@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &192034326077010314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 192034326077010312}
+  - component: {fileID: 6639484643018219743}
+  - component: {fileID: 4125834924217455386}
+  m_Layer: 0
+  m_Name: Left AutoXR Hand Model With Collisions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &192034326077010312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192034326077010314}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6639484643018219743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192034326077010314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e32b2a802dd9845b4574f8376e7d6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handModelMode: 0
+  controllerCharacteristics: 324
+  controllerModels:
+  - {fileID: 7634514334346526944, guid: c2285fc937be62641b392c24ab84994b, type: 3}
+  - {fileID: 5928091942230486030, guid: f140636c8eaa5024e82f1f336fc443c2, type: 3}
+  - {fileID: 4818293155451206850, guid: b9046a841483cf343a4a28e7faa23c2c, type: 3}
+  - {fileID: 4245457492171364763, guid: 2e1d85736a2beef4289fd6e59a01a718, type: 3}
+  - {fileID: 7523567926693483842, guid: 63a7539aaba64d2458db2a577fa217bb, type: 3}
+  handModel: {fileID: 109434732395284509, guid: 65847589f926b734d9eaed6e25f0046b, type: 3}
+  customModel: {fileID: 8007995345765236298, guid: 3c352584cfbad8b43b4f2ea50cad68d7, type: 3}
+--- !u!54 &4125834924217455386
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192034326077010314}
+  serializedVersion: 2
+  m_Mass: 20
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

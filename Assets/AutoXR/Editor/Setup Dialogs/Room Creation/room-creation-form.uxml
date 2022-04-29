@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="room-creation-form" style="margin-bottom: 20px;">
+        <ui:Label text="Create Rooms:" display-tooltip-when-elided="true" name="create-room-label" style="-unity-font-style: bold;" />
+        <ui:VisualElement name="room-width" style="flex-direction: row; flex-grow: 1;">
+            <ui:TextField picking-mode="Ignore" label="Width" value="filler text" text="Enter Width..." name="room-width-label" style="margin-left: 20px; margin-right: 10px; height: auto; flex-shrink: 1; flex-grow: 1; flex-direction: row; width: 10px;" />
+            <ui:Label text="m" display-tooltip-when-elided="true" name="unit-label" style="flex-grow: 1; flex-shrink: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="room-height" style="flex-direction: row; flex-grow: 1;">
+            <ui:TextField picking-mode="Ignore" label="Height" value="filler text" text="Enter Height..." name="room-height-label" style="margin-left: 20px; margin-right: 10px; flex-shrink: 1; flex-grow: 1; width: 10px;" />
+            <ui:Label text="m" display-tooltip-when-elided="true" name="unit-label" style="flex-shrink: 1; flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="room-depth" style="flex-direction: row; flex-grow: 1;">
+            <ui:TextField picking-mode="Ignore" label="Depth" value="filler text" text="Enter Depth..." name="room-depth-label" style="margin-left: 20px; margin-right: 10px; flex-shrink: 1; flex-grow: 1; width: 10px;" />
+            <ui:Label text="m" display-tooltip-when-elided="true" name="unit-label" style="flex-grow: 1; flex-shrink: 1;" />
+        </ui:VisualElement>
+        <ui:Toggle label="Add Teleportation Area" name="teleportation-toggle" value="true" style="margin-left: 20px;" />
+        <ui:Button text="Create a new Room" display-tooltip-when-elided="true" name="create-room-button" style="margin-top: 10px; margin-bottom: 1px;" />
+        <ui:Label text="Room was successfully created!" display-tooltip-when-elided="true" name="room-creation-success" style="color: rgb(0, 255, 0); -unity-text-align: upper-center; display: none;" />
+        <ui:Label text="Error creating a room, be sure to enter only positve floats." display-tooltip-when-elided="true" name="room-creation-failure" style="color: rgb(255, 0, 0); -unity-text-align: upper-center; display: none;" />
+    </ui:VisualElement>
+</ui:UXML>

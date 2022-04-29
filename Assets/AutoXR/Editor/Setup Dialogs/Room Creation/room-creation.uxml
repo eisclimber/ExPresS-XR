@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="step-1-intro" src="step-1-intro.uxml" />
+    <ui:Template name="step-2-room-creation" src="step-2-room-creation.uxml" />
+    <ui:Template name="step-3-cutouts" src="step-3-cutouts.uxml" />
+    <ui:Template name="step-4-extruding-hallways" src="step-4-extruding-hallways.uxml" />
+    <ui:Template name="step-5-skybox" src="step-5-skybox.uxml" />
+    <ui:Template name="step-6-teleportation-area 1" src="step-6-teleportation-area 1.uxml" />
+    <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
+        <ui:VisualElement name="steps-container" style="width: 60px; background-color: rgb(36, 36, 36);">
+            <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" />
+            <ui:Button text="WF2" display-tooltip-when-elided="true" name="step-2" />
+            <ui:Button text="WF3" display-tooltip-when-elided="true" name="step-3" />
+            <ui:Button text="WF4" display-tooltip-when-elided="true" name="step-4" />
+            <ui:Button text="WF5" display-tooltip-when-elided="true" name="step-5" />
+            <ui:Button text="WF6" display-tooltip-when-elided="true" name="step-6" />
+        </ui:VisualElement>
+        <ui:VisualElement name="content-container" style="flex-grow: 1;">
+            <ui:Instance template="step-1-intro" name="step-1-intro" style="flex-grow: 1;" />
+            <ui:Instance template="step-2-room-creation" name="step-2-room-creation" style="display: none; flex-grow: 1;" />
+            <ui:Instance template="step-3-cutouts" name="step-3-cutouts" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-4-extruding-hallways" name="step-4-extruding-hallways" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-5-skybox" name="step-6-teleportation-area" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-6-teleportation-area 1" name="step-6-teleportation-area 1" style="flex-grow: 1; display: none;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

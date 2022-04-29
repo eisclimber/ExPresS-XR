@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="step-1-device-type" src="step-1-device-type.uxml" />
+    <ui:Template name="step-2-controlls-presets" src="step-2-controlls-presets.uxml" />
+    <ui:Template name="step-3-launch" src="step-3-launch.uxml" />
+    <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
+        <ui:VisualElement name="steps-container" style="width: 60px; background-color: rgb(36, 36, 36);">
+            <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" />
+            <ui:Button text="WF2" display-tooltip-when-elided="true" name="step-2" />
+            <ui:Button text="WF3" display-tooltip-when-elided="true" name="step-3" />
+        </ui:VisualElement>
+        <ui:VisualElement name="content-container" style="flex-grow: 1;">
+            <ui:Instance template="step-1-device-type" name="step-1-device-type" style="display: flex; flex-grow: 1;" />
+            <ui:Instance template="step-2-controlls-presets" name="step-2-controlls-presets" style="display: none; flex-grow: 1;" />
+            <ui:Instance template="step-3-launch" name="step-3-launch" style="display: none; flex-grow: 1;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
