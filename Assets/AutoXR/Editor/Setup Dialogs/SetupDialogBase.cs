@@ -7,6 +7,14 @@ using UnityEngine.UIElements;
 
 public class SetupDialogBase : EditorWindow
 {
+    public const float DEFAULT_WINDOW_WIDTH = 600.0f;
+    public const float DEFAULT_WINDOW_HEIGHT = 400.0f;
+
+    public static Vector2 defaultWindowSize
+    {
+        get => new Vector2(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+    }
+
     protected VisualElement contentContainer;
     protected VisualElement stepsContainer;
 

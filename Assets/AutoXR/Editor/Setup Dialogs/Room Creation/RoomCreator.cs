@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using System.Globalization;
@@ -8,7 +9,8 @@ public class RoomCreator : EditorWindow
     public static void LaunchRoomCreator(MenuCommand menuCommand)
     {
         // Get existing open window or if none, make a new one:
-        GetWindow<RoomCreator>("Room Creator");
+        EditorWindow window = GetWindow<RoomCreator>("Room Creator");
+        window.minSize = new Vector2(600, 150);
     }
 
     private VisualElement _contentRootForm;

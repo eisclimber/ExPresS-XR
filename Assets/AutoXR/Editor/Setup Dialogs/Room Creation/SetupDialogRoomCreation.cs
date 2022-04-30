@@ -11,7 +11,8 @@ public class SetupDialogRoomCreation : SetupDialogBase
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
-        GetWindow<SetupDialogRoomCreation>("Room Creation");
+        EditorWindow window = GetWindow<SetupDialogRoomCreation>("Room Creation");
+        window.minSize = defaultWindowSize;
     }
 
     public override string uxmlName

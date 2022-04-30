@@ -10,7 +10,8 @@ class TutorialButtonQuiz : SetupDialogBase
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
-        GetWindow<TutorialButtonQuiz>("TutorialButtonQuiz");
+        EditorWindow window = GetWindow<TutorialButtonQuiz>("TutorialButtonQuiz");
+        window.minSize = defaultWindowSize;
     }
 
     public override string uxmlName

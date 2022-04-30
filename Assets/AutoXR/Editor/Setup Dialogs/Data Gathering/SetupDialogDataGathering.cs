@@ -10,7 +10,8 @@ class SetupDialogDataGathering : SetupDialogBase
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
-        GetWindow<SetupDialogDataGathering>("SetupDialogDataGathering");
+        EditorWindow window = GetWindow<SetupDialogDataGathering>("SetupDialogDataGathering");
+        window.minSize = defaultWindowSize;
     }
 
     public override string uxmlName

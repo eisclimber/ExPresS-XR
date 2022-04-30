@@ -10,7 +10,8 @@ class SetupDialogInitial : SetupDialogBase
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
-        GetWindow<SetupDialogInitial>("SetupDialogInitial");
+        EditorWindow window = GetWindow<SetupDialogInitial>("SetupDialogInitial");
+        window.minSize = defaultWindowSize;
     }
 
     public override string uxmlName
