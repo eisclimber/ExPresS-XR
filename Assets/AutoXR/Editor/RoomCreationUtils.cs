@@ -9,37 +9,35 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public static class AutoXRRoomCreationUtils
 {
-    const string DEFAULT_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Floor.mat";
-    const string DEFAULT_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Wall.mat";
-    const string DEFAULT_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Wall.mat";
+    // Experimentation default material paths
+    const string EXPERIMENTATION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Floor.mat";
+    const string EXPERIMENTATION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
+    const string EXPERIMENTATION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
+    
+    // Exhibition default material paths
+    const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Old Travertine Floor.mat";
+    const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Street Floor.mat";
+    const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Street Floor.mat";
 
+    // Default Reticle Path
     const string DEFAULT_TELEPORTATION_RETICLE_PATH = "Assets/AutoXR/Prefabs/Reticles/Teleport Reticle.prefab";
 
+    // Teleportation area placement offset
     const float TELEPORTATION_AREA_Y_OFFSET = 0.001f;
 
     // Threshold of an face to recognized as floor (dot product of two normalized vectors)
     const float DOT_FLOOR_THRESHOLD = 0.95f;
 
-    enum ROOM_FACE_IDXS
+    [MenuItem("AutoXR/Rooms.../Create an Experimentation Room")]
+    public static void CreateExperimentationRoom(MenuCommand menuCommand)
     {
-        WALL_BACK,
-        WALL_RIGHT,
-        WALL_FRONT,
-        WALL_LEFT,
-        CEILING,
-        FLOOR
+        CreateRoom(5f, 3f, 4f, true, MaterialMode.SeparateFloor, MaterialPreset.Experimentation);
     }
 
-    [MenuItem("AutoXR/Rooms.../Open Room Creator")]
-    public static void LaunchRoomCreator(MenuCommand menuCommand)
+    [MenuItem("AutoXR/Rooms.../Create an Exhibition Room")]
+    public static void CreateExhibitionRoom(MenuCommand menuCommand)
     {
-        Debug.Log("Room Creator");
-    }
-
-    [MenuItem("AutoXR/Rooms.../Create a New Test Room")]
-    public static void CreateTestRoom(MenuCommand menuCommand)
-    {
-        CreateRoom(5f, 3f, 4f);
+        CreateRoom(5f, 3f, 4f, true, MaterialMode.SeparateFloor, MaterialPreset.Exhibition);
     }
 
     [MenuItem("AutoXR/Rooms.../Update Teleportation of Selected Rooms")]
@@ -69,7 +67,13 @@ public static class AutoXRRoomCreationUtils
     }
 
 
-    public static void CreateRoom(float width, float height, float depth, MaterialMode mode = MaterialMode.SEPARATE_FLOOR, bool addTeleportationArea = true)
+    public static void CreateRoom(
+        float width, 
+        float height, 
+        float depth, 
+        bool addTeleportationArea = true, 
+        MaterialMode mode = MaterialMode.SeparateFloor,
+        MaterialPreset materialPreset = MaterialPreset.Experimentation)
     {
         ProBuilderMesh room = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(width, height, depth));
 
@@ -83,7 +87,7 @@ public static class AutoXRRoomCreationUtils
         }
 
         // Assign Materials to faces
-        AssignRoomMaterials(room, mode);
+        AssignRoomMaterials(room, mode, materialPreset);
 
 
         // Mesh cleanup
@@ -105,7 +109,7 @@ public static class AutoXRRoomCreationUtils
         Undo.RegisterCreatedObjectUndo(room.gameObject, "Created AutoXR Room");
     }
 
-    private static void AssignRoomMaterials(ProBuilderMesh room, MaterialMode mode)
+    private static void AssignRoomMaterials(ProBuilderMesh room, MaterialMode mode,MaterialPreset materialPreset)
     {
         if (room == null || room.GetComponent<MeshRenderer>() == null)
         {
@@ -115,31 +119,31 @@ public static class AutoXRRoomCreationUtils
 
         MeshRenderer roomRenderer = room.GetComponent<MeshRenderer>();
 
-        Material wallMaterial = AssetDatabase.LoadAssetAtPath<Material>(DEFAULT_WALL_MATERIAL_PATH);
-        Material ceilingMaterial = AssetDatabase.LoadAssetAtPath<Material>(DEFAULT_CEILING_MATERIAL_PATH);
-        Material floorMaterial = AssetDatabase.LoadAssetAtPath<Material>(DEFAULT_FLOOR_MATERIAL_PATH);
+        Material wallMaterial = AssetDatabase.LoadAssetAtPath<Material>(GetWallPathFromPreset(materialPreset));
+        Material ceilingMaterial = AssetDatabase.LoadAssetAtPath<Material>(GetCeilingPathFromPreset(materialPreset));
+        Material floorMaterial = AssetDatabase.LoadAssetAtPath<Material>(GetFloorPathFromPreset(materialPreset));
 
         // The faces of a generated cube are enumerated as in ROOM_FACE_IDXS (when looking towards positive z and x towards right)
         switch (mode)
         {
-            case MaterialMode.SEPARATE_FLOOR:
+            case MaterialMode.SeparateFloor:
                 // Make a list of materials
                 roomRenderer.materials = new Material[] { wallMaterial, floorMaterial };
-                room.faces[(int)ROOM_FACE_IDXS.FLOOR].submeshIndex = 1;
+                room.faces[(int)RoomFaceIds.Floor].submeshIndex = 1;
                 break;
-            case MaterialMode.SEPARATE_FLOOR_AND_CEILING:
+            case MaterialMode.SeparateFloorAndCeiling:
                 // Make a list of materials
                 roomRenderer.materials = new Material[] { wallMaterial, ceilingMaterial, floorMaterial };
-                room.faces[(int)ROOM_FACE_IDXS.CEILING].submeshIndex = 1;
-                room.faces[(int)ROOM_FACE_IDXS.FLOOR].submeshIndex = 2;
+                room.faces[(int)RoomFaceIds.Ceiling].submeshIndex = 1;
+                room.faces[(int)RoomFaceIds.Floor].submeshIndex = 2;
                 break;
-            case MaterialMode.ALL_SEPARATE:
+            case MaterialMode.AllSeparate:
                 // Make a list of materials
                 roomRenderer.materials = new Material[] { wallMaterial, wallMaterial, wallMaterial, wallMaterial, ceilingMaterial, floorMaterial };
                 // If each side has it's own material, use a mapping of face index to material index
                 for (int i = 0; i < roomRenderer.materials.Length; i++)
                 {
-                    room.faces[(int)ROOM_FACE_IDXS.FLOOR].submeshIndex = 1;
+                    room.faces[(int)RoomFaceIds.Floor].submeshIndex = 1;
                 }
                 break;
             default: // == MaterialMode.SINGLE
@@ -185,21 +189,20 @@ public static class AutoXRRoomCreationUtils
                     Object.DestroyImmediate(copy.transform.GetChild(i).gameObject);
                 }
 
-                // Should be done (as in DuplicateFaces but somehow throws an error:/)
+                // Should be done (as in ProBuilder's DuplicateFaces but somehow throws an error:/)
                 // foreach (var child in parentMesh.transform.GetComponentsInChildren<ProBuilderMesh>())
                 // {
                 //     UnityEditor.ProBuilder.EditorUtility.SynchronizeWithMeshFilter(child);
                 // }
             }
-            Undo.RegisterCreatedObjectUndo(copy.gameObject, "Update Floor Teleportation");
-
-            foreach(var v in inverse) {Debug.Log(v);}
 
             copy.DeleteFaces(inverse);
             copy.ToMesh();
             copy.Refresh();
             copy.Optimize();
             copy.ClearSelection();
+            
+            Undo.RegisterCreatedObjectUndo(copy.gameObject, "Update Floor Teleportation");
 
             // Debug.Log(copy.gameObject + " x " + mesh.gameObject.transform + " x " + teleportationArea);
             MakeMeshTeleportationArea(copy.gameObject, parentMesh.transform, tpTransform);
@@ -303,12 +306,66 @@ public static class AutoXRRoomCreationUtils
         }
         return false;
     }
+
+    
+
+
+    private static string GetWallPathFromPreset(MaterialPreset materialPreset)
+    {
+        switch (materialPreset)
+        {
+            case MaterialPreset.Exhibition:
+                return EXHIBITION_WALL_MATERIAL_PATH;
+            default:
+                return EXPERIMENTATION_WALL_MATERIAL_PATH;
+        }
+    }
+
+    private static string GetFloorPathFromPreset(MaterialPreset materialPreset)
+    {
+        switch (materialPreset)
+        {
+            case MaterialPreset.Exhibition:
+                return EXHIBITION_FLOOR_MATERIAL_PATH;
+            default:
+                return EXPERIMENTATION_FLOOR_MATERIAL_PATH;
+        }
+    }
+
+    private static string GetCeilingPathFromPreset(MaterialPreset materialPreset)
+    {
+        switch (materialPreset)
+        {
+            case MaterialPreset.Exhibition:
+                return EXHIBITION_CEILING_MATERIAL_PATH;
+            default:
+                return EXPERIMENTATION_CEILING_MATERIAL_PATH;
+        }
+    }
 }
 
 public enum MaterialMode
 {
-    SINGLE,
-    SEPARATE_FLOOR,
-    SEPARATE_FLOOR_AND_CEILING,
-    ALL_SEPARATE
+    Single,
+    SeparateFloor,
+    SeparateFloorAndCeiling,
+    AllSeparate
+}
+
+public enum MaterialPreset
+{
+    Experimentation,
+    Exhibition
+}
+
+
+public  enum RoomFaceIds
+{
+    // When looking at the room towards positive z
+    WallBack,
+    WallRight,
+    WallFront,
+    WallLeft,
+    Ceiling,
+    Floor
 }

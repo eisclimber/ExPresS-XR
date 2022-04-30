@@ -25,6 +25,21 @@ public class AutoXRBaseButton : XRBaseInteractable
     [SerializeField]
     private float _yMax = 0.029f;
 
+    [SerializeField]
+    private Vector3 _colliderSize;
+    public Vector3 colliderSize
+    {
+        get => _colliderSize;
+        set
+        {
+            _colliderSize = value;
+
+            if (pushAnchor != null && pushAnchor.GetComponent<BoxCollider>() != null)
+            {
+                pushAnchor.GetComponent<BoxCollider>().size = _colliderSize;
+            }
+        }
+    }
 
     private bool _pressed = false;
     public bool pressed
@@ -150,5 +165,11 @@ public class AutoXRBaseButton : XRBaseInteractable
         downPct = Mathf.Clamp(downPct, 0.0f, 1.0f);
 
         return (downPct <= PRESS_PCT);
+    }
+
+    private void OnValidate()
+    {
+        // Prevents weird behavior
+        colliderSize = _colliderSize;
     }
 }

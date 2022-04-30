@@ -53,7 +53,9 @@ public class DataGatherer : MonoBehaviour
 
 
     // Data
-    bool includeTimeStamp = true;
+    [SerializeField]
+    private bool _includeTimeStamp = true;
+
 
     [SerializeField]
     private List<DataGatheringBinding> _dataBindings;
@@ -93,7 +95,7 @@ public class DataGatherer : MonoBehaviour
 
     private string GetExportCSVLine()
     {
-        string line = (includeTimeStamp ? System.DateTime.Now.ToString() + "," : "");
+        string line = (_includeTimeStamp ? System.DateTime.Now.ToString() + "," : "");
         for (int i = 0; i < _dataBindings.Count; i++)
         {
             line += _dataBindings[i].GetBindingValue();
@@ -109,7 +111,7 @@ public class DataGatherer : MonoBehaviour
 
     private string GetExportCSVHeader()
     {
-        string header = includeTimeStamp ? "time," : "";
+        string header = (_includeTimeStamp ? "time," : "");
         for (int i = 0; i < _dataBindings.Count; i++)
         {
             header += _dataBindings[i].exportColumnName;

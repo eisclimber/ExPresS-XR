@@ -72,7 +72,7 @@ public class SetupDialogBase : EditorWindow
     protected virtual void AssignStepContainersRefs()
     {
         // Assign the references of each assignStepContainers
-        // E.g. stepsContainer.Q<VisualElement>(<element-name>)
+        // E.g. step1Container = contentContainer.Q<VisualElement>(<element-1-name>);
     }
 
     // Expand this method and add bindings for each step

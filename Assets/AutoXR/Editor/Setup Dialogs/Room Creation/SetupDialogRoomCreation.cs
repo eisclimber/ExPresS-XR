@@ -77,7 +77,7 @@ public class SetupDialogRoomCreation : SetupDialogBase
 
         if (canCreate)
         {
-            AutoXRRoomCreationUtils.CreateRoom(width, height, depth, MaterialMode.SEPARATE_FLOOR);
+            AutoXRRoomCreationUtils.CreateRoom(width, height, depth, true, MaterialMode.SeparateFloor, MaterialPreset.Experimentation);
         }
 
         if (_roomCreationFailureLabel != null)

@@ -13,6 +13,8 @@ public class DataGathererEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        serializedObject.UpdateIfRequiredOrScript();
+
         EditorGUI.BeginDisabledGroup(true);
         {
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
@@ -50,7 +52,10 @@ public class DataGathererEditor : Editor
 
         EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataBindings"), true);
         EditorGUI.indentLevel--;
+
+        serializedObject.ApplyModifiedProperties();
     }
 }

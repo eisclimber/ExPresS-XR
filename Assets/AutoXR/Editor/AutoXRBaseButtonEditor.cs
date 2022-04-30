@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Events;
 
 [CustomEditor(typeof(AutoXRBaseButton))]
 public class AutoXRBaseButtonEditor : Editor
@@ -15,17 +16,19 @@ public class AutoXRBaseButtonEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        serializedObject.UpdateIfRequiredOrScript();
+        
         EditorGUI.BeginDisabledGroup(true);
         {
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
         }
         EditorGUI.EndDisabledGroup();
         
-
         EditorGUILayout.LabelField("Local Push Limits", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_yMin"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_yMax"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_colliderSize"), true);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();

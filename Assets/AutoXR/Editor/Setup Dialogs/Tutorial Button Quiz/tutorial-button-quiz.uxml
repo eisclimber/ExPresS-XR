@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Template name="step-1-intro" src="step-1-intro.uxml" />
+    <ui:Template name="step-2-create-room" src="step-2-create-room.uxml" />
+    <ui:Template name="step-3-place-furniture" src="step-3-place-furniture.uxml" />
+    <ui:Template name="step-4-place-video-display" src="step-4-place-video-display.uxml" />
+    <ui:Template name="step-5-place-buttons" src="step-5-place-buttons.uxml" />
+    <ui:Template name="step-6-setup-quiz-logic" src="step-6-setup-quiz-logic.uxml" />
+    <ui:Template name="step-7-data-gathering" src="step-7-data-gathering.uxml" />
+    <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
+        <ui:VisualElement name="steps-container" style="width: 60px; background-color: rgb(36, 36, 36);">
+            <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" />
+            <ui:Button text="WF2" display-tooltip-when-elided="true" name="step-2" />
+            <ui:Button text="WF3" display-tooltip-when-elided="true" name="step-3" />
+            <ui:Button text="WF4" display-tooltip-when-elided="true" name="step-4" />
+            <ui:Button text="WF5" display-tooltip-when-elided="true" name="step-5" />
+            <ui:Button text="WF6" display-tooltip-when-elided="true" name="step-6" />
+            <ui:Button text="WF7" display-tooltip-when-elided="true" name="step-7" />
+        </ui:VisualElement>
+        <ui:VisualElement name="content-container" style="flex-grow: 1;">
+            <ui:Instance template="step-1-intro" name="step-1-intro" style="flex-grow: 1; display: flex;" />
+            <ui:Instance template="step-2-create-room" name="step-2-create-room" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-3-place-furniture" name="step-3-place-furniture" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-4-place-video-display" name="step-4-place-video-display" style="display: none; flex-grow: 1;" />
+            <ui:Instance template="step-5-place-buttons" name="step-5-place-buttons" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-6-setup-quiz-logic" name="step-6-setup-quiz-logic" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-7-data-gathering" name="step-7-data-gathering" style="flex-grow: 1; display: none;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

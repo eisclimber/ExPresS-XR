@@ -173,7 +173,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.08, y: 0.02, z: 0.08}
+  m_Size: {x: 0, y: 0, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5005649191158765114
 Rigidbody:
@@ -314,6 +314,7 @@ MonoBehaviour:
   pushAnchor: {fileID: 5005649191158765113}
   _yMin: 0.019
   _yMax: 0.029
+  _colliderSize: {x: 0, y: 0, z: 0}
 --- !u!1 &6709303480767786271
 GameObject:
   m_ObjectHideFlags: 0
