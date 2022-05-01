@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using System.Globalization;
+using AutoXR.Editor;
+
 
 public class SetupDialogRoomCreation : SetupDialogBase
 {
@@ -24,6 +26,8 @@ public class SetupDialogRoomCreation : SetupDialogBase
     private VisualElement step2Container;
     private VisualElement step3Container;
 
+    private Button _openRoomCreatorButton;
+
     protected override void AssignStepContainersRefs()
     {
         step1Container = contentContainer.Q<VisualElement>("step-1-intro");
@@ -31,95 +35,15 @@ public class SetupDialogRoomCreation : SetupDialogBase
         step3Container = contentContainer.Q<VisualElement>("step-3-cutouts");
     }
 
-    private TextField _roomWidthField;
-    private TextField _roomHeightField;
-    private TextField _roomDepthField;
-    private Toggle _teleportationToggle;
-
-    private Label _roomCreationSuccessLabel;
-    private Label _roomCreationFailureLabel;
-
 
     protected override void BindUiElements()
     {
-        // Only bind room creation form on this one
-        BindRoomCreationForm();
+        _openRoomCreatorButton = step2Container.Q<Button>();
+        _openRoomCreatorButton.clickable.clicked += OpenRoomCreator;
 
         // Bind remaining UI Elements
         base.BindUiElements();
     }
 
-    private void BindRoomCreationForm()
-    {
-        _roomWidthField = step2Container.Q<TextField>("room-width-label");
-        _roomHeightField = step2Container.Q<TextField>("room-height-label");
-        _roomDepthField = step2Container.Q<TextField>("room-depth-label");
-
-        _teleportationToggle = step2Container.Q<Toggle>("teleportation-toggle");
-
-        _roomCreationSuccessLabel = step2Container.Q<Label>("room-creation-success");
-        _roomCreationFailureLabel = step2Container.Q<Label>("room-creation-failure");
-
-        Button createButton = step2Container.Q<Button>("create-room-button");
-
-        if (createButton != null)
-        {
-            createButton.clickable.clicked += TryCreateRoom;
-        }
-    }
-
-    private void TryCreateRoom()
-    {
-        float width = TryGetRoomWidth();
-        float height = TryGetRoomHeight();
-        float depth = TryGetRoomDepth();
-
-        bool canCreate = (width > 0 && height > 0 && depth > 0);
-
-        if (canCreate)
-        {
-            AutoXRRoomCreationUtils.CreateRoom(width, height, depth, true, MaterialMode.SeparateFloor, MaterialPreset.Experimentation);
-        }
-
-        if (_roomCreationFailureLabel != null)
-        {
-            _roomCreationFailureLabel.style.display = canCreate ? DisplayStyle.None : DisplayStyle.Flex;
-        }
-
-        if (_roomCreationSuccessLabel != null)
-        {
-            _roomCreationSuccessLabel.style.display = canCreate ? DisplayStyle.Flex : DisplayStyle.None;
-        }
-    }
-
-    private bool GetValueFromTeleportationToggle()
-    {
-        if (_teleportationToggle != null)
-        {
-            return _teleportationToggle.value;
-        }
-        return false;
-    }
-
-    private float TryGetValueFromTextField(TextField textField)
-    {
-        if (textField != null)
-        {
-            float result;
-
-            // Replace the comma with a dot to support the german float format
-            if (float.TryParse(textField.text.Replace(',', '.'), 
-                System.Globalization.NumberStyles.Float, 
-                CultureInfo.InvariantCulture, 
-                out result))
-            {
-                return result;
-            }
-        }
-        return -1.0f;
-    }
-
-    private float TryGetRoomWidth() => TryGetValueFromTextField(_roomWidthField);
-    private float TryGetRoomHeight() => TryGetValueFromTextField(_roomHeightField);
-    private float TryGetRoomDepth() => TryGetValueFromTextField(_roomDepthField);
+    private void OpenRoomCreator() => RoomCreator.ShowWindow();
 }

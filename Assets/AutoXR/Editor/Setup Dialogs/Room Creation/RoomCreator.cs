@@ -1,23 +1,30 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Globalization;
+using AutoXR.Editor;
 
 public class RoomCreator : EditorWindow
 {
     [MenuItem("AutoXR/Rooms.../Open Room Creator")]
-    public static void LaunchRoomCreator(MenuCommand menuCommand)
+    public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
         EditorWindow window = GetWindow<RoomCreator>("Room Creator");
-        window.minSize = new Vector2(600, 150);
+        window.minSize = new Vector2(600, 220);
     }
 
     private VisualElement _contentRootForm;
-    private TextField _roomWidthField;
-    private TextField _roomHeightField;
-    private TextField _roomDepthField;
+    private FloatField _roomWidthField;
+    private FloatField _roomHeightField;
+    private FloatField _roomDepthField;
     private Toggle _teleportationToggle;
+
+    private EnumField _wallModeField;
+    private EnumField _materialPresetField;
+
+    private Button _createButton;
 
     private Label _roomCreationSuccessLabel;
     private Label _roomCreationFailureLabel;
@@ -28,7 +35,6 @@ public class RoomCreator : EditorWindow
         get => "Assets/AutoXR/Editor/Setup Dialogs/Room Creation/room-creation-form.uxml";
     }
 
-
     public void OnEnable()
     {
         VisualTreeAsset original = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlName);
@@ -36,11 +42,20 @@ public class RoomCreator : EditorWindow
 
         _contentRootForm = rootVisualElement.Q<VisualElement>("room-creation-form");
 
-        _roomWidthField = _contentRootForm.Q<TextField>("room-width-label");
-        _roomHeightField = _contentRootForm.Q<TextField>("room-height-label");
-        _roomDepthField = _contentRootForm.Q<TextField>("room-depth-label");
+        _roomWidthField = _contentRootForm.Q<FloatField>("room-width-label");
+        _roomHeightField = _contentRootForm.Q<FloatField>("room-height-label");
+        _roomDepthField = _contentRootForm.Q<FloatField>("room-depth-label");
 
         _teleportationToggle = _contentRootForm.Q<Toggle>("teleportation-toggle");
+
+        _wallModeField = _contentRootForm.Q<EnumField>("wall-mode-field");
+        _materialPresetField = _contentRootForm.Q<EnumField>("material-preset-field");
+
+        _createButton = _contentRootForm.Q<Button>("create-room-button");
+        _createButton.clickable.clicked += TryCreateRoom;
+
+        _roomCreationSuccessLabel = _contentRootForm.Q<Label>("room-creation-success");
+        _roomCreationFailureLabel = _contentRootForm.Q<Label>("room-creation-failure");
     }
 
     private void TryCreateRoom()
@@ -49,11 +64,15 @@ public class RoomCreator : EditorWindow
         float height = TryGetRoomHeight();
         float depth = TryGetRoomDepth();
 
-        bool canCreate = (width > 0 && height > 0 && depth > 0);
+        bool addTeleportation = GetValueFromTeleportationToggle();
+        MaterialPreset materialPreset = GetMaterialPreset();
+        WallMode wallMode = GetWallMode();
 
+        bool canCreate = (width > 0 && height > 0 && depth > 0);
+        
         if (canCreate)
         {
-            AutoXRRoomCreationUtils.CreateRoom(width, height, depth, true, MaterialMode.SeparateFloor, MaterialPreset.Experimentation);
+            AutoXRRoomCreationUtils.CreateRoom(width, height, depth, addTeleportation, wallMode, materialPreset);
         }
 
         if (_roomCreationFailureLabel != null)
@@ -76,26 +95,36 @@ public class RoomCreator : EditorWindow
         return false;
     }
 
-    private float TryGetValueFromTextField(TextField textField)
+    private MaterialPreset GetMaterialPreset()
     {
-        if (textField != null)
+        if (_materialPresetField != null)
         {
-            float result;
+            return (MaterialPreset)_materialPresetField.value;
+        }
+        return MaterialPreset.Experimentation;
+    }
 
-            // Replace the comma with a dot to support the german float format
-            if (float.TryParse(textField.text.Replace(',', '.'),
-                System.Globalization.NumberStyles.Float,
-                CultureInfo.InvariantCulture,
-                out result))
-            {
-                return result;
-            }
+    private WallMode GetWallMode()
+    {
+        if (_wallModeField != null)
+        {
+            return (WallMode)_wallModeField.value;
+        }
+        return WallMode.SeparateFloor;
+    }
+
+
+    private float GetValueFromTextField(FloatField floatField)
+    {
+        if (floatField != null)
+        {
+            return floatField.value;
         }
         return -1.0f;
     }
 
 
-    private float TryGetRoomWidth() => TryGetValueFromTextField(_roomWidthField);
-    private float TryGetRoomHeight() => TryGetValueFromTextField(_roomHeightField);
-    private float TryGetRoomDepth() => TryGetValueFromTextField(_roomDepthField);
+    private float TryGetRoomWidth() => GetValueFromTextField(_roomWidthField);
+    private float TryGetRoomHeight() => GetValueFromTextField(_roomHeightField);
+    private float TryGetRoomDepth() => GetValueFromTextField(_roomDepthField);
 }
