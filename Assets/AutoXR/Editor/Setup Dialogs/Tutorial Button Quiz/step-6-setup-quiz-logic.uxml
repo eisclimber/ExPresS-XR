@@ -1,10 +1,28 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement name="step-6-setup-quiz-logic" style="flex-grow: 1;">
-        <ui:Label text="Setup Quiz Logic..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
-        <ui:Label text="[TODO]" display-tooltip-when-elided="true" name="choice-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
-    </ui:VisualElement>
-    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
-        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
-        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+        <ui:Label text="Setup Quiz Logic..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; min-height: initial;" />
+        <ui:VisualElement name="description" style="flex-grow: 0; margin-left: 10px;">
+            <ui:Label text="Next we will populate the dataset and choose which feedback we want to give. Drag a Video Clip into the Object field to mark them as to be played as question or answer. Optionally you can enter a text thatwill be displayed when the clip plays. You can create a new question by pressing the plus-sign below. In the end you can choose how the feedback should be given: Always the correct, always the answer to the other option, a random answer or none." display-tooltip-when-elided="true" name="choice-1-description" style="white-space: normal; flex-grow: 0; border-bottom-width: 20px; min-width: auto; min-height: initial;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="header" style="flex-direction: row;">
+            <ui:Label text="Questions" display-tooltip-when-elided="true" name="question-label" style="margin-left: 10px; flex-grow: 1; -unity-font-style: bold;" />
+            <ui:Label text="Answers" display-tooltip-when-elided="true" name="answer-label" style="margin-left: 0; flex-grow: 1; -unity-font-style: bold;" />
+        </ui:VisualElement>
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" show-vertical-scroller="true" name="questions" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; flex-grow: 1; background-color: rgb(51, 51, 51); height: 200px;" />
+        <ui:VisualElement name="add-button-container" style="flex-direction: row-reverse; margin-right: 7px; min-height: initial;">
+            <ui:Button text="+" display-tooltip-when-elided="true" name="add-item-button" style="flex-direction: row-reverse; width: 24px; height: 24px;" />
+            <ui:Button text="-" display-tooltip-when-elided="true" name="remove-item-button" style="flex-direction: row-reverse; width: 24px; height: 24px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="button-refs" style="margin-top: 10px; margin-right: 10px; min-height: initial;">
+            <uie:ObjectField label="Button 1" name="button-1-ref" type="AutoXRBaseButton, Assembly-CSharp" style="margin-left: 10px;" />
+            <uie:ObjectField label="Button 2" name="button-2-ref" type="AutoXRBaseButton, Assembly-CSharp" style="margin-left: 10px;" />
+            <uie:ObjectField label="Video Player" name="video-player-ref" type="UnityEngine.Video.VideoPlayer, UnityEngine.VideoModule" style="margin-left: 10px;" />
+        </ui:VisualElement>
+        <uie:EnumField label="Feedback Type" name="feedback-type" value="AlwaysCorrect" type="FeedbackType,Assembly-CSharp-Editor" style="margin-top: 10px; margin-bottom: 10px; flex-shrink: 1; margin-left: 10px; margin-right: 10px; min-height: initial;" />
+        <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end; min-height: initial;">
+            <ui:Label text="Setup failed. Be sure to connect the buttons amd add at least 2 questions!" display-tooltip-when-elided="true" name="setup-failure-label" style="flex-grow: 1; margin-right: 0; margin-left: 0; color: rgb(255, 0, 0); -unity-font-style: bold; -unity-text-align: upper-center; display: none;" />
+            <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+            <ui:Button text="Setup" display-tooltip-when-elided="true" name="setup-button" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

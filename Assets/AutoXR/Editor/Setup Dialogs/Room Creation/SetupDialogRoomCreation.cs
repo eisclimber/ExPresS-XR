@@ -8,7 +8,6 @@ using AutoXR.Editor;
 
 public class SetupDialogRoomCreation : SetupDialogBase
 {
-
     [MenuItem("AutoXR/Room Creation", false, 1)]
     public static void ShowWindow()
     {

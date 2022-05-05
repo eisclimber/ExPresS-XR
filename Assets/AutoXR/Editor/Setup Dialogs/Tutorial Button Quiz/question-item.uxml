@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="question-item" style="flex-direction: row; margin-top: 3px; margin-bottom: 3px;">
+        <ui:Label text="1" display-tooltip-when-elided="true" name="number-label" style="-unity-text-align: middle-center; margin-right: 10px; font-size: 18px; border-left-width: 5px; margin-left: 10px;" />
+        <ui:VisualElement name="question" style="flex-grow: 1; margin-right: 10px;">
+            <uie:ObjectField name="question-object" type="UnityEngine.Video.VideoClip,UnityEngine.VideoModule" style="flex-grow: 0; flex-shrink: 0; width: auto;" />
+            <ui:TextField picking-mode="Ignore" text="Enter Question" name="question-text" multiline="true" style="flex-shrink: 0; flex-grow: 1; height: 35px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="answer" style="flex-grow: 1;">
+            <uie:ObjectField name="answer-object" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="flex-grow: 0; flex-shrink: 1; width: auto;" />
+            <ui:TextField picking-mode="Ignore" text="Enter Answer" name="answer-text" multiline="true" style="flex-grow: 1; flex-shrink: 0;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

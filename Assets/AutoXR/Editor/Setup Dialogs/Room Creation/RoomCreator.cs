@@ -1,24 +1,25 @@
+using System.Collections;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
-using System.Globalization;
 using AutoXR.Editor;
+using Unity.EditorCoroutines.Editor;
 
 public class RoomCreator : EditorWindow
 {
+    public const float ERROR_MESSAGE_DURATION = 3.0f;
+
     [MenuItem("AutoXR/Rooms.../Open Room Creator")]
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
         EditorWindow window = GetWindow<RoomCreator>("Room Creator");
-        window.minSize = new Vector2(600, 220);
+        window.minSize = new Vector2(600, 230);
     }
 
     private VisualElement _contentRootForm;
-    private FloatField _roomWidthField;
-    private FloatField _roomHeightField;
-    private FloatField _roomDepthField;
+    private BoundsField _roomDimensionsField;
     private Toggle _teleportationToggle;
 
     private EnumField _wallModeField;
@@ -29,6 +30,7 @@ public class RoomCreator : EditorWindow
     private Label _roomCreationSuccessLabel;
     private Label _roomCreationFailureLabel;
 
+    private EditorCoroutine _errorCoroutine;
 
     public virtual string uxmlName
     {
@@ -42,9 +44,7 @@ public class RoomCreator : EditorWindow
 
         _contentRootForm = rootVisualElement.Q<VisualElement>("room-creation-form");
 
-        _roomWidthField = _contentRootForm.Q<FloatField>("room-width-label");
-        _roomHeightField = _contentRootForm.Q<FloatField>("room-height-label");
-        _roomDepthField = _contentRootForm.Q<FloatField>("room-depth-label");
+        _roomDimensionsField = _contentRootForm.Q<BoundsField>("room-dimensions");
 
         _teleportationToggle = _contentRootForm.Q<Toggle>("teleportation-toggle");
 
@@ -60,71 +60,44 @@ public class RoomCreator : EditorWindow
 
     private void TryCreateRoom()
     {
-        float width = TryGetRoomWidth();
-        float height = TryGetRoomHeight();
-        float depth = TryGetRoomDepth();
-
-        bool addTeleportation = GetValueFromTeleportationToggle();
-        MaterialPreset materialPreset = GetMaterialPreset();
-        WallMode wallMode = GetWallMode();
-
-        bool canCreate = (width > 0 && height > 0 && depth > 0);
+        Bounds bounds = _roomDimensionsField.value;
+        Vector3 roomSize = bounds.size;
+        Vector3 roomPos = bounds.center + new Vector3(0.0f, roomSize.y / 2.0f, 0.0f);
         
+
+        bool addTeleportation = _teleportationToggle.value;
+        MaterialPreset materialPreset = (MaterialPreset)_materialPresetField.value;
+        WallMode wallMode = (WallMode)_wallModeField.value;
+
+        bool canCreate = (roomSize.x > 0 && roomSize.y > 0 && roomSize.z > 0);
+
         if (canCreate)
         {
-            AutoXRRoomCreationUtils.CreateRoom(width, height, depth, addTeleportation, wallMode, materialPreset);
+            AutoXRRoomCreationUtils.CreateRoom(roomPos, roomSize, addTeleportation, wallMode, materialPreset);
+            _errorCoroutine = ShowErrorElement(_roomCreationSuccessLabel);
         }
-
-        if (_roomCreationFailureLabel != null)
+        else
         {
-            _roomCreationFailureLabel.style.display = canCreate ? DisplayStyle.None : DisplayStyle.Flex;
-        }
-
-        if (_roomCreationSuccessLabel != null)
-        {
-            _roomCreationSuccessLabel.style.display = canCreate ? DisplayStyle.Flex : DisplayStyle.None;
+            _errorCoroutine = ShowErrorElement(_roomCreationFailureLabel);
         }
     }
 
-    private bool GetValueFromTeleportationToggle()
+    protected EditorCoroutine ShowErrorElement(VisualElement _errorElement)
     {
-        if (_teleportationToggle != null)
+        if (_errorCoroutine != null)
         {
-            return _teleportationToggle.value;
+            EditorCoroutineUtility.StopCoroutine(_errorCoroutine);
         }
-        return false;
+        return EditorCoroutineUtility.StartCoroutine(ShowErrorCoroutine(_errorElement), this);
     }
 
-    private MaterialPreset GetMaterialPreset()
+    private IEnumerator ShowErrorCoroutine(VisualElement _errorElement)
     {
-        if (_materialPresetField != null)
+        if (_errorElement != null)
         {
-            return (MaterialPreset)_materialPresetField.value;
+            _errorElement.style.display = DisplayStyle.Flex;
+            yield return new EditorWaitForSeconds(ERROR_MESSAGE_DURATION);
+            _errorElement.style.display = DisplayStyle.None;
         }
-        return MaterialPreset.Experimentation;
     }
-
-    private WallMode GetWallMode()
-    {
-        if (_wallModeField != null)
-        {
-            return (WallMode)_wallModeField.value;
-        }
-        return WallMode.SeparateFloor;
-    }
-
-
-    private float GetValueFromTextField(FloatField floatField)
-    {
-        if (floatField != null)
-        {
-            return floatField.value;
-        }
-        return -1.0f;
-    }
-
-
-    private float TryGetRoomWidth() => GetValueFromTextField(_roomWidthField);
-    private float TryGetRoomHeight() => GetValueFromTextField(_roomHeightField);
-    private float TryGetRoomDepth() => GetValueFromTextField(_roomDepthField);
 }

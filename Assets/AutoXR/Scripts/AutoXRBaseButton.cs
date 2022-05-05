@@ -64,7 +64,7 @@ public class AutoXRBaseButton : XRBaseInteractable
     {
         return Time.time - triggerStartTime;
     }
-    
+
     ////////
 
     protected override void Awake()

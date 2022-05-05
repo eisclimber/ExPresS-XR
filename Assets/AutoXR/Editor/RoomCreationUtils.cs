@@ -77,10 +77,21 @@ namespace AutoXR.Editor
             WallMode mode = WallMode.SeparateFloor,
             MaterialPreset materialPreset = MaterialPreset.Experimentation)
         {
-            ProBuilderMesh room = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(width, height, depth));
+            CreateRoom(new Vector3(0, height / 2, 0), new Vector3(width, height, depth), addTeleportationArea, mode, materialPreset);
+        }    
+
+
+        public static void CreateRoom(
+            Vector3 roomPos,
+            Vector3 roomSize,
+            bool addTeleportationArea = true,
+            WallMode mode = WallMode.SeparateFloor,
+            MaterialPreset materialPreset = MaterialPreset.Experimentation)
+        {
+            ProBuilderMesh room = ShapeGenerator.GenerateCube(PivotLocation.Center, roomSize);
 
             room.name = "Room";
-            room.transform.position = new Vector3(0, height / 2, 0);
+            room.transform.position = roomPos;
 
             // Reverse normals to turn the face inwards
             foreach (Face face in room.faces)
@@ -197,14 +208,13 @@ namespace AutoXR.Editor
                     //     UnityEditor.ProBuilder.EditorUtility.SynchronizeWithMeshFilter(child);
                     // }
                 }
+                Undo.RegisterCreatedObjectUndo(copy.gameObject, "Update Floor Teleportation");
 
                 copy.DeleteFaces(inverse);
                 copy.ToMesh();
                 copy.Refresh();
                 copy.Optimize();
                 copy.ClearSelection();
-
-                Undo.RegisterCreatedObjectUndo(copy.gameObject, "Update Floor Teleportation");
 
                 // Debug.Log(copy.gameObject + " x " + mesh.gameObject.transform + " x " + teleportationArea);
                 MakeMeshTeleportationArea(copy.gameObject, parentMesh.transform, tpTransform);
@@ -352,12 +362,15 @@ namespace AutoXR.Editor
         SeparateFloor,
         SeparateFloorAndCeiling,
         AllSeparate
+        // Assembly Name: AutoXR.Editor.WallMode,Assembly-CSharp-Editor
     }
 
     public enum MaterialPreset
     {
         Experimentation,
         Exhibition
+
+        // Assembly Name: AutoXR.Editor.MaterialPreset,Assembly-CSharp-Editor
     }
 
 

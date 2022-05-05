@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UIElements;
-
 
 class SetupDialogDataGathering : SetupDialogBase
 {

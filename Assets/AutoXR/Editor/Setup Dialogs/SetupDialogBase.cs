@@ -1,14 +1,15 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
-
-
+using Unity.EditorCoroutines.Editor;
 
 public class SetupDialogBase : EditorWindow
 {
     public const float DEFAULT_WINDOW_WIDTH = 600.0f;
     public const float DEFAULT_WINDOW_HEIGHT = 400.0f;
+
+    public const float ERROR_MESSAGE_DURATION = 3.0f;
 
     public static Vector2 defaultWindowSize
     {
@@ -20,7 +21,7 @@ public class SetupDialogBase : EditorWindow
 
     [SerializeField]
     protected int _currentStep = 0;
-    public int currentStep 
+    public int currentStep
     {
         get
         {
@@ -54,9 +55,9 @@ public class SetupDialogBase : EditorWindow
         get => "uxmlNameNotSpecified";
     }
 
-    public void OnEnable() 
+    public virtual void OnEnable()
     {
-        VisualTreeAsset original = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlName);      
+        VisualTreeAsset original = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlName);
         original.CloneTree(rootVisualElement);
         contentContainer = rootVisualElement.Q<VisualElement>("content-container");
         stepsContainer = rootVisualElement.Q<VisualElement>("steps-container");
@@ -104,7 +105,8 @@ public class SetupDialogBase : EditorWindow
 
     private void bindSteps()
     {
-        for (int i = 0; i < stepsContainer.childCount; i++) {
+        for (int i = 0; i < stepsContainer.childCount; i++)
+        {
             Button stepButton = stepsContainer.Q<Button>("step-" + (i + 1));
             if (stepButton != null)
             {
@@ -113,14 +115,14 @@ public class SetupDialogBase : EditorWindow
                 stepButton.clickable.clicked += () => { currentStep = j; };
 
                 // Set the button's toggle
-                stepButton.style.backgroundColor = (i == currentStep? Color.gray : Color.black);
+                stepButton.style.backgroundColor = (i == currentStep ? Color.gray : Color.black);
             }
         }
     }
 
     private void BindControlButtons()
     {
-        contentContainer.Query<Button>("back-button").ForEach((button) => 
+        contentContainer.Query<Button>("back-button").ForEach((button) =>
         {
             button.clickable.clicked += () => { currentStep--; };
         });
@@ -134,5 +136,17 @@ public class SetupDialogBase : EditorWindow
         {
             nextButton.clickable.clicked += FinalizeSetup;
         });
+    }
+
+    protected EditorCoroutine ShowErrorElement(VisualElement _errorElement) => EditorCoroutineUtility.StartCoroutine(ShowErrorCoroutine(_errorElement), this);
+
+    private IEnumerator ShowErrorCoroutine(VisualElement _errorElement)
+    {
+        if (_errorElement != null)
+        {
+            _errorElement.style.display = DisplayStyle.Flex;
+            yield return new EditorWaitForSeconds(ERROR_MESSAGE_DURATION);
+            _errorElement.style.display = DisplayStyle.None;
+        }
     }
 }
