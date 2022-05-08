@@ -18,8 +18,8 @@ namespace AutoXR.Editor
 
         // Exhibition default material paths
         const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Old Travertine Floor.mat";
-        const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Street Floor.mat";
-        const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Street Floor.mat";
+        const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
+        const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
 
         // Default Reticle Path
         const string DEFAULT_TELEPORTATION_RETICLE_PATH = "Assets/AutoXR/Prefabs/Reticles/Teleport Reticle.prefab";

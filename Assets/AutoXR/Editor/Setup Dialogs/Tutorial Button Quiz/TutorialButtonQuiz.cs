@@ -120,7 +120,7 @@ public class QuizSetupConfig : ScriptableObject
     // QuizSetupConfig, Assembly-CSharp-Editor
     public QuizMode quizMode = QuizMode.SingleChoice;
     public AnswersAmount answersAmount = AnswersAmount.Two;
-    public QuestionType questionType = QuestionType.Text;
+    public QuestionType questionType = QuestionType.Video;
     public AnswerType answerType = AnswerType.Text;
     public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
     public FeedbackType feedbackType = FeedbackType.None;

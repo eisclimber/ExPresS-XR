@@ -11,6 +11,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     const string QUESTION_ITEM_PATH = "Assets/AutoXR/Editor/Setup Dialogs/Tutorial Button Quiz/question-item.uxml";
 
+    const string CONFIG_SAVE_PATH = "Assets/AutoXR/ExportAssets/ButtonQuizConfig.config";
+
     [MenuItem("AutoXR/Tutorials/Tutorial Button Quiz", false)]
     public static void ShowWindow()
     {
@@ -19,9 +21,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         window.minSize = new Vector2(700, 500);
 
         _quizConfig = QuizSetupConfig.CreateInstance<QuizSetupConfig>();
-
-        // Saves config
-        // AssetDatabase.CreateAsset(config, "Assets/Config.asset");
+        Debug.Log(typeof(VideoClip).AssemblyQualifiedName);
     }
 
     public override string uxmlName
@@ -34,6 +34,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private VisualElement _step5Container;
     private VisualElement _step6Container;
     private VisualElement _step7Container;
+    private VisualElement _step8Container;
 
     // Step 1
     private ObjectField _configField;
@@ -63,6 +64,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private Button _addItemButton;
     private Button _removeItemButton;
 
+    // Step 8
+    private TextField _configSavePathField;
+    private Button _configSaveButton;
+
 
     // Special 'Next'-Buttons
     private Button _setupIntroButton;
@@ -71,10 +76,13 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private Button _setupQuestioningDisplayButton;
     private Button _setupQuestionsButton;
 
+
     // Failure Labels
     private Label _buttonsFailureLabel;
     private Label _questioningDisplayFailureLabel;
     private Label _questionsFailureLabel;
+    private Label _saveConfigSuccessLabel;
+    private Label _saveConfigFailureLabel;
 
 
     // Quiz Config
@@ -103,6 +111,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _step5Container = contentContainer.Q<VisualElement>("step-5-place-buttons");
         _step6Container = contentContainer.Q<VisualElement>("step-6-place-questioning-display");
         _step7Container = contentContainer.Q<VisualElement>("step-7-setup-quiz-logic");
+        _step8Container = contentContainer.Q<VisualElement>("step-8-completion");
     }
 
     // Expand this method and add bindings for each step
@@ -153,6 +162,18 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _setupQuestionsButton.clickable.clicked += SetupQuiz;
         _questionsFailureLabel = _step7Container.Q<Label>("questions-failure-label");
 
+        // Setup step 8
+        _configSavePathField = _step8Container.Q<TextField>("save-path-field");
+        if (_configSavePathField != null)
+        {
+            _configSavePathField.value = CONFIG_SAVE_PATH;
+        }
+        _configSaveButton = _step8Container.Q<Button>("save-config-button");
+        _configSaveButton.clickable.clicked += SaveConfig;
+        _saveConfigFailureLabel = _step8Container.Q<Label>("save-config-failure-label");
+        _saveConfigSuccessLabel = _step8Container.Q<Label>("save-config-success-label");
+        
+
         // Bind remaining UI Elements
         base.BindUiElements();
     }
@@ -163,6 +184,13 @@ class TutorialButtonQuizDialog : SetupDialogBase
         if (_configField.value != null)
         {
             _quizConfig = (QuizSetupConfig)_configField.value;
+
+            _quizModeField.value = _quizConfig.quizMode;
+            _answersAmountsField.value = _quizConfig.answersAmount;
+            _questionTypeField.value = _quizConfig.questionType;
+            _answerTypeField.value = _quizConfig.answerType;
+            _feedbackModeField.value = _quizConfig.feedbackMode;
+            _feedbackTypeField.value = _quizConfig.feedbackType;          
 
             SetupQuizType();
         }
@@ -182,7 +210,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Show Correct Buttons
         bool showButton1 = (_quizConfig.answersAmount >= AnswersAmount.One);
-
         bool showButton2 = (_quizConfig.answersAmount >= AnswersAmount.Two);
         bool showButton3 = (_quizConfig.answersAmount >= AnswersAmount.Three);
         bool showButton4 = (_quizConfig.answersAmount >= AnswersAmount.Four);
@@ -306,15 +333,15 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
             if (questionObjectField != null)
             {
-                questionObjectField.style.display = (showQuestionObjectField) ? DisplayStyle.Flex : DisplayStyle.None;
+                questionObjectField.style.display = (showQuestionObjectField ? DisplayStyle.Flex : DisplayStyle.None);
             }
             if (questionVideoField != null)
             {
-                questionVideoField.style.display = (showQuestionVideoField) ? DisplayStyle.Flex : DisplayStyle.None;
+                questionVideoField.style.display = (showQuestionVideoField ? DisplayStyle.Flex : DisplayStyle.None);
             }
             if (questionTextField != null)
             {
-                questionTextField.style.display = (showQuestionTextField) ? DisplayStyle.Flex : DisplayStyle.None;
+                questionTextField.style.display = (showQuestionTextField ? DisplayStyle.Flex : DisplayStyle.None);
             }
 
             // Answers
@@ -328,6 +355,16 @@ class TutorialButtonQuizDialog : SetupDialogBase
             {
                 objField.style.display = (showAnswerTextField? DisplayStyle.Flex : DisplayStyle.None);
             });
+
+            // Num Items
+            VisualElement answersContainer = questionItem.Q<VisualElement>("answers");
+            int i = 0;
+            foreach (VisualElement answer in answersContainer.Children())
+            {
+                bool showAnswer = (i <= (int)_quizConfig.answersAmount);
+                answer.style.display = (showAnswer ? DisplayStyle.Flex : DisplayStyle.None);
+                i++;
+            }
         }
     }
 
@@ -337,6 +374,19 @@ class TutorialButtonQuizDialog : SetupDialogBase
         if (_questionList.childCount > TutorialButtonQuiz.MIN_QUESTIONS)
         {
             _questionList.RemoveAt(_questionList.childCount - 1);
+        }
+    }
+
+    private void SaveConfig()
+    {
+        if (_quizConfig != null && _configSavePathField.value != null)
+        {
+            AssetDatabase.CreateAsset(_quizConfig, _configSavePathField.value);
+            ShowErrorElement(_saveConfigSuccessLabel);
+        }
+        else
+        {
+            ShowErrorElement(_saveConfigFailureLabel);
         }
     }
 }
