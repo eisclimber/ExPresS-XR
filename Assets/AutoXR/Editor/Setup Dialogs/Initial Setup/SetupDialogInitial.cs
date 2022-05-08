@@ -31,7 +31,7 @@ class SetupDialogInitial : SetupDialogBase
         get => _deviceOption;
         set
         {
-            switchStepValue(step1Container, (int)_deviceOption, (int)value);
+            SwitchStepValue(step1Container, (int)_deviceOption, (int)value);
 
             // Disable Controller Options for HeadGaze devices
             step2Container.Q<Button>("choice-1-button").SetEnabled(_deviceOption != DeviceOption.HeadGaze);
@@ -48,7 +48,7 @@ class SetupDialogInitial : SetupDialogBase
         get => _movementOption;
         set
         {
-            switchStepValue(step2Container, (int)_movementOption, (int)value);
+            SwitchStepValue(step2Container, (int)_movementOption, (int)value);
 
             _movementOption = value;
         }
@@ -61,7 +61,7 @@ class SetupDialogInitial : SetupDialogBase
         get => _launchOption;
         set
         {
-            switchStepValue(step3Container, (int)_launchOption, (int)value);
+            SwitchStepValue(step3Container, (int)_launchOption, (int)value);
 
             _launchOption = value;
         }

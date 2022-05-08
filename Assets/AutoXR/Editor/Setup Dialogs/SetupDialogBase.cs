@@ -23,27 +23,16 @@ public class SetupDialogBase : EditorWindow
     protected int _currentStep = 0;
     public int currentStep
     {
-        get
-        {
-            return _currentStep;
-        }
+        get => _currentStep;
         set
         {
             contentContainer.ElementAt((int)_currentStep).style.display = DisplayStyle.None;
             contentContainer.ElementAt((int)value).style.display = DisplayStyle.Flex;
 
             // Unselect the previous step
-            Button prevStepButton = stepsContainer.Q<Button>("step-" + ((int)_currentStep + 1));
-            if (prevStepButton != null)
-            {
-                prevStepButton.style.backgroundColor = Color.black;
-            }
+            SetStepButtonToggled(false, (int)_currentStep + 1);
             // Select the next step
-            Button nextStepButton = stepsContainer.Q<Button>("step-" + ((int)value + 1));
-            if (nextStepButton != null)
-            {
-                nextStepButton.style.backgroundColor = Color.gray;
-            }
+            SetStepButtonToggled(true, (int)value + 1);
 
             _currentStep = value;
         }
@@ -68,7 +57,7 @@ public class SetupDialogBase : EditorWindow
     }
 
 
-    protected void switchStepValue(VisualElement stepContainer, int oldValue, int newValue)
+    protected void SwitchStepValue(VisualElement stepContainer, int oldValue, int newValue)
     {
         stepContainer.Q<Button>("choice-" + (oldValue + 1) + "-button").style.backgroundColor = Color.black;
         stepContainer.Q<Button>("choice-" + (newValue + 1) + "-button").style.backgroundColor = Color.gray;
@@ -147,6 +136,35 @@ public class SetupDialogBase : EditorWindow
             _errorElement.style.display = DisplayStyle.Flex;
             yield return new EditorWaitForSeconds(ERROR_MESSAGE_DURATION);
             _errorElement.style.display = DisplayStyle.None;
+        }
+    }
+
+
+    protected void SetStepButtonEnabled(bool enabled, int step) => SetStepButtonsEnabled(enabled, step, step);
+
+    protected void SetStepButtonsEnabled(bool enabled, int minStep, int maxStep)
+    {
+        for (int i = minStep; i < maxStep + 1; i++)
+        {
+            Button stepButton = stepsContainer.Q<Button>("step-" + i);
+            if (stepButton != null)
+            {
+                stepButton.SetEnabled(enabled);
+            }
+        }
+    }
+
+    protected void SetStepButtonToggled(bool toggled, int step) => SetStepButtonsToggled(toggled, step, step);
+
+    protected void SetStepButtonsToggled(bool toggled, int minStep, int maxStep)
+    {
+        for (int i = minStep; i < maxStep + 1; i++)
+        {
+            Button stepButton = stepsContainer.Q<Button>("step-" + i);
+            if (stepButton != null)
+            {
+                stepButton.style.backgroundColor = toggled? Color.gray : Color.black;
+            }
         }
     }
 }

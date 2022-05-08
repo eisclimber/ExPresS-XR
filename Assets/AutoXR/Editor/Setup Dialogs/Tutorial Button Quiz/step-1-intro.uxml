@@ -1,9 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement name="step-1-intro" style="flex-grow: 1;">
         <ui:Label text="Creating a Button Quiz..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
-        <ui:Label text="In this tutorial you will create a simple quiz where the participants are shown a video clip, similar to the one in the tutorial scene. They then have to press one of two buttons in context of the clip they have just seen. Afterwards feedback on their answer can be provided and another clip with two different choices can be played. Optional  those choices aswell as other metrics as the reaction time can be logged by using the Data Gatherer Component." display-tooltip-when-elided="true" name="choice-1-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+        <ui:Label text="In this tutorial you will create a simple quiz similar to the one in in the tutorial scene. Players have to answer single or multiple choice questions by pressing an button in VR. The questions, aswell as the answers, can be either presented as text, object or video. Optionally the players can be presented with feedback after each question. Alternatively you can load an existing setup by dragging it into the Object field below. The setup will be automatically saved to &apos;Assets/AutoXR/ExportAssets/ButtonQuizConfig.asset&apos;" display-tooltip-when-elided="true" name="choice-1-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+        <uie:ObjectField label="Quiz Config:" name="config-field" type="QuizSetupConfig, Assembly-CSharp-Editor , UnityEngine.CoreModule" style="margin-left: 20px; margin-right: 20px; margin-bottom: 20px;" />
     </ui:VisualElement>
     <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
-        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="setup-quiz-config-button" />
     </ui:VisualElement>
 </ui:UXML>

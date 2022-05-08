@@ -1,12 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:Template name="step-1-intro" src="step-1-intro.uxml" />
-    <ui:Template name="step-2-create-room" src="step-2-create-room.uxml" />
-    <ui:Template name="step-3-place-furniture" src="step-3-place-furniture.uxml" />
-    <ui:Template name="step-4-place-video-display" src="step-4-place-video-display.uxml" />
+    <ui:Template name="step-2-configure-quiz-type" src="step-2-configure-quiz-type.uxml" />
+    <ui:Template name="step-3-create-room" src="step-3-create-room.uxml" />
+    <ui:Template name="step-4-place-furniture" src="step-4-place-furniture.uxml" />
+    <ui:Template name="step-7-setup-quiz-logic" src="step-7-setup-quiz-logic.uxml" />
+    <ui:Template name="step-8-completion" src="step-8-completion.uxml" />
+    <ui:Template name="step-9-data-gathering" src="step-9-data-gathering.uxml" />
     <ui:Template name="step-5-place-buttons" src="step-5-place-buttons.uxml" />
-    <ui:Template name="step-6-setup-quiz-logic" src="step-6-setup-quiz-logic.uxml" />
-    <ui:Template name="step-7-completion" src="step-7-completion.uxml" />
-    <ui:Template name="step-8-data-gathering" src="step-8-data-gathering.uxml" />
+    <ui:Template name="step-6-place-questioning-display" src="step-6-place-questioning-display.uxml" />
     <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); min-width: 58px; padding-top: 4px; align-items: center;">
             <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" style="min-width: 50px; min-height: 50px;" />
@@ -17,16 +18,18 @@
             <ui:Button text="WF6" display-tooltip-when-elided="true" name="step-6" style="min-width: 50px; min-height: 50px;" />
             <ui:Button text="WF7" display-tooltip-when-elided="true" name="step-7" style="min-width: 50px; min-height: 50px;" />
             <ui:Button text="WF8" display-tooltip-when-elided="true" name="step-8" style="min-width: 50px; min-height: 50px;" />
+            <ui:Button text="WF9" display-tooltip-when-elided="true" name="step-9" style="min-width: 50px; min-height: 50px;" />
         </ui:VisualElement>
         <ui:VisualElement name="content-container" style="flex-grow: 1;">
-            <ui:Instance template="step-1-intro" name="step-1-intro" style="flex-grow: 1; display: flex;" />
-            <ui:Instance template="step-2-create-room" name="step-2-create-room" style="flex-grow: 1; display: none;" />
-            <ui:Instance template="step-3-place-furniture" name="step-3-place-furniture" style="flex-grow: 1; display: none;" />
-            <ui:Instance template="step-4-place-video-display" name="step-4-place-video-display" style="display: none; flex-grow: 1;" />
+            <ui:Instance template="step-1-intro" name="step-1-intro" style="flex-grow: 1;" />
+            <ui:Instance template="step-2-configure-quiz-type" name="step-2-configure-quiz-type" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-3-create-room" name="step-3-create-room" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-4-place-furniture" name="step-4-place-furniture" style="flex-grow: 1; display: none;" />
             <ui:Instance template="step-5-place-buttons" name="step-5-place-buttons" style="flex-grow: 1; display: none;" />
-            <ui:Instance template="step-6-setup-quiz-logic" name="step-6-setup-quiz-logic" style="flex-grow: 1; display: none;" />
-            <ui:Instance template="step-7-completion" name="step-7-completion" style="flex-grow: 1; display: none;" />
-            <ui:Instance template="step-8-data-gathering" name="step-8-data-gathering" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-6-place-questioning-display" name="step-6-place-questioning-display" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-7-setup-quiz-logic" name="step-7-setup-quiz-logic" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-8-completion" name="step-8-completion" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-9-data-gathering" name="step-9-data-gathering" style="flex-grow: 1; display: none;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
