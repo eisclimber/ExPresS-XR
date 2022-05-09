@@ -32,15 +32,15 @@ public class TutorialButtonQuiz : MonoBehaviour
             ObjectField answerObject = questionItem.Q<ObjectField>("answer-object");
             TextField answerText = questionItem.Q<TextField>("answer-text");
 
-            items[i] = new QuizQuestion(i, (GameObject)questionObject.value, questionText.value,
-                                        (GameObject)answerObject.value, answerText.value);
+            // items[i] = new QuizQuestion(i, (GameObject)questionObject.value, questionText.value,
+            //                             (GameObject)answerObject.value, answerText.value);
 
-            if (!items[i].IsValid(feedbackMode))
-            {
-                // Either the question or answer is invalid => abort!
-                Debug.Log(items[i].answerText);
-                return false;
-            }
+            // if (!items[i].IsValid(feedbackMode))
+            // {
+            //     // Either the question or answer is invalid => abort!
+            //     Debug.Log(items[i].answerText);
+            //     return false;
+            // }
         }
 
         int[] questions = GenerateRandomIntArray(items.Length);
@@ -125,6 +125,7 @@ public class QuizSetupConfig : ScriptableObject
     public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
     public FeedbackType feedbackType = FeedbackType.None;
 
+    // Scene Values
     public QuizQuestion[] questions = {};
 }
 
@@ -133,24 +134,32 @@ public class QuizSetupConfig : ScriptableObject
 public struct QuizQuestion
 {
     public int itemId;
+    public VideoClip questionVideo;
     public GameObject questionObject;
     public string questionText;
-    public GameObject answerObject;
-    public string answerText;
 
-    public QuizQuestion(int itemId,
-        GameObject questionObject, string questionText,
-        GameObject answerObject, string answerText)
+    public GameObject[] answersObjects;
+    public string[] answersTexts;
+
+    public bool[] correctAnswers;
+
+    public QuizQuestion(int itemId, VideoClip questionVideo, GameObject questionObject, string questionText,
+                        GameObject[] answersObjects, string[] answersTexts, bool[] correctAnswers)
     {
         this.itemId = itemId;
+
+        this.questionVideo = questionVideo;
         this.questionObject = questionObject;
         this.questionText = questionText;
-        this.answerObject = answerObject;
-        this.answerText = answerText;
-    }
 
+        this.answersObjects = answersObjects;
+        this.answersTexts = answersTexts;
+
+        this.correctAnswers = correctAnswers;
+    }
+    
     public bool IsQuestionValid() => (questionObject != null || questionText != null);
-    public bool IsAnswerValid() => (answerObject != null || answerText != null);
+    public bool IsAnswerValid() => (answersObjects != null || answersTexts != null);
     public bool IsValid() => (IsQuestionValid() && IsAnswerValid());
 
     // If no feedback should be given, only the question should be valid (Answer might be invalid)
@@ -163,8 +172,7 @@ public enum QuizMode
 {
     //QuizMode,Assembly-CSharp-Editor
     SingleChoice,
-    MultipleChoice,
-    AnyChoice
+    MultipleChoice
 }
 
 public enum AnswersAmount
