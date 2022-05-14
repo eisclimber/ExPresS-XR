@@ -1,68 +1,102 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 using UnityEngine.Video;
+using UnityEngine.UI;
 
 public class TutorialButtonQuiz : MonoBehaviour
 {
     public const int MIN_QUESTIONS = 2;
+    public const int NUM_ANSWERS = 4;
 
-    public static bool Setup(AutoXRBaseButton button1, AutoXRBaseButton button2, VideoPlayer videoPlayer,
-                            VisualElement questionList, FeedbackMode feedbackMode)
+    public static bool IsSetupValid(QuizSetupConfig config, AutoXRBaseButton[] buttons,
+                            Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
     {
-        bool gameObjectsValid = (button1 != null && button2 != null && button1 != button2
-                                && videoPlayer != null);
-        bool questionListValid = (questionList == null || questionList.childCount <= MIN_QUESTIONS);
+        bool displaysValid = IsDisplayValid(config, displayText, displayObject, displayPlayer);
+        bool buttonsValid = IsButtonsValid(config, buttons);
+        bool questionsValid = AreQuestionsValid(config);
 
-        if (!gameObjectsValid || !questionListValid)
+        return displaysValid  && buttonsValid;
+    }
+
+    private static bool IsDisplayValid(QuizSetupConfig config, Text displayLabel, GameObject displayObject, VideoPlayer displayPlayer)
+    {
+        bool hasFeedback = config.feedbackMode != FeedbackMode.None;
+
+        if (displayLabel == null && (config.questionType == QuestionType.Text || config.feedbackType == FeedbackType.Text))
         {
-            Debug.Log(gameObjectsValid + "  " + questionListValid);
+            Debug.LogError("Config requires Label-Reference but was null.");
             return false;
         }
 
-        QuizQuestion[] items = new QuizQuestion[questionList.childCount];
-
-        for (int i = 0; i < items.Length; i++)
+        else if (displayObject == null && (config.questionType == QuestionType.Object || config.feedbackType == FeedbackType.Object))
         {
-            VisualElement questionItem = questionList.ElementAt(i);
-            ObjectField questionObject = questionItem.Q<ObjectField>("question-object");
-            TextField questionText = questionItem.Q<TextField>("question-text");
-            ObjectField answerObject = questionItem.Q<ObjectField>("answer-object");
-            TextField answerText = questionItem.Q<TextField>("answer-text");
+            Debug.LogError("Config requires GameObject-Reference but was null.");
+            return false;
+        }
+        else if (displayPlayer == null && (config.questionType == QuestionType.Video || config.feedbackType == FeedbackType.Video))
+        {
+            Debug.LogError("Config requires VideoPlayer-Reference but was null.");
+            return false;
+        }
+        return true;
+    }
 
-            // items[i] = new QuizQuestion(i, (GameObject)questionObject.value, questionText.value,
-            //                             (GameObject)answerObject.value, answerText.value);
+    private static bool IsButtonsValid(QuizSetupConfig config, AutoXRBaseButton[] buttons)
+    {
+        int numButtons = (int) config.answersAmount;
 
-            // if (!items[i].IsValid(feedbackMode))
-            // {
-            //     // Either the question or answer is invalid => abort!
-            //     Debug.Log(items[i].answerText);
-            //     return false;
-            // }
+        if (buttons.Length < numButtons && config.answersAmount != AnswersAmount.Different) {
+            Debug.LogError("Not enough button references found.");
+            return false;
         }
 
-        int[] questions = GenerateRandomIntArray(items.Length);
-
-        int[] answers = new int[items.Length];
-
-        switch (feedbackMode)
+        for (int i = 0; i < numButtons; i++)
         {
-            case FeedbackMode.AlwaysCorrect:
-                // Simply copy indices of answers
-                questions.CopyTo(answers, 0);
-                break;
-            case FeedbackMode.AlwaysWrong:
-                // Mix Quest
-                questions.CopyTo(answers, 0);
-                answers = ShuffleNoPair(answers, questions);
-                break;
-            case FeedbackMode.Random:
-                // Mix Questions and answers independent
-                answers = GenerateRandomIntArray(items.Length);
-                break;
+            if (buttons[i] == null)
+            {
+                Debug.LogError("Button Reference was null.");
+                return false;
+            }
+
+            for (int j = i + 1; j < numButtons; j++)
+            {
+                if (buttons[i] == buttons[j])
+                {
+                    Debug.LogError("Two Buttons were equal.");
+                    return false;
+                }
+            }
         }
+        return true;
+    }
+
+    private static bool AreQuestionsValid(QuizSetupConfig config)
+    {
+        if (config.questions != null && config.questions.Length > MIN_QUESTIONS)
+        {
+            return false;
+        }
+
+        foreach (QuizQuestion question in config.questions)
+        {
+            int correctAnswerCount = 0;
+            foreach (bool correctOption in question.correctAnswers)
+            {
+                correctAnswerCount += (correctOption ? 1 : 0 );
+            }
+            Debug.Log(correctAnswerCount);
+
+            if (config.quizMode == QuizMode.SingleChoice && correctAnswerCount != 1)
+            {
+                Debug.LogError("Single Choice Answer did not have exactly one answer.");
+                return false;
+            }
+            else if (config.quizMode == QuizMode.MultipleChoice && correctAnswerCount < 1)
+            {
+                Debug.LogWarning("Multiple Choice Answer did not have at least one answer.");
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -123,15 +157,15 @@ public class QuizSetupConfig : ScriptableObject
     public QuestionType questionType = QuestionType.Video;
     public AnswerType answerType = AnswerType.Text;
     public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
-    public FeedbackType feedbackType = FeedbackType.None;
+    public FeedbackType feedbackType = FeedbackType.Text;
 
     // Scene Values
-    public QuizQuestion[] questions = {};
+    public QuizQuestion[] questions;
 }
 
 
 [System.Serializable]
-public struct QuizQuestion
+public class QuizQuestion
 {
     public int itemId;
     public VideoClip questionVideo;
@@ -157,7 +191,7 @@ public struct QuizQuestion
 
         this.correctAnswers = correctAnswers;
     }
-    
+
     public bool IsQuestionValid() => (questionObject != null || questionText != null);
     public bool IsAnswerValid() => (answersObjects != null || answersTexts != null);
     public bool IsValid() => (IsQuestionValid() && IsAnswerValid());
@@ -212,7 +246,6 @@ public enum FeedbackMode
 public enum FeedbackType
 {
     //FeedbackType,Assembly-CSharp-Editor
-    None,
     Object,
     Video,
     Text

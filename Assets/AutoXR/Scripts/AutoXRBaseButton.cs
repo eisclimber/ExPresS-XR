@@ -41,6 +41,7 @@ public class AutoXRBaseButton : XRBaseInteractable
         }
     }
 
+
     private bool _pressed = false;
     public bool pressed
     {

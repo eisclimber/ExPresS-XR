@@ -275,12 +275,15 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     private void SetupQuiz()
     {
-        if (TutorialButtonQuiz.Setup(
-                    (AutoXRBaseButton)_button1Field.value,
-                    (AutoXRBaseButton)_button2Field.value,
-                    (VideoPlayer)_videoPlayerField.value,
-                    _questionList,
-                    (FeedbackMode)FeedbackMode.None))
+        _quizConfig.questions = ParseQuestionList(_quizConfig, _questionList);
+
+        AutoXRBaseButton[] buttons = { (AutoXRBaseButton)_button1Field.value,
+                                        (AutoXRBaseButton)_button2Field.value,
+                                        (AutoXRBaseButton)_button3Field.value,
+                                        (AutoXRBaseButton)_button4Field.value };
+
+        if (TutorialButtonQuiz.IsSetupValid(_quizConfig, buttons, (UnityEngine.UI.Text)_textLabelField.value,
+                                    (GameObject)_gameObjectField.value, (VideoPlayer)_videoPlayerField.value))
         {
             // Enable step 7-9 if setup successfully
             SetStepButtonsEnabled(true, 7, 9);
@@ -360,11 +363,17 @@ class TutorialButtonQuizDialog : SetupDialogBase
                 {
                     _unregisterAll = new UnityEvent();
                 }
-                toggles.ForEach((Toggle toggle) => {
-                    EventCallback<ChangeEvent<bool>> toggleCallback = (evt) => {
+
+                bool correctAnswerFound = false;
+
+                toggles.ForEach((Toggle toggle) =>
+                {
+                    EventCallback<ChangeEvent<bool>> toggleCallback = (evt) =>
+                    {
                         if (evt.newValue)
                         {
-                            toggles.ForEach((Toggle t) => {
+                            toggles.ForEach((Toggle t) =>
+                            {
                                 if (t != toggle)
                                 {
                                     t.value = false;
@@ -372,16 +381,36 @@ class TutorialButtonQuizDialog : SetupDialogBase
                             });
                         }
                     };
+
+                    // Ensure only one 
+                    if (!correctAnswerFound && toggle.value)
+                    {
+                        correctAnswerFound = true;
+                    }
+                    else if (correctAnswerFound)
+                    {
+                        toggle.value = false;
+                    }
+
                     toggle.RegisterValueChangedCallback(toggleCallback);
                     _unregisterAll.AddListener(() => toggle.UnregisterValueChangedCallback(toggleCallback));
                 });
+
+                // Set correct answer if none was set
+                if (!correctAnswerFound)
+                {
+                    Toggle firstQuestion = questionItem.Q<Toggle>("correct-toggle");
+                    if (firstQuestion != null)
+                    {
+                        firstQuestion.value = true;
+                    }
+                }
             }
-            else 
+            else
             {
                 _unregisterAll?.Invoke();
                 _unregisterAll.RemoveAllListeners();
             }
-
 
             // Num Items
             VisualElement answersContainer = questionItem.Q<VisualElement>("answers");
@@ -395,7 +424,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
         }
     }
 
-
     private void RemoveQuestionItem()
     {
         if (_questionList.childCount > TutorialButtonQuiz.MIN_QUESTIONS)
@@ -403,6 +431,65 @@ class TutorialButtonQuizDialog : SetupDialogBase
             _questionList.RemoveAt(_questionList.childCount - 1);
         }
     }
+
+    public static QuizQuestion[] ParseQuestionList(QuizSetupConfig config, VisualElement questionList)
+    {
+        QuizQuestion[] quizQuestions = new QuizQuestion[questionList.childCount];
+
+        int i = 0;
+
+        foreach (VisualElement question in questionList.Children())
+        {
+            ObjectField answerObjectField = question.Q<ObjectField>("question-object-field");
+            ObjectField answerVideoPlayer = question.Q<ObjectField>("question-video-field");
+            TextField questionLabel = question.Q<TextField>("question-text-field");
+
+            GameObject questionObject = answerObjectField.value as GameObject;
+            VideoClip questionClip = answerVideoPlayer.value as VideoClip;
+            string questionText = questionLabel.value ?? "";
+
+            VisualElement answers = question.Q<VisualElement>("answers");
+
+            GameObject[] answersObjects = new GameObject[TutorialButtonQuiz.NUM_ANSWERS];
+            string[] answersTexts = new string[TutorialButtonQuiz.NUM_ANSWERS];
+            bool[] correctValues = new bool[TutorialButtonQuiz.NUM_ANSWERS];
+
+            for (int j = 0; j < TutorialButtonQuiz.NUM_ANSWERS; j++)
+            {
+                // Answers values
+                VisualElement currentAnswer = answers.Q<VisualElement>("answer-" + (j + 1).ToString());
+
+                if (currentAnswer != null)
+                {
+                    TextField currentTextField = currentAnswer.Q<TextField>("answer-text-field");
+                    if (currentTextField != null)
+                    {
+                        answersTexts[j] = currentTextField.value;
+                    }
+
+                    ObjectField currentObjectField = currentAnswer.Q<ObjectField>("answer-object-field");
+                    if (currentObjectField != null)
+                    {
+                        answersObjects[j] = currentObjectField.value as GameObject;
+                    }
+
+                    // Correct Toggle
+                    Toggle correctToggle = currentAnswer.Q<Toggle>("correct-toggle");
+                    if (correctToggle != null)
+                    {
+                        correctValues[j] = correctToggle.value;
+                    }
+                }
+            }
+
+            quizQuestions[i] = new QuizQuestion(i, questionClip, questionObject, questionText,
+                                            answersObjects, answersTexts, correctValues);
+
+            i++;
+        }
+        return quizQuestions;
+    }
+
 
 
     private void SaveConfig()

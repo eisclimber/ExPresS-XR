@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public class ColorSwitcher : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class ColorSwitcher : MonoBehaviour
 
     private Material originalMaterial;
     private MeshRenderer meshRenderer;
+
+    private Coroutine switchCoroutine;
 
 
     private void Awake()
@@ -22,6 +26,7 @@ public class ColorSwitcher : MonoBehaviour
         }
     }
 
+    // Instant Switches
     public void ActivateAlternativeMaterial()
     {
         if (alternativeMaterial != null)
@@ -47,4 +52,21 @@ public class ColorSwitcher : MonoBehaviour
         }
     }
 
+    // Coroutine Switches
+    public IEnumerator ActivateAlternativeMaterialForSeconds(float time)
+    {
+        ActivateAlternativeMaterial();
+        yield return new WaitForSeconds(time);
+        ActivateOriginalMaterial();
+    }
+
+    public IEnumerator ActivateOriginalMaterialForSeconds(float time)
+    {
+        ActivateOriginalMaterial();
+        yield return new WaitForSeconds(time);
+        ActivateAlternativeMaterial();
+    }
+
+    public void ActivateAlternativeMaterialForASecond() => ActivateAlternativeMaterialForSeconds(1f);
+    public void ActivateOriginalMaterialForASecond() => ActivateOriginalMaterialForSeconds(1f);
 }

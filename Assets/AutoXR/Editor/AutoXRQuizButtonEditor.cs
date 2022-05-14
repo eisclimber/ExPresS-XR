@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.Events;
+using UnityEngine.UI;
 
-[CustomEditor(typeof(AutoXRBaseButton))]
-public class AutoXRBaseButtonEditor : Editor
+[CustomEditor(typeof(AutoXRQuizButton))]
+public class AutoXRQuizButtonEditor : Editor
 {
-    AutoXRBaseButton targetScript;
+    AutoXRQuizButton targetScript;
 
     private bool _showObjectRefs = false;
 
     void OnEnable()
     {
-        targetScript = (AutoXRBaseButton)target;
+        targetScript = (AutoXRQuizButton)target;
     }
 
     public override void OnInspectorGUI()
@@ -49,6 +49,27 @@ public class AutoXRBaseButtonEditor : Editor
 
         EditorGUILayout.Space();
 
+        EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
+        EditorGUI.indentLevel--;
+
+        EditorGUILayout.Space();
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("answerText"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("answerObject"), true);
+        EditorGUI.indentLevel--;
+        
+        EditorGUILayout.Space();
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedCorrect"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedIncorrect"), true);
+        EditorGUI.indentLevel--;
+
+
         _showObjectRefs = EditorGUILayout.BeginFoldoutHeaderGroup(_showObjectRefs, "Game Object References");
 
         if (_showObjectRefs)
@@ -58,6 +79,7 @@ public class AutoXRBaseButtonEditor : Editor
 
             targetScript.baseAnchor = (Transform)EditorGUILayout.ObjectField("Base Anchor", targetScript.baseAnchor, typeof(Transform), true);
             targetScript.pushAnchor = (Transform)EditorGUILayout.ObjectField("Push Anchor", targetScript.pushAnchor, typeof(Transform), true);
+            targetScript.feedbackTextLabel = (Text)EditorGUILayout.ObjectField("Feedback Text Label", targetScript.feedbackTextLabel, typeof(Text), true);
 
             EditorGUI.indentLevel--;
         }

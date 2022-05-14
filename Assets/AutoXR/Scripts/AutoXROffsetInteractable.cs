@@ -31,7 +31,7 @@ public class AutoXROffsetInteractable : XRGrabInteractable
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
         base.OnSelectEntering(args);
-        MatchAttachPoint(args.interactor);
+        MatchAttachPoint(args.interactorObject as XRBaseInteractor);
     }
 
     private void MatchAttachPoint(XRBaseInteractor interactor)
