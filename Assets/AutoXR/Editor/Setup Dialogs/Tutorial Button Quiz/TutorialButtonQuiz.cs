@@ -44,7 +44,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     {
         int numButtons = (int) config.answersAmount;
 
-        if (buttons.Length < numButtons && config.answersAmount != AnswersAmount.Different) {
+        if (buttons.Length < numButtons && config.answersAmount != AnswersAmount.DifferingAmounts) {
             Debug.LogError("Not enough button references found.");
             return false;
         }
@@ -216,7 +216,7 @@ public enum AnswersAmount
     Two,
     Three,
     Four,
-    Different
+    DifferingAmounts
 }
 
 public enum QuestionType
@@ -224,7 +224,8 @@ public enum QuestionType
     //QuestionType,Assembly-CSharp-Editor
     Object,
     Video,
-    Text
+    Text,
+    DifferingTypes
 }
 
 public enum AnswerType
@@ -248,5 +249,6 @@ public enum FeedbackType
     //FeedbackType,Assembly-CSharp-Editor
     Object,
     Video,
-    Text
+    Text,
+    DifferingTypes
 }

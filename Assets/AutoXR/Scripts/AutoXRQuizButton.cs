@@ -15,7 +15,11 @@ public class AutoXRQuizButton : AutoXRBaseButton
         {
             _answerText = value;
 
-
+            Transform textTransform = pushAnchor.Find("Text");
+            if (textTransform.GetComponent<Text>() != null)
+            {
+                textTransform.GetComponent<Text>().text = _answerText;
+            }
         }
     }
     

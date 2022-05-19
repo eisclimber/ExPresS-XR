@@ -14,6 +14,11 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     const string CONFIG_SAVE_PATH = "Assets/AutoXR/ExportAssets/QuizSetupConfig.asset";
 
+    const string QUIZ_BUTTON_PREFAB_PATH = "Assets/AutoXR/Prefabs/Auto XR Buttons/Auto XR Quiz Button/Auto XR Quiz Button Square Text.prefab";
+    const float QUIZ_BUTTON_SPACING = 0.15f;
+
+
+
     [MenuItem("AutoXR/Tutorials/Tutorial Button Quiz", false)]
     public static void ShowWindow()
     {
@@ -52,11 +57,14 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private ObjectField _button2Field;
     private ObjectField _button3Field;
     private ObjectField _button4Field;
+    private Button _createButtonsButton;
 
     // Step 6
     private ObjectField _textLabelField;
     private ObjectField _gameObjectField;
     private ObjectField _videoPlayerField;
+
+    private Button _createQuestioningDisplayButton;
 
     // Step 7
     private VisualElement _questions;
@@ -140,6 +148,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _button2Field = _step5Container.Q<ObjectField>("button-field-2");
         _button3Field = _step5Container.Q<ObjectField>("button-field-3");
         _button4Field = _step5Container.Q<ObjectField>("button-field-4");
+        _createButtonsButton = _step5Container.Q<Button>("create-buttons-button");
+        _createButtonsButton.clickable.clicked += CreateButtons;
         _setupButtonsButton = _step5Container.Q<Button>("setup-buttons-button");
         _setupButtonsButton.clickable.clicked += SetupButtons;
         _buttonsFailureLabel = _step5Container.Q<Label>("buttons-failure-label");
@@ -148,6 +158,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _textLabelField = _step6Container.Q<ObjectField>("text-label-field");
         _gameObjectField = _step6Container.Q<ObjectField>("game-object-field");
         _videoPlayerField = _step6Container.Q<ObjectField>("video-player-field");
+        _createQuestioningDisplayButton = _step6Container.Q<Button>("create-questioning-display-button");
+        _createQuestioningDisplayButton.clickable.clicked += CreateQuestioningDisplays;
         _setupQuestioningDisplayButton = _step6Container.Q<Button>("setup-questioning-display-button");
         _setupQuestioningDisplayButton.clickable.clicked += SetupDisplay;
         _questioningDisplayFailureLabel = _step6Container.Q<Label>("questioning-display-failure-label");
@@ -220,11 +232,14 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _button4Field.style.display = (showButton4 ? DisplayStyle.Flex : DisplayStyle.None);
 
         // Show Correct Questioning Display
-        bool showTextLabel = (_quizConfig.questionType == QuestionType.Text
+        bool showAnyField = (_quizConfig.questionType == QuestionType.DifferingTypes
+                            || _quizConfig.feedbackType == FeedbackType.DifferingTypes);
+
+        bool showTextLabel = (showAnyField || _quizConfig.questionType == QuestionType.Text
                             || _quizConfig.feedbackType == FeedbackType.Text);
-        bool showObjectField = (_quizConfig.questionType == QuestionType.Object
+        bool showObjectField = (showAnyField || _quizConfig.questionType == QuestionType.Object
                             || _quizConfig.feedbackType == FeedbackType.Object);
-        bool showVideoPlayer = (_quizConfig.questionType == QuestionType.Video
+        bool showVideoPlayer = (showAnyField || _quizConfig.questionType == QuestionType.Video
                             || _quizConfig.feedbackType == FeedbackType.Video);
 
         _textLabelField.style.display = (showTextLabel ? DisplayStyle.Flex : DisplayStyle.None);
@@ -488,6 +503,93 @@ class TutorialButtonQuizDialog : SetupDialogBase
             i++;
         }
         return quizQuestions;
+    }
+
+    private void CreateButtons()
+    {
+        if (_quizConfig != null)
+        {
+            GameObject go = new GameObject("Quiz Buttons");
+            int numButtons = (int)Mathf.Min((int)_quizConfig.answersAmount + 1, TutorialButtonQuiz.NUM_ANSWERS);
+
+            float xOffset = QUIZ_BUTTON_SPACING * (float)numButtons / 2.0f;
+
+            ObjectField[] buttonFields = { _button1Field, _button2Field, _button3Field, _button4Field };
+
+            AutoXRQuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(QUIZ_BUTTON_PREFAB_PATH);
+            for (int i = 0; i < numButtons; i++)
+            {
+                // Create new button
+                AutoXRQuizButton button = Instantiate(buttonPrefab, new Vector3(QUIZ_BUTTON_SPACING * i - xOffset, 0, 0), Quaternion.identity);
+                button.transform.SetParent(go.transform);
+                button.name = "Quiz Button " + (i + 1).ToString();
+
+                // Set Button Fields value
+                buttonFields[i].value = button;
+            }
+
+            GameObjectUtility.EnsureUniqueNameForSibling(go);
+            Undo.RegisterCreatedObjectUndo(go, "Create Quiz Buttons");
+        }
+    }
+
+
+    private void CreateQuestioningDisplays()
+    {
+        bool needsText = _textLabelField.style.display == DisplayStyle.Flex
+                                && _textLabelField.value == null;
+        bool needsGameObjectAnchor = _gameObjectField.style.display == DisplayStyle.Flex
+                                && _gameObjectField.value == null;
+        bool needsVideoPlayer = _videoPlayerField.style.display == DisplayStyle.Flex
+                                && _videoPlayerField.value == null;
+
+        if (needsText || needsVideoPlayer)
+        {
+
+            GameObject canvasGo = new GameObject("Questioning Display Canvas");
+            canvasGo.AddComponent<Canvas>();
+            Canvas canvasComp = canvasGo.GetComponent<Canvas>();
+            canvasComp.renderMode = RenderMode.WorldSpace;
+            canvasComp.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
+
+            if (needsText)
+            {
+                GameObject textLabel = new GameObject("Questioning Display Text");
+                textLabel.AddComponent<UnityEngine.UI.Text>();
+
+                _textLabelField.value = textLabel;
+
+                textLabel.transform.SetParent(canvasGo.transform);
+            }
+
+            if (needsVideoPlayer)
+            {
+                GameObject videoPlayerGo = new GameObject("Video Player");
+                videoPlayerGo.AddComponent<VideoPlayer>();
+
+                GameObject videoDisplayGo = new GameObject("Video Display");
+                videoDisplayGo.AddComponent<UnityEngine.UI.RawImage>();
+
+                videoPlayerGo.transform.SetParent(canvasGo.transform);
+                videoDisplayGo.transform.SetParent(canvasGo.transform);
+
+                _videoPlayerField.value = videoPlayerGo;
+
+                Debug.LogWarning("Video Player was created. Be sure to set up the Video Player as described in the Tutorial!");
+            }
+
+            Undo.RegisterCreatedObjectUndo(canvasGo, "Create Questioning Display Canvas");
+        }
+
+
+        if (needsGameObjectAnchor)
+        {
+            GameObject anchor = new GameObject("Questioning Display Anchor");
+            
+            _gameObjectField.value = anchor;
+
+            Undo.RegisterCreatedObjectUndo(anchor, "Create Questioning Display GameObject Anchor");
+        }
     }
 
 
