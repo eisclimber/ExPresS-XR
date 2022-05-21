@@ -1,23 +1,106 @@
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class TutorialButtonQuiz : MonoBehaviour
 {
     public const int MIN_QUESTIONS = 2;
     public const int NUM_ANSWERS = 4;
 
-    public static bool IsSetupValid(QuizSetupConfig config, AutoXRBaseButton[] buttons,
+    private QuizSetupConfig _config;
+    private AutoXRBaseButton[] _buttons;
+    private Text _displayText;
+    private GameObject _displayObject;
+    private VideoPlayer _displayPlayer;
+
+
+    private QuizQuestion[] _questions;
+    public QuizQuestion[] questions { get; set; }
+
+    private int _numQuestions;
+    public int numQuestions { get; set; }
+
+    private int[] _questionPermutation;
+    public int[] questionPermutation { get; set; }
+
+    private int _currentQuestion;
+    public int currentQuestion { get; set; }
+
+    public UnityEvent OnAnswerGiven;
+    public UnityEvent OnQuizStarted;
+    public UnityEvent OnQuizCompleted;
+
+
+    // Setup
+    public void Setup(QuizSetupConfig config, AutoXRBaseButton[] buttons,
+                            Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
+    {
+        // Set values
+        _config = config;
+        _buttons = buttons;
+        _displayText = displayText;
+        _displayObject = displayObject;
+        _displayPlayer = displayPlayer;
+
+        _questions = _config.questions;
+        _numQuestions = _questions.Length;
+
+        // Create Question Permutation
+        questionPermutation = GenerateIdentityArray(numQuestions);
+        if (config.questionOrder == QuestionOrder.Randomize)
+        {
+            questionPermutation = Shuffle(questionPermutation);
+        }
+        currentQuestion = 0;
+
+        // Connect Events
+        foreach (AutoXRBaseButton button in _buttons)
+        {
+            button.OnPressed.AddListener(ShowFeedback);
+        }
+
+        DisplayNextQuestion();
+    }
+
+    // Runtime logic
+    private void DisplayNextQuestion()
+    {
+        if (currentQuestion == numQuestions)
+        {
+            // Only invoke the complete event
+            OnQuizCompleted.Invoke();
+        }
+        else
+        {
+            currentQuestion++;
+        }
+    }
+
+    private void ShowFeedback()
+    {
+
+    }
+
+    private void OnFeedbackCompleted()
+    {
+
+    }
+
+
+    // Validation
+    public bool IsSetupValid(QuizSetupConfig config, AutoXRBaseButton[] buttons,
                             Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
     {
         bool displaysValid = IsDisplayValid(config, displayText, displayObject, displayPlayer);
         bool buttonsValid = IsButtonsValid(config, buttons);
         bool questionsValid = AreQuestionsValid(config);
 
-        return displaysValid  && buttonsValid;
+        return displaysValid && buttonsValid;
     }
 
-    private static bool IsDisplayValid(QuizSetupConfig config, Text displayLabel, GameObject displayObject, VideoPlayer displayPlayer)
+
+    private bool IsDisplayValid(QuizSetupConfig config, Text displayLabel, GameObject displayObject, VideoPlayer displayPlayer)
     {
         bool hasFeedback = config.feedbackMode != FeedbackMode.None;
 
@@ -40,11 +123,12 @@ public class TutorialButtonQuiz : MonoBehaviour
         return true;
     }
 
-    private static bool IsButtonsValid(QuizSetupConfig config, AutoXRBaseButton[] buttons)
+    private bool IsButtonsValid(QuizSetupConfig config, AutoXRBaseButton[] buttons)
     {
-        int numButtons = (int) config.answersAmount;
+        int numButtons = (int)config.answersAmount;
 
-        if (buttons.Length < numButtons && config.answersAmount != AnswersAmount.DifferingAmounts) {
+        if (buttons.Length < numButtons && config.answersAmount != AnswersAmount.DifferingAmounts)
+        {
             Debug.LogError("Not enough button references found.");
             return false;
         }
@@ -69,7 +153,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         return true;
     }
 
-    private static bool AreQuestionsValid(QuizSetupConfig config)
+    private bool AreQuestionsValid(QuizSetupConfig config)
     {
         if (config.questions != null && config.questions.Length > MIN_QUESTIONS)
         {
@@ -81,9 +165,8 @@ public class TutorialButtonQuiz : MonoBehaviour
             int correctAnswerCount = 0;
             foreach (bool correctOption in question.correctAnswers)
             {
-                correctAnswerCount += (correctOption ? 1 : 0 );
+                correctAnswerCount += (correctOption ? 1 : 0);
             }
-            Debug.Log(correctAnswerCount);
 
             if (config.quizMode == QuizMode.SingleChoice && correctAnswerCount != 1)
             {
@@ -96,24 +179,21 @@ public class TutorialButtonQuiz : MonoBehaviour
                 return false;
             }
         }
-
         return true;
     }
 
-
-    private static int[] GenerateRandomIntArray(int length)
+    // Permutations
+    private int[] GenerateIdentityArray(int length)
     {
-        // Populate identity
         int[] array = new int[length];
         for (int i = 0; i < length; i++)
         {
             array[i] = i;
         }
-        // Return shuffled result
-        return Shuffle(array);
+        return array;
     }
 
-    private static int[] Shuffle(int[] array)
+    private int[] Shuffle(int[] array)
     {
         // Fisher-Yates-Shuffle
         for (int i = 0; i < array.Length; i++)
@@ -126,7 +206,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         return array;
     }
 
-    private static int[] ShuffleNoPair(int[] array, int[] pairs)
+    private int[] ShuffleNoPair(int[] array, int[] pairs)
     {
         // Basically Fisher-Yates-Shuffle but preventing 
         for (int i = 0; i < array.Length; i++)
@@ -134,7 +214,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             int j = Random.Range(0, array.Length);
             if (array[i] == pairs[j])
             {
-                // Prevent shuffleing a pair together by shifting it 1 to the right
+                // Prevent shuffling a pair together by shifting it 1 to the right
                 j = (j + 1) % array.Length;
             }
 
@@ -144,17 +224,17 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
         return array;
     }
-
 }
 
 
 [System.Serializable]
 public class QuizSetupConfig : ScriptableObject
 {
-    // QuizSetupConfig, Assembly-CSharp-Editor
+    // QuizSetupConfig, Assembly-CSharp
     public QuizMode quizMode = QuizMode.SingleChoice;
+    public QuestionOrder questionOrder = QuestionOrder.Randomize;
     public AnswersAmount answersAmount = AnswersAmount.Two;
-    public QuestionType questionType = QuestionType.Video;
+    public QuestionType questionType = QuestionType.Text;
     public AnswerType answerType = AnswerType.Text;
     public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
     public FeedbackType feedbackType = FeedbackType.Text;
@@ -167,6 +247,7 @@ public class QuizSetupConfig : ScriptableObject
 [System.Serializable]
 public class QuizQuestion
 {
+    // QuizQuestion, Assembly-CSharp
     public int itemId;
     public VideoClip questionVideo;
     public GameObject questionObject;
@@ -204,14 +285,21 @@ public class QuizQuestion
 
 public enum QuizMode
 {
-    //QuizMode,Assembly-CSharp-Editor
+    // QuizMode, Assembly-CSharp
     SingleChoice,
     MultipleChoice
 }
 
+public enum QuestionOrder
+{
+    // QuestionOrder, Assembly-CSharp
+    ORdered,
+    Randomize
+}
+
 public enum AnswersAmount
 {
-    //AnswersAmount,Assembly-CSharp-Editor
+    // AnswersAmount, Assembly-CSharp
     One,
     Two,
     Three,
@@ -221,7 +309,7 @@ public enum AnswersAmount
 
 public enum QuestionType
 {
-    //QuestionType,Assembly-CSharp-Editor
+    // QuestionType, Assembly-CSharp
     Object,
     Video,
     Text,
@@ -230,14 +318,14 @@ public enum QuestionType
 
 public enum AnswerType
 {
-    //AnswerType,Assembly-CSharp-Editor
+    // AnswerType, Assembly-CSharp
     Object,
     Text
 }
 
 public enum FeedbackMode
 {
-    //FeedbackMode,Assembly-CSharp-Editor
+    // FeedbackMode, Assembly-CSharp
     None,
     AlwaysCorrect,
     AlwaysWrong,
@@ -246,7 +334,7 @@ public enum FeedbackMode
 
 public enum FeedbackType
 {
-    //FeedbackType,Assembly-CSharp-Editor
+    // FeedbackType, Assembly-CSharp
     Object,
     Video,
     Text,

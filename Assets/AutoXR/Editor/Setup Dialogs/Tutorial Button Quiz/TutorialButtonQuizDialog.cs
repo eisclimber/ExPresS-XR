@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.Video;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using UnityEngine.XR.Interaction.Toolkit.UI;
 
 
 class TutorialButtonQuizDialog : SetupDialogBase
@@ -25,8 +26,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
         // Get existing open window or if none, make a new one:
         EditorWindow window = GetWindow<TutorialButtonQuizDialog>("TutorialButtonQuiz");
         window.minSize = new Vector2(700, 500);
-
-        _quizConfig = QuizSetupConfig.CreateInstance<QuizSetupConfig>();
     }
 
     public override string uxmlName
@@ -40,17 +39,21 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private VisualElement _step6Container;
     private VisualElement _step7Container;
     private VisualElement _step8Container;
+    private VisualElement _step9Container;
 
     // Step 1
     private ObjectField _configField;
 
     // Step 2
     private EnumField _quizModeField;
+    private EnumField _questionOrderField;
     private EnumField _answersAmountsField;
     private EnumField _questionTypeField;
     private EnumField _answerTypeField;
     private EnumField _feedbackModeField;
     private EnumField _feedbackTypeField;
+    private Button _setupQuizButton;
+
 
     // Step 5
     private ObjectField _button1Field;
@@ -58,32 +61,30 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private ObjectField _button3Field;
     private ObjectField _button4Field;
     private Button _createButtonsButton;
+    private Button _setupButtonsButton;
 
     // Step 6
     private ObjectField _textLabelField;
     private ObjectField _gameObjectField;
     private ObjectField _videoPlayerField;
-
     private Button _createQuestioningDisplayButton;
+    private Button _setupQuestioningDisplayButton;
 
     // Step 7
     private VisualElement _questions;
     private VisualElement _questionList;
     private Button _addItemButton;
     private Button _removeItemButton;
+    private Button _setupQuestionsButton;
     private UnityEvent _unregisterAll = new UnityEvent();
+
 
     // Step 8
     private TextField _configSavePathField;
     private Button _configSaveButton;
 
-
-    // Special 'Next'-Buttons
-    private Button _setupIntroButton;
-    private Button _setupQuizTypeButton;
-    private Button _setupButtonsButton;
-    private Button _setupQuestioningDisplayButton;
-    private Button _setupQuestionsButton;
+    // Step 9
+    private Button _createDataGathererButton;
 
 
     // Failure Labels
@@ -110,6 +111,9 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Disable on click on the following steps as it is should be only be reachable already setup completed
         SetStepButtonsEnabled(false, 3, 9);
+
+        // Update Quit Config for the first time
+        UpdateQuizConfig(_quizConfig ?? QuizSetupConfig.CreateInstance<QuizSetupConfig>());
     }
 
 
@@ -121,6 +125,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _step6Container = contentContainer.Q<VisualElement>("step-6-place-questioning-display");
         _step7Container = contentContainer.Q<VisualElement>("step-7-setup-quiz-logic");
         _step8Container = contentContainer.Q<VisualElement>("step-8-completion");
+        _step9Container = contentContainer.Q<VisualElement>("step-9-data-gathering");
     }
 
     // Expand this method and add bindings for each step
@@ -130,18 +135,26 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Setup step 1
         _configField = _step1Container.Q<ObjectField>("config-field");
-        _setupIntroButton = _step1Container.Q<Button>("setup-quiz-config-button");
-        _setupIntroButton.clickable.clicked += SetupQuizConfig;
+        _configField.value = _quizConfig;
+        _configField.RegisterValueChangedCallback<Object>(ConfigFieldValueChangedCallback);
 
         // Setup step 2
         _quizModeField = _step2Container.Q<EnumField>("choice-type");
+        _quizModeField.RegisterCallback<ChangeEvent<System.Enum>>(QuizModeChangedCallback);
+        _questionOrderField = _step2Container.Q<EnumField>("question-order");
+        _questionOrderField.RegisterCallback<ChangeEvent<System.Enum>>(QuestionOrderChangedCallback);
         _answersAmountsField = _step2Container.Q<EnumField>("number-of-answers");
+        _answersAmountsField.RegisterCallback<ChangeEvent<System.Enum>>(AnswersAmountChangedCallback);
         _questionTypeField = _step2Container.Q<EnumField>("question-type");
+        _questionTypeField.RegisterCallback<ChangeEvent<System.Enum>>(QuestionTypeChangedCallback);
         _answerTypeField = _step2Container.Q<EnumField>("answer-type");
+        _answerTypeField.RegisterCallback<ChangeEvent<System.Enum>>(AnswerTypeChangedCallback);
         _feedbackModeField = _step2Container.Q<EnumField>("feedback-mode");
+        _feedbackModeField.RegisterCallback<ChangeEvent<System.Enum>>(FeedbackModeChangedCallback);
         _feedbackTypeField = _step2Container.Q<EnumField>("feedback-type");
-        _setupQuizTypeButton = _step2Container.Q<Button>("setup-quiz-type-button");
-        _setupQuizTypeButton.clickable.clicked += SetupQuizType;
+        _feedbackTypeField.RegisterCallback<ChangeEvent<System.Enum>>(FeedbackTypeChangedCallback);
+        _setupQuizButton = _step2Container.Q<Button>("setup-quiz-type-button");
+        _setupQuizButton.clickable.clicked += SetupQuizType;
 
         // Setup step 5
         _button1Field = _step5Container.Q<ObjectField>("button-field-1");
@@ -186,16 +199,65 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _saveConfigFailureLabel = _step8Container.Q<Label>("save-config-failure-label");
         _saveConfigSuccessLabel = _step8Container.Q<Label>("save-config-success-label");
 
+        // Setup step 9
+        _createDataGathererButton = _step9Container.Q<Button>("create-data-gatherer-button");
+        _createDataGathererButton.clickable.clicked += CreateDataGatherer;
+
         // Bind remaining UI Elements
         base.BindUiElements();
     }
 
+    // Step 1 Callbacks
+    private void ConfigFieldValueChangedCallback(ChangeEvent<Object> evt)
+        => UpdateQuizConfig((QuizSetupConfig) evt.newValue);
 
-    private void SetupQuizConfig()
+
+    // Step 2 Callbacks
+    private void QuizModeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
-        if (_configField.value != null)
+        _quizConfig.quizMode = (QuizMode) evt.newValue;
+        UpdateQuestionItems();
+    }
+
+    private void QuestionOrderChangedCallback(ChangeEvent<System.Enum> evt) 
+    {
+        _quizConfig.questionOrder = (QuestionOrder) evt.newValue;
+    }
+
+    private void AnswersAmountChangedCallback(ChangeEvent<System.Enum> evt) 
+    {
+        _quizConfig.answersAmount = (AnswersAmount) evt.newValue;
+        UpdateButtonFields();
+        UpdateQuestionItems();
+    }
+
+    private void QuestionTypeChangedCallback(ChangeEvent<System.Enum> evt) 
+    {
+        _quizConfig.questionType = (QuestionType) evt.newValue;
+        UpdateQuestionItems();
+    }
+
+    private void AnswerTypeChangedCallback(ChangeEvent<System.Enum> evt) 
+    {
+        _quizConfig.answerType = (AnswerType) evt.newValue;
+        UpdateQuestionItems();
+    }
+
+    private void FeedbackModeChangedCallback(ChangeEvent<System.Enum> evt) 
+        => _quizConfig.feedbackMode = (FeedbackMode) evt.newValue;
+        
+
+    private void FeedbackTypeChangedCallback(ChangeEvent<System.Enum> evt) 
+    {
+        _quizConfig.feedbackType = (FeedbackType) evt.newValue;
+    } 
+
+    // Update Steps
+    private void UpdateQuizConfig(QuizSetupConfig newValue)
+    {
+        if (newValue != null)
         {
-            _quizConfig = (QuizSetupConfig)_configField.value;
+            _quizConfig = newValue;
 
             _quizModeField.value = _quizConfig.quizMode;
             _answersAmountsField.value = _quizConfig.answersAmount;
@@ -204,23 +266,23 @@ class TutorialButtonQuizDialog : SetupDialogBase
             _feedbackModeField.value = _quizConfig.feedbackMode;
             _feedbackTypeField.value = _quizConfig.feedbackType;
 
-            SetupQuizType();
+            UpdateButtonFields();
+            UpdateQuestioningDisplays();
+            UpdateQuestionItems();
         }
-        currentStep++;
     }
 
 
-    private void SetupQuizType()
+    private void UpdateQuestionItems()
     {
-        // Update quiz config
-        _quizConfig.quizMode = (QuizMode)_quizModeField.value;
-        _quizConfig.answersAmount = (AnswersAmount)_answersAmountsField.value;
-        _quizConfig.questionType = (QuestionType)_questionTypeField.value;
-        _quizConfig.answerType = (AnswerType)_answerTypeField.value;
-        _quizConfig.feedbackMode = (FeedbackMode)_feedbackModeField.value;
-        _quizConfig.feedbackType = (FeedbackType)_feedbackTypeField.value;
+        foreach (VisualElement questionItem in _questionList.Children())
+        {
+            ConfigureQuestionItem(questionItem);
+        }
+    }
 
-        // Show Correct Buttons
+    private void UpdateButtonFields()
+    {
         bool showButton1 = (_quizConfig.answersAmount >= AnswersAmount.One);
         bool showButton2 = (_quizConfig.answersAmount >= AnswersAmount.Two);
         bool showButton3 = (_quizConfig.answersAmount >= AnswersAmount.Three);
@@ -230,8 +292,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _button2Field.style.display = (showButton2 ? DisplayStyle.Flex : DisplayStyle.None);
         _button3Field.style.display = (showButton3 ? DisplayStyle.Flex : DisplayStyle.None);
         _button4Field.style.display = (showButton4 ? DisplayStyle.Flex : DisplayStyle.None);
+    }
 
-        // Show Correct Questioning Display
+    private void UpdateQuestioningDisplays()
+    {
         bool showAnyField = (_quizConfig.questionType == QuestionType.DifferingTypes
                             || _quizConfig.feedbackType == FeedbackType.DifferingTypes);
 
@@ -245,14 +309,12 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _textLabelField.style.display = (showTextLabel ? DisplayStyle.Flex : DisplayStyle.None);
         _gameObjectField.style.display = (showObjectField ? DisplayStyle.Flex : DisplayStyle.None);
         _videoPlayerField.style.display = (showVideoPlayer ? DisplayStyle.Flex : DisplayStyle.None);
+    }
 
-        // Show Correct Question Item Fields
+    // Setup functions
 
-        foreach (VisualElement questionItem in _questionList.Children())
-        {
-            ConfigureQuestionItem(questionItem);
-        }
-
+    private void SetupQuizType()
+    {
         currentStep++;
         SetStepButtonsEnabled(true, 3, 5);
     }
@@ -297,7 +359,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
                                         (AutoXRBaseButton)_button3Field.value,
                                         (AutoXRBaseButton)_button4Field.value };
 
-        if (TutorialButtonQuiz.IsSetupValid(_quizConfig, buttons, (UnityEngine.UI.Text)_textLabelField.value,
+        if (CreateQuiz(_quizConfig, buttons, (UnityEngine.UI.Text)_textLabelField.value,
                                     (GameObject)_gameObjectField.value, (VideoPlayer)_videoPlayerField.value))
         {
             // Enable step 7-9 if setup successfully
@@ -310,6 +372,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         }
     }
 
+    // Questions
     private void AddQuestionItem()
     {
         // Clone question item to new VisualElement
@@ -505,6 +568,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
         return quizQuestions;
     }
 
+
+    // Create Quiz GameObjects
     private void CreateButtons()
     {
         if (_quizConfig != null)
@@ -548,9 +613,12 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
             GameObject canvasGo = new GameObject("Questioning Display Canvas");
             canvasGo.AddComponent<Canvas>();
+            canvasGo.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+            canvasGo.AddComponent<TrackedDeviceGraphicRaycaster>();
+            canvasGo.AddComponent<UnityEngine.UI.CanvasScaler>();
             Canvas canvasComp = canvasGo.GetComponent<Canvas>();
             canvasComp.renderMode = RenderMode.WorldSpace;
-            canvasComp.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
+            
 
             if (needsText)
             {
@@ -575,9 +643,11 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
                 _videoPlayerField.value = videoPlayerGo;
 
-                Debug.LogWarning("Video Player was created. Be sure to set up the Video Player as described in the Tutorial!");
+                Debug.LogWarning("Video Player and Video Display were created. Be sure to set up the Video Player as described in the Tutorial!");
             }
+            canvasComp.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
 
+            GameObjectUtility.EnsureUniqueNameForSibling(canvasGo);
             Undo.RegisterCreatedObjectUndo(canvasGo, "Create Questioning Display Canvas");
         }
 
@@ -588,12 +658,41 @@ class TutorialButtonQuizDialog : SetupDialogBase
             
             _gameObjectField.value = anchor;
 
+            GameObjectUtility.EnsureUniqueNameForSibling(anchor);
             Undo.RegisterCreatedObjectUndo(anchor, "Create Questioning Display GameObject Anchor");
         }
     }
 
 
+    private void CreateDataGatherer()
+    {
+        GameObject go = new GameObject("Data Gatherer");
+        go.AddComponent<DataGatherer>();
+        GameObjectUtility.EnsureUniqueNameForSibling(go);
+        Undo.RegisterCreatedObjectUndo(go, "Create Data Gatherer Game Object");
+    }
 
+
+    public static bool CreateQuiz(QuizSetupConfig config, AutoXRBaseButton[] buttons,
+                            UnityEngine.UI.Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
+    {
+        GameObject quizGo = new GameObject("Tutorial Button Quiz");
+        TutorialButtonQuiz quiz = quizGo.AddComponent<TutorialButtonQuiz>();
+
+        if (!quiz.IsSetupValid(config, buttons, displayText, displayObject, displayPlayer))
+        {
+            Object.DestroyImmediate(quizGo);
+            return false;
+        }
+
+        quiz.Setup(config, buttons, displayText, displayObject, displayPlayer);
+
+        Undo.RegisterCreatedObjectUndo(quizGo, "Create Tutorial Button Quiz Game Object");
+        return true;
+    }
+
+
+    // Config IO
     private void SaveConfig()
     {
         if (_quizConfig != null && _configSavePathField.value != null)
