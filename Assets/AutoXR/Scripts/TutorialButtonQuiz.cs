@@ -9,7 +9,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     public const int NUM_ANSWERS = 4;
 
     private QuizSetupConfig _config;
-    private AutoXRBaseButton[] _buttons;
+    private AutoXRQuizButton[] _buttons;
     private Text _displayText;
     private GameObject _displayObject;
     private VideoPlayer _displayPlayer;
@@ -33,7 +33,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     // Setup
-    public void Setup(QuizSetupConfig config, AutoXRBaseButton[] buttons,
+    public void Setup(QuizSetupConfig config, AutoXRQuizButton[] buttons,
                             Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
     {
         // Set values
@@ -55,7 +55,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         currentQuestion = 0;
 
         // Connect Events
-        foreach (AutoXRBaseButton button in _buttons)
+        foreach (AutoXRQuizButton button in _buttons)
         {
             button.OnPressed.AddListener(ShowFeedback);
         }
@@ -73,23 +73,36 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
         else
         {
+            QuizQuestion nextQuestion = _questions[currentQuestion];
+            for (int i = 0; i < _questions.Length; i++)
+            {
+                AutoXRQuizButton currentButton = _buttons[i];
+                if (currentButton != null)
+                {
+                    currentButton.SetupAnswer(
+                        nextQuestion.answersTexts[i],
+                        nextQuestion.answersObjects[i],
+                        nextQuestion.correctAnswers[i]
+                    );
+                }
+            }
             currentQuestion++;
         }
     }
 
     private void ShowFeedback()
     {
-
+        
     }
 
     private void OnFeedbackCompleted()
     {
-
+        DisplayNextQuestion();
     }
 
 
     // Validation
-    public bool IsSetupValid(QuizSetupConfig config, AutoXRBaseButton[] buttons,
+    public bool IsSetupValid(QuizSetupConfig config, AutoXRQuizButton[] buttons,
                             Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
     {
         bool displaysValid = IsDisplayValid(config, displayText, displayObject, displayPlayer);
@@ -123,7 +136,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         return true;
     }
 
-    private bool IsButtonsValid(QuizSetupConfig config, AutoXRBaseButton[] buttons)
+    private bool IsButtonsValid(QuizSetupConfig config, AutoXRQuizButton[] buttons)
     {
         int numButtons = (int)config.answersAmount;
 

@@ -32,7 +32,10 @@ public class AutoXRQuizButton : AutoXRBaseButton
         {
             _answerObject = value;
 
-            _answerObject.transform.SetParent(pushAnchor.transform);
+            if (pushAnchor != null)
+            {
+                _answerObject.transform.SetParent(pushAnchor.transform);
+            }
         }
     }
 
@@ -50,6 +53,15 @@ public class AutoXRQuizButton : AutoXRBaseButton
         
         OnReleased.AddListener(NotifyCorrectChoice);
     }
+
+
+    public void SetupAnswer(string answerText, GameObject answerObject, bool correctChoice)
+    {
+        this.answerText = answerText;
+        this.answerObject = answerObject;
+        this.correctChoice = correctChoice;
+    }
+
 
     private void NotifyCorrectChoice()
     {

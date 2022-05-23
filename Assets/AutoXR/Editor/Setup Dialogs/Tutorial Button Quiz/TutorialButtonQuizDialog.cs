@@ -15,7 +15,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     const string CONFIG_SAVE_PATH = "Assets/AutoXR/ExportAssets/QuizSetupConfig.asset";
 
-    const string QUIZ_BUTTON_PREFAB_PATH = "Assets/AutoXR/Prefabs/Auto XR Buttons/Auto XR Quiz Button/Auto XR Quiz Button Square Text.prefab";
     const float QUIZ_BUTTON_SPACING = 0.15f;
 
 
@@ -354,10 +353,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
     {
         _quizConfig.questions = ParseQuestionList(_quizConfig, _questionList);
 
-        AutoXRBaseButton[] buttons = { (AutoXRBaseButton)_button1Field.value,
-                                        (AutoXRBaseButton)_button2Field.value,
-                                        (AutoXRBaseButton)_button3Field.value,
-                                        (AutoXRBaseButton)_button4Field.value };
+        AutoXRQuizButton[] buttons = { (AutoXRQuizButton)_button1Field.value,
+                                        (AutoXRQuizButton)_button2Field.value,
+                                        (AutoXRQuizButton)_button3Field.value,
+                                        (AutoXRQuizButton)_button4Field.value };
 
         if (CreateQuiz(_quizConfig, buttons, (UnityEngine.UI.Text)_textLabelField.value,
                                     (GameObject)_gameObjectField.value, (VideoPlayer)_videoPlayerField.value))
@@ -577,15 +576,17 @@ class TutorialButtonQuizDialog : SetupDialogBase
             GameObject go = new GameObject("Quiz Buttons");
             int numButtons = (int)Mathf.Min((int)_quizConfig.answersAmount + 1, TutorialButtonQuiz.NUM_ANSWERS);
 
-            float xOffset = QUIZ_BUTTON_SPACING * (float)numButtons / 2.0f;
+           
+            float xOffset = (QUIZ_BUTTON_SPACING * (numButtons - 1)) / 2.0f;
 
             ObjectField[] buttonFields = { _button1Field, _button2Field, _button3Field, _button4Field };
 
-            AutoXRQuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(QUIZ_BUTTON_PREFAB_PATH);
+            string buttonPrefabPath = AutoXRCreationUtils.MakeAutoXRPrefabPath(AutoXRCreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
+            AutoXRQuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(buttonPrefabPath);
             for (int i = 0; i < numButtons; i++)
             {
                 // Create new button
-                AutoXRQuizButton button = Instantiate(buttonPrefab, new Vector3(QUIZ_BUTTON_SPACING * i - xOffset, 0, 0), Quaternion.identity);
+                AutoXRQuizButton button = Instantiate(buttonPrefab, new Vector3((QUIZ_BUTTON_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
                 button.transform.SetParent(go.transform);
                 button.name = "Quiz Button " + (i + 1).ToString();
 
@@ -673,7 +674,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     }
 
 
-    public static bool CreateQuiz(QuizSetupConfig config, AutoXRBaseButton[] buttons,
+    public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons,
                             UnityEngine.UI.Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
     {
         GameObject quizGo = new GameObject("Tutorial Button Quiz");

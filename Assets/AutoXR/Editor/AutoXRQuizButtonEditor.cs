@@ -58,8 +58,8 @@ public class AutoXRQuizButtonEditor : Editor
         EditorGUILayout.Space();
 
         EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("answerText"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("answerObject"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerObject"), true);
         EditorGUI.indentLevel--;
         
         EditorGUILayout.Space();

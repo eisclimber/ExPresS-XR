@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 879532188256843321}
   - component: {fileID: 3032875347758627282}
   m_Layer: 0
-  m_Name: Auto XR Quiz Button Square Text
+  m_Name: Auto XR Quiz Button Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,8 +119,8 @@ MonoBehaviour:
       m_Calls: []
   pressedSound: {fileID: 0}
   releasedSound: {fileID: 0}
-  baseAnchor: {fileID: 0}
-  pushAnchor: {fileID: 0}
+  baseAnchor: {fileID: 879532188554278062}
+  pushAnchor: {fileID: 879532188442078939}
   _yMin: 0.019
   _yMax: 0.029
   _colliderSize: {x: 0, y: 0, z: 0}
@@ -129,11 +129,35 @@ MonoBehaviour:
   _answerObject: {fileID: 0}
   OnPressedCorrect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 879532189004701954}
+        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateAlternativeMaterialForASecond
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnPressedIncorrect:
     m_PersistentCalls:
-      m_Calls: []
-  feedbackTextLabel: {fileID: 0}
+      m_Calls:
+      - m_Target: {fileID: 15272736109910073}
+        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateAlternativeMaterialForASecond
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  feedbackTextLabel: {fileID: 8171433780582446880}
 --- !u!1 &879532188442078938
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +203,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.08, y: 0.02, z: 0.08}
+  m_Size: {x: 0, y: 0, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &879532188442078936
 Rigidbody:
@@ -257,6 +281,7 @@ GameObject:
   - component: {fileID: 879532189004701957}
   - component: {fileID: 879532189004701956}
   - component: {fileID: 879532189004701954}
+  - component: {fileID: 15272736109910073}
   m_Layer: 0
   m_Name: Push
   m_TagString: Untagged
@@ -340,6 +365,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alternativeMaterial: {fileID: 2100000, guid: f6f596704738d6147905929251ecfc6b, type: 2}
+--- !u!114 &15272736109910073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879532189004701958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d5fa914a73f4a4094acc0b67945c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alternativeMaterial: {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
 --- !u!1 &879532189368720654
 GameObject:
   m_ObjectHideFlags: 0
