@@ -24,6 +24,12 @@ public class AutoXRQuizButtonEditor : Editor
         }
         EditorGUI.EndDisabledGroup();
         
+        EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputDisabled"), true);
+        EditorGUI.indentLevel--;
+
+
         EditorGUILayout.LabelField("Local Push Limits", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_yMin"), true);
@@ -45,6 +51,9 @@ public class AutoXRQuizButtonEditor : Editor
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressed"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnReleased"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputDisabled"), true);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
@@ -53,13 +62,14 @@ public class AutoXRQuizButtonEditor : Editor
 
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("invertedFeedback"), true);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
 
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerObject"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerPrefab"), true);
         EditorGUI.indentLevel--;
         
         EditorGUILayout.Space();

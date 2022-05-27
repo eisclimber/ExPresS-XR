@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 122380044487349915}
   - component: {fileID: 6516485837012481656}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +175,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &4628906556678883196
@@ -380,7 +380,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.07, y: 0.02, z: 0.07}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4628906556980870624
 Rigidbody:
@@ -509,6 +509,13 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
+  _inputDisabled: 0
+  OnInputDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnabled:
+    m_PersistentCalls:
+      m_Calls: []
   OnPressed:
     m_PersistentCalls:
       m_Calls: []
@@ -521,8 +528,9 @@ MonoBehaviour:
   pushAnchor: {fileID: 4628906556980870627}
   _yMin: 0.019
   _yMax: 0.029
-  _colliderSize: {x: 0, y: 0, z: 0}
+  _colliderSize: {x: 0.07, y: 0.02, z: 0.07}
   correctChoice: 0
+  notifyInvertedChoice: 0
   _answerText: 
   _answerObject: {fileID: 0}
   OnPressedCorrect:

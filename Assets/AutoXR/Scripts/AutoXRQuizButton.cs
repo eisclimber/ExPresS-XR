@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class AutoXRQuizButton : AutoXRBaseButton
 {
-    public bool correctChoice = false;
+    public bool correctChoice;
+    public bool invertedFeedback;
 
     [SerializeField]
     private string _answerText;
@@ -24,17 +26,23 @@ public class AutoXRQuizButton : AutoXRBaseButton
     }
     
     [SerializeField]
-    private GameObject _answerObject;
-    public GameObject answerObject
+    private GameObject _answerPrefab;
+    public GameObject answerPrefab
     {
-        get => _answerObject;
+        get => _answerPrefab;
         set
         {
-            _answerObject = value;
+            if (value == null)
+            {
+                Destroy(_answerPrefab);
+            }
+            _answerPrefab = value;
 
             if (pushAnchor != null)
             {
-                _answerObject.transform.SetParent(pushAnchor.transform);
+                // Instantiate Object
+                GameObject answerObjectInstance = Instantiate<GameObject>(_answerPrefab, pushAnchor.transform);
+                _answerPrefab = answerObjectInstance;
             }
         }
     }
@@ -51,21 +59,30 @@ public class AutoXRQuizButton : AutoXRBaseButton
     {
         base.Awake();
         
-        OnReleased.AddListener(NotifyCorrectChoice);
+        if (answerText != null && answerText != "")
+        {
+            answerText = _answerText;
+        }
+        if (answerPrefab != null)
+        {
+            answerPrefab = _answerPrefab;
+        }
+
+        OnPressed.AddListener(NotifyChoice);
     }
 
 
-    public void SetupAnswer(string answerText, GameObject answerObject, bool correctChoice)
+    public void DisplayAnswer(string answerText, GameObject answerObject, bool correctChoice)
     {
         this.answerText = answerText;
-        this.answerObject = answerObject;
+        this.answerPrefab = answerObject;
         this.correctChoice = correctChoice;
     }
 
 
-    private void NotifyCorrectChoice()
+    private void NotifyChoice()
     {
-        if (correctChoice)
+        if (correctChoice || (!correctChoice && invertedFeedback))
         {
             OnPressedCorrect.Invoke();
         }

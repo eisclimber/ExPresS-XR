@@ -111,6 +111,13 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
+  _inputDisabled: 0
+  OnInputDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnabled:
+    m_PersistentCalls:
+      m_Calls: []
   OnPressed:
     m_PersistentCalls:
       m_Calls: []
@@ -123,8 +130,9 @@ MonoBehaviour:
   pushAnchor: {fileID: 879532188442078939}
   _yMin: 0.019
   _yMax: 0.029
-  _colliderSize: {x: 0, y: 0, z: 0}
+  _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
   correctChoice: 0
+  notifyInvertedChoice: 0
   _answerText: 
   _answerObject: {fileID: 0}
   OnPressedCorrect:
@@ -203,7 +211,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.08, y: 0.02, z: 0.08}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &879532188442078936
 Rigidbody:

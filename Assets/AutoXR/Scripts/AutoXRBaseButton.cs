@@ -10,6 +10,28 @@ public class AutoXRBaseButton : XRBaseInteractable
 {
     private const float PRESS_PCT = 0.3f;
 
+    public bool _inputDisabled;
+    public bool inputDisabled
+    {
+        get => _inputDisabled;
+        set
+        {
+            if (value && !_inputDisabled)
+            {
+                OnInputEnabled.Invoke();
+            }
+            else if (!value && _inputDisabled)
+            {
+                OnInputDisabled.Invoke();
+            }
+
+            _inputDisabled = value;
+        }
+    }
+
+    public UnityEvent OnInputDisabled;
+    public UnityEvent OnInputEnabled;
+
     public UnityEvent OnPressed;
     public UnityEvent OnReleased;
 
@@ -56,7 +78,7 @@ public class AutoXRBaseButton : XRBaseInteractable
     ////////
 
     // Can be used to measure the time since between any point in time and a button press
-    public void StartTriggerTime()
+    public void StartTriggerTimer()
     {
         triggerStartTime = Time.time;
     }
@@ -73,6 +95,16 @@ public class AutoXRBaseButton : XRBaseInteractable
         base.Awake();
         hoverEntered.AddListener(StartPress);
         hoverExited.AddListener(EndPress);
+
+        // Dis-/Enable 
+        if (!_inputDisabled)
+        {
+            OnInputEnabled.Invoke();
+        }
+        else
+        {
+            OnInputDisabled.Invoke();
+        }
 
         triggerStartTime = Time.time;
     }
@@ -143,8 +175,12 @@ public class AutoXRBaseButton : XRBaseInteractable
 
     private void CheckPress()
     {
-        bool isDown = IsInDownPosition();
+        if (inputDisabled)
+        {
+            return;
+        }
 
+        bool isDown = IsInDownPosition();
         // Debug.Log(isDown + "    " + pressed);
         if (isDown && !pressed)
         {

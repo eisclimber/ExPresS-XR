@@ -302,8 +302,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
                             || _quizConfig.feedbackType == FeedbackType.Text);
         bool showObjectField = (showAnyField || _quizConfig.questionType == QuestionType.Object
                             || _quizConfig.feedbackType == FeedbackType.Object);
-        bool showVideoPlayer = (showAnyField || _quizConfig.questionType == QuestionType.Video
-                            || _quizConfig.feedbackType == FeedbackType.Video);
+        bool showVideoPlayer = (showAnyField || _quizConfig.questionType == QuestionType.Video);
 
         _textLabelField.style.display = (showTextLabel ? DisplayStyle.Flex : DisplayStyle.None);
         _gameObjectField.style.display = (showObjectField ? DisplayStyle.Flex : DisplayStyle.None);

@@ -20,7 +20,7 @@ public class ColorSwitcher : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         originalMaterial = meshRenderer.material;
 
-        if (alternativeMaterial != null)
+        if (alternativeMaterial == null)
         {
             Debug.LogWarning("No Material assigned to Color Switcher. Materials won't switch.");
         }
@@ -53,20 +53,21 @@ public class ColorSwitcher : MonoBehaviour
     }
 
     // Coroutine Switches
-    public IEnumerator ActivateAlternativeMaterialForSeconds(float time)
+    public IEnumerator ActivateAlternativeMaterialForSecondsCoroutine(float time)
     {
         ActivateAlternativeMaterial();
         yield return new WaitForSeconds(time);
         ActivateOriginalMaterial();
     }
 
-    public IEnumerator ActivateOriginalMaterialForSeconds(float time)
+    public IEnumerator ActivateOriginalMaterialForSecondsCoroutine(float time)
     {
         ActivateOriginalMaterial();
         yield return new WaitForSeconds(time);
         ActivateAlternativeMaterial();
     }
 
-    public void ActivateAlternativeMaterialForASecond() => ActivateAlternativeMaterialForSeconds(1f);
-    public void ActivateOriginalMaterialForASecond() => ActivateOriginalMaterialForSeconds(1f);
+    public void ActivateAlternativeMaterialForASecond() => StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1f));
+    
+    public void ActivateOriginalMaterialForASecond() => StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(1f));
 }

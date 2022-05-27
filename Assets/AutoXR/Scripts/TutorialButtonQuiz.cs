@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
@@ -11,9 +13,13 @@ public class TutorialButtonQuiz : MonoBehaviour
     private QuizSetupConfig _config;
     private AutoXRQuizButton[] _buttons;
     private Text _displayText;
-    private GameObject _displayObject;
+    private GameObject _displayAnchor;
     private VideoPlayer _displayPlayer;
 
+
+    [SerializeField]
+    private float _feedbackDuration = 5;
+    public float feedbackDuration { get; set; }
 
     private QuizQuestion[] _questions;
     public QuizQuestion[] questions { get; set; }
@@ -24,8 +30,10 @@ public class TutorialButtonQuiz : MonoBehaviour
     private int[] _questionPermutation;
     public int[] questionPermutation { get; set; }
 
-    private int _currentQuestion;
-    public int currentQuestion { get; set; }
+    private int _currentQuestionIdx;
+
+    private QuizQuestion _currentQuestion;
+    private QuizQuestion currentQuestion { get; set; }
 
     public UnityEvent OnAnswerGiven;
     public UnityEvent OnQuizStarted;
@@ -34,13 +42,13 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     // Setup
     public void Setup(QuizSetupConfig config, AutoXRQuizButton[] buttons,
-                            Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
+                            Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer)
     {
         // Set values
         _config = config;
         _buttons = buttons;
         _displayText = displayText;
-        _displayObject = displayObject;
+        _displayAnchor = displayAnchor;
         _displayPlayer = displayPlayer;
 
         _questions = _config.questions;
@@ -52,12 +60,15 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             questionPermutation = Shuffle(questionPermutation);
         }
-        currentQuestion = 0;
+        _currentQuestionIdx = 0;
 
         // Connect Events
         foreach (AutoXRQuizButton button in _buttons)
         {
-            button.OnPressed.AddListener(ShowFeedback);
+            if (button != null)
+            {
+                button.OnPressed.AddListener(() => ShowFeedback(button));
+            }
         }
 
         DisplayNextQuestion();
@@ -66,38 +77,77 @@ public class TutorialButtonQuiz : MonoBehaviour
     // Runtime logic
     private void DisplayNextQuestion()
     {
-        if (currentQuestion == numQuestions)
+        if (_currentQuestionIdx == numQuestions)
         {
             // Only invoke the complete event
             OnQuizCompleted.Invoke();
         }
         else
         {
-            QuizQuestion nextQuestion = _questions[currentQuestion];
+            _currentQuestion = _questions[_questionPermutation[_currentQuestionIdx]];
+            
+            SetButtonsDisabled(false);
+
             for (int i = 0; i < _questions.Length; i++)
             {
                 AutoXRQuizButton currentButton = _buttons[i];
                 if (currentButton != null)
                 {
-                    currentButton.SetupAnswer(
-                        nextQuestion.answersTexts[i],
-                        nextQuestion.answersObjects[i],
-                        nextQuestion.correctAnswers[i]
+                    currentButton.DisplayAnswer(
+                        _currentQuestion.answersTexts[i],
+                        _currentQuestion.answersObjects[i],
+                        _currentQuestion.correctAnswers[i]
                     );
+                    currentButton.StartTriggerTimer();
                 }
             }
-            currentQuestion++;
+            _currentQuestionIdx++;
         }
     }
 
-    private void ShowFeedback()
+    private void ShowFeedback(AutoXRQuizButton button)
     {
-        
+        if (_config.feedbackType == FeedbackType.Text)
+        {
+
+        }
+        else if (_config.feedbackType == FeedbackType.Object) {
+
+        }
+        StartCoroutine("WaitForFeedbackCompletion");
     }
 
     private void OnFeedbackCompleted()
     {
         DisplayNextQuestion();
+
+        if (_displayPlayer != null)
+        {
+            _displayPlayer.loopPointReached -= OnDisplayPlayerLoopPointReached;
+        }
+        if (_displayAnchor != null)
+        {
+            foreach(Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        if (_displayText != null)
+        {
+            _displayText.text = "";
+        }
+    }
+
+
+    private void SetButtonsDisabled(bool disabled)
+    {
+        foreach (AutoXRQuizButton button in _buttons)
+        {
+            if (button != null)
+            {
+                button.inputDisabled = disabled;
+            }
+        }
     }
 
 
@@ -109,7 +159,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         bool buttonsValid = IsButtonsValid(config, buttons);
         bool questionsValid = AreQuestionsValid(config);
 
-        return displaysValid && buttonsValid;
+        return displaysValid && buttonsValid && questionsValid;
     }
 
 
@@ -128,7 +178,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             Debug.LogError("Config requires GameObject-Reference but was null.");
             return false;
         }
-        else if (displayPlayer == null && (config.questionType == QuestionType.Video || config.feedbackType == FeedbackType.Video))
+        else if (displayPlayer == null && (config.questionType == QuestionType.Video))
         {
             Debug.LogError("Config requires VideoPlayer-Reference but was null.");
             return false;
@@ -219,23 +269,16 @@ public class TutorialButtonQuiz : MonoBehaviour
         return array;
     }
 
-    private int[] ShuffleNoPair(int[] array, int[] pairs)
+    // Coroutines & Actions
+    private IEnumerator WaitForFeedbackCompletion()
     {
-        // Basically Fisher-Yates-Shuffle but preventing 
-        for (int i = 0; i < array.Length; i++)
-        {
-            int j = Random.Range(0, array.Length);
-            if (array[i] == pairs[j])
-            {
-                // Prevent shuffling a pair together by shifting it 1 to the right
-                j = (j + 1) % array.Length;
-            }
+        yield return new WaitForSeconds(_feedbackDuration);
+        OnFeedbackCompleted();
+    }
 
-            int temp = array[i];
-            array[j] = array[i];
-            array[i] = temp;
-        }
-        return array;
+    private void OnDisplayPlayerLoopPointReached(VideoPlayer evt) 
+    {
+        OnFeedbackCompleted();
     }
 }
 
@@ -266,6 +309,7 @@ public class QuizQuestion
     public GameObject questionObject;
     public string questionText;
 
+    public int numAnswers;
     public GameObject[] answersObjects;
     public string[] answersTexts;
 
@@ -283,9 +327,104 @@ public class QuizQuestion
         this.answersObjects = answersObjects;
         this.answersTexts = answersTexts;
 
+        numAnswers = 0;
+        for (int i = 0; i < TutorialButtonQuiz.NUM_ANSWERS; i++)
+        {
+            if (answersObjects[i] != null || answersTexts[i] != null)
+            {
+                numAnswers = i;
+            }
+        }
+
         this.correctAnswers = correctAnswers;
     }
 
+    public string GetFeedbackText(FeedbackMode feedbackMode, FeedbackType feedbackType, QuizMode quizMode) 
+    {
+        string feedbackString = "";
+        if (feedbackMode != FeedbackMode.None && (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes))
+        {
+            switch(feedbackMode)
+            {
+                case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
+                    for (int i = 0; i < answersTexts.Length; i++)
+                    {
+                        bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
+                        if (correctAnswers[i] == chooseCorrect && answersTexts[i] != null && answersTexts[i] != "")
+                        {
+                            feedbackString += answersTexts[i];
+
+                            if (quizMode == QuizMode.SingleChoice)
+                            {
+                                return feedbackString;
+                            }
+                        }
+                    }
+                    return feedbackString;
+                case FeedbackMode.Random:
+                    for (int i = 0; i < numAnswers; i++)
+                    {
+                        if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
+                        {
+                            feedbackString += answersTexts[i];
+                        }
+                    }
+                    if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
+                    {
+                        return answersTexts[Random.Range(0, numAnswers)];
+                    }
+                    return feedbackString;
+            }
+        }
+        return "";
+    }
+
+    public GameObject[] GetFeedbackGameObjects(FeedbackMode feedbackMode, FeedbackType feedbackType, QuizMode quizMode) 
+    {
+        List<GameObject> feedbackGos = new List<GameObject>();
+
+        if (feedbackMode != FeedbackMode.None && (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes))
+        {
+            switch(feedbackMode)
+            {
+                case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
+                    for (int i = 0; i < answersTexts.Length; i++)
+                    {
+                        bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
+                        if (correctAnswers[i] == chooseCorrect && answersObjects[i] != null)
+                        {
+                            feedbackGos.Add(answersObjects[i]);
+
+                            if (quizMode == QuizMode.SingleChoice)
+                            {
+                                return feedbackGos.ToArray();
+                            }
+                        }
+                    }
+                    break;
+                case FeedbackMode.Random:
+                    for (int i = 0; i < numAnswers; i++)
+                    {
+                        if (Random.Range(0, 1) < 0.5 && answersObjects[i] != null)
+                        {
+                            feedbackGos.Add(answersObjects[i]);
+                            if (quizMode == QuizMode.SingleChoice)
+                            {
+                                return feedbackGos.ToArray();
+                            }
+                        }
+                    }
+                    if (answersTexts.Length <= 0 && quizMode == QuizMode.SingleChoice)
+                    {
+                        return new GameObject[] { feedbackGos[Random.Range(0, feedbackGos.Count)] };
+                    }
+                    return feedbackGos.ToArray();
+            }
+        }
+        return new GameObject[] { };
+    }
+
+    // Feedback
     public bool IsQuestionValid() => (questionObject != null || questionText != null);
     public bool IsAnswerValid() => (answersObjects != null || answersTexts != null);
     public bool IsValid() => (IsQuestionValid() && IsAnswerValid());
@@ -349,7 +488,6 @@ public enum FeedbackType
 {
     // FeedbackType, Assembly-CSharp
     Object,
-    Video,
     Text,
     DifferingTypes
 }
