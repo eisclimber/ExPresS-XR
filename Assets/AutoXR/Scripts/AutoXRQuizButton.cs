@@ -17,7 +17,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
         {
             _answerText = value;
 
-            Transform textTransform = pushAnchor.Find("Text");
+            Transform textTransform = pushAnchor.Find("Canvas/Text");
             if (textTransform.GetComponent<Text>() != null)
             {
                 textTransform.GetComponent<Text>().text = _answerText;
@@ -38,7 +38,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
             }
             _answerPrefab = value;
 
-            if (pushAnchor != null)
+            if (pushAnchor != null && _answerPrefab != null)
             {
                 // Instantiate Object
                 GameObject answerObjectInstance = Instantiate<GameObject>(_answerPrefab, pushAnchor.transform);

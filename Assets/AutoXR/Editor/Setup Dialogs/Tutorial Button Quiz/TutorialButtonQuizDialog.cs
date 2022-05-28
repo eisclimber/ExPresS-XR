@@ -5,6 +5,7 @@ using UnityEngine.Video;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using UnityEngine.XR.Interaction.Toolkit.UI;
+using TMPro;
 
 
 class TutorialButtonQuizDialog : SetupDialogBase
@@ -23,8 +24,11 @@ class TutorialButtonQuizDialog : SetupDialogBase
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
-        EditorWindow window = GetWindow<TutorialButtonQuizDialog>("TutorialButtonQuiz");
+        TutorialButtonQuizDialog window = GetWindow<TutorialButtonQuizDialog>("TutorialButtonQuiz");
         window.minSize = new Vector2(700, 500);
+
+        window.configField.value = null;
+        window.UpdateQuizConfig(QuizSetupConfig.CreateInstance<QuizSetupConfig>());
     }
 
     public override string uxmlName
@@ -41,7 +45,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private VisualElement _step9Container;
 
     // Step 1
-    private ObjectField _configField;
+    public ObjectField configField;
 
     // Step 2
     private EnumField _quizModeField;
@@ -110,9 +114,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Disable on click on the following steps as it is should be only be reachable already setup completed
         SetStepButtonsEnabled(false, 3, 9);
-
-        // Update Quit Config for the first time
-        UpdateQuizConfig(_quizConfig ?? QuizSetupConfig.CreateInstance<QuizSetupConfig>());
     }
 
 
@@ -130,12 +131,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
     // Expand this method and add bindings for each step
     protected override void BindUiElements()
     {
-        // Add behavior the ui elements of each step
-
         // Setup step 1
-        _configField = _step1Container.Q<ObjectField>("config-field");
-        _configField.value = _quizConfig;
-        _configField.RegisterValueChangedCallback<Object>(ConfigFieldValueChangedCallback);
+        configField = _step1Container.Q<ObjectField>("config-field");
+        configField.value = _quizConfig;
+        configField.RegisterValueChangedCallback<Object>(ConfigFieldValueChangedCallback);
 
         // Setup step 2
         _quizModeField = _step2Container.Q<EnumField>("choice-type");
@@ -234,6 +233,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     {
         _quizConfig.questionType = (QuestionType) evt.newValue;
         UpdateQuestionItems();
+        UpdateQuestioningDisplays();
     }
 
     private void AnswerTypeChangedCallback(ChangeEvent<System.Enum> evt) 
@@ -243,7 +243,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
     }
 
     private void FeedbackModeChangedCallback(ChangeEvent<System.Enum> evt) 
-        => _quizConfig.feedbackMode = (FeedbackMode) evt.newValue;
+    {
+        _quizConfig.feedbackMode = (FeedbackMode) evt.newValue;
+        UpdateQuestioningDisplays();
+    }
         
 
     private void FeedbackTypeChangedCallback(ChangeEvent<System.Enum> evt) 
@@ -357,7 +360,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
                                         (AutoXRQuizButton)_button3Field.value,
                                         (AutoXRQuizButton)_button4Field.value };
 
-        if (CreateQuiz(_quizConfig, buttons, (UnityEngine.UI.Text)_textLabelField.value,
+        if (CreateQuiz(_quizConfig, buttons, (TMP_Text)_textLabelField.value,
                                     (GameObject)_gameObjectField.value, (VideoPlayer)_videoPlayerField.value))
         {
             // Enable step 7-9 if setup successfully
@@ -456,6 +459,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
                                 }
                             });
                         }
+                        toggle.value = evt.newValue;
                     };
 
                     // Ensure only one 
@@ -623,7 +627,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
             if (needsText)
             {
                 GameObject textLabel = new GameObject("Questioning Display Text");
-                textLabel.AddComponent<UnityEngine.UI.Text>();
+                textLabel.AddComponent<TextMeshProUGUI>();
 
                 _textLabelField.value = textLabel;
 
@@ -674,7 +678,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
 
     public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons,
-                            UnityEngine.UI.Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
+                            TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
     {
         GameObject quizGo = new GameObject("Tutorial Button Quiz");
         TutorialButtonQuiz quiz = quizGo.AddComponent<TutorialButtonQuiz>();
