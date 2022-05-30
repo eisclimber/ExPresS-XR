@@ -902,6 +902,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &967390123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 967390125}
+  - component: {fileID: 967390124}
+  m_Layer: 0
+  m_Name: Data Gatherer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &967390124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967390123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9412700f773454640a2190008089fd5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dataExportType: 0
+  localExportPath: 
+  httpExportPath: 
+  inputActionTrigger: []
+  _periodicExportEnabled: 0
+  _periodicExportTime: 1
+  _includeTimeStamp: 1
+  _dataBindings:
+  - targetObject: {fileID: 0}
+    targetComponentName: 
+    targetValueName: 
+    exportColumnName: 
+  - targetObject: {fileID: 0}
+    targetComponentName: 
+    targetValueName: 
+    exportColumnName: 
+  - targetObject: {fileID: 0}
+    targetComponentName: 
+    targetValueName: 
+    exportColumnName: 
+--- !u!4 &967390125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967390123}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1434565716
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1287,7 +1350,19 @@ MonoBehaviour:
       m_Calls: []
   OnQuizCompleted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 967390124}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &2135157763
 Transform:
   m_ObjectHideFlags: 0
