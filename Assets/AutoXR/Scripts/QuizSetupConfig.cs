@@ -50,9 +50,9 @@ public class QuizQuestion
         numAnswers = 0;
         for (int i = 0; i < TutorialButtonQuiz.NUM_ANSWERS; i++)
         {
-            if (answersObjects[i] != null || answersTexts[i] != null)
+            if (answersObjects[i] != null || (answersTexts[i] != null && answersTexts[i] != ""))
             {
-                numAnswers = i;
+                numAnswers = i + 1;
             }
         }
 

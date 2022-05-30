@@ -10,6 +10,7 @@ public class AutoXRBaseButton : XRBaseInteractable
 {
     private const float PRESS_PCT = 0.3f;
 
+    [SerializeField]
     public bool _inputDisabled;
     public bool inputDisabled
     {
@@ -147,7 +148,7 @@ public class AutoXRBaseButton : XRBaseInteractable
     {
         base.ProcessInteractable(updatePhase);
 
-        if (hoverInteractor != null)
+        if (hoverInteractor != null && !inputDisabled)
         {
             float newHandHeight = GetLocalYPosition(hoverInteractor.transform.position);
             float handDifference = previousHandHeight - newHandHeight;

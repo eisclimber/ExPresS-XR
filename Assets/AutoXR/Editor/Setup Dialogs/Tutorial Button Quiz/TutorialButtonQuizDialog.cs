@@ -16,7 +16,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     const string CONFIG_SAVE_PATH = "Assets/AutoXR/ExportAssets/QuizSetupConfig.asset";
 
-    const float QUIZ_BUTTON_SPACING = 0.15f;
+    const float QUIZ_BUTTON_SPACING = 0.3f;
 
 
 
@@ -190,7 +190,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _configSavePathField = _step8Container.Q<TextField>("save-path-field");
         if (_configSavePathField != null)
         {
-            _configSavePathField.value = CONFIG_SAVE_PATH;
+            _configSavePathField.value = AssetDatabase.GenerateUniqueAssetPath(CONFIG_SAVE_PATH);
         }
         _configSaveButton = _step8Container.Q<Button>("save-config-button");
         _configSaveButton.clickable.clicked += SaveConfig;
@@ -199,7 +199,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Setup step 9
         _createDataGathererButton = _step9Container.Q<Button>("create-data-gatherer-button");
-        _createDataGathererButton.clickable.clicked += CreateDataGatherer;
+        _createDataGathererButton.clickable.clicked += () => { AutoXRCreationUtils.CreateDataGatherer(null); };
 
         // Bind remaining UI Elements
         base.BindUiElements();
@@ -578,7 +578,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
         {
             GameObject go = new GameObject("Quiz Buttons");
             int numButtons = (int)Mathf.Min((int)_quizConfig.answersAmount + 1, TutorialButtonQuiz.NUM_ANSWERS);
-
            
             float xOffset = (QUIZ_BUTTON_SPACING * (numButtons - 1)) / 2.0f;
 
@@ -627,7 +626,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
             if (needsText)
             {
                 GameObject textLabel = new GameObject("Questioning Display Text");
-                textLabel.AddComponent<TextMeshProUGUI>();
+                TextMeshProUGUI tmpText = textLabel.AddComponent<TextMeshProUGUI>();
+                tmpText.fontSize = 16;
 
                 _textLabelField.value = textLabel;
 
@@ -666,16 +666,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
             Undo.RegisterCreatedObjectUndo(anchor, "Create Questioning Display GameObject Anchor");
         }
     }
-
-
-    private void CreateDataGatherer()
-    {
-        GameObject go = new GameObject("Data Gatherer");
-        go.AddComponent<DataGatherer>();
-        GameObjectUtility.EnsureUniqueNameForSibling(go);
-        Undo.RegisterCreatedObjectUndo(go, "Create Data Gatherer Game Object");
-    }
-
 
     public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons,
                             TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer)

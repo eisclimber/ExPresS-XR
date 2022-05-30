@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91147366f28929439b0468f14fce089, type: 3}
-  m_Name: QuizSetupConfig
+  m_Name: TextTest_QuizSetupConfig
   m_EditorClassIdentifier: 
   quizMode: 0
   questionOrder: 1
@@ -24,15 +24,15 @@ MonoBehaviour:
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Question 1
-    numAnswers: 3
+    numAnswers: 2
     answersObjects:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     answersTexts:
-    - Answer 1.1
-    - Answer 1.2
+    - X A 1.1
+    - A 1.2
     - 
     - 
     correctAnswers: 01000000
@@ -40,6 +40,22 @@ MonoBehaviour:
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Question 2
+    numAnswers: 2
+    answersObjects:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    answersTexts:
+    - A 2.1
+    - X A 2.2
+    - 
+    - 
+    correctAnswers: 00010000
+  - itemId: 2
+    questionVideo: {fileID: 0}
+    questionObject: {fileID: 0}
+    questionText: Question 3
     numAnswers: 3
     answersObjects:
     - {fileID: 0}
@@ -47,8 +63,8 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     answersTexts:
-    - Answer 2.1
-    - Answer 2.2
+    - X A 3.1
+    - A 3.2
     - 
     - 
     correctAnswers: 01000000

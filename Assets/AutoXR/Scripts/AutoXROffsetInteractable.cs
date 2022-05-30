@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 // Credits to 'VR with Andrew' on Youtube
-
 public class AutoXROffsetInteractable : XRGrabInteractable
 {
     protected override void Awake() 
@@ -26,7 +23,6 @@ public class AutoXROffsetInteractable : XRGrabInteractable
 
         attachTransform = attachObject.transform;
     }
-
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {

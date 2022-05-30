@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class AutoXRQuizButton : AutoXRBaseButton
 {
@@ -77,6 +76,18 @@ public class AutoXRQuizButton : AutoXRBaseButton
         this.answerText = answerText;
         this.answerPrefab = answerObject;
         this.correctChoice = correctChoice;
+    }
+
+
+    public void ClearAnswer()
+    {
+        answerText = "";
+        correctChoice = false;
+        if (answerPrefab)
+        {
+            Destroy(answerPrefab);
+            answerPrefab = null;
+        }
     }
 
 

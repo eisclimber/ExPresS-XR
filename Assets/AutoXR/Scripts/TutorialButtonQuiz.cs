@@ -9,6 +9,9 @@ public class TutorialButtonQuiz : MonoBehaviour
 {
     public const int MIN_QUESTIONS = 2;
     public const int NUM_ANSWERS = 4;
+    public const float DISPLAY_OBJECTS_SPACING = 0.5f;
+
+    public const float DEFAULT_FEEDBACK_DURATION = 3.0f;
 
     [SerializeField]
     private QuizSetupConfig _config;
@@ -41,7 +44,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     [SerializeField]
-    private float _feedbackDuration = 5;
+    private float _feedbackDuration = DEFAULT_FEEDBACK_DURATION;
 
     private QuizQuestion[] _questions;
 
@@ -49,7 +52,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     private int[] _questionPermutation;
 
-    private int _currentQuestionIdx;
+    private int _nextQuestionIdx;
 
     private QuizQuestion _currentQuestion;
 
@@ -77,7 +80,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             _questionPermutation = Shuffle(_questionPermutation);
         }
-        _currentQuestionIdx = 0;
+        _nextQuestionIdx = 0;
 
         // Connect Events
         foreach (AutoXRQuizButton button in _buttons)
@@ -104,15 +107,26 @@ public class TutorialButtonQuiz : MonoBehaviour
     // Runtime logic
     private void DisplayNextQuestion()
     {
-        if (_currentQuestionIdx >= _numQuestions)
+        if (_nextQuestionIdx >= _numQuestions)
         {
             // Only invoke the complete event
-            Debug.Log("Quiz Completed.");
             OnQuizCompleted.Invoke();
+            for (int i = 0; i < _questions.Length; i++)
+            {
+                if (_buttons[i] != null)
+                {
+                    _buttons[i].ClearAnswer();
+                }
+            }
+
+            if (_displayText != null)
+            {
+                _displayText.text = "Quiz Completed";
+            }
         }
         else
         {
-            _currentQuestion = _questions[_questionPermutation[_currentQuestionIdx]];
+            _currentQuestion = _questions[_questionPermutation[_nextQuestionIdx]];
             
             SetButtonsDisabled(false);
 
@@ -133,43 +147,62 @@ public class TutorialButtonQuiz : MonoBehaviour
             {
                 _displayText.text = _currentQuestion.questionText;
             }
+
             if (_displayAnchor != null && _currentQuestion.questionObject != null)
             {
                 GameObject go = Instantiate<GameObject>(_currentQuestion.questionObject, _displayAnchor.transform);
             }
+
             if (_displayPlayer != null && _currentQuestion.questionVideo != null)
             {
                 _displayPlayer.clip = _currentQuestion.questionVideo;
                 _displayPlayer.Play();
             }
 
-            _currentQuestionIdx++;
+            _nextQuestionIdx++;
         }
     }
 
     private void ShowFeedback(AutoXRQuizButton button)
     {
-        if (_config.feedbackType == FeedbackType.Text)
+        OnAnswerGiven.Invoke();
+
+        SetButtonsDisabled(true);
+
+        if (_displayText != null && _config.feedbackType == FeedbackType.Text)
         {
-
+            _displayText.text = "Correct Answer was \n" + _currentQuestion.GetFeedbackText(config.feedbackMode, config.feedbackType, config.quizMode);
         }
-        else if (_config.feedbackType == FeedbackType.Object) {
+        else if (_displayAnchor != null && _config.feedbackType == FeedbackType.Object) 
+        {
+            GameObject[] feedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode, config.feedbackType, config.quizMode);
+            float xOffset = (DISPLAY_OBJECTS_SPACING * (feedbackObjects.Length - 1)) / 2.0f;
 
+            foreach(Transform child in _displayAnchor.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            for (int i = 0; i < feedbackObjects.Length; i++)
+            {
+                if (feedbackObjects[i] != null)
+                {
+                    GameObject.Instantiate<GameObject>(feedbackObjects[i], new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
+                }
+            }
         }
         StartCoroutine("WaitForFeedbackCompletion");
     }
 
     private void OnFeedbackCompleted()
     {
-        DisplayNextQuestion();
-
         if (_displayPlayer != null)
         {
             _displayPlayer.loopPointReached -= OnDisplayPlayerLoopPointReached;
         }
         if (_displayAnchor != null)
         {
-            foreach(Transform child in transform)
+            foreach(Transform child in _displayAnchor.transform)
             {
                 Destroy(child.gameObject);
             }
@@ -178,6 +211,8 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             _displayText.text = "";
         }
+
+        DisplayNextQuestion();
     }
 
 
@@ -341,8 +376,8 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             int j = Random.Range(0, array.Length);
             int temp = array[i];
-            array[j] = array[i];
-            array[i] = temp;
+            array[i] = array[j];
+            array[j] = temp;
         }
         return array;
     }

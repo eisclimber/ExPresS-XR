@@ -14,6 +14,9 @@ public class ColorSwitcher : MonoBehaviour
 
     private Coroutine switchCoroutine;
 
+    [SerializeField]
+    public float switchDuration = 1.0f;
+
 
     private void Awake()
     {
@@ -67,7 +70,25 @@ public class ColorSwitcher : MonoBehaviour
         ActivateAlternativeMaterial();
     }
 
-    public void ActivateAlternativeMaterialForASecond() => StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1f));
+
+    public void ActivateAlternativeMaterialForASecond() 
+    {
+        switchCoroutine = StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1f));
+    }
     
-    public void ActivateOriginalMaterialForASecond() => StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(1f));
+    public void ActivateOriginalMaterialForASecond()
+    {
+        switchCoroutine = StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(1f));
+    }
+
+
+    public void ActivateAlternativeMaterialForSwitchDuration() 
+    {
+        switchCoroutine = StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(switchDuration));
+    }
+    
+    public void ActivateOriginalMaterialForSwitchDuration()
+    {
+        switchCoroutine = StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(switchDuration));
+    } 
 }

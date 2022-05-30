@@ -45,6 +45,14 @@ public static class AutoXRCreationUtils
         }
     }
 
+    // Interaction
+    [MenuItem("GameObject/AutoXR/Interaction/AutoXR Offset Interactable")]
+    public static void CreateAutoXROffsetInteractable(MenuCommand menuCommand)
+    {
+        Transform parentOfNewGameObject = GetContextTransform(menuCommand);
+        GameObject go = CreateAndPlaceGameObject("Interaction/AutoXR Offset Interactable", parentOfNewGameObject);
+    }
+
     // Buttons
     [MenuItem("GameObject/AutoXR/Buttons/Auto XR Button Empty Text")]
     public static void CreateAutoXRButtonEmptyText(MenuCommand menuCommand)
@@ -167,6 +175,17 @@ public static class AutoXRCreationUtils
     {
         Transform parentOfNewGameObject = GetContextTransform(menuCommand);
         GameObject go = CreateAndPlaceGameObject("World Space Keyboard Numpad", parentOfNewGameObject);
+    }
+
+
+    // Data
+    [MenuItem("GameObject/AutoXR/Data Gatherer")]
+    public static void CreateDataGatherer(MenuCommand menuCommand)
+    {
+        GameObject go = new GameObject("Data Gatherer");
+        go.AddComponent<DataGatherer>();
+        GameObjectUtility.EnsureUniqueNameForSibling(go);
+        Undo.RegisterCreatedObjectUndo(go, "Create Data Gatherer Game Object");
     }
 
 
