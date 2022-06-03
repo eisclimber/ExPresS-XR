@@ -382,6 +382,13 @@ public class TutorialButtonQuiz : MonoBehaviour
         return array;
     }
 
+    public string GetQuestionPermutationAsCsvString()
+    {
+        // Use Escape character as escape symbol
+        return "\"[" + string.Join(",", _questionPermutation) + "]\"";
+    }
+
+
     // Coroutines & Actions
     private IEnumerator WaitForFeedbackCompletion()
     {

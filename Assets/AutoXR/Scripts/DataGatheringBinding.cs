@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -6,45 +8,100 @@ using UnityEngine;
 public class DataGatheringBinding
 {
     [SerializeField]
-    public GameObject targetObject = null;
+    public string exportColumnName;
+
 
     [SerializeField]
-    public string targetComponentName = "";
+    private GameObject _targetObject;
 
     [SerializeField]
-    public string targetValueName = "";
+    private Component _targetComponent;
 
     [SerializeField]
-    public string exportColumnName = "";
+    private MemberInfo _targetMemberInfo;
 
 
-    // References to the target member that provide the data
-    private MemberInfo _valueMemberInfo;
-    private Component _valueComponent;
+    // List of all members
+    [SerializeField]
+    private string[] _memberNameList = new string[0];
+
+    // Prettified List of all members
+    [SerializeField]
+    private string[] _prettyMemberNameList = new string[0];
 
 
-    public bool bindingIsValid
+    // Index of components in the list
+    [SerializeField]
+    private int _memberIdx;
+
+
+    private string GetTargetMemberName()
     {
-        get => (_valueMemberInfo != null && _valueComponent != null);
+        if (_targetObject != null && _memberNameList != null
+            && _memberIdx >= 0 && _memberIdx < _memberNameList.Length)
+        {
+            return _memberNameList[_memberIdx];
+        }
+        return null;
+    }
+
+    public bool ValidateBinding()
+    {
+        string memberName = GetTargetMemberName();
+        if (_targetObject != null && memberName != null)
+        {
+            string[] splitName = memberName.Split('/');
+            if (splitName.Length != 2)
+            {
+                return false;
+            }
+
+            foreach (Component component in _targetObject.GetComponents<Component>())
+            {
+                if (IsComponentMatch(component, splitName[0]))
+                {
+                    _targetComponent = component;
+                    _targetMemberInfo = component.GetType().GetMember(splitName[1])[0];
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            _targetComponent = null;
+            _targetMemberInfo = null;
+        }
+        return false;
     }
 
 
-    // Returns an 
+    // Validation
+    private bool IsCurrentBindingValid()
+    {
+        return (_targetObject != null && _targetComponent != null && _targetMemberInfo != null);
+    }
+
+    private bool IsComponentMatch(Component component, string requiredFullName)
+    {
+        return (component != null && component.GetType().FullName == requiredFullName);
+    }
+
+
     public string GetBindingValue()
     {
-        if (bindingIsValid)
+        if (IsCurrentBindingValid())
         {
             object result = null;
-            switch (_valueMemberInfo.MemberType)
+            switch (_targetMemberInfo.MemberType)
             {
                 case MemberTypes.Method:
-                    result = ((MethodInfo)_valueMemberInfo).Invoke(_valueComponent, new object[0]);
+                    result = ((MethodInfo)_targetMemberInfo).Invoke(_targetComponent, new object[0]);
                     break;
                 case MemberTypes.Field:
-                    result = ((FieldInfo)_valueMemberInfo).GetValue(_valueComponent);
+                    result = ((FieldInfo)_targetMemberInfo).GetValue(_targetComponent);
                     break;
                 case MemberTypes.Property:
-                    result = ((PropertyInfo)_valueMemberInfo).GetValue(_valueComponent);
+                    result = ((PropertyInfo)_targetMemberInfo).GetValue(_targetComponent);
                     break;
             }
 
@@ -56,99 +113,60 @@ public class DataGatheringBinding
         return "";
     }
 
-
-    public bool ValidateBinding()
+    public string GetBindingDescription()
     {
-        if (targetObject == null)
-        {
-            _valueMemberInfo = null;
-            _valueComponent = null;
-            Debug.LogError("No target object was assigned.");
-            return false;
-        }
-
-        foreach (Component component in targetObject.GetComponents(typeof(Component)))
-        {
-            if (IsComponentMatch(component.GetType().ToString()))
-            {
-                // Maybe use members && Check if get_
-                MemberInfo[] members = component.GetType().GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-                foreach (MemberInfo member in members)
-                {
-                    if (IsMemberMatch(member))
-                    {
-                        _valueMemberInfo = member;
-                        _valueComponent = component;
-                        return true;
-                    }
-                }
-                Debug.LogErrorFormat("No accessible member with name '{0}' in component '{1}' was found.",
-                    targetValueName,
-                    targetComponentName);
-                _valueMemberInfo = null;
-                _valueComponent = null;
-                return false;
-            }
-        }
-        Debug.LogErrorFormat("No component '{0}' was found in GameObject '{1}'.", targetComponentName, targetObject);
-        _valueMemberInfo = null;
-        _valueComponent = null;
-        return false;
-    }
-
-    private bool IsComponentMatch(string fullName)
-    {
-        // Either use full name (unique) or the common name
-        string[] splitName = fullName.Split('.');
-        string commonName = splitName[splitName.Length - 1];
-
-        // Filter spaces and use it to compare 
-        // (Classes can't have spaces but will be displayed in Unity)
-        string spacelessComponentName = Regex.Replace(targetComponentName, @"\s+", "");
-
-        return (spacelessComponentName == fullName || spacelessComponentName == commonName);
+        return ("The binding to object '" + _targetObject
+            + "', component '" + _targetComponent?.name + "' and value/function '"
+            + _targetMemberInfo?.Name + "' was invalid so the value in column '"
+            + exportColumnName + "' will always be empty.");
     }
 
 
-    private bool IsMemberMatch(MemberInfo memberInfo)
+    //////////////////////////////////////////
+    //          Static functions
+    //////////////////////////////////////////
+
+    public static bool IsTypeExportable(Type type)
     {
-        return IsMemberNameMatch(memberInfo) && IsTypeValid(memberInfo);
+        return type.IsPrimitive || type == typeof(string);
     }
 
-
-    private bool IsMemberNameMatch(MemberInfo memberInfo)
+    public static bool IsValidMemberInfo(MemberInfo info)
     {
-        string getterName = targetValueName;
-        // Remove hungarian notation prefix
-        if (getterName.StartsWith("m_") && targetValueName.Length >= 2)
+        if (info.MemberType == MemberTypes.Method)
         {
-            getterName = getterName.Substring(2, getterName.Length - 2);
+            MethodInfo methodInfo = (MethodInfo)info;
+            // Methods should not be of type void nor have any parameters and has no special name (e.g. auto-generated seeters)
+            return IsTypeExportable(methodInfo.ReturnType) && methodInfo.GetParameters().Length <= 0 && !methodInfo.IsSpecialName;
         }
-        // Add prefix for auto-generated getters
-        getterName = "get_" + getterName;
-
-        // Check if name matches
-        return (targetValueName == memberInfo.Name || getterName == memberInfo.Name);
+        // A property is valid if it can be read
+        bool validProperty = (info.MemberType == MemberTypes.Property
+                            && ((PropertyInfo)info).CanRead
+                            && IsTypeExportable(((PropertyInfo)info).PropertyType));
+        // fields are considered valid
+        bool validField = (info.MemberType == MemberTypes.Field
+                            && IsTypeExportable(((FieldInfo)info).FieldType));
+        return validProperty || validField;
     }
 
-    private bool IsTypeValid(MemberInfo memberInfo)
+    public static Type GetMemberValueType(MemberInfo info)
     {
-        if (memberInfo.MemberType == MemberTypes.Method)
+        if (info.MemberType == MemberTypes.Method
+            && IsTypeExportable(((MethodInfo)info).ReturnType))
         {
-            MethodInfo methodInfo = (MethodInfo)memberInfo;
-            if (methodInfo.ReturnType == typeof(void) || methodInfo.GetParameters().Length > 0)
-            {
-                Debug.LogErrorFormat("Method with name {0} was found but was not a Method with a non-void return type and zero peramters.", memberInfo.Name);
-                return false;
-            }
-            return true;
+            return ((MethodInfo)info).ReturnType;
         }
-        else if ((memberInfo.MemberType != MemberTypes.Property && ((PropertyInfo)memberInfo).CanRead) && memberInfo.MemberType != MemberTypes.Field)
+        else if (info.MemberType == MemberTypes.Property
+            && IsTypeExportable(((PropertyInfo)info).PropertyType))
         {
-            Debug.LogErrorFormat("Member with name {0} was found but it was neither a Field or a readable Property.", memberInfo.Name);
+            return ((PropertyInfo)info).PropertyType;
+        }
+        else if (info.MemberType == MemberTypes.Field
+            && IsTypeExportable(((FieldInfo)info).FieldType))
+        {
+            return ((FieldInfo)info).FieldType;
         }
 
-        return true;
+        return null;
     }
 }

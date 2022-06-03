@@ -1,9 +1,11 @@
 using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Networking;
 
 
 public class DataGatherer : MonoBehaviour
@@ -61,6 +63,7 @@ public class DataGatherer : MonoBehaviour
     private List<DataGatheringBinding> _dataBindings;
 
 
+    StreamWriter outputWriter;
 
     private void Start()
     {
@@ -76,18 +79,28 @@ public class DataGatherer : MonoBehaviour
 
         ValidateBindings();
 
-        ValidateExportPath();
+        SetupExport();
+    }
+
+    private void OnDestroy() {
+        if (outputWriter != null)
+        {
+            // Write everything that might not be written & close writer
+            outputWriter.Flush();
+            outputWriter.Close();
+        }
     }
 
     public void ExportNewCSVLine()
     {
-        if (_dataExportType == DataGathererExportType.Http)
+        string data = GetExportCSVLine();
+        if (_dataExportType == DataGathererExportType.Http || _dataExportType == DataGathererExportType.Both)
         {
-            Debug.Log("(Currently not)Posting to : " + GetExportCSVLine() + " at " + GetLocalSavePath());
+            Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
+            PostHttpData(httpExportPath, data);
         }
-        else
+        if (_dataExportType == DataGathererExportType.Local || _dataExportType == DataGathererExportType.Both)
         {
-            
             Debug.Log("(Currently not)Saving: " + GetExportCSVLine() + " at " + GetLocalSavePath());
         }
     }
@@ -127,37 +140,45 @@ public class DataGatherer : MonoBehaviour
     {
         for (int i = 0; i < _dataBindings.Count; i++)
         {
-            if (_dataBindings[i].targetObject != null)
-            {
-                _dataBindings[i].ValidateBinding();
 
-                if (!_dataBindings[i].bindingIsValid)
-                {
-                    Debug.LogWarning(("The binding to object '" + _dataBindings[i].targetObject
-                        + "', component '" + _dataBindings[i].targetComponentName + "' and value/function '"
-                        + _dataBindings[i].targetValueName + "' was invalid so the value in column '"
-                        + _dataBindings[i].exportColumnName + "' will always be empty."));
-                }
+            if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
+            {
+                Debug.LogWarning(String.Format("The following binding is invalid and will always be empty: {0}", 
+                                                _dataBindings[i].GetBindingDescription()));
             }
         }
     }
 
-    private void ValidateExportPath()
+    private void SetupExport()
     {
-        if (_dataExportType == DataGathererExportType.Http)
+        if (_dataExportType == DataGathererExportType.Local || _dataExportType == DataGathererExportType.Both)
         {
-            Debug.Log("(Currently not)Posting to : " + GetExportCSVLine() + " at " + GetLocalSavePath());
+            StartCoroutine(PostHttpData(httpExportPath, GetExportCSVHeader()));
         }
-        else
+
+        if (_dataExportType == DataGathererExportType.Local || _dataExportType == DataGathererExportType.Both)
         {
             string path = GetLocalSavePath();
             try
             {
                 // Throws an error if invalid
                 string fullPath = Path.GetFullPath(path);
-                if (!File.Exists(fullPath))
+
+                if (!File.Exists(fullPath)
+                     && (!fullPath.EndsWith(".txt") || !fullPath.EndsWith(".csv") || !fullPath.EndsWith(".log")))
                 {
-                    // StreamWriter 
+                    localExportPath += ".csv";
+                    fullPath += ".csv";
+                    Debug.LogWarning("File does not exist and does not end on '.txt' or '.csv'."
+                         + String.Format("Appending '.csv' and creating a new file if necessary. New path is: '{0}'. ", localExportPath));
+                }
+
+                outputWriter = new StreamWriter(fullPath);
+                // If empty append csv header
+                if (new FileInfo(fullPath).Length == 0)
+                {
+                    outputWriter.WriteLine(GetExportCSVHeader());
+                    outputWriter.Flush();
                 }
             } 
             catch (Exception e)
@@ -199,6 +220,30 @@ public class DataGatherer : MonoBehaviour
             }
         }
     }
+
+
+    private IEnumerator PostHttpData(string url, string data)
+    {
+        UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+
+        if (data != null)
+        {
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        }
+
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application-json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ProtocolError 
+            || request.result == UnityWebRequest.Result.ConnectionError)
+        {
+            Debug.Log(String.Format("Failed to send data to server: '{0}'.", request.error));
+        }
+    }
+
 
     private IEnumerator TimeTriggerCoroutine()
     {

@@ -1,93 +1,180 @@
 using System;
+using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(DataGatheringBinding))]
 public class DataGatheringBindingDrawer : PropertyDrawer
 {
     private const int PROPERTY_SPACING = 2;
+    private const string NO_VALUE_TEXT = "No Value";
 
     // Draw the property inside the given rect
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.BeginProperty(position, label, property);
-        Rect foldoutRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
-        if (property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, label))
+        Rect positionRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+
+        if (property.isExpanded = EditorGUI.Foldout(positionRect, property.isExpanded, label))
         {
-            // Create property fields
-            SerializedProperty targetColumnName = property.FindPropertyRelative("exportColumnName");
-            SerializedProperty targetObject = property.FindPropertyRelative("targetObject");
-            SerializedProperty targetComponentName = property.FindPropertyRelative("targetComponentName");
-            SerializedProperty targetValueName = property.FindPropertyRelative("targetValueName");
+            positionRect = new Rect(positionRect.x,
+                                    positionRect.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING,
+                                    positionRect.width,
+                                    EditorGUIUtility.singleLineHeight);
 
-            Rect positionRect = new Rect(position.x, 
-                                        position.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING, 
-                                        position.width, 
-                                        EditorGUI.GetPropertyHeight(targetObject));
+            EditorGUI.PropertyField(positionRect, property.FindPropertyRelative("exportColumnName"));
 
-            // Draw normal text field for column name
-            EditorGUI.PropertyField(positionRect, targetColumnName);
+            positionRect = new Rect(positionRect.x,
+                                    positionRect.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING,
+                                    positionRect.width,
+                                    EditorGUIUtility.singleLineHeight);
 
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.ObjectField(positionRect, property.FindPropertyRelative("_targetObject"));
+            if (EditorGUI.EndChangeCheck())
+            {
+                // Reset _memberIdx if the targetObject changed
+                property.FindPropertyRelative("_memberIdx").intValue = -1;
+            }
+            UpdateMembers(property, property.FindPropertyRelative("_targetObject").objectReferenceValue as GameObject);
 
-            positionRect = new Rect(positionRect.x, 
-                                    positionRect.y + EditorGUI.GetPropertyHeight(targetObject) + PROPERTY_SPACING, 
-                                    positionRect.width, 
-                                    EditorGUI.GetPropertyHeight(targetColumnName));
+            positionRect = new Rect(positionRect.x,
+                                    positionRect.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING,
+                                    positionRect.width,
+                                    EditorGUIUtility.singleLineHeight);
 
-            // Draw Object field 
-            EditorGUI.PropertyField(positionRect, targetObject);
-            targetObject = property.FindPropertyRelative("targetObject");
+            bool memberSelectionEnabled = IsObjectPropertyNull(property.FindPropertyRelative("_targetObject"));
 
-            // Draw the others only if a targetObject is specified
-            EditorGUI.BeginDisabledGroup(targetObject != null);
+            EditorGUI.BeginDisabledGroup(memberSelectionEnabled);
 
-                positionRect = new Rect(positionRect.x, 
-                                        positionRect.y + EditorGUI.GetPropertyHeight(targetColumnName) + PROPERTY_SPACING, 
-                                        positionRect.width, 
-                                        EditorGUI.GetPropertyHeight(targetComponentName));
-                
-                EditorGUI.Popup(positionRect, "Component", 0, GetComponentsList());
+            string[] popupOptions = GetPopupMemberNames(property.FindPropertyRelative("_prettyMemberNameList"));
 
-                // Draw the others only if a targetComponentName is specified
-                EditorGUI.BeginDisabledGroup(targetComponentName != null);
+            SerializedProperty memberIdx = property.FindPropertyRelative("_memberIdx");
+            // Popup (Add subtract 1 to account for an invalid member)
+            memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
 
-                    positionRect = new Rect(positionRect.x, 
-                                        positionRect.y + EditorGUI.GetPropertyHeight(targetComponentName) + PROPERTY_SPACING, 
-                                        positionRect.width, 
-                                        EditorGUI.GetPropertyHeight(targetValueName));
-                    
-                    EditorGUI.Popup(positionRect, "Value",  0, GetValueList());
-                EditorGUI.EndDisabledGroup();
             EditorGUI.EndDisabledGroup();
         }
         EditorGUI.EndProperty();
     }
 
-    public override float GetPropertyHeight (SerializedProperty property, GUIContent label) {
-        float totalHeight = EditorGUI.GetPropertyHeight(property, true);
-
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
         if (property.isExpanded)
         {
-            // Add bottom margin
-            totalHeight += PROPERTY_SPACING;
+            return 4 * EditorGUIUtility.singleLineHeight + 4 * PROPERTY_SPACING;
+        }
+        return EditorGUIUtility.singleLineHeight;
+    }
+
+    public string[] GetPopupMemberNames(SerializedProperty property)
+    {
+        if (property != null && property.isArray && property.arrayElementType == "string")
+        {
+            string[] members = new string[property.arraySize + 1];
+            members[0] = NO_VALUE_TEXT;
+            for (int i = 0; i < property.arraySize; i++)
+            {
+                members[i + 1] = property.GetArrayElementAtIndex(i).stringValue;
+            }
+            return members;
+        }
+        return new string[] { NO_VALUE_TEXT };
+    }
+
+
+    private bool IsObjectPropertyNull(SerializedProperty property)
+    {
+        return property == null || property.objectReferenceValue == null;
+    }
+
+    private void UpdateMembers(SerializedProperty property, GameObject targetObject)
+    {
+        SerializedProperty availableMemberNames = property.FindPropertyRelative("_memberNameList");
+        SerializedProperty prettyMemberNames = property.FindPropertyRelative("_prettyMemberNameList");
+
+        availableMemberNames.ClearArray();
+        prettyMemberNames.ClearArray();
+
+        int i = 0;
+
+        if (targetObject != null)
+        {
+            // Methods from the GameObject itself
+            foreach (MemberInfo info in targetObject.GetType().GetMembers())
+            {
+                if (DataGatheringBinding.IsValidMemberInfo(info))
+                {
+                    availableMemberNames.InsertArrayElementAtIndex(i);
+                    availableMemberNames.GetArrayElementAtIndex(i).stringValue =
+                                    string.Format("{0}/{1}", "Game Object", info.Name);
+
+                    prettyMemberNames.InsertArrayElementAtIndex(i);
+                    prettyMemberNames.GetArrayElementAtIndex(i).stringValue =
+                                string.Format("{0}/{1}", "Game Object", GetPrettifiedMemberName(info));
+
+                    i++;
+                }
+            }
+
+            // Methods from all the  other components
+            foreach (Component component in targetObject.GetComponents<Component>())
+            {
+                // TODO Multiple same components
+                foreach (MemberInfo info in component.GetType().GetMembers())
+                {
+                    if (DataGatheringBinding.IsValidMemberInfo(info))
+                    {
+                        availableMemberNames.InsertArrayElementAtIndex(i);
+                        availableMemberNames.GetArrayElementAtIndex(i).stringValue = 
+                                string.Format("{0}/{1}", component.GetType().FullName, info.Name);
+
+                        prettyMemberNames.InsertArrayElementAtIndex(i);
+                        prettyMemberNames.GetArrayElementAtIndex(i).stringValue =
+                                string.Format("{0}/{1}", component.GetType().Name, GetPrettifiedMemberName(info));
+
+                        i++;
+                    }
+                }
+            }
+        }
+    }
+
+    private string GetPrettifiedMemberName(MemberInfo info)
+    {
+        Type infoType = DataGatheringBinding.GetMemberValueType(info);
+        string prettyName = info.Name;
+
+        if (primitiveTypeKeywords.ContainsKey(infoType))
+        {
+            prettyName = String.Format("{0} {1}", primitiveTypeKeywords[infoType], info.Name);
+        }
+        if (info.MemberType == MemberTypes.Method)
+        {
+            // Add brackets to functions
+            prettyName += "()";
         }
 
-        return totalHeight;
+        return prettyName;
     }
 
-
-    private string[] GetComponentsList()
+    static Dictionary<Type, string> primitiveTypeKeywords = new Dictionary<Type, string>
     {
-        return new string[] {"No Component Specified", "a", "b"};
-    }
-
-
-    private string[] GetValueList()
-    {
-        return new string[] {"No Value Specified", "db"};
-    }
+        { typeof(bool), "bool" },
+        { typeof(byte), "byte" },
+        { typeof(char), "char" },
+        { typeof(decimal), "decimal" },
+        { typeof(double), "double" },
+        { typeof(float), "float" },
+        { typeof(int), "int" },
+        { typeof(long), "long" },
+        { typeof(sbyte), "sbyte" },
+        { typeof(short), "short" },
+        { typeof(string), "string" },
+        { typeof(uint), "uint" },
+        { typeof(ulong), "ulong" },
+        { typeof(ushort), "ushort" },
+    };
 }
