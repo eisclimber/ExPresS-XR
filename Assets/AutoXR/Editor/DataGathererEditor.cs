@@ -53,8 +53,27 @@ public class DataGathererEditor : Editor
         EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
+        EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataBindings"), true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            targetScript.ValidateBindings();
+        }
         EditorGUI.indentLevel--;
+
+        EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
+        if (GUILayout.Button("Print Values"))
+        {
+            Debug.Log("The Header is: " + targetScript.GetExportCSVHeader());
+            Debug.Log("The Value is: " + targetScript.GetExportCSVLine());
+        }
+        if (!Application.isEditor)
+        {
+            if (GUILayout.Button("Export Values Manually"))
+            {
+                targetScript.ExportNewCSVLine();
+            }
+        }
 
         serializedObject.ApplyModifiedProperties();
     }

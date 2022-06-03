@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
-[CustomEditor(typeof(AutoXRQuizButton))]
-public class AutoXRQuizButtonEditor : Editor
+[CustomEditor(typeof(AutoXRConfirmMultipleChoiceButton))]
+public class AutoXRConfirmMultipleChoiceButtonEditor : Editor
 {
-    AutoXRQuizButton targetScript;
+    AutoXRConfirmMultipleChoiceButton targetScript;
 
     private bool _showObjectRefs = false;
 
     void OnEnable()
     {
-        targetScript = (AutoXRQuizButton)target;
+        targetScript = (AutoXRConfirmMultipleChoiceButton)target;
     }
 
     public override void OnInspectorGUI()
@@ -23,12 +23,12 @@ public class AutoXRQuizButtonEditor : Editor
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
         }
         EditorGUI.EndDisabledGroup();
-        
+
         EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputDisabled"), true);
         EditorGUI.indentLevel--;
-
+        
         EditorGUILayout.LabelField("Local Push Limits", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_yMin"), true);
@@ -57,31 +57,6 @@ public class AutoXRQuizButtonEditor : Editor
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
-
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);
-        EditorGUI.BeginDisabledGroup(targetScript.feedbackDisabled);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("invertedFeedback"), true);
-        EditorGUI.EndDisabledGroup();
-        EditorGUI.indentLevel--;
-
-        EditorGUILayout.Space();
-
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerPrefab"), true);
-        EditorGUI.indentLevel--;
-        
-        EditorGUILayout.Space();
-
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedCorrect"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedIncorrect"), true);
-        EditorGUI.indentLevel--;
-
-
         _showObjectRefs = EditorGUILayout.BeginFoldoutHeaderGroup(_showObjectRefs, "Game Object References");
 
         if (_showObjectRefs)
@@ -91,7 +66,6 @@ public class AutoXRQuizButtonEditor : Editor
 
             targetScript.baseAnchor = (Transform)EditorGUILayout.ObjectField("Base Anchor", targetScript.baseAnchor, typeof(Transform), true);
             targetScript.pushAnchor = (Transform)EditorGUILayout.ObjectField("Push Anchor", targetScript.pushAnchor, typeof(Transform), true);
-            targetScript.feedbackTextLabel = (Text)EditorGUILayout.ObjectField("Feedback Text Label", targetScript.feedbackTextLabel, typeof(Text), true);
 
             EditorGUI.indentLevel--;
         }

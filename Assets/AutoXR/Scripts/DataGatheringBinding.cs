@@ -117,8 +117,8 @@ public class DataGatheringBinding
     {
         return ("The binding to object '" + _targetObject
             + "', component '" + _targetComponent?.name + "' and value/function '"
-            + _targetMemberInfo?.Name + "' was invalid so the value in column '"
-            + exportColumnName + "' will always be empty.");
+            + _targetMemberInfo?.Name + "' will be exported to column '"
+            + exportColumnName + "'.");
     }
 
 
@@ -128,7 +128,8 @@ public class DataGatheringBinding
 
     public static bool IsTypeExportable(Type type)
     {
-        return type.IsPrimitive || type == typeof(string);
+        return type.IsPrimitive || type == typeof(string) || type == typeof(Vector2) 
+        || type == typeof(Vector3) || type == typeof(Quaternion);
     }
 
     public static bool IsValidMemberInfo(MemberInfo info)

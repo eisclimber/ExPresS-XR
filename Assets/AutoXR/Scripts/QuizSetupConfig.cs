@@ -13,10 +13,10 @@ public class QuizSetupConfig : ScriptableObject
     public QuestionType questionType = QuestionType.Text;
     public AnswerType answerType = AnswerType.Text;
     public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
-    public FeedbackType feedbackType = FeedbackType.Text;
+    public FeedbackType feedbackType = FeedbackType.ShowAnswers;
 
-    // Scene Values
-    public QuizQuestion[] questions;
+    // Actual Questions
+    public QuizQuestion[] questions = new QuizQuestion[0];
 }
 
 
@@ -155,7 +155,7 @@ public enum QuizMode
 public enum QuestionOrder
 {
     // QuestionOrder, Assembly-CSharp
-    ORdered,
+    Ordered,
     Randomize
 }
 
@@ -197,7 +197,9 @@ public enum FeedbackMode
 public enum FeedbackType
 {
     // FeedbackType, Assembly-CSharp
+    ShowAnswers,
     Object,
     Text,
+    Video,
     DifferingTypes
 }

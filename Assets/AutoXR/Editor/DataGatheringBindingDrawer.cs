@@ -176,5 +176,8 @@ public class DataGatheringBindingDrawer : PropertyDrawer
         { typeof(uint), "uint" },
         { typeof(ulong), "ulong" },
         { typeof(ushort), "ushort" },
+        { typeof(Vector2), "Vector2" },
+        { typeof(Vector3), "Vector3" },
+        { typeof(Quaternion), "Quaternion" },
     };
 }

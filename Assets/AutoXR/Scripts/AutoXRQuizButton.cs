@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class AutoXRQuizButton : AutoXRBaseButton
 {
     public bool correctChoice;
+    public bool feedbackDisabled;
     public bool invertedFeedback;
 
     [SerializeField]
@@ -46,10 +47,9 @@ public class AutoXRQuizButton : AutoXRBaseButton
         }
     }
 
-
     public UnityEvent OnPressedCorrect;
     public UnityEvent OnPressedIncorrect;
-
+    
 
     public Text feedbackTextLabel;
 
@@ -93,13 +93,20 @@ public class AutoXRQuizButton : AutoXRBaseButton
 
     private void NotifyChoice()
     {
-        if (correctChoice || (!correctChoice && invertedFeedback))
+        if (feedbackDisabled)
         {
-            OnPressedCorrect.Invoke();
+            return;
         }
         else
         {
-            OnPressedIncorrect.Invoke();
+            if (correctChoice || (!correctChoice && invertedFeedback))
+            {
+                OnPressedCorrect.Invoke();
+            }
+            else
+            {
+                OnPressedIncorrect.Invoke();
+            }
         }
     }
 }

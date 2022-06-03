@@ -200,6 +200,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             _displayPlayer.loopPointReached -= OnDisplayPlayerLoopPointReached;
         }
+
         if (_displayAnchor != null)
         {
             foreach(Transform child in _displayAnchor.transform)
@@ -207,6 +208,7 @@ public class TutorialButtonQuiz : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+        
         if (_displayText != null)
         {
             _displayText.text = "";
@@ -323,36 +325,39 @@ public class TutorialButtonQuiz : MonoBehaviour
                 return false;
             }
 
-            // Check answers
-            int correctAnswerCount = 0;
-            for (int j = 0; j < Mathf.Min((int) config.answersAmount + 1, NUM_ANSWERS); j++)
+            // Check answers (if not any amount is allowed)
+            if (config.answersAmount != AnswersAmount.DifferingAmounts)
             {
-                // Check Answer Types
-                if (config.answerType == AnswerType.Object && question.answersObjects[j] == null)
+                int correctAnswerCount = 0;
+                for (int j = 0; j < Mathf.Min((int) config.answersAmount + 1, NUM_ANSWERS); j++)
                 {
-                    Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Object but answerObject is null.", i, j);
-                    return false;
+                    // Check Answer Types
+                    if (config.answerType == AnswerType.Object && question.answersObjects[j] == null)
+                    {
+                        Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Object but answerObject is null.", i, j);
+                        return false;
+                    }
+
+                    if (config.answerType == AnswerType.Text && (question.answersTexts == null || question.answersTexts[j] == ""))
+                    {
+                        Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Text but answerText is null or empty.", i, j);
+                        return false;
+                    }
+
+                    // Count correct answers
+                    correctAnswerCount += (question.correctAnswers[j] ? 1 : 0);
                 }
 
-                if (config.answerType == AnswerType.Text && (question.answersTexts == null || question.answersTexts[j] == ""))
+                if (config.quizMode == QuizMode.SingleChoice && correctAnswerCount != 1)
                 {
-                    Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Text but answerText is null or empty.", i, j);
+                    Debug.LogErrorFormat("The Quiz is a Single Choice but Question {0} did not have exactly one answer but had {1}.", i, correctAnswerCount);
                     return false;
                 }
-
-                // Count correct answers
-                correctAnswerCount += (question.correctAnswers[j] ? 1 : 0);
-            }
-
-            if (config.quizMode == QuizMode.SingleChoice && correctAnswerCount != 1)
-            {
-                Debug.LogErrorFormat("The Quiz is a Single Choice but Question {0} did not have exactly one answer but had {1}.", i, correctAnswerCount);
-                return false;
-            }
-            else if (config.quizMode == QuizMode.MultipleChoice && correctAnswerCount < 1)
-            {
-                Debug.LogWarningFormat("The Quiz is a Multiple Choice but Question {0} did not have at least one answer.", i);
-                return false;
+                else if (config.quizMode == QuizMode.MultipleChoice && correctAnswerCount < 1)
+                {
+                    Debug.LogWarningFormat("The Quiz is a Multiple Choice but Question {0} did not have at least one answer.", i);
+                    return false;
+                }
             }
         }
         return true;

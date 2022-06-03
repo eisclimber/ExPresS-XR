@@ -214,7 +214,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private void QuizModeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.quizMode = (QuizMode) evt.newValue;
-        UpdateQuestionItems();
+        UpdateQuestionItemConfig();
     }
 
     private void QuestionOrderChangedCallback(ChangeEvent<System.Enum> evt) 
@@ -226,20 +226,20 @@ class TutorialButtonQuizDialog : SetupDialogBase
     {
         _quizConfig.answersAmount = (AnswersAmount) evt.newValue;
         UpdateButtonFields();
-        UpdateQuestionItems();
+        UpdateQuestionItemConfig();
     }
 
     private void QuestionTypeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.questionType = (QuestionType) evt.newValue;
-        UpdateQuestionItems();
+        UpdateQuestionItemConfig();
         UpdateQuestioningDisplays();
     }
 
     private void AnswerTypeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.answerType = (AnswerType) evt.newValue;
-        UpdateQuestionItems();
+        UpdateQuestionItemConfig();
     }
 
     private void FeedbackModeChangedCallback(ChangeEvent<System.Enum> evt) 
@@ -270,18 +270,67 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
             UpdateButtonFields();
             UpdateQuestioningDisplays();
-            UpdateQuestionItems();
+            UpdateQuestionItemConfig();
+            LoadQuestionsFromConfig();
         }
     }
 
 
-    private void UpdateQuestionItems()
+    private void UpdateQuestionItemConfig()
     {
         foreach (VisualElement questionItem in _questionList.Children())
         {
             ConfigureQuestionItem(questionItem);
         }
     }
+
+    private void LoadQuestionsFromConfig()
+    {
+        // Delete additional question items
+        int requiredItems = _quizConfig?.questions?.Length ?? TutorialButtonQuiz.MIN_QUESTIONS;
+        int numToDelete = _questionList.childCount - requiredItems;
+        
+        for (int i = 0; i < numToDelete; i++)
+        {
+            RemoveQuestionItem();
+        }
+
+        // Add and fill questions
+        if (_quizConfig != null)
+        {
+            for (int i = 0; i < _quizConfig.questions.Length; i++)
+            {
+                // Add Item if not exists
+                if (i >= _questionList.childCount)
+                {
+                    AddQuestionItem();
+                }
+
+                // Retrieve question
+                QuizQuestion question = _quizConfig.questions[i];
+                VisualElement questionItem = _questionList.Q<VisualElement>("question-item-" + i);
+
+                // Fill Question Values
+                questionItem.Q<ObjectField>("question-object-field").value = question.questionObject;
+                questionItem.Q<ObjectField>("question-video-field").value = question.questionVideo;
+                questionItem.Q<TextField>("question-text-field").value = question.questionText;
+
+                // Fill Answers
+                int counter = 0;
+                questionItem.Query<ObjectField>("answer-object-field").ForEach((objField) =>
+                {
+                    objField.value = question.answersObjects[counter];
+                });
+
+                counter = 0;
+                questionItem.Query<TextField>("answer-text-field").ForEach((objField) =>
+                {
+                    objField.value = question.answersTexts[counter];
+                });
+            }
+        }
+    }
+
 
     private void UpdateButtonFields()
     {

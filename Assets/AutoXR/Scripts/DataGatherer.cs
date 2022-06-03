@@ -101,14 +101,16 @@ public class DataGatherer : MonoBehaviour
         }
         if (_dataExportType == DataGathererExportType.Local || _dataExportType == DataGathererExportType.Both)
         {
-            Debug.Log("(Currently not)Saving: " + GetExportCSVLine() + " at " + GetLocalSavePath());
+            Debug.Log("Saving: " + data + " at " + GetLocalSavePath());
+            outputWriter.WriteLine(data);
         }
     }
 
 
-    private string GetExportCSVLine()
+    public string GetExportCSVLine()
     {
-        string line = (_includeTimeStamp ? System.DateTime.Now.ToString() + "," : "");
+        string line = (_includeTimeStamp ?  DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "");
+        line += (_dataBindings.Count > 0 ? "," : "");
         for (int i = 0; i < _dataBindings.Count; i++)
         {
             line += _dataBindings[i].GetBindingValue();
@@ -122,9 +124,10 @@ public class DataGatherer : MonoBehaviour
     }
 
 
-    private string GetExportCSVHeader()
+    public string GetExportCSVHeader()
     {
-        string header = (_includeTimeStamp ? "time," : "");
+        string header = (_includeTimeStamp ? "time" : "");
+        header += (_dataBindings.Count > 0 ? "," : "");
         for (int i = 0; i < _dataBindings.Count; i++)
         {
             header += _dataBindings[i].exportColumnName;
@@ -136,7 +139,8 @@ public class DataGatherer : MonoBehaviour
         }
         return header;
     }
-    private void ValidateBindings()
+    
+    public void ValidateBindings()
     {
         for (int i = 0; i < _dataBindings.Count; i++)
         {
