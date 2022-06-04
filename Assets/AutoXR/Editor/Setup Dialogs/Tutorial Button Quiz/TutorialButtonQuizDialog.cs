@@ -686,7 +686,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
             if (needsVideoPlayer)
             {
                 GameObject videoPlayerGo = new GameObject("Video Player");
-                videoPlayerGo.AddComponent<VideoPlayer>();
+                VideoPlayer videoPlayerComp = videoPlayerGo.AddComponent<VideoPlayer>();
+                videoPlayerComp.playOnAwake = false;
 
                 GameObject videoDisplayGo = new GameObject("Video Display");
                 videoDisplayGo.AddComponent<UnityEngine.UI.RawImage>();

@@ -7,7 +7,7 @@ using TMPro;
 
 public class TutorialButtonQuiz : MonoBehaviour
 {
-    public const int MIN_QUESTIONS = 2;
+    public const int MIN_QUESTIONS = 1;
     public const int NUM_ANSWERS = 4;
     public const float DISPLAY_OBJECTS_SPACING = 0.5f;
 
