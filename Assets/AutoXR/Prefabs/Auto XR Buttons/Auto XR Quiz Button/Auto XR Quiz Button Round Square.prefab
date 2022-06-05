@@ -318,6 +318,7 @@ GameObject:
   - component: {fileID: 8564542220441333172}
   - component: {fileID: 1737433521459664151}
   - component: {fileID: 4097689581189052639}
+  - component: {fileID: 8505896942668886804}
   m_Layer: 0
   m_Name: Push
   m_TagString: Untagged
@@ -401,6 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alternativeMaterial: {fileID: 2100000, guid: f6f596704738d6147905929251ecfc6b, type: 2}
+  switchDuration: 1
 --- !u!114 &4097689581189052639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,6 +416,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alternativeMaterial: {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
+  switchDuration: 1
+--- !u!114 &8505896942668886804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8564542220441333171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d5fa914a73f4a4094acc0b67945c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alternativeMaterial: {fileID: 2100000, guid: fdf71cbaf6d05ec44870654f43bd77c6, type: 2}
+  switchDuration: 1
 --- !u!1 &8564542220658757583
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,6 +543,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _inputDisabled: 0
+  _toggleMode: 0
   OnInputDisabled:
     m_PersistentCalls:
       m_Calls: []
@@ -538,6 +556,36 @@ MonoBehaviour:
   OnReleased:
     m_PersistentCalls:
       m_Calls: []
+  OnTogglePressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8505896942668886804}
+        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateAlternativeMaterial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnToggleReleased:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8505896942668886804}
+        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateOriginalMaterial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   pressedSound: {fileID: 0}
   releasedSound: {fileID: 0}
   baseAnchor: {fileID: 8564542220368989529}
@@ -546,6 +594,7 @@ MonoBehaviour:
   _yMax: 0.029
   _colliderSize: {x: 0.07, y: 0.02, z: 0.07}
   correctChoice: 0
+  feedbackDisabled: 0
   invertedFeedback: 0
   _answerText: 
   _answerPrefab: {fileID: 0}

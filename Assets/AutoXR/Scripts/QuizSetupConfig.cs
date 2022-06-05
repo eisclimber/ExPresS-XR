@@ -35,8 +35,15 @@ public class QuizQuestion
 
     public bool[] correctAnswers;
 
+
+    public VideoClip answerVideo;
+    public GameObject answerObject;
+    public string answerText;
+
+
     public QuizQuestion(int itemId, VideoClip questionVideo, GameObject questionObject, string questionText,
-                        GameObject[] answersObjects, string[] answersTexts, bool[] correctAnswers)
+                        GameObject[] answersObjects, string[] answersTexts, bool[] correctAnswers,
+                        VideoClip answerVideo, GameObject answerObject, string answerText)
     {
         this.itemId = itemId;
 
@@ -57,6 +64,10 @@ public class QuizQuestion
         }
 
         this.correctAnswers = correctAnswers;
+
+        this.answerVideo = answerVideo;
+        this.answerObject = answerObject;
+        this.answerText = answerText;
     }
 
     public string GetFeedbackText(FeedbackMode feedbackMode, FeedbackType feedbackType, QuizMode quizMode) 

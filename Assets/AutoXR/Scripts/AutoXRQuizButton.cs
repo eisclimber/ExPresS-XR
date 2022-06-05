@@ -93,11 +93,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
 
     private void NotifyChoice()
     {
-        if (feedbackDisabled)
-        {
-            return;
-        }
-        else
+        if (!feedbackDisabled && !toggleMode)
         {
             if (correctChoice || (!correctChoice && invertedFeedback))
             {

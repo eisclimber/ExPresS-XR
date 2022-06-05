@@ -11,6 +11,7 @@ public static class AutoXRCreationUtils
     public const string HEAD_GAZE_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Head Gaze";
     public const string CUSTOM_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Custom";
     public const string AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Auto XR Buttons/Auto XR Quiz Button/Auto XR Quiz Button Square";
+    public const string AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Auto XR Buttons/Auto XR Quiz Button/Auto XR Multiple Choice Confirm Button Square";
 
     // Auto XR Rig
     [MenuItem("GameObject/AutoXR/Auto XR Rig/Teleport")]

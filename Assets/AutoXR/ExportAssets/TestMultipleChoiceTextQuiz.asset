@@ -10,29 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91147366f28929439b0468f14fce089, type: 3}
-  m_Name: TestGameObjectQuiz
+  m_Name: TestMultipleChoiceTextQuiz
   m_EditorClassIdentifier: 
-  quizMode: 0
+  quizMode: 1
   questionOrder: 1
   answersAmount: 1
-  questionType: 0
-  answerType: 0
+  questionType: 2
+  answerType: 1
   feedbackMode: 1
   feedbackType: 0
   questions:
   - itemId: 0
     questionVideo: {fileID: 0}
-    questionObject: {fileID: 5135186621001058616, guid: f40a3c7f93a909745920b00f9456ab86, type: 3}
-    questionText: 
+    questionObject: {fileID: 0}
+    questionText: Question 1
     numAnswers: 2
     answersObjects:
-    - {fileID: 5135186621001058616, guid: f40a3c7f93a909745920b00f9456ab86, type: 3}
-    - {fileID: 3822530026479553738, guid: a5682e4f9493a1648816fd94040c5283, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     answersTexts:
-    - 
-    - 
+    - X A 1.1
+    - A 1.2
     - 
     - 
     correctAnswers: 01000000
@@ -41,20 +41,39 @@ MonoBehaviour:
     answerText: 
   - itemId: 1
     questionVideo: {fileID: 0}
-    questionObject: {fileID: 1602188775668948610, guid: 93cfbbf6f7ee9f44aadd9f4a5bbe0ee0, type: 3}
-    questionText: 
+    questionObject: {fileID: 0}
+    questionText: Question 2
     numAnswers: 2
     answersObjects:
-    - {fileID: 3822530026479553738, guid: a5682e4f9493a1648816fd94040c5283, type: 3}
-    - {fileID: 1602188775668948610, guid: 93cfbbf6f7ee9f44aadd9f4a5bbe0ee0, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     answersTexts:
-    - 
-    - 
+    - A 2.1
+    - X A 2.2
     - 
     - 
     correctAnswers: 00010000
+    answerVideo: {fileID: 0}
+    answerObject: {fileID: 0}
+    answerText: 
+  - itemId: 2
+    questionVideo: {fileID: 0}
+    questionObject: {fileID: 0}
+    questionText: Question 3
+    numAnswers: 3
+    answersObjects:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    answersTexts:
+    - X A 3.1
+    - A 3.2
+    - 
+    - 
+    correctAnswers: 01000000
     answerVideo: {fileID: 0}
     answerObject: {fileID: 0}
     answerText: 

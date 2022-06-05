@@ -2,16 +2,16 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Events;
 
-[CustomEditor(typeof(AutoXRConfirmMultipleChoiceButton))]
-public class AutoXRConfirmMultipleChoiceButtonEditor : Editor
+[CustomEditor(typeof(AutoXRMcConfirmButton))]
+public class AutoXRMcConfirmButtonEditor : Editor
 {
-    AutoXRConfirmMultipleChoiceButton targetScript;
+    AutoXRMcConfirmButton targetScript;
 
     private bool _showObjectRefs = false;
 
     void OnEnable()
     {
-        targetScript = (AutoXRConfirmMultipleChoiceButton)target;
+        targetScript = (AutoXRMcConfirmButton)target;
     }
 
     public override void OnInspectorGUI()
@@ -27,6 +27,7 @@ public class AutoXRConfirmMultipleChoiceButtonEditor : Editor
         EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputDisabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_toggleMode"), true);
         EditorGUI.indentLevel--;
         
         EditorGUILayout.LabelField("Local Push Limits", EditorStyles.boldLabel);
@@ -50,6 +51,9 @@ public class AutoXRConfirmMultipleChoiceButtonEditor : Editor
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressed"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnReleased"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnTogglePressed"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnToggleReleased"), true);
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputEnabled"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputDisabled"), true);

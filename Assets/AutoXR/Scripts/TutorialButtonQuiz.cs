@@ -33,6 +33,9 @@ public class TutorialButtonQuiz : MonoBehaviour
     [SerializeField]
     private AutoXRQuizButton[] _buttons = new AutoXRQuizButton[NUM_ANSWERS];
 
+    [SerializeField]
+    private AutoXRMcConfirmButton _mcConfirmButton;
+
     [SerializeField] // TMPro.TMP_Text, Unity.TextMeshPro
     private TMP_Text _displayText;
 
@@ -62,12 +65,13 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     // Setup
-    public void Setup(QuizSetupConfig config, AutoXRQuizButton[] buttons,
+    public void Setup(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer)
     {
         // Set values
         this.config = config;
         _buttons = buttons;
+        _mcConfirmButton = mcConfirmButton;
         _displayText = displayText;
         _displayAnchor = displayAnchor;
         _displayPlayer = displayPlayer;
@@ -93,13 +97,13 @@ public class TutorialButtonQuiz : MonoBehaviour
     }
 
     private void Awake() {
-        if (_config == null || !IsSetupValid(_config, _buttons, _displayText, _displayAnchor, _displayPlayer))
+        if (_config == null || !IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
         {
             Debug.LogWarning("Quiz Config not set or invalid.");
         }
         else
         {
-            Setup(_config, _buttons, _displayText, _displayAnchor, _displayPlayer);
+            Setup(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer);
             DisplayNextQuestion();
         }
     }
@@ -169,9 +173,15 @@ public class TutorialButtonQuiz : MonoBehaviour
 
         SetButtonsDisabled(true);
 
+        bool showAny = _config.feedbackType == FeedbackType.DifferingTypes;
+        bool showText = _displayText != null && (showAny || _config.feedbackType == FeedbackType.Text);
+        bool showObjecu = _displayText != null && (showAny || _config.feedbackType == FeedbackType.Object);
+        bool showVideo = _displayText != null && (showAny || _config.feedbackType == FeedbackType.Video);
+
+
         if (_displayText != null && _config.feedbackType == FeedbackType.Text)
         {
-            _displayText.text = "Correct Answer was \n" + _currentQuestion.GetFeedbackText(config.feedbackMode, config.feedbackType, config.quizMode);
+            _displayText.text = "Correct Answer was: \n" + _currentQuestion.GetFeedbackText(config.feedbackMode, config.feedbackType, config.quizMode);
         }
         else if (_displayAnchor != null && _config.feedbackType == FeedbackType.Object) 
         {
@@ -190,6 +200,10 @@ public class TutorialButtonQuiz : MonoBehaviour
                     GameObject.Instantiate<GameObject>(feedbackObjects[i], new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
                 }
             }
+        }
+        else if (_displayPlayer != null && _config.feedbackType == FeedbackType.Video)
+        {
+
         }
         StartCoroutine("WaitForFeedbackCompletion");
     }
@@ -231,11 +245,11 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     // Validation
-    public bool IsSetupValid(QuizSetupConfig config, AutoXRQuizButton[] buttons,
+    public bool IsSetupValid(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer)
     {
         bool displaysValid = IsDisplayValid(config, displayText, displayAnchor, displayPlayer);
-        bool buttonsValid = IsButtonsValid(config, buttons);
+        bool buttonsValid = AreButtonsValid(config, buttons, mcConfirmButton);
         bool questionsValid = AreQuestionsValid(config);
 
         return displaysValid && buttonsValid && questionsValid;
@@ -244,20 +258,20 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     private bool IsDisplayValid(QuizSetupConfig config, TMP_Text displayLabel, GameObject displayAnchor, VideoPlayer displayPlayer)
     {
-        bool hasFeedback = config.feedbackMode != FeedbackMode.None;
+        bool needsAllDisplays = (config.questionType == QuestionType.DifferingTypes || config.feedbackType == FeedbackType.DifferingTypes);
 
-        if (displayLabel == null && (config.questionType == QuestionType.Text || config.feedbackType == FeedbackType.Text))
+        if (displayLabel == null && (needsAllDisplays || config.questionType == QuestionType.Text || config.feedbackType == FeedbackType.Text))
         {
             Debug.LogError("Config requires Label-Reference but was null.");
             return false;
         }
 
-        else if (displayAnchor == null && (config.questionType == QuestionType.Object || config.feedbackType == FeedbackType.Object))
+        else if (displayAnchor == null && (needsAllDisplays || config.questionType == QuestionType.Object || config.feedbackType == FeedbackType.Object))
         {
             Debug.LogError("Config requires GameObject-Reference but was null.");
             return false;
         }
-        else if (displayPlayer == null && (config.questionType == QuestionType.Video))
+        else if (displayPlayer == null && (needsAllDisplays || config.questionType == QuestionType.Video || config.feedbackType == FeedbackType.Object))
         {
             Debug.LogError("Config requires VideoPlayer-Reference but was null.");
             return false;
@@ -265,29 +279,35 @@ public class TutorialButtonQuiz : MonoBehaviour
         return true;
     }
 
-    private bool IsButtonsValid(QuizSetupConfig config, AutoXRQuizButton[] buttons)
+    private bool AreButtonsValid(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton)
     {
-        int numButtons = (int)config.answersAmount;
+        int numRequiredButtons = Mathf.Min((int)config.answersAmount, TutorialButtonQuiz.NUM_ANSWERS);
 
-        if (buttons.Length < numButtons && config.answersAmount != AnswersAmount.DifferingAmounts)
+        if (buttons.Length < numRequiredButtons)
         {
             Debug.LogError("Not enough button references found.");
             return false;
         }
 
-        for (int i = 0; i < numButtons; i++)
+        if (config.quizMode == QuizMode.MultipleChoice && mcConfirmButton == null)
+        {
+            Debug.LogError("Quiz Mode is MultipleChoice but MultipleChoiceConfirmButton is null.");
+            return false;
+        }
+
+        for (int i = 0; i < numRequiredButtons; i++)
         {
             if (buttons[i] == null)
             {
-                Debug.LogError("Button Reference was null.");
+                Debug.LogError("A QuizButton Reference was null.");
                 return false;
             }
 
-            for (int j = i + 1; j < numButtons; j++)
+            for (int j = i + 1; j < buttons.Length; j++)
             {
                 if (buttons[i] == buttons[j])
                 {
-                    Debug.LogError("Two Buttons were equal.");
+                    Debug.LogError("The QuizButtons should not be equal.");
                     return false;
                 }
             }
@@ -309,19 +329,19 @@ public class TutorialButtonQuiz : MonoBehaviour
             QuizQuestion question = config.questions[i];
             if (config.questionType == QuestionType.Object && question.questionObject == null)
             {
-                Debug.LogError("Question {0}'s has QuestionType Object but the object was null.");
+                Debug.LogErrorFormat("Question {0}'s has QuestionType Object but the object was null.", i + 1);
                 return false;
             }
 
             if (config.questionType == QuestionType.Text && (question.questionText == null || question.questionText == ""))
             {
-                Debug.LogError("Question {0}'s has QuestionType Text but the object was null or empty.");
+                Debug.LogErrorFormat("Question {0}'s has QuestionType Text but it was null or empty.", i + 1);
                 return false;
             }
 
             if (config.questionType == QuestionType.Video && (question.questionVideo == null))
             {
-                Debug.LogError("Question {0}'s has QuestionType Video but the clip was null.");
+                Debug.LogErrorFormat("Question {0}'s has QuestionType Video but the clip was null.", i + 1);
                 return false;
             }
 

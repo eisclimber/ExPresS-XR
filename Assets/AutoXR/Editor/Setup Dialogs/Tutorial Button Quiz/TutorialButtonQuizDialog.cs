@@ -63,6 +63,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private ObjectField _button2Field;
     private ObjectField _button3Field;
     private ObjectField _button4Field;
+    private ObjectField _mcConfirmButtonField;
+
     private Button _createButtonsButton;
     private Button _setupButtonsButton;
 
@@ -159,6 +161,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _button2Field = _step5Container.Q<ObjectField>("button-field-2");
         _button3Field = _step5Container.Q<ObjectField>("button-field-3");
         _button4Field = _step5Container.Q<ObjectField>("button-field-4");
+        _mcConfirmButtonField = _step5Container.Q<ObjectField>("mc-confirm-button-field");
         _createButtonsButton = _step5Container.Q<Button>("create-buttons-button");
         _createButtonsButton.clickable.clicked += CreateButtons;
         _setupButtonsButton = _step5Container.Q<Button>("setup-buttons-button");
@@ -214,44 +217,44 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private void QuizModeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.quizMode = (QuizMode) evt.newValue;
-        UpdateQuestionItemConfig();
+        UpdateQuizConfig(_quizConfig);
     }
 
     private void QuestionOrderChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.questionOrder = (QuestionOrder) evt.newValue;
+        UpdateQuizConfig(_quizConfig);
     }
 
     private void AnswersAmountChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.answersAmount = (AnswersAmount) evt.newValue;
-        UpdateButtonFields();
-        UpdateQuestionItemConfig();
+        UpdateQuizConfig(_quizConfig);
     }
 
     private void QuestionTypeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.questionType = (QuestionType) evt.newValue;
-        UpdateQuestionItemConfig();
-        UpdateQuestioningDisplays();
+        UpdateQuizConfig(_quizConfig);
     }
 
     private void AnswerTypeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.answerType = (AnswerType) evt.newValue;
-        UpdateQuestionItemConfig();
+        UpdateQuizConfig(_quizConfig);
     }
 
     private void FeedbackModeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.feedbackMode = (FeedbackMode) evt.newValue;
-        UpdateQuestioningDisplays();
+        UpdateQuizConfig(_quizConfig);
     }
         
 
     private void FeedbackTypeChangedCallback(ChangeEvent<System.Enum> evt) 
     {
         _quizConfig.feedbackType = (FeedbackType) evt.newValue;
+        UpdateQuizConfig(_quizConfig);
     } 
 
     // Update Steps
@@ -268,8 +271,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
             _feedbackModeField.value = _quizConfig.feedbackMode;
             _feedbackTypeField.value = _quizConfig.feedbackType;
 
-            UpdateButtonFields();
-            UpdateQuestioningDisplays();
+            UpdateButtonFieldsVisibility();
+            UpdateQuestioningDisplaysVisibility();
             UpdateQuestionItemConfig();
             LoadQuestionsFromConfig();
         }
@@ -320,40 +323,48 @@ class TutorialButtonQuizDialog : SetupDialogBase
                 questionItem.Query<ObjectField>("answer-object-field").ForEach((objField) =>
                 {
                     objField.value = question.answersObjects[counter];
+                    counter++;
                 });
 
                 counter = 0;
                 questionItem.Query<TextField>("answer-text-field").ForEach((objField) =>
                 {
                     objField.value = question.answersTexts[counter];
+                    counter++;
                 });
             }
         }
     }
 
 
-    private void UpdateButtonFields()
+    private void UpdateButtonFieldsVisibility()
     {
         bool showButton1 = (_quizConfig.answersAmount >= AnswersAmount.One);
         bool showButton2 = (_quizConfig.answersAmount >= AnswersAmount.Two);
         bool showButton3 = (_quizConfig.answersAmount >= AnswersAmount.Three);
         bool showButton4 = (_quizConfig.answersAmount >= AnswersAmount.Four);
+        bool showMcConfirmButton = (_quizConfig.answersAmount >= AnswersAmount.Four);
 
         _button1Field.style.display = (showButton1 ? DisplayStyle.Flex : DisplayStyle.None);
         _button2Field.style.display = (showButton2 ? DisplayStyle.Flex : DisplayStyle.None);
         _button3Field.style.display = (showButton3 ? DisplayStyle.Flex : DisplayStyle.None);
         _button4Field.style.display = (showButton4 ? DisplayStyle.Flex : DisplayStyle.None);
+        _mcConfirmButtonField.style.display = (showMcConfirmButton ? DisplayStyle.Flex : DisplayStyle.None);
     }
 
-    private void UpdateQuestioningDisplays()
+    private void UpdateQuestioningDisplaysVisibility()
     {
         bool showAnyField = (_quizConfig.questionType == QuestionType.DifferingTypes
                             || _quizConfig.feedbackType == FeedbackType.DifferingTypes);
 
         bool showTextLabel = (showAnyField || _quizConfig.questionType == QuestionType.Text
-                            || _quizConfig.feedbackType == FeedbackType.Text);
+                            || _quizConfig.feedbackType == FeedbackType.Text
+                            || (_quizConfig.feedbackType == FeedbackType.ShowAnswers 
+                                && _quizConfig.answerType == AnswerType.Text));
         bool showObjectField = (showAnyField || _quizConfig.questionType == QuestionType.Object
-                            || _quizConfig.feedbackType == FeedbackType.Object);
+                            || _quizConfig.feedbackType == FeedbackType.Object
+                            || (_quizConfig.feedbackType == FeedbackType.ShowAnswers 
+                                && _quizConfig.answerType == AnswerType.Object));
         bool showVideoPlayer = (showAnyField || _quizConfig.questionType == QuestionType.Video);
 
         _textLabelField.style.display = (showTextLabel ? DisplayStyle.Flex : DisplayStyle.None);
@@ -409,8 +420,9 @@ class TutorialButtonQuizDialog : SetupDialogBase
                                         (AutoXRQuizButton)_button3Field.value,
                                         (AutoXRQuizButton)_button4Field.value };
 
-        if (CreateQuiz(_quizConfig, buttons, (TMP_Text)_textLabelField.value,
-                                    (GameObject)_gameObjectField.value, (VideoPlayer)_videoPlayerField.value))
+        if (CreateQuiz(_quizConfig, buttons, (AutoXRMcConfirmButton) _mcConfirmButtonField.value,
+                        (TMP_Text)_textLabelField.value, (GameObject)_gameObjectField.value,
+                        (VideoPlayer)_videoPlayerField.value))
         {
             // Enable step 7-9 if setup successfully
             SetStepButtonsEnabled(true, 7, 9);
@@ -450,9 +462,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
         if (_quizConfig != null)
         {
             // Questions
-            bool showQuestionObjectField = (_quizConfig.questionType == QuestionType.Object);
-            bool showQuestionVideoField = (_quizConfig.questionType == QuestionType.Video);
-            bool showQuestionTextField = (_quizConfig.questionType == QuestionType.Text);
+            bool showAnyQuestionField = (_quizConfig.questionType == QuestionType.DifferingTypes);
+            bool showQuestionObjectField = (showAnyQuestionField || _quizConfig.questionType == QuestionType.Object);
+            bool showQuestionVideoField = (showAnyQuestionField || _quizConfig.questionType == QuestionType.Video);
+            bool showQuestionTextField = (showAnyQuestionField || _quizConfig.questionType == QuestionType.Text);
 
             ObjectField questionObjectField = questionItem.Q<ObjectField>("question-object-field");
             ObjectField questionVideoField = questionItem.Q<ObjectField>("question-video-field");
@@ -469,6 +482,29 @@ class TutorialButtonQuizDialog : SetupDialogBase
             if (questionTextField != null)
             {
                 questionTextField.style.display = (showQuestionTextField ? DisplayStyle.Flex : DisplayStyle.None);
+            }
+
+            // Feedback
+            bool showAnyFeedbackField = (_quizConfig.feedbackType == FeedbackType.DifferingTypes);
+            bool showFeedbackObjectField = (showAnyFeedbackField || _quizConfig.feedbackType == FeedbackType.Object);
+            bool showFeedbackVideoField = (showAnyFeedbackField || _quizConfig.feedbackType == FeedbackType.Video);
+            bool showFeedbackTextField = (showAnyFeedbackField || _quizConfig.feedbackType == FeedbackType.Text);
+
+            ObjectField feedbackObjectField = questionItem.Q<ObjectField>("feedback-object-field");
+            ObjectField feedbackVideoField = questionItem.Q<ObjectField>("feedback-video-field");
+            TextField feedbackTextField = questionItem.Q<TextField>("feedback-text-field");
+
+            if (feedbackObjectField != null)
+            {
+                feedbackObjectField.style.display = (showFeedbackObjectField ? DisplayStyle.Flex : DisplayStyle.None);
+            }
+            if (feedbackVideoField != null)
+            {
+                feedbackVideoField.style.display = (showFeedbackVideoField ? DisplayStyle.Flex : DisplayStyle.None);
+            }
+            if (feedbackTextField != null)
+            {
+                feedbackTextField.style.display = (showFeedbackTextField ? DisplayStyle.Flex : DisplayStyle.None);
             }
 
             // Answers
@@ -569,14 +605,25 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         foreach (VisualElement question in questionList.Children())
         {
+            // Question
             ObjectField answerObjectField = question.Q<ObjectField>("question-object-field");
-            ObjectField answerVideoPlayer = question.Q<ObjectField>("question-video-field");
+            ObjectField answerVideoClipField = question.Q<ObjectField>("question-video-field");
             TextField questionLabel = question.Q<TextField>("question-text-field");
 
             GameObject questionObject = answerObjectField.value as GameObject;
-            VideoClip questionClip = answerVideoPlayer.value as VideoClip;
+            VideoClip questionClip = answerVideoClipField.value as VideoClip;
             string questionText = questionLabel.value ?? "";
 
+            // Feedback
+            ObjectField feedbackObjectField = question.Q<ObjectField>("feedback-object-field");
+            ObjectField feedbackVideoClipField = question.Q<ObjectField>("feedback-video-field");
+            TextField feedbackLabel = question.Q<TextField>("feedback-text-field");
+
+            GameObject feedbackObject = feedbackObjectField.value as GameObject;
+            VideoClip feedbackClip = feedbackVideoClipField.value as VideoClip;
+            string feedbackText = feedbackLabel.value ?? "";
+
+            // Answers
             VisualElement answers = question.Q<VisualElement>("answers");
 
             GameObject[] answersObjects = new GameObject[TutorialButtonQuiz.NUM_ANSWERS];
@@ -612,7 +659,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
             }
 
             quizQuestions[i] = new QuizQuestion(i, questionClip, questionObject, questionText,
-                                            answersObjects, answersTexts, correctValues);
+                                            answersObjects, answersTexts, correctValues,
+                                            feedbackClip, feedbackObject, feedbackText);
 
             i++;
         }
@@ -643,6 +691,19 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
                 // Set Button Fields value
                 buttonFields[i].value = button;
+            }
+
+            // Add Multiple Choice Button if necessary
+            if (_quizConfig.quizMode == QuizMode.MultipleChoice)
+            {
+                string multiChoiceButtonPrefabPath = AutoXRCreationUtils.MakeAutoXRPrefabPath(AutoXRCreationUtils.AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
+                AutoXRQuizButton multiChoiceButtonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(multiChoiceButtonPrefabPath);
+
+                AutoXRQuizButton button = Instantiate(multiChoiceButtonPrefab, new Vector3(xOffset + QUIZ_BUTTON_SPACING, 0, 0), Quaternion.identity);
+                button.transform.SetParent(go.transform);
+                button.name = "Multiple Choice Confirm Button";
+
+                _mcConfirmButtonField.value = button;
             }
 
             GameObjectUtility.EnsureUniqueNameForSibling(go);
@@ -676,7 +737,9 @@ class TutorialButtonQuizDialog : SetupDialogBase
             {
                 GameObject textLabel = new GameObject("Questioning Display Text");
                 TextMeshProUGUI tmpText = textLabel.AddComponent<TextMeshProUGUI>();
+                
                 tmpText.fontSize = 16;
+                tmpText.alignment = TextAlignmentOptions.Center;
 
                 _textLabelField.value = textLabel;
 
@@ -717,19 +780,19 @@ class TutorialButtonQuizDialog : SetupDialogBase
         }
     }
 
-    public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons,
+    public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
     {
         GameObject quizGo = new GameObject("Tutorial Button Quiz");
         TutorialButtonQuiz quiz = quizGo.AddComponent<TutorialButtonQuiz>();
 
-        if (!quiz.IsSetupValid(config, buttons, displayText, displayObject, displayPlayer))
+        if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer))
         {
             Object.DestroyImmediate(quizGo);
             return false;
         }
 
-        quiz.Setup(config, buttons, displayText, displayObject, displayPlayer);
+        quiz.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer);
 
         Undo.RegisterCreatedObjectUndo(quizGo, "Create Tutorial Button Quiz Game Object");
         return true;

@@ -27,6 +27,7 @@ public class AutoXRQuizButtonEditor : Editor
         EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputDisabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_toggleMode"), true);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.LabelField("Local Push Limits", EditorStyles.boldLabel);
@@ -50,6 +51,9 @@ public class AutoXRQuizButtonEditor : Editor
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressed"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnReleased"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnTogglePressed"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnToggleReleased"), true);
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputEnabled"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputDisabled"), true);

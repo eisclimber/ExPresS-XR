@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.Events;
 
-// Credits to VR with Andrew on Youtube
-
 public class AutoXRBaseButton : XRBaseInteractable
 {
     private const float PRESS_PCT = 0.3f;
@@ -30,7 +28,17 @@ public class AutoXRBaseButton : XRBaseInteractable
         }
     }
 
-    public bool toggleMode;
+    [SerializeField]
+    private bool _toggleMode;
+    public bool toggleMode
+    {
+        get => _toggleMode;
+        set
+        {
+            _toggleMode = value;
+        }
+    }
+
 
     // Input Disabled Events
     public UnityEvent OnInputDisabled;
@@ -41,8 +49,8 @@ public class AutoXRBaseButton : XRBaseInteractable
     public UnityEvent OnReleased;
 
     // Toggle Events
-    public UnityEvent OnToggleReleased;
     public UnityEvent OnTogglePressed;
+    public UnityEvent OnToggleReleased;
 
 
     public AudioClip pressedSound;
@@ -80,12 +88,18 @@ public class AutoXRBaseButton : XRBaseInteractable
         get => _pressed;
     }
 
-    private float triggerStartTime = 0.0f;
 
     private float previousHandHeight = 0.0f;
     private XRBaseInteractor hoverInteractor = null;
 
+
+    // Is true when the button is in toggle mode is being toggled up
+    private bool _toBeToggledDown;
+    // private bool _toggleBeingReleased;
+
     ////////
+
+    private float triggerStartTime = 0.0f;
 
     // Can be used to measure the time since between any point in time and a button press
     public void StartTriggerTimer()
@@ -130,6 +144,8 @@ public class AutoXRBaseButton : XRBaseInteractable
     {
         hoverInteractor = (XRBaseInteractor)args.interactorObject;
         previousHandHeight = GetLocalYPosition(args.interactableObject.transform.position);
+
+        _toBeToggledDown = !pressed;
     }
 
     private void EndPress(HoverExitEventArgs args)
@@ -137,18 +153,16 @@ public class AutoXRBaseButton : XRBaseInteractable
         hoverInteractor = null;
         previousHandHeight = 0.0f;
 
-        if (!toggleMode)
+        if (toggleMode)
+        {
+            SetYPosition(pressed ? _yMin : _yMax);
+        }
+        else
         {
             _pressed = false;
             SetYPosition(_yMax);
         }
-        else
-        {
-            _pressed = !_pressed;
-            SetYPosition(pressed ? _yMin : _yMax);
-        }
     }
-
 
     private void Start()
     {
@@ -166,21 +180,14 @@ public class AutoXRBaseButton : XRBaseInteractable
     {
         base.ProcessInteractable(updatePhase);
 
-        if (hoverInteractor != null && !inputDisabled)
+        bool toggledAlready = !toggleMode || (_toBeToggledDown == pressed);
+
+        if (hoverInteractor != null && !inputDisabled && !toggledAlready)
         {
             float newHandHeight = GetLocalYPosition(hoverInteractor.transform.position);
 
-            // If toggling allow only up/down movement
-            if (toggleMode && !pressed)
-            {
-                newHandHeight = Mathf.Min(newHandHeight, previousHandHeight);
-            }
-            else if (toggleMode && pressed)
-            {
-                newHandHeight = Mathf.Max(newHandHeight, previousHandHeight);
-            }
-
             float handDifference = previousHandHeight - newHandHeight;
+
             previousHandHeight = newHandHeight;
 
             float newPosition = pushAnchor.transform.localPosition.y - handDifference;
@@ -211,34 +218,32 @@ public class AutoXRBaseButton : XRBaseInteractable
         }
 
         bool isDown = IsInDownPosition();
-        // Debug.Log(isDown + "    " + pressed);
-        if (isDown && !pressed)
+        
+        if (!toggleMode)
         {
-            _pressed = true;
-            if (toggleMode)
+            if (isDown && !pressed)
             {
-                // Debug.Log("Toggle Pressed");
-                OnTogglePressed.Invoke();
-            }
-            else
-            {
-                // Debug.Log("Pressed");
+                _pressed = true;
                 OnPressed.Invoke();
             }
-        }
-        else if (!isDown && pressed)
-        {
-            _pressed = false;
-            
-            if (toggleMode)
+            else if (!isDown && pressed)
             {
-                // Debug.Log("Toggle Released");
-                OnToggleReleased.Invoke();
-            }
-            else
-            {
-                // Debug.Log("Released");
+                _pressed = false;
                 OnReleased.Invoke();
+            }
+        }
+        else if (toggleMode && isDown)
+        {
+            if (!pressed)
+            {
+                _pressed = true;
+                SetYPosition(_yMin);
+                OnTogglePressed.Invoke();
+            }
+            else if (pressed)
+            {
+                _pressed = false;
+                OnToggleReleased.Invoke();
             }
         }
     }

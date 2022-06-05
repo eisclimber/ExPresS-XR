@@ -32,6 +32,7 @@ public class ColorSwitcher : MonoBehaviour
     // Instant Switches
     public void ActivateAlternativeMaterial()
     {
+        StopAllCoroutines();
         if (alternativeMaterial != null)
         {
             meshRenderer.material = alternativeMaterial;
@@ -40,11 +41,13 @@ public class ColorSwitcher : MonoBehaviour
 
     public void ActivateOriginalMaterial()
     {
+        StopAllCoroutines();
         meshRenderer.material = originalMaterial;
     }
 
     public void ToggleMaterial()
     {
+        StopAllCoroutines();
         if (alternativeMaterial != null && meshRenderer.material == alternativeMaterial)
         {
             meshRenderer.material = originalMaterial;
@@ -58,6 +61,7 @@ public class ColorSwitcher : MonoBehaviour
     // Coroutine Switches
     public IEnumerator ActivateAlternativeMaterialForSecondsCoroutine(float time)
     {
+        StopAllCoroutines();
         ActivateAlternativeMaterial();
         yield return new WaitForSeconds(time);
         ActivateOriginalMaterial();
@@ -65,6 +69,7 @@ public class ColorSwitcher : MonoBehaviour
 
     public IEnumerator ActivateOriginalMaterialForSecondsCoroutine(float time)
     {
+        StopAllCoroutines();
         ActivateOriginalMaterial();
         yield return new WaitForSeconds(time);
         ActivateAlternativeMaterial();
@@ -72,23 +77,16 @@ public class ColorSwitcher : MonoBehaviour
 
 
     public void ActivateAlternativeMaterialForASecond() 
-    {
-        switchCoroutine = StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1f));
-    }
+        => StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1f));
     
-    public void ActivateOriginalMaterialForASecond()
-    {
-        switchCoroutine = StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(1f));
-    }
+    public void ActivateOriginalMaterialForASecond() 
+        => StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(1f));
 
 
     public void ActivateAlternativeMaterialForSwitchDuration() 
-    {
-        switchCoroutine = StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(switchDuration));
-    }
+        => StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(switchDuration));
+
     
     public void ActivateOriginalMaterialForSwitchDuration()
-    {
-        switchCoroutine = StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(switchDuration));
-    } 
+        => StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(switchDuration));
 }
