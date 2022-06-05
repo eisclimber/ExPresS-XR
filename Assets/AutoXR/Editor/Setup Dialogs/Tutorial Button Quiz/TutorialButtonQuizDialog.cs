@@ -343,7 +343,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         bool showButton2 = (_quizConfig.answersAmount >= AnswersAmount.Two);
         bool showButton3 = (_quizConfig.answersAmount >= AnswersAmount.Three);
         bool showButton4 = (_quizConfig.answersAmount >= AnswersAmount.Four);
-        bool showMcConfirmButton = (_quizConfig.answersAmount >= AnswersAmount.Four);
+        bool showMcConfirmButton = (_quizConfig.quizMode == QuizMode.MultipleChoice);
 
         _button1Field.style.display = (showButton1 ? DisplayStyle.Flex : DisplayStyle.None);
         _button2Field.style.display = (showButton2 ? DisplayStyle.Flex : DisplayStyle.None);
