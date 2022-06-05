@@ -59,6 +59,11 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     private QuizQuestion _currentQuestion;
 
+    [SerializeField]
+    private bool _showQuizCompletedText;
+
+    public bool quizUndergoing { get; private set; }
+
     public UnityEvent OnAnswerGiven;
     public UnityEvent OnQuizStarted;
     public UnityEvent OnQuizCompleted;
@@ -108,6 +113,19 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
     }
 
+    public void StartQuiz()
+    {
+        Debug.Log("TODO: Start Quiz");
+        quizUndergoing = true;
+    }
+
+    public void StopQuiz()
+    {
+        Debug.Log("TODO: Stop Quiz");
+        quizUndergoing = false;
+    }
+
+
     // Runtime logic
     private void DisplayNextQuestion()
     {
@@ -123,7 +141,7 @@ public class TutorialButtonQuiz : MonoBehaviour
                 }
             }
 
-            if (_displayText != null)
+            if (_displayText != null && _showQuizCompletedText)
             {
                 _displayText.text = "Quiz Completed";
             }
