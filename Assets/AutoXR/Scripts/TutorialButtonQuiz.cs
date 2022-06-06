@@ -354,7 +354,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             Debug.LogError("Config requires GameObject-Reference but was null.");
             return false;
         }
-        else if (displayPlayer == null && (needsAllDisplays || config.questionType == QuestionType.Video || config.feedbackType == FeedbackType.Object))
+        else if (displayPlayer == null && (needsAllDisplays || config.questionType == QuestionType.Video || config.feedbackType == FeedbackType.Video))
         {
             Debug.LogError("Config requires VideoPlayer-Reference but was null.");
             return false;

@@ -127,7 +127,8 @@ public class SetupDialogBase : EditorWindow
         });
     }
 
-    protected EditorCoroutine ShowErrorElement(VisualElement _errorElement) => EditorCoroutineUtility.StartCoroutine(ShowErrorCoroutine(_errorElement), this);
+    protected EditorCoroutine ShowErrorElement(VisualElement _errorElement) 
+        => EditorCoroutineUtility.StartCoroutine(ShowErrorCoroutine(_errorElement), this);
 
     private IEnumerator ShowErrorCoroutine(VisualElement _errorElement)
     {

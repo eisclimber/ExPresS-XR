@@ -332,6 +332,11 @@ class TutorialButtonQuizDialog : SetupDialogBase
                     objField.value = question.answersTexts[counter];
                     counter++;
                 });
+
+                // Fill Feedback Values
+                questionItem.Q<ObjectField>("feedback-object-field").value = question.feedbackObject;
+                questionItem.Q<ObjectField>("feedback-video-field").value = question.feedbackVideo;
+                questionItem.Q<TextField>("feedback-text-field").value = question.feedbackText;
             }
         }
     }

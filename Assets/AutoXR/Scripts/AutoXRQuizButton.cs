@@ -93,6 +93,8 @@ public class AutoXRQuizButton : AutoXRBaseButton
 
     public void DisplayAnswer(string answerText, GameObject answerObject, bool correctChoice)
     {
+        ClearAnswer();
+
         this.answerText = answerText;
         this.answerPrefab = answerObject;
         this.correctChoice = correctChoice;
