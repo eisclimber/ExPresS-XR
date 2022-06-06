@@ -54,6 +54,24 @@ public class AutoXRQuizButton : AutoXRBaseButton
     public Text feedbackTextLabel;
 
 
+    ///////////
+    private float triggerStartTime = 0.0f;
+
+    // Can be used to measure the time since between any point in time and a button press
+    // Will be automatically started when input is (re-)enabled
+    public void RestartTriggerTimer()
+    {
+        triggerStartTime = Time.time;
+    }
+
+    public float GetTriggerTimerValue()
+    {
+        return Time.time - triggerStartTime;
+    }
+
+
+    ////// 
+
     protected override void Awake()
     {
         base.Awake();
@@ -68,6 +86,8 @@ public class AutoXRQuizButton : AutoXRBaseButton
         }
 
         OnPressed.AddListener(NotifyChoice);
+        
+        triggerStartTime = Time.time;
     }
 
 
@@ -76,6 +96,8 @@ public class AutoXRQuizButton : AutoXRBaseButton
         this.answerText = answerText;
         this.answerPrefab = answerObject;
         this.correctChoice = correctChoice;
+
+        RestartTriggerTimer();
     }
 
 

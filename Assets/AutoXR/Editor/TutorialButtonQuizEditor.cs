@@ -23,8 +23,9 @@ public class TutorialButtonQuizEditor : Editor
         }
         EditorGUI.EndDisabledGroup();
 
-        EditorGUILayout.LabelField("Export", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Config", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_startOnAwake"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_config"), true);
         EditorGUI.indentLevel--;
 
@@ -47,24 +48,28 @@ public class TutorialButtonQuizEditor : Editor
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.LabelField("Misc", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Feedback Options", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDuration"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_showResolutionTextPrefix"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_showQuizCompletedText"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDuration"), true);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
 
-        if (!Application.isEditor && GUILayout.Button("(Re-)Start Quiz"))
+        string startButtonLabel = targetScript.quizUndergoing ? "Restart Quiz" : "Start Quiz";
+        if (Application.isPlaying && GUILayout.Button(startButtonLabel))
         {
             targetScript.StartQuiz();
         }
 
         EditorGUILayout.Space();
 
-        if (!Application.isEditor && targetScript.quizUndergoing && GUILayout.Button("Stop Quiz"))
+        if (Application.isPlaying && targetScript.quizUndergoing && GUILayout.Button("Stop Quiz"))
         {
-            targetScript.StartQuiz();
+            targetScript.StopQuiz();
         }
+        
+        serializedObject.ApplyModifiedProperties();
     }
 }

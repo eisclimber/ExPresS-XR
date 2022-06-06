@@ -36,14 +36,14 @@ public class QuizQuestion
     public bool[] correctAnswers;
 
 
-    public VideoClip answerVideo;
-    public GameObject answerObject;
-    public string answerText;
+    public VideoClip feedbackVideo;
+    public GameObject feedbackObject;
+    public string feedbackText;
 
 
     public QuizQuestion(int itemId, VideoClip questionVideo, GameObject questionObject, string questionText,
                         GameObject[] answersObjects, string[] answersTexts, bool[] correctAnswers,
-                        VideoClip answerVideo, GameObject answerObject, string answerText)
+                        VideoClip feedbackVideo, GameObject feedbackObject, string feedbackText)
     {
         this.itemId = itemId;
 
@@ -65,57 +65,93 @@ public class QuizQuestion
 
         this.correctAnswers = correctAnswers;
 
-        this.answerVideo = answerVideo;
-        this.answerObject = answerObject;
-        this.answerText = answerText;
+        this.feedbackVideo = feedbackVideo;
+        this.feedbackObject = feedbackObject;
+        this.feedbackText = feedbackText;
     }
 
-    public string GetFeedbackText(FeedbackMode feedbackMode, FeedbackType feedbackType, QuizMode quizMode) 
+    public string GetFeedbackText(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode) 
     {
-        string feedbackString = "";
-        if (feedbackMode != FeedbackMode.None && (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes))
+        // No Feedback
+        if (feedbackMode == FeedbackMode.None)
         {
-            switch(feedbackMode)
-            {
-                case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
-                    for (int i = 0; i < answersTexts.Length; i++)
-                    {
-                        bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
-                        if (correctAnswers[i] == chooseCorrect && answersTexts[i] != null && answersTexts[i] != "")
-                        {
-                            feedbackString += answersTexts[i];
+            return "";
+        }
 
-                            if (quizMode == QuizMode.SingleChoice)
+        // Show feedback text if exists
+        if (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes)
+        {
+            return feedbackText ?? "";
+        }
+
+        // Show answer text feedback type is ShowAnswer
+        if (feedbackType == FeedbackType.ShowAnswers
+                && (answerType == AnswerType.Text || answerType == AnswerType.DifferingTypes))
+        {
+            string feedbackString = "";
+
+            if (feedbackMode != FeedbackMode.None && (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes))
+            {
+                switch(feedbackMode)
+                {
+                    case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
+                        for (int i = 0; i < answersTexts.Length; i++)
+                        {
+                            bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
+                            if (correctAnswers[i] == chooseCorrect && answersTexts[i] != null && answersTexts[i] != "")
                             {
-                                return feedbackString;
+                                feedbackString += answersTexts[i];
+
+                                if (quizMode == QuizMode.SingleChoice)
+                                {
+                                    return feedbackString;
+                                }
                             }
                         }
-                    }
-                    return feedbackString;
-                case FeedbackMode.Random:
-                    for (int i = 0; i < numAnswers; i++)
-                    {
-                        if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
+                        return feedbackString;
+                    case FeedbackMode.Random:
+                        for (int i = 0; i < numAnswers; i++)
                         {
-                            feedbackString += answersTexts[i];
+                            if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
+                            {
+                                feedbackString += answersTexts[i];
+                            }
                         }
-                    }
-                    if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
-                    {
-                        return answersTexts[Random.Range(0, numAnswers)];
-                    }
-                    return feedbackString;
+                        if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
+                        {
+                            return answersTexts[Random.Range(0, numAnswers)];
+                        }
+                        return feedbackString;
+                }
             }
         }
         return "";
     }
 
-    public GameObject[] GetFeedbackGameObjects(FeedbackMode feedbackMode, FeedbackType feedbackType, QuizMode quizMode) 
+    public GameObject[] GetFeedbackGameObjects(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode) 
     {
-        List<GameObject> feedbackGos = new List<GameObject>();
-
-        if (feedbackMode != FeedbackMode.None && (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes))
+        // No Feedback
+        if (feedbackMode == FeedbackMode.None)
         {
+            return new GameObject[0];
+        }
+
+        // Show feedback object if exists
+        if (feedbackType == FeedbackType.Object || feedbackType == FeedbackType.DifferingTypes)
+        {
+            if (feedbackObject != null)
+            {
+                return new GameObject[] { feedbackObject };
+            }
+            return new GameObject[0];
+        }
+
+        // Show answer object feedback type is ShowAnswer
+        if (feedbackType == FeedbackType.ShowAnswers
+                && (answerType == AnswerType.Object || answerType == AnswerType.DifferingTypes))
+        {
+            List<GameObject> feedbackGos = new List<GameObject>();
+
             switch(feedbackMode)
             {
                 case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
@@ -152,9 +188,20 @@ public class QuizQuestion
                     return feedbackGos.ToArray();
             }
         }
-        return new GameObject[] { };
+        return new GameObject[0];
+    }
+
+    public VideoClip GetFeedbackVideo(FeedbackType feedbackType)
+    {
+        if (feedbackType == FeedbackType.Video || feedbackType == FeedbackType.DifferingTypes)
+        {
+            return feedbackVideo;
+        }
+        
+        return null;
     }
 }
+
 
 public enum QuizMode
 {
@@ -193,7 +240,8 @@ public enum AnswerType
 {
     // AnswerType, Assembly-CSharp
     Object,
-    Text
+    Text,
+    DifferingTypes
 }
 
 public enum FeedbackMode
@@ -208,7 +256,7 @@ public enum FeedbackMode
 public enum FeedbackType
 {
     // FeedbackType, Assembly-CSharp
-    ShowAnswers,
+    ShowAnswers, // Overrides Feedback Mode
     Object,
     Text,
     Video,

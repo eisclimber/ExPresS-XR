@@ -24,6 +24,7 @@ public class AutoXRBaseButton : XRBaseInteractable
                 OnInputDisabled.Invoke();
             }
 
+            
             _inputDisabled = value;
         }
     }
@@ -95,22 +96,6 @@ public class AutoXRBaseButton : XRBaseInteractable
 
     // Is true when the button is in toggle mode is being toggled up
     private bool _toBeToggledDown;
-    // private bool _toggleBeingReleased;
-
-    ////////
-
-    private float triggerStartTime = 0.0f;
-
-    // Can be used to measure the time since between any point in time and a button press
-    public void StartTriggerTimer()
-    {
-        triggerStartTime = Time.time;
-    }
-
-    public float GetTimeSinceTriggerStarted()
-    {
-        return Time.time - triggerStartTime;
-    }
 
     ////////
 
@@ -129,8 +114,6 @@ public class AutoXRBaseButton : XRBaseInteractable
         {
             OnInputDisabled.Invoke();
         }
-
-        triggerStartTime = Time.time;
     }
 
     protected override void OnDestroy()
@@ -180,7 +163,7 @@ public class AutoXRBaseButton : XRBaseInteractable
     {
         base.ProcessInteractable(updatePhase);
 
-        bool toggledAlready = !toggleMode || (_toBeToggledDown == pressed);
+        bool toggledAlready = toggleMode && (_toBeToggledDown == pressed);
 
         if (hoverInteractor != null && !inputDisabled && !toggledAlready)
         {

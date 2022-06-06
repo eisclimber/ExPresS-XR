@@ -60,6 +60,12 @@ public class TutorialButtonQuiz : MonoBehaviour
     private QuizQuestion _currentQuestion;
 
     [SerializeField]
+    private bool _startOnAwake = true;
+
+    [SerializeField]
+    private bool _showResolutionTextPrefix;
+
+    [SerializeField]
     private bool _showQuizCompletedText;
 
     public bool quizUndergoing { get; private set; }
@@ -92,36 +98,72 @@ public class TutorialButtonQuiz : MonoBehaviour
         _nextQuestionIdx = 0;
 
         // Connect Events
+        bool isMultipleChoice = (config.quizMode == QuizMode.MultipleChoice);
+        if (mcConfirmButton != null && isMultipleChoice)
+        {
+            mcConfirmButton.toggleMode = false;
+            mcConfirmButton.OnPressed.AddListener(() => ShowMultipleChoiceFeedback(mcConfirmButton));
+        }
+
         foreach (AutoXRQuizButton button in _buttons)
         {
             if (button != null)
             {
-                button.OnPressed.AddListener(() => ShowFeedback(button));
+                button.toggleMode = isMultipleChoice;
+                if (!isMultipleChoice)
+                {
+                    button.OnPressed.AddListener(() => ShowFeedback(button));
+                }
             }
         }
+        
     }
 
     private void Awake() {
-        if (_config == null || !IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
+        if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
         {
             Debug.LogWarning("Quiz Config not set or invalid.");
         }
-        else
+        else if (_startOnAwake)
         {
-            Setup(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer);
-            DisplayNextQuestion();
+            StartQuiz();
         }
     }
 
     public void StartQuiz()
     {
-        Debug.Log("TODO: Start Quiz");
-        quizUndergoing = true;
+        if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
+        {
+            Debug.LogWarning("Cannot start Quiz. Quiz Config not set or invalid.");
+        }
+        else
+        {
+            // Debug.Log("Starting Quiz");
+            Setup(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer);
+            DisplayNextQuestion();
+            quizUndergoing = true;
+        }
     }
 
     public void StopQuiz()
     {
-        Debug.Log("TODO: Stop Quiz");
+        // Debug.Log("Stopping and clearing Quiz");
+
+        OnQuizCompleted.Invoke();
+
+        for (int i = 0; i < _questions.Length; i++)
+        {
+            if (_buttons[i] != null)
+            {
+                _buttons[i].ClearAnswer();
+            }
+        }
+
+        if (_displayText != null && _showQuizCompletedText)
+        {
+            _displayText.text = "Quiz Completed";
+        }
+
         quizUndergoing = false;
     }
 
@@ -131,20 +173,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     {
         if (_nextQuestionIdx >= _numQuestions)
         {
-            // Only invoke the complete event
-            OnQuizCompleted.Invoke();
-            for (int i = 0; i < _questions.Length; i++)
-            {
-                if (_buttons[i] != null)
-                {
-                    _buttons[i].ClearAnswer();
-                }
-            }
-
-            if (_displayText != null && _showQuizCompletedText)
-            {
-                _displayText.text = "Quiz Completed";
-            }
+            StopQuiz();
         }
         else
         {
@@ -161,7 +190,6 @@ public class TutorialButtonQuiz : MonoBehaviour
                         _currentQuestion.answersObjects[i],
                         _currentQuestion.correctAnswers[i]
                     );
-                    _buttons[i].StartTriggerTimer();
                 }
             }
 
@@ -185,25 +213,46 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
     }
 
+    private void ShowMultipleChoiceFeedback(AutoXRMcConfirmButton button)
+    {
+
+    }
+
+
     private void ShowFeedback(AutoXRQuizButton button)
     {
         OnAnswerGiven.Invoke();
 
+        // If no feedback was given the feedback is already completed
+        if (config.feedbackMode == FeedbackMode.None)
+        {
+            OnFeedbackCompleted();
+            return;
+        }
+
         SetButtonsDisabled(true);
 
         bool showAny = _config.feedbackType == FeedbackType.DifferingTypes;
-        bool showText = _displayText != null && (showAny || _config.feedbackType == FeedbackType.Text);
-        bool showObjecu = _displayText != null && (showAny || _config.feedbackType == FeedbackType.Object);
-        bool showVideo = _displayText != null && (showAny || _config.feedbackType == FeedbackType.Video);
+        bool showAnswerType = config.feedbackType == FeedbackType.ShowAnswers;
+        bool showAnyAnswerType = showAnswerType && config.answerType == AnswerType.DifferingTypes;
+
+        bool showTextFeedback = _displayText != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Text 
+                                                    || (showAnswerType && config.answerType == AnswerType.Text));
+        bool showObjectFeedback = _displayAnchor != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Text 
+                                                    || (showAnswerType && config.answerType == AnswerType.Object));
+        bool showVideoFeedback = _displayPlayer != null && (showAny || _config.feedbackType == FeedbackType.Video);
 
 
-        if (_displayText != null && _config.feedbackType == FeedbackType.Text)
+        if (_displayText != null && showTextFeedback)
         {
-            _displayText.text = "Correct Answer was: \n" + _currentQuestion.GetFeedbackText(config.feedbackMode, config.feedbackType, config.quizMode);
+            string res = (_showResolutionTextPrefix ? "Correct Answer was: \n" : "");
+            _displayText.text = res + _currentQuestion.GetFeedbackText(config.feedbackMode, config.feedbackType, config.answerType, config.quizMode);
         }
-        else if (_displayAnchor != null && _config.feedbackType == FeedbackType.Object) 
+        
+        if (_displayAnchor != null && showObjectFeedback) 
         {
-            GameObject[] feedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode, config.feedbackType, config.quizMode);
+            GameObject[] feedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode, 
+                                                                config.feedbackType, config.answerType, config.quizMode);
             float xOffset = (DISPLAY_OBJECTS_SPACING * (feedbackObjects.Length - 1)) / 2.0f;
 
             foreach(Transform child in _displayAnchor.transform)
@@ -219,10 +268,20 @@ public class TutorialButtonQuiz : MonoBehaviour
                 }
             }
         }
-        else if (_displayPlayer != null && _config.feedbackType == FeedbackType.Video)
-        {
 
+        if (_displayPlayer != null && showVideoFeedback)
+        {
+            // Play clip is exists
+            VideoClip feedbackClip = _currentQuestion.GetFeedbackVideo(config.feedbackType);
+            if (feedbackClip != null)
+            {
+                _displayPlayer.clip = feedbackClip;
+                _displayPlayer.Play();
+                _displayPlayer.loopPointReached += OnFeedbackVideoCompleted;
+                return;
+            }
         }
+
         StartCoroutine("WaitForFeedbackCompletion");
     }
 
@@ -230,7 +289,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     {
         if (_displayPlayer != null)
         {
-            _displayPlayer.loopPointReached -= OnDisplayPlayerLoopPointReached;
+            _displayPlayer.loopPointReached -= OnFeedbackVideoCompleted;
         }
 
         if (_displayAnchor != null)
@@ -266,6 +325,12 @@ public class TutorialButtonQuiz : MonoBehaviour
     public bool IsSetupValid(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer)
     {
+        // Quiz is invalid without a config
+        if (config == null)
+        {
+            return false;
+        }
+
         bool displaysValid = IsDisplayValid(config, displayText, displayAnchor, displayPlayer);
         bool buttonsValid = AreButtonsValid(config, buttons, mcConfirmButton);
         bool questionsValid = AreQuestionsValid(config);
@@ -439,7 +504,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         OnFeedbackCompleted();
     }
 
-    private void OnDisplayPlayerLoopPointReached(VideoPlayer evt) 
+    private void OnFeedbackVideoCompleted(VideoPlayer evt) 
     {
         OnFeedbackCompleted();
     }

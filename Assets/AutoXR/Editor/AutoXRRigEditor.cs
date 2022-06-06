@@ -17,6 +17,8 @@ public class AutoXRRigEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        serializedObject.UpdateIfRequiredOrScript();
+
         EditorGUI.BeginDisabledGroup(true);
         {
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
@@ -103,6 +105,8 @@ public class AutoXRRigEditor : Editor
             EditorGUI.indentLevel--;
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+
+        serializedObject.ApplyModifiedProperties();
     }
 
 
