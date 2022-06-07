@@ -113,7 +113,7 @@ public class ColorSwitcher : MonoBehaviour
     // Private methods for setting materials to allow proper coroutine handling
     private void SetAlternativeMaterialActive()
     {
-        if (alternativeMaterial != null)
+        if (meshRenderer != null && alternativeMaterial != null)
         {
             meshRenderer.material = alternativeMaterial;
         }
@@ -121,18 +121,24 @@ public class ColorSwitcher : MonoBehaviour
 
     private void SetOriginalMaterialActive()
     {
-        meshRenderer.material = originalMaterial;
+        if (meshRenderer != null)
+        {
+            meshRenderer.material = originalMaterial;
+        }
     }
 
     private void SetMaterialToggled()
     {
-        if (meshRenderer.material == alternativeMaterial)
+        if (meshRenderer != null)
         {
-            SetAlternativeMaterialActive();
-        }
-        else
-        {
-            SetOriginalMaterialActive();
+            if (meshRenderer.material == alternativeMaterial)
+            {
+                SetAlternativeMaterialActive();
+            }
+            else
+            {
+                SetOriginalMaterialActive();
+            }
         }
     }
 }

@@ -89,40 +89,37 @@ public class QuizQuestion
                 && (answerType == AnswerType.Text || answerType == AnswerType.DifferingTypes))
         {
             string feedbackString = "";
-
-            if (feedbackMode != FeedbackMode.None && (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes))
+            
+            switch(feedbackMode)
             {
-                switch(feedbackMode)
-                {
-                    case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
-                        for (int i = 0; i < answersTexts.Length; i++)
+                case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
+                    for (int i = 0; i < answersTexts.Length; i++)
+                    {
+                        bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
+                        if (correctAnswers[i] == chooseCorrect && answersTexts[i] != null && answersTexts[i] != "")
                         {
-                            bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
-                            if (correctAnswers[i] == chooseCorrect && answersTexts[i] != null && answersTexts[i] != "")
-                            {
-                                feedbackString += answersTexts[i];
+                            feedbackString += answersTexts[i];
 
-                                if (quizMode == QuizMode.SingleChoice)
-                                {
-                                    return feedbackString;
-                                }
-                            }
-                        }
-                        return feedbackString;
-                    case FeedbackMode.Random:
-                        for (int i = 0; i < numAnswers; i++)
-                        {
-                            if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
+                            if (quizMode == QuizMode.SingleChoice)
                             {
-                                feedbackString += answersTexts[i];
+                                return feedbackString;
                             }
                         }
-                        if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
+                    }
+                    return feedbackString;
+                case FeedbackMode.Random:
+                    for (int i = 0; i < numAnswers; i++)
+                    {
+                        if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
                         {
-                            return answersTexts[Random.Range(0, numAnswers)];
+                            feedbackString += answersTexts[i];
                         }
-                        return feedbackString;
-                }
+                    }
+                    if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
+                    {
+                        return answersTexts[Random.Range(0, numAnswers)];
+                    }
+                    return feedbackString;
             }
         }
         return "";

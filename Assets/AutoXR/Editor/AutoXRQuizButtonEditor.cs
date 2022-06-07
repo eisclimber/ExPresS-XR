@@ -57,12 +57,13 @@ public class AutoXRQuizButtonEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputEnabled"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputDisabled"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnButtonPressReset"), true);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
 
         EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
-
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);

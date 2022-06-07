@@ -53,6 +53,9 @@ public class AutoXRBaseButton : XRBaseInteractable
     public UnityEvent OnTogglePressed;
     public UnityEvent OnToggleReleased;
 
+    // Reset Event
+    public UnityEvent OnButtonPressReset;
+
 
     public AudioClip pressedSound;
     public AudioClip releasedSound;
@@ -102,6 +105,12 @@ public class AutoXRBaseButton : XRBaseInteractable
     protected override void Awake()
     {
         base.Awake();
+
+        if (colliderSize == Vector3.zero)
+        {
+            Debug.LogWarning("Button has no ColliderSize, pressing it won't work.");
+        }
+
         hoverEntered.AddListener(StartPress);
         hoverExited.AddListener(EndPress);
 
@@ -145,6 +154,15 @@ public class AutoXRBaseButton : XRBaseInteractable
             _pressed = false;
             SetYPosition(_yMax);
         }
+    }
+
+    protected void ResetButtonPress()
+    {
+        hoverInteractor = null;
+        previousHandHeight = 0.0f;
+        _pressed = false;
+        SetYPosition(_yMax);
+        OnButtonPressReset.Invoke();
     }
 
     private void Start()

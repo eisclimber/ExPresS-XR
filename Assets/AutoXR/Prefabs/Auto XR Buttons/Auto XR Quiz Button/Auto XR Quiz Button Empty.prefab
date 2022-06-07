@@ -87,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2653103620626110049}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.415, y: 0.9632, z: 0.335}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2653103620855583991}
@@ -174,6 +174,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _inputDisabled: 0
+  _toggleMode: 0
   OnInputDisabled:
     m_PersistentCalls:
       m_Calls: []
@@ -186,6 +187,12 @@ MonoBehaviour:
   OnReleased:
     m_PersistentCalls:
       m_Calls: []
+  OnTogglePressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnToggleReleased:
+    m_PersistentCalls:
+      m_Calls: []
   pressedSound: {fileID: 0}
   releasedSound: {fileID: 0}
   baseAnchor: {fileID: 0}
@@ -194,13 +201,20 @@ MonoBehaviour:
   _yMax: 0.029
   _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
   correctChoice: 0
-  notifyInvertedChoice: 0
+  feedbackDisabled: 0
+  invertedFeedback: 0
   _answerText: 
-  _answerObject: {fileID: 0}
+  _answerPrefab: {fileID: 0}
   OnPressedCorrect:
     m_PersistentCalls:
       m_Calls: []
   OnPressedIncorrect:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMultipleChoiceFeedbackCorrect:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMultipleChoiceFeedbackIncorrect:
     m_PersistentCalls:
       m_Calls: []
   feedbackTextLabel: {fileID: 0}

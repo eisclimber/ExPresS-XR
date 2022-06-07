@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [CustomEditor(typeof(AutoXRMcConfirmButton))]
 public class AutoXRMcConfirmButtonEditor : Editor
@@ -23,13 +24,22 @@ public class AutoXRMcConfirmButtonEditor : Editor
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
         }
         EditorGUI.EndDisabledGroup();
-
+        
         EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputDisabled"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_toggleMode"), true);
         EditorGUI.indentLevel--;
-        
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Answer Buttons", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerButtons"), true);
+        EditorGUI.indentLevel--;
+
+        EditorGUILayout.Space();
+
         EditorGUILayout.LabelField("Local Push Limits", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_yMin"), true);
@@ -57,9 +67,35 @@ public class AutoXRMcConfirmButtonEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputEnabled"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnInputDisabled"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnButtonPressReset"), true);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);
+        EditorGUI.BeginDisabledGroup(targetScript.feedbackDisabled);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("invertedFeedback"), true);
+        EditorGUI.EndDisabledGroup();
+        EditorGUI.indentLevel--;
+
+        EditorGUILayout.Space();
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerPrefab"), true);
+        EditorGUI.indentLevel--;
+        
+        EditorGUILayout.Space();
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedCorrect"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedIncorrect"), true);
+        EditorGUI.indentLevel--;
+
 
         _showObjectRefs = EditorGUILayout.BeginFoldoutHeaderGroup(_showObjectRefs, "Game Object References");
 
@@ -70,6 +106,7 @@ public class AutoXRMcConfirmButtonEditor : Editor
 
             targetScript.baseAnchor = (Transform)EditorGUILayout.ObjectField("Base Anchor", targetScript.baseAnchor, typeof(Transform), true);
             targetScript.pushAnchor = (Transform)EditorGUILayout.ObjectField("Push Anchor", targetScript.pushAnchor, typeof(Transform), true);
+            targetScript.feedbackTextLabel = (Text)EditorGUILayout.ObjectField("Feedback Text Label", targetScript.feedbackTextLabel, typeof(Text), true);
 
             EditorGUI.indentLevel--;
         }

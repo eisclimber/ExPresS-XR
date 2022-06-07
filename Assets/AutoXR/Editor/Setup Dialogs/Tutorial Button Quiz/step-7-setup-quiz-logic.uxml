@@ -9,7 +9,7 @@
             <ui:Label text="Answers" display-tooltip-when-elided="true" name="answer-label" style="margin-left: 0; flex-grow: 1; -unity-font-style: bold;" />
             <ui:Label text="Correct?" display-tooltip-when-elided="true" name="correct-label" style="width: 75px; min-width: 75px; margin-right: 20px; -unity-text-align: middle-center; -unity-font-style: bold;" />
         </ui:VisualElement>
-        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" show-vertical-scroller="true" name="questions" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; flex-grow: 1; background-color: rgb(51, 51, 51); height: 200px;" />
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" show-vertical-scroller="true" name="questions" horizontal-page-size="3" vertical-page-size="3" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; flex-grow: 1; background-color: rgb(51, 51, 51); height: 200px;" />
         <ui:VisualElement name="add-button-container" style="flex-direction: row-reverse; margin-right: 7px; min-height: initial; margin-bottom: 10px;">
             <ui:Button text="+" display-tooltip-when-elided="true" name="add-item-button" style="flex-direction: row-reverse; width: 24px; height: 24px;" />
             <ui:Button text="-" display-tooltip-when-elided="true" name="remove-item-button" style="flex-direction: row-reverse; width: 24px; height: 24px;" />

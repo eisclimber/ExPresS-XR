@@ -3,9 +3,9 @@
         <ui:Label text="1" display-tooltip-when-elided="true" name="number-label" style="-unity-text-align: middle-center; font-size: 24px; margin-left: 20px; margin-right: 20px;" />
         <ui:VisualElement name="question-content" style="flex-grow: 1;">
             <ui:VisualElement name="question-row">
-                <uie:ObjectField label="Question:" name="question-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 78px; display: flex;" />
-                <uie:ObjectField label="Question:" name="question-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 78px; display: none;" />
-                <ui:TextField picking-mode="Ignore" label="Question:" text="Enter Question..." name="question-text-field" style="display: none; border-right-width: 78px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
+                <uie:ObjectField label="Question:" name="question-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 75px; display: flex;" />
+                <uie:ObjectField label="Question:" name="question-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 75px; display: none;" />
+                <ui:TextField picking-mode="Ignore" label="Question:" text="Enter Question..." name="question-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
             </ui:VisualElement>
             <ui:VisualElement name="answers" style="flex-grow: 1; margin-top: 4px;">
                 <ui:VisualElement name="answer-1" style="flex-direction: row;">
@@ -38,9 +38,9 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="feedback" style="margin-top: 4px;">
-                <uie:ObjectField label="Feedback:" name="feedback-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 78px; display: flex;" />
-                <uie:ObjectField label="Question:" name="feedback-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 78px; display: none;" />
-                <ui:TextField picking-mode="Ignore" label="Question:" text="Enter Question..." name="feedback-text-field" style="display: none; border-right-width: 78px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
+                <uie:ObjectField label="Feedback:" name="feedback-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 75px; display: flex;" />
+                <uie:ObjectField label="Question:" name="feedback-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 75px; display: none;" />
+                <ui:TextField picking-mode="Ignore" label="Question:" text="Enter Question..." name="feedback-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

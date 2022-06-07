@@ -81,6 +81,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     {
         // Set values
         this.config = config;
+
         _buttons = buttons;
         _mcConfirmButton = mcConfirmButton;
         _displayText = displayText;
@@ -99,10 +100,17 @@ public class TutorialButtonQuiz : MonoBehaviour
 
         // Connect Events
         bool isMultipleChoice = (config.quizMode == QuizMode.MultipleChoice);
+        bool invertedFeedback = (config.feedbackMode == FeedbackMode.AlwaysWrong);
+        bool feedbackDisabled = (config.feedbackMode == FeedbackMode.None
+                            || config.feedbackMode == FeedbackMode.Random);
+
         if (mcConfirmButton != null && isMultipleChoice)
         {
             mcConfirmButton.toggleMode = false;
-            mcConfirmButton.OnPressed.AddListener(() => ShowMultipleChoiceFeedback(mcConfirmButton));
+            mcConfirmButton.feedbackDisabled = feedbackDisabled;
+            mcConfirmButton.invertedFeedback = invertedFeedback;
+            mcConfirmButton.answerButtons = _buttons;
+            mcConfirmButton.OnPressed.AddListener(() => ShowFeedback());
         }
 
         foreach (AutoXRQuizButton button in _buttons)
@@ -110,13 +118,15 @@ public class TutorialButtonQuiz : MonoBehaviour
             if (button != null)
             {
                 button.toggleMode = isMultipleChoice;
+                button.feedbackDisabled = feedbackDisabled;
+                button.invertedFeedback = invertedFeedback;
+
                 if (!isMultipleChoice)
                 {
-                    button.OnPressed.AddListener(() => ShowFeedback(button));
+                    button.OnPressed.AddListener(() => ShowFeedback());
                 }
             }
         }
-        
     }
 
     private void Awake() {
@@ -151,7 +161,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
         OnQuizCompleted.Invoke();
 
-        for (int i = 0; i < _questions.Length; i++)
+        for (int i = 0; i < _buttons.Length; i++)
         {
             if (_buttons[i] != null)
             {
@@ -181,7 +191,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             
             SetButtonsDisabled(false);
 
-            for (int i = 0; i < _questions.Length; i++)
+            for (int i = 0; i < _buttons.Length; i++)
             {
                 if (_buttons[i] != null)
                 {
@@ -213,13 +223,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
     }
 
-    private void ShowMultipleChoiceFeedback(AutoXRMcConfirmButton button)
-    {
-
-    }
-
-
-    private void ShowFeedback(AutoXRQuizButton button)
+    private void ShowFeedback()
     {
         OnAnswerGiven.Invoke();
 
@@ -317,6 +321,11 @@ public class TutorialButtonQuiz : MonoBehaviour
             {
                 button.inputDisabled = disabled;
             }
+        }
+
+        if (_mcConfirmButton != null)
+        {
+            _mcConfirmButton.inputDisabled = disabled;
         }
     }
 

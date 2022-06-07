@@ -320,16 +320,24 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
                 // Fill Answers
                 int counter = 0;
-                questionItem.Query<ObjectField>("answer-object-field").ForEach((objField) =>
+                questionItem.Query<ObjectField>("answer-object-field").ForEach((ObjectField objField) =>
                 {
                     objField.value = question.answersObjects[counter];
                     counter++;
                 });
 
                 counter = 0;
-                questionItem.Query<TextField>("answer-text-field").ForEach((objField) =>
+                questionItem.Query<TextField>("answer-text-field").ForEach((TextField textField) =>
                 {
-                    objField.value = question.answersTexts[counter];
+                    textField.value = question.answersTexts[counter];
+                    counter++;
+                });
+
+                // Fill Answers
+                counter = 0;
+                questionItem.Query<Toggle>("correct-toggle").ForEach((Toggle toggle) => 
+                {
+                    toggle.value = question.correctAnswers[counter];
                     counter++;
                 });
 

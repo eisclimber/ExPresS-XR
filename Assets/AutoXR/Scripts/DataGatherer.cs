@@ -12,7 +12,11 @@ public class DataGatherer : MonoBehaviour
 {
     [SerializeField]
     private DataGathererExportType _dataExportType;
-    public DataGathererExportType dataExportType { get; set; }
+    public DataGathererExportType dataExportType
+    { 
+        get => _dataExportType;
+        set => _dataExportType = value; 
+    }
 
 
     [SerializeField]
@@ -94,12 +98,12 @@ public class DataGatherer : MonoBehaviour
     public void ExportNewCSVLine()
     {
         string data = GetExportCSVLine();
-        if (_dataExportType == DataGathererExportType.Http || _dataExportType == DataGathererExportType.Both)
+        if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
         {
             Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
             PostHttpData(httpExportPath, data);
         }
-        if (_dataExportType == DataGathererExportType.Local || _dataExportType == DataGathererExportType.Both)
+        if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
         {
             Debug.Log("Saving: " + data + " at " + GetLocalSavePath());
             outputWriter.WriteLine(data);
@@ -144,7 +148,6 @@ public class DataGatherer : MonoBehaviour
     {
         for (int i = 0; i < _dataBindings.Count; i++)
         {
-
             if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
             {
                 Debug.LogWarning(String.Format("The following binding is invalid and will always be empty: {0}", 
@@ -155,14 +158,20 @@ public class DataGatherer : MonoBehaviour
 
     private void SetupExport()
     {
-        if (_dataExportType == DataGathererExportType.Local || _dataExportType == DataGathererExportType.Both)
+        if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
         {
             StartCoroutine(PostHttpData(httpExportPath, GetExportCSVHeader()));
         }
 
-        if (_dataExportType == DataGathererExportType.Local || _dataExportType == DataGathererExportType.Both)
+        if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
         {
             string path = GetLocalSavePath();
+
+            if (path == "" || path == ".txt" || path == ".csv" || path == ".log")
+            {
+                Debug.LogWarningFormat("Local Export Path not properly specified: '{0}'", path);
+            }
+
             try
             {
                 // Throws an error if invalid
@@ -187,7 +196,7 @@ public class DataGatherer : MonoBehaviour
             } 
             catch (Exception e)
             {
-                Debug.LogError("Export path '" + path + "' is invalid: " + e.Message);
+                Debug.LogError(e.Message);
             }
         }
     }

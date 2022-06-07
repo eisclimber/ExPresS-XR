@@ -48,8 +48,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
     }
 
     public UnityEvent OnPressedCorrect;
-    public UnityEvent OnPressedIncorrect;
-    
+    public UnityEvent OnPressedIncorrect;    
 
     public Text feedbackTextLabel;
 
@@ -107,19 +106,22 @@ public class AutoXRQuizButton : AutoXRBaseButton
     {
         answerText = "";
         correctChoice = false;
-        if (answerPrefab)
+        if (answerPrefab != null)
         {
             Destroy(answerPrefab);
             answerPrefab = null;
         }
+
+        ResetButtonPress();
     }
 
 
-    private void NotifyChoice()
+    protected virtual void NotifyChoice()
     {
         if (!feedbackDisabled && !toggleMode)
         {
-            if (correctChoice || (!correctChoice && invertedFeedback))
+            // (no invertedFeedback and correct) or (inverted and not correct)
+            if (correctChoice != invertedFeedback)
             {
                 OnPressedCorrect.Invoke();
             }
@@ -128,5 +130,19 @@ public class AutoXRQuizButton : AutoXRBaseButton
                 OnPressedIncorrect.Invoke();
             }
         }
+    }
+
+    // Used to get feedback and 
+    public bool GiveMultipleChoiceFeedback()
+    {
+        // Buttons must be in toggle mode for MC
+        if (!toggleMode)
+        {
+            return false;
+        }
+
+        bool correctlyToggled = (pressed == correctChoice);
+
+        return correctlyToggled;
     }
 }
