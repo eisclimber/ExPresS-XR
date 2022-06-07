@@ -15,6 +15,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     const string QUESTION_ITEM_PATH = "Assets/AutoXR/Editor/Setup Dialogs/Tutorial Button Quiz/question-item.uxml";
 
     const string CONFIG_SAVE_PATH = "Assets/AutoXR/ExportAssets/QuizSetupConfig.asset";
+    const string RENDER_TEXTURE_SAVE_PATH = "Assets/Runtime Resources/QuizRenderTexture.asset";
 
     const float QUIZ_BUTTON_SPACING = 0.3f;
 
@@ -521,8 +522,9 @@ class TutorialButtonQuizDialog : SetupDialogBase
             }
 
             // Answers
-            bool showAnswerObjectField = (_quizConfig.answerType == AnswerType.Object);
-            bool showAnswerTextField = (_quizConfig.answerType == AnswerType.Text);
+            bool showAnyAnswerField = (_quizConfig.answerType == AnswerType.DifferingTypes);
+            bool showAnswerObjectField = showAnyAnswerField ||(_quizConfig.answerType == AnswerType.Object);
+            bool showAnswerTextField = showAnyAnswerField || (_quizConfig.answerType == AnswerType.Text);
             questionItem.Query<ObjectField>("answer-object-field").ForEach((objField) =>
             {
                 objField.style.display = (showAnswerObjectField ? DisplayStyle.Flex : DisplayStyle.None);
@@ -766,21 +768,29 @@ class TutorialButtonQuizDialog : SetupDialogBase
                 videoPlayerComp.playOnAwake = false;
 
                 GameObject videoDisplayGo = new GameObject("Video Display");
-                videoDisplayGo.AddComponent<UnityEngine.UI.RawImage>();
+                UnityEngine.UI.RawImage videoDisplayComp = videoDisplayGo.AddComponent<UnityEngine.UI.RawImage>();
 
                 videoPlayerGo.transform.SetParent(canvasGo.transform);
                 videoDisplayGo.transform.SetParent(canvasGo.transform);
 
                 _videoPlayerField.value = videoPlayerGo;
 
-                Debug.LogWarning("Video Player and Video Display were created. Be sure to set up the Video Player as described in the Tutorial!");
+                // Create & saveRender texture
+                RenderTexture renderTexture = new RenderTexture(1080, 720, 16, RenderTextureFormat.ARGB32);
+
+                videoPlayerComp.targetTexture = renderTexture;
+                videoDisplayComp.texture = renderTexture;
+
+                string savePath = AssetDatabase.GenerateUniqueAssetPath(RENDER_TEXTURE_SAVE_PATH);
+                AssetDatabase.CreateAsset(renderTexture, savePath);
+
+                Debug.LogWarningFormat("Render texture generated and saved to '{0}'.", savePath);
             }
             canvasComp.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
 
             GameObjectUtility.EnsureUniqueNameForSibling(canvasGo);
             Undo.RegisterCreatedObjectUndo(canvasGo, "Create Questioning Display Canvas");
         }
-
 
         if (needsGameObjectAnchor)
         {

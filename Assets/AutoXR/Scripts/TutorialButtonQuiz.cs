@@ -351,21 +351,22 @@ public class TutorialButtonQuiz : MonoBehaviour
     private bool IsDisplayValid(QuizSetupConfig config, TMP_Text displayLabel, GameObject displayAnchor, VideoPlayer displayPlayer)
     {
         bool needsAllDisplays = (config.questionType == QuestionType.DifferingTypes || config.feedbackType == FeedbackType.DifferingTypes);
+        string errorMessageAppendix = (needsAllDisplays ? " QuestionType or FeedbackType is set to DifferingTypes so all Displays must be provided." : "");
 
         if (displayLabel == null && (needsAllDisplays || config.questionType == QuestionType.Text || config.feedbackType == FeedbackType.Text))
         {
-            Debug.LogError("Config requires Label-Reference but was null.");
+            Debug.LogError("Config requires Label-Reference but was null." + errorMessageAppendix);
             return false;
         }
 
         else if (displayAnchor == null && (needsAllDisplays || config.questionType == QuestionType.Object || config.feedbackType == FeedbackType.Object))
         {
-            Debug.LogError("Config requires GameObject-Reference but was null.");
+            Debug.LogError("Config requires GameObject-Reference but was null." + errorMessageAppendix);
             return false;
         }
         else if (displayPlayer == null && (needsAllDisplays || config.questionType == QuestionType.Video || config.feedbackType == FeedbackType.Video))
         {
-            Debug.LogError("Config requires VideoPlayer-Reference but was null.");
+            Debug.LogError("Config requires VideoPlayer-Reference but was null." + errorMessageAppendix);
             return false;
         }
         return true;
