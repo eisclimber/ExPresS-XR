@@ -29,7 +29,6 @@ public class QuizQuestion
     public GameObject questionObject;
     public string questionText;
 
-    public int numAnswers;
     public GameObject[] answersObjects;
     public string[] answersTexts;
 
@@ -53,15 +52,6 @@ public class QuizQuestion
 
         this.answersObjects = answersObjects;
         this.answersTexts = answersTexts;
-
-        numAnswers = 0;
-        for (int i = 0; i < TutorialButtonQuiz.NUM_ANSWERS; i++)
-        {
-            if (answersObjects[i] != null || (answersTexts[i] != null && answersTexts[i] != ""))
-            {
-                numAnswers = i + 1;
-            }
-        }
 
         this.correctAnswers = correctAnswers;
 
@@ -108,7 +98,8 @@ public class QuizQuestion
                     }
                     return feedbackString;
                 case FeedbackMode.Random:
-                    for (int i = 0; i < numAnswers; i++)
+                    int numValidAnswer = GetNumValidAnswers();
+                    for (int i = 0; i < numValidAnswer; i++)
                     {
                         if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
                         {
@@ -117,7 +108,7 @@ public class QuizQuestion
                     }
                     if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
                     {
-                        return answersTexts[Random.Range(0, numAnswers)];
+                        return answersTexts[Random.Range(0, numValidAnswer)];
                     }
                     return feedbackString;
             }
@@ -167,7 +158,7 @@ public class QuizQuestion
                     }
                     break;
                 case FeedbackMode.Random:
-                    for (int i = 0; i < numAnswers; i++)
+                    for (int i = 0; i < GetNumValidAnswers(); i++)
                     {
                         if (Random.Range(0, 1) < 0.5 && answersObjects[i] != null)
                         {
@@ -186,6 +177,19 @@ public class QuizQuestion
             }
         }
         return new GameObject[0];
+    }
+
+    private int GetNumValidAnswers()
+    {
+        int numAnswers = 0;
+        for (int i = 0; i < TutorialButtonQuiz.NUM_ANSWERS; i++)
+        {
+            if (answersObjects[i] != null || (answersTexts[i] != null && answersTexts[i] != ""))
+            {
+                numAnswers = i + 1;
+            }
+        }
+        return numAnswers;
     }
 
     public VideoClip GetFeedbackVideo(FeedbackType feedbackType)

@@ -155,6 +155,14 @@ public static class AutoXRCreationUtils
         Transform parentOfNewGameObject = GetContextTransform(menuCommand);
         GameObject go = CreateAndPlaceGameObject("Head Gaze Reticle", parentOfNewGameObject);
     }
+    
+    // UI
+    [MenuItem("GameObject/AutoXR/UI/World Space Image")]
+    static void CreateWorldSpaceImage(MenuCommand menuCommand)
+    {
+        Transform parentOfNewGameObject = GetContextTransform(menuCommand);
+        GameObject go = CreateAndPlaceGameObject("World Space Image", parentOfNewGameObject);
+    }
 
     // Keyboards
     [MenuItem("GameObject/AutoXR/UI/Keyboard - German")]
