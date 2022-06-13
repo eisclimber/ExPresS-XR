@@ -75,12 +75,6 @@ public class DataGatheringBinding
     }
 
 
-    // Validation
-    private bool IsCurrentBindingValid()
-    {
-        return (_targetObject != null && _targetComponent != null && _targetMemberInfo != null);
-    }
-
     private bool IsComponentMatch(Component component, string requiredFullName)
     {
         return (component != null && component.GetType().FullName == requiredFullName);
@@ -89,7 +83,7 @@ public class DataGatheringBinding
 
     public string GetBindingValue()
     {
-        if (IsCurrentBindingValid())
+        if (ValidateBinding())
         {
             object result = null;
             switch (_targetMemberInfo.MemberType)
