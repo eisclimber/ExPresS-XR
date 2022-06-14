@@ -48,7 +48,7 @@ public static class AutoXRSceneUtils
 
     private static void OneShotAddAutoXRRigCallback(UnityEngine.SceneManagement.Scene scene, UnityEditor.SceneManagement.OpenSceneMode mode)
     {
-        GameObject rig = AutoXRCreationUtils.CreateAndPlaceGameObject(_autoXRRigPrefabName, null);
+        GameObject rig = AutoXRCreationUtils.InstantiateAndPlacePrefab(_autoXRRigPrefabName, null);
         if (rig == null)
         {
             Debug.LogWarning("There is currently no AutoXRRig in the scene. Please create one via the hierarchy.");

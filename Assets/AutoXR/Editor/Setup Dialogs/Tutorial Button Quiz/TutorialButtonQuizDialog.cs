@@ -73,6 +73,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private ObjectField _textLabelField;
     private ObjectField _gameObjectField;
     private ObjectField _videoPlayerField;
+    private ObjectField _afterQuizMenuField;
     private Button _createQuestioningDisplayButton;
     private Button _setupQuestioningDisplayButton;
 
@@ -155,7 +156,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _feedbackTypeField = _step2Container.Q<EnumField>("feedback-type");
         _feedbackTypeField.RegisterCallback<ChangeEvent<System.Enum>>(FeedbackTypeChangedCallback);
         _setupQuizButton = _step2Container.Q<Button>("setup-quiz-type-button");
-        _setupQuizButton.clickable.clicked += SetupQuizType;
+        _setupQuizButton.clickable.clicked += SetupQuizConfig;
 
         // Setup step 5
         _button1Field = _step5Container.Q<ObjectField>("button-field-1");
@@ -173,6 +174,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _textLabelField = _step6Container.Q<ObjectField>("text-label-field");
         _gameObjectField = _step6Container.Q<ObjectField>("game-object-field");
         _videoPlayerField = _step6Container.Q<ObjectField>("video-player-field");
+        _afterQuizMenuField = _step6Container.Q<ObjectField>("after-quiz-menu-field");
         _createQuestioningDisplayButton = _step6Container.Q<Button>("create-questioning-display-button");
         _createQuestioningDisplayButton.clickable.clicked += CreateQuestioningDisplays;
         _setupQuestioningDisplayButton = _step6Container.Q<Button>("setup-questioning-display-button");
@@ -203,7 +205,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Setup step 9
         _createDataGathererButton = _step9Container.Q<Button>("create-data-gatherer-button");
-        _createDataGathererButton.clickable.clicked += () => { AutoXRCreationUtils.CreateDataGatherer(null); };
+        _createDataGathererButton.clickable.clicked += () => { AutoXRMenuCreationUtils.CreateDataGatherer(null); };
 
         // Bind remaining UI Elements
         base.BindUiElements();
@@ -388,7 +390,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     // Setup functions
 
-    private void SetupQuizType()
+    private void SetupQuizConfig()
     {
         currentStep++;
         SetStepButtonsEnabled(true, 3, 5);
@@ -436,7 +438,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         if (CreateQuiz(_quizConfig, buttons, (AutoXRMcConfirmButton) _mcConfirmButtonField.value,
                         (TMP_Text)_textLabelField.value, (GameObject)_gameObjectField.value,
-                        (VideoPlayer)_videoPlayerField.value))
+                        (VideoPlayer)_videoPlayerField.value, (Canvas)_afterQuizMenuField.value))
         {
             // Enable step 7-9 if setup successfully
             SetStepButtonsEnabled(true, 7, 9);
@@ -735,6 +737,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
                                 && _gameObjectField.value == null;
         bool needsVideoPlayer = _videoPlayerField.style.display == DisplayStyle.Flex
                                 && _videoPlayerField.value == null;
+        bool needsAfterQuizMenu = _afterQuizMenuField.value == null;
 
         if (needsText || needsVideoPlayer)
         {
@@ -801,21 +804,30 @@ class TutorialButtonQuizDialog : SetupDialogBase
             GameObjectUtility.EnsureUniqueNameForSibling(anchor);
             Undo.RegisterCreatedObjectUndo(anchor, "Create Questioning Display GameObject Anchor");
         }
+
+        if (needsAfterQuizMenu)
+        {
+            GameObject go = AutoXRCreationUtils.InstantiateAndPlacePrefab(AutoXRCreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
+
+            _afterQuizMenuField.value = go.GetComponent<Canvas>();
+
+            Undo.RegisterCreatedObjectUndo(go, "Create After Quiz Menu");
+        }
     }
 
     public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
-                            TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
+                            TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer, Canvas _afterQuizDialog)
     {
         GameObject quizGo = new GameObject("Tutorial Button Quiz");
         TutorialButtonQuiz quiz = quizGo.AddComponent<TutorialButtonQuiz>();
 
-        if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer))
+        if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, _afterQuizDialog))
         {
             Object.DestroyImmediate(quizGo);
             return false;
         }
 
-        quiz.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer);
+        quiz.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, _afterQuizDialog);
 
         Undo.RegisterCreatedObjectUndo(quizGo, "Create Tutorial Button Quiz Game Object");
         return true;

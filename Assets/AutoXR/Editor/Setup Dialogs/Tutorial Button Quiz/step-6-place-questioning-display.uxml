@@ -6,12 +6,13 @@
             <uie:ObjectField label="Text Label:" name="text-label-field" type="TMPro.TMP_Text, Unity.TextMeshPro" style="padding-top: 2px; padding-bottom: 2px;" />
             <uie:ObjectField label="Game Object Field:" name="game-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="padding-top: 2px; padding-bottom: 2px;" />
             <uie:ObjectField label="Video Player:" type="UnityEngine.Video.VideoPlayer, UnityEngine.VideoModule" name="video-player-field" style="padding-top: 2px; padding-bottom: 2px;" />
+            <uie:ObjectField label="(Opt.) After Quiz Menu:" type="UnityEngine.Canvas, UnityEngine.UIModule" name="after-quiz-menu-field" style="padding-top: 2px; padding-bottom: 2px; display: flex;" />
             <ui:Button text="Create Questioning Displays" display-tooltip-when-elided="true" name="create-questioning-display-button" style="margin-top: 10px; margin-bottom: 10px; width: auto; margin-left: 20px; margin-right: 20px;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
         <ui:Label text="Setup failed. Be sure to connect the buttons amd add at least 2 questions!" display-tooltip-when-elided="true" name="questioning-display-failure-label" style="flex-grow: 1; margin-right: 0; margin-left: 0; color: rgb(255, 0, 0); -unity-font-style: bold; -unity-text-align: upper-center; display: none;" />
         <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
-        <ui:Button text="Next" display-tooltip-when-elided="true" name="setup-questioning-display-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="setup-questioning-display-button" label="After Video Quiz" />
     </ui:VisualElement>
 </ui:UXML>
