@@ -94,6 +94,7 @@ public class QuizQuestion
                             {
                                 return feedbackString;
                             }
+                            feedbackString += "\n";
                         }
                     }
                     return feedbackString;
@@ -103,7 +104,7 @@ public class QuizQuestion
                     {
                         if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
                         {
-                            feedbackString += answersTexts[i];
+                            feedbackString += answersTexts[i] + "\n";
                         }
                     }
                     if (feedbackString == "" || quizMode == QuizMode.SingleChoice)

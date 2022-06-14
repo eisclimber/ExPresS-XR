@@ -741,7 +741,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         if (needsText || needsVideoPlayer)
         {
-
             GameObject canvasGo = new GameObject("Questioning Display Canvas");
             canvasGo.AddComponent<Canvas>();
             canvasGo.AddComponent<UnityEngine.UI.GraphicRaycaster>();
@@ -750,7 +749,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
             Canvas canvasComp = canvasGo.GetComponent<Canvas>();
             canvasComp.renderMode = RenderMode.WorldSpace;
             
-
             if (needsText)
             {
                 GameObject textLabel = new GameObject("Questioning Display Text");
