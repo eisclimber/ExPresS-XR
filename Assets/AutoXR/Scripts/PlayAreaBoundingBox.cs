@@ -13,7 +13,7 @@ public class PlayAreaBoundingBox : MonoBehaviour
     public bool useCustomBoundingBoxMaterial
     {
         get => _useCustomBoundingBoxMaterial;
-        set 
+        set
         {
             _useCustomBoundingBoxMaterial = value;
             UpdateBoundarySize();
@@ -21,17 +21,20 @@ public class PlayAreaBoundingBox : MonoBehaviour
         }
     }
 
-    private void Awake() {
+    private void Awake()
+    {
         GetComponent<MeshRenderer>().enabled = useCustomBoundingBoxMaterial;
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         InvertMesh();
         UpdateBoundarySize();
     }
 
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         // Disable/Stop input System
         List<XRInputSubsystem> inputSubsystems = new List<XRInputSubsystem>();
         SubsystemManager.GetInstances<XRInputSubsystem>(inputSubsystems);
@@ -70,15 +73,15 @@ public class PlayAreaBoundingBox : MonoBehaviour
     }
 
     private void SetSizeWithBoundaryPoints(List<Vector3> boundaryPoints)
-    {      
+    {
         if (boundaryPoints.Count < 2)
         {
             return;
         }
         Vector3 minPoint = boundaryPoints[0];
         Vector3 maxPoint = boundaryPoints[0];
-        
-        foreach(Vector3 p in boundaryPoints)
+
+        foreach (Vector3 p in boundaryPoints)
         {
             minPoint.Set(Mathf.Min(minPoint.x, p.x), Mathf.Min(minPoint.y, p.y), Mathf.Min(minPoint.z, p.z));
             maxPoint.Set(Mathf.Max(maxPoint.x, p.x), Mathf.Max(maxPoint.y, p.y), Mathf.Max(maxPoint.z, p.z));
@@ -112,7 +115,7 @@ public class PlayAreaBoundingBox : MonoBehaviour
         for (int i = 0; i < mesh.subMeshCount; i++)
         {
             int[] triangles = mesh.GetTriangles(i);
-            for (int j = 0; j < triangles.Length; j += 3) 
+            for (int j = 0; j < triangles.Length; j += 3)
             {
                 //swap order of tri vertices
                 int temp = triangles[j];
@@ -126,9 +129,12 @@ public class PlayAreaBoundingBox : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        // Draw a semitransparent red cube at the transforms position
-        Gizmos.color = new Color(1, 0, 0, 0.5f);
-        Gizmos.DrawWireCube(transform.position, transform.localScale);
+        if (enabled)
+        {
+            // Draw a semitransparent red cube at the transforms position
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawWireCube(transform.position, transform.localScale);
+        }
     }
 
     void OnDrawGizmosSelected()

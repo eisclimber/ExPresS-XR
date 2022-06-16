@@ -529,6 +529,10 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             // Check question
             QuizQuestion question = config.questions[i];
+            
+            // Ensure the correct idx for each question
+            question.itemIdx = i;
+
             if (config.questionType == QuestionType.Object && question.questionObject == null)
             {
                 Debug.LogErrorFormat("Question {0}'s has QuestionType Object but the object was null.", i + 1);
@@ -554,13 +558,13 @@ public class TutorialButtonQuiz : MonoBehaviour
                 for (int j = 0; j < Mathf.Min((int) config.answersAmount + 1, NUM_ANSWERS); j++)
                 {
                     // Check Answer Types
-                    if (config.answerType == AnswerType.Object && question.answerObjects[j] == null)
+                    if (config.answerType == AnswerType.Object && (question.answerObjects.Length <= j || question.answerObjects[j] == null))
                     {
                         Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Object but answerObject is null.", i, j);
                         return false;
                     }
 
-                    if (config.answerType == AnswerType.Text && (question.answerTexts == null || question.answerTexts[j] == ""))
+                    if (config.answerType == AnswerType.Text && (question.answerTexts == null || question.answerTexts.Length <= j || question.answerTexts[j] == ""))
                     {
                         Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Text but answerText is null or empty.", i, j);
                         return false;

@@ -16584,13 +16584,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dataExportType: 0
-  localExportPath: DataGathererValues.cv
+  localExportPath: DataGathererValues.csv
   httpExportPath: 
   inputActionTrigger: []
   _periodicExportEnabled: 0
   _periodicExportTime: 1
   _includeTimeStamp: 1
-  _dataBindings: []
+  _dataBindings:
+  - exportColumnName: 
+    _targetObject: {fileID: 0}
+    _targetComponent: {fileID: 0}
+    _memberNameList: []
+    _prettyMemberNameList: []
+    _memberIdx: 0
 --- !u!4 &1451104188
 Transform:
   m_ObjectHideFlags: 0
@@ -22741,7 +22747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2089638936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.04, y: 1.18, z: 1.06}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 161978785}
@@ -23691,12 +23697,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035720620137249699}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59bebd72e682be142a10263c84bee4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _useCustomBoundingBoxMaterial: 1
+  _useCustomBoundingBoxMaterial: 0
 --- !u!23 &2035720620137249697
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -23704,7 +23710,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035720620137249699}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -29900,8 +29906,8 @@ MonoBehaviour:
   _teleportHands: -1
   _headCollisionEnabled: 1
   _showCollisionVignetteEffect: 0
-  _showPlayAreaBounds: 1
-  _useCustomPlayAreaMaterial: 1
+  _showPlayAreaBounds: 0
+  _useCustomPlayAreaMaterial: 0
   _headGazeCanReselect: 1
   _headGazeTimeToSelect: 1
   _headGazeReticle: {fileID: 7962031181988260944}

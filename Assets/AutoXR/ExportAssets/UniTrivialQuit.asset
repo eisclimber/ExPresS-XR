@@ -13,43 +13,31 @@ MonoBehaviour:
   m_Name: UniTrivialQuit
   m_EditorClassIdentifier: 
   quizMode: 0
-  questionOrder: 0
+  questionOrdering: 1
   answersAmount: 4
   questionType: 2
   answerType: 1
   feedbackMode: 1
   feedbackType: 0
   questions:
-  - itemId: 0
+  - itemIdx: 0
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: "When was the Unitversity T\xFCbingen founded? "
-    numAnswers: 2
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - 1477
     - 1404
-    - 
-    - 
     correctAnswers: 01000000
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemId: 1
+  - itemIdx: 1
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: "What subject is not taught in T\xFCbingen?"
-    numAnswers: 4
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - Computer Science
     - Law
     - Architecture
@@ -58,17 +46,12 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemId: 2
+  - itemIdx: 2
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: After which metal is one of the buildings named?
-    numAnswers: 4
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - Gold (Gold)
     - Silver (Silber)
     - Copper (Kupfer)
@@ -77,97 +60,67 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemId: 3
+  - itemIdx: 3
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: "How many Nobel laureates are from T\xFCbingen?"
-    numAnswers: 3
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - 11
     - 1
     - 26
-    - 
     correctAnswers: 01000000
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemId: 4
+  - itemIdx: 4
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: "In which state is the Univerity T\xFCbingen located?"
-    numAnswers: 3
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - Saarland
     - "Baden-W\xFCrtemberg"
     - Sachen
-    - 
     correctAnswers: 00010000
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemId: 5
+  - itemIdx: 5
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: "T\xFCbingen is one of how many \"Eliteuniversit\xE4ten\" in Germany?"
-    numAnswers: 2
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - 5
     - 11
-    - 
-    - 
     correctAnswers: 00010000
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemId: 6
+  - itemIdx: 6
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: "How many Partner-Universities does T\xFCbingen have?"
-    numAnswers: 3
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - 8
     - 137
-    - 587
-    - 
+    - 584
     correctAnswers: 00000100
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemId: 7
+  - itemIdx: 7
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: What was the title of Karl Eugen one of the namesake of the university?
-    numAnswers: 2
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
+    answerObjects: []
+    answerTexts:
     - Bishop (Bischoff)
     - Duke (Herzog)
-    - 
-    - 
+    - Emperor (Kaiser)
+    - "King (K\xF6nig)"
     correctAnswers: 00010000
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
