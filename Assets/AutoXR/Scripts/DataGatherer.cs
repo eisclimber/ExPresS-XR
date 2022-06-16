@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 public class DataGatherer : MonoBehaviour
 {
-    const string DEFAULT_EXPORT_FILE_NAME = "DataGathererValues.cv";
+    const string DEFAULT_EXPORT_FILE_NAME = "DataGathererValues.csv";
 
     [SerializeField]
     private DataGathererExportType _dataExportType;

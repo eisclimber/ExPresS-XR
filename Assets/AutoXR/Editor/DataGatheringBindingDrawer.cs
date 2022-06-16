@@ -50,10 +50,16 @@ public class DataGatheringBindingDrawer : PropertyDrawer
             EditorGUI.BeginDisabledGroup(memberSelectionEnabled);
 
             string[] popupOptions = GetPopupMemberNames(property.FindPropertyRelative("_prettyMemberNameList"));
-
             SerializedProperty memberIdx = property.FindPropertyRelative("_memberIdx");
+            
+            EditorGUI.BeginChangeCheck();
             // Popup (Add subtract 1 to account for an invalid member)
             memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
+            if (EditorGUI.EndChangeCheck())
+            {
+                // Change ExportColumnName if special Methods of TutorialQuiz were selected
+                TryAddingSpecialExportColumnName(property, popupOptions, memberIdx.intValue + 1);
+            }
 
             EditorGUI.EndDisabledGroup();
         }
@@ -136,6 +142,41 @@ public class DataGatheringBindingDrawer : PropertyDrawer
                                 string.Format("{0}/{1}", component.GetType().Name, GetPrettifiedMemberName(info));
 
                         i++;
+                    }
+                }
+            }
+        }
+    }
+
+    private void TryAddingSpecialExportColumnName(SerializedProperty property, string[] prettyMembers, int idx)
+    {
+        if (idx >= 0 && idx < prettyMembers.Length)
+        {
+            string[] splitName = prettyMembers[idx].Split('/');
+            Debug.Log(prettyMembers[idx]);
+            if (splitName.Length == 2)
+            {
+                string componentName = splitName[0];
+                string memberName = splitName[1];
+
+                if (componentName.StartsWith("TutorialButtonQuiz"))
+                {
+                    if (memberName == "string GetConfigCsvExportValues()")
+                    {
+                        property.FindPropertyRelative("exportColumnName").stringValue = QuizSetupConfig.CONFIG_CSV_HEADER_STRING;
+                    }
+                    else if (memberName == "string GetAllQuestionsCsvExportValues()")
+                    {
+                        Debug.Log("`GetQuestionsCsvExportValues()` will export multiple lines of values which might break the formatting of the csv.");
+                        property.FindPropertyRelative("exportColumnName").stringValue = QuizQuestion.QUESTION_CSV_HEADER_STRING;
+                    }
+                    else if (memberName == "string GetCurrentQuestionCsvExportValue()")
+                    {
+                        property.FindPropertyRelative("exportColumnName").stringValue = QuizQuestion.QUESTION_CSV_HEADER_STRING;
+                    }
+                    else if (memberName == "string GetFullQuizCsvValues()")
+                    {
+                        property.FindPropertyRelative("exportColumnName").stringValue = TutorialButtonQuiz.FULL_QUIZ_CSV_HEADER;
                     }
                 }
             }

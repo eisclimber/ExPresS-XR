@@ -7,6 +7,27 @@ using UnityEngine.Events;
 
 public class PlayerHeadCollider : MonoBehaviour
 {
+    [Tooltip("If true the players camera will be pushed back.")]
+    [SerializeField]
+    public bool collisionPushbackEnabled;
+
+    [Tooltip("If true the players cameras corner will be faded.")]
+    [SerializeField]
+    private bool _collisionScreenFadeEnabled;
+    public bool collisionScreenFadeEnabled
+    {
+        get => _collisionScreenFadeEnabled;
+        set
+        {
+            _collisionScreenFadeEnabled = value;
+
+            if (_collisionScreenFadeEnabled)
+            {
+                Debug.Log("TODO Make Screen Fade stuff");
+            }
+        }
+    }
+
     [Tooltip("The anchor that is moved when collisions occur. Usually should be set to the AutoXRRig/XROrigin.")]
     [SerializeField]
     private GameObject _pushbackAnchor;
@@ -15,13 +36,13 @@ public class PlayerHeadCollider : MonoBehaviour
     [SerializeField]
     private float backupCap = .22f;
 
-    [Tooltip("Will be invoked once when the first collidion with a wall occurs. Gets reset when no collision is detected anymore.")]
+    [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
     [SerializeField]
-    public UnityEvent onCollisionStarted;
+    public UnityEvent OnCollisionStarted;
     
-    [Tooltip("Will be invoked once when a collidion with wall ends.")]
+    [Tooltip("Will be invoked once when a collision with wall ends.")]
     [SerializeField]
-    public UnityEvent onCollisionEnded;
+    public UnityEvent OnCollisionEnded;
 
     
     private LayerMask layerMask;
@@ -71,7 +92,7 @@ public class PlayerHeadCollider : MonoBehaviour
                 if (colliding)
                 {
                     colliding = false;
-                    onCollisionEnded.Invoke();
+                    OnCollisionEnded.Invoke();
                 }
             }
 
@@ -105,13 +126,17 @@ public class PlayerHeadCollider : MonoBehaviour
                 Vector3 adjHeadPos = new Vector3(_pushbackAnchor.transform.position.x - headDiff.x,
                                                  _pushbackAnchor.transform.position.y,
                                                  _pushbackAnchor.transform.position.z - headDiff.z);
-                _pushbackAnchor.transform.SetPositionAndRotation(adjHeadPos, _pushbackAnchor.transform.rotation);
+                
+                if (collisionPushbackEnabled)
+                {
+                    _pushbackAnchor.transform.SetPositionAndRotation(adjHeadPos, _pushbackAnchor.transform.rotation);
+                }
 
                 // Collision Started
                 if (!colliding)
                 {
                     colliding = true;
-                    onCollisionEnded.Invoke();
+                    OnCollisionEnded.Invoke();
                 }
             }
         }

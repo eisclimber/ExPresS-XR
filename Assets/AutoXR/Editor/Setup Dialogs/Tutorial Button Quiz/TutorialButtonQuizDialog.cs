@@ -150,7 +150,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _quizModeField = _step2Container.Q<EnumField>("choice-type");
         _quizModeField.RegisterCallback<ChangeEvent<System.Enum>>(QuizModeChangedCallback);
         _questionOrderField = _step2Container.Q<EnumField>("question-order");
-        _questionOrderField.RegisterCallback<ChangeEvent<System.Enum>>(QuestionOrderChangedCallback);
+        _questionOrderField.RegisterCallback<ChangeEvent<System.Enum>>(QuestionOrderingChangedCallback);
         _answersAmountsField = _step2Container.Q<EnumField>("number-of-answers");
         _answersAmountsField.RegisterCallback<ChangeEvent<System.Enum>>(AnswersAmountChangedCallback);
         _questionTypeField = _step2Container.Q<EnumField>("question-type");
@@ -229,9 +229,9 @@ class TutorialButtonQuizDialog : SetupDialogBase
         UpdateQuizConfig(_quizConfig);
     }
 
-    private void QuestionOrderChangedCallback(ChangeEvent<System.Enum> evt) 
+    private void QuestionOrderingChangedCallback(ChangeEvent<System.Enum> evt) 
     {
-        _quizConfig.questionOrder = (QuestionOrder) evt.newValue;
+        _quizConfig.questionOrdering = (QuestionOrdering) evt.newValue;
         UpdateQuizConfig(_quizConfig);
     }
 
@@ -331,14 +331,14 @@ class TutorialButtonQuizDialog : SetupDialogBase
                 int counter = 0;
                 questionItem.Query<ObjectField>("answer-object-field").ForEach((ObjectField objField) =>
                 {
-                    objField.value = question.answersObjects[counter];
+                    objField.value = question.answerObjects[counter];
                     counter++;
                 });
 
                 counter = 0;
                 questionItem.Query<TextField>("answer-text-field").ForEach((TextField textField) =>
                 {
-                    textField.value = question.answersTexts[counter];
+                    textField.value = question.answerTexts[counter];
                     counter++;
                 });
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using Unity.XR.CoreUtils;
 
@@ -147,7 +148,59 @@ public class AutoXRRig : MonoBehaviour
 
             if (_playerHeadCollider != null) 
             {
-                _playerHeadCollider.enabled = _headCollisionEnabled;
+                _playerHeadCollider.collisionPushbackEnabled = _headCollisionEnabled;
+            }
+        }
+    }
+
+    [Tooltip("Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them.")]
+    [SerializeField]
+    private bool _showCollisionVignetteEffect;
+    public bool showCollisionVignetteEffect
+    {
+        get => _showCollisionVignetteEffect;
+        set
+        {
+            _showCollisionVignetteEffect = value;
+
+            if (_playerHeadCollider != null) 
+            {
+                _playerHeadCollider.collisionScreenFadeEnabled = _showCollisionVignetteEffect;
+            }
+        }
+    }
+
+
+    [Tooltip("Gives a visual clue of the bounds of the play area. The play area must be configured via you VR's software, e.g. SteamVR. Be aware that this may change the forward direction and start position depending on your play area")]
+    [SerializeField]
+    private bool _showPlayAreaBounds;
+    public bool showPlayAreaBounds
+    {
+        get => _showPlayAreaBounds;
+        set
+        {
+            _showPlayAreaBounds = value;
+
+            if (_playAreaBoundingBox != null)
+            {
+                _playAreaBoundingBox.enabled = _showPlayAreaBounds;
+            }
+        }
+    }
+
+    [Tooltip("Uses the material applied to the bounding box GameObject instead of using the system default.")]
+    [SerializeField]
+    private bool _useCustomPlayAreaMaterial;
+    public bool useCustomPlayAreaMaterial
+    {
+        get => _useCustomPlayAreaMaterial;
+        set
+        {
+            _useCustomPlayAreaMaterial = value;
+
+            if (_playAreaBoundingBox != null)
+            {
+                _playAreaBoundingBox.useCustomBoundingBoxMaterial = _useCustomPlayAreaMaterial;
             }
         }
     }
@@ -223,7 +276,6 @@ public class AutoXRRig : MonoBehaviour
         set => _rightHandController = value;
     }
 
-
     //////////////////
 
     [SerializeField]
@@ -246,13 +298,23 @@ public class AutoXRRig : MonoBehaviour
 
     //////////////////
 
-    [Tooltip("Should be an Component attached to the Main Camera.")]
+    [Tooltip("Must be a PlayerHeadCollider-Component attached to the Main Camera GameObject.")]
     [SerializeField]
     private PlayerHeadCollider _playerHeadCollider;
     public PlayerHeadCollider playerHeadCollider
     {
         get => _playerHeadCollider;
         set => _playerHeadCollider = value;
+    }
+
+
+    [Tooltip("A Reference to the PlayAreaBoundingBox of the Rig")]
+    [SerializeField]
+    private PlayAreaBoundingBox _playAreaBoundingBox;
+    public PlayAreaBoundingBox playAreaBoundingBox
+    {
+        get => _playAreaBoundingBox;
+        set => _playAreaBoundingBox = value;
     }
 
     //////////////
@@ -287,19 +349,15 @@ public class AutoXRRig : MonoBehaviour
         }
     }
 
+    private void Awake() {
+        List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
+        SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
 
-    // Assign all variables to their to properties
-    // Or use a custom Editor
-    // private void OnValidate()
-    // {
-    //     inputMethode = _inputMethode;
-    //     teleportationEnabled = _teleportationEnabled;
-    //     joystickMovementEnabled = _joystickMovementEnabled;
-    //     snapTurnEnabled = _snapTurnEnabled;
-    //     handModelMode = _handModelMode;
-    //     interactHands = _interactHands;
-    //     headGazeReticle = _headGazeReticle;
-    // }
+        if (displaySubsystems.Count > 0)
+        {
+            displaySubsystems[0].SetPreferredMirrorBlitMode(XRMirrorViewBlitMode.SideBySide);
+        }
+    }
 }
 
 public enum InputMethodeType

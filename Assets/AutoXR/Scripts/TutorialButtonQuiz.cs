@@ -1,10 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
+
 
 public class TutorialButtonQuiz : MonoBehaviour
 {
@@ -15,6 +17,10 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     public const string RESULT_TEXT_PREFIX = "Correct Answer was: \n";
     public const string DEFAULT_QUIZ_COMPLETED_TEXT = "Quiz Completed";
+
+    public const string FULL_QUIZ_CSV_HEADER = "isQuizActive,currentQuestionNumber,currentQuestionIdx,answerPressTime,"
+        + "chosenAnswerString,displayedFeedbackText,displayedFeedbackObjects,displayedFeedbackVideo," 
+        + QuizQuestion.QUESTION_CSV_HEADER_STRING + "," + QuizSetupConfig.CONFIG_CSV_HEADER_STRING;
 
 
     [SerializeField]
@@ -94,6 +100,42 @@ public class TutorialButtonQuiz : MonoBehaviour
     public UnityEvent OnQuizStarted;
     public UnityEvent OnQuizCompleted;
 
+    // Export
+    private long _quizStartTime;
+    public long quizStartTime
+    {
+        get => _quizStartTime;
+    }
+
+
+    private string _latestChosenAnswersIdxs;
+    public string latestChosenAnswersIdxs {
+        get => _latestChosenAnswersIdxs;
+    }
+
+    private float _latestAnswerPressTime;
+    public float latestAnswerPressTime
+    {
+        get => _latestAnswerPressTime;
+    }
+
+    private string _displayedFeedbackText;
+    public string latestFeedbackText
+    {
+        get => _displayedFeedbackText;
+    }
+    private GameObject[] _displayedFeedbackObjects;
+    public GameObject[] latestFeedbackObjects
+    {
+        get => _displayedFeedbackObjects;
+    }
+
+    private VideoClip _displayedFeedbackVideo;
+    public VideoClip latestFeedbackVideo
+    {
+        get => _displayedFeedbackVideo;
+    }
+
 
     // Setup
     public void Setup(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
@@ -113,7 +155,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
         // Create Question Permutation
         _questionPermutation = GenerateIdentityArray(_numQuestions);
-        if (config.questionOrder == QuestionOrder.Randomize)
+        if (config.questionOrdering == QuestionOrdering.Randomize)
         {
             _questionPermutation = Shuffle(_questionPermutation);
         }
@@ -189,6 +231,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         else
         {
             quizUndergoing = true;
+            _quizStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
             Setup(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer, _afterQuizMenu);
             DisplayNextQuestion();
         }
@@ -230,8 +273,8 @@ public class TutorialButtonQuiz : MonoBehaviour
                 if (_buttons[i] != null)
                 {
                     _buttons[i].DisplayAnswer(
-                        _currentQuestion.answersTexts[i],
-                        _currentQuestion.answersObjects[i],
+                        _currentQuestion.answerTexts[i],
+                        _currentQuestion.answerObjects[i],
                         _currentQuestion.correctAnswers[i]
                     );
                 }
@@ -259,6 +302,8 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     private void ShowFeedback()
     {
+        UpdateAnswerExportValues();
+
         OnAnswerGiven.Invoke();
 
         // If no feedback was given the feedback is already completed
@@ -284,25 +329,23 @@ public class TutorialButtonQuiz : MonoBehaviour
         if (_displayText != null && showTextFeedback)
         {
             string res = (_showResultTextPrefix ? RESULT_TEXT_PREFIX : "");
-            _displayText.text = res + _currentQuestion.GetFeedbackText(config.feedbackMode, config.feedbackType, config.answerType, config.quizMode);
+            _displayText.text = res + _displayedFeedbackText;
         }
         
         if (_displayAnchor != null && showObjectFeedback) 
         {
-            GameObject[] feedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode, 
-                                                                config.feedbackType, config.answerType, config.quizMode);
-            float xOffset = (DISPLAY_OBJECTS_SPACING * (feedbackObjects.Length - 1)) / 2.0f;
+            float xOffset = (DISPLAY_OBJECTS_SPACING * (_displayedFeedbackObjects.Length - 1)) / 2.0f;
 
             foreach(Transform child in _displayAnchor.transform)
             {
                 Destroy(child.gameObject);
             }
 
-            for (int i = 0; i < feedbackObjects.Length; i++)
+            for (int i = 0; i < _displayedFeedbackObjects.Length; i++)
             {
-                if (feedbackObjects[i] != null)
+                if (_displayedFeedbackObjects[i] != null)
                 {
-                    GameObject.Instantiate<GameObject>(feedbackObjects[i], new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
+                    GameObject.Instantiate<GameObject>(_displayedFeedbackObjects[i], new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
                 }
             }
         }
@@ -310,10 +353,9 @@ public class TutorialButtonQuiz : MonoBehaviour
         if (_displayPlayer != null && showVideoFeedback)
         {
             // Play clip is exists
-            VideoClip feedbackClip = _currentQuestion.GetFeedbackVideo(config.feedbackType);
-            if (feedbackClip != null)
+            if (_displayedFeedbackVideo != null)
             {
-                _displayPlayer.clip = feedbackClip;
+                _displayPlayer.clip = _displayedFeedbackVideo;
                 _displayPlayer.Play();
                 _displayPlayer.loopPointReached += OnFeedbackVideoCompleted;
                 return;
@@ -512,13 +554,13 @@ public class TutorialButtonQuiz : MonoBehaviour
                 for (int j = 0; j < Mathf.Min((int) config.answersAmount + 1, NUM_ANSWERS); j++)
                 {
                     // Check Answer Types
-                    if (config.answerType == AnswerType.Object && question.answersObjects[j] == null)
+                    if (config.answerType == AnswerType.Object && question.answerObjects[j] == null)
                     {
                         Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Object but answerObject is null.", i, j);
                         return false;
                     }
 
-                    if (config.answerType == AnswerType.Text && (question.answersTexts == null || question.answersTexts[j] == ""))
+                    if (config.answerType == AnswerType.Text && (question.answerTexts == null || question.answerTexts[j] == ""))
                     {
                         Debug.LogErrorFormat("Question {0}'s answer {1} was invalid, Answer type is Text but answerText is null or empty.", i, j);
                         return false;
@@ -567,12 +609,40 @@ public class TutorialButtonQuiz : MonoBehaviour
         return array;
     }
 
-    public string GetQuestionPermutationAsCsvString()
-    {
-        // Use Escape character as escape symbol
-        return "\"[" + string.Join(",", _questionPermutation) + "]\"";
-    }
 
+
+    // Update After Event Export Values
+    private void UpdateAnswerExportValues()
+    {
+        bool isMC = (config.quizMode == QuizMode.MultipleChoice);
+        List<int> pressedButtonIdxs = new List<int>();
+        List<AutoXRQuizButton> pressedButtons = new List<AutoXRQuizButton>();
+        for (int i = 0; i < _buttons.Length; i++)
+        {
+            if (_buttons[i] != null && _buttons[i].pressed)
+            {
+                pressedButtonIdxs.Add(i);
+                pressedButtons.Add(_buttons[i]);
+            }
+        }
+
+        if (isMC)
+        {
+            _latestChosenAnswersIdxs = "\"[" + string.Join(",", pressedButtonIdxs) + "]\"";
+            _latestAnswerPressTime = _mcConfirmButton.GetTriggerTimerValue();
+        }
+        else 
+        {
+            _latestChosenAnswersIdxs = (pressedButtonIdxs.Count > 0 ? pressedButtonIdxs[0].ToString() : "-1");
+            _latestAnswerPressTime = (pressedButtons.Count > 0 ? pressedButtons[0].GetTriggerTimerValue() : -1.0f);
+        }
+
+        _displayedFeedbackText = _currentQuestion?.GetFeedbackText(config.feedbackMode, config.feedbackType,
+                                    config.answerType, config.quizMode) ?? "";
+        _displayedFeedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode, 
+                                    config.feedbackType, config.answerType, config.quizMode) ?? new GameObject[0];
+        _displayedFeedbackVideo = _currentQuestion.GetFeedbackVideo(config.feedbackType);
+    }
 
     // Coroutines & Actions
     private IEnumerator WaitForFeedbackCompletion()
@@ -592,5 +662,100 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             _afterQuizMenu.enabled = false;
         }
+    }
+
+
+    ///////////////////////////////////////////////
+    //               Export Values               //
+    ///////////////////////////////////////////////
+
+    // Continuous Polling
+    
+    public float GetQuizUnixStartTime()
+    {
+        return quizUndergoing ? quizStartTime : -1f;
+    }
+    
+    public float GetCurrentQuizUnixTimeMillisecondsDuration()
+    {
+        return quizUndergoing ? (quizStartTime - System.DateTimeOffset.Now.ToUnixTimeMilliseconds()) : -1f;
+    }
+
+    public int GetCurrentQuestionIdx()
+    {
+        return _currentQuestion?.itemIdx ?? -1;
+    }
+
+    public string GetCurrentQuestionCsvExportValue()
+    {
+        return _currentQuestion?.GetCsvExportValues() ?? "";
+    }
+
+    public int GetCurrentQuestionNumber()
+    {
+        return quizUndergoing ? _nextQuestionIdx : -1;
+    }
+
+    public bool IsQuizActive()
+    {
+        return quizUndergoing;
+    }
+
+
+    // After Events
+    public float GetAnswerPressTime()
+    {
+        return _latestAnswerPressTime;
+    }
+
+    public string GetChosenAnswersString()
+    {
+        // Either a single integer of the answer or a csv escaped array of values
+        return _latestChosenAnswersIdxs;
+    }
+
+    public string GetDisplayedFeedbackText()
+    {
+        return _displayedFeedbackText;
+    }
+
+    public string GetDisplayedFeedbackObjects()
+    {
+        List<string> _feedbackObjectNames = new List<string>();
+        foreach(GameObject go in _displayedFeedbackObjects)
+        {
+            _feedbackObjectNames.Add(go.name);
+        }
+        return "\"[" + string.Join(",", _feedbackObjectNames) + "]\"";
+    }
+
+    public string GetDisplayedFeedbackVideo()
+    {
+        return _displayedFeedbackVideo.name ?? "";
+    }
+
+    // Misc
+    public string GetQuestionPermutationAsCsvString()
+    {
+        // Use Escape character as escape symbol
+        return "\"[" + string.Join(",", _questionPermutation) + "]\"";
+    }
+
+    public string GetConfigCsvExportValues()
+    {
+        // Use EXPORT_CSV_COLUMN_STRING for header
+        return config?.GetCsvExportValues() ?? ",,,,,,";
+    }
+    public string GetAllQuestionsCsvExportValues()
+    {
+        // Use EXPORT_CSV_COLUMN_STRING for header
+        return config?.GetAllQuestionsCsvExportValues() ?? ",,,,,,,,,,,,,,,,,,";
+    }
+
+    public string GetFullQuizCsvValues()
+    {
+        return IsQuizActive() + "," + GetCurrentQuestionNumber() + "," + GetCurrentQuestionIdx() + "," + GetAnswerPressTime() 
+            + "," + GetChosenAnswersString() + "," + GetDisplayedFeedbackText() + "," + GetDisplayedFeedbackObjects()
+            + "," + GetDisplayedFeedbackVideo() + "," + GetCurrentQuestionCsvExportValue() + "," + GetConfigCsvExportValues();
     }
 }

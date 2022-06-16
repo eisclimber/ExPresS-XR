@@ -54,18 +54,18 @@ public class AutoXRQuizButton : AutoXRBaseButton
 
 
     ///////////
-    private float triggerStartTime = 0.0f;
+    private long triggerStartTime = -1;
 
     // Can be used to measure the time since between any point in time and a button press
     // Will be automatically started when input is (re-)enabled
     public void RestartTriggerTimer()
     {
-        triggerStartTime = Time.time;
+        triggerStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
     }
 
     public float GetTriggerTimerValue()
     {
-        return Time.time - triggerStartTime;
+        return System.DateTimeOffset.Now.ToUnixTimeMilliseconds() - triggerStartTime;
     }
 
 
@@ -86,7 +86,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
 
         OnPressed.AddListener(NotifyChoice);
         
-        triggerStartTime = Time.time;
+        triggerStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
     }
 
 

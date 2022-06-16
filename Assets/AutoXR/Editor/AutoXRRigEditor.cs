@@ -73,7 +73,23 @@ public class AutoXRRigEditor : Editor
             EditorGUI.indentLevel--;
         }
 
+        EditorGUILayout.LabelField("Head Collisions", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
         targetScript.headCollisionEnabled = EditorGUILayout.Toggle("Enable Head Collisions", targetScript.headCollisionEnabled);
+        targetScript.showCollisionVignetteEffect = EditorGUILayout.Toggle("Show Play Area Bounds", targetScript.showCollisionVignetteEffect);
+        EditorGUI.indentLevel--;
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Play Area Highlighting", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        targetScript.showPlayAreaBounds = EditorGUILayout.Toggle("Show Play Area Bounds", targetScript.showPlayAreaBounds);
+        targetScript.useCustomPlayAreaMaterial = EditorGUILayout.Toggle("Use Custom Play Area Material", targetScript.useCustomPlayAreaMaterial);
+        if (targetScript.showPlayAreaBounds && !targetScript.useCustomPlayAreaMaterial)
+        {
+            EditorGUILayout.HelpBox("If the VR is configured for standing position the default play area won't show. Use useCustomPlayAreaMaterial to still se the play area.", MessageType.Info);
+        }
+        EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
 
@@ -100,6 +116,7 @@ public class AutoXRRigEditor : Editor
             targetScript.headGazeReticle = (HeadGazeReticle)EditorGUILayout.ObjectField("Head Gaze Reticle", targetScript.headGazeReticle, typeof(HeadGazeReticle), true);
             targetScript.locomotionSystem = (LocomotionSystem)EditorGUILayout.ObjectField("Locomotion System", targetScript.locomotionSystem, typeof(LocomotionSystem), true);
             targetScript.playerHeadCollider = (PlayerHeadCollider)EditorGUILayout.ObjectField("Player Head Collider", targetScript.playerHeadCollider, typeof(PlayerHeadCollider), true);
+            targetScript.playAreaBoundingBox = (PlayAreaBoundingBox)EditorGUILayout.ObjectField("Play Area Bounding Box", targetScript.playAreaBoundingBox, typeof(PlayAreaBoundingBox), true);
             targetScript.hud = (Canvas)EditorGUILayout.ObjectField("Hud", targetScript.hud, typeof(Canvas), true);
             targetScript.fadeRect = (FadeRect)EditorGUILayout.ObjectField("Custom Fade Rect", targetScript.fadeRect, typeof(FadeRect), true);
             EditorGUI.indentLevel--;
