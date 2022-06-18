@@ -174,12 +174,12 @@ public class DataGatherer : MonoBehaviour
                 // Throws an error if invalid
                 string fullPath = Path.GetFullPath(path);
                 
-                if (!File.Exists(fullPath)
-                     && (!fullPath.EndsWith(".txt") || !fullPath.EndsWith(".csv") || !fullPath.EndsWith(".log")))
+
+                if ((!fullPath.EndsWith(".txt") && !fullPath.EndsWith(".csv") && !fullPath.EndsWith(".log")))
                 {
                     localExportPath += ".csv";
                     fullPath += ".csv";
-                    Debug.LogWarning("File does not exist and does not end on '.txt', '.log' or '.csv'."
+                    Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
                          + String.Format("Appending '.csv' and creating a new file if necessary. New path is: '{0}'. ", localExportPath));
                 }
 

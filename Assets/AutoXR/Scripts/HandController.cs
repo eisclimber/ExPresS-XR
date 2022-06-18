@@ -72,7 +72,6 @@ public class HandController : MonoBehaviour
         _interactionController.gameObject.SetActive(_interactionEnabled);
         _teleportationController.gameObject.SetActive(_teleportationEnabled);
 
-
         // Activate Teleport Mode (Teleports on release). Default: Move Joystick Up
         _teleportModeActivationReference.action.performed += TeleportModeActivate;
 

@@ -46,15 +46,6 @@ public class FadeRect : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            FadeToColor(Input.GetKey(KeyCode.LeftShift));
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            FadeToClear(Input.GetKey(KeyCode.LeftShift));
-        }
-
         if (_fadeDirection < 0.0f)
         {
             // Fade to Black

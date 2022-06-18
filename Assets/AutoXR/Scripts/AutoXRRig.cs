@@ -327,6 +327,15 @@ public class AutoXRRig : MonoBehaviour
         set => _hud = value;
     }
 
+    /* 
+    Hud Values
+    - Camera Near Clipping Plane: 0.15
+    - Canvas Mode: Screen Space - Camera
+    - Canvas Plane Distance: 0.155
+    - Head Collider size: 0.25
+    */
+
+
     [SerializeField]
     private FadeRect _fadeRect;
     public FadeRect fadeRect
@@ -344,7 +353,17 @@ public class AutoXRRig : MonoBehaviour
             LocomotionProvider provider = _locomotionSystem.gameObject.GetComponent<T>();
             if (provider != null)
             {
-                provider.enabled = enabled;
+                // if (typeof(T) == typeof(ActionBasedContinuousMoveProvider))
+                // {
+                //     // Keep Action Based Continuous Provider enabled but en-/disable the input
+                //     // This will update the 
+
+                // }
+                // else
+                // {
+                    provider.enabled = enabled;
+                // }
+                
             }
         }
     }
