@@ -2567,8 +2567,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 1
-  _collisionScreenFadeEnabled: 0
-  _screenCollisionIndicator: {fileID: 1393096849937594671}
+  _showCollisionVignetteEffect: 0
+  screenCollisionIndicator: {fileID: 0}
   _pushbackAnchor: {fileID: 7962031182072201356}
   _colliderSize: 0.22
   _maxFadeDuration: 0
@@ -3772,6 +3772,7 @@ MonoBehaviour:
   _headGazeController: {fileID: 7962031182344312698}
   _locomotionSystem: {fileID: 7962031182087000031}
   _playerHeadCollider: {fileID: 7962031181944261768}
+  _screenCollisionIndicator: {fileID: 0}
   _playAreaBoundingBox: {fileID: 0}
   _hud: {fileID: 7962031182165130078}
   _fadeRect: {fileID: 381064170800375870, guid: fe20ac386cd49f3438c17c74ac03c920, type: 3}
@@ -3786,13 +3787,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.5
+  m_Height: 0
   m_Radius: 0.15
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.75, z: 0}
+  m_Center: {x: 0, y: 0.08, z: 0}
 --- !u!1 &7962031182087000030
 GameObject:
   m_ObjectHideFlags: 0
@@ -3916,7 +3917,7 @@ MonoBehaviour:
   m_GravityApplicationMode: 1
   m_ForwardSource: {fileID: 7962031181944261767}
   m_LeftHandMoveAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Left Hand Move
       m_Type: 0
@@ -5005,17 +5006,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 482353112909346647, guid: 4315c0e74254d9247ab0a19148450895, type: 3}
   m_PrefabInstance: {fileID: 1577649297967353469}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1393096849937594671 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 482353112909346642, guid: 4315c0e74254d9247ab0a19148450895, type: 3}
-  m_PrefabInstance: {fileID: 1577649297967353469}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf331a0adb5e7248ab2e74a62836f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7962031180377657662
 PrefabInstance:
   m_ObjectHideFlags: 0

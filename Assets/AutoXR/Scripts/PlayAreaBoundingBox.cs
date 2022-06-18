@@ -64,11 +64,12 @@ public class PlayAreaBoundingBox : MonoBehaviour
                 SetSizeWithBoundaryPoints(boundaryPoints);
             }
 
-            if (_useCustomBoundingBoxMaterial)
-            {
-                // Turn of the default bounding box by turning of the subsystem
-                // inputSubsystem.Stop();
-            }
+            // if (_useCustomBoundingBoxMaterial)
+            // {
+            //     // Turn of the default bounding box by turning of the subsystem
+            //     // NAH this kills the whole subsystem -> don't use it
+            //     inputSubsystem.Stop();
+            // }
         }
     }
 

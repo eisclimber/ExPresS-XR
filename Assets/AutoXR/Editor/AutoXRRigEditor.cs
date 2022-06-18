@@ -35,11 +35,13 @@ public class AutoXRRigEditor : Editor
         if (targetScript.inputMethode == InputMethodeType.Controller)
         {
             EditorGUI.indentLevel++;
-            targetScript.teleportationEnabled = EditorGUILayout.Toggle("Enable Teleportation", targetScript.teleportationEnabled);
-
             targetScript.joystickMovementEnabled = EditorGUILayout.Toggle("Enable Joystick Movement", targetScript.joystickMovementEnabled);
-            targetScript.snapTurnEnabled = EditorGUILayout.Toggle("Enable SnapTurn", targetScript.snapTurnEnabled);
+            
+            EditorGUILayout.Space();
 
+            targetScript.teleportationEnabled = EditorGUILayout.Toggle("Enable Teleportation", targetScript.teleportationEnabled);
+            targetScript.snapTurnEnabled = EditorGUILayout.Toggle("Enable SnapTurn", targetScript.snapTurnEnabled);
+            
             EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);
@@ -76,7 +78,7 @@ public class AutoXRRigEditor : Editor
         EditorGUILayout.LabelField("Head Collisions", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         targetScript.headCollisionEnabled = EditorGUILayout.Toggle("Enable Head Collisions", targetScript.headCollisionEnabled);
-        targetScript.showCollisionVignetteEffect = EditorGUILayout.Toggle("Show Play Area Bounds", targetScript.showCollisionVignetteEffect);
+        targetScript.showCollisionVignetteEffect = EditorGUILayout.Toggle("Show Collision Indicator", targetScript.showCollisionVignetteEffect);
         EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
@@ -116,6 +118,7 @@ public class AutoXRRigEditor : Editor
             targetScript.headGazeReticle = (HeadGazeReticle)EditorGUILayout.ObjectField("Head Gaze Reticle", targetScript.headGazeReticle, typeof(HeadGazeReticle), true);
             targetScript.locomotionSystem = (LocomotionSystem)EditorGUILayout.ObjectField("Locomotion System", targetScript.locomotionSystem, typeof(LocomotionSystem), true);
             targetScript.playerHeadCollider = (PlayerHeadCollider)EditorGUILayout.ObjectField("Player Head Collider", targetScript.playerHeadCollider, typeof(PlayerHeadCollider), true);
+            targetScript.screenCollisionIndicator = (ScreenCollisionIndicator)EditorGUILayout.ObjectField("Screen Collision Indicator", targetScript.screenCollisionIndicator, typeof(ScreenCollisionIndicator), true);
             targetScript.playAreaBoundingBox = (PlayAreaBoundingBox)EditorGUILayout.ObjectField("Play Area Bounding Box", targetScript.playAreaBoundingBox, typeof(PlayAreaBoundingBox), true);
             targetScript.hud = (Canvas)EditorGUILayout.ObjectField("Hud", targetScript.hud, typeof(Canvas), true);
             targetScript.fadeRect = (FadeRect)EditorGUILayout.ObjectField("Custom Fade Rect", targetScript.fadeRect, typeof(FadeRect), true);

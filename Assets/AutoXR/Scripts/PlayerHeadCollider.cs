@@ -17,19 +17,24 @@ public class PlayerHeadCollider : MonoBehaviour
 
     [Tooltip("If true the players cameras corner will be faded.")]
     [SerializeField]
-    private bool _collisionScreenFadeEnabled;
-    public bool collisionScreenFadeEnabled
+    private bool _showCollisionVignetteEffect;
+    public bool showCollisionVignetteEffect
     {
-        get => _collisionScreenFadeEnabled;
-        set => _collisionScreenFadeEnabled = value;
+        get => _showCollisionVignetteEffect;
+        set => _showCollisionVignetteEffect = value;
     }
 
     [SerializeField]
-    private ScreenCollisionIndicator _screenCollisionIndicator;
+    public ScreenCollisionIndicator screenCollisionIndicator;
 
     [Tooltip("The anchor that is moved when collisions occur. Usually should be set to the AutoXRRig or XROrigin.")]
     [SerializeField]
     private GameObject _pushbackAnchor;
+    public GameObject pushbackAnchor
+    {
+        get => _pushbackAnchor;
+        set => _pushbackAnchor = value;
+    }
 
     [Tooltip("Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.")]
     [SerializeField]
@@ -76,10 +81,22 @@ public class PlayerHeadCollider : MonoBehaviour
         _colliding = false;
         _prevHeadPos = transform.position;
 
-        if (_screenCollisionIndicator != null)
+        if (screenCollisionIndicator != null)
         {
-            OnCollisionStarted.AddListener(() => { _screenCollisionIndicator.FadeIn(_maxFadeDuration); });
-            OnCollisionEnded.AddListener(() => { _screenCollisionIndicator.FadeOut(_maxFadeDuration); });
+            OnCollisionStarted.AddListener(() => {
+                // Debug.Log("Show Vignette.");
+                if (showCollisionVignetteEffect)
+                {
+                    screenCollisionIndicator.FadeIn(_maxFadeDuration); 
+                }
+            });
+            OnCollisionEnded.AddListener(() => {
+                // Debug.Log("Show Vignette.");
+                if (showCollisionVignetteEffect)
+                {
+                    screenCollisionIndicator.FadeOut(_maxFadeDuration); 
+                }
+            });
         }
     }
 
@@ -112,9 +129,13 @@ public class PlayerHeadCollider : MonoBehaviour
                 if (_colliding)
                 {
                     _colliding = false;
+                    // Debug.Log("Ending");
                     OnCollisionEnded.Invoke();
                 }
-                MoveTowardsFloor();
+                if (collisionPushbackEnabled)
+                {
+                    MoveTowardsFloor();
+                }
             }
 
             // Collision
@@ -147,7 +168,7 @@ public class PlayerHeadCollider : MonoBehaviour
                 if (!_colliding)
                 {
                     _colliding = true;
-
+                    // Debug.Log("Start");
                     // Prevent initial Collision showing up
                     OnCollisionStarted.Invoke();
                 }
@@ -161,8 +182,7 @@ public class PlayerHeadCollider : MonoBehaviour
         RaycastHit hit;
         float floorDistance = Mathf.Min(_pushbackAnchor.transform.position.y, _colliderSize);
 
-        // TODO make this behave better
-
+        // TODO Enhance this behavior
         if (floorDistance > FLOOR_DISTANCE_THRESHOLD)
         {
             // Cast a sphere down by the total y offset of the head and move to the next valid position
@@ -176,7 +196,7 @@ public class PlayerHeadCollider : MonoBehaviour
 
     private IEnumerator CollisionCooldown()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         cooldownCoroutine = null;
     }
 }

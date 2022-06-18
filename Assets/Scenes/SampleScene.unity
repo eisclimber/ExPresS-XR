@@ -1232,7 +1232,7 @@ GameObject:
   - component: {fileID: 2144634355}
   - component: {fileID: 2144634354}
   m_Layer: 0
-  m_Name: Table (1)
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6053,7 +6053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 1
   _collisionScreenFadeEnabled: 1
-  _screenCollisionIndicator: {fileID: 1294212793}
+  screenCollisionIndicator: {fileID: 1294212793}
   _pushbackAnchor: {fileID: 7962031182436725579}
   _colliderSize: 0.25
   _maxFadeDuration: 1
@@ -6281,7 +6281,7 @@ MonoBehaviour:
   m_GravityApplicationMode: 1
   m_ForwardSource: {fileID: 7962031182241677120}
   m_LeftHandMoveAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Left Hand Move
       m_Type: 0
@@ -6354,7 +6354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af6bf904e410ee8479f9093d8830d1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LocomotionProvider: {fileID: 7962031182385200133}
+  m_LocomotionProvider: {fileID: 7962031182385200131}
   m_MinHeight: 0
   m_MaxHeight: Infinity
 --- !u!114 &7962031182385200152
@@ -6461,6 +6461,7 @@ MonoBehaviour:
   _headGazeController: {fileID: 7962031182113236157}
   _locomotionSystem: {fileID: 7962031182385200152}
   _playerHeadCollider: {fileID: 7962031182241677135}
+  _screenCollisionIndicator: {fileID: 0}
   _playAreaBoundingBox: {fileID: 2035720620137249696}
   _hud: {fileID: 7962031182337476761}
   _fadeRect: {fileID: 381064170800375870, guid: fe20ac386cd49f3438c17c74ac03c920, type: 3}

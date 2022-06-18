@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
@@ -39,7 +40,9 @@ public class AutoXRRig : MonoBehaviour
         {
             _teleportationEnabled = value;
 
-            EnableLocomotionProvider<TeleportationProvider>(_teleportationEnabled);
+            bool enableAsDriver = _teleportationEnabled && !_joystickMovementEnabled;
+
+            EnableLocomotionProvider<TeleportationProvider>(_teleportationEnabled, enableAsDriver);
 
             _leftHandController.teleportationEnabled = _teleportationEnabled;
             _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
@@ -56,7 +59,9 @@ public class AutoXRRig : MonoBehaviour
         {
             _joystickMovementEnabled = value;
 
-            EnableLocomotionProvider<ActionBasedContinuousMoveProvider>(_joystickMovementEnabled);
+            bool enableAsDriver = _joystickMovementEnabled;
+
+            EnableLocomotionProvider<ActionBasedContinuousMoveProvider>(_joystickMovementEnabled, enableAsDriver);
             EnableLocomotionProvider<ActionBasedContinuousTurnProvider>(_joystickMovementEnabled);
 
             // Snap Turn and joystick Movement is not allowed
@@ -165,7 +170,7 @@ public class AutoXRRig : MonoBehaviour
 
             if (_playerHeadCollider != null) 
             {
-                _playerHeadCollider.collisionScreenFadeEnabled = _showCollisionVignetteEffect;
+                _playerHeadCollider.showCollisionVignetteEffect = _showCollisionVignetteEffect;
             }
         }
     }
@@ -304,11 +309,37 @@ public class AutoXRRig : MonoBehaviour
     public PlayerHeadCollider playerHeadCollider
     {
         get => _playerHeadCollider;
-        set => _playerHeadCollider = value;
+        set
+        {
+            _playerHeadCollider = value;
+            
+            if (_playerHeadCollider != null)
+            {
+                _playerHeadCollider.screenCollisionIndicator = screenCollisionIndicator;
+                _playerHeadCollider.pushbackAnchor = this.gameObject;
+            }
+        }
+    }
+
+    [Tooltip("Must be a ScreenCollisionIndicator-Component attached to the Hud.")]
+    [SerializeField]
+    private ScreenCollisionIndicator _screenCollisionIndicator;
+    public ScreenCollisionIndicator screenCollisionIndicator
+    {
+        get => _screenCollisionIndicator;
+        set
+        {
+            _screenCollisionIndicator = value;
+            
+            if (_playerHeadCollider != null)
+            {
+                _playerHeadCollider.screenCollisionIndicator = screenCollisionIndicator;
+            }
+        }
     }
 
 
-    [Tooltip("A Reference to the PlayAreaBoundingBox of the Rig")]
+    [Tooltip("A Reference to the PlayAreaBoundingBox of the Rig.")]
     [SerializeField]
     private PlayAreaBoundingBox _playAreaBoundingBox;
     public PlayAreaBoundingBox playAreaBoundingBox
@@ -319,6 +350,7 @@ public class AutoXRRig : MonoBehaviour
 
     //////////////
 
+    [Tooltip("A Reference to a Canvas containing most other hud elements. It's mode must be set to 'Screen Space - Camera'.")]
     [SerializeField]
     private Canvas _hud;
     public Canvas hud
@@ -335,7 +367,7 @@ public class AutoXRRig : MonoBehaviour
     - Head Collider size: 0.25
     */
 
-
+    [Tooltip("A FadeRect GameObject that is used to fade the whole screen to black. It should be parented of the hud.")]
     [SerializeField]
     private FadeRect _fadeRect;
     public FadeRect fadeRect
@@ -346,24 +378,20 @@ public class AutoXRRig : MonoBehaviour
 
 
     ///////////
-    private void EnableLocomotionProvider<T>(bool enabled) where T : LocomotionProvider
+    private void EnableLocomotionProvider<T>(bool enabled, bool updateDriverOnEnable = false) where T : LocomotionProvider
     {
         if (_locomotionSystem != null)
         {
             LocomotionProvider provider = _locomotionSystem.gameObject.GetComponent<T>();
+            CharacterControllerDriver driver = _locomotionSystem.gameObject.GetComponent<CharacterControllerDriver>();
             if (provider != null)
             {
-                // if (typeof(T) == typeof(ActionBasedContinuousMoveProvider))
-                // {
-                //     // Keep Action Based Continuous Provider enabled but en-/disable the input
-                //     // This will update the 
+                provider.enabled = enabled;
 
-                // }
-                // else
-                // {
-                    provider.enabled = enabled;
-                // }
-                
+                if (driver != null && enabled && updateDriverOnEnable)
+                {
+                    driver.locomotionProvider = provider;
+                }
             }
         }
     }
@@ -376,6 +404,26 @@ public class AutoXRRig : MonoBehaviour
         {
             displaySubsystems[0].SetPreferredMirrorBlitMode(XRMirrorViewBlitMode.SideBySide);
         }
+
+        // Update the initial position of the teleportation provider
+        StartCoroutine(UpdateInitialCharacterPosition());    
+    }
+
+    private IEnumerator UpdateInitialCharacterPosition()
+    {
+        // Wait for a bit to allow the AutoXR rig to update the positions properly
+        yield return new WaitForSeconds(0.3f);
+
+        CharacterController characterController = GetComponent<CharacterController>();
+        XROrigin xrOrigin = GetComponent<XROrigin>();
+
+        var height = Mathf.Clamp(xrOrigin.CameraInOriginSpaceHeight, 0.0f, float.PositiveInfinity);
+        Vector3 center = xrOrigin.CameraInOriginSpacePos;
+
+        center.y = height / 2f + characterController.skinWidth;
+
+        characterController.height = height;
+        characterController.center = center;
     }
 }
 
