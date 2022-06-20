@@ -86,6 +86,7 @@ MonoBehaviour:
   _headGazeController: {fileID: 1176076481063096152}
   _locomotionSystem: {fileID: 1176076480797693949}
   _playerHeadCollider: {fileID: 1176076480923129002}
+  _screenCollisionIndicator: {fileID: 0}
   _playAreaBoundingBox: {fileID: 0}
   _hud: {fileID: 1176076480884204412}
   _fadeRect: {fileID: 381064170800375870, guid: fe20ac386cd49f3438c17c74ac03c920, type: 3}
@@ -642,8 +643,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 1
-  _collisionScreenFadeEnabled: 0
-  _screenCollisionIndicator: {fileID: 7389849409128735683}
+  _showCollisionVignetteEffect: 0
+  screenCollisionIndicator: {fileID: 0}
   _pushbackAnchor: {fileID: 1176076480782604462}
   _colliderSize: 0.22
   _maxFadeDuration: 0
@@ -5255,14 +5256,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 482353112909346647, guid: 4315c0e74254d9247ab0a19148450895, type: 3}
   m_PrefabInstance: {fileID: 6935452698489410705}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7389849409128735683 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 482353112909346642, guid: 4315c0e74254d9247ab0a19148450895, type: 3}
-  m_PrefabInstance: {fileID: 6935452698489410705}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf331a0adb5e7248ab2e74a62836f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
