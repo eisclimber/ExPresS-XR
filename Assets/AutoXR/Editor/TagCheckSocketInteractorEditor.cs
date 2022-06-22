@@ -7,10 +7,7 @@ using UnityEditor.XR.Interaction.Toolkit;
 public class TagCheckSocketInteractorEditor : XRSocketInteractorEditor
 {
     TagCheckSocketInteractor targetScript;
-
-    [SerializeField]
-    private bool _showInteractorEvents;
-
+    
     protected override void OnEnable()
     {
         base.OnEnable();

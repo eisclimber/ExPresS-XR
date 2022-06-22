@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit;
+
 
 [CustomEditor(typeof(PutBackSocketInteractor))]
+[CanEditMultipleObjects]
 public class PutBackSocketInteratorEditor : XRSocketInteractorEditor
 {
     PutBackSocketInteractor targetScript;
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         targetScript = (PutBackSocketInteractor)target;
     }
 
@@ -25,6 +30,11 @@ public class PutBackSocketInteratorEditor : XRSocketInteractorEditor
         EditorGUILayout.LabelField("Put Back Object", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObject"), true);
+        // serializedObject.ApplyModifiedProperties();
+        if (IsObjectInNeedOfInteractable(targetScript.putBackObject))
+        {
+            EditorGUILayout.HelpBox("Game Object is not an XRSelectInteractable. A XRGrabInteractable-Component will be added at runtime.", MessageType.Warning);
+        }
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
         EditorGUI.indentLevel--;
 
@@ -42,4 +52,7 @@ public class PutBackSocketInteratorEditor : XRSocketInteractorEditor
 
         serializedObject.ApplyModifiedProperties();
     }
+
+    private bool IsObjectInNeedOfInteractable(GameObject go)
+        => go != null && go.GetComponent<IXRSelectInteractable>() == null;
 }
