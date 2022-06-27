@@ -6,7 +6,7 @@ using UnityEngine.Video;
 [System.Serializable]
 public class QuizSetupConfig : ScriptableObject
 {
-    public const string CONFIG_CSV_HEADER_STRING = "quizMode,questionOrdering,answersAmount,questionType,answerType,feedbackMode,feedbackType";
+    public const string CONFIG_CSV_HEADER_STRING = "quizMode,questionOrdering,answersAmount,questionType,answerType,feedbackMode,feedbackType,objectInspectionOption";
 
     // QuizSetupConfig, Assembly-CSharp
     public QuizMode quizMode = QuizMode.SingleChoice;
@@ -22,8 +22,9 @@ public class QuizSetupConfig : ScriptableObject
 
     public string GetCsvExportValues()
     {
-        return quizMode + "," + questionOrdering + "," + answersAmount + "," + questionType
-                + "," + answerType + "," + feedbackMode + "," + feedbackType;
+        return quizMode + "," + questionOrdering + "," + answersAmount 
+                + "," + questionType  + "," + answerType + "," + feedbackMode + "," 
+                + feedbackType;
     }
 
     public string GetAllQuestionsCsvExportValues()
@@ -303,4 +304,12 @@ public enum FeedbackType
     Text,
     Video,
     DifferingTypes
+}
+
+public enum ObjectInspectionOption
+{
+    None,
+    OnlyAnswers,
+    OnlyQuestion,
+    Both
 }

@@ -265,17 +265,21 @@ public class TutorialButtonQuiz : MonoBehaviour
         else
         {
             _currentQuestion = _questions[_questionPermutation[_nextQuestionIdx]];
-            
+
             SetButtonsDisabled(false);
 
             for (int i = 0; i < _buttons.Length; i++)
             {
                 if (_buttons[i] != null)
                 {
+                    string answerText = (i < _currentQuestion.answerTexts.Length ? _currentQuestion.answerTexts[i] : "");
+                    GameObject answerGo = (i < _currentQuestion.answerObjects.Length ? _currentQuestion.answerObjects[i] : null);
+                    bool answerCorrect = (i < _currentQuestion.correctAnswers.Length ? _currentQuestion.correctAnswers[i] : false);
+
                     _buttons[i].DisplayAnswer(
-                        _currentQuestion.answerTexts[i],
-                        _currentQuestion.answerObjects[i],
-                        _currentQuestion.correctAnswers[i]
+                        answerText,
+                        answerGo,
+                        answerCorrect
                     );
                 }
             }
@@ -321,18 +325,17 @@ public class TutorialButtonQuiz : MonoBehaviour
 
         bool showTextFeedback = _displayText != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Text 
                                                     || (showAnswerType && config.answerType == AnswerType.Text));
-        bool showObjectFeedback = _displayAnchor != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Text 
+        bool showObjectFeedback = _displayAnchor != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Object
                                                     || (showAnswerType && config.answerType == AnswerType.Object));
         bool showVideoFeedback = _displayPlayer != null && (showAny || _config.feedbackType == FeedbackType.Video);
 
-
-        if (_displayText != null && showTextFeedback)
+        if (showTextFeedback)
         {
             string res = (_showResultTextPrefix ? RESULT_TEXT_PREFIX : "");
             _displayText.text = res + _displayedFeedbackText;
         }
         
-        if (_displayAnchor != null && showObjectFeedback) 
+        if (showObjectFeedback) 
         {
             float xOffset = (DISPLAY_OBJECTS_SPACING * (_displayedFeedbackObjects.Length - 1)) / 2.0f;
 
@@ -345,12 +348,14 @@ public class TutorialButtonQuiz : MonoBehaviour
             {
                 if (_displayedFeedbackObjects[i] != null)
                 {
-                    GameObject.Instantiate<GameObject>(_displayedFeedbackObjects[i], new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
+                    GameObject go = GameObject.Instantiate<GameObject>(_displayedFeedbackObjects[i], _displayAnchor.transform);
+                    go.transform.localPosition = new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0);
+
                 }
             }
         }
 
-        if (_displayPlayer != null && showVideoFeedback)
+        if (showVideoFeedback)
         {
             // Play clip is exists
             if (_displayedFeedbackVideo != null)
@@ -748,7 +753,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     public string GetConfigCsvExportValues()
     {
         // Use EXPORT_CSV_COLUMN_STRING for header
-        return config?.GetCsvExportValues() ?? ",,,,,,";
+        return config?.GetCsvExportValues() ?? ",,,,,,,";
     }
     public string GetAllQuestionsCsvExportValues()
     {

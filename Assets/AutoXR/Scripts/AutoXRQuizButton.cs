@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class AutoXRQuizButton : AutoXRBaseButton
 {
@@ -17,10 +18,9 @@ public class AutoXRQuizButton : AutoXRBaseButton
         {
             _answerText = value;
 
-            Transform textTransform = pushAnchor.Find("Canvas/Text");
-            if (textTransform.GetComponent<Text>() != null)
+            if (_feedbackTextLabel != null)
             {
-                textTransform.GetComponent<Text>().text = _answerText;
+                _feedbackTextLabel.text = _answerText;
             }
         }
     }
@@ -32,26 +32,54 @@ public class AutoXRQuizButton : AutoXRBaseButton
         get => _answerPrefab;
         set
         {
-            if (value == null)
-            {
-                Destroy(_answerPrefab);
-            }
             _answerPrefab = value;
-
-            if (pushAnchor != null && _answerPrefab != null)
+            
+            if (_answerObjectInstance != null)
             {
-                // Instantiate Object
-                GameObject answerObjectInstance = Instantiate<GameObject>(_answerPrefab, pushAnchor.transform);
-                _answerPrefab = answerObjectInstance;
+                Destroy(_answerObjectInstance);
+                _answerObjectInstance = null;
+            }
+
+            if (_answerPrefab != null)
+            {
+                bool canPickupAnswerObject = (_answerPrefab.GetComponent<XRGrabInteractable>() != null);
+                
+                if (canPickupAnswerObject && _feedbackObjectSocket != null)
+                {
+                    _answerObjectInstance = Instantiate<GameObject>(_answerPrefab, _feedbackObjectSocket.transform);
+                    _feedbackObjectSocket.putBackObject = _answerObjectInstance;
+                }
+                else if (!canPickupAnswerObject && pushAnchor != null)
+                {
+                    _answerObjectInstance = Instantiate<GameObject>(_answerPrefab, pushAnchor.transform);
+                }
+                else
+                {
+                    Debug.Log("Object is either an GrabInteractable but there is no Socket or the push anchor is not set.");
+                }
             }
         }
     }
 
+    [SerializeField]
+    private Text _feedbackTextLabel;
+
+    [SerializeField]
+    private PutBackSocketInteractor _feedbackObjectSocket;
+    public PutBackSocketInteractor feedbackObjectSocket
+    {
+        get => _feedbackObjectSocket;
+        set
+        {
+            _feedbackObjectSocket = value;
+        }
+    }
+
+
     public UnityEvent OnPressedCorrect;
     public UnityEvent OnPressedIncorrect;    
 
-    public Text feedbackTextLabel;
-
+    private GameObject _answerObjectInstance;
 
     ///////////
     private long triggerStartTime = -1;
@@ -108,7 +136,8 @@ public class AutoXRQuizButton : AutoXRBaseButton
         correctChoice = false;
         if (answerPrefab != null)
         {
-            Destroy(answerPrefab);
+            Destroy(_answerObjectInstance);
+            _answerObjectInstance = null;
             answerPrefab = null;
         }
 

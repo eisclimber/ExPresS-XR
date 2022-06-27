@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
-public class PutBackSocketInteractor : XRSocketInteractor
+public class PutBackSocketInteractor : HighlightableSocketInteractor
 {
     [SerializeField]
     private GameObject _putBackObject;
@@ -16,6 +17,11 @@ public class PutBackSocketInteractor : XRSocketInteractor
             // Remove previous Interactable
             if (_putBackInteractable != null)
             {
+                if (Application.isPlaying && _putBackInteractable.isSelected)
+                {
+                    interactionManager.SelectExit(this, (IXRSelectInteractable) _putBackInteractable);
+                }
+
                 startingSelectedInteractable = null;
                 _putBackInteractable.selectExited.RemoveListener(StartPutBackTimer);
                 _putBackInteractable.selectEntered.RemoveListener(ResetPutBackTimer);
@@ -23,20 +29,24 @@ public class PutBackSocketInteractor : XRSocketInteractor
 
             if (_putBackObject != null)
             {
-                if (!_putBackObject.TryGetComponent<XRBaseInteractable>(out _putBackInteractable))
+                _putBackInteractable = _putBackObject.GetComponent<XRGrabInteractable>();
+                if (_putBackInteractable)
                 {
-                    Debug.LogWarning("PutBackObject does not contain a XRBaseInteractable-Component. Adding one.");
-                    _putBackInteractable = _putBackObject.AddComponent<XRBaseInteractable>();
-                }
+                    startingSelectedInteractable = _putBackInteractable;
+                    _putBackObject.transform.position = transform.position;
+                    if (_putBackInteractable != null && Application.isPlaying)
+                    {
+                        interactionManager.SelectEnter(this, (IXRSelectInteractable) _putBackInteractable);
+                    }
 
-                startingSelectedInteractable = _putBackInteractable;
-                _putBackInteractable.selectExited.AddListener(StartPutBackTimer);
-                _putBackInteractable.selectEntered.AddListener(ResetPutBackTimer);
+                    _putBackInteractable.selectExited.AddListener(StartPutBackTimer);
+                    _putBackInteractable.selectEntered.AddListener(ResetPutBackTimer);
+                }
             }
         }
     }
 
-    private XRBaseInteractable _putBackInteractable;
+    private XRGrabInteractable _putBackInteractable;
 
 
     [SerializeField]
@@ -111,6 +121,6 @@ public class PutBackSocketInteractor : XRSocketInteractor
 
     private bool IsObjectMatch(IXRInteractable interactable) 
     {
-        return (interactable.transform.gameObject == _putBackInteractable.gameObject);
+        return (_putBackInteractable != null && interactable.transform.gameObject == _putBackInteractable.gameObject);
     }
 }

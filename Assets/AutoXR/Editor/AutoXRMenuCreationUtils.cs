@@ -40,6 +40,24 @@ public static class AutoXRMenuCreationUtils
         GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Interaction/AutoXR Offset Interactable");
     }
 
+    [MenuItem("GameObject/AutoXR/Interaction/Highlightable Socket Interactor")]
+    public static void CreateHighlightableSocketInteractor(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Highlightable Socket Interactor");
+    }
+
+    [MenuItem("GameObject/AutoXR/Interaction/Put Back Socket Interactor")]
+    public static void CreatePutBackSocketInteractor(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Put Back Socket Interactor");
+    }
+
+    [MenuItem("GameObject/AutoXR/Interaction/Tag Check Socket Interactor")]
+    public static void CreateTagCheckSocketInteractor(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Tag Check Socket Interactor");
+    }
+
     // Buttons
     [MenuItem("GameObject/AutoXR/Buttons/Auto XR Button Empty Text")]
     public static void CreateAutoXRButtonEmptyText(MenuCommand menuCommand)
@@ -115,43 +133,61 @@ public static class AutoXRMenuCreationUtils
     }
 
 
+    [MenuItem("GameObject/AutoXR/Buttons/Quiz Buttons/Auto XR Multiple Choice Confirm Button Square")]
+    public static void CreateAutoXRMcConfirmButton(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Auto XR Buttons/Auto XR Quiz Button/Auto XR Multiple Choice Confirm Button Square");
+    }
+
     // Hud
+    [MenuItem("GameObject/AutoXR/HUD/HUD")]
+    static void CreateHud(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/Hud");
+    }
+
     [MenuItem("GameObject/AutoXR/HUD/Fade Rect")]
     static void CreateFadeRect(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Fade Rect");
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/Fade Rect");
     }
 
     [MenuItem("GameObject/AutoXR/HUD/Head Gaze Reticle")]
     static void CreateHeadGazeReticle(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Head Gaze Reticle");
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/Head Gaze Reticle");
     }
     
     // UI
-    [MenuItem("GameObject/AutoXR/UI/World Space Image")]
+    [MenuItem("GameObject/AutoXR/UI/World Space Canvas")]
     static void CreateWorldSpaceImage(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "World Space Image");
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Canvas");
+    }
+
+    [MenuItem("GameObject/AutoXR/UI/World Space Canvas (Always On Top)")]
+    static void CreateWorldSpaceCanvasAOT(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Canvas (Always On Top)");
     }
 
     // Keyboards
-    [MenuItem("GameObject/AutoXR/UI/Keyboard - German")]
+    [MenuItem("GameObject/AutoXR/UI/World Space Canvas (Always On Top)")]
     static void CreateKeyboardGerman(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "World Space Keyboard German");
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Keyboard German");
     }
 
     [MenuItem("GameObject/AutoXR/UI/Keyboard - English")]
     static void CreateKeyboardEnglish(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "World Space Keyboard English");
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Keyboard English");
     }
 
     [MenuItem("GameObject/AutoXR/UI/Keyboard - Numpad")]
     static void CreateKeyboardNumpad(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "World Space Keyboard Numpad");
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Keyboard Numpad");
     }
 
 

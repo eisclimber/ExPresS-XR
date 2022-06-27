@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class TagCheckSocketInteractor : XRSocketInteractor
+public class TagCheckSocketInteractor : HighlightableSocketInteractor
 {
     [SerializeField]
     public string targetTag = "";

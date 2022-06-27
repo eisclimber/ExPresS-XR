@@ -1,49 +1,30 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.XR.Interaction.Toolkit;
 
 [CustomEditor(typeof(TagCheckSocketInteractor))]
 [CanEditMultipleObjects]
-public class TagCheckSocketInteractorEditor : XRSocketInteractorEditor
+public class TagCheckSocketInteractorEditor : HighlightableSocketInteractorEditor
 {
-    TagCheckSocketInteractor targetScript;
-    
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-
-        targetScript = (TagCheckSocketInteractor)target;
-    }
-
     public override void OnInspectorGUI()
     {
         serializedObject.UpdateIfRequiredOrScript();
 
-        EditorGUI.BeginDisabledGroup(true);
-        {
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
-        }
-        EditorGUI.EndDisabledGroup();
-
+        DrawBeforeProperties();
         EditorGUILayout.Space();
+        DrawTagCheckProperties();
+        EditorGUILayout.Space();
+        DrawHighlightingProperties();
+        EditorGUILayout.Space();
+        DrawBaseSocketProperties();
 
+        serializedObject.ApplyModifiedProperties();
+    }
+
+    protected void DrawTagCheckProperties()
+    {
         EditorGUILayout.LabelField("Tag", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("targetTag"), true);
         EditorGUI.indentLevel--;
-
-        EditorGUILayout.Space();
-
-        // Draw the rest of the properties
-        EditorGUILayout.LabelField("Socket Interactor", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        DrawProperties();
-
-        EditorGUILayout.Space();
-
-        DrawEvents();
-        EditorGUI.indentLevel--;
-
-        serializedObject.ApplyModifiedProperties();
     }
 }

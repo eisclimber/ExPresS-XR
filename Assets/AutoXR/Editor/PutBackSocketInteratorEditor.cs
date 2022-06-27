@@ -6,53 +6,45 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 [CustomEditor(typeof(PutBackSocketInteractor))]
 [CanEditMultipleObjects]
-public class PutBackSocketInteratorEditor : XRSocketInteractorEditor
+public class PutBackSocketInteratorEditor : HighlightableSocketInteractorEditor
 {
-    PutBackSocketInteractor targetScript;
+    PutBackSocketInteractor putBackSocket;
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        targetScript = (PutBackSocketInteractor)target;
+        putBackSocket = (PutBackSocketInteractor)target;
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.UpdateIfRequiredOrScript();
-        
-        EditorGUI.BeginDisabledGroup(true);
-        {
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
-        }
-        EditorGUI.EndDisabledGroup();
 
-        EditorGUILayout.LabelField("Put Back Object", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObject"), true);
-        // serializedObject.ApplyModifiedProperties();
-        if (IsObjectInNeedOfInteractable(targetScript.putBackObject))
-        {
-            EditorGUILayout.HelpBox("Game Object is not an XRSelectInteractable. A XRGrabInteractable-Component will be added at runtime.", MessageType.Warning);
-        }
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
-        EditorGUI.indentLevel--;
-
+        DrawBeforeProperties();
         EditorGUILayout.Space();
-
-        // Draw the rest of the properties
-        EditorGUILayout.LabelField("Socket Interactor", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        DrawProperties();
-
+        DrawPutBackProperties();
         EditorGUILayout.Space();
-
-        DrawEvents();
-        EditorGUI.indentLevel--;
+        DrawHighlightingProperties();
+        EditorGUILayout.Space();
+        DrawBaseSocketProperties();
 
         serializedObject.ApplyModifiedProperties();
     }
 
+    protected void DrawPutBackProperties()
+    {
+        EditorGUILayout.LabelField("Put Back Object", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObject"), true);
+        if (IsObjectInNeedOfInteractable(putBackSocket.putBackObject))
+        {
+            EditorGUILayout.HelpBox("Game Object is not an XRGrabInteractable. A XRGrabInteractable-Component will be added at runtime.", MessageType.Warning);
+        }
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
+        EditorGUI.indentLevel--;
+    }
+
     private bool IsObjectInNeedOfInteractable(GameObject go)
-        => go != null && go.GetComponent<IXRSelectInteractable>() == null;
+        => go != null && go.GetComponent<XRGrabInteractable>() == null;
 }
