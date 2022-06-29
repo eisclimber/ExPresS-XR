@@ -350,7 +350,6 @@ public class TutorialButtonQuiz : MonoBehaviour
                 {
                     GameObject go = GameObject.Instantiate<GameObject>(_displayedFeedbackObjects[i], _displayAnchor.transform);
                     go.transform.localPosition = new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0);
-
                 }
             }
         }

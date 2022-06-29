@@ -39,7 +39,7 @@ public class PutBackSocketInteratorEditor : HighlightableSocketInteractorEditor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObject"), true);
         if (IsObjectInNeedOfInteractable(putBackSocket.putBackObject))
         {
-            EditorGUILayout.HelpBox("Game Object is not an XRGrabInteractable. A XRGrabInteractable-Component will be added at runtime.", MessageType.Warning);
+            EditorGUILayout.HelpBox("PutBackObject is not an XRGrabInteractable. If you want it to be picked up a XRGrabInteractable needs to be added.", MessageType.Warning);
         }
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
         EditorGUI.indentLevel--;

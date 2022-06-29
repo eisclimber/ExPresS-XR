@@ -30,7 +30,7 @@ public class PutBackSocketInteractor : HighlightableSocketInteractor
             if (_putBackObject != null)
             {
                 _putBackInteractable = _putBackObject.GetComponent<XRGrabInteractable>();
-                if (_putBackInteractable)
+                if (_putBackInteractable != null)
                 {
                     startingSelectedInteractable = _putBackInteractable;
                     _putBackObject.transform.position = transform.position;
@@ -42,11 +42,19 @@ public class PutBackSocketInteractor : HighlightableSocketInteractor
                     _putBackInteractable.selectExited.AddListener(StartPutBackTimer);
                     _putBackInteractable.selectEntered.AddListener(ResetPutBackTimer);
                 }
+                else
+                {
+                    Debug.Log("PutBackObject is not an XRGrabInteractable. If you want it to be picked up a XRGrabInteractable needs to be added.");
+                }
             }
         }
     }
 
     private XRGrabInteractable _putBackInteractable;
+    public XRGrabInteractable putBackInteractable
+    {
+        get => _putBackInteractable;
+    }
 
 
     [SerializeField]
