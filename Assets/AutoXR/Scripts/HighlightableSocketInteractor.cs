@@ -13,16 +13,13 @@ public class HighlightableSocketInteractor : XRSocketInteractor
         {
             _showHighlighter = value;
 
-            if (_highlighterObject != null)
-            {
-                _highlighterObject.GetComponent<MeshRenderer>().enabled = _showHighlighter;
-            }
+            SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
         }
     }
     
     [SerializeField]
     protected GameObject _highlighterObject;
-    private GameObject highlighterObject
+    public GameObject highlighterObject
     {
         get => _highlighterObject;
         set
@@ -70,8 +67,10 @@ public class HighlightableSocketInteractor : XRSocketInteractor
     protected override void Awake() {
         base.Awake();
 
-        hoverEntered.AddListener(HideHighlighter);
-        hoverExited.AddListener(ShowHighlighter);
+        SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
+
+        selectEntered.AddListener(HideHighlighter);
+        selectExited.AddListener(ShowHighlighter);
     }
 
 
@@ -108,19 +107,28 @@ public class HighlightableSocketInteractor : XRSocketInteractor
     }
 
 
-    private void ShowHighlighter(HoverExitEventArgs args)
+    public void SetHighlighterVisible(bool visible)
     {
         if (_highlighterObject != null)
         {
-            _highlighterObject.GetComponent<MeshRenderer>().enabled = true;
+            _highlighterObject.GetComponent<MeshRenderer>().enabled = visible;
         }
     }
 
-    private void HideHighlighter(HoverEnterEventArgs args)
+
+    private void ShowHighlighter(SelectExitEventArgs args)
     {
-        if (_highlighterObject != null)
+        if (showHighlighter)
         {
-            _highlighterObject.GetComponent<MeshRenderer>().enabled = false;
+            SetHighlighterVisible(true);
+        }
+    }
+
+    private void HideHighlighter(SelectEnterEventArgs args)
+    {
+        if (showHighlighter)
+        {
+            SetHighlighterVisible(false);
         }
     }
 

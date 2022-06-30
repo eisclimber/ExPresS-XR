@@ -15,35 +15,7 @@ public class ExhibitionDisplay : MonoBehaviour
         {
             _displayedPrefab = value;
 
-            if (_displayedObjectInstance != null)
-            {
-                if (!Application.isPlaying)
-                {
-                    DestroyImmediate(_displayedObjectInstance);
-                }
-                else
-                {
-                    Destroy(_displayedObjectInstance);
-                }
-                _displayedObjectInstance = null;
-            }
-
-            if (_displayedPrefab != null)
-            {
-                if (_socket != null)
-                {
-                    _displayedObjectInstance = GameObject.Instantiate<GameObject>(_displayedPrefab, _socket.transform);
-                    
-                    bool canPickupAnswerObject = (_displayedObjectInstance.GetComponent<XRGrabInteractable>() != null);
-                    
-                    if (canPickupAnswerObject)
-                    {
-                        _socket.putBackObject = _displayedObjectInstance;
-                    }
-                    // Re-set the transform as the socket will remove the parenting
-                    _displayedObjectInstance.transform.SetParent(transform);
-                }
-            }
+            UpdateDisplayedPrefab();
         }
     }
 
@@ -284,6 +256,46 @@ public class ExhibitionDisplay : MonoBehaviour
 
         displayedPrefab = _displayedPrefab;
         putBackTime = _putBackTime;
+        spinObject = _spinObject;
+    }
+
+
+    public void UpdateDisplayedPrefab()
+    {
+        if (_displayedObjectInstance != null)
+            {
+                if (!Application.isPlaying)
+                {
+                    DestroyImmediate(_displayedObjectInstance);
+                }
+                else
+                {
+                    Destroy(_displayedObjectInstance);
+                }
+                _displayedObjectInstance = null;
+            }
+
+            if (_displayedPrefab != null)
+            {
+                if (_socket != null)
+                {
+                    _displayedObjectInstance = GameObject.Instantiate<GameObject>(_displayedPrefab, _socket.transform);
+                    
+                    bool canPickupAnswerObject = (_displayedObjectInstance.GetComponent<XRGrabInteractable>() != null);
+                    
+                    if (canPickupAnswerObject)
+                    {
+                        _socket.putBackObject = _displayedObjectInstance;
+                    }
+                    // Re-set the transform as the socket will remove the parenting
+                    _displayedObjectInstance.transform.SetParent(transform);
+                }
+            }
+
+            if (_socket != null && _socket.showHighlighter)
+            {
+                _socket.SetHighlighterVisible(_displayedObjectInstance == null);
+            }
     }
 
 

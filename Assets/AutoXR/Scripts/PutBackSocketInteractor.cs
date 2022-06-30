@@ -30,6 +30,7 @@ public class PutBackSocketInteractor : HighlightableSocketInteractor
             if (_putBackObject != null)
             {
                 _putBackInteractable = _putBackObject.GetComponent<XRGrabInteractable>();
+
                 if (_putBackInteractable != null)
                 {
                     startingSelectedInteractable = _putBackInteractable;
@@ -46,6 +47,12 @@ public class PutBackSocketInteractor : HighlightableSocketInteractor
                 {
                     Debug.Log("PutBackObject is not an XRGrabInteractable. If you want it to be picked up a XRGrabInteractable needs to be added.");
                 }
+            }
+
+            // Hide the highlighter in editor
+            if (_highlighterObject != null && showHighlighter)
+            {
+                _highlighterObject.GetComponent<MeshRenderer>().enabled = (_putBackObject != null);
             }
         }
     }

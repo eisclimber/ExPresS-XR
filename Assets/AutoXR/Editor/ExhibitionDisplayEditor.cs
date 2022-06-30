@@ -26,7 +26,14 @@ public class ExhibitionDisplayEditor : Editor
 
         EditorGUILayout.LabelField("Displayed Object", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        targetScript.displayedPrefab = (GameObject)EditorGUILayout.ObjectField("Displayed Prefab", targetScript.displayedPrefab, typeof(GameObject), true);
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayedPrefab"), true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            // Update Displayed Prefab only when necessary
+            serializedObject.ApplyModifiedProperties();
+            targetScript.UpdateDisplayedPrefab();
+        }
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObject"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
         EditorGUI.indentLevel--;
