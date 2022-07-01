@@ -64,7 +64,7 @@ public class HandController : MonoBehaviour
     public UnityEvent onTeleportCancel;
 
 
-    void Start()
+    void Awake()
     {
         // Set hand model mode, as the prefabs are not instantiated at runtime
         handModelMode = _handModelMode;
@@ -106,12 +106,12 @@ public class HandController : MonoBehaviour
     }
 
 
-    // Disable Interaction Hand Collision when selecting, enable when exiting HOVER (prevents objects from beeing pushed away when exiting select)
+    // Disable Interaction Hand Collision when selecting, enable when exiting HOVER (prevents objects from being pushed away when exiting select)
     public void OnInteractionControllerSelectEntered(SelectEnterEventArgs args) => SetIgnoreHandInteractableCollisions(args, false);
     
     public void OnInteractionControllerHoverExited(HoverExitEventArgs args) => SetIgnoreHandInteractableCollisions(args, true);
 
-    // These can be also used if interactables should be handeled differently
+    // These can be also used if interactable should be handled differently
     /*
     public void OnInteractionControllerSelectExited(SelectExitEventArgs args) => SetIgnoreHandInteractableCollisions(args, false);
     public void OnInteractionControllerHoverEntered(HoverEnterEventArgs args) => SetIgnoreHandInteractableCollisions(args, true);

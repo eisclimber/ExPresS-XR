@@ -34,29 +34,9 @@ public class AutoXRQuizButton : AutoXRBaseButton
         {
             _answerPrefab = value;
             
-            if (_answerObjectInstance != null)
+            if (_feedbackObjectSocket != null)
             {
-                Destroy(_answerObjectInstance);
-                _answerObjectInstance = null;
-            }
-
-            if (_answerPrefab != null)
-            {
-                bool canPickupAnswerObject = (_answerPrefab.GetComponent<XRGrabInteractable>() != null);
-                
-                if (canPickupAnswerObject && _feedbackObjectSocket != null)
-                {
-                    _answerObjectInstance = Instantiate<GameObject>(_answerPrefab, _feedbackObjectSocket.transform);
-                    _feedbackObjectSocket.putBackObject = _answerObjectInstance;
-                }
-                else if (!canPickupAnswerObject && pushAnchor != null)
-                {
-                    _answerObjectInstance = Instantiate<GameObject>(_answerPrefab, pushAnchor.transform);
-                }
-                else
-                {
-                    Debug.Log("Object is either an GrabInteractable but there is no Socket or the push anchor is not set.");
-                }
+                _feedbackObjectSocket.putBackPrefab = _answerPrefab;
             }
         }
     }
@@ -64,6 +44,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
     [SerializeField]
     private Text _feedbackTextLabel;
 
+    
     [SerializeField]
     private PutBackSocketInteractor _feedbackObjectSocket;
     public PutBackSocketInteractor feedbackObjectSocket
@@ -79,7 +60,6 @@ public class AutoXRQuizButton : AutoXRBaseButton
     public UnityEvent OnPressedCorrect;
     public UnityEvent OnPressedIncorrect;    
 
-    private GameObject _answerObjectInstance;
 
     ///////////
     private long triggerStartTime = -1;
@@ -136,8 +116,6 @@ public class AutoXRQuizButton : AutoXRBaseButton
         correctChoice = false;
         if (answerPrefab != null)
         {
-            Destroy(_answerObjectInstance);
-            _answerObjectInstance = null;
             answerPrefab = null;
         }
 

@@ -36,8 +36,16 @@ public class PutBackSocketInteratorEditor : HighlightableSocketInteractorEditor
     {
         EditorGUILayout.LabelField("Put Back Object", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObject"), true);
-        if (IsObjectInNeedOfInteractable(putBackSocket.putBackObject))
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackPrefab"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            // Update Displayed Prefab only when necessary
+            serializedObject.ApplyModifiedProperties();
+            putBackSocket.UpdatePutBackObject();
+        }
+        if (IsObjectInNeedOfInteractable(putBackSocket.putBackPrefab))
         {
             EditorGUILayout.HelpBox("PutBackObject is not an XRGrabInteractable. If you want it to be picked up a XRGrabInteractable needs to be added.", MessageType.Warning);
         }

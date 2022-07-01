@@ -35,7 +35,13 @@ public class HighlightableSocketInteractorEditor : XRSocketInteractorEditor
         EditorGUILayout.LabelField("Socket Highlighting", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         // Using Toggle since an object cannot be hidden in OnValidate using it's setter
-        highlightableSocket.showHighlighter = EditorGUILayout.Toggle("Show Highlighter", highlightableSocket.showHighlighter);
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_showHighlighter"), true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+            highlightableSocket.SetHighlighterVisible(highlightableSocket.showHighlighter);
+        }
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_highlighterObject"), true);
         if (highlightableSocket.CanSetHighlighterScaleWithCollider())
         {

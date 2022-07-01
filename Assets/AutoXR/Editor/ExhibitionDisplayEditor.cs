@@ -32,7 +32,7 @@ public class ExhibitionDisplayEditor : Editor
         {
             // Update Displayed Prefab only when necessary
             serializedObject.ApplyModifiedProperties();
-            targetScript.UpdateDisplayedPrefab();
+            targetScript.displayedPrefab = targetScript.displayedPrefab;
         }
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObject"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);

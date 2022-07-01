@@ -107,7 +107,7 @@ public class HighlightableSocketInteractor : XRSocketInteractor
     }
 
 
-    public void SetHighlighterVisible(bool visible)
+    public virtual void SetHighlighterVisible(bool visible)
     {
         if (_highlighterObject != null)
         {

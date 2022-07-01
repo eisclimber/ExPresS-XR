@@ -15,7 +15,14 @@ public class ExhibitionDisplay : MonoBehaviour
         {
             _displayedPrefab = value;
 
-            UpdateDisplayedPrefab();
+            if (_socket != null)
+            {
+                _socket.putBackPrefab = _displayedPrefab;
+            } 
+            else
+            {
+                Debug.LogError("Can't attach Prefab. PutBackSocketReference was not set.");
+            }
         }
     }
 
@@ -233,9 +240,6 @@ public class ExhibitionDisplay : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private GameObject _displayedObjectInstance;
-
     private Coroutine showInfoCoroutine;
 
 
@@ -258,46 +262,6 @@ public class ExhibitionDisplay : MonoBehaviour
         putBackTime = _putBackTime;
         spinObject = _spinObject;
     }
-
-
-    public void UpdateDisplayedPrefab()
-    {
-        if (_displayedObjectInstance != null)
-            {
-                if (!Application.isPlaying)
-                {
-                    DestroyImmediate(_displayedObjectInstance);
-                }
-                else
-                {
-                    Destroy(_displayedObjectInstance);
-                }
-                _displayedObjectInstance = null;
-            }
-
-            if (_displayedPrefab != null)
-            {
-                if (_socket != null)
-                {
-                    _displayedObjectInstance = GameObject.Instantiate<GameObject>(_displayedPrefab, _socket.transform);
-                    
-                    bool canPickupAnswerObject = (_displayedObjectInstance.GetComponent<XRGrabInteractable>() != null);
-                    
-                    if (canPickupAnswerObject)
-                    {
-                        _socket.putBackObject = _displayedObjectInstance;
-                    }
-                    // Re-set the transform as the socket will remove the parenting
-                    _displayedObjectInstance.transform.SetParent(transform);
-                }
-            }
-
-            if (_socket != null && _socket.showHighlighter)
-            {
-                _socket.SetHighlighterVisible(_displayedObjectInstance == null);
-            }
-    }
-
 
     public void ShowInfoText() => SetInfoTextEnabled(true);
 

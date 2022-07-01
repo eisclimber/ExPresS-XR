@@ -67,7 +67,7 @@ public class PlayerHeadCollider : MonoBehaviour
     private float _totalVerticalCollisionDiff;
     private Coroutine cooldownCoroutine;
 
-    private void Start()
+    private void Awake()
     {
         if (_pushbackAnchor == null)
         {
