@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class AutoXRQuizButton : AutoXRBaseButton
 {
@@ -44,7 +43,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
     [SerializeField]
     private Text _feedbackTextLabel;
 
-    
+
     [SerializeField]
     private PutBackSocketInteractor _feedbackObjectSocket;
     public PutBackSocketInteractor feedbackObjectSocket

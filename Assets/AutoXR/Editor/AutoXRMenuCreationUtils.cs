@@ -172,11 +172,12 @@ public static class AutoXRMenuCreationUtils
     }
 
     // Keyboards
-    [MenuItem("GameObject/AutoXR/UI/World Space Canvas (Always On Top)")]
+    [MenuItem("GameObject/AutoXR/UI/Keyboard - German")]
     static void CreateKeyboardGerman(MenuCommand menuCommand)
     {
         GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Keyboard German");
     }
+
 
     [MenuItem("GameObject/AutoXR/UI/Keyboard - English")]
     static void CreateKeyboardEnglish(MenuCommand menuCommand)
@@ -188,6 +189,35 @@ public static class AutoXRMenuCreationUtils
     static void CreateKeyboardNumpad(MenuCommand menuCommand)
     {
         GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Keyboard Numpad");
+    }
+
+    // Exhibition
+    [MenuItem("GameObject/AutoXR/Exhibition/Exhibition Display - Object")]
+    static void CreateExhibitionDisplayObject(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display Object");
+    }
+
+
+    [MenuItem("GameObject/AutoXR/Exhibition/Exhibition Display - Image")]
+    static void CreateExhibitionDisplayImage(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display Image");
+    }
+
+
+    // Teleportation
+    [MenuItem("GameObject/AutoXR/Interaction/Teleportation Area")]
+    static void CreateTeleporationArea(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Teleportation Area");
+    }
+
+
+    [MenuItem("GameObject/AutoXR/Interaction/Teleportation Anchor")]
+    static void CreateTeleporationAnchor(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Teleportation Anchor");
     }
 
 
