@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public static class AutoXRCreationUtils
 {    
@@ -19,7 +20,7 @@ public static class AutoXRCreationUtils
     /// </summary>
     /// <param name="path">The object passed to custom menu item functions to operate on.</param>
     /// <param name="menuCommand">The object passed to custom menu item functions to operate on.</param>
-    /// <returns> A Reference the object that was created or <see langword="null"/> if zhe prefab was 
+    /// <returns> A Reference the object that was created or <see langword="null"/> if the prefab was 
     /// not found.</returns>
     public static GameObject InstantiateAndPlacePrefab(string name, Transform parent = null)
     {
@@ -29,6 +30,19 @@ public static class AutoXRCreationUtils
         if (prefab != null)
         {
             GameObject go = (GameObject)GameObject.Instantiate(prefab, parent);
+
+            if (parent == null)
+            {
+                Transform goTransform = go.transform;
+                SceneView view = SceneView.lastActiveSceneView;
+                if (view != null)
+                    view.MoveToView(goTransform);
+                else
+                    goTransform.position = Vector3.zero;
+                
+                StageUtility.PlaceGameObjectInCurrentStage(go);
+            }
+            GameObjectUtility.EnsureUniqueNameForSibling(go);
 
             go.name = prefab.name;
 
@@ -77,13 +91,10 @@ public static class AutoXRCreationUtils
     /// <param name="menuCommand">The object passed to custom menu item functions to operate on.</param>
     /// <returns>Returns the <see cref="Transform"/> of the object that is the target of a menu command,
     /// or <see langword="null"/> if there is no context.</returns>
-    public static Transform GetContextTransform(this MenuCommand menuCommand)
+    public static Transform GetContextTransform(MenuCommand menuCommand)
     {
         var context = menuCommand.context as GameObject;
-        if (context == null)
-            return null;
-
-        return context.transform;
+        return context?.transform;
     }
 
     /// <summary>

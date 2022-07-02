@@ -234,7 +234,7 @@ public static class AutoXRMenuCreationUtils
 
     private static GameObject InstantiatePrefabAtContextTransform(MenuCommand menuCommand, string prefabName)
     {
-        Transform parentOfNewGameObject = AutoXRCreationUtils.GetContextTransform(menuCommand);
-        return AutoXRCreationUtils.InstantiateAndPlacePrefab(prefabName, parentOfNewGameObject);
+        Transform parent = AutoXRCreationUtils.GetContextTransform(menuCommand);
+        return AutoXRCreationUtils.InstantiateAndPlacePrefab(prefabName, parent);
     }
 }
