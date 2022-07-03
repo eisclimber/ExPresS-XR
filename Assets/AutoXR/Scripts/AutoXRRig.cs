@@ -11,22 +11,22 @@ using Unity.XR.CoreUtils;
 public class AutoXRRig : MonoBehaviour
 {
     [SerializeField]
-    private InputMethodeType _inputMethode;
-    public InputMethodeType inputMethode
+    private InputMethodType _inputMethod;
+    public InputMethodType inputMethod
     {
-        get => _inputMethode;
+        get => _inputMethod;
         set
         {
-            _inputMethode = value;
+            _inputMethod = value;
 
-            _leftHandController.gameObject.SetActive(inputMethode == InputMethodeType.Controller);
-            _rightHandController.gameObject.SetActive(inputMethode == InputMethodeType.Controller);
+            _leftHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
+            _rightHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
 
-            _headGazeController.gameObject.SetActive(inputMethode == InputMethodeType.HeadGaze);
+            _headGazeController.gameObject.SetActive(inputMethod == InputMethodType.HeadGaze);
 
             if (_headGazeReticle != null)
             {
-                _headGazeReticle.gameObject.SetActive(inputMethode == InputMethodeType.HeadGaze);
+                _headGazeReticle.gameObject.SetActive(inputMethod == InputMethodType.HeadGaze);
             }
         }
     }
@@ -427,7 +427,7 @@ public class AutoXRRig : MonoBehaviour
     }
 }
 
-public enum InputMethodeType
+public enum InputMethodType
 {
     Controller,
     HeadGaze

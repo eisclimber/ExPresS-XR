@@ -91,8 +91,10 @@ public class TutorialButtonQuiz : MonoBehaviour
         private set
         {
             _quizUndergoing = value;
-            // Force the editor to update and display the correct buttons
-            EditorUtility.SetDirty(this);
+            #if UNITY_EDITOR
+                // Force the editor to update and display the correct buttons
+                EditorUtility.SetDirty(this);
+            #endif
         }    
     }
 

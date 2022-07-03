@@ -12,35 +12,54 @@ public class FadeRect : MonoBehaviour
 
     [SerializeField]
     private float _fadeDirection = 0.0f;
+
     [SerializeField]
     private Image _fadeImage;
     
+
+    // Screen NOT visible
+    public bool completelyVisible
+    {
+        get => (fadeColor.a == 1.0f);
+    }
+
+    // Screen visible
+    public bool completelyHidden
+    {
+        get => (fadeColor.a == 0.0f);
+    }
+
 
     // Start is called before the first frame update
     void Awake()
     {
         _fadeImage = GetComponent<Image>();
-        if (_fadeImage != null)
-        {
-            _fadeImage.color = fadeColor;
-        }
+        UpdateFadeImage();
     }
 
     public void FadeToColor(bool instant = false)
     {
-        _fadeDirection = 1.0f;
-        if (instant)
+        if (!instant)
+        {
+            _fadeDirection = 1.0f;
+        }
+        else
         {
             fadeColor.a = 1.0f;
+            UpdateFadeImage();
         }
     }
 
-    private void FadeToClear(bool instant = false)
+    public void FadeToClear(bool instant = false)
     {
-        _fadeDirection = -1.0f;
-        if (instant)
+        if (!instant)
+        {
+            _fadeDirection = -1.0f;
+        }
+        else
         {
             fadeColor.a = 0.0f;
+            UpdateFadeImage();
         }
     }
 
@@ -55,6 +74,19 @@ public class FadeRect : MonoBehaviour
         {
             // Fade to Clear
             fadeColor.a = Mathf.Min(1.0f, fadeColor.a + (Time.deltaTime / fadeToClearTime));
+        }
+
+        if (_fadeImage != null)
+        {
+            _fadeImage.color = fadeColor;
+        }
+    }
+
+    private void UpdateFadeImage()
+    {
+        if (_fadeImage == null)
+        {
+            _fadeImage = GetComponent<Image>();
         }
 
         if (_fadeImage != null)

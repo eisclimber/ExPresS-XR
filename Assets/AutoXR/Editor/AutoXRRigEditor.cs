@@ -27,12 +27,12 @@ public class AutoXRRigEditor : Editor
 
         EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        targetScript.inputMethode = (InputMethodeType)EditorGUILayout.EnumPopup("Input Methode", targetScript.inputMethode);
+        targetScript.inputMethod = (InputMethodType)EditorGUILayout.EnumPopup("Input Method", targetScript.inputMethod);
         EditorGUI.indentLevel--;
 
 
         EditorGUILayout.LabelField("Movement", EditorStyles.boldLabel);
-        if (targetScript.inputMethode == InputMethodeType.Controller)
+        if (targetScript.inputMethod == InputMethodType.Controller)
         {
             EditorGUI.indentLevel++;
             targetScript.joystickMovementEnabled = EditorGUILayout.Toggle("Enable Joystick Movement", targetScript.joystickMovementEnabled);
@@ -47,7 +47,7 @@ public class AutoXRRigEditor : Editor
             EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);
 
             EditorGUI.indentLevel++;
-            EditorGUI.BeginDisabledGroup(targetScript.inputMethode != InputMethodeType.Controller);
+            EditorGUI.BeginDisabledGroup(targetScript.inputMethod != InputMethodType.Controller);
             {
                 targetScript.handModelMode = (HandModelMode)EditorGUILayout.EnumPopup("Type of Hand Model", targetScript.handModelMode);
 
@@ -62,7 +62,7 @@ public class AutoXRRigEditor : Editor
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
         }
-        else if (targetScript.inputMethode == InputMethodeType.HeadGaze)
+        else if (targetScript.inputMethod == InputMethodType.HeadGaze)
         {
             EditorGUI.indentLevel++;
             targetScript.teleportationEnabled = EditorGUILayout.Toggle("Enable Teleportation", targetScript.teleportationEnabled);
@@ -100,6 +100,22 @@ public class AutoXRRigEditor : Editor
         {
             EditorGUILayout.HelpBox("Custom AutoXRRig already set. Setting a new one will override the old one.", MessageType.Warning);
         }
+
+        // EditorGUILayout.Space();
+
+        // if (targetScript.fadeRect != null && targetScript.fadeRect.completelyHidden 
+        //     && GUILayout.Button("Fade Screen To Black"))
+        // {
+        //     targetScript.fadeRect.FadeToColor(!Application.isPlaying);
+        // }
+
+        // if (targetScript.fadeRect != null && targetScript.fadeRect.completelyVisible 
+        //     && GUILayout.Button("Fade Screen To Clear"))
+        // {
+        //     targetScript.fadeRect.FadeToClear(!Application.isPlaying);
+        // }
+
+        // EditorGUILayout.Space();
 
         if (GUILayout.Button("Set As Custom AutoXRRig"))
         {
