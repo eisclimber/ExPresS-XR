@@ -708,7 +708,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
             ObjectField[] buttonFields = { _button1Field, _button2Field, _button3Field, _button4Field };
 
-            string buttonPrefabPath = AutoXRCreationUtils.MakeAutoXRPrefabPath(AutoXRCreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
+            string buttonPrefabPath = CreationUtils.MakeAutoXRPrefabPath(CreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
             AutoXRQuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(buttonPrefabPath);
             for (int i = 0; i < numButtons; i++)
             {
@@ -724,7 +724,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
             // Add Multiple Choice Button if necessary
             if (_quizConfig.quizMode == QuizMode.MultipleChoice)
             {
-                string multiChoiceButtonPrefabPath = AutoXRCreationUtils.MakeAutoXRPrefabPath(AutoXRCreationUtils.AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
+                string multiChoiceButtonPrefabPath = CreationUtils.MakeAutoXRPrefabPath(CreationUtils.AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
                 AutoXRQuizButton multiChoiceButtonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(multiChoiceButtonPrefabPath);
 
                 AutoXRQuizButton button = Instantiate(multiChoiceButtonPrefab, new Vector3(xOffset + QUIZ_BUTTON_SPACING, 0, 0), Quaternion.identity);
@@ -819,7 +819,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         if (needsAfterQuizMenu)
         {
-            GameObject afterMenuGo = AutoXRCreationUtils.InstantiateAndPlacePrefab(AutoXRCreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
+            GameObject afterMenuGo = CreationUtils.InstantiateAndPlacePrefab(CreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
 
             afterMenuGo.transform.SetParent(_currentQuizGo?.transform);
 

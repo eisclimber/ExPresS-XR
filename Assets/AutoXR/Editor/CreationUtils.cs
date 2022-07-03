@@ -3,23 +3,40 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-public static class AutoXRCreationUtils
-{    
+public class CreationUtils
+{
     private const string AUTOXR_PREFABS_PATH = "Assets/AutoXR/Prefabs/";
     public const string AUTOXR_PREFAB_FORMAT = AUTOXR_PREFABS_PATH + "{0}.prefab";
     public const string TELEPORT_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Teleport";
     public const string CONTINUOUS_MOVE_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Continuous Move";
     public const string HEAD_GAZE_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Head Gaze";
+    public const string HEAD_GAZE_TELEPORT_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Head Gaze Teleport";
     public const string CUSTOM_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Custom";
     public const string AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Auto XR Buttons/Auto XR Quiz Button/Auto XR Quiz Button Square";
     public const string AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Auto XR Buttons/Auto XR Quiz Button/Auto XR Multiple Choice Confirm Button Square";
     public const string AFTER_QUIZ_DIALOG_PATH_NAME = "After Quiz Dialog";
 
+
+
+    /// <summary>
+    /// Creates an <see cref="GameObject"> from a given prefab from a menu command and adds it under the current selection
+    /// </summary>
+    /// <param name="menuCommand"><see cref="MenuCommand"> that requested the creation.</param>
+    /// <param name="name">The name of the prefab to be instantiated.</param>
+    /// <returns> A Reference the object that was created or <see langword="null"/> if the prefab was 
+    /// not found.</returns>
+    public static GameObject InstantiatePrefabAtContextTransform(MenuCommand menuCommand, string prefabName)
+    {
+        Transform parent = CreationUtils.GetContextTransform(menuCommand);
+        return CreationUtils.InstantiateAndPlacePrefab(prefabName, parent);
+    }
+
+
     /// <summary>
     /// Creates an <see cref="GameObject"> from a given prefab and adds it under the current selection
     /// </summary>
+    /// <param name="name">The name of the prefab to be instantiated.</param>
     /// <param name="path">The object passed to custom menu item functions to operate on.</param>
-    /// <param name="menuCommand">The object passed to custom menu item functions to operate on.</param>
     /// <returns> A Reference the object that was created or <see langword="null"/> if the prefab was 
     /// not found.</returns>
     public static GameObject InstantiateAndPlacePrefab(string name, Transform parent = null)
@@ -95,32 +112,5 @@ public static class AutoXRCreationUtils
     {
         var context = menuCommand.context as GameObject;
         return context?.transform;
-    }
-
-    /// <summary>
-    /// Finds and returns the (first) <see cref="Transform"/> of a child with the specified name.
-    /// </summary>
-    /// <param name="parent">The transform to find the child in.</param>
-    /// <param name="childName">The name of the GameObject to find.</param>
-    /// <returns>Returns the first Transform of a GameObject having the specified name,
-    /// or <see langword="null"/> if there is none.</returns>
-    public static Transform RecursiveFindChild(Transform parent, string childName)
-    {
-        foreach (Transform child in parent)
-        {
-            if(child.name == childName)
-            {
-                return child;
-            }
-            else
-            {
-                Transform found = RecursiveFindChild(child, childName);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-        }
-        return null;
     }
 }

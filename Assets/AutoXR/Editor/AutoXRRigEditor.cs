@@ -96,7 +96,7 @@ public class AutoXRRigEditor : Editor
         EditorGUILayout.Space();
 
 
-        if (File.Exists(AutoXRCreationUtils.customAutoXRRigPath))
+        if (File.Exists(CreationUtils.customAutoXRRigPath))
         {
             EditorGUILayout.HelpBox("Custom AutoXRRig already set. Setting a new one will override the old one.", MessageType.Warning);
         }
@@ -136,11 +136,11 @@ public class AutoXRRigEditor : Editor
         if (PrefabUtility.IsAnyPrefabInstanceRoot(go))
         {
             GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(go);
-            PrefabUtility.SaveAsPrefabAsset(prefab, AutoXRCreationUtils.customAutoXRRigPath);
+            PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.customAutoXRRigPath);
         }
         else 
         {
-            PrefabUtility.SaveAsPrefabAsset(targetScript.gameObject, AutoXRCreationUtils.customAutoXRRigPath);
+            PrefabUtility.SaveAsPrefabAsset(targetScript.gameObject, CreationUtils.customAutoXRRigPath);
         }
     }
 

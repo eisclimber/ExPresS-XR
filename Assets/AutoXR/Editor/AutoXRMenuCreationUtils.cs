@@ -8,25 +8,31 @@ public static class AutoXRMenuCreationUtils
     [MenuItem("GameObject/AutoXR/Auto XR Rig/Teleport")]
     static void CreateAutoXRRig(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, AutoXRCreationUtils.TELEPORT_AUTOXR_PREFAB_NAME);
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.TELEPORT_AUTOXR_PREFAB_NAME);
     }
 
     [MenuItem("GameObject/AutoXR/Auto XR Rig/Continuous Move")]
     static void CreateAutoXRRigContinuousMove(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, AutoXRCreationUtils.CONTINUOUS_MOVE_AUTOXR_PREFAB_NAME);
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.CONTINUOUS_MOVE_AUTOXR_PREFAB_NAME);
     }
 
     [MenuItem("GameObject/AutoXR/Auto XR Rig/Head Gaze")]
     static void CreateAutoXRRigHeadGaze(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, AutoXRCreationUtils.HEAD_GAZE_AUTOXR_PREFAB_NAME);
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.HEAD_GAZE_AUTOXR_PREFAB_NAME);
+    }
+
+    [MenuItem("GameObject/AutoXR/Auto XR Rig/Head Gaze Teleport")]
+    static void CreateAutoXRRigHeadGazeTeleport(MenuCommand menuCommand)
+    {
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.HEAD_GAZE_TELEPORT_AUTOXR_PREFAB_NAME);
     }
 
     [MenuItem("GameObject/AutoXR/Auto XR Rig/Custom")]
     public static void CreateAutoXRRigCustom(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, AutoXRCreationUtils.CUSTOM_AUTOXR_PREFAB_NAME);
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.CUSTOM_AUTOXR_PREFAB_NAME);
         if (go == null)
         {
             Debug.LogWarning("No custom AutoXR-Rig found. Create a new one and mark it as custom in the Inspector.");
@@ -129,7 +135,7 @@ public static class AutoXRMenuCreationUtils
     [MenuItem("GameObject/AutoXR/Buttons/Quiz Buttons/Auto XR Quiz Button Square")]
     public static void CreateAutoXRQuizButtonSquare(MenuCommand menuCommand)
     {
-        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, AutoXRCreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
+        GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
     }
 
 
@@ -234,7 +240,7 @@ public static class AutoXRMenuCreationUtils
 
     private static GameObject InstantiatePrefabAtContextTransform(MenuCommand menuCommand, string prefabName)
     {
-        Transform parent = AutoXRCreationUtils.GetContextTransform(menuCommand);
-        return AutoXRCreationUtils.InstantiateAndPlacePrefab(prefabName, parent);
+        Transform parent = CreationUtils.GetContextTransform(menuCommand);
+        return CreationUtils.InstantiateAndPlacePrefab(prefabName, parent);
     }
 }

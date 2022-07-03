@@ -464,8 +464,8 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             _afterQuizMenu.enabled = true;
 
-            Transform restartTransform = AutoXRCreationUtils.RecursiveFindChild(_afterQuizMenu.transform, "Restart Button");
-            Transform closeTransform = AutoXRCreationUtils.RecursiveFindChild(_afterQuizMenu.transform, "Close Button");
+            Transform restartTransform = AutoXRRuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Restart Button");
+            Transform closeTransform = AutoXRRuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Close Button");
 
             Button restartButton = restartTransform?.GetComponent<Button>();
             Button closeButton = closeTransform?.GetComponent<Button>();
