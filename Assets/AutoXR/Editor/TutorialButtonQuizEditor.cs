@@ -50,7 +50,8 @@ public class TutorialButtonQuizEditor : Editor
 
         EditorGUILayout.LabelField("Feedback Options", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_showResolutionTextPrefix"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_canRestartFromAfterQuizDialog"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_showResultTextPrefix"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_showQuizCompletedText"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDuration"), true);
         EditorGUI.indentLevel--;

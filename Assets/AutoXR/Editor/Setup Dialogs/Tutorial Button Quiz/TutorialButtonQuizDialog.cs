@@ -15,6 +15,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     const string QUESTION_ITEM_PATH = "Assets/AutoXR/Editor/Setup Dialogs/Tutorial Button Quiz/question-item.uxml";
 
     const string CONFIG_SAVE_PATH = "Assets/AutoXR/ExportAssets/QuizSetupConfig.asset";
+    const string RENDER_TEXTURE_SAVE_PATH = "Assets/Runtime Resources/QuizRenderTexture.asset";
 
     const float QUIZ_BUTTON_SPACING = 0.3f;
 
@@ -29,6 +30,8 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         window.configField.value = null;
         window.UpdateQuizConfig(QuizSetupConfig.CreateInstance<QuizSetupConfig>());
+
+        _currentQuizGo = null;
     }
 
     public override string uxmlName
@@ -72,6 +75,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
     private ObjectField _textLabelField;
     private ObjectField _gameObjectField;
     private ObjectField _videoPlayerField;
+    private ObjectField _afterQuizMenuField;
     private Button _createQuestioningDisplayButton;
     private Button _setupQuestioningDisplayButton;
 
@@ -102,6 +106,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     // Quiz Config
     private static QuizSetupConfig _quizConfig;
+
+    // Quiz GameObject
+    private static GameObject _currentQuizGo;
+
 
     public override void OnEnable()
     {
@@ -142,7 +150,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _quizModeField = _step2Container.Q<EnumField>("choice-type");
         _quizModeField.RegisterCallback<ChangeEvent<System.Enum>>(QuizModeChangedCallback);
         _questionOrderField = _step2Container.Q<EnumField>("question-order");
-        _questionOrderField.RegisterCallback<ChangeEvent<System.Enum>>(QuestionOrderChangedCallback);
+        _questionOrderField.RegisterCallback<ChangeEvent<System.Enum>>(QuestionOrderingChangedCallback);
         _answersAmountsField = _step2Container.Q<EnumField>("number-of-answers");
         _answersAmountsField.RegisterCallback<ChangeEvent<System.Enum>>(AnswersAmountChangedCallback);
         _questionTypeField = _step2Container.Q<EnumField>("question-type");
@@ -154,7 +162,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _feedbackTypeField = _step2Container.Q<EnumField>("feedback-type");
         _feedbackTypeField.RegisterCallback<ChangeEvent<System.Enum>>(FeedbackTypeChangedCallback);
         _setupQuizButton = _step2Container.Q<Button>("setup-quiz-type-button");
-        _setupQuizButton.clickable.clicked += SetupQuizType;
+        _setupQuizButton.clickable.clicked += SetupQuizGo;
 
         // Setup step 5
         _button1Field = _step5Container.Q<ObjectField>("button-field-1");
@@ -172,6 +180,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         _textLabelField = _step6Container.Q<ObjectField>("text-label-field");
         _gameObjectField = _step6Container.Q<ObjectField>("game-object-field");
         _videoPlayerField = _step6Container.Q<ObjectField>("video-player-field");
+        _afterQuizMenuField = _step6Container.Q<ObjectField>("after-quiz-menu-field");
         _createQuestioningDisplayButton = _step6Container.Q<Button>("create-questioning-display-button");
         _createQuestioningDisplayButton.clickable.clicked += CreateQuestioningDisplays;
         _setupQuestioningDisplayButton = _step6Container.Q<Button>("setup-questioning-display-button");
@@ -202,7 +211,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Setup step 9
         _createDataGathererButton = _step9Container.Q<Button>("create-data-gatherer-button");
-        _createDataGathererButton.clickable.clicked += () => { AutoXRCreationUtils.CreateDataGatherer(null); };
+        _createDataGathererButton.clickable.clicked += () => { AutoXRMenuCreationUtils.CreateDataGatherer(null); };
 
         // Bind remaining UI Elements
         base.BindUiElements();
@@ -220,9 +229,9 @@ class TutorialButtonQuizDialog : SetupDialogBase
         UpdateQuizConfig(_quizConfig);
     }
 
-    private void QuestionOrderChangedCallback(ChangeEvent<System.Enum> evt) 
+    private void QuestionOrderingChangedCallback(ChangeEvent<System.Enum> evt) 
     {
-        _quizConfig.questionOrder = (QuestionOrder) evt.newValue;
+        _quizConfig.questionOrdering = (QuestionOrdering) evt.newValue;
         UpdateQuizConfig(_quizConfig);
     }
 
@@ -322,14 +331,14 @@ class TutorialButtonQuizDialog : SetupDialogBase
                 int counter = 0;
                 questionItem.Query<ObjectField>("answer-object-field").ForEach((ObjectField objField) =>
                 {
-                    objField.value = question.answersObjects[counter];
+                    objField.value = question.answerObjects[counter];
                     counter++;
                 });
 
                 counter = 0;
                 questionItem.Query<TextField>("answer-text-field").ForEach((TextField textField) =>
                 {
-                    textField.value = question.answersTexts[counter];
+                    textField.value = question.answerTexts[counter];
                     counter++;
                 });
 
@@ -387,9 +396,13 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     // Setup functions
 
-    private void SetupQuizType()
+    private void SetupQuizGo()
     {
         currentStep++;
+
+        _currentQuizGo = new GameObject("Tutorial Button Quiz");
+        _currentQuizGo.GetComponent<TutorialButtonQuiz>();
+
         SetStepButtonsEnabled(true, 3, 5);
     }
 
@@ -435,7 +448,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         if (CreateQuiz(_quizConfig, buttons, (AutoXRMcConfirmButton) _mcConfirmButtonField.value,
                         (TMP_Text)_textLabelField.value, (GameObject)_gameObjectField.value,
-                        (VideoPlayer)_videoPlayerField.value))
+                        (VideoPlayer)_videoPlayerField.value, (Canvas)_afterQuizMenuField.value))
         {
             // Enable step 7-9 if setup successfully
             SetStepButtonsEnabled(true, 7, 9);
@@ -521,8 +534,9 @@ class TutorialButtonQuizDialog : SetupDialogBase
             }
 
             // Answers
-            bool showAnswerObjectField = (_quizConfig.answerType == AnswerType.Object);
-            bool showAnswerTextField = (_quizConfig.answerType == AnswerType.Text);
+            bool showAnyAnswerField = (_quizConfig.answerType == AnswerType.DifferingTypes);
+            bool showAnswerObjectField = showAnyAnswerField ||(_quizConfig.answerType == AnswerType.Object);
+            bool showAnswerTextField = showAnyAnswerField || (_quizConfig.answerType == AnswerType.Text);
             questionItem.Query<ObjectField>("answer-object-field").ForEach((objField) =>
             {
                 objField.style.display = (showAnswerObjectField ? DisplayStyle.Flex : DisplayStyle.None);
@@ -687,13 +701,14 @@ class TutorialButtonQuizDialog : SetupDialogBase
         if (_quizConfig != null)
         {
             GameObject go = new GameObject("Quiz Buttons");
+            go.transform.SetParent(_currentQuizGo?.transform);
             int numButtons = (int)Mathf.Min((int)_quizConfig.answersAmount + 1, TutorialButtonQuiz.NUM_ANSWERS);
            
             float xOffset = (QUIZ_BUTTON_SPACING * (numButtons - 1)) / 2.0f;
 
             ObjectField[] buttonFields = { _button1Field, _button2Field, _button3Field, _button4Field };
 
-            string buttonPrefabPath = AutoXRCreationUtils.MakeAutoXRPrefabPath(AutoXRCreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
+            string buttonPrefabPath = CreationUtils.MakeAutoXRPrefabPath(CreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
             AutoXRQuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(buttonPrefabPath);
             for (int i = 0; i < numButtons; i++)
             {
@@ -709,7 +724,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
             // Add Multiple Choice Button if necessary
             if (_quizConfig.quizMode == QuizMode.MultipleChoice)
             {
-                string multiChoiceButtonPrefabPath = AutoXRCreationUtils.MakeAutoXRPrefabPath(AutoXRCreationUtils.AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
+                string multiChoiceButtonPrefabPath = CreationUtils.MakeAutoXRPrefabPath(CreationUtils.AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
                 AutoXRQuizButton multiChoiceButtonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(multiChoiceButtonPrefabPath);
 
                 AutoXRQuizButton button = Instantiate(multiChoiceButtonPrefab, new Vector3(xOffset + QUIZ_BUTTON_SPACING, 0, 0), Quaternion.identity);
@@ -733,11 +748,12 @@ class TutorialButtonQuizDialog : SetupDialogBase
                                 && _gameObjectField.value == null;
         bool needsVideoPlayer = _videoPlayerField.style.display == DisplayStyle.Flex
                                 && _videoPlayerField.value == null;
+        bool needsAfterQuizMenu = _afterQuizMenuField.value == null;
 
         if (needsText || needsVideoPlayer)
         {
-
             GameObject canvasGo = new GameObject("Questioning Display Canvas");
+            canvasGo.transform.SetParent(_currentQuizGo?.transform);
             canvasGo.AddComponent<Canvas>();
             canvasGo.AddComponent<UnityEngine.UI.GraphicRaycaster>();
             canvasGo.AddComponent<TrackedDeviceGraphicRaycaster>();
@@ -745,7 +761,6 @@ class TutorialButtonQuizDialog : SetupDialogBase
             Canvas canvasComp = canvasGo.GetComponent<Canvas>();
             canvasComp.renderMode = RenderMode.WorldSpace;
             
-
             if (needsText)
             {
                 GameObject textLabel = new GameObject("Questioning Display Text");
@@ -766,14 +781,23 @@ class TutorialButtonQuizDialog : SetupDialogBase
                 videoPlayerComp.playOnAwake = false;
 
                 GameObject videoDisplayGo = new GameObject("Video Display");
-                videoDisplayGo.AddComponent<UnityEngine.UI.RawImage>();
+                UnityEngine.UI.RawImage videoDisplayComp = videoDisplayGo.AddComponent<UnityEngine.UI.RawImage>();
 
                 videoPlayerGo.transform.SetParent(canvasGo.transform);
                 videoDisplayGo.transform.SetParent(canvasGo.transform);
 
                 _videoPlayerField.value = videoPlayerGo;
 
-                Debug.LogWarning("Video Player and Video Display were created. Be sure to set up the Video Player as described in the Tutorial!");
+                // Create & saveRender texture
+                RenderTexture renderTexture = new RenderTexture(1080, 720, 16, RenderTextureFormat.ARGB32);
+
+                videoPlayerComp.targetTexture = renderTexture;
+                videoDisplayComp.texture = renderTexture;
+
+                string savePath = AssetDatabase.GenerateUniqueAssetPath(RENDER_TEXTURE_SAVE_PATH);
+                AssetDatabase.CreateAsset(renderTexture, savePath);
+
+                Debug.LogWarningFormat("Render texture generated and saved to '{0}'.", savePath);
             }
             canvasComp.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
 
@@ -781,33 +805,53 @@ class TutorialButtonQuizDialog : SetupDialogBase
             Undo.RegisterCreatedObjectUndo(canvasGo, "Create Questioning Display Canvas");
         }
 
-
         if (needsGameObjectAnchor)
         {
             GameObject anchor = new GameObject("Questioning Display Anchor");
+
+            anchor.transform.SetParent(_currentQuizGo?.transform);
             
             _gameObjectField.value = anchor;
 
             GameObjectUtility.EnsureUniqueNameForSibling(anchor);
             Undo.RegisterCreatedObjectUndo(anchor, "Create Questioning Display GameObject Anchor");
         }
+
+        if (needsAfterQuizMenu)
+        {
+            GameObject afterMenuGo = CreationUtils.InstantiateAndPlacePrefab(CreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
+
+            afterMenuGo.transform.SetParent(_currentQuizGo?.transform);
+
+            _afterQuizMenuField.value = afterMenuGo.GetComponent<Canvas>();
+
+            Undo.RegisterCreatedObjectUndo(afterMenuGo, "Create After Quiz Menu");
+        }
     }
 
     public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
-                            TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer)
+                            TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer, Canvas _afterQuizDialog)
     {
-        GameObject quizGo = new GameObject("Tutorial Button Quiz");
-        TutorialButtonQuiz quiz = quizGo.AddComponent<TutorialButtonQuiz>();
-
-        if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer))
+        if (_currentQuizGo == null)
         {
-            Object.DestroyImmediate(quizGo);
+            _currentQuizGo = new GameObject("Tutorial Button Quiz");
+        }
+        
+        TutorialButtonQuiz quiz = _currentQuizGo.GetComponent<TutorialButtonQuiz>();
+        if (quiz == null)
+        {
+            quiz = _currentQuizGo.AddComponent<TutorialButtonQuiz>();
+        }
+
+        if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, _afterQuizDialog))
+        {
+            Undo.RegisterCreatedObjectUndo(_currentQuizGo, "Create Tutorial Button Quiz Game Object");
             return false;
         }
 
-        quiz.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer);
+        quiz.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, _afterQuizDialog);
 
-        Undo.RegisterCreatedObjectUndo(quizGo, "Create Tutorial Button Quiz Game Object");
+        Undo.RegisterCreatedObjectUndo(_currentQuizGo, "Create Tutorial Button Quiz Game Object");
         return true;
     }
 

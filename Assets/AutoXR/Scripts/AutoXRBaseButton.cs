@@ -165,17 +165,17 @@ public class AutoXRBaseButton : XRBaseInteractable
         OnButtonPressReset.Invoke();
     }
 
-    private void Start()
-    {
-        SetMinMax();
-    }
+    // private void Start()
+    // {
+    //     SetMinMax();
+    // }
 
-    private void SetMinMax()
-    {
-        Collider collider = pushAnchor.GetComponent<Collider>();
-        _yMin = pushAnchor.transform.localPosition.y - (collider.bounds.size.y * 0.5f);
-        _yMax = pushAnchor.transform.localPosition.y;
-    }
+    // private void SetMinMax()
+    // {
+    //     Collider collider = pushAnchor.GetComponent<Collider>();
+    //     _yMin = pushAnchor.transform.localPosition.y - (collider.bounds.size.y * 0.5f);
+    //     _yMax = pushAnchor.transform.localPosition.y;
+    // }
 
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,48 +8,106 @@ using UnityEngine.Events;
 
 public class PlayerHeadCollider : MonoBehaviour
 {
-    [Tooltip("The anchor that is moved when collisions occur. Usually should be set to the AutoXRRig/XROrigin.")]
+    private const float FLOOR_DISTANCE_THRESHOLD = 0.02f;
+
+
+    [Tooltip("If true the players camera will be pushed back.")]
+    [SerializeField]
+    public bool collisionPushbackEnabled;
+
+    [Tooltip("If true the players cameras corner will be faded.")]
+    [SerializeField]
+    private bool _showCollisionVignetteEffect;
+    public bool showCollisionVignetteEffect
+    {
+        get => _showCollisionVignetteEffect;
+        set => _showCollisionVignetteEffect = value;
+    }
+
+    [SerializeField]
+    public ScreenCollisionIndicator screenCollisionIndicator;
+
+    [Tooltip("The anchor that is moved when collisions occur. Usually should be set to the AutoXRRig or XROrigin.")]
     [SerializeField]
     private GameObject _pushbackAnchor;
+    public GameObject pushbackAnchor
+    {
+        get => _pushbackAnchor;
+        set => _pushbackAnchor = value;
+    }
 
     [Tooltip("Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.")]
     [SerializeField]
-    private float backupCap = .22f;
+    private float _colliderSize = .25f;
 
-    [Tooltip("Will be invoked once when the first collidion with a wall occurs. Gets reset when no collision is detected anymore.")]
+
+    [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds.")]
     [SerializeField]
-    public UnityEvent onCollisionStarted;
-    
-    [Tooltip("Will be invoked once when a collidion with wall ends.")]
+    private float _maxFadeDuration;
+    private float maxFadeDuration
+    {
+        get => _maxFadeDuration;
+        set => _maxFadeDuration = value;
+    }
+
+
+    [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
     [SerializeField]
-    public UnityEvent onCollisionEnded;
+    public UnityEvent OnCollisionStarted;
 
-    
-    private LayerMask layerMask;
-    private Collider[] objs = new Collider[10];
-    private Vector3 prevHeadPos;
-    private bool colliding;
+    [Tooltip("Will be invoked once when a collision with wall ends.")]
+    [SerializeField]
+    public UnityEvent OnCollisionEnded;
 
-    private void Start()
+
+    private LayerMask _layerMask;
+    private Collider[] _objs = new Collider[10];
+    private Vector3 _prevHeadPos;
+    private bool _colliding;
+    private float _totalVerticalCollisionDiff;
+    private Coroutine cooldownCoroutine;
+
+    private void Awake()
     {
         if (_pushbackAnchor == null)
         {
             Debug.LogError("No GameObject was set as pushback anchor!");
         }
 
-        layerMask = LayerMask.NameToLayer("Everything");
+        // Prevent Collision during setup
+        cooldownCoroutine = StartCoroutine(CollisionCooldown());
 
-        prevHeadPos = transform.position;
+        _layerMask = LayerMask.NameToLayer("Everything");
+        _colliding = false;
+        _prevHeadPos = transform.position;
+
+        if (screenCollisionIndicator != null)
+        {
+            OnCollisionStarted.AddListener(() => {
+                // Debug.Log("Show Vignette.");
+                if (showCollisionVignetteEffect)
+                {
+                    screenCollisionIndicator.FadeIn(_maxFadeDuration); 
+                }
+            });
+            OnCollisionEnded.AddListener(() => {
+                // Debug.Log("Show Vignette.");
+                if (showCollisionVignetteEffect)
+                {
+                    screenCollisionIndicator.FadeOut(_maxFadeDuration); 
+                }
+            });
+        }
     }
 
     private int DetectHit(Vector3 loc)
     {
         int hits = 0;
-        int size = Physics.OverlapSphereNonAlloc(loc, backupCap, objs, layerMask, QueryTriggerInteraction.Ignore);
+        int size = Physics.OverlapSphereNonAlloc(loc, _colliderSize, _objs, _layerMask, QueryTriggerInteraction.Ignore);
 
         for (int i = 0; i < size; i++)
         {
-            if (objs[i].tag != "Player")
+            if (_objs[i].tag != "Player")
             {
                 hits++;
             }
@@ -58,20 +117,24 @@ public class PlayerHeadCollider : MonoBehaviour
 
     public void Update()
     {
-        if (_pushbackAnchor != null)
+        if (_pushbackAnchor != null && cooldownCoroutine == null)
         {
             int hits = DetectHit(transform.position);
 
             // No collision
             if (hits == 0)
             {
-                prevHeadPos = transform.position;
-
+                _prevHeadPos = transform.position;
                 // Collision Ending
-                if (colliding)
+                if (_colliding)
                 {
-                    colliding = false;
-                    onCollisionEnded.Invoke();
+                    _colliding = false;
+                    // Debug.Log("Ending");
+                    OnCollisionEnded.Invoke();
+                }
+                if (collisionPushbackEnabled)
+                {
+                    MoveTowardsFloor();
                 }
             }
 
@@ -79,41 +142,61 @@ public class PlayerHeadCollider : MonoBehaviour
             else
             {
                 // Player pushback  
-                Vector3 headDiff = transform.position - prevHeadPos;
-                if (Mathf.Abs(headDiff.x) > backupCap)
+                Vector3 headDiff = transform.position - _prevHeadPos;
+
+                if (Mathf.Abs(headDiff.x) > _colliderSize)
                 {
-                    if (headDiff.x > 0)
-                    {
-                        headDiff.x = backupCap;
-                    }
-                    else
-                    {
-                        headDiff.x = -backupCap;
-                    }
+                    headDiff.x = (headDiff.x > 0 ? _colliderSize : -_colliderSize);
                 }
-                if (Mathf.Abs(headDiff.z) > backupCap)
+                if (Mathf.Abs(headDiff.z) > _colliderSize)
                 {
-                    if (headDiff.z > 0)
-                    {
-                        headDiff.z = backupCap;
-                    }
-                    else
-                    {
-                        headDiff.z = -backupCap;
-                    }
+                    headDiff.z = (headDiff.z > 0 ? _colliderSize : -_colliderSize);
                 }
-                Vector3 adjHeadPos = new Vector3(_pushbackAnchor.transform.position.x - headDiff.x,
-                                                 _pushbackAnchor.transform.position.y,
-                                                 _pushbackAnchor.transform.position.z - headDiff.z);
-                _pushbackAnchor.transform.SetPositionAndRotation(adjHeadPos, _pushbackAnchor.transform.rotation);
+                if (Mathf.Abs(headDiff.y) > _colliderSize)
+                {
+                    headDiff.y = (headDiff.y > 0 ? _colliderSize : -_colliderSize);
+                }
+
+                Vector3 adjHeadPos = _pushbackAnchor.transform.position - headDiff;
+
+                if (collisionPushbackEnabled)
+                {
+                    _pushbackAnchor.transform.position = adjHeadPos;
+                }
 
                 // Collision Started
-                if (!colliding)
+                if (!_colliding)
                 {
-                    colliding = true;
-                    onCollisionEnded.Invoke();
+                    _colliding = true;
+                    // Debug.Log("Start");
+                    // Prevent initial Collision showing up
+                    OnCollisionStarted.Invoke();
                 }
             }
         }
+    }
+
+
+    private void MoveTowardsFloor()
+    {
+        RaycastHit hit;
+        float floorDistance = Mathf.Min(_pushbackAnchor.transform.position.y, _colliderSize);
+
+        // TODO Enhance this behavior
+        if (floorDistance > FLOOR_DISTANCE_THRESHOLD)
+        {
+            // Cast a sphere down by the total y offset of the head and move to the next valid position
+            if (Physics.SphereCast(transform.position, _colliderSize, -transform.up, out hit, floorDistance))
+            {
+                floorDistance = hit.distance - FLOOR_DISTANCE_THRESHOLD;
+            }
+            _pushbackAnchor.transform.position -= new Vector3(0.0f, Mathf.Max(floorDistance, 0.0f), 0.0f);
+        }
+    }
+
+    private IEnumerator CollisionCooldown()
+    {
+        yield return new WaitForSeconds(0.3f);
+        cooldownCoroutine = null;
     }
 }

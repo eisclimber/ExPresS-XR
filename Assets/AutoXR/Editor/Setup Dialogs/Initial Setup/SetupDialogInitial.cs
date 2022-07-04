@@ -167,13 +167,13 @@ class SetupDialogInitial : SetupDialogBase
         switch (movementOption)
         {
             case MovementOption.Teleport:
-                return AutoXRCreationUtils.TELEPORT_AUTOXR_PREFAB_NAME;
+                return CreationUtils.TELEPORT_AUTOXR_PREFAB_NAME;
             case MovementOption.ContinuousMove:
-                return AutoXRCreationUtils.CONTINUOUS_MOVE_AUTOXR_PREFAB_NAME;
+                return CreationUtils.CONTINUOUS_MOVE_AUTOXR_PREFAB_NAME;
             case MovementOption.HeadGaze:
-                return AutoXRCreationUtils.HEAD_GAZE_AUTOXR_PREFAB_NAME;
+                return CreationUtils.HEAD_GAZE_AUTOXR_PREFAB_NAME;
             default:
-                return AutoXRCreationUtils.CUSTOM_AUTOXR_PREFAB_NAME;
+                return CreationUtils.CUSTOM_AUTOXR_PREFAB_NAME;
         }
     }
 }

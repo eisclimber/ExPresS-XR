@@ -17,7 +17,7 @@ namespace AutoXR.Editor
         const string EXPERIMENTATION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
 
         // Exhibition default material paths
-        const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Old Travertine Floor.mat";
+        const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Wood Fishbone.mat";
         const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
         const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
 

@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using Unity.XR.CoreUtils;
 
@@ -9,22 +11,22 @@ using Unity.XR.CoreUtils;
 public class AutoXRRig : MonoBehaviour
 {
     [SerializeField]
-    private InputMethodeType _inputMethode;
-    public InputMethodeType inputMethode
+    private InputMethodType _inputMethod;
+    public InputMethodType inputMethod
     {
-        get => _inputMethode;
+        get => _inputMethod;
         set
         {
-            _inputMethode = value;
+            _inputMethod = value;
 
-            _leftHandController.gameObject.SetActive(inputMethode == InputMethodeType.Controller);
-            _rightHandController.gameObject.SetActive(inputMethode == InputMethodeType.Controller);
+            _leftHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
+            _rightHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
 
-            _headGazeController.gameObject.SetActive(inputMethode == InputMethodeType.HeadGaze);
+            _headGazeController.gameObject.SetActive(inputMethod == InputMethodType.HeadGaze);
 
             if (_headGazeReticle != null)
             {
-                _headGazeReticle.gameObject.SetActive(inputMethode == InputMethodeType.HeadGaze);
+                _headGazeReticle.gameObject.SetActive(inputMethod == InputMethodType.HeadGaze);
             }
         }
     }
@@ -38,7 +40,9 @@ public class AutoXRRig : MonoBehaviour
         {
             _teleportationEnabled = value;
 
-            EnableLocomotionProvider<TeleportationProvider>(_teleportationEnabled);
+            bool enableAsDriver = _teleportationEnabled && !_joystickMovementEnabled;
+
+            EnableLocomotionProvider<TeleportationProvider>(_teleportationEnabled, enableAsDriver);
 
             _leftHandController.teleportationEnabled = _teleportationEnabled;
             _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
@@ -55,7 +59,9 @@ public class AutoXRRig : MonoBehaviour
         {
             _joystickMovementEnabled = value;
 
-            EnableLocomotionProvider<ActionBasedContinuousMoveProvider>(_joystickMovementEnabled);
+            bool enableAsDriver = _joystickMovementEnabled;
+
+            EnableLocomotionProvider<ActionBasedContinuousMoveProvider>(_joystickMovementEnabled, enableAsDriver);
             EnableLocomotionProvider<ActionBasedContinuousTurnProvider>(_joystickMovementEnabled);
 
             // Snap Turn and joystick Movement is not allowed
@@ -147,7 +153,59 @@ public class AutoXRRig : MonoBehaviour
 
             if (_playerHeadCollider != null) 
             {
-                _playerHeadCollider.enabled = _headCollisionEnabled;
+                _playerHeadCollider.collisionPushbackEnabled = _headCollisionEnabled;
+            }
+        }
+    }
+
+    [Tooltip("Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them.")]
+    [SerializeField]
+    private bool _showCollisionVignetteEffect;
+    public bool showCollisionVignetteEffect
+    {
+        get => _showCollisionVignetteEffect;
+        set
+        {
+            _showCollisionVignetteEffect = value;
+
+            if (_playerHeadCollider != null) 
+            {
+                _playerHeadCollider.showCollisionVignetteEffect = _showCollisionVignetteEffect;
+            }
+        }
+    }
+
+
+    [Tooltip("Gives a visual clue of the bounds of the play area. The play area must be configured via you VR's software, e.g. SteamVR. Be aware that this may change the forward direction and start position depending on your play area")]
+    [SerializeField]
+    private bool _showPlayAreaBounds;
+    public bool showPlayAreaBounds
+    {
+        get => _showPlayAreaBounds;
+        set
+        {
+            _showPlayAreaBounds = value;
+
+            if (_playAreaBoundingBox != null)
+            {
+                _playAreaBoundingBox.enabled = _showPlayAreaBounds;
+            }
+        }
+    }
+
+    [Tooltip("Uses the material applied to the bounding box GameObject instead of using the system default.")]
+    [SerializeField]
+    private bool _useCustomPlayAreaMaterial;
+    public bool useCustomPlayAreaMaterial
+    {
+        get => _useCustomPlayAreaMaterial;
+        set
+        {
+            _useCustomPlayAreaMaterial = value;
+
+            if (_playAreaBoundingBox != null)
+            {
+                _playAreaBoundingBox.useCustomBoundingBoxMaterial = _useCustomPlayAreaMaterial;
             }
         }
     }
@@ -223,7 +281,6 @@ public class AutoXRRig : MonoBehaviour
         set => _rightHandController = value;
     }
 
-
     //////////////////
 
     [SerializeField]
@@ -246,17 +303,54 @@ public class AutoXRRig : MonoBehaviour
 
     //////////////////
 
-    [Tooltip("Should be an Component attached to the Main Camera.")]
+    [Tooltip("Must be a PlayerHeadCollider-Component attached to the Main Camera GameObject.")]
     [SerializeField]
     private PlayerHeadCollider _playerHeadCollider;
     public PlayerHeadCollider playerHeadCollider
     {
         get => _playerHeadCollider;
-        set => _playerHeadCollider = value;
+        set
+        {
+            _playerHeadCollider = value;
+            
+            if (_playerHeadCollider != null)
+            {
+                _playerHeadCollider.screenCollisionIndicator = screenCollisionIndicator;
+                _playerHeadCollider.pushbackAnchor = this.gameObject;
+            }
+        }
+    }
+
+    [Tooltip("Must be a ScreenCollisionIndicator-Component attached to the Hud.")]
+    [SerializeField]
+    private ScreenCollisionIndicator _screenCollisionIndicator;
+    public ScreenCollisionIndicator screenCollisionIndicator
+    {
+        get => _screenCollisionIndicator;
+        set
+        {
+            _screenCollisionIndicator = value;
+            
+            if (_playerHeadCollider != null)
+            {
+                _playerHeadCollider.screenCollisionIndicator = screenCollisionIndicator;
+            }
+        }
+    }
+
+
+    [Tooltip("A Reference to the PlayAreaBoundingBox of the Rig.")]
+    [SerializeField]
+    private PlayAreaBoundingBox _playAreaBoundingBox;
+    public PlayAreaBoundingBox playAreaBoundingBox
+    {
+        get => _playAreaBoundingBox;
+        set => _playAreaBoundingBox = value;
     }
 
     //////////////
 
+    [Tooltip("A Reference to a Canvas containing most other hud elements. It's mode must be set to 'Screen Space - Camera'.")]
     [SerializeField]
     private Canvas _hud;
     public Canvas hud
@@ -265,6 +359,15 @@ public class AutoXRRig : MonoBehaviour
         set => _hud = value;
     }
 
+    /* 
+    Hud Values
+    - Camera Near Clipping Plane: 0.15
+    - Canvas Mode: Screen Space - Camera
+    - Canvas Plane Distance: 0.155
+    - Head Collider size: 0.25
+    */
+
+    [Tooltip("A FadeRect GameObject that is used to fade the whole screen to black. It should be parented of the hud.")]
     [SerializeField]
     private FadeRect _fadeRect;
     public FadeRect fadeRect
@@ -275,34 +378,74 @@ public class AutoXRRig : MonoBehaviour
 
 
     ///////////
-    private void EnableLocomotionProvider<T>(bool enabled) where T : LocomotionProvider
+    private void EnableLocomotionProvider<T>(bool enabled, bool updateDriverOnEnable = false) where T : LocomotionProvider
     {
         if (_locomotionSystem != null)
         {
             LocomotionProvider provider = _locomotionSystem.gameObject.GetComponent<T>();
+            CharacterControllerDriver driver = _locomotionSystem.gameObject.GetComponent<CharacterControllerDriver>();
             if (provider != null)
             {
                 provider.enabled = enabled;
+
+                if (driver != null && enabled && updateDriverOnEnable)
+                {
+                    driver.locomotionProvider = provider;
+                }
             }
         }
     }
 
+    private void Awake() {
+        List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
+        SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
 
-    // Assign all variables to their to properties
-    // Or use a custom Editor
-    // private void OnValidate()
-    // {
-    //     inputMethode = _inputMethode;
-    //     teleportationEnabled = _teleportationEnabled;
-    //     joystickMovementEnabled = _joystickMovementEnabled;
-    //     snapTurnEnabled = _snapTurnEnabled;
-    //     handModelMode = _handModelMode;
-    //     interactHands = _interactHands;
-    //     headGazeReticle = _headGazeReticle;
-    // }
+        if (displaySubsystems.Count > 0)
+        {
+            displaySubsystems[0].SetPreferredMirrorBlitMode(XRMirrorViewBlitMode.SideBySide);
+        }
+
+        // Update the initial position of the teleportation provider
+        StartCoroutine(UpdateInitialCharacterPosition());    
+    }
+
+    // Fade
+    public void FadeToColor(bool instant = false)
+    {
+        if (_fadeRect != null)
+        {
+            _fadeRect.FadeToColor(instant);
+        }
+    }
+
+    public void FadeToClear(bool instant = false)
+    {
+        if (_fadeRect != null)
+        {
+            _fadeRect.FadeToClear(instant);
+        }
+    }
+
+
+    private IEnumerator UpdateInitialCharacterPosition()
+    {
+        // Wait for a bit to allow the AutoXR rig to update the positions properly
+        yield return new WaitForSeconds(0.3f);
+
+        CharacterController characterController = GetComponent<CharacterController>();
+        XROrigin xrOrigin = GetComponent<XROrigin>();
+
+        var height = Mathf.Clamp(xrOrigin.CameraInOriginSpaceHeight, 0.0f, float.PositiveInfinity);
+        Vector3 center = xrOrigin.CameraInOriginSpacePos;
+
+        center.y = height / 2f + characterController.skinWidth;
+
+        characterController.height = height;
+        characterController.center = center;
+    }
 }
 
-public enum InputMethodeType
+public enum InputMethodType
 {
     Controller,
     HeadGaze

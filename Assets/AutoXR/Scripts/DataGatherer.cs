@@ -10,6 +10,8 @@ using UnityEngine.Networking;
 
 public class DataGatherer : MonoBehaviour
 {
+    const string DEFAULT_EXPORT_FILE_NAME = "DataGathererValues.csv";
+
     [SerializeField]
     private DataGathererExportType _dataExportType;
     public DataGathererExportType dataExportType
@@ -20,7 +22,7 @@ public class DataGatherer : MonoBehaviour
 
 
     [SerializeField]
-    private string localExportPath;
+    private string localExportPath = DEFAULT_EXPORT_FILE_NAME;
 
     [SerializeField]
     private string httpExportPath;
@@ -166,23 +168,18 @@ public class DataGatherer : MonoBehaviour
         if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
         {
             string path = GetLocalSavePath();
-
-            if (path == "" || path == ".txt" || path == ".csv" || path == ".log")
-            {
-                Debug.LogWarningFormat("Local Export Path not properly specified: '{0}'", path);
-            }
-
+            
             try
             {
                 // Throws an error if invalid
                 string fullPath = Path.GetFullPath(path);
+                
 
-                if (!File.Exists(fullPath)
-                     && (!fullPath.EndsWith(".txt") || !fullPath.EndsWith(".csv") || !fullPath.EndsWith(".log")))
+                if ((!fullPath.EndsWith(".txt") && !fullPath.EndsWith(".csv") && !fullPath.EndsWith(".log")))
                 {
                     localExportPath += ".csv";
                     fullPath += ".csv";
-                    Debug.LogWarning("File does not exist and does not end on '.txt' or '.csv'."
+                    Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
                          + String.Format("Appending '.csv' and creating a new file if necessary. New path is: '{0}'. ", localExportPath));
                 }
 

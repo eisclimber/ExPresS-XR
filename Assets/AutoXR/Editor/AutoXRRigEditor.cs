@@ -27,25 +27,27 @@ public class AutoXRRigEditor : Editor
 
         EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        targetScript.inputMethode = (InputMethodeType)EditorGUILayout.EnumPopup("Input Methode", targetScript.inputMethode);
+        targetScript.inputMethod = (InputMethodType)EditorGUILayout.EnumPopup("Input Method", targetScript.inputMethod);
         EditorGUI.indentLevel--;
 
 
         EditorGUILayout.LabelField("Movement", EditorStyles.boldLabel);
-        if (targetScript.inputMethode == InputMethodeType.Controller)
+        if (targetScript.inputMethod == InputMethodType.Controller)
         {
             EditorGUI.indentLevel++;
-            targetScript.teleportationEnabled = EditorGUILayout.Toggle("Enable Teleportation", targetScript.teleportationEnabled);
-
             targetScript.joystickMovementEnabled = EditorGUILayout.Toggle("Enable Joystick Movement", targetScript.joystickMovementEnabled);
-            targetScript.snapTurnEnabled = EditorGUILayout.Toggle("Enable SnapTurn", targetScript.snapTurnEnabled);
+            
+            EditorGUILayout.Space();
 
+            targetScript.teleportationEnabled = EditorGUILayout.Toggle("Enable Teleportation", targetScript.teleportationEnabled);
+            targetScript.snapTurnEnabled = EditorGUILayout.Toggle("Enable SnapTurn", targetScript.snapTurnEnabled);
+            
             EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);
 
             EditorGUI.indentLevel++;
-            EditorGUI.BeginDisabledGroup(targetScript.inputMethode != InputMethodeType.Controller);
+            EditorGUI.BeginDisabledGroup(targetScript.inputMethod != InputMethodType.Controller);
             {
                 targetScript.handModelMode = (HandModelMode)EditorGUILayout.EnumPopup("Type of Hand Model", targetScript.handModelMode);
 
@@ -60,7 +62,7 @@ public class AutoXRRigEditor : Editor
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
         }
-        else if (targetScript.inputMethode == InputMethodeType.HeadGaze)
+        else if (targetScript.inputMethod == InputMethodType.HeadGaze)
         {
             EditorGUI.indentLevel++;
             targetScript.teleportationEnabled = EditorGUILayout.Toggle("Enable Teleportation", targetScript.teleportationEnabled);
@@ -73,15 +75,47 @@ public class AutoXRRigEditor : Editor
             EditorGUI.indentLevel--;
         }
 
+        EditorGUILayout.LabelField("Head Collisions", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
         targetScript.headCollisionEnabled = EditorGUILayout.Toggle("Enable Head Collisions", targetScript.headCollisionEnabled);
+        targetScript.showCollisionVignetteEffect = EditorGUILayout.Toggle("Show Collision Indicator", targetScript.showCollisionVignetteEffect);
+        EditorGUI.indentLevel--;
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Play Area Highlighting", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        targetScript.showPlayAreaBounds = EditorGUILayout.Toggle("Show Play Area Bounds", targetScript.showPlayAreaBounds);
+        targetScript.useCustomPlayAreaMaterial = EditorGUILayout.Toggle("Use Custom Play Area Material", targetScript.useCustomPlayAreaMaterial);
+        if (targetScript.showPlayAreaBounds && !targetScript.useCustomPlayAreaMaterial)
+        {
+            EditorGUILayout.HelpBox("If the VR is configured for standing position the default play area won't show. Use useCustomPlayAreaMaterial to still se the play area.", MessageType.Info);
+        }
+        EditorGUI.indentLevel--;
 
         EditorGUILayout.Space();
 
 
-        if (File.Exists(AutoXRCreationUtils.customAutoXRRigPath))
+        if (File.Exists(CreationUtils.customAutoXRRigPath))
         {
             EditorGUILayout.HelpBox("Custom AutoXRRig already set. Setting a new one will override the old one.", MessageType.Warning);
         }
+
+        EditorGUILayout.Space();
+
+        if (targetScript.fadeRect != null && targetScript.fadeRect.completelyHidden 
+            && GUILayout.Button("Fade Screen To Black"))
+        {
+            targetScript.FadeToColor(!Application.isPlaying);
+        }
+
+        if (targetScript.fadeRect != null && targetScript.fadeRect.completelyVisible 
+            && GUILayout.Button("Fade Screen To Clear"))
+        {
+            targetScript.FadeToClear(!Application.isPlaying);
+        }
+
+        EditorGUILayout.Space();
 
         if (GUILayout.Button("Set As Custom AutoXRRig"))
         {
@@ -100,6 +134,8 @@ public class AutoXRRigEditor : Editor
             targetScript.headGazeReticle = (HeadGazeReticle)EditorGUILayout.ObjectField("Head Gaze Reticle", targetScript.headGazeReticle, typeof(HeadGazeReticle), true);
             targetScript.locomotionSystem = (LocomotionSystem)EditorGUILayout.ObjectField("Locomotion System", targetScript.locomotionSystem, typeof(LocomotionSystem), true);
             targetScript.playerHeadCollider = (PlayerHeadCollider)EditorGUILayout.ObjectField("Player Head Collider", targetScript.playerHeadCollider, typeof(PlayerHeadCollider), true);
+            targetScript.screenCollisionIndicator = (ScreenCollisionIndicator)EditorGUILayout.ObjectField("Screen Collision Indicator", targetScript.screenCollisionIndicator, typeof(ScreenCollisionIndicator), true);
+            targetScript.playAreaBoundingBox = (PlayAreaBoundingBox)EditorGUILayout.ObjectField("Play Area Bounding Box", targetScript.playAreaBoundingBox, typeof(PlayAreaBoundingBox), true);
             targetScript.hud = (Canvas)EditorGUILayout.ObjectField("Hud", targetScript.hud, typeof(Canvas), true);
             targetScript.fadeRect = (FadeRect)EditorGUILayout.ObjectField("Custom Fade Rect", targetScript.fadeRect, typeof(FadeRect), true);
             EditorGUI.indentLevel--;
@@ -116,11 +152,11 @@ public class AutoXRRigEditor : Editor
         if (PrefabUtility.IsAnyPrefabInstanceRoot(go))
         {
             GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(go);
-            PrefabUtility.SaveAsPrefabAsset(prefab, AutoXRCreationUtils.customAutoXRRigPath);
+            PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.customAutoXRRigPath);
         }
         else 
         {
-            PrefabUtility.SaveAsPrefabAsset(targetScript.gameObject, AutoXRCreationUtils.customAutoXRRigPath);
+            PrefabUtility.SaveAsPrefabAsset(targetScript.gameObject, CreationUtils.customAutoXRRigPath);
         }
     }
 

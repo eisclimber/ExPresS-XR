@@ -6,9 +6,11 @@ using UnityEngine.Video;
 [System.Serializable]
 public class QuizSetupConfig : ScriptableObject
 {
+    public const string CONFIG_CSV_HEADER_STRING = "quizMode,questionOrdering,answersAmount,questionType,answerType,feedbackMode,feedbackType,objectInspectionOption";
+
     // QuizSetupConfig, Assembly-CSharp
     public QuizMode quizMode = QuizMode.SingleChoice;
-    public QuestionOrder questionOrder = QuestionOrder.Randomize;
+    public QuestionOrdering questionOrdering = QuestionOrdering.Randomize;
     public AnswersAmount answersAmount = AnswersAmount.Two;
     public QuestionType questionType = QuestionType.Text;
     public AnswerType answerType = AnswerType.Text;
@@ -17,21 +19,46 @@ public class QuizSetupConfig : ScriptableObject
 
     // Actual Questions
     public QuizQuestion[] questions = new QuizQuestion[0];
+
+    public string GetCsvExportValues()
+    {
+        return quizMode + "," + questionOrdering + "," + answersAmount 
+                + "," + questionType  + "," + answerType + "," + feedbackMode + "," 
+                + feedbackType;
+    }
+
+    public string GetAllQuestionsCsvExportValues()
+    {
+        string res = "";
+        if (questions != null)
+        {
+            foreach (QuizQuestion question in questions)
+            {
+                res += question.GetCsvExportValues() + "\n";
+            }
+        }
+        return res;
+    }
 }
 
 
 [System.Serializable]
 public class QuizQuestion
 {
+    public const string QUESTION_CSV_HEADER_STRING = "itemIdx,questionVideo,questionObject,questionText,"
+            + "answerObject0,answerObject1,answerObject2,answerObject3,"
+            + "answerText0,answerText1,answerText2,answerText3,"
+            + "correctAnswers0,correctAnswers1,correctAnswers2,correctAnswers3,"
+            + "feedbackVideo,feedbackObject,feedbackText";
+
     // QuizQuestion, Assembly-CSharp
-    public int itemId;
+    public int itemIdx;
     public VideoClip questionVideo;
     public GameObject questionObject;
     public string questionText;
 
-    public int numAnswers;
-    public GameObject[] answersObjects;
-    public string[] answersTexts;
+    public GameObject[] answerObjects;
+    public string[] answerTexts;
 
     public bool[] correctAnswers;
 
@@ -41,27 +68,18 @@ public class QuizQuestion
     public string feedbackText;
 
 
-    public QuizQuestion(int itemId, VideoClip questionVideo, GameObject questionObject, string questionText,
-                        GameObject[] answersObjects, string[] answersTexts, bool[] correctAnswers,
+    public QuizQuestion(int itemIdx, VideoClip questionVideo, GameObject questionObject, string questionText,
+                        GameObject[] answerObjects, string[] answerTexts, bool[] correctAnswers,
                         VideoClip feedbackVideo, GameObject feedbackObject, string feedbackText)
     {
-        this.itemId = itemId;
+        this.itemIdx = itemIdx;
 
         this.questionVideo = questionVideo;
         this.questionObject = questionObject;
         this.questionText = questionText;
 
-        this.answersObjects = answersObjects;
-        this.answersTexts = answersTexts;
-
-        numAnswers = 0;
-        for (int i = 0; i < TutorialButtonQuiz.NUM_ANSWERS; i++)
-        {
-            if (answersObjects[i] != null || (answersTexts[i] != null && answersTexts[i] != ""))
-            {
-                numAnswers = i + 1;
-            }
-        }
+        this.answerObjects = answerObjects;
+        this.answerTexts = answerTexts;
 
         this.correctAnswers = correctAnswers;
 
@@ -70,7 +88,7 @@ public class QuizQuestion
         this.feedbackText = feedbackText;
     }
 
-    public string GetFeedbackText(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode) 
+    public string GetFeedbackText(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode)
     {
         // No Feedback
         if (feedbackMode == FeedbackMode.None)
@@ -89,35 +107,38 @@ public class QuizQuestion
                 && (answerType == AnswerType.Text || answerType == AnswerType.DifferingTypes))
         {
             string feedbackString = "";
-            
-            switch(feedbackMode)
+
+            switch (feedbackMode)
             {
-                case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
-                    for (int i = 0; i < answersTexts.Length; i++)
+                case FeedbackMode.AlwaysCorrect:
+                case FeedbackMode.AlwaysWrong:
+                    for (int i = 0; i < answerTexts.Length; i++)
                     {
                         bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
-                        if (correctAnswers[i] == chooseCorrect && answersTexts[i] != null && answersTexts[i] != "")
+                        if (correctAnswers[i] == chooseCorrect && answerTexts[i] != null && answerTexts[i] != "")
                         {
-                            feedbackString += answersTexts[i];
+                            feedbackString += answerTexts[i];
 
                             if (quizMode == QuizMode.SingleChoice)
                             {
                                 return feedbackString;
                             }
+                            feedbackString += "\n";
                         }
                     }
                     return feedbackString;
                 case FeedbackMode.Random:
-                    for (int i = 0; i < numAnswers; i++)
+                    int numValidAnswer = GetNumValidAnswers();
+                    for (int i = 0; i < numValidAnswer; i++)
                     {
-                        if (Random.Range(0, 1) < 0.5 && answersTexts[i] != null && answersTexts[i] != "")
+                        if (Random.Range(0, 1) < 0.5 && answerTexts[i] != null && answerTexts[i] != "")
                         {
-                            feedbackString += answersTexts[i];
+                            feedbackString += answerTexts[i] + "\n";
                         }
                     }
                     if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
                     {
-                        return answersTexts[Random.Range(0, numAnswers)];
+                        return answerTexts[Random.Range(0, numValidAnswer)];
                     }
                     return feedbackString;
             }
@@ -125,7 +146,7 @@ public class QuizQuestion
         return "";
     }
 
-    public GameObject[] GetFeedbackGameObjects(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode) 
+    public GameObject[] GetFeedbackGameObjects(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode)
     {
         // No Feedback
         if (feedbackMode == FeedbackMode.None)
@@ -149,15 +170,16 @@ public class QuizQuestion
         {
             List<GameObject> feedbackGos = new List<GameObject>();
 
-            switch(feedbackMode)
+            switch (feedbackMode)
             {
-                case FeedbackMode.AlwaysCorrect: case FeedbackMode.AlwaysWrong:
-                    for (int i = 0; i < answersTexts.Length; i++)
+                case FeedbackMode.AlwaysCorrect:
+                case FeedbackMode.AlwaysWrong:
+                    for (int i = 0; i < answerTexts.Length; i++)
                     {
                         bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
-                        if (correctAnswers[i] == chooseCorrect && answersObjects[i] != null)
+                        if (correctAnswers[i] == chooseCorrect && answerObjects[i] != null)
                         {
-                            feedbackGos.Add(answersObjects[i]);
+                            feedbackGos.Add(answerObjects[i]);
 
                             if (quizMode == QuizMode.SingleChoice)
                             {
@@ -167,18 +189,18 @@ public class QuizQuestion
                     }
                     break;
                 case FeedbackMode.Random:
-                    for (int i = 0; i < numAnswers; i++)
+                    for (int i = 0; i < GetNumValidAnswers(); i++)
                     {
-                        if (Random.Range(0, 1) < 0.5 && answersObjects[i] != null)
+                        if (Random.Range(0, 1) < 0.5 && answerObjects[i] != null)
                         {
-                            feedbackGos.Add(answersObjects[i]);
+                            feedbackGos.Add(answerObjects[i]);
                             if (quizMode == QuizMode.SingleChoice)
                             {
                                 return feedbackGos.ToArray();
                             }
                         }
                     }
-                    if (answersTexts.Length <= 0 && quizMode == QuizMode.SingleChoice)
+                    if (answerTexts.Length <= 0 && quizMode == QuizMode.SingleChoice)
                     {
                         return new GameObject[] { feedbackGos[Random.Range(0, feedbackGos.Count)] };
                     }
@@ -188,14 +210,38 @@ public class QuizQuestion
         return new GameObject[0];
     }
 
+    private int GetNumValidAnswers()
+    {
+        int numAnswers = 0;
+        for (int i = 0; i < TutorialButtonQuiz.NUM_ANSWERS; i++)
+        {
+            if (answerObjects[i] != null || (answerTexts[i] != null && answerTexts[i] != ""))
+            {
+                numAnswers = i + 1;
+            }
+        }
+        return numAnswers;
+    }
+
     public VideoClip GetFeedbackVideo(FeedbackType feedbackType)
     {
         if (feedbackType == FeedbackType.Video || feedbackType == FeedbackType.DifferingTypes)
         {
             return feedbackVideo;
         }
-        
+
         return null;
+    }
+
+
+    public string GetCsvExportValues()
+    {
+        return itemIdx + "," + (questionVideo.name ?? "") + "," + (questionObject.name ?? "") + ",\"" + questionText + "\","
+            + (answerObjects[0]?.name ?? "") + "," + (answerObjects[1]?.name ?? "") + ","
+            + (answerObjects[2]?.name ?? "") + "," + (answerObjects[3]?.name ?? "") + ","
+            + "\"" + answerTexts[0] + "\",\"" + answerTexts[1] + "\",\"" + answerTexts[2] + "\",\"" + answerTexts[3] + "\","
+            + correctAnswers[0] + "," + correctAnswers[1] + "," + correctAnswers[2] + "," + correctAnswers[3] + ","
+            + (feedbackVideo?.name ?? "") + "," + (feedbackObject?.name ?? "") + "," + feedbackText;
     }
 }
 
@@ -207,9 +253,9 @@ public enum QuizMode
     MultipleChoice
 }
 
-public enum QuestionOrder
+public enum QuestionOrdering
 {
-    // QuestionOrder, Assembly-CSharp
+    // QuestionOrdering, Assembly-CSharp
     Ordered,
     Randomize
 }
@@ -258,4 +304,12 @@ public enum FeedbackType
     Text,
     Video,
     DifferingTypes
+}
+
+public enum ObjectInspectionOption
+{
+    None,
+    OnlyAnswers,
+    OnlyQuestion,
+    Both
 }

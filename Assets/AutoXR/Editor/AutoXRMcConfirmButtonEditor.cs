@@ -104,9 +104,10 @@ public class AutoXRMcConfirmButtonEditor : Editor
             EditorGUI.indentLevel++;
             EditorGUILayout.LabelField("Do not change these! Thank you:)");
 
-            targetScript.baseAnchor = (Transform)EditorGUILayout.ObjectField("Base Anchor", targetScript.baseAnchor, typeof(Transform), true);
-            targetScript.pushAnchor = (Transform)EditorGUILayout.ObjectField("Push Anchor", targetScript.pushAnchor, typeof(Transform), true);
-            targetScript.feedbackTextLabel = (Text)EditorGUILayout.ObjectField("Feedback Text Label", targetScript.feedbackTextLabel, typeof(Text), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("baseAnchor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("pushAnchor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackObjectSocket"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackTextLabel"), true);
 
             EditorGUI.indentLevel--;
         }

@@ -30,7 +30,7 @@ public static class AutoXRSceneUtils
     // Helper variable that stores the AutoXRRig wile a new scene gets created
     private static string _autoXRRigPrefabName = "";
 
-    public static void LoadSceneTemplate(string templateName, string rigName = AutoXRCreationUtils.CUSTOM_AUTOXR_PREFAB_NAME)
+    public static void LoadSceneTemplate(string templateName, string rigName = CreationUtils.CUSTOM_AUTOXR_PREFAB_NAME)
     {
         string path = string.Format(AUTOXR_SCENE_TEMPLATE_FORMAT, templateName);
         SceneTemplateAsset templateAsset = AssetDatabase.LoadAssetAtPath<SceneTemplateAsset>(path);
@@ -48,7 +48,7 @@ public static class AutoXRSceneUtils
 
     private static void OneShotAddAutoXRRigCallback(UnityEngine.SceneManagement.Scene scene, UnityEditor.SceneManagement.OpenSceneMode mode)
     {
-        GameObject rig = AutoXRCreationUtils.CreateAndPlaceGameObject(_autoXRRigPrefabName, null);
+        GameObject rig = CreationUtils.InstantiateAndPlacePrefab(_autoXRRigPrefabName, null);
         if (rig == null)
         {
             Debug.LogWarning("There is currently no AutoXRRig in the scene. Please create one via the hierarchy.");

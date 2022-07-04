@@ -25,7 +25,7 @@ public class HeadGazeReticle : MonoBehaviour
     }
 
 
-    private void Start()
+    private void Awake()
     {
         if (_animator == null)
         {

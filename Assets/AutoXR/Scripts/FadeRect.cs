@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 [RequireComponent(typeof(Image))]
 public class FadeRect : MonoBehaviour
@@ -12,49 +13,55 @@ public class FadeRect : MonoBehaviour
 
     [SerializeField]
     private float _fadeDirection = 0.0f;
+
     [SerializeField]
     private Image _fadeImage;
     
+
+    // Screen NOT visible
+    public bool completelyVisible
+    {
+        get => (fadeColor.a == 1.0f);
+    }
+
+    // Screen visible
+    public bool completelyHidden
+    {
+        get => (fadeColor.a == 0.0f);
+    }
+
 
     // Start is called before the first frame update
     void Awake()
     {
         _fadeImage = GetComponent<Image>();
-        if (_fadeImage != null)
-        {
-            _fadeImage.color = fadeColor;
-        }
+        UpdateFadeImage();
     }
 
     public void FadeToColor(bool instant = false)
     {
         _fadeDirection = 1.0f;
+
         if (instant)
         {
             fadeColor.a = 1.0f;
+            UpdateFadeImage();
         }
     }
 
-    private void FadeToClear(bool instant = false)
+    public void FadeToClear(bool instant = false)
     {
         _fadeDirection = -1.0f;
+
         if (instant)
         {
             fadeColor.a = 0.0f;
+            UpdateFadeImage();
         }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            FadeToColor(Input.GetKey(KeyCode.LeftShift));
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            FadeToClear(Input.GetKey(KeyCode.LeftShift));
-        }
-
         if (_fadeDirection < 0.0f)
         {
             // Fade to Black
@@ -66,9 +73,24 @@ public class FadeRect : MonoBehaviour
             fadeColor.a = Mathf.Min(1.0f, fadeColor.a + (Time.deltaTime / fadeToClearTime));
         }
 
+        UpdateFadeImage();
+    }
+
+    private void UpdateFadeImage()
+    {
+        if (_fadeImage == null)
+        {
+            _fadeImage = GetComponent<Image>();
+        }
+
         if (_fadeImage != null)
         {
             _fadeImage.color = fadeColor;
+
+            #if UNITY_EDITOR
+                // Instantaneously Update Editor Visuals
+                EditorUtility.SetDirty(this);
+            #endif
         }
     }
 }

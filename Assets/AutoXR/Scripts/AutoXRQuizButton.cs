@@ -17,10 +17,9 @@ public class AutoXRQuizButton : AutoXRBaseButton
         {
             _answerText = value;
 
-            Transform textTransform = pushAnchor.Find("Canvas/Text");
-            if (textTransform.GetComponent<Text>() != null)
+            if (_feedbackTextLabel != null)
             {
-                textTransform.GetComponent<Text>().text = _answerText;
+                _feedbackTextLabel.text = _answerText;
             }
         }
     }
@@ -32,40 +31,48 @@ public class AutoXRQuizButton : AutoXRBaseButton
         get => _answerPrefab;
         set
         {
-            if (value == null)
-            {
-                Destroy(_answerPrefab);
-            }
             _answerPrefab = value;
-
-            if (pushAnchor != null && _answerPrefab != null)
+            
+            if (_feedbackObjectSocket != null)
             {
-                // Instantiate Object
-                GameObject answerObjectInstance = Instantiate<GameObject>(_answerPrefab, pushAnchor.transform);
-                _answerPrefab = answerObjectInstance;
+                _feedbackObjectSocket.putBackPrefab = _answerPrefab;
             }
         }
     }
 
+    [SerializeField]
+    private Text _feedbackTextLabel;
+
+
+    [SerializeField]
+    private PutBackSocketInteractor _feedbackObjectSocket;
+    public PutBackSocketInteractor feedbackObjectSocket
+    {
+        get => _feedbackObjectSocket;
+        set
+        {
+            _feedbackObjectSocket = value;
+        }
+    }
+
+
     public UnityEvent OnPressedCorrect;
     public UnityEvent OnPressedIncorrect;    
 
-    public Text feedbackTextLabel;
-
 
     ///////////
-    private float triggerStartTime = 0.0f;
+    private long triggerStartTime = -1;
 
     // Can be used to measure the time since between any point in time and a button press
     // Will be automatically started when input is (re-)enabled
     public void RestartTriggerTimer()
     {
-        triggerStartTime = Time.time;
+        triggerStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
     }
 
     public float GetTriggerTimerValue()
     {
-        return Time.time - triggerStartTime;
+        return System.DateTimeOffset.Now.ToUnixTimeMilliseconds() - triggerStartTime;
     }
 
 
@@ -86,7 +93,7 @@ public class AutoXRQuizButton : AutoXRBaseButton
 
         OnPressed.AddListener(NotifyChoice);
         
-        triggerStartTime = Time.time;
+        triggerStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
     }
 
 
@@ -108,7 +115,6 @@ public class AutoXRQuizButton : AutoXRBaseButton
         correctChoice = false;
         if (answerPrefab != null)
         {
-            Destroy(answerPrefab);
             answerPrefab = null;
         }
 

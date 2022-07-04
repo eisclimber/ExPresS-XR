@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Controls;
 
 public class HeadGazeController : MonoBehaviour
 {
-    [Tooltip("Whether or not the head gaze can be used to teleport.")]
+    [Tooltip("Wether or not the head gaze can be used to teleport.")]
     [SerializeField]
     private bool _teleportationEnabled = true;
     public bool teleportationEnabled
@@ -94,7 +94,8 @@ public class HeadGazeController : MonoBehaviour
     private bool hoverTimePassed;
 
 
-    void Start()
+
+    private void Awake()
     {
         preventInteractionReference.action.performed += TeleportModeReset;
         if (_headGazeReticle != null)

@@ -13,58 +13,46 @@ MonoBehaviour:
   m_Name: TestSingleChoiceTextQuiz
   m_EditorClassIdentifier: 
   quizMode: 0
-  questionOrder: 1
+  questionOrdering: 1
   answersAmount: 1
   questionType: 2
   answerType: 1
   feedbackMode: 1
   feedbackType: 0
   questions:
-  - itemId: 0
+  - itemIdx: 0
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Question 1
-    numAnswers: 2
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
-    - X A 1.1
-    - A 1.2
-    - 
-    - 
+    answerObjects: []
+    answerTexts:
+    - X A1.1
+    - A1.2
     correctAnswers: 01000000
-  - itemId: 1
+    feedbackVideo: {fileID: 0}
+    feedbackObject: {fileID: 0}
+    feedbackText: 
+  - itemIdx: 0
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Question 2
-    numAnswers: 2
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
-    - A 2.1
-    - X A 2.2
-    - 
-    - 
+    answerObjects: []
+    answerTexts:
+    - A2-1
+    - X A2.2
     correctAnswers: 00010000
-  - itemId: 2
+    feedbackVideo: {fileID: 0}
+    feedbackObject: {fileID: 0}
+    feedbackText: 
+  - itemIdx: 0
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Question 3
-    numAnswers: 3
-    answersObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    answersTexts:
-    - X A 3.1
-    - A 3.2
-    - 
-    - 
+    answerObjects: []
+    answerTexts:
+    - X A3.1
+    - A3.2
     correctAnswers: 01000000
+    feedbackVideo: {fileID: 0}
+    feedbackObject: {fileID: 0}
+    feedbackText: 

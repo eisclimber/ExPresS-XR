@@ -30,7 +30,7 @@ public class AutoXRMcConfirmButton : AutoXRQuizButton
             }
         }
 
-        if (allCorrect)
+        if (allCorrect != invertedFeedback)
         {
             OnPressedCorrect.Invoke();
         }
