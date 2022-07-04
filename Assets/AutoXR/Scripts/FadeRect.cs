@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 [RequireComponent(typeof(Image))]
 public class FadeRect : MonoBehaviour
@@ -39,11 +40,9 @@ public class FadeRect : MonoBehaviour
 
     public void FadeToColor(bool instant = false)
     {
-        if (!instant)
-        {
-            _fadeDirection = 1.0f;
-        }
-        else
+        _fadeDirection = 1.0f;
+
+        if (instant)
         {
             fadeColor.a = 1.0f;
             UpdateFadeImage();
@@ -52,11 +51,9 @@ public class FadeRect : MonoBehaviour
 
     public void FadeToClear(bool instant = false)
     {
-        if (!instant)
-        {
-            _fadeDirection = -1.0f;
-        }
-        else
+        _fadeDirection = -1.0f;
+
+        if (instant)
         {
             fadeColor.a = 0.0f;
             UpdateFadeImage();
@@ -76,10 +73,7 @@ public class FadeRect : MonoBehaviour
             fadeColor.a = Mathf.Min(1.0f, fadeColor.a + (Time.deltaTime / fadeToClearTime));
         }
 
-        if (_fadeImage != null)
-        {
-            _fadeImage.color = fadeColor;
-        }
+        UpdateFadeImage();
     }
 
     private void UpdateFadeImage()
@@ -92,6 +86,11 @@ public class FadeRect : MonoBehaviour
         if (_fadeImage != null)
         {
             _fadeImage.color = fadeColor;
+
+            #if UNITY_EDITOR
+                // Instantaneously Update Editor Visuals
+                EditorUtility.SetDirty(this);
+            #endif
         }
     }
 }

@@ -409,6 +409,24 @@ public class AutoXRRig : MonoBehaviour
         StartCoroutine(UpdateInitialCharacterPosition());    
     }
 
+    // Fade
+    public void FadeToColor(bool instant = false)
+    {
+        if (_fadeRect != null)
+        {
+            _fadeRect.FadeToColor(instant);
+        }
+    }
+
+    public void FadeToClear(bool instant = false)
+    {
+        if (_fadeRect != null)
+        {
+            _fadeRect.FadeToClear(instant);
+        }
+    }
+
+
     private IEnumerator UpdateInitialCharacterPosition()
     {
         // Wait for a bit to allow the AutoXR rig to update the positions properly

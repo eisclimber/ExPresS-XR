@@ -101,21 +101,21 @@ public class AutoXRRigEditor : Editor
             EditorGUILayout.HelpBox("Custom AutoXRRig already set. Setting a new one will override the old one.", MessageType.Warning);
         }
 
-        // EditorGUILayout.Space();
+        EditorGUILayout.Space();
 
-        // if (targetScript.fadeRect != null && targetScript.fadeRect.completelyHidden 
-        //     && GUILayout.Button("Fade Screen To Black"))
-        // {
-        //     targetScript.fadeRect.FadeToColor(!Application.isPlaying);
-        // }
+        if (targetScript.fadeRect != null && targetScript.fadeRect.completelyHidden 
+            && GUILayout.Button("Fade Screen To Black"))
+        {
+            targetScript.FadeToColor(!Application.isPlaying);
+        }
 
-        // if (targetScript.fadeRect != null && targetScript.fadeRect.completelyVisible 
-        //     && GUILayout.Button("Fade Screen To Clear"))
-        // {
-        //     targetScript.fadeRect.FadeToClear(!Application.isPlaying);
-        // }
+        if (targetScript.fadeRect != null && targetScript.fadeRect.completelyVisible 
+            && GUILayout.Button("Fade Screen To Clear"))
+        {
+            targetScript.FadeToClear(!Application.isPlaying);
+        }
 
-        // EditorGUILayout.Space();
+        EditorGUILayout.Space();
 
         if (GUILayout.Button("Set As Custom AutoXRRig"))
         {
