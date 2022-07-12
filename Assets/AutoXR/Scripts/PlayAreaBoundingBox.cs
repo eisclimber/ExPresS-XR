@@ -9,6 +9,20 @@ public class PlayAreaBoundingBox : MonoBehaviour
     const float DEFAULT_ROOM_HEIGHT = 2.5f;
 
     [SerializeField]
+    private bool _showPlayAreaBounds;
+    public bool showPlayAreaBounds
+    {
+        get => _showPlayAreaBounds;
+        set
+        {
+            _showPlayAreaBounds = value;
+
+            UpdateBoundaryVisibility();
+        }
+    }
+
+
+    [SerializeField]
     private bool _useCustomBoundingBoxMaterial;
     public bool useCustomBoundingBoxMaterial
     {
@@ -17,13 +31,29 @@ public class PlayAreaBoundingBox : MonoBehaviour
         {
             _useCustomBoundingBoxMaterial = value;
             UpdateBoundarySize();
-            GetComponent<MeshRenderer>().enabled = useCustomBoundingBoxMaterial;
+            UpdateBoundaryVisibility();
+        }
+    }
+
+    [SerializeField]
+    private Material _customBoundingBoxMaterial;
+    public Material customBoundingBoxMaterial
+    {
+        get => _customBoundingBoxMaterial;
+        set
+        {
+            _customBoundingBoxMaterial = value;
+            
+            if (GetComponent<MeshRenderer>() != null)
+            {
+                GetComponent<MeshRenderer>().sharedMaterial = _customBoundingBoxMaterial;
+            }
         }
     }
 
     private void Awake()
     {
-        GetComponent<MeshRenderer>().enabled = useCustomBoundingBoxMaterial;
+        UpdateBoundaryVisibility();
     }
 
     private void OnEnable()
@@ -73,6 +103,15 @@ public class PlayAreaBoundingBox : MonoBehaviour
         }
     }
 
+    public void UpdateBoundaryVisibility()
+    {
+        if (GetComponent<MeshRenderer>() != null)
+        {
+            GetComponent<MeshRenderer>().enabled = _showPlayAreaBounds && _useCustomBoundingBoxMaterial;
+        }
+    }
+
+
     private void SetSizeWithBoundaryPoints(List<Vector3> boundaryPoints)
     {
         if (boundaryPoints.Count < 2)
@@ -95,7 +134,7 @@ public class PlayAreaBoundingBox : MonoBehaviour
             // Some distributions, e.g. SteamVR, do not provide a height (all points at y = 0)
             diff.y = DEFAULT_ROOM_HEIGHT;
         }
-
+        
         transform.localScale = diff;
         transform.position.Set(0, diff.y / 2 + 0.1f, 0);
     }
@@ -127,21 +166,39 @@ public class PlayAreaBoundingBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when the script is loaded or a value is changed in the
+    /// inspector (Called in the editor only).
+    /// </summary>
+    private void OnValidate()
+    {
+        customBoundingBoxMaterial = _customBoundingBoxMaterial;
+    }
 
-    void OnDrawGizmos()
+    private Vector3 GetGizmoSize()
+    {
+        Vector3 invertScale = new Vector3( 1 / transform.localScale.x, 
+                                            1 / transform.localScale.y, 
+                                            1 / transform.localScale.z);
+        return Vector3.Scale(transform.localScale, invertScale);
+    }
+
+    private void OnDrawGizmos()
     {
         if (enabled)
         {
             // Draw a semitransparent red cube at the transforms position
+            Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawWireCube(transform.position, transform.localScale);
+            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
         }
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         // Draw a semitransparent red cube at the transforms position
+        Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.color = new Color(1, 0, 0, 0.5f);
-        Gizmos.DrawWireCube(transform.position, transform.localScale);
+        Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
     }
 }

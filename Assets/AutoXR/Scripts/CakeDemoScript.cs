@@ -16,17 +16,17 @@ public class CakeDemoScript : MonoBehaviour
     
     
     private void Awake() {
-        Transform yesTransform = AutoXRRuntimeUtils.RecursiveFindChild(transform, "Yes Button");
-        Transform noTransform = AutoXRRuntimeUtils.RecursiveFindChild(transform, "No Button");
-        Transform quitTransform = AutoXRRuntimeUtils.RecursiveFindChild(transform, "Quit Button");
+        Transform yesTransform = RuntimeUtils.RecursiveFindChild(transform, "Yes Button");
+        Transform noTransform = RuntimeUtils.RecursiveFindChild(transform, "No Button");
+        Transform quitTransform = RuntimeUtils.RecursiveFindChild(transform, "Quit Button");
 
         _yesButton = yesTransform.GetComponent<Button>();
         _noButton = noTransform.GetComponent<Button>();
         _quitButton = quitTransform.GetComponent<Button>();
 
-        _cakeContent = AutoXRRuntimeUtils.RecursiveFindChild(transform, "Cake Content").gameObject;
-        _lieContent = AutoXRRuntimeUtils.RecursiveFindChild(transform, "Lie Content").gameObject;
-        _endContent = AutoXRRuntimeUtils.RecursiveFindChild(transform, "End Content").gameObject;
+        _cakeContent = RuntimeUtils.RecursiveFindChild(transform, "Cake Content").gameObject;
+        _lieContent = RuntimeUtils.RecursiveFindChild(transform, "Lie Content").gameObject;
+        _endContent = RuntimeUtils.RecursiveFindChild(transform, "End Content").gameObject;
 
         _yesButton.onClick.AddListener(ShowLieContent);
         _noButton.onClick.AddListener(ShowLieContent);

@@ -29,13 +29,13 @@ public class DataGathererEditor : Editor
             || targetScript.dataExportType == DataGathererExportType.Both)
         {
             // Either Only http or both
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("httpExportPath"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
         }
         if (targetScript.dataExportType == DataGathererExportType.Local
             || targetScript.dataExportType == DataGathererExportType.Both)
         {
             // Either Only local or both
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("localExportPath"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
         }
         EditorGUI.indentLevel--;
 
@@ -43,7 +43,7 @@ public class DataGathererEditor : Editor
 
         EditorGUILayout.LabelField("Export Triggers", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("inputActionTrigger"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionTrigger"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportEnabled"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportTime"), true);
         EditorGUI.indentLevel--;

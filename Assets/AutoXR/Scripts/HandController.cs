@@ -11,7 +11,7 @@ public class HandController : MonoBehaviour
     public HandModelMode handModelMode
     {
         get => _handModelMode;
-        set
+        set 
         {
             _handModelMode = value;
 
@@ -21,13 +21,30 @@ public class HandController : MonoBehaviour
     }
 
     [SerializeField]
-    private bool _teleportationEnabled = true;
-    public bool teleportationEnabled { get => _teleportationEnabled; set => _teleportationEnabled = value; }
+    private bool _interactionEnabled = true;
+    public bool interactionEnabled 
+    {
+        get => _interactionEnabled;
+        set => _interactionEnabled = value;
+    }
+
+    [Space]
 
     [SerializeField]
-    private bool _interactionEnabled = true;
-    public bool interactionEnabled { get; set; }
+    private bool _teleportationEnabled = true;
+    public bool teleportationEnabled 
+    { 
+        get => _teleportationEnabled;
+        set => _teleportationEnabled = value;
+    }
 
+    [SerializeField]
+    private bool _gripDeactivatesTeleportation = false;
+    public bool gripDeactivatesTeleportation 
+    {
+        get => _gripDeactivatesTeleportation;
+        set => _gripDeactivatesTeleportation = value;
+    }
 
     [Space]
 
@@ -42,7 +59,7 @@ public class HandController : MonoBehaviour
 
     [Space]
 
-    [Tooltip("Interaction Controller's XRInteractor where interactables will be attached to.")]
+    [Tooltip("Interaction Controller's XRGrabInteractor where interactables will be attached to.")]
     [SerializeField]
     private XRBaseInteractor _grabInteractor;
 
@@ -54,17 +71,13 @@ public class HandController : MonoBehaviour
     [SerializeField]
     private InputActionReference _teleportModeDeactivationReference;
 
-    [SerializeField]
-    private bool _gripDeactivatesTeleportation = false;
-    public bool gripDeactivatesTeleportation { get; set; }
-
 
     [Space]
-    public UnityEvent onTeleportActivate;
-    public UnityEvent onTeleportCancel;
+    public UnityEvent OnTeleportActivate;
+    public UnityEvent OnTeleportCancel;
 
 
-    void Awake()
+    private void Awake()
     {
         // Set hand model mode, as the prefabs are not instantiated at runtime
         handModelMode = _handModelMode;
@@ -85,11 +98,11 @@ public class HandController : MonoBehaviour
         }
     }
 
-    private void TeleportModeActivate(InputAction.CallbackContext obj) => onTeleportActivate.Invoke();
+    private void TeleportModeActivate(InputAction.CallbackContext obj) => OnTeleportActivate.Invoke();
 
-    private void TeleportModeCancel(InputAction.CallbackContext obj) => Invoke("DeactiveTeleporter", 0.1f);
-
-    void DeactiveTeleporter() => onTeleportCancel.Invoke();
+    private void TeleportModeCancel(InputAction.CallbackContext obj) => Invoke("DeactivateTeleporter", 0.1f);
+    
+    private void DeactivateTeleporter() => OnTeleportCancel.Invoke();
 
 
     private void TrySetHandModelModeInController(ActionBasedController controller, HandModelMode mode)

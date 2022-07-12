@@ -135,7 +135,7 @@ class SetupDialogInitial : SetupDialogBase
 
         if (launchOption != LaunchOption.None)
         {
-            AutoXRSceneUtils.LoadSceneTemplate(sceneName, rigName);
+            SceneUtils.LoadSceneTemplate(sceneName, rigName);
         }
         else
         {
@@ -152,13 +152,13 @@ class SetupDialogInitial : SetupDialogBase
         switch (launchOption)
         {
             case LaunchOption.Exhibition:
-                return AutoXRSceneUtils.EXHIBITION_TUTORIAL_SCENE_NAME;
+                return SceneUtils.EXHIBITION_TUTORIAL_SCENE_NAME;
             case LaunchOption.Experimentation:
-                return AutoXRSceneUtils.EXPERIMENTATION_TUTORIAL_SCENE_NAME;
+                return SceneUtils.EXPERIMENTATION_TUTORIAL_SCENE_NAME;
             case LaunchOption.Both:
-                return AutoXRSceneUtils.GENERAL_TUTORIAL_SCENE_NAME;
+                return SceneUtils.GENERAL_TUTORIAL_SCENE_NAME;
             default:
-                return AutoXRSceneUtils.EMPTY_SCENE_NAME;
+                return SceneUtils.EMPTY_SCENE_NAME;
         }
     }
 
@@ -167,13 +167,13 @@ class SetupDialogInitial : SetupDialogBase
         switch (movementOption)
         {
             case MovementOption.Teleport:
-                return CreationUtils.TELEPORT_AUTOXR_PREFAB_NAME;
+                return CreationUtils.TELEPORT_EXPRESS_XR_RIG_PREFAB_NAME;
             case MovementOption.ContinuousMove:
-                return CreationUtils.CONTINUOUS_MOVE_AUTOXR_PREFAB_NAME;
+                return CreationUtils.CONTINUOUS_MOVE_EXPRESS_XR_RIG_PREFAB_NAME;
             case MovementOption.HeadGaze:
-                return CreationUtils.HEAD_GAZE_AUTOXR_PREFAB_NAME;
+                return CreationUtils.HEAD_GAZE_EXPRESS_XR_RIG_PREFAB_NAME;
             default:
-                return CreationUtils.CUSTOM_AUTOXR_PREFAB_NAME;
+                return CreationUtils.CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME;
         }
     }
 }

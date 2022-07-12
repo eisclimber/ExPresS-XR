@@ -59,9 +59,16 @@ public class AutoHandModel : MonoBehaviour
         {
             _collisionsEnabled = value;
 
+            // Disable Rigid Body
             if (GetComponent<Rigidbody>() != null)
             {
-                GetComponent<Rigidbody>().detectCollisions = collisionsEnabled;
+                GetComponent<Rigidbody>().detectCollisions = _collisionsEnabled;
+            }
+
+            // Disable Colliders
+            foreach (Collider collider in gameObject.GetComponentsInChildren<Collider>())
+            {
+                collider.enabled = _collisionsEnabled;
             }
         }
     }
@@ -120,7 +127,7 @@ public class AutoHandModel : MonoBehaviour
 
     
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (!currentDevice.isValid)
         {

@@ -345,8 +345,8 @@ public class ExhibitionDisplay : MonoBehaviour
 
 
     [SerializeField]
-    private AutoXRBaseButton _worldShowInfoButton;
-    public AutoXRBaseButton worldShowInfoButton
+    private BaseButton _worldShowInfoButton;
+    public BaseButton worldShowInfoButton
     {
         get => _worldShowInfoButton;
         set

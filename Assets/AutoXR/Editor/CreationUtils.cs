@@ -5,15 +5,15 @@ using UnityEditor.SceneManagement;
 
 public class CreationUtils
 {
-    private const string AUTOXR_PREFABS_PATH = "Assets/AutoXR/Prefabs/";
-    public const string AUTOXR_PREFAB_FORMAT = AUTOXR_PREFABS_PATH + "{0}.prefab";
-    public const string TELEPORT_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Teleport";
-    public const string CONTINUOUS_MOVE_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Continuous Move";
-    public const string HEAD_GAZE_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Head Gaze";
-    public const string HEAD_GAZE_TELEPORT_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Head Gaze Teleport";
-    public const string CUSTOM_AUTOXR_PREFAB_NAME = "Auto XR Rigs/Auto XR Rig - Custom";
-    public const string AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Auto XR Buttons/Auto XR Quiz Button/Auto XR Quiz Button Square";
-    public const string AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Auto XR Buttons/Auto XR Quiz Button/Auto XR Multiple Choice Confirm Button Square";
+    private const string EXPRESS_XR_PREFABS_PATH = "Assets/AutoXR/Prefabs/";
+    public const string EXPRESS_XR_PREFAB_FORMAT = EXPRESS_XR_PREFABS_PATH + "{0}.prefab";
+    public const string TELEPORT_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Teleport";
+    public const string CONTINUOUS_MOVE_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Continuous Move";
+    public const string HEAD_GAZE_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Head Gaze";
+    public const string HEAD_GAZE_TELEPORT_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Head Gaze Teleport";
+    public const string CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom";
+    public const string QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Quiz Button Square";
+    public const string MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "ExPresS XR Buttons/Quiz Buttons/Multiple Choice Confirm Button Square";
     public const string AFTER_QUIZ_DIALOG_PATH_NAME = "After Quiz Dialog";
 
 
@@ -41,7 +41,7 @@ public class CreationUtils
     /// not found.</returns>
     public static GameObject InstantiateAndPlacePrefab(string name, Transform parent = null)
     {
-        string path = MakeAutoXRPrefabPath(name);
+        string path = MakeExPresSXRPrefabPath(name);
         UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
 
         if (prefab != null)
@@ -84,22 +84,22 @@ public class CreationUtils
     /// </summary>
     /// <param name="name">The name (or subpath) to an prefab.</param>
     /// <returns>Returns the formatted <see cref="string"/>.</returns>
-    public static string MakeAutoXRPrefabPath(string name) {
-        if (name.StartsWith(AUTOXR_PREFABS_PATH)) {
+    public static string MakeExPresSXRPrefabPath(string name) {
+        if (name.StartsWith(EXPRESS_XR_PREFABS_PATH)) {
             Debug.LogWarning("Do not add the AutoXRPrefabPath to the name. We're accounting for that already.");
-            name = name.Substring(AUTOXR_PREFABS_PATH.Length);
+            name = name.Substring(EXPRESS_XR_PREFABS_PATH.Length);
         }
         if (name.EndsWith(".prefab")) {
             Debug.LogWarning("Do not add the suffix '.prefab' to the name. We're accounting for that already.");
             name = name.Substring(0, name.Length - ".prefab".Length);
         }
-        return String.Format(AUTOXR_PREFAB_FORMAT, name);
+        return String.Format(EXPRESS_XR_PREFAB_FORMAT, name);
     }
 
 
     public static string customAutoXRRigPath
     {
-        get => MakeAutoXRPrefabPath(CUSTOM_AUTOXR_PREFAB_NAME);
+        get => MakeExPresSXRPrefabPath(CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME);
     }
 
     /// <summary>

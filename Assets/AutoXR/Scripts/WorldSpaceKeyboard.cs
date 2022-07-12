@@ -65,8 +65,8 @@ public class WorldSpaceKeyboard : MonoBehaviour
 
     [Space]
 
-    public UnityEvent<string> textEntered;
-    public UnityEvent<string> textChanged;
+    public UnityEvent<string> OnTextEntered;
+    public UnityEvent<string> OnTextChanged;
 
 
     private void Start()
@@ -80,7 +80,7 @@ public class WorldSpaceKeyboard : MonoBehaviour
 
     public void ConfirmText()
     {
-        textEntered.Invoke(inputText);
+        OnTextEntered.Invoke(inputText);
     }
 
     public void AppendToText(string stringToAppend)
@@ -100,7 +100,7 @@ public class WorldSpaceKeyboard : MonoBehaviour
             }
         }
 
-        textChanged.Invoke(inputText);
+        OnTextChanged.Invoke(inputText);
     }
 
     public void RemoveLastFromText()
@@ -108,14 +108,14 @@ public class WorldSpaceKeyboard : MonoBehaviour
         if (inputText.Length > 0)
         {
             inputText = inputText.Substring(0, inputText.Length - 1);
-            textChanged.Invoke(inputText);
+            OnTextChanged.Invoke(inputText);
         }
     }
 
     public void ClearText()
     {
         inputText = "";
-        textChanged.Invoke(inputText);
+        OnTextChanged.Invoke(inputText);
     }
 
 

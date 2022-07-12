@@ -19,7 +19,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     public const string DEFAULT_QUIZ_COMPLETED_TEXT = "Quiz Completed";
 
     public const string FULL_QUIZ_CSV_HEADER = "isQuizActive,currentQuestionNumber,currentQuestionIdx,answerPressTime,"
-        + "chosenAnswerString,displayedFeedbackText,displayedFeedbackObjects,displayedFeedbackVideo," 
+        + "chosenAnswerString,displayedFeedbackText,displayedFeedbackObjects,displayedFeedbackVideo,"
         + QuizQuestion.QUESTION_CSV_HEADER_STRING + "," + QuizSetupConfig.CONFIG_CSV_HEADER_STRING;
 
 
@@ -28,10 +28,10 @@ public class TutorialButtonQuiz : MonoBehaviour
     public QuizSetupConfig config
     {
         get => _config;
-        set 
+        set
         {
             _config = value;
-            
+
             if (_config != null)
             {
                 _questions = _config.questions;
@@ -41,22 +41,19 @@ public class TutorialButtonQuiz : MonoBehaviour
     }
 
     [SerializeField]
-    private AutoXRQuizButton[] _buttons = new AutoXRQuizButton[NUM_ANSWERS];
-
-    [SerializeField]
-    private AutoXRMcConfirmButton _mcConfirmButton;
-
-    [SerializeField] // TMPro.TMP_Text, Unity.TextMeshPro
-    private TMP_Text _displayText;
-
-    [SerializeField]
-    private GameObject _displayAnchor;
-
-    [SerializeField]
-    private VideoPlayer _displayPlayer;
-
-    [SerializeField]
-    private Canvas _afterQuizMenu;
+    private bool _quizUndergoing;
+    public bool quizUndergoing
+    {
+        get => _quizUndergoing;
+        private set
+        {
+            _quizUndergoing = value;
+#if UNITY_EDITOR
+            // Force the editor to update and display the correct buttons
+            EditorUtility.SetDirty(this);
+#endif
+        }
+    }
 
 
     [SerializeField]
@@ -72,6 +69,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     private QuizQuestion _currentQuestion;
 
+
     [SerializeField]
     private bool _startOnAwake = true;
 
@@ -84,22 +82,28 @@ public class TutorialButtonQuiz : MonoBehaviour
     [SerializeField]
     private bool _canRestartFromAfterQuizDialog;
 
-    [SerializeField]
-    private bool _quizUndergoing;
-    public bool quizUndergoing { 
-        get => _quizUndergoing; 
-        private set
-        {
-            _quizUndergoing = value;
-            #if UNITY_EDITOR
-                // Force the editor to update and display the correct buttons
-                EditorUtility.SetDirty(this);
-            #endif
-        }    
-    }
 
-    public UnityEvent OnAnswerGiven;
+
+    [SerializeField]
+    private QuizButton[] _buttons = new QuizButton[NUM_ANSWERS];
+
+    [SerializeField]
+    private McConfirmButton _mcConfirmButton;
+
+    [SerializeField] // TMPro.TMP_Text, Unity.TextMeshPro
+    private TMP_Text _displayText;
+
+    [SerializeField]
+    private GameObject _displayAnchor;
+
+    [SerializeField]
+    private VideoPlayer _displayPlayer;
+
+    [SerializeField]
+    private Canvas _afterQuizMenu;
+
     public UnityEvent OnQuizStarted;
+    public UnityEvent OnAnswerGiven;
     public UnityEvent OnQuizCompleted;
 
     // Export
@@ -111,7 +115,8 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     private string _latestChosenAnswersIdxs;
-    public string latestChosenAnswersIdxs {
+    public string latestChosenAnswersIdxs
+    {
         get => _latestChosenAnswersIdxs;
     }
 
@@ -140,7 +145,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     // Setup
-    public void Setup(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
+    public void Setup(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, Canvas afterQuizDialog)
     {
         // Set values
@@ -181,7 +186,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             mcConfirmButton.OnPressed.AddListener(ShowFeedback);
         }
 
-        foreach (AutoXRQuizButton button in _buttons)
+        foreach (QuizButton button in _buttons)
         {
             if (button != null)
             {
@@ -206,7 +211,8 @@ public class TutorialButtonQuiz : MonoBehaviour
     }
 
 
-    private void Awake() {
+    private void Awake()
+    {
         if (_startOnAwake)
         {
             StartQuiz();
@@ -216,7 +222,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             // Warn about invalid quiz directly (even when not starting)
             Debug.LogWarning("Quiz Config not set or invalid.");
         }
-        
+
         // Always disable AfterQuizMenu
         if (_afterQuizMenu != null)
         {
@@ -252,7 +258,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
 
         quizUndergoing = false;
-        
+
         ShowAfterQuizMenu();
     }
 
@@ -325,7 +331,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         bool showAnswerType = config.feedbackType == FeedbackType.ShowAnswers;
         bool showAnyAnswerType = showAnswerType && config.answerType == AnswerType.DifferingTypes;
 
-        bool showTextFeedback = _displayText != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Text 
+        bool showTextFeedback = _displayText != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Text
                                                     || (showAnswerType && config.answerType == AnswerType.Text));
         bool showObjectFeedback = _displayAnchor != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Object
                                                     || (showAnswerType && config.answerType == AnswerType.Object));
@@ -336,12 +342,12 @@ public class TutorialButtonQuiz : MonoBehaviour
             string res = (_showResultTextPrefix ? RESULT_TEXT_PREFIX : "");
             _displayText.text = res + _displayedFeedbackText;
         }
-        
-        if (showObjectFeedback) 
+
+        if (showObjectFeedback)
         {
             float xOffset = (DISPLAY_OBJECTS_SPACING * (_displayedFeedbackObjects.Length - 1)) / 2.0f;
 
-            foreach(Transform child in _displayAnchor.transform)
+            foreach (Transform child in _displayAnchor.transform)
             {
                 Destroy(child.gameObject);
             }
@@ -380,12 +386,12 @@ public class TutorialButtonQuiz : MonoBehaviour
 
         if (_displayAnchor != null)
         {
-            foreach(Transform child in _displayAnchor.transform)
+            foreach (Transform child in _displayAnchor.transform)
             {
                 Destroy(child.gameObject);
             }
         }
-        
+
         if (_displayText != null)
         {
             _displayText.text = "";
@@ -397,7 +403,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     private void SetButtonsDisabled(bool disabled)
     {
-        foreach (AutoXRQuizButton button in _buttons)
+        foreach (QuizButton button in _buttons)
         {
             if (button != null)
             {
@@ -413,7 +419,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     // Validation
-    public bool IsSetupValid(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
+    public bool IsSetupValid(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, Canvas afterQuizDialog)
     {
         // Quiz is invalid without a config
@@ -466,20 +472,20 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             _afterQuizMenu.enabled = true;
 
-            Transform restartTransform = AutoXRRuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Restart Button");
-            Transform closeTransform = AutoXRRuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Close Button");
+            Transform restartTransform = RuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Restart Button");
+            Transform closeTransform = RuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Close Button");
 
             Button restartButton = restartTransform?.GetComponent<Button>();
             Button closeButton = closeTransform?.GetComponent<Button>();
 
-            if (restartButton)
+            if (restartButton != null)
             {
                 restartTransform.gameObject.SetActive(_canRestartFromAfterQuizDialog);
                 restartButton.onClick.RemoveListener(StartQuiz);
                 restartButton.onClick.AddListener(StartQuiz);
             }
-            
-            if (closeButton)
+
+            if (closeButton != null)
             {
                 closeButton.onClick.RemoveListener(CloseAfterQuizMenu);
                 closeButton.onClick.AddListener(CloseAfterQuizMenu);
@@ -487,7 +493,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
     }
 
-    private bool AreButtonsValid(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton)
+    private bool AreButtonsValid(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton)
     {
         int numRequiredButtons = Mathf.Min((int)config.answersAmount, TutorialButtonQuiz.NUM_ANSWERS);
 
@@ -535,7 +541,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         {
             // Check question
             QuizQuestion question = config.questions[i];
-            
+
             // Ensure the correct idx for each question
             question.itemIdx = i;
 
@@ -561,7 +567,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             if (config.answersAmount != AnswersAmount.DifferingAmounts)
             {
                 int correctAnswerCount = 0;
-                for (int j = 0; j < Mathf.Min((int) config.answersAmount + 1, NUM_ANSWERS); j++)
+                for (int j = 0; j < Mathf.Min((int)config.answersAmount + 1, NUM_ANSWERS); j++)
                 {
                     // Check Answer Types
                     if (config.answerType == AnswerType.Object && (question.answerObjects.Length <= j || question.answerObjects[j] == null))
@@ -626,7 +632,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     {
         bool isMC = (config.quizMode == QuizMode.MultipleChoice);
         List<int> pressedButtonIdxs = new List<int>();
-        List<AutoXRQuizButton> pressedButtons = new List<AutoXRQuizButton>();
+        List<QuizButton> pressedButtons = new List<QuizButton>();
         for (int i = 0; i < _buttons.Length; i++)
         {
             if (_buttons[i] != null && _buttons[i].pressed)
@@ -641,7 +647,7 @@ public class TutorialButtonQuiz : MonoBehaviour
             _latestChosenAnswersIdxs = "\"[" + string.Join(",", pressedButtonIdxs) + "]\"";
             _latestAnswerPressTime = _mcConfirmButton.GetTriggerTimerValue();
         }
-        else 
+        else
         {
             _latestChosenAnswersIdxs = (pressedButtonIdxs.Count > 0 ? pressedButtonIdxs[0].ToString() : "-1");
             _latestAnswerPressTime = (pressedButtons.Count > 0 ? pressedButtons[0].GetTriggerTimerValue() : -1.0f);
@@ -649,7 +655,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
         _displayedFeedbackText = _currentQuestion?.GetFeedbackText(config.feedbackMode, config.feedbackType,
                                     config.answerType, config.quizMode) ?? "";
-        _displayedFeedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode, 
+        _displayedFeedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode,
                                     config.feedbackType, config.answerType, config.quizMode) ?? new GameObject[0];
         _displayedFeedbackVideo = _currentQuestion.GetFeedbackVideo(config.feedbackType);
     }
@@ -661,7 +667,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         OnFeedbackCompleted();
     }
 
-    private void OnFeedbackVideoCompleted(VideoPlayer evt) 
+    private void OnFeedbackVideoCompleted(VideoPlayer evt)
     {
         OnFeedbackCompleted();
     }
@@ -680,12 +686,12 @@ public class TutorialButtonQuiz : MonoBehaviour
     ///////////////////////////////////////////////
 
     // Continuous Polling
-    
+
     public float GetQuizUnixStartTime()
     {
         return quizUndergoing ? quizStartTime : -1f;
     }
-    
+
     public float GetCurrentQuizUnixTimeMillisecondsDuration()
     {
         return quizUndergoing ? (quizStartTime - System.DateTimeOffset.Now.ToUnixTimeMilliseconds()) : -1f;
@@ -732,7 +738,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     public string GetDisplayedFeedbackObjects()
     {
         List<string> _feedbackObjectNames = new List<string>();
-        foreach(GameObject go in _displayedFeedbackObjects)
+        foreach (GameObject go in _displayedFeedbackObjects)
         {
             _feedbackObjectNames.Add(go.name);
         }
@@ -756,6 +762,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         // Use EXPORT_CSV_COLUMN_STRING for header
         return config?.GetCsvExportValues() ?? ",,,,,,,";
     }
+
     public string GetAllQuestionsCsvExportValues()
     {
         // Use EXPORT_CSV_COLUMN_STRING for header
@@ -764,7 +771,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     public string GetFullQuizCsvValues()
     {
-        return IsQuizActive() + "," + GetCurrentQuestionNumber() + "," + GetCurrentQuestionIdx() + "," + GetAnswerPressTime() 
+        return IsQuizActive() + "," + GetCurrentQuestionNumber() + "," + GetCurrentQuestionIdx() + "," + GetAnswerPressTime()
             + "," + GetChosenAnswersString() + "," + GetDisplayedFeedbackText() + "," + GetDisplayedFeedbackObjects()
             + "," + GetDisplayedFeedbackVideo() + "," + GetCurrentQuestionCsvExportValue() + "," + GetConfigCsvExportValues();
     }

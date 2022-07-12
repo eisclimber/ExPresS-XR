@@ -40,15 +40,6 @@ public class HeadGazeController : MonoBehaviour
     [Tooltip("The time in seconds needed to focus the head gaze to interact.")]
     [SerializeField]
     private float _timeToSelect = 1.0f;
-
-    [Tooltip("The time in seconds that the reticle will not show after interacting. Only takes effect if reselect is enabled.")]
-    [SerializeField]
-    private float _postInteractionCooldown = 0.2f;
-
-    [Tooltip("The time in seconds the reticle will not show after heavy head movement. The intensity-threshold can be set by changing the 'Head/Head Gaze Prevent Interaction'-Input-Mapping.")]
-    [SerializeField]
-    private float _timeInteractionPrevented = 0.2f;
-
     public float timeToSelect
     {
         get => _timeToSelect;
@@ -62,6 +53,14 @@ public class HeadGazeController : MonoBehaviour
             }
         }
     }
+
+    [Tooltip("The time in seconds that the reticle will not show after interacting. Only takes effect if reselect is enabled.")]
+    [SerializeField]
+    private float _postInteractionCooldown = 0.2f;
+
+    [Tooltip("The time in seconds the reticle will not show after heavy head movement. The intensity-threshold can be set by changing the 'Head/Head Gaze Prevent Interaction'-Input-Mapping.")]
+    [SerializeField]
+    private float _timeInteractionPrevented = 0.2f;
 
 
     [SerializeField]
@@ -85,13 +84,13 @@ public class HeadGazeController : MonoBehaviour
     public InputActionReference preventInteractionReference;
 
 
-    private Mouse fakeInputDevice;
+    private Mouse _fakeInputDevice;
 
-    private GameObject hoverTarget;
-    private float timeLeftTillSelect;
-    private float timeLeftTillHoverBlocked;
+    private GameObject _hoverTarget;
+    private float _timeLeftTillSelect;
+    private float _timeLeftTillHoverBlocked;
 
-    private bool hoverTimePassed;
+    private bool _hoverTimePassed;
 
 
 
@@ -104,47 +103,47 @@ public class HeadGazeController : MonoBehaviour
             TryHideReticle();
         }
         // Add a fake mouse that will be used to trigger the action (by pressing mouse_forward)
-        fakeInputDevice = InputSystem.AddDevice<Mouse>();
+        _fakeInputDevice = InputSystem.AddDevice<Mouse>();
     }
 
     private void Update()
     {
         GameObject newTarget = TryGetNewTarget();
 
-        if (newTarget != hoverTarget)
+        if (newTarget != _hoverTarget)
         {
             // New Target Found
-            hoverTarget = newTarget;
-            timeLeftTillSelect = timeToSelect;
-            hoverTimePassed = false;
+            _hoverTarget = newTarget;
+            _timeLeftTillSelect = timeToSelect;
+            _hoverTimePassed = false;
 
-            if (hoverTarget != null)
+            if (_hoverTarget != null)
             {
                 TryShowReticle();
             }
             else
             {
-                timeLeftTillHoverBlocked = 0.0f;
+                _timeLeftTillHoverBlocked = 0.0f;
                 TryHideReticle();
             }
         }
-        else if (newTarget != null && timeLeftTillHoverBlocked > 0.0f)
+        else if (newTarget != null && _timeLeftTillHoverBlocked > 0.0f)
         {
             // Timeout after canceling
-            timeLeftTillHoverBlocked = Mathf.Max(timeLeftTillHoverBlocked - Time.deltaTime, 0.0f);
+            _timeLeftTillHoverBlocked = Mathf.Max(_timeLeftTillHoverBlocked - Time.deltaTime, 0.0f);
 
-            if (timeLeftTillHoverBlocked <= 0.0f)
+            if (_timeLeftTillHoverBlocked <= 0.0f)
             {
                 TryShowReticle();
             }
         }
-        else if (newTarget != null && !hoverTimePassed)
+        else if (newTarget != null && !_hoverTimePassed)
         {
             // Wait till hovered long enough
-            timeLeftTillSelect = Mathf.Max(timeLeftTillSelect - Time.deltaTime, 0.0f);
-            if (timeLeftTillSelect <= 0.0f)
+            _timeLeftTillSelect = Mathf.Max(_timeLeftTillSelect - Time.deltaTime, 0.0f);
+            if (_timeLeftTillSelect <= 0.0f)
             {
-                hoverTimePassed = true;
+                _hoverTimePassed = true;
                 PerformFakeButtonPress();
             }
         }
@@ -177,11 +176,11 @@ public class HeadGazeController : MonoBehaviour
 
     private void TeleportModeReset(InputAction.CallbackContext callback)
     {
-        if (hoverTarget != null && !hoverTimePassed)
+        if (_hoverTarget != null && !_hoverTimePassed)
         {
             // Reset Hovertimer and set cooldown
-            timeLeftTillHoverBlocked = _timeInteractionPrevented;
-            timeLeftTillSelect = timeToSelect;
+            _timeLeftTillHoverBlocked = _timeInteractionPrevented;
+            _timeLeftTillSelect = timeToSelect;
 
             TryHideReticle();
         }
@@ -189,9 +188,9 @@ public class HeadGazeController : MonoBehaviour
 
     private void PerformFakeButtonPress()
     {
-        using (StateEvent.From(fakeInputDevice, out var eventPtr))
+        using (StateEvent.From(_fakeInputDevice, out var eventPtr))
         {
-            ((ButtonControl)fakeInputDevice.forwardButton).WriteValueIntoEvent(1.0f, eventPtr);
+            ((ButtonControl)_fakeInputDevice.forwardButton).WriteValueIntoEvent(1.0f, eventPtr);
             InputSystem.QueueEvent(eventPtr);
             // Release button press after a short while
             StartCoroutine(ReleaseButtonPress());
@@ -201,9 +200,9 @@ public class HeadGazeController : MonoBehaviour
     private IEnumerator ReleaseButtonPress()
     {
         yield return new WaitForSeconds(0.05f);
-        using (StateEvent.From(fakeInputDevice, out var eventPtr))
+        using (StateEvent.From(_fakeInputDevice, out var eventPtr))
         {
-            ((ButtonControl)fakeInputDevice.forwardButton).WriteValueIntoEvent(0.0f, eventPtr);
+            ((ButtonControl)_fakeInputDevice.forwardButton).WriteValueIntoEvent(0.0f, eventPtr);
             InputSystem.QueueEvent(eventPtr);
         }
 
@@ -211,9 +210,9 @@ public class HeadGazeController : MonoBehaviour
 
         if (_canReselect)
         {
-            timeLeftTillHoverBlocked = _postInteractionCooldown;
-            timeLeftTillSelect = timeToSelect;
-            hoverTimePassed = false;
+            _timeLeftTillHoverBlocked = _postInteractionCooldown;
+            _timeLeftTillSelect = timeToSelect;
+            _hoverTimePassed = false;
         }
     }
 

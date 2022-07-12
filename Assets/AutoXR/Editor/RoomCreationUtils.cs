@@ -12,14 +12,14 @@ namespace AutoXR.Editor
     public static class AutoXRRoomCreationUtils
     {
         // Experimentation default material paths
-        const string EXPERIMENTATION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Floor.mat";
-        const string EXPERIMENTATION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
-        const string EXPERIMENTATION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
+        const string EXPERIMENTATION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/World Materials/PVC Floor Blue Speckled.mat";
+        const string EXPERIMENTATION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/World Materials/Woodchip Wall.mat";
+        const string EXPERIMENTATION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/World Materials/Woodchip Wall.mat";
 
         // Exhibition default material paths
-        const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Wood Fishbone.mat";
-        const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
-        const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/Room/Room Woodchip Wall.mat";
+        const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/AutoXR/Materials/World Materials/Wood Fishbone.mat";
+        const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/AutoXR/Materials/World Materials/Woodchip Wall.mat";
+        const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/AutoXR/Materials/World Materials/Woodchip Wall.mat";
 
         // Default Reticle Path
         const string DEFAULT_TELEPORTATION_RETICLE_PATH = "Assets/AutoXR/Prefabs/Reticles/Teleport Reticle.prefab";

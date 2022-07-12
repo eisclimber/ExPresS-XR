@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 0ffaa0b7117ba8c47a9d05ae701d4b4d, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.28462127, g: 0.37120965, b: 0.49880528, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -170,121 +170,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handModelMode: 1
-  _teleportationEnabled: 1
   _interactionEnabled: 1
+  _teleportationEnabled: 1
+  _gripDeactivatesTeleportation: 0
   _interactionController: {fileID: 1182955877}
   _teleportationController: {fileID: 185499839}
   _uiInteractionController: {fileID: 1440985191}
   _grabInteractor: {fileID: 1182955876}
   _teleportModeActivationReference: {fileID: 1263111715868034790, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _teleportModeDeactivationReference: {fileID: 737890489006591557, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  _gripDeactivatesTeleportation: 0
-  onTeleportActivate:
+  OnTeleportActivate:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1182955877}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1182955876}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 185499839}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 185499838}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onTeleportCancel:
+      m_Calls: []
+  OnTeleportCancel:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1182955877}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1182955876}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 185499839}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 185499838}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &185499834
 GameObject:
   m_ObjectHideFlags: 0
@@ -4236,171 +4136,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handModelMode: 1
-  _teleportationEnabled: 1
   _interactionEnabled: 1
+  _teleportationEnabled: 1
+  _gripDeactivatesTeleportation: 0
   _interactionController: {fileID: 1043779726}
   _teleportationController: {fileID: 2141450041}
   _uiInteractionController: {fileID: 917514850}
   _grabInteractor: {fileID: 1043779724}
   _teleportModeActivationReference: {fileID: -8061240218431744966, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _teleportModeDeactivationReference: {fileID: 2307464322626738743, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  _gripDeactivatesTeleportation: 0
-  onTeleportActivate:
+  OnTeleportActivate:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1043779726}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1043779724}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2141450041}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 2141450040}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 917514850}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 917514849}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTeleportCancel:
+      m_Calls: []
+  OnTeleportCancel:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1043779726}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1043779724}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 2141450041}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2141450040}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 917514850}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.XRBaseController,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_enableInputActions
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 917514849}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1863846698
 GameObject:
   m_ObjectHideFlags: 0
@@ -6118,5 +5868,4 @@ MonoBehaviour:
   fadeColor: {r: 0, g: 0, b: 0, a: 0}
   fadeToBlackTime: 0.5
   fadeToClearTime: 0.5
-  _fadeDirection: -1
   _fadeImage: {fileID: 8078588518456325478}

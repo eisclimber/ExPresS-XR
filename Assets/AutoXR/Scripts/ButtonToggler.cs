@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Button))]
-[AddComponentMenu("AutoXR/ButtonToggler")]
+[AddComponentMenu("ExPresSXR/Button Toggler")]
 public class ButtonToggler : MonoBehaviour
 {
     [SerializeField]
@@ -27,7 +27,7 @@ public class ButtonToggler : MonoBehaviour
     
     [Space]
 
-    public ToggledChangedEvent onToggleChanged;
+    public ToggledChangedEvent OnToggleChanged;
 
 
     private Button btn;
@@ -35,22 +35,22 @@ public class ButtonToggler : MonoBehaviour
     private Color pressedColor;
 
     
-    void Awake()
+    private void Awake()
     {
         btn = gameObject.GetComponent<Button>();
         normalColor = btn.colors.normalColor;
         pressedColor = btn.colors.pressedColor;
-        btn.onClick.AddListener(TaskOnClick);
+        btn.onClick.AddListener(ToggleButton);
     }
 
-    void TaskOnClick()
+    private void ToggleButton()
     {
         pressed = !pressed;
 
-        onToggleChanged.Invoke(pressed);
+        OnToggleChanged.Invoke(pressed);
     }
 
-    void OnValidate()
+    private void OnValidate()
     {
         pressed = _pressed;
     }

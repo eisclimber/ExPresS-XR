@@ -38,10 +38,10 @@ public class ScreenCollisionIndicator : MonoBehaviour
     private Image _fadeImage;
     
 
-    public void FadeIn(float _duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(1.0f, _duration));
+    public void FadeIn(float duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(1.0f, duration));
     
 
-    public void FadeOut(float _duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(0.0f, _duration));
+    public void FadeOut(float duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(0.0f, duration));
     
 
     private IEnumerator FadeCoroutine(float toAlpha, float fadeDuration)

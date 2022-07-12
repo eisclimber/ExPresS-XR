@@ -22,15 +22,30 @@ public class DataGatherer : MonoBehaviour
 
 
     [SerializeField]
-    private string localExportPath = DEFAULT_EXPORT_FILE_NAME;
+    private string _localExportPath = DEFAULT_EXPORT_FILE_NAME;
+    public string localExportPath
+    {
+        get => _localExportPath;
+        set => _localExportPath = value;
+    }
 
     [SerializeField]
-    private string httpExportPath;
+    private string _httpExportPath;
+    public string httpExportPath
+    {
+        get => _httpExportPath;
+        set => _httpExportPath = value;
+    }
 
 
     // Triggers
     [SerializeField]
-    InputActionReference[] inputActionTrigger;
+    private InputActionReference[] _inputActionTrigger;
+    public InputActionReference[] inputActionTrigger
+    {
+        get => _inputActionTrigger;
+        set => _inputActionTrigger = value;
+    }
 
 
     [SerializeField]
@@ -56,22 +71,45 @@ public class DataGatherer : MonoBehaviour
 
     [SerializeField]
     private float _periodicExportTime = 1.0f;
-
-    private Coroutine _periodicExportCoroutine;
+    public float periodicExportTime
+    {
+        get => _periodicExportTime;
+        set => _periodicExportTime = value;
+    }
 
 
     // Data
     [SerializeField]
     private bool _includeTimeStamp = true;
+    public bool includeTimeStamp
+    {
+        get => _includeTimeStamp;
+        set => _includeTimeStamp = value;
+    }
 
 
     [SerializeField]
     private List<DataGatheringBinding> _dataBindings;
+    public List<DataGatheringBinding> dataBindings
+    {
+        get => _dataBindings;
+        set => _dataBindings = value;
+    }
 
 
-    StreamWriter outputWriter;
+    [SerializeField]
+    private InputActionReference[] _inputActionDataBindings;
+    public InputActionReference[] inputActionDataBindings
+    {
+        get => _inputActionDataBindings;
+        set => _inputActionDataBindings = value;
+    }
+    
+    private Coroutine _periodicExportCoroutine;
 
-    private void Start()
+    private StreamWriter _outputWriter;
+
+    private void Awake()
     {
         TryStartPeriodicCoroutine();
 
@@ -89,11 +127,11 @@ public class DataGatherer : MonoBehaviour
     }
 
     private void OnDestroy() {
-        if (outputWriter != null)
+        if (_outputWriter != null)
         {
             // Write everything that might not be written & close writer
-            outputWriter.Flush();
-            outputWriter.Close();
+            _outputWriter.Flush();
+            _outputWriter.Close();
         }
     }
 
@@ -102,13 +140,13 @@ public class DataGatherer : MonoBehaviour
         string data = GetExportCSVLine();
         if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
         {
-            Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
-            PostHttpData(httpExportPath, data);
+            // Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
+            StartCoroutine(PostHttpData(httpExportPath, data));
         }
         if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
         {
-            Debug.Log("Saving: " + data + " at " + GetLocalSavePath());
-            outputWriter.WriteLine(data);
+            // Debug.Log(String.Format("Saving '{0}' at '{1}'.",  data,  GetLocalSavePath());
+            _outputWriter.WriteLine(data);
         }
     }
 
@@ -183,12 +221,12 @@ public class DataGatherer : MonoBehaviour
                          + String.Format("Appending '.csv' and creating a new file if necessary. New path is: '{0}'. ", localExportPath));
                 }
 
-                outputWriter = new StreamWriter(fullPath);
+                _outputWriter = new StreamWriter(fullPath);
                 // If empty append csv header
                 if (new FileInfo(fullPath).Length == 0)
                 {
-                    outputWriter.WriteLine(GetExportCSVHeader());
-                    outputWriter.Flush();
+                    _outputWriter.WriteLine(GetExportCSVHeader());
+                    _outputWriter.Flush();
                 }
             } 
             catch (Exception e)
@@ -198,7 +236,7 @@ public class DataGatherer : MonoBehaviour
         }
     }
 
-    private string GetLocalSavePath()
+    public string GetLocalSavePath()
     {
 #if UNITY_EDITOR
         return Path.Combine(Application.dataPath + "/Data/", localExportPath);
@@ -211,10 +249,9 @@ public class DataGatherer : MonoBehaviour
 #endif
     }
 
-
     private void TryStartPeriodicCoroutine()
     {
-        if (periodicExportEnabled)
+        if (periodicExportEnabled && Application.isPlaying)
         {
             if (_periodicExportTime > 0)
             {
@@ -222,7 +259,7 @@ public class DataGatherer : MonoBehaviour
                 {
                     StopCoroutine(_periodicExportCoroutine);
                 }
-                _periodicExportCoroutine = StartCoroutine("TimeTriggerCoroutine");
+                _periodicExportCoroutine = StartCoroutine(TimeTriggerCoroutine());
             }
             else
             {
@@ -266,7 +303,6 @@ public class DataGatherer : MonoBehaviour
 
     private void OnInputActionExportRequested(InputAction.CallbackContext callback) => ExportNewCSVLine();
 }
-
 
 public enum DataGathererExportType
 {

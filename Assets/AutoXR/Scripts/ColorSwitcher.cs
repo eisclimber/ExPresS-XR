@@ -9,19 +9,16 @@ public class ColorSwitcher : MonoBehaviour
     [Tooltip("The material that is replacing the material applied to the GameObject via Editor.")]
     public Material alternativeMaterial;
 
-    private Material originalMaterial;
-    private MeshRenderer meshRenderer;
-
-    private Coroutine switchCoroutine;
-
-    [SerializeField]
     public float switchDuration = 1.0f;
+
+    private Material _originalMaterial;
+    private MeshRenderer _meshRenderer;
 
 
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        originalMaterial = meshRenderer.material;
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _originalMaterial = _meshRenderer.material;
 
         if (alternativeMaterial == null)
         {
@@ -49,7 +46,7 @@ public class ColorSwitcher : MonoBehaviour
     }
 
     // Fixed 1 second switches
-    public void ActivateAlternativeMaterialForASecond() 
+    public void ActivateAlternativeMaterialForASecond()
     {
         StopAllCoroutines();
         StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1f));
@@ -113,25 +110,25 @@ public class ColorSwitcher : MonoBehaviour
     // Private methods for setting materials to allow proper coroutine handling
     private void SetAlternativeMaterialActive()
     {
-        if (meshRenderer != null && alternativeMaterial != null)
+        if (_meshRenderer != null && alternativeMaterial != null)
         {
-            meshRenderer.material = alternativeMaterial;
+            _meshRenderer.material = alternativeMaterial;
         }
     }
 
     private void SetOriginalMaterialActive()
     {
-        if (meshRenderer != null)
+        if (_meshRenderer != null)
         {
-            meshRenderer.material = originalMaterial;
+            _meshRenderer.material = _originalMaterial;
         }
     }
 
     private void SetMaterialToggled()
     {
-        if (meshRenderer != null)
+        if (_meshRenderer != null)
         {
-            if (meshRenderer.material == alternativeMaterial)
+            if (_meshRenderer.material == alternativeMaterial)
             {
                 SetAlternativeMaterialActive();
             }

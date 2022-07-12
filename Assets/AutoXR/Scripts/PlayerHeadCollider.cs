@@ -12,7 +12,6 @@ public class PlayerHeadCollider : MonoBehaviour
 
 
     [Tooltip("If true the players camera will be pushed back.")]
-    [SerializeField]
     public bool collisionPushbackEnabled;
 
     [Tooltip("If true the players cameras corner will be faded.")]
@@ -24,7 +23,6 @@ public class PlayerHeadCollider : MonoBehaviour
         set => _showCollisionVignetteEffect = value;
     }
 
-    [SerializeField]
     public ScreenCollisionIndicator screenCollisionIndicator;
 
     [Tooltip("The anchor that is moved when collisions occur. Usually should be set to the AutoXRRig or XROrigin.")]
@@ -52,11 +50,9 @@ public class PlayerHeadCollider : MonoBehaviour
 
 
     [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
-    [SerializeField]
     public UnityEvent OnCollisionStarted;
 
     [Tooltip("Will be invoked once when a collision with wall ends.")]
-    [SerializeField]
     public UnityEvent OnCollisionEnded;
 
 
@@ -64,8 +60,7 @@ public class PlayerHeadCollider : MonoBehaviour
     private Collider[] _objs = new Collider[10];
     private Vector3 _prevHeadPos;
     private bool _colliding;
-    private float _totalVerticalCollisionDiff;
-    private Coroutine cooldownCoroutine;
+    private Coroutine _cooldownCoroutine;
 
     private void Awake()
     {
@@ -75,7 +70,7 @@ public class PlayerHeadCollider : MonoBehaviour
         }
 
         // Prevent Collision during setup
-        cooldownCoroutine = StartCoroutine(CollisionCooldown());
+        _cooldownCoroutine = StartCoroutine(CollisionCooldown());
 
         _layerMask = LayerMask.NameToLayer("Everything");
         _colliding = false;
@@ -115,9 +110,9 @@ public class PlayerHeadCollider : MonoBehaviour
         return hits;
     }
 
-    public void Update()
+    private void Update()
     {
-        if (_pushbackAnchor != null && cooldownCoroutine == null)
+        if (_pushbackAnchor != null && _cooldownCoroutine == null)
         {
             int hits = DetectHit(transform.position);
 
@@ -197,6 +192,6 @@ public class PlayerHeadCollider : MonoBehaviour
     private IEnumerator CollisionCooldown()
     {
         yield return new WaitForSeconds(0.3f);
-        cooldownCoroutine = null;
+        _cooldownCoroutine = null;
     }
 }

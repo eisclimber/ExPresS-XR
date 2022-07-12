@@ -79,7 +79,7 @@ public class SetupDialogBase : EditorWindow
         // Add behavior the ui elements of each step in the child classes!!!
 
         // Bind the steps
-        bindSteps();
+        BindSteps();
         // Bind the controls
         BindControlButtons();
     }
@@ -92,7 +92,7 @@ public class SetupDialogBase : EditorWindow
         Close();
     }
 
-    private void bindSteps()
+    private void BindSteps()
     {
         for (int i = 0; i < stepsContainer.childCount; i++)
         {

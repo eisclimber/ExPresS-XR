@@ -309,7 +309,5 @@ public enum FeedbackType
 public enum ObjectInspectionOption
 {
     None,
-    OnlyAnswers,
-    OnlyQuestion,
-    Both
+    OnlyAnswers
 }

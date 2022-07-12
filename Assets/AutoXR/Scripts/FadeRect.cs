@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 
 [RequireComponent(typeof(Image))]
@@ -7,32 +8,35 @@ public class FadeRect : MonoBehaviour
 {
     public Color fadeColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
     
-    public float fadeToBlackTime = 0.5f;
+    public float fadeToColorTime = 0.5f;
 
     public float fadeToClearTime = 0.5f;
 
     [SerializeField]
+    private Image _fadeImage;
+
     private float _fadeDirection = 0.0f;
 
-    [SerializeField]
-    private Image _fadeImage;
+
+    public UnityEvent OnFadeToColorCompleted;
+    public UnityEvent OnFadeToCleanCompleted;
     
 
     // Screen NOT visible
-    public bool completelyVisible
+    public bool screenCompletelyVisible
     {
         get => (fadeColor.a == 1.0f);
     }
 
     // Screen visible
-    public bool completelyHidden
+    public bool screenCompletelyHidden
     {
         get => (fadeColor.a == 0.0f);
     }
 
 
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         _fadeImage = GetComponent<Image>();
         UpdateFadeImage();
@@ -62,16 +66,35 @@ public class FadeRect : MonoBehaviour
 
     private void Update()
     {
+        float newFadeValue = fadeColor.a;
+
         if (_fadeDirection < 0.0f)
         {
-            // Fade to Black
-            fadeColor.a = Mathf.Max(0.0f, fadeColor.a - (Time.deltaTime / fadeToBlackTime));
+            // Fade to Color
+            newFadeValue = Mathf.Max(0.0f, fadeColor.a - (Time.deltaTime / fadeToColorTime));
+
+            if (fadeColor.a > 1.0f && newFadeValue == 1.0f)
+            {
+                // Fade to Color completed
+                OnFadeToColorCompleted.Invoke();
+            }
         }
         else if (_fadeDirection > 0.0f)
         {
             // Fade to Clear
-            fadeColor.a = Mathf.Min(1.0f, fadeColor.a + (Time.deltaTime / fadeToClearTime));
+            newFadeValue = Mathf.Min(1.0f, fadeColor.a + (Time.deltaTime / fadeToClearTime));
+
+            if (fadeColor.a < 0.0f && newFadeValue == 0.0f)
+            {
+                // Fade to Clear completed
+                OnFadeToColorCompleted.Invoke();
+            }
         }
+
+        
+        else if (fadeColor.a > 0.0f && newFadeValue == 1.0f)
+
+        fadeColor.a = newFadeValue;
 
         UpdateFadeImage();
     }

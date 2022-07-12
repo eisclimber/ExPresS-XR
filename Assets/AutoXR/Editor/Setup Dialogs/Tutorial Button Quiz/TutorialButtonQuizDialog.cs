@@ -14,7 +14,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
     const string QUESTION_ITEM_PATH = "Assets/AutoXR/Editor/Setup Dialogs/Tutorial Button Quiz/question-item.uxml";
 
-    const string CONFIG_SAVE_PATH = "Assets/AutoXR/ExportAssets/QuizSetupConfig.asset";
+    const string CONFIG_SAVE_PATH = "Assets/AutoXR/Runtime Resources/QuizSetupConfig.asset";
     const string RENDER_TEXTURE_SAVE_PATH = "Assets/Runtime Resources/QuizRenderTexture.asset";
 
     const float QUIZ_BUTTON_SPACING = 0.3f;
@@ -211,7 +211,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
         // Setup step 9
         _createDataGathererButton = _step9Container.Q<Button>("create-data-gatherer-button");
-        _createDataGathererButton.clickable.clicked += () => { AutoXRMenuCreationUtils.CreateDataGatherer(null); };
+        _createDataGathererButton.clickable.clicked += () => { MenuCreationUtils.CreateDataGatherer(null); };
 
         // Bind remaining UI Elements
         base.BindUiElements();
@@ -441,12 +441,12 @@ class TutorialButtonQuizDialog : SetupDialogBase
     {
         _quizConfig.questions = ParseQuestionList(_quizConfig, _questionList);
 
-        AutoXRQuizButton[] buttons = { (AutoXRQuizButton)_button1Field.value,
-                                        (AutoXRQuizButton)_button2Field.value,
-                                        (AutoXRQuizButton)_button3Field.value,
-                                        (AutoXRQuizButton)_button4Field.value };
+        QuizButton[] buttons = { (QuizButton)_button1Field.value,
+                                        (QuizButton)_button2Field.value,
+                                        (QuizButton)_button3Field.value,
+                                        (QuizButton)_button4Field.value };
 
-        if (CreateQuiz(_quizConfig, buttons, (AutoXRMcConfirmButton) _mcConfirmButtonField.value,
+        if (CreateQuiz(_quizConfig, buttons, (McConfirmButton) _mcConfirmButtonField.value,
                         (TMP_Text)_textLabelField.value, (GameObject)_gameObjectField.value,
                         (VideoPlayer)_videoPlayerField.value, (Canvas)_afterQuizMenuField.value))
         {
@@ -708,12 +708,12 @@ class TutorialButtonQuizDialog : SetupDialogBase
 
             ObjectField[] buttonFields = { _button1Field, _button2Field, _button3Field, _button4Field };
 
-            string buttonPrefabPath = CreationUtils.MakeAutoXRPrefabPath(CreationUtils.AUTOXR_QUIZ_BUTTON_SQUARE_PREFAB_NAME);
-            AutoXRQuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(buttonPrefabPath);
+            string buttonPrefabPath = CreationUtils.MakeExPresSXRPrefabPath(CreationUtils.QUIZ_BUTTON_SQUARE_PREFAB_NAME);
+            QuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<QuizButton>(buttonPrefabPath);
             for (int i = 0; i < numButtons; i++)
             {
                 // Create new button
-                AutoXRQuizButton button = Instantiate(buttonPrefab, new Vector3((QUIZ_BUTTON_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
+                QuizButton button = Instantiate(buttonPrefab, new Vector3((QUIZ_BUTTON_SPACING * i) - xOffset, 0, 0), Quaternion.identity);
                 button.transform.SetParent(go.transform);
                 button.name = "Quiz Button " + (i + 1).ToString();
 
@@ -724,10 +724,10 @@ class TutorialButtonQuizDialog : SetupDialogBase
             // Add Multiple Choice Button if necessary
             if (_quizConfig.quizMode == QuizMode.MultipleChoice)
             {
-                string multiChoiceButtonPrefabPath = CreationUtils.MakeAutoXRPrefabPath(CreationUtils.AUTOXR_MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
-                AutoXRQuizButton multiChoiceButtonPrefab = AssetDatabase.LoadAssetAtPath<AutoXRQuizButton>(multiChoiceButtonPrefabPath);
+                string multiChoiceButtonPrefabPath = CreationUtils.MakeExPresSXRPrefabPath(CreationUtils.MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
+                QuizButton multiChoiceButtonPrefab = AssetDatabase.LoadAssetAtPath<QuizButton>(multiChoiceButtonPrefabPath);
 
-                AutoXRQuizButton button = Instantiate(multiChoiceButtonPrefab, new Vector3(xOffset + QUIZ_BUTTON_SPACING, 0, 0), Quaternion.identity);
+                QuizButton button = Instantiate(multiChoiceButtonPrefab, new Vector3(xOffset + QUIZ_BUTTON_SPACING, 0, 0), Quaternion.identity);
                 button.transform.SetParent(go.transform);
                 button.name = "Multiple Choice Confirm Button";
 
@@ -829,7 +829,7 @@ class TutorialButtonQuizDialog : SetupDialogBase
         }
     }
 
-    public static bool CreateQuiz(QuizSetupConfig config, AutoXRQuizButton[] buttons, AutoXRMcConfirmButton mcConfirmButton,
+    public static bool CreateQuiz(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer, Canvas _afterQuizDialog)
     {
         if (_currentQuizGo == null)
