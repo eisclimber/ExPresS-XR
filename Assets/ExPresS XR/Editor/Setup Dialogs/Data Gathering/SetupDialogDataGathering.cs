@@ -4,7 +4,7 @@ using UnityEditor;
 class SetupDialogDataGathering : SetupDialogBase
 {
 
-    [MenuItem("ExPresS XR/Data Gathering", false, 3)]
+    [MenuItem("ExPresS XR/Data Gathering", false, 4)]
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:

@@ -8,24 +8,24 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 using TMPro;
 
 
-class ButtonQuizDialog : SetupDialogBase
+class ButtonQuizSetupDialog : SetupDialogBase
 {
     // UnityEngine.Video.VideoClip,UnityEngine.VideoModule
 
     const string QUESTION_ITEM_PATH = "Assets/ExPresS XR/Editor/Setup Dialogs/Button Quiz/question-item.uxml";
 
-    const string CONFIG_SAVE_PATH = "Assets/ExPresS XR/Runtime Resources/QuizSetupConfig.asset";
+    const string CONFIG_SAVE_PATH = "Assets/ExPresS XR/Runtime Resources/QuizConfig.asset";
     const string RENDER_TEXTURE_SAVE_PATH = "Assets/Runtime Resources/QuizRenderTexture.asset";
 
     const float QUIZ_BUTTON_SPACING = 0.3f;
 
 
 
-    [MenuItem("ExPresS XR/Button Quiz Setup", false)]
+    [MenuItem("ExPresS XR/Button Quiz Setup", false, 3)]
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
-        ButtonQuizDialog window = GetWindow<ButtonQuizDialog>("TutorialButtonQuiz");
+        ButtonQuizSetupDialog window = GetWindow<ButtonQuizSetupDialog>("Button Quiz Setup");
         window.minSize = new Vector2(700, 500);
 
         window.configField.value = null;
@@ -36,7 +36,7 @@ class ButtonQuizDialog : SetupDialogBase
 
     public override string uxmlName
     {
-        get => "Assets/ExPresS XR/Editor/Setup Dialogs/Button Quiz/button-quiz.uxml";
+        get => "Assets/ExPresS XR/Editor/Setup Dialogs/Button Quiz/button-quiz-setup.uxml";
     }
 
     private VisualElement _step1Container;
