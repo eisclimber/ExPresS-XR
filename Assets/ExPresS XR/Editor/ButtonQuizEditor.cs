@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(TutorialButtonQuiz))]
-public class TutorialButtonQuizEditor : Editor
+[CustomEditor(typeof(ButtonQuiz))]
+public class ButtonQuizEditor : Editor
 {
-    TutorialButtonQuiz targetScript;
+    ButtonQuiz targetScript;
 
     void OnEnable()
     {
-        targetScript = (TutorialButtonQuiz)target;
+        targetScript = (ButtonQuiz)target;
     }
 
     public override void OnInspectorGUI()

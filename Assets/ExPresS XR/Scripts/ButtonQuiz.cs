@@ -8,7 +8,7 @@ using UnityEditor;
 using TMPro;
 
 
-public class TutorialButtonQuiz : MonoBehaviour
+public class ButtonQuiz : MonoBehaviour
 {
     public const int MIN_QUESTIONS = 1;
     public const int NUM_ANSWERS = 4;
@@ -20,12 +20,12 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     public const string FULL_QUIZ_CSV_HEADER = "isQuizActive,currentQuestionNumber,currentQuestionIdx,answerPressTime,"
         + "chosenAnswerString,displayedFeedbackText,displayedFeedbackObjects,displayedFeedbackVideo,"
-        + QuizQuestion.QUESTION_CSV_HEADER_STRING + "," + QuizSetupConfig.CONFIG_CSV_HEADER_STRING;
+        + ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING + "," + ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
 
 
     [SerializeField]
-    private QuizSetupConfig _config;
-    public QuizSetupConfig config
+    private ButtonQuizConfig _config;
+    public ButtonQuizConfig config
     {
         get => _config;
         set
@@ -59,7 +59,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     [SerializeField]
     private float _feedbackDuration = DEFAULT_FEEDBACK_DURATION;
 
-    private QuizQuestion[] _questions;
+    private ButtonQuizQuestion[] _questions;
 
     private int _numQuestions;
 
@@ -67,7 +67,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
     private int _nextQuestionIdx;
 
-    private QuizQuestion _currentQuestion;
+    private ButtonQuizQuestion _currentQuestion;
 
 
     [SerializeField]
@@ -145,7 +145,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     // Setup
-    public void Setup(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
+    public void Setup(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, Canvas afterQuizDialog)
     {
         // Set values
@@ -419,7 +419,7 @@ public class TutorialButtonQuiz : MonoBehaviour
 
 
     // Validation
-    public bool IsSetupValid(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
+    public bool IsSetupValid(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, Canvas afterQuizDialog)
     {
         // Quiz is invalid without a config
@@ -436,7 +436,7 @@ public class TutorialButtonQuiz : MonoBehaviour
     }
 
 
-    private bool IsDisplayValid(QuizSetupConfig config, TMP_Text displayLabel, GameObject displayAnchor, VideoPlayer displayPlayer)
+    private bool IsDisplayValid(ButtonQuizConfig config, TMP_Text displayLabel, GameObject displayAnchor, VideoPlayer displayPlayer)
     {
         bool needsAllDisplays = (config.questionType == QuestionType.DifferingTypes || config.feedbackType == FeedbackType.DifferingTypes);
         string errorMessageAppendix = (needsAllDisplays ? " QuestionType or FeedbackType is set to DifferingTypes so all Displays must be provided." : "");
@@ -493,9 +493,9 @@ public class TutorialButtonQuiz : MonoBehaviour
         }
     }
 
-    private bool AreButtonsValid(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton)
+    private bool AreButtonsValid(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton)
     {
-        int numRequiredButtons = Mathf.Min((int)config.answersAmount, TutorialButtonQuiz.NUM_ANSWERS);
+        int numRequiredButtons = Mathf.Min((int)config.answersAmount, ButtonQuiz.NUM_ANSWERS);
 
         if (buttons.Length < numRequiredButtons)
         {
@@ -529,7 +529,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         return true;
     }
 
-    private bool AreQuestionsValid(QuizSetupConfig config)
+    private bool AreQuestionsValid(ButtonQuizConfig config)
     {
         if (config.questions != null && config.questions.Length < MIN_QUESTIONS)
         {
@@ -540,7 +540,7 @@ public class TutorialButtonQuiz : MonoBehaviour
         for (int i = 0; i < config.questions.Length; i++)
         {
             // Check question
-            QuizQuestion question = config.questions[i];
+            ButtonQuizQuestion question = config.questions[i];
 
             // Ensure the correct idx for each question
             question.itemIdx = i;

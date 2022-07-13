@@ -159,24 +159,24 @@ public class DataGatheringBindingDrawer : PropertyDrawer
                 string componentName = splitName[0];
                 string memberName = splitName[1];
 
-                if (componentName.StartsWith("TutorialButtonQuiz"))
+                if (componentName.StartsWith("ButtonQuiz"))
                 {
                     if (memberName == "string GetConfigCsvExportValues()")
                     {
-                        property.FindPropertyRelative("exportColumnName").stringValue = QuizSetupConfig.CONFIG_CSV_HEADER_STRING;
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
                     }
                     else if (memberName == "string GetAllQuestionsCsvExportValues()")
                     {
                         Debug.Log("`GetQuestionsCsvExportValues()` will export multiple lines of values which might break the formatting of the csv.");
-                        property.FindPropertyRelative("exportColumnName").stringValue = QuizQuestion.QUESTION_CSV_HEADER_STRING;
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
                     }
                     else if (memberName == "string GetCurrentQuestionCsvExportValue()")
                     {
-                        property.FindPropertyRelative("exportColumnName").stringValue = QuizQuestion.QUESTION_CSV_HEADER_STRING;
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
                     }
                     else if (memberName == "string GetFullQuizCsvValues()")
                     {
-                        property.FindPropertyRelative("exportColumnName").stringValue = TutorialButtonQuiz.FULL_QUIZ_CSV_HEADER;
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuiz.FULL_QUIZ_CSV_HEADER;
                     }
                 }
             }

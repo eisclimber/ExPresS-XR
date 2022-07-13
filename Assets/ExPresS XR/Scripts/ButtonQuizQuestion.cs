@@ -1,49 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 
 [System.Serializable]
-public class QuizSetupConfig : ScriptableObject
-{
-    public const string CONFIG_CSV_HEADER_STRING = "quizMode,questionOrdering,answersAmount,questionType,answerType,feedbackMode,feedbackType,objectInspectionOption";
-
-    // QuizSetupConfig, Assembly-CSharp
-    public QuizMode quizMode = QuizMode.SingleChoice;
-    public QuestionOrdering questionOrdering = QuestionOrdering.Randomize;
-    public AnswersAmount answersAmount = AnswersAmount.Two;
-    public QuestionType questionType = QuestionType.Text;
-    public AnswerType answerType = AnswerType.Text;
-    public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
-    public FeedbackType feedbackType = FeedbackType.ShowAnswers;
-
-    // Actual Questions
-    public QuizQuestion[] questions = new QuizQuestion[0];
-
-    public string GetCsvExportValues()
-    {
-        return quizMode + "," + questionOrdering + "," + answersAmount 
-                + "," + questionType  + "," + answerType + "," + feedbackMode + "," 
-                + feedbackType;
-    }
-
-    public string GetAllQuestionsCsvExportValues()
-    {
-        string res = "";
-        if (questions != null)
-        {
-            foreach (QuizQuestion question in questions)
-            {
-                res += question.GetCsvExportValues() + "\n";
-            }
-        }
-        return res;
-    }
-}
-
-
-[System.Serializable]
-public class QuizQuestion
+public class ButtonQuizQuestion
 {
     public const string QUESTION_CSV_HEADER_STRING = "itemIdx,questionVideo,questionObject,questionText,"
             + "answerObject0,answerObject1,answerObject2,answerObject3,"
@@ -51,7 +11,7 @@ public class QuizQuestion
             + "correctAnswers0,correctAnswers1,correctAnswers2,correctAnswers3,"
             + "feedbackVideo,feedbackObject,feedbackText";
 
-    // QuizQuestion, Assembly-CSharp
+    // ButtonQuizQuestion, Assembly-CSharp
     public int itemIdx;
     public VideoClip questionVideo;
     public GameObject questionObject;
@@ -68,7 +28,7 @@ public class QuizQuestion
     public string feedbackText;
 
 
-    public QuizQuestion(int itemIdx, VideoClip questionVideo, GameObject questionObject, string questionText,
+    public ButtonQuizQuestion(int itemIdx, VideoClip questionVideo, GameObject questionObject, string questionText,
                         GameObject[] answerObjects, string[] answerTexts, bool[] correctAnswers,
                         VideoClip feedbackVideo, GameObject feedbackObject, string feedbackText)
     {
@@ -213,7 +173,7 @@ public class QuizQuestion
     private int GetNumValidAnswers()
     {
         int numAnswers = 0;
-        for (int i = 0; i < TutorialButtonQuiz.NUM_ANSWERS; i++)
+        for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
         {
             if (answerObjects[i] != null || (answerTexts[i] != null && answerTexts[i] != ""))
             {
@@ -243,71 +203,4 @@ public class QuizQuestion
             + correctAnswers[0] + "," + correctAnswers[1] + "," + correctAnswers[2] + "," + correctAnswers[3] + ","
             + (feedbackVideo?.name ?? "") + "," + (feedbackObject?.name ?? "") + "," + feedbackText;
     }
-}
-
-
-public enum QuizMode
-{
-    // QuizMode, Assembly-CSharp
-    SingleChoice,
-    MultipleChoice
-}
-
-public enum QuestionOrdering
-{
-    // QuestionOrdering, Assembly-CSharp
-    Ordered,
-    Randomize
-}
-
-public enum AnswersAmount
-{
-    // AnswersAmount, Assembly-CSharp
-    One,
-    Two,
-    Three,
-    Four,
-    DifferingAmounts
-}
-
-public enum QuestionType
-{
-    // QuestionType, Assembly-CSharp
-    Object,
-    Video,
-    Text,
-    DifferingTypes
-}
-
-public enum AnswerType
-{
-    // AnswerType, Assembly-CSharp
-    Object,
-    Text,
-    DifferingTypes
-}
-
-public enum FeedbackMode
-{
-    // FeedbackMode, Assembly-CSharp
-    None,
-    AlwaysCorrect,
-    AlwaysWrong,
-    Random
-}
-
-public enum FeedbackType
-{
-    // FeedbackType, Assembly-CSharp
-    ShowAnswers, // Overrides Feedback Mode
-    Object,
-    Text,
-    Video,
-    DifferingTypes
-}
-
-public enum ObjectInspectionOption
-{
-    None,
-    OnlyAnswers
 }

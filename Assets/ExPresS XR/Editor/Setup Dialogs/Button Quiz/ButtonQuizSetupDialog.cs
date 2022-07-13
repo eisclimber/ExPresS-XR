@@ -14,7 +14,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
 
     const string QUESTION_ITEM_PATH = "Assets/ExPresS XR/Editor/Setup Dialogs/Button Quiz/question-item.uxml";
 
-    const string CONFIG_SAVE_PATH = "Assets/ExPresS XR/Runtime Resources/QuizConfig.asset";
+    const string CONFIG_SAVE_PATH = "Assets/Runtime Resources/QuizConfig.asset";
     const string RENDER_TEXTURE_SAVE_PATH = "Assets/Runtime Resources/QuizRenderTexture.asset";
 
     const float QUIZ_BUTTON_SPACING = 0.3f;
@@ -29,7 +29,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
         window.minSize = new Vector2(700, 500);
 
         window.configField.value = null;
-        window.UpdateQuizConfig(QuizSetupConfig.CreateInstance<QuizSetupConfig>());
+        window.UpdateQuizConfig(ButtonQuizConfig.CreateInstance<ButtonQuizConfig>());
 
         _currentQuizGo = null;
     }
@@ -105,7 +105,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
 
 
     // Quiz Config
-    private static QuizSetupConfig _quizConfig;
+    private static ButtonQuizConfig _quizConfig;
 
     // Quiz GameObject
     private static GameObject _currentQuizGo;
@@ -116,7 +116,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
         base.OnEnable();
 
         // Add the min amount of question items
-        int itemsToAdd = TutorialButtonQuiz.MIN_QUESTIONS - _questionList.childCount;
+        int itemsToAdd = ButtonQuiz.MIN_QUESTIONS - _questionList.childCount;
         for (int i = 0; i < itemsToAdd; i++)
         {
             AddQuestionItem();
@@ -203,6 +203,10 @@ class ButtonQuizSetupDialog : SetupDialogBase
         if (_configSavePathField != null)
         {
             _configSavePathField.value = AssetDatabase.GenerateUniqueAssetPath(CONFIG_SAVE_PATH);
+            if (_configSavePathField.value == null || _configSavePathField.value == "")
+            {
+                Debug.LogWarningFormat("Default save location of config not found at: '{0}'", CONFIG_SAVE_PATH);
+            }
         }
         _configSaveButton = _step8Container.Q<Button>("save-config-button");
         _configSaveButton.clickable.clicked += SaveConfig;
@@ -219,7 +223,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
 
     // Step 1 Callbacks
     private void ConfigFieldValueChangedCallback(ChangeEvent<Object> evt)
-        => UpdateQuizConfig((QuizSetupConfig) evt.newValue);
+        => UpdateQuizConfig((ButtonQuizConfig) evt.newValue);
 
 
     // Step 2 Callbacks
@@ -267,7 +271,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
     } 
 
     // Update Steps
-    private void UpdateQuizConfig(QuizSetupConfig newValue)
+    private void UpdateQuizConfig(ButtonQuizConfig newValue)
     {
         if (newValue != null)
         {
@@ -299,7 +303,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
     private void LoadQuestionsFromConfig()
     {
         // Delete additional question items
-        int requiredItems = _quizConfig?.questions?.Length ?? TutorialButtonQuiz.MIN_QUESTIONS;
+        int requiredItems = _quizConfig?.questions?.Length ?? ButtonQuiz.MIN_QUESTIONS;
         int numToDelete = _questionList.childCount - requiredItems;
         
         for (int i = 0; i < numToDelete; i++)
@@ -319,7 +323,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
                 }
 
                 // Retrieve question
-                QuizQuestion question = _quizConfig.questions[i];
+                ButtonQuizQuestion question = _quizConfig.questions[i];
                 VisualElement questionItem = _questionList.Q<VisualElement>("question-item-" + i);
 
                 // Fill Question Values
@@ -401,7 +405,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
         currentStep++;
 
         _currentQuizGo = new GameObject("Tutorial Button Quiz");
-        _currentQuizGo.GetComponent<TutorialButtonQuiz>();
+        _currentQuizGo.GetComponent<ButtonQuiz>();
 
         SetStepButtonsEnabled(true, 3, 5);
     }
@@ -618,15 +622,15 @@ class ButtonQuizSetupDialog : SetupDialogBase
 
     private void RemoveQuestionItem()
     {
-        if (_questionList.childCount > TutorialButtonQuiz.MIN_QUESTIONS)
+        if (_questionList.childCount > ButtonQuiz.MIN_QUESTIONS)
         {
             _questionList.RemoveAt(_questionList.childCount - 1);
         }
     }
 
-    public static QuizQuestion[] ParseQuestionList(QuizSetupConfig config, VisualElement questionList)
+    public static ButtonQuizQuestion[] ParseQuestionList(ButtonQuizConfig config, VisualElement questionList)
     {
-        QuizQuestion[] quizQuestions = new QuizQuestion[questionList.childCount];
+        ButtonQuizQuestion[] ButtonQuizQuestions = new ButtonQuizQuestion[questionList.childCount];
 
         int i = 0;
 
@@ -653,11 +657,11 @@ class ButtonQuizSetupDialog : SetupDialogBase
             // Answers
             VisualElement answers = question.Q<VisualElement>("answers");
 
-            GameObject[] answersObjects = new GameObject[TutorialButtonQuiz.NUM_ANSWERS];
-            string[] answersTexts = new string[TutorialButtonQuiz.NUM_ANSWERS];
-            bool[] correctValues = new bool[TutorialButtonQuiz.NUM_ANSWERS];
+            GameObject[] answersObjects = new GameObject[ButtonQuiz.NUM_ANSWERS];
+            string[] answersTexts = new string[ButtonQuiz.NUM_ANSWERS];
+            bool[] correctValues = new bool[ButtonQuiz.NUM_ANSWERS];
 
-            for (int j = 0; j < TutorialButtonQuiz.NUM_ANSWERS; j++)
+            for (int j = 0; j < ButtonQuiz.NUM_ANSWERS; j++)
             {
                 // Answers values
                 VisualElement currentAnswer = answers.Q<VisualElement>("answer-" + (j + 1).ToString());
@@ -685,13 +689,13 @@ class ButtonQuizSetupDialog : SetupDialogBase
                 }
             }
 
-            quizQuestions[i] = new QuizQuestion(i, questionClip, questionObject, questionText,
+            ButtonQuizQuestions[i] = new ButtonQuizQuestion(i, questionClip, questionObject, questionText,
                                             answersObjects, answersTexts, correctValues,
                                             feedbackClip, feedbackObject, feedbackText);
 
             i++;
         }
-        return quizQuestions;
+        return ButtonQuizQuestions;
     }
 
 
@@ -702,7 +706,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
         {
             GameObject go = new GameObject("Quiz Buttons");
             go.transform.SetParent(_currentQuizGo?.transform);
-            int numButtons = (int)Mathf.Min((int)_quizConfig.answersAmount + 1, TutorialButtonQuiz.NUM_ANSWERS);
+            int numButtons = (int)Mathf.Min((int)_quizConfig.answersAmount + 1, ButtonQuiz.NUM_ANSWERS);
            
             float xOffset = (QUIZ_BUTTON_SPACING * (numButtons - 1)) / 2.0f;
 
@@ -794,10 +798,11 @@ class ButtonQuizSetupDialog : SetupDialogBase
                 videoPlayerComp.targetTexture = renderTexture;
                 videoDisplayComp.texture = renderTexture;
 
-                string savePath = AssetDatabase.GenerateUniqueAssetPath(RENDER_TEXTURE_SAVE_PATH);
-                AssetDatabase.CreateAsset(renderTexture, savePath);
+                // string savePath = AssetDatabase.GenerateUniqueAssetPath(RENDER_TEXTURE_SAVE_PATH);
+                // AssetDatabase.CreateAsset(renderTexture, savePath);
 
-                Debug.LogWarningFormat("Render texture generated and saved to '{0}'.", savePath);
+                // Debug.LogWarningFormat("Render texture generated and saved to '{0}'.", savePath);
+                Debug.LogWarning("Render texture generated.");
             }
             canvasComp.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
 
@@ -829,7 +834,7 @@ class ButtonQuizSetupDialog : SetupDialogBase
         }
     }
 
-    public static bool CreateQuiz(QuizSetupConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
+    public static bool CreateQuiz(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
                             TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer, Canvas _afterQuizDialog)
     {
         if (_currentQuizGo == null)
@@ -837,10 +842,10 @@ class ButtonQuizSetupDialog : SetupDialogBase
             _currentQuizGo = new GameObject("Tutorial Button Quiz");
         }
         
-        TutorialButtonQuiz quiz = _currentQuizGo.GetComponent<TutorialButtonQuiz>();
+        ButtonQuiz quiz = _currentQuizGo.GetComponent<ButtonQuiz>();
         if (quiz == null)
         {
-            quiz = _currentQuizGo.AddComponent<TutorialButtonQuiz>();
+            quiz = _currentQuizGo.AddComponent<ButtonQuiz>();
         }
 
         if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, _afterQuizDialog))
