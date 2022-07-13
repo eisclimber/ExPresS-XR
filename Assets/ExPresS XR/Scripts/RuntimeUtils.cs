@@ -1,32 +1,35 @@
-using System;
 using UnityEngine;
 
-public static class RuntimeUtils
-{    
-    /// <summary>
-    /// Finds and returns the (first) <see cref="Transform"/> of a child with the specified name.
-    /// </summary>
-    /// <param name="parent">The transform to find the child in.</param>
-    /// <param name="childName">The name of the GameObject to find.</param>
-    /// <returns>Returns the first Transform of a GameObject having the specified name,
-    /// or <see langword="null"/> if there is none.</returns>
-    public static Transform RecursiveFindChild(Transform parent, string childName)
+
+namespace ExPresSXR.Misc
+{
+    public static class RuntimeUtils
     {
-        foreach (Transform child in parent)
+        /// <summary>
+        /// Finds and returns the (first) <see cref="Transform"/> of a child with the specified name.
+        /// </summary>
+        /// <param name="parent">The transform to find the child in.</param>
+        /// <param name="childName">The name of the GameObject to find.</param>
+        /// <returns>Returns the first Transform of a GameObject having the specified name,
+        /// or <see langword="null"/> if there is none.</returns>
+        public static Transform RecursiveFindChild(Transform parent, string childName)
         {
-            if(child.name == childName)
+            foreach (Transform child in parent)
             {
-                return child;
-            }
-            else
-            {
-                Transform found = RecursiveFindChild(child, childName);
-                if (found != null)
+                if (child.name == childName)
                 {
-                    return found;
+                    return child;
+                }
+                else
+                {
+                    Transform found = RecursiveFindChild(child, childName);
+                    if (found != null)
+                    {
+                        return found;
+                    }
                 }
             }
+            return null;
         }
-        return null;
     }
 }

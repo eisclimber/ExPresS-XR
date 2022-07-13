@@ -1,40 +1,44 @@
 using UnityEngine;
 using UnityEditor;
+using ExPresSXR.Rig;
 
 
-[CustomEditor(typeof(PlayAreaBoundingBox))]
-[CanEditMultipleObjects]
-public class PlayAreaBoundingBoxEditor : Editor
+namespace ExPresSXR.Editor
 {
-    PlayAreaBoundingBox targetScript;
-
-    void OnEnable()
+    [CustomEditor(typeof(PlayAreaBoundingBox))]
+    [CanEditMultipleObjects]
+    public class PlayAreaBoundingBoxEditor : UnityEditor.Editor
     {
-        targetScript = (PlayAreaBoundingBox)target;
-    }
+        PlayAreaBoundingBox targetScript;
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.UpdateIfRequiredOrScript();
-
-        EditorGUI.BeginDisabledGroup(true);
+        void OnEnable()
         {
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+            targetScript = (PlayAreaBoundingBox)target;
         }
-        EditorGUI.EndDisabledGroup();
 
-        EditorGUI.indentLevel++;
-        EditorGUI.BeginChangeCheck();
+        public override void OnInspectorGUI()
+        {
+            serializedObject.UpdateIfRequiredOrScript();
+
+            EditorGUI.BeginDisabledGroup(true);
+            {
+                EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+            }
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUI.indentLevel++;
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_showPlayAreaBounds"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_useCustomBoundingBoxMaterial"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_customBoundingBoxMaterial"), true);
-        if (EditorGUI.EndChangeCheck())
-        {
-            serializedObject.ApplyModifiedProperties();
-            targetScript.UpdateBoundaryVisibility();
-        }        
-        EditorGUI.indentLevel--;
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                targetScript.UpdateBoundaryVisibility();
+            }
+            EditorGUI.indentLevel--;
 
-        serializedObject.ApplyModifiedProperties();
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }

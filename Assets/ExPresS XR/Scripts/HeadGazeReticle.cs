@@ -1,56 +1,59 @@
 using UnityEngine;
 
-// [RequireComponent(typeof(Animator))]
-public class HeadGazeReticle : MonoBehaviour
+
+namespace ExPresSXR.UI
 {
-    [SerializeField]
-    private Animator _animator;
-
-
-    [Tooltip("Length of the show-animation clip. Used to calculate the right speed for the animation.")]
-    [SerializeField]
-    private float _showHintAnimationDuration = 1.0f;
-    private float _hintDuration = 0.5f;
-    public float hintDuration
+    public class HeadGazeReticle : MonoBehaviour
     {
-        get { return _hintDuration; }
-        set
+        [SerializeField]
+        private Animator _animator;
+
+
+        [Tooltip("Length of the show-animation clip. Used to calculate the right speed for the animation.")]
+        [SerializeField]
+        private float _showHintAnimationDuration = 1.0f;
+        private float _hintDuration = 0.5f;
+        public float hintDuration
         {
-            _hintDuration = value;
-            if (_animator != null)
+            get { return _hintDuration; }
+            set
             {
-                _animator.speed = _showHintAnimationDuration / _hintDuration;
+                _hintDuration = value;
+                if (_animator != null)
+                {
+                    _animator.speed = _showHintAnimationDuration / _hintDuration;
+                }
             }
         }
-    }
 
 
-    private void Awake()
-    {
-        if (_animator == null)
+        private void Awake()
         {
-            _animator = GetComponent<Animator>();
+            if (_animator == null)
+            {
+                _animator = GetComponent<Animator>();
+            }
+            // Hide Reticle initially
+            if (_animator != null)
+            {
+                _animator.SetTrigger("TrHide");
+            }
         }
-        // Hide Reticle initially
-        if (_animator != null)
-        {
-            _animator.SetTrigger("TrHide");
-        }
-    }
 
-    public void ShowHint()
-    {
-        if (_animator != null)
+        public void ShowHint()
         {
-            _animator.SetTrigger("TrShow");
+            if (_animator != null)
+            {
+                _animator.SetTrigger("TrShow");
+            }
         }
-    }
 
-    public void HideHint()
-    {
-        if (_animator != null)
+        public void HideHint()
         {
-            _animator.SetTrigger("TrHide");
+            if (_animator != null)
+            {
+                _animator.SetTrigger("TrHide");
+            }
         }
     }
 }

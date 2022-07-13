@@ -1,30 +1,34 @@
-using UnityEngine;
 using UnityEditor;
+using ExPresSXR.Interaction;
 
-[CustomEditor(typeof(TagCheckSocketInteractor))]
-[CanEditMultipleObjects]
-public class TagCheckSocketInteractorEditor : HighlightableSocketInteractorEditor
+
+namespace ExPresSXR.Editor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(TagCheckSocketInteractor))]
+    [CanEditMultipleObjects]
+    public class TagCheckSocketInteractorEditor : HighlightableSocketInteractorEditor
     {
-        serializedObject.UpdateIfRequiredOrScript();
+        public override void OnInspectorGUI()
+        {
+            serializedObject.UpdateIfRequiredOrScript();
 
-        DrawBeforeProperties();
-        EditorGUILayout.Space();
-        DrawTagCheckProperties();
-        EditorGUILayout.Space();
-        DrawHighlightingProperties();
-        EditorGUILayout.Space();
-        DrawBaseSocketProperties();
+            DrawBeforeProperties();
+            EditorGUILayout.Space();
+            DrawTagCheckProperties();
+            EditorGUILayout.Space();
+            DrawHighlightingProperties();
+            EditorGUILayout.Space();
+            DrawBaseSocketProperties();
 
-        serializedObject.ApplyModifiedProperties();
-    }
+            serializedObject.ApplyModifiedProperties();
+        }
 
-    protected void DrawTagCheckProperties()
-    {
-        EditorGUILayout.LabelField("Tag", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("targetTag"), true);
-        EditorGUI.indentLevel--;
+        protected void DrawTagCheckProperties()
+        {
+            EditorGUILayout.LabelField("Tag", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("targetTag"), true);
+            EditorGUI.indentLevel--;
+        }
     }
 }

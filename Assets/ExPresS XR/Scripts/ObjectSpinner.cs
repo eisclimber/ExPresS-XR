@@ -1,12 +1,16 @@
 using UnityEngine;
 
-public class ObjectSpinner : MonoBehaviour
+
+namespace ExPresSXR.Misc
 {
-    public Vector3 rotation;
-    public float speed;
-    
-    private void Update()
+    public class ObjectSpinner : MonoBehaviour
     {
-        transform.Rotate(speed * Time.deltaTime * rotation);
+        public Vector3 rotation;
+        public float speed;
+
+        private void Update()
+        {
+            transform.Rotate(speed * Time.deltaTime * rotation);
+        }
     }
 }

@@ -1,64 +1,67 @@
-using UnityEngine;
 using UnityEditor;
-using UnityEngine.UI;
+using ExPresSXR.Experimentation;
 
-[CustomEditor(typeof(QuizButton))]
-[CanEditMultipleObjects]
-public class QuizButtonEditor : BaseButtonEditor
+
+namespace ExPresSXR.Editor
 {
-    QuizButton quizButton;
-
-    protected override void OnEnable()
+    [CustomEditor(typeof(QuizButton))]
+    [CanEditMultipleObjects]
+    public class QuizButtonEditor : BaseButtonEditor
     {
-        base.OnEnable();
+        QuizButton quizButton;
 
-        quizButton = (QuizButton)target;
-    }
+        protected override void OnEnable()
+        {
+            base.OnEnable();
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.UpdateIfRequiredOrScript();
-        
-        DrawScript();
-        DrawBaseProperties();
-        EditorGUILayout.Space();
-        DrawFeedback();
-        EditorGUILayout.Space();
-        DrawEventsFoldout();
-        EditorGUILayout.Space();
-        DrawObjectRefsFoldout();
+            quizButton = (QuizButton)target;
+        }
 
-        serializedObject.ApplyModifiedProperties();
-    }
+        public override void OnInspectorGUI()
+        {
+            serializedObject.UpdateIfRequiredOrScript();
 
-    protected void DrawFeedback()
-    {
-        EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);
-        EditorGUI.BeginDisabledGroup(quizButton.feedbackDisabled);
+            DrawScript();
+            DrawBaseProperties();
+            EditorGUILayout.Space();
+            DrawFeedback();
+            EditorGUILayout.Space();
+            DrawEventsFoldout();
+            EditorGUILayout.Space();
+            DrawObjectRefsFoldout();
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        protected void DrawFeedback()
+        {
+            EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);
+            EditorGUI.BeginDisabledGroup(quizButton.feedbackDisabled);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("invertedFeedback"), true);
-        EditorGUI.EndDisabledGroup();
-        EditorGUI.indentLevel--;
+            EditorGUI.EndDisabledGroup();
+            EditorGUI.indentLevel--;
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerPrefab"), true);
-        EditorGUI.indentLevel--;
-    }
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerPrefab"), true);
+            EditorGUI.indentLevel--;
+        }
 
-    protected override void DrawEvents()
-    {
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedCorrect"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedIncorrect"), true);
-        EditorGUI.indentLevel--;
+        protected override void DrawEvents()
+        {
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedCorrect"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedIncorrect"), true);
+            EditorGUI.indentLevel--;
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        base.DrawEvents();
+            base.DrawEvents();
+        }
     }
 }

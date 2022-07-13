@@ -1,75 +1,79 @@
 using UnityEngine;
 using UnityEditor;
+using ExPresSXR.Experimentation.DataGathering;
 
-[CustomEditor(typeof(DataGatherer))]
-public class DataGathererEditor : Editor
+namespace ExPresSXR.Editor
 {
-    DataGatherer targetScript;
-
-    void OnEnable()
+    [CustomEditor(typeof(DataGatherer))]
+    public class DataGathererEditor : UnityEditor.Editor
     {
-        targetScript = (DataGatherer)target;
-    }
+        DataGatherer targetScript;
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.UpdateIfRequiredOrScript();
-
-        EditorGUI.BeginDisabledGroup(true);
+        void OnEnable()
         {
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+            targetScript = (DataGatherer)target;
         }
-        EditorGUI.EndDisabledGroup();
 
-        EditorGUILayout.LabelField("Export", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataExportType"), true);
-
-        if (targetScript.dataExportType == DataGathererExportType.Http
-            || targetScript.dataExportType == DataGathererExportType.Both)
+        public override void OnInspectorGUI()
         {
-            // Either Only http or both
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
-        }
-        if (targetScript.dataExportType == DataGathererExportType.Local
-            || targetScript.dataExportType == DataGathererExportType.Both)
-        {
-            // Either Only local or both
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
-        }
-        EditorGUI.indentLevel--;
+            serializedObject.UpdateIfRequiredOrScript();
 
-        EditorGUILayout.Space();
-
-        EditorGUILayout.LabelField("Export Triggers", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionTrigger"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportEnabled"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportTime"), true);
-        EditorGUI.indentLevel--;
-
-        EditorGUILayout.Space();
-
-        EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataBindings"), true);
-        EditorGUI.indentLevel--;
-
-        EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
-        if (GUILayout.Button("Print Values"))
-        {
-            Debug.Log("The Header is: " + targetScript.GetExportCSVHeader());
-            Debug.Log("The Value is: " + targetScript.GetExportCSVLine());
-        }
-        if (Application.isPlaying)
-        {
-            if (GUILayout.Button("Export Values Manually"))
+            EditorGUI.BeginDisabledGroup(true);
             {
-                targetScript.ExportNewCSVLine();
+                EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
             }
-        }
+            EditorGUI.EndDisabledGroup();
 
-        serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.LabelField("Export", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataExportType"), true);
+
+            if (targetScript.dataExportType == DataGathererExportType.Http
+                || targetScript.dataExportType == DataGathererExportType.Both)
+            {
+                // Either Only http or both
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
+            }
+            if (targetScript.dataExportType == DataGathererExportType.Local
+                || targetScript.dataExportType == DataGathererExportType.Both)
+            {
+                // Either Only local or both
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
+            }
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Export Triggers", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionTrigger"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportEnabled"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportTime"), true);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataBindings"), true);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
+            if (GUILayout.Button("Print Values"))
+            {
+                Debug.Log("The Header is: " + targetScript.GetExportCSVHeader());
+                Debug.Log("The Value is: " + targetScript.GetExportCSVLine());
+            }
+            if (Application.isPlaying)
+            {
+                if (GUILayout.Button("Export Values Manually"))
+                {
+                    targetScript.ExportNewCSVLine();
+                }
+            }
+
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }

@@ -8,238 +8,241 @@ using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 
 
-public class DataGatherer : MonoBehaviour
+namespace ExPresSXR.Experimentation.DataGathering
 {
-    const string DEFAULT_EXPORT_FILE_NAME = "DataGathererValues.csv";
-
-    [SerializeField]
-    private DataGathererExportType _dataExportType;
-    public DataGathererExportType dataExportType
-    { 
-        get => _dataExportType;
-        set => _dataExportType = value; 
-    }
-
-
-    [SerializeField]
-    private string _localExportPath = DEFAULT_EXPORT_FILE_NAME;
-    public string localExportPath
+    public class DataGatherer : MonoBehaviour
     {
-        get => _localExportPath;
-        set => _localExportPath = value;
-    }
+        const string DEFAULT_EXPORT_FILE_NAME = "DataGathererValues.csv";
 
-    [SerializeField]
-    private string _httpExportPath;
-    public string httpExportPath
-    {
-        get => _httpExportPath;
-        set => _httpExportPath = value;
-    }
-
-
-    // Triggers
-    [SerializeField]
-    private InputActionReference[] _inputActionTrigger;
-    public InputActionReference[] inputActionTrigger
-    {
-        get => _inputActionTrigger;
-        set => _inputActionTrigger = value;
-    }
-
-
-    [SerializeField]
-    private bool _periodicExportEnabled = false;
-    public bool periodicExportEnabled
-    {
-        get => _periodicExportEnabled;
-        set
+        [SerializeField]
+        private DataGathererExportType _dataExportType;
+        public DataGathererExportType dataExportType
         {
-            _periodicExportEnabled = value;
+            get => _dataExportType;
+            set => _dataExportType = value;
+        }
 
-            if (_periodicExportEnabled)
+
+        [SerializeField]
+        private string _localExportPath = DEFAULT_EXPORT_FILE_NAME;
+        public string localExportPath
+        {
+            get => _localExportPath;
+            set => _localExportPath = value;
+        }
+
+        [SerializeField]
+        private string _httpExportPath;
+        public string httpExportPath
+        {
+            get => _httpExportPath;
+            set => _httpExportPath = value;
+        }
+
+
+        // Triggers
+        [SerializeField]
+        private InputActionReference[] _inputActionTrigger;
+        public InputActionReference[] inputActionTrigger
+        {
+            get => _inputActionTrigger;
+            set => _inputActionTrigger = value;
+        }
+
+
+        [SerializeField]
+        private bool _periodicExportEnabled = false;
+        public bool periodicExportEnabled
+        {
+            get => _periodicExportEnabled;
+            set
             {
-                StopCoroutine(_periodicExportCoroutine);
-                _periodicExportCoroutine = null;
-            }
-            else
-            {
-                TryStartPeriodicCoroutine();
-            }
-        }
-    }
+                _periodicExportEnabled = value;
 
-    [SerializeField]
-    private float _periodicExportTime = 1.0f;
-    public float periodicExportTime
-    {
-        get => _periodicExportTime;
-        set => _periodicExportTime = value;
-    }
-
-
-    // Data
-    [SerializeField]
-    private bool _includeTimeStamp = true;
-    public bool includeTimeStamp
-    {
-        get => _includeTimeStamp;
-        set => _includeTimeStamp = value;
-    }
-
-
-    [SerializeField]
-    private List<DataGatheringBinding> _dataBindings;
-    public List<DataGatheringBinding> dataBindings
-    {
-        get => _dataBindings;
-        set => _dataBindings = value;
-    }
-
-
-    [SerializeField]
-    private InputActionReference[] _inputActionDataBindings;
-    public InputActionReference[] inputActionDataBindings
-    {
-        get => _inputActionDataBindings;
-        set => _inputActionDataBindings = value;
-    }
-    
-    private Coroutine _periodicExportCoroutine;
-
-    private StreamWriter _outputWriter;
-
-    private void Awake()
-    {
-        TryStartPeriodicCoroutine();
-
-        foreach (InputActionReference actionRef in inputActionTrigger)
-        {
-            if (actionRef != null)
-            {
-                actionRef.action.performed += OnInputActionExportRequested;
-            }
-        }
-
-        ValidateBindings();
-
-        SetupExport();
-    }
-
-    private void OnDestroy() {
-        if (_outputWriter != null)
-        {
-            // Write everything that might not be written & close writer
-            _outputWriter.Flush();
-            _outputWriter.Close();
-        }
-    }
-
-    public void ExportNewCSVLine()
-    {
-        string data = GetExportCSVLine();
-        if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
-        {
-            // Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
-            StartCoroutine(PostHttpData(httpExportPath, data));
-        }
-        if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
-        {
-            // Debug.Log(String.Format("Saving '{0}' at '{1}'.",  data,  GetLocalSavePath());
-            _outputWriter.WriteLine(data);
-        }
-    }
-
-
-    public string GetExportCSVLine()
-    {
-        string line = (_includeTimeStamp ?  DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "");
-        line += (_dataBindings.Count > 0 ? "," : "");
-        for (int i = 0; i < _dataBindings.Count; i++)
-        {
-            line += _dataBindings[i].GetBindingValue();
-
-            if (i < _dataBindings.Count - 1)
-            {
-                line += ",";
-            }
-        }
-        return line;
-    }
-
-
-    public string GetExportCSVHeader()
-    {
-        string header = (_includeTimeStamp ? "time" : "");
-        header += (_dataBindings.Count > 0 ? "," : "");
-        for (int i = 0; i < _dataBindings.Count; i++)
-        {
-            header += _dataBindings[i].exportColumnName;
-
-            if (i < _dataBindings.Count - 1)
-            {
-                header += ",";
-            }
-        }
-        return header;
-    }
-    
-    public void ValidateBindings()
-    {
-        for (int i = 0; i < _dataBindings.Count; i++)
-        {
-            if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
-            {
-                Debug.LogWarning(String.Format("The following binding is invalid and will always be empty: {0}", 
-                                                _dataBindings[i].GetBindingDescription()));
-            }
-        }
-    }
-
-    private void SetupExport()
-    {
-        if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
-        {
-            StartCoroutine(PostHttpData(httpExportPath, GetExportCSVHeader()));
-        }
-
-        if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
-        {
-            string path = GetLocalSavePath();
-            
-            try
-            {
-                // Throws an error if invalid
-                string fullPath = Path.GetFullPath(path);
-                
-
-                if ((!fullPath.EndsWith(".txt") && !fullPath.EndsWith(".csv") && !fullPath.EndsWith(".log")))
+                if (_periodicExportEnabled)
                 {
-                    localExportPath += ".csv";
-                    fullPath += ".csv";
-                    Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
-                         + String.Format("Appending '.csv' and creating a new file if necessary. New path is: '{0}'. ", localExportPath));
+                    StopCoroutine(_periodicExportCoroutine);
+                    _periodicExportCoroutine = null;
                 }
-
-                _outputWriter = new StreamWriter(fullPath);
-                // If empty append csv header
-                if (new FileInfo(fullPath).Length == 0)
+                else
                 {
-                    _outputWriter.WriteLine(GetExportCSVHeader());
-                    _outputWriter.Flush();
+                    TryStartPeriodicCoroutine();
                 }
-            } 
-            catch (Exception e)
-            {
-                Debug.LogError(e.Message);
             }
         }
-    }
 
-    public string GetLocalSavePath()
-    {
+        [SerializeField]
+        private float _periodicExportTime = 1.0f;
+        public float periodicExportTime
+        {
+            get => _periodicExportTime;
+            set => _periodicExportTime = value;
+        }
+
+
+        // Data
+        [SerializeField]
+        private bool _includeTimeStamp = true;
+        public bool includeTimeStamp
+        {
+            get => _includeTimeStamp;
+            set => _includeTimeStamp = value;
+        }
+
+
+        [SerializeField]
+        private List<DataGatheringBinding> _dataBindings;
+        public List<DataGatheringBinding> dataBindings
+        {
+            get => _dataBindings;
+            set => _dataBindings = value;
+        }
+
+
+        [SerializeField]
+        private InputActionReference[] _inputActionDataBindings;
+        public InputActionReference[] inputActionDataBindings
+        {
+            get => _inputActionDataBindings;
+            set => _inputActionDataBindings = value;
+        }
+
+        private Coroutine _periodicExportCoroutine;
+
+        private StreamWriter _outputWriter;
+
+        private void Awake()
+        {
+            TryStartPeriodicCoroutine();
+
+            foreach (InputActionReference actionRef in inputActionTrigger)
+            {
+                if (actionRef != null)
+                {
+                    actionRef.action.performed += OnInputActionExportRequested;
+                }
+            }
+
+            ValidateBindings();
+
+            SetupExport();
+        }
+
+        private void OnDestroy()
+        {
+            if (_outputWriter != null)
+            {
+                // Write everything that might not be written & close writer
+                _outputWriter.Flush();
+                _outputWriter.Close();
+            }
+        }
+
+        public void ExportNewCSVLine()
+        {
+            string data = GetExportCSVLine();
+            if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
+            {
+                // Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
+                StartCoroutine(PostHttpData(httpExportPath, data));
+            }
+            if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
+            {
+                // Debug.Log(String.Format("Saving '{0}' at '{1}'.",  data,  GetLocalSavePath());
+                _outputWriter.WriteLine(data);
+            }
+        }
+
+
+        public string GetExportCSVLine()
+        {
+            string line = (_includeTimeStamp ? DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "");
+            line += (_dataBindings.Count > 0 ? "," : "");
+            for (int i = 0; i < _dataBindings.Count; i++)
+            {
+                line += _dataBindings[i].GetBindingValue();
+
+                if (i < _dataBindings.Count - 1)
+                {
+                    line += ",";
+                }
+            }
+            return line;
+        }
+
+
+        public string GetExportCSVHeader()
+        {
+            string header = (_includeTimeStamp ? "time" : "");
+            header += (_dataBindings.Count > 0 ? "," : "");
+            for (int i = 0; i < _dataBindings.Count; i++)
+            {
+                header += _dataBindings[i].exportColumnName;
+
+                if (i < _dataBindings.Count - 1)
+                {
+                    header += ",";
+                }
+            }
+            return header;
+        }
+
+        public void ValidateBindings()
+        {
+            for (int i = 0; i < _dataBindings.Count; i++)
+            {
+                if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
+                {
+                    Debug.LogWarning(String.Format("The following binding is invalid and will always be empty: {0}",
+                                                    _dataBindings[i].GetBindingDescription()));
+                }
+            }
+        }
+
+        private void SetupExport()
+        {
+            if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
+            {
+                StartCoroutine(PostHttpData(httpExportPath, GetExportCSVHeader()));
+            }
+
+            if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
+            {
+                string path = GetLocalSavePath();
+
+                try
+                {
+                    // Throws an error if invalid
+                    string fullPath = Path.GetFullPath(path);
+
+
+                    if ((!fullPath.EndsWith(".txt") && !fullPath.EndsWith(".csv") && !fullPath.EndsWith(".log")))
+                    {
+                        localExportPath += ".csv";
+                        fullPath += ".csv";
+                        Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
+                             + String.Format("Appending '.csv' and creating a new file if necessary. New path is: '{0}'. ", localExportPath));
+                    }
+
+                    _outputWriter = new StreamWriter(fullPath);
+                    // If empty append csv header
+                    if (new FileInfo(fullPath).Length == 0)
+                    {
+                        _outputWriter.WriteLine(GetExportCSVHeader());
+                        _outputWriter.Flush();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                }
+            }
+        }
+
+        public string GetLocalSavePath()
+        {
 #if UNITY_EDITOR
-        return Path.Combine(Application.dataPath + "/Data/", localExportPath);
+            return Path.Combine(Application.dataPath + "/Data/", localExportPath);
 #elif UNITY_ANDROID
         return Path.Combine(Application.persistentDataPath + localExportPath);
 #elif UNITY_IPHONE
@@ -247,66 +250,67 @@ public class DataGatherer : MonoBehaviour
 #else
         return Path.Combine(Application.dataPath + "/" + localExportPath);
 #endif
-    }
+        }
 
-    private void TryStartPeriodicCoroutine()
-    {
-        if (periodicExportEnabled && Application.isPlaying)
+        private void TryStartPeriodicCoroutine()
         {
-            if (_periodicExportTime > 0)
+            if (periodicExportEnabled && Application.isPlaying)
             {
-                if (_periodicExportCoroutine != null)
+                if (_periodicExportTime > 0)
                 {
-                    StopCoroutine(_periodicExportCoroutine);
+                    if (_periodicExportCoroutine != null)
+                    {
+                        StopCoroutine(_periodicExportCoroutine);
+                    }
+                    _periodicExportCoroutine = StartCoroutine(TimeTriggerCoroutine());
                 }
-                _periodicExportCoroutine = StartCoroutine(TimeTriggerCoroutine());
+                else
+                {
+                    Debug.LogError("PeriodicExportTime must be greater than zero.");
+                }
             }
-            else
+        }
+
+
+        private IEnumerator PostHttpData(string url, string data)
+        {
+            UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+
+            if (data != null)
             {
-                Debug.LogError("PeriodicExportTime must be greater than zero.");
+                byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
+                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            }
+
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application-json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.ProtocolError
+                || request.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log(String.Format("Failed to send data to server: '{0}'.", request.error));
             }
         }
+
+
+        private IEnumerator TimeTriggerCoroutine()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(_periodicExportTime);
+                ExportNewCSVLine();
+            }
+        }
+
+        private void OnInputActionExportRequested(InputAction.CallbackContext callback) => ExportNewCSVLine();
     }
 
-
-    private IEnumerator PostHttpData(string url, string data)
+    public enum DataGathererExportType
     {
-        UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
-
-        if (data != null)
-        {
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        }
-
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application-json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.ProtocolError 
-            || request.result == UnityWebRequest.Result.ConnectionError)
-        {
-            Debug.Log(String.Format("Failed to send data to server: '{0}'.", request.error));
-        }
+        Local,
+        Http,
+        Both
     }
-
-
-    private IEnumerator TimeTriggerCoroutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(_periodicExportTime);
-            ExportNewCSVLine();
-        }
-    }
-
-    private void OnInputActionExportRequested(InputAction.CallbackContext callback) => ExportNewCSVLine();
-}
-
-public enum DataGathererExportType
-{
-    Local,
-    Http,
-    Both
 }

@@ -1,37 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class McConfirmButton : QuizButton
+namespace ExPresSXR.Experimentation
 {
-    [SerializeField]
-    private QuizButton[] _answerButtons;
-    public QuizButton[] answerButtons
+    public class McConfirmButton : QuizButton
     {
-        get => _answerButtons;
-        set => _answerButtons = value;
-    }
+        // ExPresSXR.Experimentation.McConfirmButton, Assembly-CSharp
 
-    protected override void NotifyChoice()
-    {
-        bool allCorrect = true;
-        foreach (QuizButton button in _answerButtons)
+        [SerializeField]
+        private QuizButton[] _answerButtons;
+        public QuizButton[] answerButtons
         {
-            if (button != null)
+            get => _answerButtons;
+            set => _answerButtons = value;
+        }
+
+        protected override void NotifyChoice()
+        {
+            bool allCorrect = true;
+            foreach (QuizButton button in _answerButtons)
             {
-                allCorrect &= button.GiveMultipleChoiceFeedback();
+                if (button != null)
+                {
+                    allCorrect &= button.GiveMultipleChoiceFeedback();
+                }
+            }
+
+            if (allCorrect != invertedFeedback)
+            {
+                OnPressedCorrect.Invoke();
+            }
+            else
+            {
+                OnPressedIncorrect.Invoke();
             }
         }
-
-        if (allCorrect != invertedFeedback)
-        {
-            OnPressedCorrect.Invoke();
-        }
-        else
-        {
-            OnPressedIncorrect.Invoke();
-        }
     }
-
 }

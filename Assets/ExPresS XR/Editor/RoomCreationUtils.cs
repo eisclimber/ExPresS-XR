@@ -78,7 +78,7 @@ namespace ExPresSXR.Editor
             MaterialPreset materialPreset = MaterialPreset.Experimentation)
         {
             CreateRoom(new Vector3(0, height / 2, 0), new Vector3(width, height, depth), addTeleportationArea, mode, materialPreset);
-        }    
+        }
 
 
         public static void CreateRoom(
