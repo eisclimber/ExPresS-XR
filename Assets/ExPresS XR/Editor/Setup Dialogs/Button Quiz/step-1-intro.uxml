@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-1-intro" style="flex-grow: 1;">
+        <ui:Label text="Creating a Button Quiz..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
+        <ui:Label text="In this tutorial you will create a simple quiz similar to the one in in the tutorial scene. Players have to answer single or multiple choice questions by pressing an button in VR. The questions, aswell as the answers, can be either presented as text, object or video. Optionally the players can be presented with feedback after each question. Alternatively you can load an existing setup by dragging it into the Object field below. The setup will be automatically saved to &apos;Assets/ExPresS XR/ExportAssets/ButtonQuizConfig.asset&apos; but you will still need to hook up the button and questioning display." display-tooltip-when-elided="true" name="choice-1-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+        <uie:ObjectField label="Quiz Config:" name="config-field" type="QuizSetupConfig, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px; margin-bottom: 20px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>

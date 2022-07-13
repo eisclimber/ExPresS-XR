@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="step-5-place-buttons" style="flex-grow: 1;">
+        <ui:Label text="Place Buttons..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
+        <ui:Label text="Create a 3D button for each Object Field below by right-clicking in the hierarchy and selecting one from &apos;ExPresS XR &gt; Buttons &gt; QuizButton&apos; and placing them on the table at (-0.2, 0.7, 0.7) and (0.2, 0.7, 0.7). To customize the button you can attach objects to the PushAnchor or BaseAnchor and change the push-depth by adjusting the &apos;minY&apos; and &apos;maxY&apos; Property. The &apos;colliderSize&apos; can then be set to roughly the fit the bounds of the button. It defines the pushable area of the button cap. Finally drag the buttons in the Object Fields below." display-tooltip-when-elided="true" name="choice-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+        <ui:VisualElement name="button-fields" style="flex-shrink: 0; margin-bottom: 20px; margin-left: 20px; margin-right: 20px; margin-top: 10px;">
+            <uie:ObjectField label="Button 1:" name="button-field-1" type="QuizButton, Assembly-CSharp" style="margin-top: 2px;" />
+            <uie:ObjectField label="Button 2:" name="button-field-2" type="QuizButton, Assembly-CSharp" style="margin-bottom: 2px; margin-top: 2px;" />
+            <uie:ObjectField label="Button 3:" name="button-field-3" type="QuizButton, Assembly-CSharp" style="margin-bottom: 2px; margin-top: 2px;" />
+            <uie:ObjectField label="Button 4:" name="button-field-4" type="QuizButton, Assembly-CSharp" style="margin-bottom: 2px; margin-top: 2px;" />
+            <uie:ObjectField label="MC Confirm Button:" name="mc-confirm-button-field" type="QuizButton, Assembly-CSharp" style="margin-bottom: 2px; margin-top: 8px;" />
+            <ui:Button text="Create Buttons" display-tooltip-when-elided="true" name="create-buttons-button" style="margin-top: 10px; margin-bottom: 10px; width: auto; margin-left: 20px; margin-right: 20px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Label text="Setup failed. Be sure to connect the buttons amd add at least 2 questions!" display-tooltip-when-elided="true" name="buttons-failure-label" style="flex-grow: 1; margin-right: 0; margin-left: 0; color: rgb(255, 0, 0); -unity-font-style: bold; -unity-text-align: upper-center; display: none;" />
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="setup-buttons-button" />
+    </ui:VisualElement>
+</ui:UXML>
