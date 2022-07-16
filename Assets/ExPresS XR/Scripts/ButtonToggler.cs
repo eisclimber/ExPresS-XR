@@ -5,7 +5,6 @@ using UnityEngine.Events;
 namespace ExPresSXR.Misc
 {
     [RequireComponent(typeof(Button))]
-    [AddComponentMenu("ExPresS XR/Button Toggler")]
     public class ButtonToggler : MonoBehaviour
     {
         [SerializeField]

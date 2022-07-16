@@ -47,6 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: dac273ea20e367942b6921b208b28637, type: 2}
+  _quizUndergoing: 0
+  _feedbackDuration: 3
+  _startOnAwake: 1
+  _showResultTextPrefix: 0
+  _showQuizCompletedText: 0
+  _canRestartFromAfterQuizDialog: 0
   _buttons:
   - {fileID: 8549897628352650143}
   - {fileID: 1584477264611517981}
@@ -56,17 +62,12 @@ MonoBehaviour:
   _displayText: {fileID: 2039952840501103088}
   _displayAnchor: {fileID: 2039952840511132105}
   _displayPlayer: {fileID: 2039952840517641764}
+  _displayVideoImage: {fileID: 2039952840432872638}
   _afterQuizMenu: {fileID: 0}
-  _feedbackDuration: 3
-  _startOnAwake: 1
-  _showResultTextPrefix: 0
-  _showQuizCompletedText: 0
-  _canRestartFromAfterQuizDialog: 0
-  _quizUndergoing: 0
-  OnAnswerGiven:
+  OnQuizStarted:
     m_PersistentCalls:
       m_Calls: []
-  OnQuizStarted:
+  OnAnswerGiven:
     m_PersistentCalls:
       m_Calls: []
   OnQuizCompleted:
@@ -134,7 +135,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039952839796171463}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.5799999}
+  m_LocalPosition: {x: 0, y: 0, z: 2.5}
   m_LocalScale: {x: 0.02, y: 0.02, z: 1}
   m_Children:
   - {fileID: 2039952840501103102}
@@ -145,7 +146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.03, y: 2.1599998}
+  m_AnchoredPosition: {x: -0.03, y: 1.9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2039952839796171484
@@ -263,7 +264,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 100, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2039952840432872639
 CanvasRenderer:
@@ -293,7 +294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 0748489e725a97343b8c30535883fc8e, type: 2}
+  m_Texture: {fileID: 8400000, guid: 603e84a252e0c6447a87f917f78eeb75, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -334,7 +335,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 26.499992}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2039952840501103103
@@ -392,8 +393,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -507,12 +508,12 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 0748489e725a97343b8c30535883fc8e, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 603e84a252e0c6447a87f917f78eeb75, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: _MainTex
   m_RenderMode: 2
-  m_AspectRatio: 2
+  m_AspectRatio: 3
   m_DataSource: 0
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2

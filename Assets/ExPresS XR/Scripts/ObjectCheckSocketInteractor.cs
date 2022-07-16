@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 
@@ -16,7 +17,7 @@ namespace ExPresSXR.Interaction
         private bool IsObjectMatch(IXRInteractable interactable)
         {
             XRGrabInteractable grabInteractable = interactable.transform.GetComponent<XRGrabInteractable>();
-            return grabInteractable != null && grabInteractable.Equals(targetObject);
+            return targetObject != null && grabInteractable != null && grabInteractable.gameObject == targetObject.gameObject;
         }
     }
 }

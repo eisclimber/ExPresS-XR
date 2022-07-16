@@ -199,12 +199,25 @@ namespace ExPresSXR.Experimentation
 
         public string GetCsvExportValues()
         {
-            return itemIdx + "," + (questionVideo.name ?? "") + "," + (questionObject.name ?? "") + ",\"" + questionText + "\","
-                + (answerObjects[0]?.name ?? "") + "," + (answerObjects[1]?.name ?? "") + ","
-                + (answerObjects[2]?.name ?? "") + "," + (answerObjects[3]?.name ?? "") + ","
-                + "\"" + answerTexts[0] + "\",\"" + answerTexts[1] + "\",\"" + answerTexts[2] + "\",\"" + answerTexts[3] + "\","
-                + correctAnswers[0] + "," + correctAnswers[1] + "," + correctAnswers[2] + "," + correctAnswers[3] + ","
-                + (feedbackVideo?.name ?? "") + "," + (feedbackObject?.name ?? "") + "," + feedbackText;
+            return itemIdx + "," 
+                + (questionVideo != null? questionVideo.name : "") + "," 
+                + (questionObject != null? questionObject.name : "") + ",\"" 
+                + questionText + "\","
+                + (answerObjects.Length > 0 && answerObjects[0] != null? answerObjects[0].name : "") + "," 
+                + (answerObjects.Length > 1 && answerObjects[1] != null? answerObjects[1].name : "") + "," 
+                + (answerObjects.Length > 2 && answerObjects[2] != null? answerObjects[2].name : "") + "," 
+                + (answerObjects.Length > 3 && answerObjects[3] != null? answerObjects[3].name : "") + ",\"" 
+                + (answerTexts.Length > 0? answerTexts[0] : "") + "\",\"" 
+                + (answerTexts.Length > 1? answerTexts[1] : "") + "\",\"" 
+                + (answerTexts.Length > 2? answerTexts[2] : "") + "\",\"" 
+                + (answerTexts.Length > 3? answerTexts[3] : "") + "\","
+                + (correctAnswers.Length > 0? correctAnswers[0].ToString() : "false") + "," 
+                + (correctAnswers.Length > 1? correctAnswers[1].ToString() : "false") + "," 
+                + (correctAnswers.Length > 2? correctAnswers[2].ToString() : "false") + "," 
+                + (correctAnswers.Length > 3? correctAnswers[3].ToString() : "false") + ","
+                + (feedbackVideo != null? feedbackVideo.name : "") + "," 
+                + (feedbackObject != null? feedbackObject.name : "") + "," 
+                + feedbackText;
         }
     }
 }

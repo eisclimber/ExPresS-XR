@@ -196,12 +196,12 @@ namespace ExPresSXR.Interaction
                 }
                 else if (allowNonInteractables)
                 {
-                    Debug.Log("PutBackPrefab it is not an XRGrabInteractable, you won't be able to pick it up");
+                    // Debug.Log("PutBackPrefab it is not an XRGrabInteractable, you won't be able to pick it up");
                     _putBackObjectInstance.transform.position = transform.position;
                 }
                 else
                 {
-                    Debug.LogWarning("Can't attach PutBackPrefab, it is not an XRGrabInteractable. "
+                    Debug.LogError("Can't attach PutBackPrefab, it is not an XRGrabInteractable. "
                                     + "If you want to attach regular GameObjects without being able "
                                     + "to pick them up enable: 'allowNonInteractables'.");
                     putBackPrefab = null;

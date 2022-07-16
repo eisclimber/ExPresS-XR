@@ -110,13 +110,20 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.Space();
 
-            if (targetScript.fadeRect != null && targetScript.fadeRect.screenCompletelyHidden
+            EditorGUILayout.LabelField("Game Tab Display Mode", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_gameTabDisplayMode"), true);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
+
+            if (targetScript.fadeRect != null && targetScript.fadeRect.screenCompletelyVisible
                 && GUILayout.Button("Fade Screen To Black"))
             {
                 targetScript.FadeToColor(!Application.isPlaying);
             }
 
-            if (targetScript.fadeRect != null && targetScript.fadeRect.screenCompletelyVisible
+            if (targetScript.fadeRect != null && targetScript.fadeRect.screenCompletelyHidden
                 && GUILayout.Button("Fade Screen To Clear"))
             {
                 targetScript.FadeToClear(!Application.isPlaying);
@@ -128,6 +135,7 @@ namespace ExPresSXR.Editor
             {
                 SaveAsCustomXRRig();
             }
+
 
             _showObjectRefs = EditorGUILayout.BeginFoldoutHeaderGroup(_showObjectRefs, "Game Object References");
 

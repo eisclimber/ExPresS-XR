@@ -48,6 +48,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 58eff15f190ac6c49b22d07ab4cff1d3, type: 2}
+  _quizUndergoing: 0
+  _feedbackDuration: 3
+  _startOnAwake: 1
+  _showResultTextPrefix: 0
+  _showQuizCompletedText: 0
+  _canRestartFromAfterQuizDialog: 0
   _buttons:
   - {fileID: 5252442048548038347}
   - {fileID: 3151968936702499657}
@@ -57,17 +63,12 @@ MonoBehaviour:
   _displayText: {fileID: 2453446870114235556}
   _displayAnchor: {fileID: 2453446870137760925}
   _displayPlayer: {fileID: 2453446870131252080}
+  _displayVideoImage: {fileID: 0}
   _afterQuizMenu: {fileID: 0}
-  _feedbackDuration: 3
-  _startOnAwake: 1
-  _showResultTextPrefix: 0
-  _showQuizCompletedText: 0
-  _canRestartFromAfterQuizDialog: 0
-  _quizUndergoing: 0
-  OnAnswerGiven:
+  OnQuizStarted:
     m_PersistentCalls:
       m_Calls: []
-  OnQuizStarted:
+  OnAnswerGiven:
     m_PersistentCalls:
       m_Calls: []
   OnQuizCompleted:
@@ -294,7 +295,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 0748489e725a97343b8c30535883fc8e, type: 2}
+  m_Texture: {fileID: 8400000, guid: a5ed4f4cac2bfce4db414404b4580553, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -478,7 +479,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 0748489e725a97343b8c30535883fc8e, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: a5ed4f4cac2bfce4db414404b4580553, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: _MainTex

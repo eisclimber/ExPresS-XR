@@ -103,6 +103,9 @@ namespace ExPresSXR.Experimentation
         private VideoPlayer _displayPlayer;
 
         [SerializeField]
+        private RawImage _displayVideoImage;
+
+        [SerializeField]
         private Canvas _afterQuizMenu;
 
         public UnityEvent OnQuizStarted;
@@ -149,7 +152,8 @@ namespace ExPresSXR.Experimentation
 
         // Setup
         public void Setup(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
-                                TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, Canvas afterQuizDialog)
+                                TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, 
+                                RawImage displayVideoImage, Canvas afterQuizDialog)
         {
             // Set values
             this.config = config;
@@ -159,6 +163,7 @@ namespace ExPresSXR.Experimentation
             _displayText = displayText;
             _displayAnchor = displayAnchor;
             _displayPlayer = displayPlayer;
+            _displayVideoImage = displayVideoImage;
             _afterQuizMenu = afterQuizDialog;
             _questions = _config.questions;
             _numQuestions = _config.questions.Length;
@@ -220,7 +225,7 @@ namespace ExPresSXR.Experimentation
             {
                 StartQuiz();
             }
-            else if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer, _afterQuizMenu))
+            else if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
             {
                 // Warn about invalid quiz directly (even when not starting)
                 Debug.LogWarning("Quiz Config not set or invalid.");
@@ -235,7 +240,7 @@ namespace ExPresSXR.Experimentation
 
         public void StartQuiz()
         {
-            if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer, _afterQuizMenu))
+            if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
             {
                 Debug.LogWarning("Cannot start Quiz. Quiz Config not set or invalid.");
             }
@@ -243,7 +248,7 @@ namespace ExPresSXR.Experimentation
             {
                 quizUndergoing = true;
                 _quizStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                Setup(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer, _afterQuizMenu);
+                Setup(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer, _displayVideoImage, _afterQuizMenu);
                 DisplayNextQuestion();
             }
         }
@@ -295,17 +300,23 @@ namespace ExPresSXR.Experimentation
                     }
                 }
 
-                if (_displayText != null && _currentQuestion.questionText != null)
+                bool showTextQuestion = _currentQuestion.questionText != null;
+                bool showObjectQuestion = _currentQuestion.questionObject != null;
+                bool showVideoQuestion = _currentQuestion.questionVideo != null;
+
+                SetQuizDisplayEnabled(showTextQuestion, showObjectQuestion, showVideoQuestion);
+
+                if (_displayText != null && showTextQuestion)
                 {
                     _displayText.text = _currentQuestion.questionText;
                 }
 
-                if (_displayAnchor != null && _currentQuestion.questionObject != null)
+                if (_displayAnchor != null && showObjectQuestion)
                 {
                     GameObject go = Instantiate<GameObject>(_currentQuestion.questionObject, _displayAnchor.transform);
                 }
 
-                if (_displayPlayer != null && _currentQuestion.questionVideo != null)
+                if (_displayPlayer != null && showVideoQuestion)
                 {
                     _displayPlayer.clip = _currentQuestion.questionVideo;
                     _displayPlayer.Play();
@@ -330,15 +341,30 @@ namespace ExPresSXR.Experimentation
 
             SetButtonsDisabled(true);
 
-            bool showAny = _config.feedbackType == FeedbackType.DifferingTypes;
+            bool showFeedback = _config.feedbackMode != FeedbackMode.None;
+            bool showIfAvailable = _config.feedbackType == FeedbackType.DifferingTypes;
             bool showAnswerType = config.feedbackType == FeedbackType.ShowAnswers;
-            bool showAnyAnswerType = showAnswerType && config.answerType == AnswerType.DifferingTypes;
+            bool showAnyAnswerType = showAnswerType && (config.answerType == AnswerType.DifferingTypes);
 
-            bool showTextFeedback = _displayText != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Text
-                                                        || (showAnswerType && config.answerType == AnswerType.Text));
-            bool showObjectFeedback = _displayAnchor != null && (showAny || showAnyAnswerType || _config.feedbackType == FeedbackType.Object
-                                                        || (showAnswerType && config.answerType == AnswerType.Object));
-            bool showVideoFeedback = _displayPlayer != null && (showAny || _config.feedbackType == FeedbackType.Video);
+            bool showTextFeedback = _displayText != null 
+                                        && showFeedback 
+                                        && (_config.feedbackType == FeedbackType.Text
+                                            || (showAnswerType && config.answerType == AnswerType.Text)
+                                            || (showIfAvailable && _currentQuestion.feedbackText != null)
+                                            || showAnyAnswerType);
+            bool showObjectFeedback = _displayAnchor != null 
+                                        && showFeedback
+                                        && ( _config.feedbackType == FeedbackType.Object
+                                            || (showAnswerType && config.answerType == AnswerType.Object)
+                                            || (showIfAvailable &&  _currentQuestion.feedbackObject != null)
+                                            || showAnyAnswerType);
+            bool showVideoFeedback = _displayPlayer != null
+                                        && showFeedback
+                                        && (_config.feedbackType == FeedbackType.Video
+                                            || (showIfAvailable &&  _currentQuestion.feedbackVideo != null));
+
+
+            SetQuizDisplayEnabled(showTextFeedback, showObjectFeedback, showVideoFeedback);
 
             if (showTextFeedback)
             {
@@ -377,7 +403,7 @@ namespace ExPresSXR.Experimentation
                 }
             }
 
-            StartCoroutine("WaitForFeedbackCompletion");
+            StartCoroutine(WaitForFeedbackCompletion());
         }
 
         private void OnFeedbackCompleted()
@@ -423,7 +449,7 @@ namespace ExPresSXR.Experimentation
 
         // Validation
         public bool IsSetupValid(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
-                                TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, Canvas afterQuizDialog)
+                                TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer)
         {
             // Quiz is invalid without a config
             if (config == null)
@@ -463,6 +489,26 @@ namespace ExPresSXR.Experimentation
             return true;
         }
 
+
+        private void SetQuizDisplayEnabled(bool enableDisplayText, bool enableDisplayAnchor, bool enabledVideoPlayer)
+        {
+            if (_displayText != null)
+            {
+                _displayText.gameObject.SetActive(enableDisplayText);
+            }
+            if (_displayAnchor != null)
+            {
+                _displayAnchor.SetActive(enableDisplayAnchor);
+            }
+            if (_displayPlayer != null)
+            {
+                _displayPlayer.gameObject.SetActive(enabledVideoPlayer);
+            }
+            if (_displayVideoImage != null)
+            {
+                _displayVideoImage.gameObject.SetActive(enabledVideoPlayer);
+            }
+        }
 
         private void ShowAfterQuizMenu()
         {
@@ -741,16 +787,26 @@ namespace ExPresSXR.Experimentation
         public string GetDisplayedFeedbackObjects()
         {
             List<string> _feedbackObjectNames = new List<string>();
-            foreach (GameObject go in _displayedFeedbackObjects)
+            if (_displayedFeedbackObjects != null)
             {
-                _feedbackObjectNames.Add(go.name);
+                foreach (GameObject go in _displayedFeedbackObjects)
+                {
+                    if (go != null)
+                    {
+                        _feedbackObjectNames.Add(go.name);
+                    }
+                }
             }
             return "\"[" + string.Join(",", _feedbackObjectNames) + "]\"";
         }
 
         public string GetDisplayedFeedbackVideo()
         {
-            return _displayedFeedbackVideo.name ?? "";
+            if (_displayedFeedbackVideo != null)
+            {
+                return _displayedFeedbackVideo.name;
+            }
+            return "";
         }
 
         // Misc
@@ -763,7 +819,7 @@ namespace ExPresSXR.Experimentation
         public string GetConfigCsvExportValues()
         {
             // Use EXPORT_CSV_COLUMN_STRING for header
-            return config?.GetCsvExportValues() ?? ",,,,,,,";
+            return config?.GetCsvExportValues() ?? ",,,,,,";
         }
 
         public string GetAllQuestionsCsvExportValues()

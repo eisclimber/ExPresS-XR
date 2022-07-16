@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace ExPresSXR.Misc
@@ -30,6 +33,32 @@ namespace ExPresSXR.Misc
                 }
             }
             return null;
+        }
+
+
+        /// <summary>
+        /// Populates an <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.
+        /// </summary>
+        /// <param name="dropdown">The Dropdown to be populated.</param>
+        /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
+        public static void PopulateDropDownWithEnum(Dropdown dropdown, Type enumType)
+        {
+            if (!enumType.IsEnum)
+            {
+                Debug.LogError("Parameter 'enumType' was not a Enum.");
+            }
+
+            List<Dropdown.OptionData> newOptions = new List<Dropdown.OptionData>();
+
+            // Populate new Options
+            for (int i = 0; i < Enum.GetNames(enumType).Length; i++)
+            {
+                newOptions.Add(new Dropdown.OptionData(Enum.GetName(enumType, i)));
+            }
+
+            // Clear old and add new options
+            dropdown.ClearOptions();
+            dropdown.AddOptions(newOptions);
         }
     }
 }

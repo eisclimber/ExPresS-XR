@@ -372,6 +372,14 @@ namespace ExPresSXR.Rig
             set => _fadeRect = value;
         }
 
+        [Tooltip("The way the 'Game'-view displays the rig's camera when entering play mode. Can be changed at runtime at the top right in the 'Game'-tab.")]
+        [SerializeField]
+        private GameTabDisplayMode _gameTabDisplayMode = GameTabDisplayMode.SideBySide;
+        public GameTabDisplayMode gameTabDisplayMode
+        {
+            get => _gameTabDisplayMode;
+            set => _gameTabDisplayMode = value;
+        }
 
         ///////////
         private void EnableLocomotionProvider<T>(bool enabled, bool updateDriverOnEnable = false) where T : LocomotionProvider
@@ -399,7 +407,7 @@ namespace ExPresSXR.Rig
 
             if (displaySubsystems.Count > 0)
             {
-                displaySubsystems[0].SetPreferredMirrorBlitMode(XRMirrorViewBlitMode.SideBySide);
+                displaySubsystems[0].SetPreferredMirrorBlitMode((int) _gameTabDisplayMode);
             }
 
             // Update the initial position of the teleportation provider
@@ -454,5 +462,19 @@ namespace ExPresSXR.Rig
         None,
         Left,
         Right
+    }
+
+    /// <summary>
+    /// Reflects the <see cref="XRMirrorViewBlitMode"/> for easier display in the editor.
+    /// </summary>
+    public enum GameTabDisplayMode
+    {
+        Default = 0, 
+        LeftEye = -1, 
+        RightEye = -2, 
+        SideBySide = -3, 
+        SideBySideOcclusionMesh = -4, 
+        Distort = -5,
+        None = -6
     }
 }

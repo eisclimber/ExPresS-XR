@@ -40,11 +40,12 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Buttons", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Display Objects", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayText"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayAnchor"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayPlayer"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayVideoImage"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
@@ -55,6 +56,15 @@ namespace ExPresSXR.Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_showResultTextPrefix"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_showQuizCompletedText"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDuration"), true);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Events", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnQuizStarted"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnAnswerGiven"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnQuizCompleted"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();

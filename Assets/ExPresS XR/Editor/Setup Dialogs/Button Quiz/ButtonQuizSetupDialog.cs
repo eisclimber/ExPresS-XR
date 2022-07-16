@@ -12,8 +12,6 @@ namespace ExPresSXR.Editor.SetupDialogs
 {
     class ButtonQuizSetupDialog : SetupDialogBase
     {
-        // UnityEngine.Video.VideoClip,UnityEngine.VideoModule
-
         const string QUESTION_ITEM_PATH = "Assets/ExPresS XR/Editor/Setup Dialogs/Button Quiz/question-item.uxml";
 
         const string CONFIG_SAVE_PATH = "Assets/Runtime Resources/QuizConfig.asset";
@@ -77,6 +75,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         private ObjectField _textLabelField;
         private ObjectField _gameObjectField;
         private ObjectField _videoPlayerField;
+        private ObjectField _videoImageField;
         private ObjectField _afterQuizMenuField;
         private Button _createQuestioningDisplayButton;
         private Button _setupQuestioningDisplayButton;
@@ -182,6 +181,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             _textLabelField = _step6Container.Q<ObjectField>("text-label-field");
             _gameObjectField = _step6Container.Q<ObjectField>("game-object-field");
             _videoPlayerField = _step6Container.Q<ObjectField>("video-player-field");
+            _videoImageField = _step6Container.Q<ObjectField>("video-image-field");
             _afterQuizMenuField = _step6Container.Q<ObjectField>("after-quiz-menu-field");
             _createQuestioningDisplayButton = _step6Container.Q<Button>("create-questioning-display-button");
             _createQuestioningDisplayButton.clickable.clicked += CreateQuestioningDisplays;
@@ -382,22 +382,25 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private void UpdateQuestioningDisplaysVisibility()
         {
+            bool showFeedback = _quizConfig.feedbackMode != FeedbackMode.None;
             bool showAnyField = (_quizConfig.questionType == QuestionType.DifferingTypes
-                                || _quizConfig.feedbackType == FeedbackType.DifferingTypes);
+                                || (showFeedback && _quizConfig.feedbackType == FeedbackType.DifferingTypes));
 
             bool showTextLabel = (showAnyField || _quizConfig.questionType == QuestionType.Text
-                                || _quizConfig.feedbackType == FeedbackType.Text
-                                || (_quizConfig.feedbackType == FeedbackType.ShowAnswers
+                                || (showFeedback && _quizConfig.feedbackType == FeedbackType.Text)
+                                || (showFeedback && _quizConfig.feedbackType == FeedbackType.ShowAnswers
                                     && _quizConfig.answerType == AnswerType.Text));
             bool showObjectField = (showAnyField || _quizConfig.questionType == QuestionType.Object
-                                || _quizConfig.feedbackType == FeedbackType.Object
-                                || (_quizConfig.feedbackType == FeedbackType.ShowAnswers
+                                || (showFeedback && _quizConfig.feedbackType == FeedbackType.Object)
+                                || (showFeedback && _quizConfig.feedbackType == FeedbackType.ShowAnswers
                                     && _quizConfig.answerType == AnswerType.Object));
-            bool showVideoPlayer = (showAnyField || _quizConfig.questionType == QuestionType.Video);
+            bool showVideoPlayer = (showAnyField || _quizConfig.questionType == QuestionType.Video
+                || (showFeedback && _quizConfig.feedbackType == FeedbackType.Video));
 
             _textLabelField.style.display = (showTextLabel ? DisplayStyle.Flex : DisplayStyle.None);
             _gameObjectField.style.display = (showObjectField ? DisplayStyle.Flex : DisplayStyle.None);
             _videoPlayerField.style.display = (showVideoPlayer ? DisplayStyle.Flex : DisplayStyle.None);
+            _videoImageField.style.display = (showVideoPlayer ? DisplayStyle.Flex : DisplayStyle.None);
         }
 
         // Setup functions
@@ -454,7 +457,8 @@ namespace ExPresSXR.Editor.SetupDialogs
 
             if (CreateQuiz(_quizConfig, buttons, (McConfirmButton)_mcConfirmButtonField.value,
                             (TMP_Text)_textLabelField.value, (GameObject)_gameObjectField.value,
-                            (VideoPlayer)_videoPlayerField.value, (Canvas)_afterQuizMenuField.value))
+                            (VideoPlayer)_videoPlayerField.value, (UnityEngine.UI.RawImage) _videoImageField.value,
+                            (Canvas)_afterQuizMenuField.value))
             {
                 // Enable step 7-9 if setup successfully
                 SetStepButtonsEnabled(true, 7, 9);
@@ -612,6 +616,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
                 // Num Items
                 VisualElement answersContainer = questionItem.Q<VisualElement>("answers");
+
                 int i = 0;
                 foreach (VisualElement answer in answersContainer.Children())
                 {
@@ -785,6 +790,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                     GameObject videoPlayerGo = new GameObject("Video Player");
                     VideoPlayer videoPlayerComp = videoPlayerGo.AddComponent<VideoPlayer>();
                     videoPlayerComp.playOnAwake = false;
+                    videoPlayerComp.aspectRatio = VideoAspectRatio.FitInside;
 
                     GameObject videoDisplayGo = new GameObject("Video Display");
                     UnityEngine.UI.RawImage videoDisplayComp = videoDisplayGo.AddComponent<UnityEngine.UI.RawImage>();
@@ -793,6 +799,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                     videoDisplayGo.transform.SetParent(canvasGo.transform);
 
                     _videoPlayerField.value = videoPlayerGo;
+                    _videoImageField.value = videoDisplayGo;
 
                     // Create & saveRender texture
                     RenderTexture renderTexture = new RenderTexture(1080, 720, 16, RenderTextureFormat.ARGB32);
@@ -804,9 +811,9 @@ namespace ExPresSXR.Editor.SetupDialogs
                     // AssetDatabase.CreateAsset(renderTexture, savePath);
 
                     // Debug.LogWarningFormat("Render texture generated and saved to '{0}'.", savePath);
-                    Debug.LogWarning("Render texture generated.");
                 }
-                canvasComp.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
+
+                canvasGo.transform.localScale = new Vector3(0.02f, 0.02f, 1f);
 
                 GameObjectUtility.EnsureUniqueNameForSibling(canvasGo);
                 Undo.RegisterCreatedObjectUndo(canvasGo, "Create Questioning Display Canvas");
@@ -837,7 +844,8 @@ namespace ExPresSXR.Editor.SetupDialogs
         }
 
         public static bool CreateQuiz(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
-                                TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer, Canvas _afterQuizDialog)
+                                TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer, 
+                                UnityEngine.UI.RawImage displayVideoImage, Canvas afterQuizDialog)
         {
             if (_currentQuizGo == null)
             {
@@ -850,13 +858,13 @@ namespace ExPresSXR.Editor.SetupDialogs
                 quiz = _currentQuizGo.AddComponent<ButtonQuiz>();
             }
 
-            if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, _afterQuizDialog))
+            if (!quiz.IsSetupValid(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer))
             {
                 Undo.RegisterCreatedObjectUndo(_currentQuizGo, "Create Tutorial Button Quiz Game Object");
                 return false;
             }
 
-            quiz.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, _afterQuizDialog);
+            quiz.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, displayVideoImage, afterQuizDialog);
 
             Undo.RegisterCreatedObjectUndo(_currentQuizGo, "Create Tutorial Button Quiz Game Object");
             return true;

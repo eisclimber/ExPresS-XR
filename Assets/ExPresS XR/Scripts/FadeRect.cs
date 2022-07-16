@@ -25,16 +25,16 @@ namespace ExPresSXR.UI
         public UnityEvent OnFadeToCleanCompleted;
 
 
-        // Screen NOT visible
+        // Screen visible
         public bool screenCompletelyVisible
         {
-            get => (fadeColor.a == 1.0f);
+            get => (fadeColor.a == 0.0f);
         }
 
-        // Screen visible
+        // Screen NOT visible
         public bool screenCompletelyHidden
         {
-            get => (fadeColor.a == 0.0f);
+            get => (fadeColor.a == 1.0f);
         }
 
 
@@ -94,10 +94,7 @@ namespace ExPresSXR.UI
                 }
             }
 
-
-            else if (fadeColor.a > 0.0f && newFadeValue == 1.0f)
-
-                fadeColor.a = newFadeValue;
+            fadeColor.a = newFadeValue;
 
             UpdateFadeImage();
         }

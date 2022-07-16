@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
+using System.IO;
 
 namespace ExPresSXR.Editor
 {
@@ -53,24 +54,32 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Exported Values", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataBindings"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionDataBindings"), true);
             EditorGUI.indentLevel--;
 
-            EditorGUILayout.LabelField("Export Values", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Manual Export", EditorStyles.boldLabel);
             if (GUILayout.Button("Print Values"))
             {
                 Debug.Log("The Header is: " + targetScript.GetExportCSVHeader());
                 Debug.Log("The Value is: " + targetScript.GetExportCSVLine());
             }
+
             if (Application.isPlaying)
             {
                 if (GUILayout.Button("Export Values Manually"))
                 {
                     targetScript.ExportNewCSVLine();
                 }
+            }
+            
+            if (GUILayout.Button("Print Full Export Paths"))
+            {
+                Debug.Log("The Local Export Path is: " + Path.GetFullPath(targetScript.GetLocalSavePath()) + "\n"
+                        + "The Http Export Path is: " + targetScript.httpExportPath);
             }
 
             serializedObject.ApplyModifiedProperties();

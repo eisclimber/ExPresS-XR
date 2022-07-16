@@ -55,10 +55,11 @@ namespace ExPresSXR.Editor
                 {
                     Transform goTransform = go.transform;
                     SceneView view = SceneView.lastActiveSceneView;
-                    if (view != null)
-                        view.MoveToView(goTransform);
-                    else
-                        goTransform.position = Vector3.zero;
+                    // if (view != null)
+                    //     view.MoveToView(goTransform);
+                    // else
+                    //     goTransform.position = Vector3.zero;
+                    goTransform.position = Vector3.zero;
 
                     StageUtility.PlaceGameObjectInCurrentStage(go);
                 }

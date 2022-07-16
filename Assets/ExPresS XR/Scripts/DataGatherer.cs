@@ -91,8 +91,8 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
-        private List<DataGatheringBinding> _dataBindings;
-        public List<DataGatheringBinding> dataBindings
+        private DataGatheringBinding[] _dataBindings;
+        public DataGatheringBinding[] dataBindings
         {
             get => _dataBindings;
             set => _dataBindings = value;
@@ -154,32 +154,27 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
-        public string GetExportCSVLine()
-        {
-            string line = (_includeTimeStamp ? DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "");
-            line += (_dataBindings.Count > 0 ? "," : "");
-            for (int i = 0; i < _dataBindings.Count; i++)
-            {
-                line += _dataBindings[i].GetBindingValue();
-
-                if (i < _dataBindings.Count - 1)
-                {
-                    line += ",";
-                }
-            }
-            return line;
-        }
-
-
-        public string GetExportCSVHeader()
+                public string GetExportCSVHeader()
         {
             string header = (_includeTimeStamp ? "time" : "");
-            header += (_dataBindings.Count > 0 ? "," : "");
-            for (int i = 0; i < _dataBindings.Count; i++)
+            header += (_dataBindings.Length > 0 ? "," : "");
+            // Get Data Bindings headers
+            for (int i = 0; i < _dataBindings.Length; i++)
             {
                 header += _dataBindings[i].exportColumnName;
 
-                if (i < _dataBindings.Count - 1)
+                if (i < _dataBindings.Length - 1 || _inputActionDataBindings.Length > 0)
+                {
+                    header += ",";
+                }
+            }
+
+            // Gez Input Action Data Bindings Header
+            for (int i = 0; i < _inputActionDataBindings.Length; i++)
+            {
+                header += _inputActionDataBindings[i].name;
+
+                if (i < _dataBindings.Length - 1)
                 {
                     header += ",";
                 }
@@ -187,9 +182,38 @@ namespace ExPresSXR.Experimentation.DataGathering
             return header;
         }
 
+
+        public string GetExportCSVLine()
+        {
+            string line = (_includeTimeStamp ? DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "");
+            line += (_dataBindings.Length > 0 ? "," : "");
+            // Read Data Bindings
+            for (int i = 0; i < _dataBindings.Length; i++)
+            {
+                line += _dataBindings[i].GetBindingValue();
+
+                if (i < _dataBindings.Length - 1 || _inputActionDataBindings.Length > 0)
+                {
+                    line += ",";
+                }
+            }
+            // Read Input Action Data Bindings
+            for (int i = 0; i < _inputActionDataBindings.Length; i++)
+            {
+                line += _inputActionDataBindings[i].action.ReadValueAsObject() ?? "null";
+
+                if (i < _dataBindings.Length - 1)
+                {
+                    line += ",";
+                }
+            }
+
+            return line;
+        }
+
         public void ValidateBindings()
         {
-            for (int i = 0; i < _dataBindings.Count; i++)
+            for (int i = 0; i < _dataBindings.Length; i++)
             {
                 if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
                 {
@@ -216,7 +240,7 @@ namespace ExPresSXR.Experimentation.DataGathering
                     string fullPath = Path.GetFullPath(path);
 
 
-                    if ((!fullPath.EndsWith(".txt") && !fullPath.EndsWith(".csv") && !fullPath.EndsWith(".log")))
+                    if (!fullPath.EndsWith(".txt") && !fullPath.EndsWith(".csv") && !fullPath.EndsWith(".log"))
                     {
                         localExportPath += ".csv";
                         fullPath += ".csv";

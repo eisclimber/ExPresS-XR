@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: c444bb7ea1ff81b47aea5505418a8095, type: 2}
+  m_Texture: {fileID: 8400000, guid: a09c15e906f754d46970afc1c9d85f41, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -270,7 +270,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: c444bb7ea1ff81b47aea5505418a8095, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: a09c15e906f754d46970afc1c9d85f41, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: _MainTex
@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 6913536954005403816}
   - component: {fileID: 6913536954005403823}
   m_Layer: 0
-  m_Name: FruitVideoQuiz
+  m_Name: Fruit Video Quiz
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -339,6 +339,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 613846c8a8c3ef04f92f544d8ee163fc, type: 2}
+  _quizUndergoing: 0
+  _feedbackDuration: 3
+  _startOnAwake: 0
+  _showResultTextPrefix: 0
+  _showQuizCompletedText: 0
+  _canRestartFromAfterQuizDialog: 0
   _buttons:
   - {fileID: 3536927521971128648}
   - {fileID: 3895682136373826852}
@@ -348,17 +354,12 @@ MonoBehaviour:
   _displayText: {fileID: 0}
   _displayAnchor: {fileID: 0}
   _displayPlayer: {fileID: 6913536953869299026}
+  _displayVideoImage: {fileID: 6913536952678540253}
   _afterQuizMenu: {fileID: 0}
-  _feedbackDuration: 3
-  _startOnAwake: 0
-  _showResultTextPrefix: 0
-  _showQuizCompletedText: 0
-  _canRestartFromAfterQuizDialog: 0
-  _quizUndergoing: 0
-  OnAnswerGiven:
+  OnQuizStarted:
     m_PersistentCalls:
       m_Calls: []
-  OnQuizStarted:
+  OnAnswerGiven:
     m_PersistentCalls:
       m_Calls: []
   OnQuizCompleted:
