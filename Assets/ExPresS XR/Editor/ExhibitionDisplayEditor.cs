@@ -39,6 +39,7 @@ namespace ExPresSXR.Editor
                 targetScript.displayedPrefab = targetScript.displayedPrefab;
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObject"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
             EditorGUI.indentLevel--;
 

@@ -1901,6 +1901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _displayedPrefab: {fileID: 0}
   _spinObject: 0
+  _allowNonInteractables: 1
   _putBackTime: 2
   _labelText: Label
   _infoText: 
@@ -2446,6 +2447,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3942168457875969027, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
+      propertyPath: _allowNonInteractables
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942168457875969027, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
       propertyPath: m_StartingSelectedInteractable
       value: 
       objectReference: {fileID: 0}
@@ -2463,7 +2468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3942168457875969029, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.23
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3942168457875969029, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
       propertyPath: m_LocalRotation.w

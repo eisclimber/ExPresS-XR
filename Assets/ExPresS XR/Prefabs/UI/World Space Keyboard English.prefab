@@ -4981,7 +4981,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &5375964370117538822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5034,10 +5034,10 @@ MonoBehaviour:
   _capsActive: 0
   _inputField: {fileID: 6931912210494306603}
   _capsButton: {fileID: 4784789717874066232}
-  textEntered:
+  OnTextEntered:
     m_PersistentCalls:
       m_Calls: []
-  textChanged:
+  OnTextChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &5390662510561219049
@@ -7464,21 +7464,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pressed: 0
-  onToggleChanged:
+  OnToggleChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5607393182299314395}
-        m_TargetAssemblyTypeName: WorldSpaceKeyboard, Assembly-CSharp
-        m_MethodName: set_capsActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &4784789717874066232
 MonoBehaviour:
   m_ObjectHideFlags: 0

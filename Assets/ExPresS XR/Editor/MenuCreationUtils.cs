@@ -241,6 +241,12 @@ namespace ExPresSXR.Editor
             InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Canvas");
         }
 
+        [MenuItem("GameObject/ExPresS XR/UI/World Space Canvas (Not Interactable)")]
+        static void CreateWorldSpaceImageNI(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "UI/World Space Canvas (Not Interactable)");
+        }
+
         [MenuItem("GameObject/ExPresS XR/UI/World Space Canvas (Always On Top)")]
         static void CreateWorldSpaceCanvasAOT(MenuCommand menuCommand)
         {
@@ -280,6 +286,13 @@ namespace ExPresSXR.Editor
         static void CreateCakeDemoUi(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Misc/Cake Demo UI");
+        }
+
+
+        [MenuItem("GameObject/ExPresS XR/Misc/Change Movement Menu")]
+        static void CreateChangeMovementMenu(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Misc/Change Movement Menu");
         }
 
 

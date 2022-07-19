@@ -18,17 +18,13 @@ namespace ExPresSXR.Editor.SetupDialogs
             get => "Assets/ExPresS XR/Editor/Setup Dialogs/Room Creation Tutorial/room-creation.uxml";
         }
 
-        private VisualElement step1Container;
         private VisualElement step2Container;
-        private VisualElement step3Container;
 
         private Button _openRoomCreatorButton;
 
         protected override void AssignStepContainersRefs()
         {
-            step1Container = contentContainer.Q<VisualElement>("step-1-intro");
             step2Container = contentContainer.Q<VisualElement>("step-2-room-creation");
-            step3Container = contentContainer.Q<VisualElement>("step-3-cutouts");
         }
 
 

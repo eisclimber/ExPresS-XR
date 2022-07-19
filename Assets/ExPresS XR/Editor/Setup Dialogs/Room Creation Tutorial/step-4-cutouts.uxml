@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-3-cutouts" style="flex-grow: 1;">
+        <ui:Label text="Make Cutouts..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
+        <ui:Label text="Finally in order to create holes that allow users to walk or look through we have to punch some holes. This can be done easiest by adding edges that wrap around the room to split it&apos;s faces in such a way that they fit the dimensions of the window/door and can be removed alter. This is called an &quot;Inserting Edge Loops&quot;.  Change to ProBuilder&apos;s &quot;Edge Selection&quot;-Mode (Triangle at the top of the Scene-View). Select an edge of the room that is orthogonal to the direction to split the room and choose the &quot;Insert Edge Loop&quot;-Option of ProBuilder. Move the newly generated edge loop to the desired location by using it&apos;s gimbal. (When placing doors or windows try to move the edge loop inside the window/door&apos;s frame rather. Placing it exactly on the edge of the frame may cause light to seep through at the side of the frame.)  Place more edge loops enclosing the area to cut out. Then change to ProBuilder&apos;s &quot;Face Selection&quot;-Mode, select the face to remove and delete it by choosing the &quot;Delete Face&quot;-Option.  Optionally simplify the faces them by selecting all (Hold Shift + Left Click) and select the &quot;Merge Faces&quot; from the ProBuilder-Menu." display-tooltip-when-elided="true" name="step-1-description" style="flex-grow: 1; white-space: normal;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>

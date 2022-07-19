@@ -55,6 +55,23 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        [Tooltip("If true GameObjects will be added to the socket but won't be able to be picked up")]
+        [SerializeField]
+        private bool _allowNonInteractables;
+        public bool allowNonInteractables
+        {
+            get => _allowNonInteractables;
+            set
+            {
+                _allowNonInteractables = value;
+
+                if (_socket != null)
+                {
+                    _socket.allowNonInteractables = _allowNonInteractables;
+                }
+            }
+        }
+
         [SerializeField]
         private float _putBackTime;
         public float putBackTime
@@ -216,6 +233,7 @@ namespace ExPresSXR.Presentation
 
                 displayedPrefab = _displayedPrefab;
                 putBackTime = _putBackTime;
+                allowNonInteractables = _allowNonInteractables;
             }
         }
 
@@ -558,6 +576,7 @@ namespace ExPresSXR.Presentation
         {
             labelText = _labelText;
             infoText = _infoText;
+            allowNonInteractables = _allowNonInteractables;
         }
     }
 }

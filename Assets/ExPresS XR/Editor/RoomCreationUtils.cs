@@ -30,13 +30,13 @@ namespace ExPresSXR.Editor
         // Threshold of an face to recognized as floor (dot product of two normalized vectors)
         const float DOT_FLOOR_THRESHOLD = 0.95f;
 
-        [MenuItem("ExPresS XR/Rooms.../Create an Experimentation Room")]
+        [MenuItem("ExPresS XR/Rooms.../Create Default Experimentation Room")]
         public static void CreateExperimentationRoom(MenuCommand menuCommand)
         {
-            CreateRoom(5f, 3f, 4f, true, WallMode.SeparateFloor, MaterialPreset.Experimentation);
+            CreateRoom(6f, 3f, 5f, true, WallMode.SeparateFloor, MaterialPreset.Experimentation);
         }
 
-        [MenuItem("ExPresS XR/Rooms.../Create an Exhibition Room")]
+        [MenuItem("ExPresS XR/Rooms.../Create Default Exhibition Room")]
         public static void CreateExhibitionRoom(MenuCommand menuCommand)
         {
             CreateRoom(5f, 3f, 4f, true, WallMode.SeparateFloor, MaterialPreset.Exhibition);
