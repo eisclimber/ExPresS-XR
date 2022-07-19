@@ -1,0 +1,1 @@
+UniTuebingenKupferbau.jpg: https://commons.wikimedia.org/wiki/File:Uni_T%C3%BCbingen_Kupferbau.jpg ; Uploaded by User Prissantenbär under Public Domain (15.07.2022)

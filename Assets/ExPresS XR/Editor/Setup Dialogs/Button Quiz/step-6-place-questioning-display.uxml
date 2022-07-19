@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="step-6-place-video-display" style="flex-grow: 1;">
+        <ui:Label text="Place Questioning Display..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
+        <ui:Label text="In order to play a video create an &apos;World Space Video&apos; by right clicking in the inspector and selecting &apos;ExPresS XR &gt; UI &gt; World Space Video&apos; and place it at (0, 1, 2) or so it covers the screen of the model. You will then need to create a Render Texture by right-clicking in the Project Explorer and create a new one by selecting &apos;Create ...&gt; Render Texture&apos;. Be sure to set the size property in the inspector of the render texture to the resolution of the video you want to display. Next drag the Render Texture to the &apos;TargetTexture&apos;-Field of the World Space Video aswell as on the &apos;Texture&apos;-Property. Finally drag the Video Player into the Object Field below." display-tooltip-when-elided="true" name="choice-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+        <ui:VisualElement name="display-fields" style="padding-left: 20px; padding-right: 20px; padding-bottom: 20px;">
+            <uie:ObjectField label="Text Label:" name="text-label-field" type="TMPro.TMP_Text, Unity.TextMeshPro" style="padding-top: 2px; padding-bottom: 2px;" />
+            <uie:ObjectField label="Game Object Field:" name="game-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="padding-top: 2px; padding-bottom: 2px;" />
+            <uie:ObjectField label="Video Player:" type="UnityEngine.Video.VideoPlayer, UnityEngine.VideoModule" name="video-player-field" style="padding-top: 2px; padding-bottom: 2px;" />
+            <uie:ObjectField label="Video Display:" type="UnityEngine.UI.RawImage, UnityEngine.UI" name="video-image-field" style="padding-top: 2px; padding-bottom: 2px;" />
+            <uie:ObjectField label="(Opt.) After Quiz Menu:" type="UnityEngine.Canvas, UnityEngine.UIModule" name="after-quiz-menu-field" style="padding-top: 2px; padding-bottom: 2px; display: flex;" />
+            <ui:Button text="Create Questioning Displays" display-tooltip-when-elided="true" name="create-questioning-display-button" style="margin-top: 10px; margin-bottom: 10px; width: auto; margin-left: 20px; margin-right: 20px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Label text="Setup failed. Be sure to connect the buttons amd add at least 2 questions!" display-tooltip-when-elided="true" name="questioning-display-failure-label" style="flex-grow: 1; margin-right: 0; margin-left: 0; color: rgb(255, 0, 0); -unity-font-style: bold; -unity-text-align: upper-center; display: none;" />
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="setup-questioning-display-button" label="After Video Quiz" />
+    </ui:VisualElement>
+</ui:UXML>

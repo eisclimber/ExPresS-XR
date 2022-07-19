@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-3-cutouts" style="flex-grow: 1;">
+        <ui:Label text="(Optional) Skybox" display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
+        <ui:Label text="The skybox can is a special texture that is used to provide a visual background at &quot;infinity&quot; but also is also used to get lighting information of the scene. The texture can either be a HDRI texture (a HD 3D-Image) or one generated from a shader like the default skybox. You can set it by going to &apos;Window &gt; Rendering &gt; Lighting&apos;, under the tab &apos;Environment&apos; the value &apos;Skybox Material&apos; and either modifying the default skybox shader, use one of the HDRIs in &apos;ExPresS XR/Sprites/HDRI/&apos; or use your own. If you want to create an HDRI of a specific location you can use  the &apos;Google Street View&apos;-App on a Smartphone and create a 360degree Image. This then can be then converted to a HDRI. For a detailed Tutorial see: https://www.youtube.com/watch?v=Aco0UDxL6rA&amp;ab_channel=BlenderDaily" display-tooltip-when-elided="true" name="step-1-description" style="flex-grow: 1; white-space: normal;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>

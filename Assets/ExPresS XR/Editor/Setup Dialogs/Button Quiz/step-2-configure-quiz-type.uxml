@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="step-2-configure-quiz-type" style="flex-grow: 1;">
+        <ui:Label text="Configure Quiz Type..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
+        <ui:Label text="Please Specify what kind of quiz you want to create." display-tooltip-when-elided="true" name="choice-type-description" style="margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+        <uie:EnumField label="Quiz Mode:" value="SingleChoice" name="choice-type" type="ExPresSXR.Experimentation.QuizMode, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
+        <uie:EnumField label="Question Ordering:" value="Randomize" name="question-order" type="ExPresSXR.Experimentation.QuestionOrdering, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px; margin-top: 3px; margin-bottom: 3px;" />
+        <uie:EnumField label="Number of Answers:" value="Two" name="number-of-answers" type="ExPresSXR.Experimentation.AnswersAmount, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
+        <ui:Label text="Splease specify how in which way questions should be presented" display-tooltip-when-elided="true" name="questions-label" style="margin-left: 8px; margin-right: 8px; margin-top: 10px; margin-bottom: 10px;" />
+        <uie:EnumField label="Question Type:" value="Text" name="question-type" type="ExPresSXR.Experimentation.QuestionType, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
+        <ui:Label text="Please specify how in which way answered should be presented on the buttons" display-tooltip-when-elided="true" name="Label" style="margin-left: 8px; margin-right: 8px; margin-top: 10px; margin-bottom: 10px;" />
+        <uie:EnumField label="Answer Type:" value="Text" name="answer-type" type="ExPresSXR.Experimentation.AnswerType, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
+        <ui:Label text="Please specify if and how feedback should be presented" display-tooltip-when-elided="true" name="Label" style="margin-left: 8px; margin-right: 8px; margin-top: 10px; margin-bottom: 10px;" />
+        <uie:EnumField label="Feedback Mode:" value="AlwaysCorrect" name="feedback-mode" type="ExPresSXR.Experimentation.FeedbackMode, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
+        <uie:EnumField label="Feedback Type:" value="Text" name="feedback-type" type="ExPresSXR.Experimentation.FeedbackType, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px; margin-bottom: 3px; margin-top: 3px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="setup-quiz-type-button" />
+    </ui:VisualElement>
+</ui:UXML>
