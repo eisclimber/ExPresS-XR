@@ -60,11 +60,9 @@ namespace ExPresSXR.Editor
 
             foreach (ProBuilderMesh mesh in selection)
             {
-                if (mesh.name != "Teleportation Area" && mesh.transform.Find("Teleportation Area") == null)
-                {
-                    UpdateTeleportationArea(mesh, true);
-                }
-                UpdateTeleportationArea(mesh);
+                bool needsNewTeleportArea = mesh.name != "Teleportation Area" 
+                    	                        && mesh.transform.Find("Teleportation Area") == null;
+                UpdateTeleportationArea(mesh, needsNewTeleportArea);
             }
         }
 
@@ -170,9 +168,9 @@ namespace ExPresSXR.Editor
         public static void UpdateTeleportationArea(ProBuilderMesh parentMesh, bool addIfNotExists = false)
         {
             Transform tpTransform = parentMesh.transform.Find("Teleportation Area");
-            bool needsUpdate = addIfNotExists;
+            bool needsUpdate = addIfNotExists || tpTransform != null;
 
-            if (addIfNotExists || tpTransform != null)
+            if (needsUpdate)
             {
                 // Find faces to be deleted (= no floors)
                 List<int> inverse = new List<int>();
@@ -203,10 +201,10 @@ namespace ExPresSXR.Editor
                     }
 
                     // Should be done (as in ProBuilder's DuplicateFaces but somehow throws an error:/)
-                    // foreach (var child in parentMesh.transform.GetComponentsInChildren<ProBuilderMesh>())
-                    // {
-                    //     UnityEditor.ProBuilder.EditorUtility.SynchronizeWithMeshFilter(child);
-                    // }
+                    foreach (var child in parentMesh.transform.GetComponentsInChildren<ProBuilderMesh>())
+                    {
+                        UnityEditor.ProBuilder.EditorUtility.SynchronizeWithMeshFilter(child);
+                    }
                 }
                 Undo.RegisterCreatedObjectUndo(copy.gameObject, "Update Floor Teleportation");
 
@@ -230,7 +228,7 @@ namespace ExPresSXR.Editor
                 areaObject.GetComponent<MeshRenderer>().enabled = false;
 
                 // Add collider
-                areaObject.gameObject.AddComponent<MeshCollider>();
+                areaObject.AddComponent<MeshCollider>();
 
                 // Add Teleportation Area
                 areaObject.AddComponent<TeleportationArea>();
