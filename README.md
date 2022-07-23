@@ -66,7 +66,7 @@ Attribution is very much appreciated
 
 ## Version
 
-ExPresS XR was developed and tested with Unity2020.3.33f1.
+ExPresS XR was developed and tested with Unity 2021.3.6f1.
 
 ## License
 
