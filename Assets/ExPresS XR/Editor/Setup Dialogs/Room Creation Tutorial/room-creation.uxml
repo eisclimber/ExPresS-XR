@@ -1,11 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Template name="step-1-intro" src="step-1-intro.uxml" />
-    <ui:Template name="step-2-room-creation" src="step-2-room-creation.uxml" />
-    <ui:Template name="step-3-placing-furniture" src="step-3-placing-furniture.uxml" />
-    <ui:Template name="step-4-cutouts" src="step-4-cutouts.uxml" />
-    <ui:Template name="step-5-extruding-hallways" src="step-5-extruding-hallways.uxml" />
-    <ui:Template name="step-6-skybox" src="step-6-skybox.uxml" />
-    <ui:Template name="step-7-teleportation-area 1" src="step-7-teleportation-area 1.uxml" />
+    <ui:Template name="step-1-intro" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-1-intro.uxml?fileID=9197481963319205126&amp;guid=44761742c629d6a4a80d9931a4db7c81&amp;type=3#step-1-intro" />
+    <ui:Template name="step-2-room-creation" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-2-room-creation.uxml?fileID=9197481963319205126&amp;guid=5d66d1f079247c64fba5ed8d3ad7072e&amp;type=3#step-2-room-creation" />
+    <ui:Template name="step-3-placing-furniture" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-3-placing-furniture.uxml?fileID=9197481963319205126&amp;guid=236e78b79bcbcb14bbb082e444f6bfb9&amp;type=3#step-3-placing-furniture" />
+    <ui:Template name="step-4-cutouts" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-4-cutouts.uxml?fileID=9197481963319205126&amp;guid=913dc6d1ad15d974c954ed6f6d13094b&amp;type=3#step-4-cutouts" />
+    <ui:Template name="step-5-extruding-hallways" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-5-extruding-hallways.uxml?fileID=9197481963319205126&amp;guid=1363954964de455419e0edcd11245883&amp;type=3#step-5-extruding-hallways" />
+    <ui:Template name="step-6-skybox" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-6-skybox.uxml?fileID=9197481963319205126&amp;guid=c1d4ede85d9f5c043b7f53f2a4b41f3f&amp;type=3#step-6-skybox" />
+    <ui:Template name="step-7-teleportation-area" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-7-teleportation-area.uxml?fileID=9197481963319205126&amp;guid=461d8966269036b449151ec6e3802c48&amp;type=3#step-7-teleportation-area" />
     <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); align-items: center; margin-top: 0; padding-top: 4px;">
             <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" style="width: auto; height: auto; align-items: stretch; justify-content: flex-start; min-width: 50px; min-height: 50px;" />
@@ -23,7 +23,7 @@
             <ui:Instance template="step-4-cutouts" name="step-4-cutouts" style="flex-grow: 1; display: none;" />
             <ui:Instance template="step-5-extruding-hallways" name="step-5-extruding-hallways" style="flex-grow: 1; display: none;" />
             <ui:Instance template="step-6-skybox" name="step-6-skybox" style="flex-grow: 1; display: none;" />
-            <ui:Instance template="step-7-teleportation-area 1" name="step-7-teleportation-area 1" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-7-teleportation-area" name="step-7-teleportation-area" style="flex-grow: 1; display: none;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

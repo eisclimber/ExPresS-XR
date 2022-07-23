@@ -8663,6 +8663,206 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!1 &1716404442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1716404444}
+  - component: {fileID: 1716404443}
+  m_Layer: 0
+  m_Name: Data Gatherer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1716404443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716404442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9412700f773454640a2190008089fd5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dataExportType: 0
+  _localExportPath: DataGathererValues.csv
+  _httpExportPath: 
+  _inputActionTrigger: []
+  _periodicExportEnabled: 0
+  _periodicExportTime: 1
+  _includeTimeStamp: 1
+  _dataBindings:
+  - exportColumnName: isQuizActive,currentQuestionNumber,currentQuestionIdx,answerPressTime,chosenAnswerString,displayedFeedbackText,displayedFeedbackObjects,displayedFeedbackVideo,itemIdx,questionVideo,questionObject,questionText,answerObject0,answerObject1,answerObject2,answerObject3,answerText0,answerText1,answerText2,answerText3,correctAnswers0,correctAnswers1,correctAnswers2,correctAnswers3,feedbackVideo,feedbackObject,feedbackText,quizMode,questionOrdering,answersAmount,questionType,answerType,feedbackMode,feedbackType,objectInspectionOption
+    _targetObject: {fileID: 1917226900}
+    _targetComponent: {fileID: 0}
+    _memberNameList:
+    - Game Object/GetInstanceID
+    - Game Object/GetHashCode
+    - Game Object/ToString
+    - Game Object/layer
+    - Game Object/active
+    - Game Object/activeSelf
+    - Game Object/activeInHierarchy
+    - Game Object/isStatic
+    - Game Object/tag
+    - Game Object/sceneCullingMask
+    - Game Object/name
+    - UnityEngine.Transform/GetSiblingIndex
+    - UnityEngine.Transform/GetChildCount
+    - UnityEngine.Transform/GetInstanceID
+    - UnityEngine.Transform/GetHashCode
+    - UnityEngine.Transform/ToString
+    - UnityEngine.Transform/position
+    - UnityEngine.Transform/localPosition
+    - UnityEngine.Transform/eulerAngles
+    - UnityEngine.Transform/localEulerAngles
+    - UnityEngine.Transform/right
+    - UnityEngine.Transform/up
+    - UnityEngine.Transform/forward
+    - UnityEngine.Transform/rotation
+    - UnityEngine.Transform/localRotation
+    - UnityEngine.Transform/localScale
+    - UnityEngine.Transform/childCount
+    - UnityEngine.Transform/lossyScale
+    - UnityEngine.Transform/hasChanged
+    - UnityEngine.Transform/hierarchyCapacity
+    - UnityEngine.Transform/hierarchyCount
+    - UnityEngine.Transform/tag
+    - UnityEngine.Transform/name
+    - ExPresSXR.Experimentation.ButtonQuiz/GetQuizUnixStartTime
+    - ExPresSXR.Experimentation.ButtonQuiz/GetCurrentQuizUnixTimeMillisecondsDuration
+    - ExPresSXR.Experimentation.ButtonQuiz/GetCurrentQuestionIdx
+    - ExPresSXR.Experimentation.ButtonQuiz/GetCurrentQuestionCsvExportValue
+    - ExPresSXR.Experimentation.ButtonQuiz/GetCurrentQuestionNumber
+    - ExPresSXR.Experimentation.ButtonQuiz/IsQuizActive
+    - ExPresSXR.Experimentation.ButtonQuiz/GetAnswerPressTime
+    - ExPresSXR.Experimentation.ButtonQuiz/GetChosenAnswersString
+    - ExPresSXR.Experimentation.ButtonQuiz/GetDisplayedFeedbackText
+    - ExPresSXR.Experimentation.ButtonQuiz/GetDisplayedFeedbackObjects
+    - ExPresSXR.Experimentation.ButtonQuiz/GetDisplayedFeedbackVideo
+    - ExPresSXR.Experimentation.ButtonQuiz/GetQuestionPermutationAsCsvString
+    - ExPresSXR.Experimentation.ButtonQuiz/GetConfigCsvExportValues
+    - ExPresSXR.Experimentation.ButtonQuiz/GetAllQuestionsCsvExportValues
+    - ExPresSXR.Experimentation.ButtonQuiz/GetFullQuizCsvValues
+    - ExPresSXR.Experimentation.ButtonQuiz/IsInvoking
+    - ExPresSXR.Experimentation.ButtonQuiz/GetInstanceID
+    - ExPresSXR.Experimentation.ButtonQuiz/GetHashCode
+    - ExPresSXR.Experimentation.ButtonQuiz/ToString
+    - ExPresSXR.Experimentation.ButtonQuiz/quizUndergoing
+    - ExPresSXR.Experimentation.ButtonQuiz/quizStartTime
+    - ExPresSXR.Experimentation.ButtonQuiz/latestChosenAnswersIdxs
+    - ExPresSXR.Experimentation.ButtonQuiz/latestAnswerPressTime
+    - ExPresSXR.Experimentation.ButtonQuiz/latestFeedbackText
+    - ExPresSXR.Experimentation.ButtonQuiz/useGUILayout
+    - ExPresSXR.Experimentation.ButtonQuiz/runInEditMode
+    - ExPresSXR.Experimentation.ButtonQuiz/enabled
+    - ExPresSXR.Experimentation.ButtonQuiz/isActiveAndEnabled
+    - ExPresSXR.Experimentation.ButtonQuiz/tag
+    - ExPresSXR.Experimentation.ButtonQuiz/name
+    - ExPresSXR.Experimentation.ButtonQuiz/MIN_QUESTIONS
+    - ExPresSXR.Experimentation.ButtonQuiz/NUM_ANSWERS
+    - ExPresSXR.Experimentation.ButtonQuiz/DISPLAY_OBJECTS_SPACING
+    - ExPresSXR.Experimentation.ButtonQuiz/DEFAULT_FEEDBACK_DURATION
+    - ExPresSXR.Experimentation.ButtonQuiz/RESULT_TEXT_PREFIX
+    - ExPresSXR.Experimentation.ButtonQuiz/DEFAULT_QUIZ_COMPLETED_TEXT
+    - ExPresSXR.Experimentation.ButtonQuiz/FULL_QUIZ_CSV_HEADER
+    _prettyMemberNameList:
+    - Game Object/int GetInstanceID()
+    - Game Object/int GetHashCode()
+    - Game Object/string ToString()
+    - Game Object/int layer
+    - Game Object/bool active
+    - Game Object/bool activeSelf
+    - Game Object/bool activeInHierarchy
+    - Game Object/bool isStatic
+    - Game Object/string tag
+    - Game Object/ulong sceneCullingMask
+    - Game Object/string name
+    - Transform/int GetSiblingIndex()
+    - Transform/int GetChildCount()
+    - Transform/int GetInstanceID()
+    - Transform/int GetHashCode()
+    - Transform/string ToString()
+    - Transform/Vector3 position
+    - Transform/Vector3 localPosition
+    - Transform/Vector3 eulerAngles
+    - Transform/Vector3 localEulerAngles
+    - Transform/Vector3 right
+    - Transform/Vector3 up
+    - Transform/Vector3 forward
+    - Transform/Quaternion rotation
+    - Transform/Quaternion localRotation
+    - Transform/Vector3 localScale
+    - Transform/int childCount
+    - Transform/Vector3 lossyScale
+    - Transform/bool hasChanged
+    - Transform/int hierarchyCapacity
+    - Transform/int hierarchyCount
+    - Transform/string tag
+    - Transform/string name
+    - ButtonQuiz/float GetQuizUnixStartTime()
+    - ButtonQuiz/float GetCurrentQuizUnixTimeMillisecondsDuration()
+    - ButtonQuiz/int GetCurrentQuestionIdx()
+    - ButtonQuiz/string GetCurrentQuestionCsvExportValue()
+    - ButtonQuiz/int GetCurrentQuestionNumber()
+    - ButtonQuiz/bool IsQuizActive()
+    - ButtonQuiz/float GetAnswerPressTime()
+    - ButtonQuiz/string GetChosenAnswersString()
+    - ButtonQuiz/string GetDisplayedFeedbackText()
+    - ButtonQuiz/string GetDisplayedFeedbackObjects()
+    - ButtonQuiz/string GetDisplayedFeedbackVideo()
+    - ButtonQuiz/string GetQuestionPermutationAsCsvString()
+    - ButtonQuiz/string GetConfigCsvExportValues()
+    - ButtonQuiz/string GetAllQuestionsCsvExportValues()
+    - ButtonQuiz/string GetFullQuizCsvValues()
+    - ButtonQuiz/bool IsInvoking()
+    - ButtonQuiz/int GetInstanceID()
+    - ButtonQuiz/int GetHashCode()
+    - ButtonQuiz/string ToString()
+    - ButtonQuiz/bool quizUndergoing
+    - ButtonQuiz/long quizStartTime
+    - ButtonQuiz/string latestChosenAnswersIdxs
+    - ButtonQuiz/float latestAnswerPressTime
+    - ButtonQuiz/string latestFeedbackText
+    - ButtonQuiz/bool useGUILayout
+    - ButtonQuiz/bool runInEditMode
+    - ButtonQuiz/bool enabled
+    - ButtonQuiz/bool isActiveAndEnabled
+    - ButtonQuiz/string tag
+    - ButtonQuiz/string name
+    - ButtonQuiz/int MIN_QUESTIONS
+    - ButtonQuiz/int NUM_ANSWERS
+    - ButtonQuiz/float DISPLAY_OBJECTS_SPACING
+    - ButtonQuiz/float DEFAULT_FEEDBACK_DURATION
+    - ButtonQuiz/string RESULT_TEXT_PREFIX
+    - ButtonQuiz/string DEFAULT_QUIZ_COMPLETED_TEXT
+    - ButtonQuiz/string FULL_QUIZ_CSV_HEADER
+    _memberIdx: 47
+  _inputActionDataBindings:
+  - {fileID: 0}
+--- !u!4 &1716404444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716404442}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1728935370
 GameObject:
   m_ObjectHideFlags: 0
