@@ -2,19 +2,19 @@
     <ui:Template name="step-1-intro" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-1-intro.uxml?fileID=9197481963319205126&amp;guid=f6f4913c3f0affa47bc7a98a8c1f755b&amp;type=3#step-1-intro" />
     <ui:Template name="step-2-export-options" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-2-export-options.uxml?fileID=9197481963319205126&amp;guid=8818c93ca9b56a747b01bc1c04963715&amp;type=3#step-2-export-options" />
     <ui:Template name="step-3-export-triggers" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-3-export-triggers.uxml?fileID=9197481963319205126&amp;guid=4110e6c8f1b398347bce6ae1afb1575b&amp;type=3#step-3-export-triggers" />
-    <ui:Template name="step-4-exporting-values" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-4-exporting-values.uxml?fileID=9197481963319205126&amp;guid=f9822c812b7906e40b0d69b8478dccc8&amp;type=3#step-4-data-bindings" />
-    <ui:Template name="step-5-exporting-data-bindings" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-5-exporting-data-bindings.uxml?fileID=9197481963319205126&amp;guid=e4d9fa3c17b33774e9575bd667323b85&amp;type=3#step-5-data-bindings" />
-    <ui:Template name="step-6-exporting-input-actions" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-6-exporting-input-actions.uxml?fileID=9197481963319205126&amp;guid=5163b151a21ffd147b56eebf97e4d7a9&amp;type=3#step-5-exporting-input-actions" />
+    <ui:Template name="step-4-exporting-values" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-4-exporting-values.uxml?fileID=9197481963319205126&amp;guid=f9822c812b7906e40b0d69b8478dccc8&amp;type=3#step-4-exporting-values" />
+    <ui:Template name="step-5-exporting-data-bindings" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-5-exporting-data-bindings.uxml?fileID=9197481963319205126&amp;guid=e4d9fa3c17b33774e9575bd667323b85&amp;type=3#step-5-exporting-data-bindings" />
+    <ui:Template name="step-6-exporting-input-actions" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Data%20Gathering/step-6-exporting-input-actions.uxml?fileID=9197481963319205126&amp;guid=5163b151a21ffd147b56eebf97e4d7a9&amp;type=3#step-6-exporting-input-actions" />
     <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); align-items: center; min-width: 58px; padding-top: 4px;">
-            <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF2" display-tooltip-when-elided="true" name="step-2" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF5" display-tooltip-when-elided="true" name="step-5" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF6" display-tooltip-when-elided="true" name="step-6" style="min-width: 50px; min-height: 50px;" />
+            <ui:Button text="1" display-tooltip-when-elided="true" name="step-1" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="2" display-tooltip-when-elided="true" name="step-2" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="5" display-tooltip-when-elided="true" name="step-5" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="6" display-tooltip-when-elided="true" name="step-6" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
         </ui:VisualElement>
-        <ui:VisualElement name="content-container" style="flex-grow: 1;">
+        <ui:VisualElement name="content-container" style="padding-left: 8px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;">
             <ui:Instance template="step-1-intro" name="step-1-intro" style="flex-grow: 1;" />
             <ui:Instance template="step-2-export-options" name="step-2-export-options" style="flex-grow: 1; display: none;" />
             <ui:Instance template="step-3-export-triggers" name="step-3-export-triggers" style="flex-grow: 1; display: none;" />

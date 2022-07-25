@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement name="step-4-exporting-values" style="flex-grow: 1;">
-        <ui:Label text="Exporting Values..." display-tooltip-when-elided="true" name="step-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
-        <ui:Label text="The `DataGatherer` provides the possibility to export public variables(members) of any component, as return values of functions and the values of InputActions.  If `includeTimestamp` is checked an UNIX timestamp will be added as first column of the CSV." display-tooltip-when-elided="true" name="step-description" style="flex-grow: 1; white-space: normal;" />
+        <ui:Label text="Exporting Values..." display-tooltip-when-elided="true" name="step-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:Label text="The &apos;DataGatherer&apos; provides the possibility to export public variables(members) of any component, as return values of functions and the values of InputActions. \nIf &apos;includeTimestamp&apos; is checked an UNIX timestamp will be added as first column of the CSV." display-tooltip-when-elided="true" name="step-description" style="flex-grow: 1; white-space: normal;" />
     </ui:VisualElement>
     <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
         <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />

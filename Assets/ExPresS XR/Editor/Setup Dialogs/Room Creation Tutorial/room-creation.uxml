@@ -8,15 +8,15 @@
     <ui:Template name="step-7-teleportation-area" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Room%20Creation%20Tutorial/step-7-teleportation-area.uxml?fileID=9197481963319205126&amp;guid=461d8966269036b449151ec6e3802c48&amp;type=3#step-7-teleportation-area" />
     <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); align-items: center; margin-top: 0; padding-top: 4px;">
-            <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" style="width: auto; height: auto; align-items: stretch; justify-content: flex-start; min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF2" display-tooltip-when-elided="true" name="step-2" style="width: 50px; height: 50px; min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF5" display-tooltip-when-elided="true" name="step-5" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF6" display-tooltip-when-elided="true" name="step-6" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF7" display-tooltip-when-elided="true" name="step-7" style="min-width: 50px; min-height: 50px;" />
+            <ui:Button text="1" display-tooltip-when-elided="true" name="step-1" style="width: auto; height: auto; align-items: stretch; justify-content: flex-start; min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="2" display-tooltip-when-elided="true" name="step-2" style="width: 50px; height: 50px; min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="5" display-tooltip-when-elided="true" name="step-5" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="6" display-tooltip-when-elided="true" name="step-6" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="7" display-tooltip-when-elided="true" name="step-7" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
         </ui:VisualElement>
-        <ui:VisualElement name="content-container" style="flex-grow: 1; padding-top: 10px; padding-bottom: 10px; padding-left: 4px; padding-right: 4px;">
+        <ui:VisualElement name="content-container" style="flex-grow: 1; padding-top: 4px; padding-bottom: 4px; padding-left: 8px; padding-right: 4px;">
             <ui:Instance template="step-1-intro" name="step-1-intro" style="flex-grow: 1;" />
             <ui:Instance template="step-2-room-creation" name="step-2-room-creation" style="flex-grow: 1; display: none;" />
             <ui:Instance template="step-3-placing-furniture" name="step-3-placing-furniture" style="flex-grow: 1; display: none;" />

@@ -1,16 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Template name="step-1-scene-creation" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation/step-1-scene-creation.uxml?fileID=9197481963319205126&amp;guid=38fe4783799d64c4db13d41f2684701e&amp;type=3#step-1-scene-creation" />
-    <ui:Template name="step-2-room-creation" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation/step-2-room-creation.uxml?fileID=9197481963319205126&amp;guid=5694cb9e6a99434419761450de9edb2b&amp;type=3#step-2-room-creation" />
-    <ui:Template name="step-3-add-button-quiz" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation/step-3-add-button-quiz.uxml?fileID=9197481963319205126&amp;guid=262bde26564a0584eb3debd0cbb9e8fa&amp;type=3#step-3-add-button-quiz" />
-    <ui:Template name="step-4-add-data-gatherer" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation/step-4-add-data-gatherer.uxml?fileID=9197481963319205126&amp;guid=85e6e221dbc3d7f4db78507ddf27831c&amp;type=3#step-4-add-data-gatherer" />
+    <ui:Template name="step-1-scene-creation" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation%20Tutorial/step-1-scene-creation.uxml?fileID=9197481963319205126&amp;guid=38fe4783799d64c4db13d41f2684701e&amp;type=3#step-1-scene-creation" />
+    <ui:Template name="step-2-room-creation" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation%20Tutorial/step-2-room-creation.uxml?fileID=9197481963319205126&amp;guid=5694cb9e6a99434419761450de9edb2b&amp;type=3#step-2-room-creation" />
+    <ui:Template name="step-3-add-button-quiz" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation%20Tutorial/step-3-add-button-quiz.uxml?fileID=9197481963319205126&amp;guid=262bde26564a0584eb3debd0cbb9e8fa&amp;type=3#step-3-add-button-quiz" />
+    <ui:Template name="step-4-add-data-gatherer" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Experimentation%20Tutorial/step-4-add-data-gatherer.uxml?fileID=9197481963319205126&amp;guid=85e6e221dbc3d7f4db78507ddf27831c&amp;type=3#step-4-add-data-gatherer" />
     <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); align-items: center; margin-top: 0; padding-top: 4px;">
-            <ui:Button text="WF1" display-tooltip-when-elided="true" name="step-1" style="width: auto; height: auto; align-items: stretch; justify-content: flex-start; min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF2" display-tooltip-when-elided="true" name="step-2" style="width: 50px; height: 50px; min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px;" />
-            <ui:Button text="WF4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px;" />
+            <ui:Button text="1" display-tooltip-when-elided="true" name="step-1" style="width: auto; height: auto; align-items: stretch; justify-content: flex-start; min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="2" display-tooltip-when-elided="true" name="step-2" style="width: 50px; height: 50px; min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
         </ui:VisualElement>
-        <ui:VisualElement name="content-container" style="flex-grow: 1; padding-top: 10px; padding-bottom: 10px; padding-left: 4px; padding-right: 4px;">
+        <ui:VisualElement name="content-container" style="flex-grow: 1; padding-top: 4px; padding-bottom: 4px; padding-left: 8px; padding-right: 4px;">
             <ui:Instance template="step-1-scene-creation" name="step-1-scene-creation" style="flex-grow: 1;" />
             <ui:Instance template="step-2-room-creation" name="step-2-room-creation" style="display: none; flex-grow: 1;" />
             <ui:Instance template="step-3-add-button-quiz" name="step-3-add-button-quiz" style="display: none; flex-grow: 1;" />

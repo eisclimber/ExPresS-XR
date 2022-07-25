@@ -17,26 +17,25 @@ public class SetupDialogExperimentationTutorial : SetupDialogBase
         get => "Assets/ExPresS XR/Editor/Setup Dialogs/Experimentation Tutorial/experimentation-tutorial.uxml";
     }
 
-    private VisualElement step1Container;
-    private VisualElement step2Container;
     private VisualElement step3Container;
+
+    private Button buttonQuizCreationButton;
 
     protected override void AssignStepContainersRefs()
     {
-        step1Container = contentContainer.Q<VisualElement>("step-1-device-type");
-        step2Container = contentContainer.Q<VisualElement>("step-2-controls-presets");
-        step3Container = contentContainer.Q<VisualElement>("step-3-launch");
+        step3Container = contentContainer.Q<VisualElement>("step-3-add-button-quiz");
     }
 
     // Expand this method and add bindings for each step
     protected override void BindUiElements()
     {
         // Add behavior the ui elements of each step
-        // BindStep1();
-        // BindStep2();
-        // BindStep3();
+        buttonQuizCreationButton = step3Container.Q<Button>("quiz-creation-button");
+        buttonQuizCreationButton.clickable.clicked += OpenQuizCreator;
 
         // Bind remaining UI Elements
         base.BindUiElements();
     }
+
+    private void OpenQuizCreator() => ButtonQuizSetupDialog.ShowWindow();
 }

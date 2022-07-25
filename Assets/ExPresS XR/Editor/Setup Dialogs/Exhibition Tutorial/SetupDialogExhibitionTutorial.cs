@@ -17,25 +17,13 @@ public class SetupDialogExhibitionTutorial : SetupDialogBase
         get => "Assets/ExPresS XR/Editor/Setup Dialogs/Exhibition Tutorial/exhibition-tutorial.uxml";
     }
 
-    private VisualElement step1Container;
-    private VisualElement step2Container;
-    private VisualElement step3Container;
 
-
-    protected override void AssignStepContainersRefs()
-    {
-        step1Container = contentContainer.Q<VisualElement>("step-1-device-type");
-        step2Container = contentContainer.Q<VisualElement>("step-2-controlls-presets");
-        step3Container = contentContainer.Q<VisualElement>("step-3-launch");
-    }
+    protected override void AssignStepContainersRefs() { }
 
     // Expand this method and add bindings for each step
     protected override void BindUiElements()
     {
         // Add behavior the ui elements of each step
-        // BindStep1();
-        // BindStep2();
-        // BindStep3();
 
         // Bind remaining UI Elements
         base.BindUiElements();

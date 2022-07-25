@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement name="step-2-configure-quiz-type" style="flex-grow: 1;">
-        <ui:Label text="Configure Quiz Type..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold;" />
+        <ui:Label text="Configure Quiz Type..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
         <ui:Label text="Please Specify what kind of quiz you want to create." display-tooltip-when-elided="true" name="choice-type-description" style="margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
         <uie:EnumField label="Quiz Mode:" value="SingleChoice" name="choice-type" type="ExPresSXR.Experimentation.QuizMode, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
         <uie:EnumField label="Question Ordering:" value="Randomize" name="question-order" type="ExPresSXR.Experimentation.QuestionOrdering, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px; margin-top: 3px; margin-bottom: 3px;" />
