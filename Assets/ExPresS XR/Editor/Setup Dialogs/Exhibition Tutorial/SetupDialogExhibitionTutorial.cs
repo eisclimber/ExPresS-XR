@@ -4,7 +4,7 @@ using ExPresSXR.Editor.SetupDialogs;
 
 public class SetupDialogExhibitionTutorial : SetupDialogBase
 {
-    [MenuItem("ExPresS XR/Create Exhibitions Tutorial", false, 0)]
+    [MenuItem("ExPresS XR/Create Exhibitions Tutorial", false, 1)]
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
