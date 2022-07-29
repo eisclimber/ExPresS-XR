@@ -168,7 +168,7 @@ namespace ExPresSXR.Editor
         public static void UpdateTeleportationArea(ProBuilderMesh parentMesh, bool addIfNotExists = false)
         {
             Transform tpTransform = parentMesh.transform.Find("Teleportation Area");
-            bool needsUpdate = addIfNotExists || tpTransform != null;
+            bool needsUpdate = tpTransform != null || (addIfNotExists && tpTransform == null);
 
             if (needsUpdate)
             {
@@ -200,12 +200,12 @@ namespace ExPresSXR.Editor
                         Object.DestroyImmediate(copy.transform.GetChild(i).gameObject);
                     }
 
-                    // Should be done (as in ProBuilder's DuplicateFaces but somehow throws an error:/)
                     foreach (var child in parentMesh.transform.GetComponentsInChildren<ProBuilderMesh>())
                     {
                         UnityEditor.ProBuilder.EditorUtility.SynchronizeWithMeshFilter(child);
                     }
                 }
+
                 Undo.RegisterCreatedObjectUndo(copy.gameObject, "Update Floor Teleportation");
 
                 copy.DeleteFaces(inverse);
@@ -217,6 +217,7 @@ namespace ExPresSXR.Editor
                 // Debug.Log(copy.gameObject + " x " + mesh.gameObject.transform + " x " + teleportationArea);
                 MakeMeshTeleportationArea(copy.gameObject, parentMesh.transform, tpTransform);
             }
+            ProBuilderEditor.Refresh();
         }
 
         private static void MakeMeshTeleportationArea(GameObject areaObject, Transform roomTransform, Transform prevTeleportationArea)
@@ -224,7 +225,6 @@ namespace ExPresSXR.Editor
             if (areaObject != null && areaObject.GetComponent<ProBuilderMesh>() && roomTransform != null)
             {
                 // Disable mesh renderer
-                areaObject.GetComponent<Renderer>().sharedMaterials = new Material[0];
                 areaObject.GetComponent<MeshRenderer>().enabled = false;
 
                 // Add collider
@@ -234,7 +234,7 @@ namespace ExPresSXR.Editor
                 areaObject.AddComponent<TeleportationArea>();
                 // Setup Teleportation Area (Collisions and layers)
                 TeleportationArea area = areaObject.GetComponent<TeleportationArea>();
-                area.interactionLayers = (1 << InteractionLayerMask.NameToLayer("Teleportation"));
+                area.interactionLayers = 1 << InteractionLayerMask.NameToLayer("Teleportation");
                 area.colliders.Add(areaObject.GetComponent<MeshCollider>());
 
                 // Add/Copy Reticle Teleportation Area
@@ -261,7 +261,7 @@ namespace ExPresSXR.Editor
 
                 // Parent it to the room and move up (prevents errors with teleportation detection)
                 areaObject.transform.parent = roomTransform;
-                areaObject.gameObject.name = "Teleportation Area";
+                areaObject.name = "Teleportation Area";
                 areaObject.transform.position += new Vector3(0, TELEPORTATION_AREA_Y_OFFSET, 0);
             }
             else
