@@ -46,9 +46,9 @@ namespace ExPresSXR.Rig
 
                 EnableLocomotionProvider<TeleportationProvider>(_teleportationEnabled, enableAsDriver);
 
-                _leftHandController.teleportationEnabled = _teleportationEnabled;
-                _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
-                _headGazeController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Right) != 0;
+                _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
+                _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Right) != 0;
+                _headGazeController.teleportationEnabled = _teleportationEnabled;
             }
         }
 

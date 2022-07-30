@@ -23,11 +23,11 @@ namespace ExPresSXR.Rig
 
                 if (_teleportationEnabled)
                 {
-                    _rayInteractor.interactionLayers |= (1 << InteractionLayerMask.NameToLayer("Teleportation"));
+                    _rayInteractor.interactionLayers |= 1 << InteractionLayerMask.NameToLayer("Teleportation");
                 }
                 else
                 {
-                    _rayInteractor.interactionLayers = ~(1 << InteractionLayerMask.NameToLayer("Teleportation"));
+                    _rayInteractor.interactionLayers &= ~(1 << InteractionLayerMask.NameToLayer("Teleportation"));
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace ExPresSXR.Rig
 
         [Tooltip("The time in seconds that the reticle will not show after interacting. Only takes effect if reselect is enabled.")]
         [SerializeField]
-        private float _postInteractionCooldown = 0.2f;
+        private float _postInteractionCooldown = 0.5f;
 
         [Tooltip("The time in seconds the reticle will not show after heavy head movement. The intensity-threshold can be set by changing the 'Head/Head Gaze Prevent Interaction'-Input-Mapping.")]
         [SerializeField]
@@ -100,6 +100,7 @@ namespace ExPresSXR.Rig
 
         private void Awake()
         {
+            teleportationEnabled = _teleportationEnabled;
             preventInteractionReference.action.performed += TeleportModeReset;
             if (_headGazeReticle != null)
             {
@@ -163,15 +164,23 @@ namespace ExPresSXR.Rig
                     out var uiRaycastHitIndex,
                     out var isUIHitClosest))
             {
-                if (uiRaycastResult.HasValue && isUIHitClosest)
+                if (uiRaycastResult != null && uiRaycastResult.HasValue && isUIHitClosest)
                 {
                     // UI hit or Interactor Hit
                     return uiRaycastResult.Value.gameObject;
                 }
-                else if (raycastHit.HasValue)
+                else if (raycastHit != null && raycastHit.HasValue)
                 {
-                    // Interactor Hit
-                    return raycastHit.Value.transform.gameObject;
+                    bool hasInteractor = raycastHit.Value.transform.GetComponent<IXRInteractable>() != null;
+                    bool ignoreTeleportation = !teleportationEnabled 
+                        && (raycastHit.Value.transform.GetComponent<TeleportationAnchor>()
+                            || raycastHit.Value.transform.GetComponent<TeleportationArea>());
+                    // Any Hit (might be not an XRInteractor though)
+                    if (hasInteractor && !ignoreTeleportation) 
+                    {
+                        // Interactor Hit
+                        return raycastHit.Value.transform.gameObject;
+                    }
                 }
             }
             return null;
@@ -182,7 +191,7 @@ namespace ExPresSXR.Rig
         {
             if (_hoverTarget != null && !_hoverTimePassed)
             {
-                // Reset Hovertimer and set cooldown
+                // Reset hover timer and set cooldown
                 _timeLeftTillHoverBlocked = _timeInteractionPrevented;
                 _timeLeftTillSelect = timeToSelect;
 
@@ -237,10 +246,10 @@ namespace ExPresSXR.Rig
         }
 
 
-        // Allows in-editor changes
-        private void OnValidate()
-        {
-            teleportationEnabled = _teleportationEnabled;
-        }
+        // // Allows in-editor changes
+        // private void OnValidate()
+        // {
+        //     teleportationEnabled = _teleportationEnabled;
+        // }
     }
 }

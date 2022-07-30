@@ -227,13 +227,8 @@ namespace ExPresSXR.Editor
                 // Disable mesh renderer
                 areaObject.GetComponent<MeshRenderer>().enabled = false;
 
-                // Add collider
-                areaObject.AddComponent<MeshCollider>();
-
-                // Add Teleportation Area
-                areaObject.AddComponent<TeleportationArea>();
                 // Setup Teleportation Area (Collisions and layers)
-                TeleportationArea area = areaObject.GetComponent<TeleportationArea>();
+                TeleportationArea area = areaObject.AddComponent<TeleportationArea>();
                 area.interactionLayers = 1 << InteractionLayerMask.NameToLayer("Teleportation");
                 area.colliders.Add(areaObject.GetComponent<MeshCollider>());
 
