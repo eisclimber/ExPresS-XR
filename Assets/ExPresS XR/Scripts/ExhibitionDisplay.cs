@@ -503,7 +503,7 @@ namespace ExPresSXR.Presentation
 
         private void OnWorldShowInfoButtonPressed()
         {
-            if (infoActive)
+            if (!infoActive)
             {
                 // Show Button
                 showInfoCoroutine = StartCoroutine(ShowInfoCoroutine());

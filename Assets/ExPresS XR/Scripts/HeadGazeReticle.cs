@@ -32,6 +32,7 @@ namespace ExPresSXR.UI
             if (_animator == null)
             {
                 _animator = GetComponent<Animator>();
+                hintDuration = _hintDuration;
             }
             // Hide Reticle initially
             if (_animator != null)

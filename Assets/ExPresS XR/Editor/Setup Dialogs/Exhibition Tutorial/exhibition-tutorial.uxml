@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="step-1-scene-creation" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Exhibition%20Tutorial/step-1-scene-creation.uxml?fileID=9197481963319205126&amp;guid=8aed3316a9111624582a6d3efd6950f5&amp;type=3#step-1-scene-creation" />
+    <ui:Template name="step-2-room-creation" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Exhibition%20Tutorial/step-2-room-creation.uxml?fileID=9197481963319205126&amp;guid=c287bb49107c4c147b2e29cdc9423eac&amp;type=3#step-2-room-creation" />
+    <ui:Template name="step-3-placing-display" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Exhibition%20Tutorial/step-3-placing-display.uxml?fileID=9197481963319205126&amp;guid=08009fc6180280d4faac19e683319d39&amp;type=3#step-3-placing-display" />
+    <ui:Template name="step-4-filling-object-display" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Exhibition%20Tutorial/step-4-filling-object-display.uxml?fileID=9197481963319205126&amp;guid=d48c7af20ba15e54b8bf0c9be80431a4&amp;type=3#step-4-filling-object-display" />
+    <ui:Template name="step-5-filling-image-display" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Exhibition%20Tutorial/step-5-filling-image-display.uxml?fileID=9197481963319205126&amp;guid=0e748fbc19f7d7746bdd18be41df7763&amp;type=3#step-5-filling-image-display" />
+    <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
+        <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); align-items: center; margin-top: 0; padding-top: 4px;">
+            <ui:Button text="1" display-tooltip-when-elided="true" name="step-1" style="width: auto; height: auto; align-items: stretch; justify-content: flex-start; min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="2" display-tooltip-when-elided="true" name="step-2" style="width: 50px; height: 50px; min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="5" display-tooltip-when-elided="true" name="step-5" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="content-container" style="flex-grow: 1; padding-top: 4px; padding-bottom: 4px; padding-left: 8px; padding-right: 4px;">
+            <ui:Instance template="step-1-scene-creation" name="step-1-scene-creation" style="flex-grow: 1;" />
+            <ui:Instance template="step-2-room-creation" name="step-2-room-creation" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-3-placing-display" name="step-3-placing-display" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-4-filling-object-display" name="step-4-filling-object-display" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-5-filling-image-display" name="step-5-filling-image-display" style="flex-grow: 1; display: none;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

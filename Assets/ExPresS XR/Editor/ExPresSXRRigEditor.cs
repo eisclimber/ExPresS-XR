@@ -77,7 +77,7 @@ namespace ExPresSXR.Editor
                 targetScript.headGazeTimeToSelect = EditorGUILayout.FloatField("Time To Select", targetScript.headGazeTimeToSelect);
                 targetScript.headGazeCanReselect = EditorGUILayout.Toggle("Allow Reselect", targetScript.headGazeCanReselect);
 
-                targetScript.headGazeReticle = (HeadGazeReticle)EditorGUILayout.ObjectField("Custom Head Gaze Reticle", targetScript.headGazeReticle, typeof(HeadGazeReticle), true);
+                //targetScript.headGazeReticle = (HeadGazeReticle)EditorGUILayout.ObjectField("Custom Head Gaze Reticle", targetScript.headGazeReticle, typeof(HeadGazeReticle), true);
 
                 EditorGUI.indentLevel--;
             }

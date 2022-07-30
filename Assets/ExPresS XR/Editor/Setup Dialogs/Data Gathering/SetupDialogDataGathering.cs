@@ -6,7 +6,7 @@ namespace ExPresSXR.Editor.SetupDialogs
     class SetupDialogDataGathering : SetupDialogBase
     {
 
-        [MenuItem("ExPresS XR/Data Gathering", false, 4)]
+        [MenuItem("ExPresS XR/Data Gathering", false, 5)]
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:

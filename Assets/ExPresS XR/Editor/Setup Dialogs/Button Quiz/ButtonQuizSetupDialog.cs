@@ -15,13 +15,13 @@ namespace ExPresSXR.Editor.SetupDialogs
         const string QUESTION_ITEM_PATH = "Assets/ExPresS XR/Editor/Setup Dialogs/Button Quiz/question-item.uxml";
 
         const string CONFIG_SAVE_PATH = "Assets/Runtime Resources/QuizConfig.asset";
-        const string RENDER_TEXTURE_SAVE_PATH = "Assets/Runtime Resources/QuizRenderTexture.asset";
+        // const string RENDER_TEXTURE_SAVE_PATH = "Assets/Runtime Resources/QuizRenderTexture.asset";
 
         const float QUIZ_BUTTON_SPACING = 0.3f;
 
 
 
-        [MenuItem("ExPresS XR/Button Quiz Setup", false, 3)]
+        [MenuItem("ExPresS XR/Button Quiz Setup", false, 4)]
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:

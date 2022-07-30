@@ -11,7 +11,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:
-            EditorWindow window = GetWindow<SetupDialogInitial>("SetupDialogInitial");
+            EditorWindow window = GetWindow<SetupDialogInitial>("Initial Setup");
             window.minSize = defaultWindowSize;
         }
 
@@ -71,7 +71,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         protected override void AssignStepContainersRefs()
         {
             step1Container = contentContainer.Q<VisualElement>("step-1-device-type");
-            step2Container = contentContainer.Q<VisualElement>("step-2-controlls-presets");
+            step2Container = contentContainer.Q<VisualElement>("step-2-controls-presets");
             step3Container = contentContainer.Q<VisualElement>("step-3-launch");
         }
 
@@ -157,9 +157,9 @@ namespace ExPresSXR.Editor.SetupDialogs
                 case LaunchOption.Experimentation:
                     return SceneUtils.EXPERIMENTATION_TUTORIAL_SCENE_NAME;
                 case LaunchOption.Both:
-                    return SceneUtils.GENERAL_TUTORIAL_SCENE_NAME;
+                    return SceneUtils.GENERAL_EXPORT_SCENE_NAME;
                 default:
-                    return SceneUtils.EMPTY_SCENE_NAME;
+                    return SceneUtils.BASIC_SCENE_NAME;
             }
         }
 

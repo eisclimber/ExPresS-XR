@@ -12,7 +12,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 {
     public class DataGatherer : MonoBehaviour
     {
-        const string DEFAULT_EXPORT_FILE_NAME = "DataGathererValues.csv";
+        const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
 
         [SerializeField]
         private DataGathererExportType _dataExportType;
@@ -266,7 +266,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         public string GetLocalSavePath()
         {
 #if UNITY_EDITOR
-            return Path.Combine(Application.dataPath + "/Data/", localExportPath);
+            return Path.Combine(Application.dataPath + "/", localExportPath);
 #elif UNITY_ANDROID
         return Path.Combine(Application.persistentDataPath + localExportPath);
 #elif UNITY_IPHONE

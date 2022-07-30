@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-3-cutouts" style="flex-grow: 1;">
+        <ui:Label text="Placing the ExhibitionDisplays..." display-tooltip-when-elided="true" name="step-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:Label text="- Create two ExhibitionDisplays one for Objects and one for Images in the Hierarchy. This can be done via the GameObject-Menu &quot;ExPresS XR/Exhibition/ExhibitionDisplay - Object&quot; and &quot;.../ExhibitionDisplay - Image&quot;. \n- Set the Object-Display&apos;s rotation to (0, 90, 0) and the Image-Display&apos;s to (0, 90, 0). Move them to (-2.2, 0, 0) and (2.65, 0, 0) respectively." display-tooltip-when-elided="true" name="step-description" style="flex-grow: 1; white-space: normal;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>

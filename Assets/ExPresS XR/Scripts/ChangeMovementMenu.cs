@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using ExPresSXR.Rig;
+using TMPro;
 
 namespace ExPresSXR.Misc
 {
@@ -10,35 +11,35 @@ namespace ExPresSXR.Misc
         [SerializeField]
         private ExPresSXRRig rig;
 
-        Dropdown controllerTypeDropdown;
+        TMP_Dropdown controllerTypeDropdown;
         Toggle joystickMovementToggle;
         Toggle teleportationEnabledToggle;
         Toggle snapTurnToggle;
-        Dropdown handModelDropdown;
-        Dropdown interactionHandsDropdown;
-        Dropdown teleportationHandsDropdown;
+        TMP_Dropdown handModelDropdown;
+        TMP_Dropdown interactionHandsDropdown;
+        TMP_Dropdown teleportationHandsDropdown;
         Toggle headCollisionEnabled;
         Toggle headCollisionIndicator;
         Toggle showPlayAreaBounds;
         Toggle alternativePlayAreaMaterialToggle;
 
         private void Awake() {
-            controllerTypeDropdown = RuntimeUtils.RecursiveFindChild(transform, "Controller Type Dropdown").GetComponent<Dropdown>();
+            controllerTypeDropdown = RuntimeUtils.RecursiveFindChild(transform, "Controller Type Dropdown").GetComponent<TMP_Dropdown>();
             joystickMovementToggle = RuntimeUtils.RecursiveFindChild(transform, "Joystick Toggle").GetComponent<Toggle>();
             teleportationEnabledToggle = RuntimeUtils.RecursiveFindChild(transform, "Teleportation Toggle").GetComponent<Toggle>();
             snapTurnToggle = RuntimeUtils.RecursiveFindChild(transform, "Snap Turn Toggle").GetComponent<Toggle>();
-            handModelDropdown = RuntimeUtils.RecursiveFindChild(transform, "Hand Model Dropdown").GetComponent<Dropdown>();
-            interactionHandsDropdown = RuntimeUtils.RecursiveFindChild(transform, "Interaction Hand Dropdown").GetComponent<Dropdown>();
-            teleportationHandsDropdown = RuntimeUtils.RecursiveFindChild(transform, "Teleportation Hand Dropdown").GetComponent<Dropdown>();
+            handModelDropdown = RuntimeUtils.RecursiveFindChild(transform, "Hand Model Dropdown").GetComponent<TMP_Dropdown>();
+            interactionHandsDropdown = RuntimeUtils.RecursiveFindChild(transform, "Interaction Hand Dropdown").GetComponent<TMP_Dropdown>();
+            teleportationHandsDropdown = RuntimeUtils.RecursiveFindChild(transform, "Teleportation Hand Dropdown").GetComponent<TMP_Dropdown>();
             headCollisionEnabled = RuntimeUtils.RecursiveFindChild(transform, "Head Collision Toggle").GetComponent<Toggle>();
             headCollisionIndicator = RuntimeUtils.RecursiveFindChild(transform, "Collision Indicator Toggle").GetComponent<Toggle>();
             showPlayAreaBounds = RuntimeUtils.RecursiveFindChild(transform, "Play Area Bounds Toggle").GetComponent<Toggle>();
             alternativePlayAreaMaterialToggle = RuntimeUtils.RecursiveFindChild(transform, "Play Area Material Toggle").GetComponent<Toggle>();
         
-            RuntimeUtils.PopulateDropDownWithEnum(controllerTypeDropdown, typeof(InputMethodType));
-            RuntimeUtils.PopulateDropDownWithEnum(handModelDropdown, typeof(InputMethodType));
-            RuntimeUtils.PopulateDropDownWithEnum(interactionHandsDropdown, typeof(InputMethodType));
-            RuntimeUtils.PopulateDropDownWithEnum(teleportationHandsDropdown, typeof(InputMethodType));
+            RuntimeUtils.PopulateTMPDropDownWithEnum(controllerTypeDropdown, typeof(InputMethodType));
+            RuntimeUtils.PopulateTMPDropDownWithEnum(handModelDropdown, typeof(HandModelMode));
+            RuntimeUtils.PopulateTMPDropDownWithEnum(interactionHandsDropdown, typeof(HandCombinations));
+            RuntimeUtils.PopulateTMPDropDownWithEnum(teleportationHandsDropdown, typeof(HandCombinations));
 
             if (rig != null)
             {
