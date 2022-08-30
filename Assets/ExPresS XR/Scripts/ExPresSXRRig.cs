@@ -10,6 +10,7 @@ namespace ExPresSXR.Rig
 {
     [RequireComponent(typeof(XROrigin))]
     [DisallowMultipleComponent]
+    [AddComponentMenu("ExPresS XR Rig")]
     public class ExPresSXRRig : MonoBehaviour
     {
         [SerializeField]

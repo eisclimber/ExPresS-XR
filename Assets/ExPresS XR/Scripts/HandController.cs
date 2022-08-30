@@ -115,7 +115,7 @@ namespace ExPresSXR.Rig
 
                 if (handModel != null)
                 {
-                    handModel.handModelMode = _handModelMode;
+                    handModel.handModelMode = mode;
                 }
             }
         }

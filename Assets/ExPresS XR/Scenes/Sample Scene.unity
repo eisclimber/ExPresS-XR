@@ -469,7 +469,7 @@ MonoBehaviour:
   _interactHands: -1
   _teleportHands: 2
   _headCollisionEnabled: 1
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   _showPlayAreaBounds: 0
   _useCustomPlayAreaMaterial: 0
   _headGazeCanReselect: 1
@@ -549,14 +549,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 63618022}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59bebd72e682be142a10263c84bee4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _showPlayAreaBounds: 0
   _useCustomBoundingBoxMaterial: 0
-  _customBoundingBoxMaterial: {fileID: 0}
+  _customBoundingBoxMaterial: {fileID: 2100000, guid: 26d13fb7265d04f49ac092610ee8781c, type: 2}
 --- !u!23 &63618024
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -577,7 +577,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 26d13fb7265d04f49ac092610ee8781c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1679,10 +1679,10 @@ RectTransform:
   m_Father: {fileID: 657440951}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -35.677498}
+  m_SizeDelta: {x: 92, y: 20.645}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &345722004
 MonoBehaviour:
@@ -2249,10 +2249,10 @@ RectTransform:
   m_Father: {fileID: 345722003}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 22, y: -10.3225}
+  m_SizeDelta: {x: 44, y: 20.645}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &585296852
 MonoBehaviour:
@@ -2706,7 +2706,7 @@ MonoBehaviour:
   m_EnableInputActions: 0
   m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 1554651052}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
@@ -4055,10 +4055,10 @@ RectTransform:
   m_Father: {fileID: 657440951}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -12.6775}
+  m_SizeDelta: {x: 92, y: 17.355}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1056517698
 MonoBehaviour:
@@ -5151,11 +5151,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 1
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   screenCollisionIndicator: {fileID: 527738468}
   _pushbackAnchor: {fileID: 38273585}
   _colliderSize: 0.22
-  _maxFadeDuration: 0
+  _maxFadeDuration: 1
   OnCollisionStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -5182,7 +5182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1361258413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5334,10 +5334,10 @@ RectTransform:
   m_Father: {fileID: 345722003}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 70, y: -10.3225}
+  m_SizeDelta: {x: 44, y: 20.645}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1364160763
 MonoBehaviour:

@@ -45,7 +45,7 @@ namespace ExPresSXR.Rig
 
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds.")]
         [SerializeField]
-        private float _maxFadeDuration;
+        private float _maxFadeDuration = .5f;
         private float maxFadeDuration
         {
             get => _maxFadeDuration;
