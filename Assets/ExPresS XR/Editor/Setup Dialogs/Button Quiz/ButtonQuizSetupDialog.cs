@@ -41,6 +41,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private VisualElement _step1Container;
         private VisualElement _step2Container;
+        private VisualElement _step3Container;
         private VisualElement _step5Container;
         private VisualElement _step6Container;
         private VisualElement _step7Container;
@@ -59,6 +60,11 @@ namespace ExPresSXR.Editor.SetupDialogs
         private EnumField _feedbackModeField;
         private EnumField _feedbackTypeField;
         private Button _setupQuizButton;
+
+
+        // Step 3
+        private Button _roomTutorialButton;
+        private Button _roomCreatorButton;
 
 
         // Step 5
@@ -132,6 +138,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             _step1Container = contentContainer.Q<VisualElement>("step-1-intro");
             _step2Container = contentContainer.Q<VisualElement>("step-2-configure-quiz-type");
+            _step3Container = contentContainer.Q<VisualElement>("step-3-setup-environment");
             _step5Container = contentContainer.Q<VisualElement>("step-5-place-buttons");
             _step6Container = contentContainer.Q<VisualElement>("step-6-place-questioning-display");
             _step7Container = contentContainer.Q<VisualElement>("step-7-setup-quiz-logic");
@@ -164,6 +171,12 @@ namespace ExPresSXR.Editor.SetupDialogs
             _feedbackTypeField.RegisterCallback<ChangeEvent<System.Enum>>(FeedbackTypeChangedCallback);
             _setupQuizButton = _step2Container.Q<Button>("setup-quiz-type-button");
             _setupQuizButton.clickable.clicked += SetupQuizGo;
+
+            // Setup step 3
+            _roomTutorialButton = _step3Container.Q<Button>("room-tutorial-button");
+            _roomTutorialButton.clickable.clicked += OpenRoomTutorial;
+            _roomCreatorButton = _step3Container.Q<Button>("room-creator-button");
+            _roomCreatorButton.clickable.clicked += OpenRoomCreator;
 
             // Setup step 5
             _button1Field = _step5Container.Q<ObjectField>("button-field-1");
@@ -704,6 +717,10 @@ namespace ExPresSXR.Editor.SetupDialogs
             }
             return ButtonQuizQuestions;
         }
+
+        private void OpenRoomTutorial() => SetupDialogRoomCreation.ShowWindow();
+
+        private void OpenRoomCreator() => RoomCreator.ShowWindow();
 
 
         // Create Quiz GameObjects

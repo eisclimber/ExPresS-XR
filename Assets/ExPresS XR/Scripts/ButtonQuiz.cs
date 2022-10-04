@@ -221,14 +221,19 @@ namespace ExPresSXR.Experimentation
 
         private void Awake()
         {
+            if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
+            {
+                // Warn about invalid quiz directly (even when not starting)
+                Debug.LogWarning("Quiz Config not set or is invalid.");
+            }
+
             if (_startOnAwake)
             {
                 StartQuiz();
             }
-            else if (!IsSetupValid(_config, _buttons, _mcConfirmButton, _displayText, _displayAnchor, _displayPlayer))
+            else
             {
-                // Warn about invalid quiz directly (even when not starting)
-                Debug.LogWarning("Quiz Config not set or invalid.");
+                SetButtonsDisabled(false);
             }
 
             // Always disable AfterQuizMenu
@@ -679,7 +684,7 @@ namespace ExPresSXR.Experimentation
         // Update After Event Export Values
         private void UpdateAnswerExportValues()
         {
-            bool isMC = (config.quizMode == QuizMode.MultipleChoice);
+            bool isMC = config.quizMode == QuizMode.MultipleChoice;
             List<int> pressedButtonIdxs = new List<int>();
             List<QuizButton> pressedButtons = new List<QuizButton>();
             for (int i = 0; i < _buttons.Length; i++)
@@ -698,8 +703,8 @@ namespace ExPresSXR.Experimentation
             }
             else
             {
-                _latestChosenAnswersIdxs = (pressedButtonIdxs.Count > 0 ? pressedButtonIdxs[0].ToString() : "-1");
-                _latestAnswerPressTime = (pressedButtons.Count > 0 ? pressedButtons[0].GetTriggerTimerValue() : -1.0f);
+                _latestChosenAnswersIdxs = pressedButtonIdxs.Count > 0 ? pressedButtonIdxs[0].ToString() : "-1";
+                _latestAnswerPressTime = pressedButtons.Count > 0 ? pressedButtons[0].GetTriggerTimerValue() : -1.0f;
             }
 
             _displayedFeedbackText = _currentQuestion?.GetFeedbackText(config.feedbackMode, config.feedbackType,

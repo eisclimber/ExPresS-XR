@@ -53,6 +53,10 @@ namespace ExPresSXR.Editor.SetupDialogs
             contentContainer = rootVisualElement.Q<VisualElement>("content-container");
             stepsContainer = rootVisualElement.Q<VisualElement>("steps-container");
 
+            // Ensure the correct step is shown after loading
+            contentContainer.ElementAt(0).style.display = DisplayStyle.None;
+            currentStep = _currentStep;
+
             AssignStepContainersRefs();
 
             BindUiElements();

@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-3-create-room" style="flex-grow: 1;">
+        <ui:Label text="Setup Environment..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:Label text="First we need an ExPresSXRRig: \nRight-click in the inspector and select either a rig from &apos;ExPresS XR &gt; Auto XR Rigs &gt; ...&apos;. \nNote that Head Gaze CANNOT be used. \n\nNext we will need a room: \nYou can design a room by yourself or create one using the Utitlities described in the &apos;Room Creation&apos;-Tutorial. You can use the buttons below to open the Room-Creation-Tutorial or the RoomCreator." display-tooltip-when-elided="true" name="choice-1-description" style="flex-grow: 0; display: flex; flex-wrap: nowrap; white-space: normal; padding-bottom: 10px;" />
+        <ui:Button text="Open Room Creation Tutorial" display-tooltip-when-elided="true" name="room-tutorial-button" />
+        <ui:Button text="Open Room Creator" display-tooltip-when-elided="true" name="room-creator-button" />
+        <ui:VisualElement name="spacer" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>
