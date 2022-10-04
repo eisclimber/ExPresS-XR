@@ -54,7 +54,7 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 
 If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Startedmd)-Page in the wiki.
 
-Thefull documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
+The full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
 
 
 ## Made with ExPresS XR
