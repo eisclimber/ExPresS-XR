@@ -53,9 +53,13 @@ namespace ExPresSXR.Rig
             }
         }
 
+        private Vector3 _boundsExtents = Vector3.one;
+
+
         private void Awake()
         {
             UpdateBoundaryVisibility();
+            UpdateBoundarySize();
         }
 
         private void OnEnable()
@@ -131,14 +135,15 @@ namespace ExPresSXR.Rig
 
             Vector3 diff = maxPoint - minPoint;
 
-            if (diff.y == 0.0f)
-            {
-                // Some distributions, e.g. SteamVR, do not provide a height (all points at y = 0)
-                diff.y = DEFAULT_ROOM_HEIGHT;
-            }
+            // Use default value for height
+            diff.y = DEFAULT_ROOM_HEIGHT;
+            // Divide to get extends
+            diff /= 2.0f;
 
-            transform.localScale = diff;
-            transform.position.Set(0, diff.y / 2 + 0.1f, 0);
+            //transform.localScale = diff;
+            transform.localPosition = new Vector3(0, diff.y+ 0.1f, 0);
+            Debug.Log(transform.localPosition);
+            _boundsExtents = diff;
         }
 
         private void InvertMesh()
@@ -177,14 +182,6 @@ namespace ExPresSXR.Rig
             customBoundingBoxMaterial = _customBoundingBoxMaterial;
         }
 
-        private Vector3 GetGizmoSize()
-        {
-            Vector3 invertScale = new Vector3(1 / transform.localScale.x,
-                                                1 / transform.localScale.y,
-                                                1 / transform.localScale.z);
-            return Vector3.Scale(transform.localScale, invertScale);
-        }
-
         private void OnDrawGizmos()
         {
             if (enabled)
@@ -192,7 +189,7 @@ namespace ExPresSXR.Rig
                 // Draw a semitransparent red cube at the transforms position
                 Gizmos.matrix = transform.localToWorldMatrix;
                 Gizmos.color = new Color(1, 0, 0, 0.5f);
-                Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+                Gizmos.DrawWireCube(Vector3.zero, _boundsExtents);
             }
         }
 
@@ -201,7 +198,7 @@ namespace ExPresSXR.Rig
             // Draw a semitransparent red cube at the transforms position
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, _boundsExtents);
         }
     }
 }
