@@ -50,23 +50,30 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
   - Everything can be exported via the data gathering system.
 - Various little helpers for making life a bit easier.
 
-## Documentation
+## Getting Started & Documentation
 
-*ATBW* (Also To Be Written)
+If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Startedmd)-Page in the wiki.
+
+Thefull documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
+
+
+## Made with ExPresS XR
+
+A project will be linked shortly.
 
 ## Known Issues
 
-ExPress XR is still an alpha build so there will be many
+ExPress XR is still an alpha build so there may be many issues.  
+If you find any bugs check out the [Issues](https://github.com/eisclimber/ExPresS-XR/issues)-Page.
 
 ## Contact and Support
 
 @eisclimber on Twitter  
 luca.dreiling@student.uni-tuebingen.de
-Attribution is very much appreciated
 
 ## Version
 
-ExPresS XR was developed and tested with Unity 2021.3.6f1.
+ExPresS XR was developed and tested with Unity 2021.3.11f.
 
 ## License
 
