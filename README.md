@@ -1,6 +1,6 @@
 # ExPresS XR
 
-ExPresS XR (**Ex**perimentation and **Pres**entation for **S**cience with Open**XR**D is a toolkit for VR and XR in Unity.
+ExPresS XR (**Ex**perimentation and **Pres**entation for **S**cience with Open**XR**) is a toolkit for VR and XR in Unity.
 Based on the OpenXR Standard, it aims is to help automate early stages of development by providing configurable base implementations of components that are expected to be useful for scientific XR projects.  
 
 ## Structure
