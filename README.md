@@ -59,7 +59,9 @@ The full documentation can be found [here](https://github.com/eisclimber/ExPresS
 
 ## Made with ExPresS XR
 
-A project will be linked shortly.
+- [A Sample serving as an VR-Exhibition of the Church in Mühlen using ExPresS XR](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
+
+If you create your own project using ExPresS XR feel free to contact me, so I can add you to the list.
 
 ## Known Issues
 
