@@ -40,11 +40,11 @@ namespace ExPresSXR.Editor
                 EditorGUI.ObjectField(positionRect, property.FindPropertyRelative("_targetObject"));
                 if (EditorGUI.EndChangeCheck())
                 {
-                    // Reset _memberIdx if the targetObject changed
+                    // Update members and reset _memberIdx if _targetObject changed
                     UpdateMembers(property, property.FindPropertyRelative("_targetObject").objectReferenceValue as GameObject);
                     property.FindPropertyRelative("_memberIdx").intValue = -1;
                 }
-                
+
                 positionRect = new Rect(positionRect.x,
                                         positionRect.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING,
                                         positionRect.width,
