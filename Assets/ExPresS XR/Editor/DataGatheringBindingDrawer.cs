@@ -40,10 +40,10 @@ namespace ExPresSXR.Editor
                 EditorGUI.ObjectField(positionRect, property.FindPropertyRelative("_targetObject"));
                 if (EditorGUI.EndChangeCheck())
                 {
-                    // Reset _memberIdx if the targetObject changed
+                    // Update members and reset _memberIdx if _targetObject changed
+                    UpdateMembers(property, property.FindPropertyRelative("_targetObject").objectReferenceValue as GameObject);
                     property.FindPropertyRelative("_memberIdx").intValue = -1;
                 }
-                UpdateMembers(property, property.FindPropertyRelative("_targetObject").objectReferenceValue as GameObject);
 
                 positionRect = new Rect(positionRect.x,
                                         positionRect.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING,
@@ -56,7 +56,7 @@ namespace ExPresSXR.Editor
 
                 string[] popupOptions = GetPopupMemberNames(property.FindPropertyRelative("_prettyMemberNameList"));
                 SerializedProperty memberIdx = property.FindPropertyRelative("_memberIdx");
-
+                
                 EditorGUI.BeginChangeCheck();
                 // Popup (Add subtract 1 to account for an invalid member)
                 memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;

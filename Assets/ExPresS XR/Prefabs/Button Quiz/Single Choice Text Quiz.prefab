@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3475713148693367008}
   - {fileID: 3475713150045702467}
@@ -46,6 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: b0cf36d1b551b7b45b783444934a8aae, type: 2}
+  _quizUndergoing: 0
+  _feedbackDuration: 3
+  _startOnAwake: 1
+  _showResultTextPrefix: 0
+  _showQuizCompletedText: 0
+  _canRestartFromAfterQuizDialog: 0
   _buttons:
   - {fileID: 5806205015106880624}
   - {fileID: 6697648829384686353}
@@ -55,17 +62,12 @@ MonoBehaviour:
   _displayText: {fileID: 3475713150030208941}
   _displayAnchor: {fileID: 0}
   _displayPlayer: {fileID: 0}
+  _displayVideoImage: {fileID: 0}
   _afterQuizMenu: {fileID: 0}
-  _feedbackDuration: 3
-  _startOnAwake: 1
-  _showResultTextPrefix: 0
-  _showQuizCompletedText: 0
-  _canRestartFromAfterQuizDialog: 0
-  _quizUndergoing: 0
-  OnAnswerGiven:
+  OnQuizStarted:
     m_PersistentCalls:
       m_Calls: []
-  OnQuizStarted:
+  OnAnswerGiven:
     m_PersistentCalls:
       m_Calls: []
   OnQuizCompleted:
@@ -97,6 +99,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.02, y: 0.96, z: 0.32999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8552759416874240923}
   - {fileID: 8849746772640920826}
@@ -131,6 +134,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3475713150045702467}
   m_RootOrder: 0
@@ -267,6 +271,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.9599999}
   m_LocalScale: {x: 0.02, y: 0.02, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3475713150030208943}
   m_Father: {fileID: 3475713148691433554}
@@ -414,11 +419,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
---- !u!4 &8849746772640920826 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 8567012045507642051}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6697648829384686353 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3032875347758627282, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
@@ -430,6 +430,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &8849746772640920826 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+  m_PrefabInstance: {fileID: 8567012045507642051}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8828525031307394466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -487,11 +492,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
---- !u!4 &8552759416874240923 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 8828525031307394466}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5806205015106880624 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3032875347758627282, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
@@ -503,3 +503,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &8552759416874240923 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+  m_PrefabInstance: {fileID: 8828525031307394466}
+  m_PrefabAsset: {fileID: 0}

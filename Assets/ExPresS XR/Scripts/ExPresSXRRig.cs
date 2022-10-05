@@ -10,6 +10,7 @@ namespace ExPresSXR.Rig
 {
     [RequireComponent(typeof(XROrigin))]
     [DisallowMultipleComponent]
+    [AddComponentMenu("ExPresS XR Rig")]
     public class ExPresSXRRig : MonoBehaviour
     {
         [SerializeField]
@@ -139,6 +140,20 @@ namespace ExPresSXR.Rig
 
                 _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
                 _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Right) != 0;
+            }
+        }
+
+        [SerializeField]
+        private HandCombinations _uiInteractHands = HandCombinations.Left | HandCombinations.Right;
+        public HandCombinations uiInteractHands
+        {
+            get => _uiInteractHands;
+            set
+            {
+                _uiInteractHands = value;
+
+                _leftHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Left) != 0;
+                _rightHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Right) != 0;
             }
         }
 

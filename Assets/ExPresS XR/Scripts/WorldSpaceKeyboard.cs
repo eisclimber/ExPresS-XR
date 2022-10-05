@@ -34,7 +34,7 @@ namespace ExPresSXR.UI
                 _capsMode = value;
 
                 // Always start with tabs of if not always upper
-                capsActive = (_capsMode == CapsMode.AlwaysUpper);
+                capsActive = _capsMode == CapsMode.AlwaysUpper;
 
                 if (_capsButton != null)
                 {
@@ -73,11 +73,19 @@ namespace ExPresSXR.UI
         public UnityEvent<string> OnTextChanged;
 
 
-        private void Start()
+        private void Awake()
         {
             if (_inputField != null)
             {
                 _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
+            }
+
+            if (_capsButton != null)
+            {
+                if (_capsButton != null && _capsButton.gameObject.GetComponent<ButtonToggler>())
+                {
+                    _capsButton.gameObject.GetComponent<ButtonToggler>().OnToggleChanged.AddListener(ChangeCapsActive);
+                }
             }
         }
 
@@ -89,18 +97,16 @@ namespace ExPresSXR.UI
 
         public void AppendToText(string stringToAppend)
         {
-            inputText += (capsActive ? stringToAppend.ToUpper() : stringToAppend.ToLower());
+            // This will set the text to the inputField (via the setter)
+            inputText += capsActive ? stringToAppend.ToUpper() : stringToAppend.ToLower();
 
             if (capsActive && _capsMode == CapsMode.OneCharUpper)
             {
                 capsActive = !capsActive;
 
-                if (_capsButton != null)
+                if (_capsButton != null && _capsButton.gameObject.GetComponent<ButtonToggler>())
                 {
-                    if (_capsButton.gameObject.GetComponent<ButtonToggler>())
-                    {
-                        _capsButton.gameObject.GetComponent<ButtonToggler>().pressed = capsActive;
-                    }
+                    _capsButton.gameObject.GetComponent<ButtonToggler>().pressed = capsActive;
                 }
             }
 
@@ -125,7 +131,7 @@ namespace ExPresSXR.UI
 
         public void ChangeCapsActive(bool newCaps)
         {
-            capsActive = _capsActive;
+            capsActive = newCaps;
         }
 
 

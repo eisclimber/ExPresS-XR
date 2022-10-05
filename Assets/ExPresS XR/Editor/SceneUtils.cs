@@ -23,7 +23,7 @@ namespace ExPresSXR.Editor
         public const string MOBILE_EXPORT_SCENE_NAME = "Mobile Export Scene";
         public const string MOVEMENT_TUTORIAL_SCENE_NAME = "Movement Tutorial Scene";
 
-        
+
         // Helper variable that stores the ExPresS XR Rig wile a new scene gets created
         private static string _xRRigPrefabName = "";
 
@@ -78,12 +78,17 @@ namespace ExPresSXR.Editor
             }
         }
 
-        private static void OneShotAddXRRigCallback(UnityEngine.SceneManagement.Scene scene, UnityEditor.SceneManagement.OpenSceneMode mode)
+        private static void OneShotAddXRRigCallback(Scene scene, OpenSceneMode mode)
         {
-            GameObject rig = CreationUtils.InstantiateAndPlacePrefab(_xRRigPrefabName, null);
+            GameObject rig = null;
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(_xRRigPrefabName) != null)
+            {
+                rig = CreationUtils.InstantiateAndPlacePrefab(_xRRigPrefabName, null);
+            }
+
             if (rig == null)
             {
-                Debug.LogWarning("There is currently no ExPresSXRRig in the scene. Please create one via the hierarchy.");
+                Debug.LogWarning("There may not be an ExPresS XR Rig in the scene. Please create one via the hierarchy.");
             }
             if (rig != null && rig.GetComponent<ExPresSXRRig>() == null)
             {

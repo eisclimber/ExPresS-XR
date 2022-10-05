@@ -2,10 +2,10 @@
     <ui:Label text="Choose Movement/Interaction Type..." display-tooltip-when-elided="true" name="step-2-header" style="font-size: 20px; -unity-text-align: upper-center; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
     <ui:VisualElement name="step-2-controller" style="flex-grow: 1;">
         <ui:VisualElement name="choices-buttons" style="flex-direction: row; flex-grow: 0; height: 100px;">
-            <ui:Button text="Teleport" display-tooltip-when-elided="true" name="choice-1-button" style="width: auto; flex-grow: 1; flex-shrink: 1; flex-wrap: wrap;" />
-            <ui:Button text="Continuous Move" display-tooltip-when-elided="true" name="choice-2-button" style="flex-grow: 1; height: 100px; flex-shrink: 1; flex-wrap: wrap; white-space: nowrap;" />
-            <ui:Button text="Head Gaze" display-tooltip-when-elided="true" name="choice-3-button" style="flex-grow: 1; height: 100px; flex-shrink: 1; flex-wrap: wrap;" />
-            <ui:Button text="Custom" display-tooltip-when-elided="true" name="choice-4-button" style="flex-grow: 1; height: 100px; flex-shrink: 1; flex-wrap: wrap;" />
+            <ui:Button text="Teleport" display-tooltip-when-elided="true" name="choice-1-button" style="width: 0.25%; flex-grow: 1; flex-shrink: 0; flex-wrap: wrap;" />
+            <ui:Button text="Continuous Move" display-tooltip-when-elided="true" name="choice-2-button" style="flex-grow: 1; height: 100px; flex-shrink: 0; flex-wrap: wrap; white-space: nowrap; width: 0.25%;" />
+            <ui:Button text="Head Gaze" display-tooltip-when-elided="true" name="choice-3-button" style="flex-grow: 1; height: 100px; flex-shrink: 0; flex-wrap: wrap; width: 0.25%;" />
+            <ui:Button text="Custom" display-tooltip-when-elided="true" name="choice-4-button" style="flex-grow: 1; height: 100px; flex-shrink: 0; flex-wrap: wrap; width: 0.25%;" />
         </ui:VisualElement>
         <ui:VisualElement name="choices-descriptions" style="flex-grow: 1;">
             <ui:Label text="Movement is done via Teleporting which is less prone to induce motion sickness. \nThe teleportation-mode can be entered by pushing the joystick forward, aiming at a valid target and releasing to teleport. Additionally the camera can be turned in 30 degree steps by pushing the Joystick either left or right. \nObjects can be interacted with by grabbing while UI is interactable via pointing. " display-tooltip-when-elided="true" name="choice-1-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; white-space: normal; display: flex;" />

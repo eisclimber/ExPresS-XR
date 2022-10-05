@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 3597090413127384589}
   m_Layer: 0
   m_Name: Left Auto XR Hand Model Without Collisions
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -980,7 +980,7 @@ MonoBehaviour:
   m_EnableInputActions: 0
   m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 3597090412847112071}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
@@ -1459,7 +1459,7 @@ GameObject:
   - component: {fileID: 3597090413476426952}
   m_Layer: 0
   m_Name: Left AutoXR Hand Model With Collisions
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3970,6 +3970,7 @@ MonoBehaviour:
   _handModelMode: 1
   _interactionEnabled: 1
   _teleportationEnabled: 0
+  _uiInteractionEnabled: 1
   _gripDeactivatesTeleportation: 0
   _interactionController: {fileID: 3597090413604117838}
   _teleportationController: {fileID: 3597090413627662723}
@@ -4195,7 +4196,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 26d13fb7265d04f49ac092610ee8781c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4231,7 +4232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _showPlayAreaBounds: 0
   _useCustomBoundingBoxMaterial: 0
-  _customBoundingBoxMaterial: {fileID: 0}
+  _customBoundingBoxMaterial: {fileID: 2100000, guid: 26d13fb7265d04f49ac092610ee8781c, type: 2}
 --- !u!1 &3597090414194757351
 GameObject:
   m_ObjectHideFlags: 0
@@ -4508,6 +4509,7 @@ MonoBehaviour:
   _handModelMode: 1
   _interactHands: -1
   _teleportHands: -1
+  _uiInteractHands: 3
   _headCollisionEnabled: 1
   _showCollisionVignetteEffect: 0
   _showPlayAreaBounds: 0
@@ -5384,6 +5386,7 @@ MonoBehaviour:
   _handModelMode: 1
   _interactionEnabled: 1
   _teleportationEnabled: 0
+  _uiInteractionEnabled: 1
   _gripDeactivatesTeleportation: 0
   _interactionController: {fileID: 3597090413239295154}
   _teleportationController: {fileID: 3597090413244886529}

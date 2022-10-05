@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -89,7 +90,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeColor: {r: 0, g: 0, b: 0, a: 0}
-  fadeToBlackTime: 0.5
+  fadeToColorTime: 0.5
   fadeToClearTime: 0.5
-  _fadeDirection: 0
   _fadeImage: {fileID: 1085936775410217315}
+  OnFadeToColorCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeToCleanCompleted:
+    m_PersistentCalls:
+      m_Calls: []

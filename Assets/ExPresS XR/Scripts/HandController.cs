@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
@@ -27,7 +28,24 @@ namespace ExPresSXR.Rig
         public bool interactionEnabled
         {
             get => _interactionEnabled;
-            set => _interactionEnabled = value;
+            set
+            {
+                _interactionEnabled = value;
+
+                if (_interactionController != null)
+                {
+                    // Enable/Disable Interactors to prevent interaction
+                    if (_interactionController.GetComponent<XRDirectInteractor>())
+                    {
+                        _interactionController.GetComponent<XRDirectInteractor>().enabled = _interactionEnabled;
+                    }
+
+                    if (_interactionController.GetComponent<XRRayInteractor>())
+                    {
+                        _interactionController.GetComponent<XRRayInteractor>().enabled = _interactionEnabled;
+                    }
+                }
+            }
         }
 
         [Space]
@@ -38,6 +56,22 @@ namespace ExPresSXR.Rig
         {
             get => _teleportationEnabled;
             set => _teleportationEnabled = value;
+        }
+
+        [SerializeField]
+        private bool _uiInteractionEnabled = true;
+        public bool uiInteractionEnabled
+        {
+            get => _uiInteractionEnabled;
+            set
+            {
+                _uiInteractionEnabled = value;
+
+                if (_uiInteractionController != null)
+                {
+                    _uiInteractionController.enabled = _uiInteractionEnabled;
+                }
+            }
         }
 
         [SerializeField]
@@ -84,8 +118,8 @@ namespace ExPresSXR.Rig
             // Set hand model mode, as the prefabs are not instantiated at runtime
             handModelMode = _handModelMode;
 
-            _interactionController.gameObject.SetActive(_interactionEnabled);
-            _teleportationController.gameObject.SetActive(_teleportationEnabled);
+            // _interactionController.gameObject.SetActive(_interactionEnabled);
+            // _teleportationController.gameObject.SetActive(_teleportationEnabled);
 
             // Activate Teleport Mode (Teleports on release). Default: Move Joystick Up
             _teleportModeActivationReference.action.performed += TeleportModeActivate;
@@ -100,12 +134,24 @@ namespace ExPresSXR.Rig
             }
         }
 
-        private void TeleportModeActivate(InputAction.CallbackContext obj) => OnTeleportActivate.Invoke();
+        private void TeleportModeActivate(InputAction.CallbackContext obj)
+        {
+            if (teleportationEnabled)
+            {
+                OnTeleportActivate.Invoke();
+            }
+        }
 
-        private void TeleportModeCancel(InputAction.CallbackContext obj) => Invoke("DeactivateTeleporter", 0.1f);
+        private void TeleportModeCancel(InputAction.CallbackContext obj) 
+            => StartCoroutine(DeactivateTeleporterCoroutine());
 
         private void DeactivateTeleporter() => OnTeleportCancel.Invoke();
 
+        private IEnumerator DeactivateTeleporterCoroutine()
+        {
+            yield return new WaitForSeconds(0.1f);
+            DeactivateTeleporter();
+        }
 
         private void TrySetHandModelModeInController(ActionBasedController controller, HandModelMode mode)
         {
@@ -115,7 +161,7 @@ namespace ExPresSXR.Rig
 
                 if (handModel != null)
                 {
-                    handModel.handModelMode = _handModelMode;
+                    handModel.handModelMode = mode;
                 }
             }
         }

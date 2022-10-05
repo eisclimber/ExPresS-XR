@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -179,6 +179,7 @@ MonoBehaviour:
   _handModelMode: 1
   _interactHands: -1
   _teleportHands: 2
+  _uiInteractHands: 3
   _headCollisionEnabled: 1
   _showCollisionVignetteEffect: 0
   _showPlayAreaBounds: 0
@@ -510,6 +511,7 @@ MonoBehaviour:
   _handModelMode: 1
   _interactionEnabled: 1
   _teleportationEnabled: 1
+  _uiInteractionEnabled: 1
   _gripDeactivatesTeleportation: 0
   _interactionController: {fileID: 925264302}
   _teleportationController: {fileID: 741556555}
@@ -2747,6 +2749,7 @@ MonoBehaviour:
   _handModelMode: 1
   _interactionEnabled: 1
   _teleportationEnabled: 1
+  _uiInteractionEnabled: 1
   _gripDeactivatesTeleportation: 0
   _interactionController: {fileID: 2106112673}
   _teleportationController: {fileID: 830533053}

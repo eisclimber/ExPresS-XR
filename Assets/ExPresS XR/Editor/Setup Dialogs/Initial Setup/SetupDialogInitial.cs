@@ -137,6 +137,8 @@ namespace ExPresSXR.Editor.SetupDialogs
             if (launchOption != LaunchOption.None)
             {
                 SceneUtils.LoadSceneTemplate(sceneName, rigName);
+                // Open Tutorials
+                ShowTutorialsSetupDialogs();
             }
             else
             {
@@ -175,6 +177,18 @@ namespace ExPresSXR.Editor.SetupDialogs
                     return CreationUtils.HEAD_GAZE_EXPRESS_XR_RIG_PREFAB_NAME;
                 default:
                     return CreationUtils.CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME;
+            }
+        }
+
+        private void ShowTutorialsSetupDialogs()
+        {
+            if (launchOption == LaunchOption.Exhibition || launchOption == LaunchOption.Both)
+            {
+                SetupDialogExhibitionTutorial.ShowWindow();
+            }
+            if (launchOption == LaunchOption.Experimentation || launchOption == LaunchOption.Both)
+            {
+                SetupDialogExperimentationTutorial.ShowWindow();
             }
         }
     }

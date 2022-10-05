@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4029758216103307652}
   m_RootOrder: 0
@@ -161,6 +162,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4029758216586240282}
   - {fileID: 4029758216660703385}
@@ -181,6 +183,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: c7f4f3546d33c394881f8b935f94774b, type: 2}
+  _quizUndergoing: 0
+  _feedbackDuration: 3
+  _startOnAwake: 1
+  _showResultTextPrefix: 0
+  _showQuizCompletedText: 0
+  _canRestartFromAfterQuizDialog: 0
   _buttons:
   - {fileID: 7541231951524078788}
   - {fileID: 3277998412919213243}
@@ -190,17 +198,12 @@ MonoBehaviour:
   _displayText: {fileID: 4029758215890977298}
   _displayAnchor: {fileID: 4029758216660703384}
   _displayPlayer: {fileID: 0}
+  _displayVideoImage: {fileID: 0}
   _afterQuizMenu: {fileID: 0}
-  _feedbackDuration: 3
-  _startOnAwake: 1
-  _showResultTextPrefix: 0
-  _showQuizCompletedText: 0
-  _canRestartFromAfterQuizDialog: 0
-  _quizUndergoing: 0
-  OnAnswerGiven:
+  OnQuizStarted:
     m_PersistentCalls:
       m_Calls: []
-  OnQuizStarted:
+  OnAnswerGiven:
     m_PersistentCalls:
       m_Calls: []
   OnQuizCompleted:
@@ -236,6 +239,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 2.75}
   m_LocalScale: {x: 0.02, y: 0.02, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4029758215890977292}
   m_Father: {fileID: 4029758215902987370}
@@ -352,6 +356,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.96999997, z: 0.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5658103689479990063}
   - {fileID: 819518666960470864}
@@ -384,6 +389,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.030000001, y: 1.0699999, z: 1.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4029758215902987370}
   m_RootOrder: 1
