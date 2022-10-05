@@ -65,6 +65,8 @@ namespace ExPresSXR.Editor
                         targetScript.teleportHands = (HandCombinations)EditorGUILayout.EnumFlagsField("Teleport with Hands", targetScript.teleportHands);
                     }
                     EditorGUI.EndDisabledGroup();
+
+                    targetScript.uiInteractHands = (HandCombinations)EditorGUILayout.EnumFlagsField("UI-Interact with Hands", targetScript.uiInteractHands);
                 }
                 EditorGUI.EndDisabledGroup();
                 EditorGUI.indentLevel--;

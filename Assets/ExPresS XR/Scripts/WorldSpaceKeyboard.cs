@@ -97,6 +97,7 @@ namespace ExPresSXR.UI
 
         public void AppendToText(string stringToAppend)
         {
+            // This will set the text to the inputField (via the setter)
             inputText += capsActive ? stringToAppend.ToUpper() : stringToAppend.ToLower();
 
             if (capsActive && _capsMode == CapsMode.OneCharUpper)

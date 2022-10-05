@@ -142,7 +142,6 @@ namespace ExPresSXR.Rig
 
             //transform.localScale = diff;
             transform.localPosition = new Vector3(0, diff.y+ 0.1f, 0);
-            Debug.Log(transform.localPosition);
             _boundsExtents = diff;
         }
 

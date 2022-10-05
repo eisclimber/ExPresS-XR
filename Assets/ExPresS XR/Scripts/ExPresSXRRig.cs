@@ -143,6 +143,20 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [SerializeField]
+        private HandCombinations _uiInteractHands = HandCombinations.Left | HandCombinations.Right;
+        public HandCombinations uiInteractHands
+        {
+            get => _uiInteractHands;
+            set
+            {
+                _uiInteractHands = value;
+
+                _leftHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Left) != 0;
+                _rightHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Right) != 0;
+            }
+        }
+
 
         [Tooltip("Prevents the players Camera from clipping through Objects and looking inside them.")]
         [SerializeField]

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91147366f28929439b0468f14fce089, type: 3}
-  m_Name: NoFeedbackQuiz
+  m_Name: Random Feedback Quiz
   m_EditorClassIdentifier: 
   quizMode: 0
   questionOrdering: 1
   answersAmount: 1
   questionType: 2
   answerType: 1
-  feedbackMode: 0
+  feedbackMode: 3
   feedbackType: 0
   questions:
   - itemIdx: 0
@@ -28,11 +28,11 @@ MonoBehaviour:
     answerTexts:
     - Yes
     - No
-    correctAnswers: 
+    correctAnswers: 0100
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemIdx: 0
+  - itemIdx: 1
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Is the earth flat?
@@ -44,7 +44,7 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemIdx: 0
+  - itemIdx: 2
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Were you born in 1822?
@@ -56,7 +56,7 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemIdx: 0
+  - itemIdx: 3
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Do most cars have four tyres?
@@ -68,7 +68,7 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemIdx: 0
+  - itemIdx: 4
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Is H2O water?
@@ -80,7 +80,7 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemIdx: 0
+  - itemIdx: 5
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Did Columbus discover Europe?
@@ -92,7 +92,7 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemIdx: 0
+  - itemIdx: 6
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Is 7 * 6 equal to 24?
@@ -104,7 +104,7 @@ MonoBehaviour:
     feedbackVideo: {fileID: 0}
     feedbackObject: {fileID: 0}
     feedbackText: 
-  - itemIdx: 0
+  - itemIdx: 7
     questionVideo: {fileID: 0}
     questionObject: {fileID: 0}
     questionText: Do apples grow on trees?

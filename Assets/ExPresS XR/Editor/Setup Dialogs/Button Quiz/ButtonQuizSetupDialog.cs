@@ -19,6 +19,8 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         const float QUIZ_BUTTON_SPACING = 0.3f;
 
+        const string DEFAULT_BUTTON_QUIZ_GO_NAME = "Button Quiz";
+
 
 
         [MenuItem("ExPresS XR/Button Quiz Setup", false, 4)]
@@ -29,7 +31,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             window.minSize = new Vector2(700, 500);
 
             window.configField.value = null;
-            window.UpdateQuizConfig(ButtonQuizConfig.CreateInstance<ButtonQuizConfig>());
+            window.UpdateQuizConfig(CreateInstance<ButtonQuizConfig>());
 
             _currentQuizGo = null;
         }
@@ -350,23 +352,32 @@ namespace ExPresSXR.Editor.SetupDialogs
                     int counter = 0;
                     questionItem.Query<ObjectField>("answer-object-field").ForEach((ObjectField objField) =>
                     {
-                        objField.value = question.answerObjects[counter];
-                        counter++;
+                        if (counter < question.answerObjects.Length)
+                        {
+                            objField.value = question.answerObjects[counter];
+                            counter++;
+                        }
                     });
 
                     counter = 0;
                     questionItem.Query<TextField>("answer-text-field").ForEach((TextField textField) =>
                     {
-                        textField.value = question.answerTexts[counter];
-                        counter++;
+                        if (counter < question.answerTexts.Length)
+                        {
+                            textField.value = question.answerTexts[counter];
+                            counter++;
+                        }
                     });
 
                     // Fill Answers
                     counter = 0;
                     questionItem.Query<Toggle>("correct-toggle").ForEach((Toggle toggle) =>
                     {
-                        toggle.value = question.correctAnswers[counter];
-                        counter++;
+                        if (counter < question.correctAnswers.Length)
+                        {
+                            toggle.value = question.correctAnswers[counter];
+                            counter++;
+                        }
                     });
 
                     // Fill Feedback Values
@@ -422,7 +433,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             currentStep++;
 
-            _currentQuizGo = new GameObject("Tutorial Button Quiz");
+            _currentQuizGo = new GameObject(DEFAULT_BUTTON_QUIZ_GO_NAME);
             _currentQuizGo.GetComponent<ButtonQuiz>();
 
             SetStepButtonsEnabled(true, 3, 5);
@@ -866,7 +877,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             if (_currentQuizGo == null)
             {
-                _currentQuizGo = new GameObject("Tutorial Button Quiz");
+                _currentQuizGo = new GameObject(DEFAULT_BUTTON_QUIZ_GO_NAME);
             }
 
             ButtonQuiz quiz = _currentQuizGo.GetComponent<ButtonQuiz>();
