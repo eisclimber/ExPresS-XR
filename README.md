@@ -57,6 +57,11 @@ If you are new check out the [Getting Started](https://github.com/eisclimber/ExP
 The full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
 
 
+## Help Us Out
+
+ExPresS XR needs your feedback to improve. For that you will find a [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf) in the repository of your project.
+
+
 ## Made with ExPresS XR
 
 - [A Sample serving as an VR-Exhibition of the Church in Mühlen using ExPresS XR](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
