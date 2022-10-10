@@ -14,6 +14,6 @@ namespace ExPresSXR.Interaction
             => base.CanSelect(interactable) && IsTagMatch(interactable);
 
         private bool IsTagMatch(IXRInteractable interactable)
-            => interactable.transform.tag == targetTag || (targetTag == "" && interactable.transform.tag == "Untagged");
+            => interactable.transform.CompareTag(targetTag) || (targetTag == "" && interactable.transform.CompareTag("Untagged"));
     }
 }
