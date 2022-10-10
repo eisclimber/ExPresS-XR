@@ -108,7 +108,7 @@ namespace ExPresSXR.Rig
 
             for (int i = 0; i < size; i++)
             {
-                if (_objs[i].CompareTag("Player"))
+                if (!_objs[i].CompareTag("Player"))
                 {
                     hits++;
                 }
