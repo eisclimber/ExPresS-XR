@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.33988577, g: 0.3063053, b: 0.29361668, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -35835,11 +35835,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 1
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   screenCollisionIndicator: {fileID: 1862267526}
   _pushbackAnchor: {fileID: 2096557244}
   _colliderSize: 0.22
-  _maxFadeDuration: 0
+  _maxFadeDuration: 0.5
   OnCollisionStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -39393,7 +39393,7 @@ MonoBehaviour:
   _teleportHands: 2
   _uiInteractHands: 3
   _headCollisionEnabled: 1
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   _showPlayAreaBounds: 0
   _useCustomPlayAreaMaterial: 0
   _headGazeCanReselect: 1

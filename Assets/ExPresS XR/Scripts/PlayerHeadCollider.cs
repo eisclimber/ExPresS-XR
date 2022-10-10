@@ -43,7 +43,7 @@ namespace ExPresSXR.Rig
         private float _colliderSize = .25f;
 
 
-        [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds.")]
+        [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
         private float _maxFadeDuration = .5f;
         private float maxFadeDuration

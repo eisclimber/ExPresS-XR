@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.33988577, g: 0.3063053, b: 0.29361668, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1361,6 +1361,30 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8887577376557963461, guid: f898365e42c9ecc42a0a2569606aa613, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089057287810662870, guid: f898365e42c9ecc42a0a2569606aa613, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089057287810662870, guid: f898365e42c9ecc42a0a2569606aa613, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089057287810662870, guid: f898365e42c9ecc42a0a2569606aa613, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089057287810662870, guid: f898365e42c9ecc42a0a2569606aa613, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089057287810662870, guid: f898365e42c9ecc42a0a2569606aa613, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089057287810662870, guid: f898365e42c9ecc42a0a2569606aa613, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -4267,11 +4291,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 1
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   screenCollisionIndicator: {fileID: 771830475}
   _pushbackAnchor: {fileID: 1783793986}
   _colliderSize: 0.22
-  _maxFadeDuration: 0
+  _maxFadeDuration: 0.5
   OnCollisionStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -10184,7 +10208,7 @@ MonoBehaviour:
   _teleportHands: 2
   _uiInteractHands: 3
   _headCollisionEnabled: 1
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   _showPlayAreaBounds: 0
   _useCustomPlayAreaMaterial: 0
   _headGazeCanReselect: 1
