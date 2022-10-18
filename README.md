@@ -3,6 +3,13 @@
 ExPresS XR (**Ex**perimentation and **Pres**entation for **S**cience with Open**XR**) is a toolkit for VR and XR in Unity.
 Based on the OpenXR Standard, it aims is to help automate early stages of development by providing configurable base implementations of components that are expected to be useful for scientific XR projects.  
 
+## Getting Started & Documentation
+
+If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki.
+
+The full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
+
+
 ## Structure
 
 Following the aim to the OpenXR standard itself, ExPresS XR aims to allow development for a multitude of devices.
@@ -49,13 +56,6 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
   - The Feedback can be shown in different ways or be omitted.
   - Everything can be exported via the data gathering system.
 - Various little helpers for making life a bit easier.
-
-## Getting Started & Documentation
-
-If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki.
-
-The full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
-
 
 ## Help Us Out
 
