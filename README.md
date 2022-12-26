@@ -45,7 +45,7 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 - Configurable displays to present objects and further information in VR.
   - The objects can be picked up and inspected.
 - Automatic Creation of an "neutral"-looking rooms with specified dimensions for quick experiment setups.
-- An easy to use system for gathering and exporting data from anywhere in the VR.
+- An easy-to-use system for gathering and exporting data from anywhere in the VR.
   - Is structured similar to Unity's event system.
   - Data can be saved locally or be sent via http.
 - A fully customizable quizzing system.
