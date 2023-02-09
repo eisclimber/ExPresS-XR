@@ -23,11 +23,11 @@ namespace ExPresSXR.Rig
 
                 if (_teleportationEnabled)
                 {
-                    _rayInteractor.interactionLayers |= 1 << InteractionLayerMask.NameToLayer("Teleportation");
+                    _rayInteractor.interactionLayers |= 1 << InteractionLayerMask.NameToLayer("Teleport");
                 }
                 else
                 {
-                    _rayInteractor.interactionLayers &= ~(1 << InteractionLayerMask.NameToLayer("Teleportation"));
+                    _rayInteractor.interactionLayers &= ~(1 << InteractionLayerMask.NameToLayer("Teleport"));
                 }
             }
         }

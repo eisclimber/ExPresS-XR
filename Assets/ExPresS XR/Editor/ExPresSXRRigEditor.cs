@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using ExPresSXR.Rig;
 using ExPresSXR.UI;
 
@@ -143,12 +144,15 @@ namespace ExPresSXR.Editor
 
             if (_showObjectRefs)
             {
+                // TODO switch to serialized property
+                Undo.RecordObject(target, "Update Object References");
                 EditorGUI.indentLevel++;
                 EditorGUILayout.LabelField("Do not change these! Thank you:)");
                 targetScript.leftHandController = (HandController)EditorGUILayout.ObjectField("Left Hand Controller", targetScript.leftHandController, typeof(HandController), true);
                 targetScript.rightHandController = (HandController)EditorGUILayout.ObjectField("Right Hand Controller", targetScript.rightHandController, typeof(HandController), true);
                 targetScript.headGazeController = (HeadGazeController)EditorGUILayout.ObjectField("Head Gaze Controller", targetScript.headGazeController, typeof(HeadGazeController), true);
                 targetScript.headGazeReticle = (HeadGazeReticle)EditorGUILayout.ObjectField("Head Gaze Reticle", targetScript.headGazeReticle, typeof(HeadGazeReticle), true);
+                targetScript.inputActionManager = (InputActionManager)EditorGUILayout.ObjectField("XR Interaction Manager", targetScript.inputActionManager, typeof(InputActionManager), true);
                 targetScript.locomotionSystem = (LocomotionSystem)EditorGUILayout.ObjectField("Locomotion System", targetScript.locomotionSystem, typeof(LocomotionSystem), true);
                 targetScript.playerHeadCollider = (PlayerHeadCollider)EditorGUILayout.ObjectField("Player Head Collider", targetScript.playerHeadCollider, typeof(PlayerHeadCollider), true);
                 targetScript.screenCollisionIndicator = (ScreenCollisionIndicator)EditorGUILayout.ObjectField("Screen Collision Indicator", targetScript.screenCollisionIndicator, typeof(ScreenCollisionIndicator), true);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using Unity.XR.CoreUtils;
 using ExPresSXR.UI;
 
@@ -13,6 +14,7 @@ namespace ExPresSXR.Rig
     [AddComponentMenu("ExPresS XR Rig")]
     public class ExPresSXRRig : MonoBehaviour
     {
+        [Tooltip("If Controller or HeadGaze should be used for movement.")]
         [SerializeField]
         private InputMethodType _inputMethod;
         public InputMethodType inputMethod
@@ -34,6 +36,7 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("If Teleportation movement is enabled.")]
         [SerializeField]
         private bool _teleportationEnabled;
         public bool teleportationEnabled
@@ -53,6 +56,7 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("If Joystick movement is enabled.")]
         [SerializeField]
         private bool _joystickMovementEnabled;
         public bool joystickMovementEnabled
@@ -75,6 +79,7 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("If SnapTurn movement is enabled.")]
         [SerializeField]
         private bool _snapTurnEnabled;
         public bool snapTurnEnabled
@@ -94,6 +99,7 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Determines how the controllers/hands are rendered in the VR.")]
         [SerializeField]
         private HandModelMode _handModelMode;
         public HandModelMode handModelMode
@@ -115,6 +121,7 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Determines which hand can be used to interact with Interactables.")]
         [SerializeField]
         private HandCombinations _interactHands = HandCombinations.Left | HandCombinations.Right;
         public HandCombinations interactHands
@@ -129,6 +136,7 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Determines which hand can be used to teleport if teleportation is enabled.")]
         [SerializeField]
         private HandCombinations _teleportHands = HandCombinations.Left | HandCombinations.Right;
         public HandCombinations teleportHands
@@ -143,6 +151,7 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Determines which hand can be used to interact with UI.")]
         [SerializeField]
         private HandCombinations _uiInteractHands = HandCombinations.Left | HandCombinations.Right;
         public HandCombinations uiInteractHands
@@ -229,7 +238,7 @@ namespace ExPresSXR.Rig
 
 
         ///////////////
-
+        [Tooltip("Allow reselection of currently hovered Interactable with HeadGaze.")]
         [SerializeField]
         private bool _headGazeCanReselect;
         public bool headGazeCanReselect
@@ -246,6 +255,8 @@ namespace ExPresSXR.Rig
             }
         }
 
+
+        [Tooltip("Duration after which HeadGaze reselects an hovered interaction if enabled.")]
         [SerializeField]
         private float _headGazeTimeToSelect;
         public float headGazeTimeToSelect
@@ -263,7 +274,7 @@ namespace ExPresSXR.Rig
         }
 
 
-
+        [Tooltip("Reference to the HeadGazeReticle of the ExPresS XR Rig.")]
         [SerializeField]
         private HeadGazeReticle _headGazeReticle;
         public HeadGazeReticle headGazeReticle
@@ -283,6 +294,7 @@ namespace ExPresSXR.Rig
 
 
         //////////////////////
+        [Tooltip("Reference to the *left* HandController of the ExPresS XR Rig.")]
         [SerializeField]
         private HandController _leftHandController;
         public HandController leftHandController
@@ -292,6 +304,7 @@ namespace ExPresSXR.Rig
         }
 
         //////////////////
+        [Tooltip("Reference to the *right* HandController of the ExPresS XR Rig.")]
         [SerializeField]
         private HandController _rightHandController;
         public HandController rightHandController
@@ -302,6 +315,7 @@ namespace ExPresSXR.Rig
 
         //////////////////
 
+        [Tooltip("Reference to the HeadGazeController of the ExPresS XR Rig.")]
         [SerializeField]
         private HeadGazeController _headGazeController;
         public HeadGazeController headGazeController
@@ -312,6 +326,18 @@ namespace ExPresSXR.Rig
 
         //////////////////
 
+        [Tooltip("Reference to the InputActionManager of the ExPresS XR Rig.")]
+        [SerializeField]
+        private InputActionManager _inputActionManager;
+        public InputActionManager inputActionManager
+        {
+            get => _inputActionManager;
+            set => _inputActionManager = value;
+        }
+
+        //////////////////
+
+        [Tooltip("Reference to the LocomotionSystem of the ExPresS XR Rig.")]
         [SerializeField]
         private LocomotionSystem _locomotionSystem;
         public LocomotionSystem locomotionSystem
@@ -423,6 +449,16 @@ namespace ExPresSXR.Rig
             if (displaySubsystems.Count > 0)
             {
                 displaySubsystems[0].SetPreferredMirrorBlitMode((int) _gameTabDisplayMode);
+            }
+
+            // Enable Inputs of the InputActionManager as it somehow does not do it automatically anymore
+            if (inputActionManager != null)
+            {
+                inputActionManager.EnableInput();
+            }
+            else
+            {
+                Debug.LogWarning("No InputActionManager provided. InputAction will not be enabled automatically so VR-Inputs might not work.");
             }
 
             // Update the initial position of the teleportation provider

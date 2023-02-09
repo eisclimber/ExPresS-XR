@@ -185,7 +185,7 @@ namespace ExPresSXR.Editor
                 // Abort if no floor was found
                 if (inverse.Count >= parentMesh.faceCount)
                 {
-                    Debug.LogError("Could not find any suitable floors in the room. Teleportation Area Creation aborted");
+                    Debug.LogError("Could not find any suitable floors in the room. No TeleportationAreas created.");
                     return;
                 }
 
@@ -229,7 +229,7 @@ namespace ExPresSXR.Editor
 
                 // Setup Teleportation Area (Collisions and layers)
                 TeleportationArea area = areaObject.AddComponent<TeleportationArea>();
-                area.interactionLayers = 1 << InteractionLayerMask.NameToLayer("Teleportation");
+                area.interactionLayers = 1 << InteractionLayerMask.NameToLayer("Teleport");
                 area.colliders.Add(areaObject.GetComponent<MeshCollider>());
 
                 // Add/Copy Reticle Teleportation Area
