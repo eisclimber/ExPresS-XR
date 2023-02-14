@@ -347,6 +347,16 @@ namespace ExPresSXR.Rig
         }
 
         //////////////////
+        [Tooltip("The main camera that is rendering to the HMD.")]
+        [SerializeField]
+        private Camera _mainRigCamera;
+        public Camera mainRigCamera
+        {
+            get => _mainRigCamera;
+            set => _mainRigCamera = value;
+        }
+
+
 
         [Tooltip("Must be a PlayerHeadCollider-Component attached to the Main Camera GameObject.")]
         [SerializeField]
