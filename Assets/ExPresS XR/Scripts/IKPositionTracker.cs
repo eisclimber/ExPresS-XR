@@ -5,13 +5,10 @@ using UnityEngine;
 [Tooltip("Component that should be added to a target of an IKConstraint to move it according to another Transform.")]
 public class IKPositionTracker : MonoBehaviour
 {
-    [Tooltip("Root of the presence so it can be moved if '_moveRootAlong' is enabled.")]
-    [SerializeField]
-    private Transform _presenceRoot;
 
     [Tooltip("Transform of the Object that is used to move this target.")]
     [SerializeField]
-    private Transform _followObject;
+    private Transform _vrTarget;
 
     [Tooltip("Additional offset that is applied to the root of the presence.")]
     [SerializeField]
@@ -22,9 +19,14 @@ public class IKPositionTracker : MonoBehaviour
     [SerializeField]
     private bool _moveRootAlong;
 
+    [Tooltip("Root of the presence so it can be moved if '_moveRootAlong' is enabled.")]
+    [SerializeField]
+    private Transform _presenceRoot;
+
+
     // Used to apply initial position and rotation
-    [SerializeField]private Vector3 _initialFollowPosition;
-    [SerializeField]private Quaternion _initialFollowRotation;
+    [SerializeField] private Vector3 _initialFollowPosition;
+    [SerializeField] private Quaternion _initialFollowRotation;
 
 
     private void Start() {
@@ -34,29 +36,21 @@ public class IKPositionTracker : MonoBehaviour
                 + "Provide a '_presenceRoot' or disable '_moveRootAlong'.");
         }
 
-        // if (_followObject != null)
-        // {
-        //     _initialFollowPosition = transform.position;
-        //     _initialFollowRotation = transform.rotation;
-        // }
-        // else {
-        //     Debug.LogError("No followObject provided! Target won't be tracked automatically.");
-        // }
-        
+        _initialFollowPosition = transform.position;
+        _initialFollowRotation = transform.rotation;        
     }
 
     void Update()
     {
-        if (_moveRootAlong && _presenceRoot != null)
+        if (_vrTarget != null)
         {
-            _presenceRoot.position = _followObject.position - _initialFollowPosition;
-            _presenceRoot.forward = Vector3.ProjectOnPlane(_followObject.forward, Vector3.up).normalized;
-        }
-
-        if (_followObject != null)
-        {
-            transform.SetPositionAndRotation(_followObject.TransformPoint(_rootPositionOffset),
-                _followObject.rotation * _initialFollowRotation);
+            if (_moveRootAlong && _presenceRoot != null)
+            {
+                _presenceRoot.position = _vrTarget.position - _initialFollowPosition;
+                _presenceRoot.forward = Vector3.ProjectOnPlane(_vrTarget.forward, Vector3.up).normalized;
+            }
+            transform.SetPositionAndRotation(_vrTarget.TransformPoint(_rootPositionOffset),
+                    _vrTarget.rotation * _initialFollowRotation);            
         }
     }
 }
