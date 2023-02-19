@@ -202,14 +202,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 46630923}
-  m_LocalRotation: {x: 0.579228, y: -0.4055798, z: -0.579228, w: 0.4055798}
-  m_LocalPosition: {x: -0.0000009052455, y: 1.7369666, z: 245883}
+  m_LocalRotation: {x: 0.579228, y: -0.40557975, z: -0.579228, w: 0.40557975}
+  m_LocalPosition: {x: 0, y: 1.7369666, z: 0.0245883}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1376165135}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: -110}
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 250}
 --- !u!114 &46630925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,17 +217,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 46630923}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3746b212aa7f5e546b994adc02304fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vrTarget: {fileID: 796612726}
-  _rootPositionOffset: {x: 0, y: 0, z: 0}
-  _moveRootAlong: 1
+  _mapping:
+    _vrTarget: {fileID: 796612726}
+    _ikTarget: {fileID: 1885221190}
+    _positionOffset: {x: 0, y: 0, z: 0}
+    _rotationOffset: {x: 0.5792279, y: -0.4055798, z: -0.5792279, w: 0.4055798}
+  _moveRoot: 0
   _presenceRoot: {fileID: 1885221160}
-  _initialFollowPosition: {x: -0.0000009052455, y: 1.736967, z: 0.02458835}
-  _initialFollowRotation: {x: 0.5792279, y: -0.4055798, z: -0.5792279, w: 0.4055798}
 --- !u!1 &190512246
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,7 +1023,7 @@ GameObject:
   - component: {fileID: 244519913}
   - component: {fileID: 244519914}
   m_Layer: 0
-  m_Name: IK Right Hand
+  m_Name: Right Hand Constraint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2762,7 +2763,7 @@ GameObject:
   - component: {fileID: 706864007}
   - component: {fileID: 706864008}
   m_Layer: 0
-  m_Name: IK Left Hand
+  m_Name: Left Hand Constraint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3128,17 +3129,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811599352}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3746b212aa7f5e546b994adc02304fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vrTarget: {fileID: 1538084743}
-  _rootPositionOffset: {x: 0.04, y: -0.03, z: -0.1}
-  _moveRootAlong: 0
+  _mapping:
+    _vrTarget: {fileID: 1538084743}
+    _ikTarget: {fileID: 1885221144}
+    _positionOffset: {x: 0.04, y: -0.03, z: -0.1}
+    _rotationOffset: {x: 0.49999997, y: -0.49999997, z: -0.49999997, w: -0.49999997}
+  _moveRoot: 0
   _presenceRoot: {fileID: 1885221160}
-  _initialFollowPosition: {x: 0, y: 0, z: 0}
-  _initialFollowRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &841547056
 GameObject:
   m_ObjectHideFlags: 0
@@ -3264,7 +3266,7 @@ GameObject:
   - component: {fileID: 920871643}
   - component: {fileID: 920871642}
   m_Layer: 0
-  m_Name: IK Rig
+  m_Name: Constraints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3942,15 +3944,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884925128}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c56b04ae66e29194e868942d49c849d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rig: {fileID: 841547059}
-  _headIKTarget: {fileID: 46630925}
-  _leftHandIKTarget: {fileID: 0}
-  _rightHandIKTarget: {fileID: 0}
+  _head:
+    _vrTarget: {fileID: 796612726}
+    _ikTarget: {fileID: 46630924}
+    _positionOffset: {x: 0, y: 0, z: 0}
+    _rotationOffset: {x: 0.5792279, y: -0.4055798, z: -0.5792279, w: 0.4055798}
+  _leftHand:
+    _vrTarget: {fileID: 439269089}
+    _ikTarget: {fileID: 1710037494}
+    _positionOffset: {x: -0.04, y: -0.03, z: -0.1}
+    _rotationOffset: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: 0.49999997}
+  _rightHand:
+    _vrTarget: {fileID: 1538084743}
+    _ikTarget: {fileID: 811599353}
+    _positionOffset: {x: 0.04, y: -0.03, z: -0.1}
+    _rotationOffset: {x: 0.49999997, y: -0.49999997, z: -0.49999997, w: -0.49999997}
 --- !u!1 &1307357757
 GameObject:
   m_ObjectHideFlags: 0
@@ -4061,7 +4075,7 @@ GameObject:
   - component: {fileID: 1376165135}
   - component: {fileID: 1376165137}
   m_Layer: 0
-  m_Name: IK Head
+  m_Name: Head Constraint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5984,17 +5998,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1710037493}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3746b212aa7f5e546b994adc02304fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vrTarget: {fileID: 439269089}
-  _rootPositionOffset: {x: -0.04, y: -0.03, z: -0.1}
-  _moveRootAlong: 0
+  _mapping:
+    _vrTarget: {fileID: 439269089}
+    _ikTarget: {fileID: 1885221230}
+    _positionOffset: {x: -0.04, y: -0.03, z: -0.1}
+    _rotationOffset: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: 0.49999997}
+  _moveRoot: 0
   _presenceRoot: {fileID: 1885221160}
-  _initialFollowPosition: {x: 0, y: 0, z: 0}
-  _initialFollowRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &1771076860
 GameObject:
   m_ObjectHideFlags: 0
@@ -6247,6 +6262,10 @@ PrefabInstance:
     - target: {fileID: 100106, guid: 7d3425a6c7317e048be11c2ff72db69e, type: 3}
       propertyPath: m_Name
       value: BodyMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 100106, guid: 7d3425a6c7317e048be11c2ff72db69e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100108, guid: 7d3425a6c7317e048be11c2ff72db69e, type: 3}
       propertyPath: m_Name

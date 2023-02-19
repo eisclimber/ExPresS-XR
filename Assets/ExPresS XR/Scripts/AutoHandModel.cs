@@ -106,6 +106,7 @@ namespace ExPresSXR.Rig
             {
                 handAnimator.SetFloat("Trigger", 0);
             }
+            
             if (currentDevice.TryGetFeatureValue(CommonUsages.grip, out float gripValue))
             {
                 handAnimator.SetFloat("Grip", gripValue);

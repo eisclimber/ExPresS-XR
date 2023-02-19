@@ -157,9 +157,7 @@ namespace ExPresSXR.Rig
         {
             if (controller != null && controller.model != null)
             {
-                AutoHandModel handModel = controller.model.gameObject.GetComponent<AutoHandModel>() as AutoHandModel;
-
-                if (handModel != null)
+                if (controller.model.gameObject.TryGetComponent(out AutoHandModel handModel))
                 {
                     handModel.handModelMode = mode;
                 }
