@@ -223,11 +223,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapping:
-    _vrTarget: {fileID: 796612726}
-    _ikTarget: {fileID: 1885221190}
+    vrTarget: {fileID: 796612726}
+    ikTarget: {fileID: 46630924}
     _positionOffset: {x: 0, y: 0, z: 0}
     _rotationOffset: {x: 0.5792279, y: -0.4055798, z: -0.5792279, w: 0.4055798}
-  _moveRoot: 0
+  _moveRoot: 1
   _presenceRoot: {fileID: 1885221160}
 --- !u!1 &190512246
 GameObject:
@@ -3116,7 +3116,7 @@ Transform:
   m_GameObject: {fileID: 811599352}
   m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
   m_LocalPosition: {x: 0.5506369, y: 1.0989087, z: 0.023458932}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 244519913}
@@ -3135,8 +3135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapping:
-    _vrTarget: {fileID: 1538084743}
-    _ikTarget: {fileID: 1885221144}
+    vrTarget: {fileID: 1538084743}
+    ikTarget: {fileID: 811599353}
     _positionOffset: {x: 0.04, y: -0.03, z: -0.1}
     _rotationOffset: {x: 0.49999997, y: -0.49999997, z: -0.49999997, w: -0.49999997}
   _moveRoot: 0
@@ -3951,18 +3951,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rig: {fileID: 841547059}
   _head:
-    _vrTarget: {fileID: 796612726}
-    _ikTarget: {fileID: 46630924}
+    vrTarget: {fileID: 796612726}
+    ikTarget: {fileID: 46630924}
     _positionOffset: {x: 0, y: 0, z: 0}
     _rotationOffset: {x: 0.5792279, y: -0.4055798, z: -0.5792279, w: 0.4055798}
   _leftHand:
-    _vrTarget: {fileID: 439269089}
-    _ikTarget: {fileID: 1710037494}
+    vrTarget: {fileID: 439269089}
+    ikTarget: {fileID: 1710037494}
     _positionOffset: {x: -0.04, y: -0.03, z: -0.1}
     _rotationOffset: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: 0.49999997}
   _rightHand:
-    _vrTarget: {fileID: 1538084743}
-    _ikTarget: {fileID: 811599353}
+    vrTarget: {fileID: 1538084743}
+    ikTarget: {fileID: 811599353}
     _positionOffset: {x: 0.04, y: -0.03, z: -0.1}
     _rotationOffset: {x: 0.49999997, y: -0.49999997, z: -0.49999997, w: -0.49999997}
 --- !u!1 &1307357757
@@ -6004,8 +6004,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapping:
-    _vrTarget: {fileID: 439269089}
-    _ikTarget: {fileID: 1885221230}
+    vrTarget: {fileID: 439269089}
+    ikTarget: {fileID: 1710037494}
     _positionOffset: {x: -0.04, y: -0.03, z: -0.1}
     _rotationOffset: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: 0.49999997}
   _moveRoot: 0
