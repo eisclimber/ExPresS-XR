@@ -64,6 +64,8 @@ ExPresS XR needs your feedback to improve. For that you will find a [survey](htt
 
 ## Made with ExPresS XR
 
+![ProjectsHeader](https://user-images.githubusercontent.com/49446532/221184626-22493d7d-66d8-422f-ae5b-192f57d661fe.png)
+
 - [A Sample serving as an VR-Exhibition of the Church in Mühlen using ExPresS XR](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
 
 If you create your own project using ExPresS XR feel free to contact me, so I can add you to the list.
