@@ -67,7 +67,7 @@ namespace ExPresSXR.Rig.InverseKinematics
             }
 
             _initialFollowPosition = ikTarget.position;
-            _rotationOffset = ikTarget.rotation;
+            // _rotationOffset = ikTarget.rotation;
         }
     }
 }
