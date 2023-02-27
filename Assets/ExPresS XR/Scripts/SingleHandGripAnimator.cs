@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using ExPresSXR.Rig;
 
 [RequireComponent(typeof(Animator))]
 public class SingleHandGripAnimator : MonoBehaviour

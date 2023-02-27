@@ -71,28 +71,5 @@ namespace ExPresSXR.Rig.InverseKinematics
                     "Inverse Kinematics for the right hand will not work.");
             }
         }
-
-        // private InputDevice currentDevice;
-        // private Animator handAnimator;
-        // private void UpdateHandAnimation()
-        // {
-        //     if (currentDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
-        //     {
-        //         handAnimator.SetFloat("Trigger", triggerValue);
-        //     }
-        //     else
-        //     {
-        //         handAnimator.SetFloat("Trigger", 0);
-        //     }
-        //
-        //     if (currentDevice.TryGetFeatureValue(CommonUsages.grip, out float gripValue))
-        //     {
-        //         handAnimator.SetFloat("Grip", gripValue);
-        //     }
-        //     else
-        //     {
-        //         handAnimator.SetFloat("Grip", 0);
-        //     }
-        // }
     }
 }

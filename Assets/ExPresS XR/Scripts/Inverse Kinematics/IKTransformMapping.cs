@@ -25,7 +25,7 @@ namespace ExPresSXR.Rig.InverseKinematics
         [Tooltip("Additional positional offset that is applied to the _ikTarget's position. Use to align the tracked object's rotation.")]
         [SerializeField]
         private Quaternion _rotationOffset;
-        
+
 
         // [Tooltip("If enabled moves and rotates the '_presenceRoot' according to the target. "
         //     + "Enable for moving the body with the head.")]
@@ -67,7 +67,7 @@ namespace ExPresSXR.Rig.InverseKinematics
             }
 
             _initialFollowPosition = ikTarget.position;
-            _rotationOffset = ikTarget.rotation;   
+            _rotationOffset = ikTarget.rotation;
         }
     }
 }
