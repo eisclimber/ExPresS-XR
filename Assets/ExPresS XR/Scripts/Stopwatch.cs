@@ -7,13 +7,16 @@ public class Stopwatch : MonoBehaviour
     const float INACTIVE_STOP_TIME = -1.0f;
 
     [Tooltip("Time when the stopwatch was started or INACTIVE_STOP_TIME if not started.")]
-    private float _startTime;
+    private float _startTime = INACTIVE_STOP_TIME;
     public float startTime { get; private set; }
 
     [Tooltip("How long the stopwatch is currently running or INACTIVE_STOP_TIME if not started.")]
     public float currentStopTime
     {
-        get => startTime != INACTIVE_STOP_TIME ? Time.time - _startTime : INACTIVE_STOP_TIME;
+        get 
+        {
+            return _startTime == INACTIVE_STOP_TIME ? INACTIVE_STOP_TIME : (Time.time - _startTime);
+        }
     }
 
     [Tooltip("If true, will start the timer OnAwake.")]
@@ -27,21 +30,28 @@ public class Stopwatch : MonoBehaviour
     private void Awake() {
         if (autoStart)
         {
-            StartStopwatch();
+            StartTimeMeasurement();
         }
     }
 
     // Starts the stopwatch
-    public void StartStopwatch()
+    public void StartTimeMeasurement()
     {
         _startTime = Time.time;
         running = true;
     }
 
-    // Stops and resets the stopwatch
-    public void StopStopwatch()
+    // Stops and resets the stopwatch, returns the final time measurement
+    public float StopTimeMeasurement(bool _restart = false)
     {
-        running = false;
-        _startTime = INACTIVE_STOP_TIME;
+        // Save end time
+        float endTime = currentStopTime;
+        
+        // Halt stopwatch or restart
+        running = _restart;
+        _startTime = _restart ? Time.time : INACTIVE_STOP_TIME;
+        
+        // Return the previously saved time
+        return endTime;
     }
 }

@@ -10,6 +10,7 @@ public class Timer : MonoBehaviour
     
 
     [Tooltip("How long the timer takes to timeout.")]
+    [SerializeField]
     private float _waitTime = DEFAULT_WAIT_TIME;
     public float waitTime
     {
@@ -22,7 +23,7 @@ public class Timer : MonoBehaviour
             }
             else
             {
-                waitTime = value;
+                _waitTime = value;
             }
         }
     }

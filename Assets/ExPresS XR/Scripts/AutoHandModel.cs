@@ -127,27 +127,16 @@ namespace ExPresSXR.Rig
             }
             else
             {
-                if (handModelMode == HandModelMode.Both)
-                {
-                    currentHandModel.SetActive(true);
-                    currentControllerModel.SetActive(true);
-                    UpdateHandAnimation();
-                }
-                else if (handModelMode == HandModelMode.Hand)
-                {
-                    currentHandModel.SetActive(true);
-                    currentControllerModel.SetActive(false);
-                    UpdateHandAnimation();
-                }
-                else
-                {
-                    // Mode either Controller or Custom
-                    currentHandModel.SetActive(false);
-                    if (currentControllerModel)
-                    {
-                        currentControllerModel.SetActive(true);
-                    }
-                }
+                bool showHand = handModelMode == HandModelMode.Hand 
+                                || handModelMode == HandModelMode.Both;
+                
+                // Also show controller for mode Custom
+                bool showController = handModelMode == HandModelMode.Controller 
+                                    || handModelMode == HandModelMode.Custom
+                                    || handModelMode == HandModelMode.Both;
+                
+                currentHandModel.SetActive(showHand);
+                currentControllerModel.SetActive(showController);
             }
         }
     }
@@ -157,6 +146,7 @@ namespace ExPresSXR.Rig
         Controller,
         Hand,
         Both,
-        Custom
+        Custom,
+        None
     }
 }
