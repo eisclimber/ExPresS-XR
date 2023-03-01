@@ -67,7 +67,7 @@ namespace ExPresSXR.Editor
                     }
                     EditorGUI.EndDisabledGroup();
 
-                    targetScript.uiInteractHands = (HandCombinations)EditorGUILayout.EnumFlagsField("UI-Interact with Hands", targetScript.uiInteractHands);
+                    targetScript.uiInteractHands = (HandCombinations)EditorGUILayout.EnumFlagsField("UI Interact with Hands", targetScript.uiInteractHands);
                 }
                 EditorGUI.EndDisabledGroup();
                 EditorGUI.indentLevel--;

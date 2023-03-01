@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using ExPresSXR.UI;
 
 
-// Thanks to metaanomie (https://metaanomie.blogspot.com/2020/04/unity-vr-head-blocking-steam-vr-v2.html)
+// Thanks to metaanomie for basic code (https://metaanomie.blogspot.com/2020/04/unity-vr-head-blocking-steam-vr-v2.html)
 // Attach this to the 'Main Camera' of an XROrigin and assign an anchor (e.g. the XROrigin's CameraOffset) 
 // to prevent the camera clipping through walls
 
@@ -29,28 +29,27 @@ namespace ExPresSXR.Rig
 
         public ScreenCollisionIndicator screenCollisionIndicator;
 
-        [Tooltip("The anchor that is moved when collisions occur. Usually should be set to the ExPresSXRRig or XROrigin.")]
+        [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
         [SerializeField]
         private GameObject _pushbackAnchor;
-        public GameObject pushbackAnchor
-        {
-            get => _pushbackAnchor;
-            set => _pushbackAnchor = value;
-        }
+        public GameObject pushbackAnchor { get; set; }
+
+
 
         [Tooltip("Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.")]
         [SerializeField]
         private float _colliderSize = .25f;
 
 
+        [SerializeField]
+        private float gravityStrength = -9.81f;
+
+
+
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
         private float _maxFadeDuration = .5f;
-        private float maxFadeDuration
-        {
-            get => _maxFadeDuration;
-            set => _maxFadeDuration = value;
-        }
+        private float maxFadeDuration { get; set; }
 
 
         [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
@@ -65,6 +64,13 @@ namespace ExPresSXR.Rig
         private Vector3 _prevHeadPos;
         private bool _colliding;
         private Coroutine _cooldownCoroutine;
+        private CharacterController _playerController;
+
+        private Vector3 momentaryGravity 
+        {
+            get => new(0.0f, gravityStrength * Time.deltaTime, 0.0f);
+        }
+
 
         private void Awake()
         {
@@ -72,7 +78,14 @@ namespace ExPresSXR.Rig
             {
                 Debug.LogError("No GameObject was set as pushback anchor!");
             }
-
+            else
+            {
+                if (!_pushbackAnchor.TryGetComponent(out _playerController))
+                {
+                    Debug.LogWarning("The _pushbackAnchor has no CharacterController-Component. Collision pushback won't work!");
+                }
+            }
+            
             // Prevent Collision during setup
             _cooldownCoroutine = StartCoroutine(CollisionCooldown());
 
@@ -80,6 +93,29 @@ namespace ExPresSXR.Rig
             _colliding = false;
             _prevHeadPos = transform.position;
 
+            ConnectScreenCollisionIndicator();
+        }
+
+        private void Update()
+        {
+            if (_pushbackAnchor != null && _cooldownCoroutine == null)
+            {
+                int hits = CountHits(transform.position);
+
+                if (hits == 0)
+                {
+                    HandleNoCollisions();
+                }
+                else
+                {
+                    PushBackPlayer();
+                }
+            }
+        }
+
+
+        private void ConnectScreenCollisionIndicator()
+        {
             if (screenCollisionIndicator != null)
             {
                 OnCollisionStarted.AddListener(() =>
@@ -101,7 +137,9 @@ namespace ExPresSXR.Rig
             }
         }
 
-        private int DetectHit(Vector3 loc)
+
+
+        private int CountHits(Vector3 loc)
         {
             int hits = 0;
             int size = Physics.OverlapSphereNonAlloc(loc, _colliderSize, _objs, _layerMask, QueryTriggerInteraction.Ignore);
@@ -116,82 +154,55 @@ namespace ExPresSXR.Rig
             return hits;
         }
 
-        private void Update()
+
+        private void HandleNoCollisions()
         {
-            if (_pushbackAnchor != null && _cooldownCoroutine == null)
+            _prevHeadPos = transform.position;
+            // Collision Ending
+            if (_colliding)
             {
-                int hits = DetectHit(transform.position);
-
-                // No collision
-                if (hits == 0)
-                {
-                    _prevHeadPos = transform.position;
-                    // Collision Ending
-                    if (_colliding)
-                    {
-                        _colliding = false;
-                        // Debug.Log("Ending");
-                        OnCollisionEnded.Invoke();
-                    }
-                    if (collisionPushbackEnabled)
-                    {
-                        MoveTowardsFloor();
-                    }
-                }
-
-                // Collision
-                else
-                {
-                    // Player pushback  
-                    Vector3 headDiff = transform.position - _prevHeadPos;
-
-                    if (Mathf.Abs(headDiff.x) > _colliderSize)
-                    {
-                        headDiff.x = (headDiff.x > 0 ? _colliderSize : -_colliderSize);
-                    }
-                    if (Mathf.Abs(headDiff.z) > _colliderSize)
-                    {
-                        headDiff.z = (headDiff.z > 0 ? _colliderSize : -_colliderSize);
-                    }
-                    if (Mathf.Abs(headDiff.y) > _colliderSize)
-                    {
-                        headDiff.y = (headDiff.y > 0 ? _colliderSize : -_colliderSize);
-                    }
-
-                    Vector3 adjHeadPos = _pushbackAnchor.transform.position - headDiff;
-
-                    if (collisionPushbackEnabled)
-                    {
-                        _pushbackAnchor.transform.position = adjHeadPos;
-                    }
-
-                    // Collision Started
-                    if (!_colliding)
-                    {
-                        _colliding = true;
-                        // Debug.Log("Start");
-                        // Prevent initial Collision showing up
-                        OnCollisionStarted.Invoke();
-                    }
-                }
+                _colliding = false;
+                // Debug.Log("Ending");
+                OnCollisionEnded.Invoke();
+            }
+            if (_playerController != null && collisionPushbackEnabled)
+            {
+                // Apply gravity nonetheless
+                _playerController.Move(momentaryGravity);
             }
         }
 
 
-        private void MoveTowardsFloor()
+        private void PushBackPlayer()
         {
-            RaycastHit hit;
-            float floorDistance = Mathf.Min(_pushbackAnchor.transform.position.y, _colliderSize);
+            Vector3 headDiff = transform.position - _prevHeadPos;
 
-            // TODO Enhance this behavior
-            if (floorDistance > FLOOR_DISTANCE_THRESHOLD)
+            if (Mathf.Abs(headDiff.x) > _colliderSize)
             {
-                // Cast a sphere down by the total y offset of the head and move to the next valid position
-                if (Physics.SphereCast(transform.position, _colliderSize, -transform.up, out hit, floorDistance))
-                {
-                    floorDistance = hit.distance - FLOOR_DISTANCE_THRESHOLD;
-                }
-                _pushbackAnchor.transform.position -= new Vector3(0.0f, Mathf.Max(floorDistance, 0.0f), 0.0f);
+                headDiff.x = headDiff.x > 0 ? _colliderSize : -_colliderSize;
+            }
+            if (Mathf.Abs(headDiff.z) > _colliderSize)
+            {
+                headDiff.z = headDiff.z > 0 ? _colliderSize : -_colliderSize;
+            }
+            if (Mathf.Abs(headDiff.y) > _colliderSize)
+            {
+                headDiff.y = headDiff.y > 0 ? _colliderSize : -_colliderSize;
+            }
+
+            if (_playerController != null && collisionPushbackEnabled)
+            {
+                // Apply head diference and momentary gravity
+                _playerController.Move(-headDiff + momentaryGravity);
+            }
+
+            // Collision Started
+            if (!_colliding)
+            {
+                _colliding = true;
+                // Debug.Log("Start");
+                // Prevent initial Collision showing up
+                OnCollisionStarted.Invoke();
             }
         }
 

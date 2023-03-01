@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ExPresSXR.Timing
+namespace ExPresSXR.Experimentation.Timing
 {
     public class Timer : MonoBehaviour
     {

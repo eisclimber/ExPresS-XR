@@ -51,38 +51,38 @@ namespace ExPresSXR.Experimentation
             this.feedbackText = feedbackText;
         }
 
-        public string GetFeedbackText(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode)
+        public string GetFeedbackText(ButtonQuizConfig config)
         {
             // No Feedback
-            if (feedbackMode == FeedbackMode.None)
+            if (config.feedbackMode == FeedbackMode.None)
             {
                 return "";
             }
 
             // Show feedback text if exists
-            if (feedbackType == FeedbackType.Text || feedbackType == FeedbackType.DifferingTypes)
+            if (config.feedbackType == FeedbackType.Text || config.feedbackType == FeedbackType.DifferingTypes)
             {
                 return feedbackText ?? "";
             }
 
             // Show answer text feedback type is ShowAnswer
-            if (feedbackType == FeedbackType.ShowAnswers
-                    && (answerType == AnswerType.Text || answerType == AnswerType.DifferingTypes))
+            if (config.feedbackType == FeedbackType.ShowAnswers
+                    && (config.answerType == AnswerType.Text || config.answerType == AnswerType.DifferingTypes))
             {
                 string feedbackString = "";
 
-                switch (feedbackMode)
+                switch (config.feedbackMode)
                 {
                     case FeedbackMode.AlwaysCorrect:
                     case FeedbackMode.AlwaysWrong:
                         for (int i = 0; i < answerTexts.Length; i++)
                         {
-                            bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
+                            bool chooseCorrect = (config.feedbackMode == FeedbackMode.AlwaysCorrect);
                             if (correctAnswers[i] == chooseCorrect && answerTexts[i] != null && answerTexts[i] != "")
                             {
                                 feedbackString += answerTexts[i];
 
-                                if (quizMode == QuizMode.SingleChoice)
+                                if (config.quizMode == QuizMode.SingleChoice)
                                 {
                                     return feedbackString;
                                 }
@@ -99,7 +99,7 @@ namespace ExPresSXR.Experimentation
                                 feedbackString += answerTexts[i] + "\n";
                             }
                         }
-                        if (feedbackString == "" || quizMode == QuizMode.SingleChoice)
+                        if (feedbackString == "" || config.quizMode == QuizMode.SingleChoice)
                         {
                             return answerTexts[Random.Range(0, numValidAnswer)];
                         }
@@ -109,16 +109,16 @@ namespace ExPresSXR.Experimentation
             return "";
         }
 
-        public GameObject[] GetFeedbackGameObjects(FeedbackMode feedbackMode, FeedbackType feedbackType, AnswerType answerType, QuizMode quizMode)
+        public GameObject[] GetFeedbackGameObjects(ButtonQuizConfig config)
         {
             // No Feedback
-            if (feedbackMode == FeedbackMode.None)
+            if (config.feedbackMode == FeedbackMode.None)
             {
                 return new GameObject[0];
             }
 
             // Show feedback object if exists
-            if (feedbackType == FeedbackType.Object || feedbackType == FeedbackType.DifferingTypes)
+            if (config.feedbackType == FeedbackType.Object || config.feedbackType == FeedbackType.DifferingTypes)
             {
                 if (feedbackObject != null)
                 {
@@ -128,23 +128,23 @@ namespace ExPresSXR.Experimentation
             }
 
             // Show answer object feedback type is ShowAnswer
-            if (feedbackType == FeedbackType.ShowAnswers
-                    && (answerType == AnswerType.Object || answerType == AnswerType.DifferingTypes))
+            if (config.feedbackType == FeedbackType.ShowAnswers
+                    && (config.answerType == AnswerType.Object || config.answerType == AnswerType.DifferingTypes))
             {
                 List<GameObject> feedbackGos = new List<GameObject>();
 
-                switch (feedbackMode)
+                switch (config.feedbackMode)
                 {
                     case FeedbackMode.AlwaysCorrect:
                     case FeedbackMode.AlwaysWrong:
                         for (int i = 0; i < answerTexts.Length; i++)
                         {
-                            bool chooseCorrect = (feedbackMode == FeedbackMode.AlwaysCorrect);
+                            bool chooseCorrect = (config.feedbackMode == FeedbackMode.AlwaysCorrect);
                             if (correctAnswers[i] == chooseCorrect && answerObjects[i] != null)
                             {
                                 feedbackGos.Add(answerObjects[i]);
 
-                                if (quizMode == QuizMode.SingleChoice)
+                                if (config.quizMode == QuizMode.SingleChoice)
                                 {
                                     return feedbackGos.ToArray();
                                 }
@@ -157,13 +157,13 @@ namespace ExPresSXR.Experimentation
                             if (Random.Range(0, 1) < 0.5 && answerObjects[i] != null)
                             {
                                 feedbackGos.Add(answerObjects[i]);
-                                if (quizMode == QuizMode.SingleChoice)
+                                if (config.quizMode == QuizMode.SingleChoice)
                                 {
                                     return feedbackGos.ToArray();
                                 }
                             }
                         }
-                        if (answerTexts.Length <= 0 && quizMode == QuizMode.SingleChoice)
+                        if (answerTexts.Length <= 0 && config.quizMode == QuizMode.SingleChoice)
                         {
                             return new GameObject[] { feedbackGos[Random.Range(0, feedbackGos.Count)] };
                         }
@@ -186,9 +186,9 @@ namespace ExPresSXR.Experimentation
             return numAnswers;
         }
 
-        public VideoClip GetFeedbackVideo(FeedbackType feedbackType)
+        public VideoClip GetFeedbackVideo(ButtonQuizConfig config)
         {
-            if (feedbackType == FeedbackType.Video || feedbackType == FeedbackType.DifferingTypes)
+            if (config.feedbackType == FeedbackType.Video || config.feedbackType == FeedbackType.DifferingTypes)
             {
                 return feedbackVideo;
             }

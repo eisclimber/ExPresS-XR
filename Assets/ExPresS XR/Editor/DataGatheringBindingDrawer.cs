@@ -206,7 +206,7 @@ namespace ExPresSXR.Editor
             return prettyName;
         }
 
-        static readonly Dictionary<Type, string> primitiveTypeKeywords = new Dictionary<Type, string>
+        static readonly Dictionary<Type, string> primitiveTypeKeywords = new()
         {
             { typeof(bool), "bool" },
             { typeof(byte), "byte" },

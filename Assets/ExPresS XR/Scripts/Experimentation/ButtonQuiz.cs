@@ -707,11 +707,9 @@ namespace ExPresSXR.Experimentation
                 _latestAnswerPressTime = pressedButtons.Count > 0 ? pressedButtons[0].GetTriggerTimerValue() : -1.0f;
             }
 
-            _displayedFeedbackText = _currentQuestion?.GetFeedbackText(config.feedbackMode, config.feedbackType,
-                                        config.answerType, config.quizMode) ?? "";
-            _displayedFeedbackObjects = _currentQuestion.GetFeedbackGameObjects(config.feedbackMode,
-                                        config.feedbackType, config.answerType, config.quizMode) ?? new GameObject[0];
-            _displayedFeedbackVideo = _currentQuestion.GetFeedbackVideo(config.feedbackType);
+            _displayedFeedbackText = _currentQuestion?.GetFeedbackText(config) ?? "";
+            _displayedFeedbackObjects = _currentQuestion.GetFeedbackGameObjects(config) ?? new GameObject[0];
+            _displayedFeedbackVideo = _currentQuestion.GetFeedbackVideo(config);
         }
 
         // Coroutines & Actions
@@ -721,11 +719,8 @@ namespace ExPresSXR.Experimentation
             OnFeedbackCompleted();
         }
 
-        private void OnFeedbackVideoCompleted(VideoPlayer evt)
-        {
-            OnFeedbackCompleted();
-        }
-
+        private void OnFeedbackVideoCompleted(VideoPlayer evt) =>  OnFeedbackCompleted();
+        
         private void CloseAfterQuizMenu()
         {
             if (_afterQuizMenu != null)

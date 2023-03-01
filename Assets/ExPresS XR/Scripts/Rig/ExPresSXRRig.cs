@@ -453,8 +453,8 @@ namespace ExPresSXR.Rig
 
         private void Awake()
         {
-            List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
-            SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
+            List<XRDisplaySubsystem> displaySubsystems = new();
+            SubsystemManager.GetInstances(displaySubsystems);
 
             if (displaySubsystems.Count > 0)
             {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ExPresSXR.Timing
+namespace ExPresSXR.Experimentation.Timing
 {
     public class Stopwatch : MonoBehaviour
     {
