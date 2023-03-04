@@ -194,7 +194,7 @@ namespace ExPresSXR.Rig
         }
 
 
-        // // Updates values that are changed from other scripts in the inspector
+        // Updates values that are changed from other scripts in the inspector
         private void OnValidate()
         {
             handModelMode = _handModelMode;

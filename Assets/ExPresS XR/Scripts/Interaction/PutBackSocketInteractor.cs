@@ -57,7 +57,7 @@ namespace ExPresSXR.Interaction
         {
             base.Awake();
 
-            socketActive = (_putBackObjectInstance != null);
+            socketActive = _putBackObjectInstance != null;
         }
 
 
@@ -124,7 +124,7 @@ namespace ExPresSXR.Interaction
 
         private bool IsObjectMatch(IXRInteractable interactable)
         {
-            return (_putBackInteractable != null && interactable.transform.gameObject == _putBackInteractable.gameObject);
+            return _putBackInteractable != null && interactable.transform.gameObject == _putBackInteractable.gameObject;
         }
 
         public override void SetHighlighterVisible(bool visible)

@@ -24,9 +24,7 @@ namespace ExPresSXR.Editor
         {
             serializedObject.UpdateIfRequiredOrScript();
 
-            EditorGUILayout.Space();
             DrawScript();
-            EditorGUILayout.Space();
             DrawInputMethod();
             EditorGUILayout.Space();
             DrawMovementType();

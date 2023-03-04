@@ -152,6 +152,7 @@ namespace ExPresSXR.Rig
             {
                 _interactHands = value;
 
+                Debug.Log("inter");
                 if (_leftHandController != null)
                 {
                     _leftHandController.interactionEnabled = (_interactHands & HandCombinations.Left) != 0;
@@ -164,7 +165,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("Determines which hand can be used to teleport if teleportation is enabled.")]
+        [Tooltip("Determines which hand can be used to teleport AND interactHands if teleportation is enabled.")]
         [SerializeField]
         private HandCombinations _teleportHands = HandCombinations.Left | HandCombinations.Right;
         public HandCombinations teleportHands
@@ -174,6 +175,7 @@ namespace ExPresSXR.Rig
             {
                 _teleportHands = value;
                 
+                Debug.Log("tele");
                 if (_leftHandController != null)
                 {
                     _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
@@ -550,6 +552,37 @@ namespace ExPresSXR.Rig
 
             characterController.height = height;
             characterController.center = center;
+        }
+
+        // Updates values that are changed from other scripts in the inspector
+        private void OnValidate() {
+            inputMethod = _inputMethod;
+            teleportationEnabled = _teleportationEnabled;
+            joystickMovementEnabled = _joystickMovementEnabled;
+            snapTurnEnabled = _snapTurnEnabled;
+            handModelMode = _handModelMode;
+            interactHands = _interactHands;
+            teleportHands = _teleportHands;
+            uiInteractHands = _uiInteractHands;
+            headCollisionEnabled = _headCollisionEnabled;
+            showCollisionVignetteEffect = _showCollisionVignetteEffect;
+            showPlayAreaBounds = _showPlayAreaBounds;
+            useCustomPlayAreaMaterial = _useCustomPlayAreaMaterial;
+            headGazeCanReselect = _headGazeCanReselect;
+            headGazeTimeToSelect = _headGazeTimeToSelect;
+            headGazeReticle = _headGazeReticle;
+            leftHandController = _leftHandController;
+            rightHandController = _rightHandController;
+            headGazeController = _headGazeController;
+            inputActionManager = _inputActionManager;
+            locomotionSystem = _locomotionSystem;
+            mainRigCamera = _mainRigCamera;
+            playerHeadCollider = _playerHeadCollider;
+            screenCollisionIndicator = _screenCollisionIndicator;
+            playAreaBoundingBox = _playAreaBoundingBox;
+            hud = _hud;
+            fadeRect = _fadeRect;
+            gameTabDisplayMode = _gameTabDisplayMode;
         }
     }
 
