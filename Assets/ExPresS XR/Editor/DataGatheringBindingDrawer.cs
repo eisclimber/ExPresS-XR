@@ -20,7 +20,7 @@ namespace ExPresSXR.Editor
         {
             label = EditorGUI.BeginProperty(position, label, property);
 
-            Rect positionRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+            Rect positionRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
             if (property.isExpanded = EditorGUI.Foldout(positionRect, property.isExpanded, label))
             {
@@ -58,8 +58,9 @@ namespace ExPresSXR.Editor
                 SerializedProperty memberIdx = property.FindPropertyRelative("_memberIdx");
                 
                 EditorGUI.BeginChangeCheck();
-                // Popup (Add subtract 1 to account for an invalid member)
-                memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
+                    // Popup (Add subtract 1 to account for an invalid member)
+                    memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
+                
                 if (EditorGUI.EndChangeCheck())
                 {
                     // Change ExportColumnName if special Methods of TutorialQuiz were selected
@@ -116,7 +117,7 @@ namespace ExPresSXR.Editor
                 // Methods from the GameObject itself
                 foreach (MemberInfo info in targetObject.GetType().GetMembers())
                 {
-                    if (DataGatheringBinding.IsValidMemberInfo(info))
+                    if (DataGatheringBinding.IsExportableMemberInfo(info))
                     {
                         availableMemberNames.InsertArrayElementAtIndex(i);
                         availableMemberNames.GetArrayElementAtIndex(i).stringValue =
@@ -130,25 +131,58 @@ namespace ExPresSXR.Editor
                     }
                 }
 
-                // Methods from all the  other components
-                foreach (Component component in targetObject.GetComponents<Component>())
+                Component[] components = targetObject.GetComponents<Component>();
+                Dictionary<string, int> compCounts = new();
+                Dictionary<string, int> compFullNameCounts = new();
+
+                foreach (Component component in components)
                 {
-                    // TODO Multiple same components
+                    // Found a duplicates of the simple/short names
+                    if (compCounts.TryGetValue(component.GetType().Name, out int duplicatesCount))
+                    {
+                        duplicatesCount++;
+                    }
+                    compCounts[component.GetType().Name] = duplicatesCount;
+                }
+
+                // Methods from all the  other components
+                foreach (Component component in components)
+                {
+                    Type componentType = component.GetType();
+                    int duplicatesCount = 0;
+                    string compName = componentType.Name;
+                    string compFullName = componentType.FullName;
+                    if (compCounts[componentType.Name] > 0)
+                    {
+                        // If "simple" names have duplicates try using the full names or index
+                        if (compFullNameCounts.TryGetValue(componentType.FullName, out duplicatesCount))
+                        {
+                            compName = $"{componentType.FullName} ({duplicatesCount})";
+                            compFullName = compName;
+                        }
+                        else
+                        {
+                            compName = componentType.FullName;
+                        }
+                    }
+
                     foreach (MemberInfo info in component.GetType().GetMembers())
                     {
-                        if (DataGatheringBinding.IsValidMemberInfo(info))
-                        {
+                        if (DataGatheringBinding.IsExportableMemberInfo(info))
+                        {                           
                             availableMemberNames.InsertArrayElementAtIndex(i);
                             availableMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    string.Format("{0}/{1}", component.GetType().FullName, info.Name);
+                                    $"{compFullName}/{info.Name}";
 
                             prettyMemberNames.InsertArrayElementAtIndex(i);
                             prettyMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    string.Format("{0}/{1}", component.GetType().Name, GetPrettifiedMemberName(info));
+                                    $"{compName}/{GetPrettifiedMemberName(info)}";
 
                             i++;
                         }
                     }
+
+                    compFullNameCounts[componentType.FullName] = duplicatesCount + 1;
                 }
             }
         }
@@ -158,35 +192,32 @@ namespace ExPresSXR.Editor
             if (idx >= 0 && idx < prettyMembers.Length)
             {
                 string[] splitName = prettyMembers[idx].Split('/');
-                Debug.Log(prettyMembers[idx]);
-                if (splitName.Length == 2)
+                
+                if (splitName.Length == 2 && splitName[0].StartsWith("ButtonQuiz"))
                 {
-                    string componentName = splitName[0];
                     string memberName = splitName[1];
 
-                    if (componentName.StartsWith("ButtonQuiz"))
+                    if (memberName == "string GetConfigCsvExportValues()")
                     {
-                        if (memberName == "string GetConfigCsvExportValues()")
-                        {
-                            property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
-                        }
-                        else if (memberName == "string GetAllQuestionsCsvExportValues()")
-                        {
-                            Debug.Log("`GetQuestionsCsvExportValues()` will export multiple lines of values which might break the formatting of the csv.");
-                            property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
-                        }
-                        else if (memberName == "string GetCurrentQuestionCsvExportValue()")
-                        {
-                            property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
-                        }
-                        else if (memberName == "string GetFullQuizCsvValues()")
-                        {
-                            property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuiz.FULL_QUIZ_CSV_HEADER;
-                        }
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
+                    }
+                    else if (memberName == "string GetAllQuestionsCsvExportValues()")
+                    {
+                        Debug.Log("`GetQuestionsCsvExportValues()` will export multiple lines of values which might break the formatting of the csv.");
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
+                    }
+                    else if (memberName == "string GetCurrentQuestionCsvExportValue()")
+                    {
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
+                    }
+                    else if (memberName == "string GetFullQuizCsvValues()")
+                    {
+                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuiz.FULL_QUIZ_CSV_HEADER;
                     }
                 }
             }
         }
+
 
         private string GetPrettifiedMemberName(MemberInfo info)
         {
@@ -195,7 +226,7 @@ namespace ExPresSXR.Editor
 
             if (primitiveTypeKeywords.ContainsKey(infoType))
             {
-                prettyName = String.Format("{0} {1}", primitiveTypeKeywords[infoType], info.Name);
+                prettyName = $"{primitiveTypeKeywords[infoType]} {info.Name}";
             }
             if (info.MemberType == MemberTypes.Method)
             {

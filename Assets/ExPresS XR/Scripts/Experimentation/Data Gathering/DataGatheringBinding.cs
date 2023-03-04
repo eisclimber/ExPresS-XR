@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
@@ -58,29 +59,70 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         public bool ValidateBinding()
         {
-            string memberName = GetTargetMemberName();
-            if (_targetObject != null && memberName != null)
+            string targetMemberName = GetTargetMemberName();
+            if (_targetObject != null && targetMemberName != null)
             {
-                string[] splitName = memberName.Split('/');
+                string[] splitName = targetMemberName.Split('/');
                 if (splitName.Length != 2)
                 {
                     return false;
                 }
 
-                foreach (Component component in _targetObject.GetComponents<Component>())
+                string compFullName = ExtractComponentNumber(splitName[0], out int compNumber);
+                string memberName = splitName[1];
+                
+                if (FindIthComponent(compFullName, memberName, compNumber))
                 {
-                    if (IsComponentMatch(component, splitName[0]))
-                    {
-                        _targetComponent = component;
-                        _targetMemberInfo = component.GetType().GetMember(splitName[1])[0];
-                        return true;
-                    }
+                    return true;
                 }
             }
-            else
+            // Binding invalid reset value
+            _targetComponent = null;
+            _targetMemberInfo = null;
+            return false;
+        }
+
+
+        private string ExtractComponentNumber(string compFullName, out int compNumber)
+        {
+            compNumber = 0;
+
+            // Matches any number in brackets and a space in front at the end of the name
+            Match match = Regex.Match(compFullName, @" \(\d+\)$");
+
+            if (match.Success)
             {
-                _targetComponent = null;
-                _targetMemberInfo = null;
+                // Remove padding literals from number value
+                string numberString = match.Value[2..^1];
+                // Debug.Log("Length: " + match.Value.Length + " x Idx: " + match.Index + "  x  " + compFullName.Length);
+                compNumber = int.Parse(numberString);
+                // Cut the number from the name name
+                return compFullName[..match.Index];
+            }
+            // FullName does not contain a number -> must be the first or a unique component
+            return compFullName;
+        }
+
+
+        private bool FindIthComponent(string compFullName, string memberName, int compNumber)
+        {
+            int matchingComps = 0;
+
+            foreach (Component component in _targetObject.GetComponents<Component>())
+            {
+                if (IsComponentMatch(component, compFullName))
+                {
+                    if (matchingComps == compNumber)
+                    {
+                        _targetComponent = component;
+                        _targetMemberInfo = component.GetType().GetMember(memberName)[0];
+                        return true;
+                    }
+                    else
+                    {
+                        matchingComps++;
+                    }
+                }
             }
             return false;
         }
@@ -88,7 +130,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private bool IsComponentMatch(Component component, string requiredFullName)
         {
-            return (component != null && component.GetType().FullName == requiredFullName);
+            return component != null && component.GetType().FullName == requiredFullName;
         }
 
 
@@ -137,7 +179,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             || type == typeof(Vector3) || type == typeof(Quaternion);
         }
 
-        public static bool IsValidMemberInfo(MemberInfo info)
+        public static bool IsExportableMemberInfo(MemberInfo info)
         {
             if (info.MemberType == MemberTypes.Method)
             {
@@ -146,12 +188,12 @@ namespace ExPresSXR.Experimentation.DataGathering
                 return IsTypeExportable(methodInfo.ReturnType) && methodInfo.GetParameters().Length <= 0 && !methodInfo.IsSpecialName;
             }
             // A property is valid if it can be read
-            bool validProperty = (info.MemberType == MemberTypes.Property
+            bool validProperty = info.MemberType == MemberTypes.Property
                                 && ((PropertyInfo)info).CanRead
-                                && IsTypeExportable(((PropertyInfo)info).PropertyType));
+                                && IsTypeExportable(((PropertyInfo)info).PropertyType);
             // fields are considered valid
-            bool validField = (info.MemberType == MemberTypes.Field
-                                && IsTypeExportable(((FieldInfo)info).FieldType));
+            bool validField = info.MemberType == MemberTypes.Field
+                                && IsTypeExportable(((FieldInfo)info).FieldType);
             return validProperty || validField;
         }
 
