@@ -57,7 +57,9 @@ namespace ExPresSXR.Editor
             EditorGUILayout.LabelField("Exported Values", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataBindings"), true);
+
+            DrawDataBindings();
+
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionDataBindings"), true);
             EditorGUI.indentLevel--;
 
@@ -83,6 +85,26 @@ namespace ExPresSXR.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+
+        // Ensures new entries are initialized with default values
+        // This is because Unity copies the last entry as default instead of creating a new one
+        private void DrawDataBindings()
+        {
+            SerializedProperty arrayProp = serializedObject.FindProperty("_dataBindings");
+            int _prevArraySize = arrayProp.arraySize;
+
+            // Draw Property to detect changes
+            EditorGUILayout.PropertyField(arrayProp, true);
+            
+            if (_prevArraySize < arrayProp.arraySize)
+            {
+                // Entry added -> Apply changes, enforce defaults and update
+                serializedObject.ApplyModifiedProperties();
+                targetScript.dataBindings[arrayProp.arraySize - 1].SetClassDefaults();
+                serializedObject.Update();
+            }
         }
     }
 }

@@ -4,21 +4,20 @@ using UnityEngine;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
-    [System.Serializable]
+    [Serializable]
     public class DataGatheringBinding
     {
-        [SerializeField]
-        public string exportColumnName;
+        public string exportColumnName = "";
 
 
         [SerializeField]
-        private GameObject _targetObject;
+        private GameObject _targetObject = null;
 
         [SerializeField]
-        private Component _targetComponent;
+        private Component _targetComponent = null;
 
         [SerializeField]
-        private MemberInfo _targetMemberInfo;
+        private MemberInfo _targetMemberInfo = null;
 
 
         // List of all members
@@ -32,7 +31,19 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         // Index of components in the list
         [SerializeField]
-        private int _memberIdx;
+        private int _memberIdx = -1;
+
+
+        public void SetClassDefaults()
+        {
+            exportColumnName = "";
+            _targetObject = null;
+            _targetComponent = null;
+            _targetMemberInfo = null;
+            _memberNameList = new string[0];
+            _prettyMemberNameList = new string[0];
+            _memberIdx = -1;
+        }
 
 
         private string GetTargetMemberName()
@@ -109,10 +120,10 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         public string GetBindingDescription()
         {
-            return ("The binding to object '" + _targetObject
+            return "The binding to object '" + _targetObject
                 + "', component '" + _targetComponent?.name + "' and value/function '"
                 + _targetMemberInfo?.Name + "' will be exported to column '"
-                + exportColumnName + "'.");
+                + exportColumnName + "'.";
         }
 
 

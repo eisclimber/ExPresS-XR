@@ -18,7 +18,7 @@ namespace ExPresSXR.Editor
         // Draw the property inside the given rect
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, label, property);
+            label = EditorGUI.BeginProperty(position, label, property);
 
             Rect positionRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
