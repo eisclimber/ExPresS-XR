@@ -30,8 +30,8 @@ namespace ExPresSXR.Editor
         /// not found.</returns>
         public static GameObject InstantiatePrefabAtContextTransform(MenuCommand menuCommand, string prefabName)
         {
-            Transform parent = CreationUtils.GetContextTransform(menuCommand);
-            return CreationUtils.InstantiateAndPlacePrefab(prefabName, parent);
+            Transform parent = GetContextTransform(menuCommand);
+            return InstantiateAndPlacePrefab(prefabName, parent);
         }
 
 
@@ -49,7 +49,7 @@ namespace ExPresSXR.Editor
 
             if (prefab != null)
             {
-                GameObject go = (GameObject)GameObject.Instantiate(prefab, parent);
+                GameObject go = (GameObject)UnityEngine.Object.Instantiate(prefab, parent);
 
                 if (parent == null)
                 {
@@ -93,12 +93,12 @@ namespace ExPresSXR.Editor
             if (name.StartsWith(EXPRESS_XR_PREFABS_PATH))
             {
                 Debug.LogWarning("Do not add the ExPresSXRPrefabPath to the name. We're accounting for that already.");
-                name = name.Substring(EXPRESS_XR_PREFABS_PATH.Length);
+                name = name[EXPRESS_XR_PREFABS_PATH.Length..];
             }
             if (name.EndsWith(".prefab"))
             {
                 Debug.LogWarning("Do not add the suffix '.prefab' to the name. We're accounting for that already.");
-                name = name.Substring(0, name.Length - ".prefab".Length);
+                name = name[..^".prefab".Length];
             }
             return String.Format(EXPRESS_XR_PREFAB_FORMAT, name);
         }
@@ -118,7 +118,11 @@ namespace ExPresSXR.Editor
         public static Transform GetContextTransform(MenuCommand menuCommand)
         {
             var context = menuCommand.context as GameObject;
-            return context?.transform;
+            if (context != null)
+            {
+                return context.transform;
+            }
+            return null;
         }
     }
 }
