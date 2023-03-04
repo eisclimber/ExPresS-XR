@@ -152,7 +152,6 @@ namespace ExPresSXR.Rig
             {
                 _interactHands = value;
 
-                Debug.Log("inter");
                 if (_leftHandController != null)
                 {
                     _leftHandController.interactionEnabled = (_interactHands & HandCombinations.Left) != 0;
@@ -175,7 +174,6 @@ namespace ExPresSXR.Rig
             {
                 _teleportHands = value;
                 
-                Debug.Log("tele");
                 if (_leftHandController != null)
                 {
                     _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
