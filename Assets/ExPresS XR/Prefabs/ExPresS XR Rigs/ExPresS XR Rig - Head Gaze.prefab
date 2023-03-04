@@ -1410,7 +1410,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 215
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 1
   m_HoverToSelect: 0
@@ -2296,7 +2296,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0
@@ -2957,7 +2957,7 @@ GameObject:
   - component: {fileID: 1420744924147947903}
   - component: {fileID: 1420744924147947900}
   - component: {fileID: 1420744924147947901}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ExPresS XR Rig - Head Gaze
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3034,6 +3034,7 @@ MonoBehaviour:
   _headGazeController: {fileID: 1420744924396548474}
   _inputActionManager: {fileID: 1420744925174790624}
   _locomotionSystem: {fileID: 1420744924220746770}
+  _mainRigCamera: {fileID: 0}
   _playerHeadCollider: {fileID: 1420744924327880127}
   _screenCollisionIndicator: {fileID: 1420744924824188956}
   _playAreaBoundingBox: {fileID: 1420744924259078015}
@@ -3572,6 +3573,7 @@ MonoBehaviour:
   screenCollisionIndicator: {fileID: 1420744924824188956}
   _pushbackAnchor: {fileID: 1420744924147947890}
   _colliderSize: 0.22
+  gravityStrength: -9.81
   _maxFadeDuration: 0.5
   OnCollisionStarted:
     m_PersistentCalls:
@@ -5406,7 +5408,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.01
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 215
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0

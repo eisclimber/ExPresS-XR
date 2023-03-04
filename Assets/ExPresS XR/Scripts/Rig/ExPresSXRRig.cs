@@ -24,10 +24,20 @@ namespace ExPresSXR.Rig
             {
                 _inputMethod = value;
 
-                _leftHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
-                _rightHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
+                if (_leftHandController != null)
+                {
+                    _leftHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
+                }
+                
+                if (_rightHandController != null)
+                {
+                    _rightHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
+                }
 
-                _headGazeController.gameObject.SetActive(inputMethod == InputMethodType.HeadGaze);
+                if (_headGazeController != null)
+                {
+                    _headGazeController.gameObject.SetActive(inputMethod == InputMethodType.HeadGaze);
+                }
 
                 if (_headGazeReticle != null)
                 {
@@ -50,9 +60,20 @@ namespace ExPresSXR.Rig
 
                 EnableLocomotionProvider<TeleportationProvider>(_teleportationEnabled, enableAsDriver);
 
-                _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
-                _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Right) != 0;
-                _headGazeController.teleportationEnabled = _teleportationEnabled;
+                if (_leftHandController != null)
+                {
+                    _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
+                }
+
+                if (_rightHandController != null)
+                {
+                    _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Right) != 0;
+                }
+
+                if (_headGazeController != null)
+                {
+                    _headGazeController.teleportationEnabled = _teleportationEnabled;
+                }
             }
         }
 
@@ -131,8 +152,15 @@ namespace ExPresSXR.Rig
             {
                 _interactHands = value;
 
-                _leftHandController.interactionEnabled = (_interactHands & HandCombinations.Left) != 0;
-                _rightHandController.interactionEnabled = (_interactHands & HandCombinations.Right) != 0;
+                if (_leftHandController != null)
+                {
+                    _leftHandController.interactionEnabled = (_interactHands & HandCombinations.Left) != 0;
+                }
+                
+                if (_rightHandController != null)
+                {
+                    _rightHandController.interactionEnabled = (_interactHands & HandCombinations.Right) != 0;
+                }
             }
         }
 
@@ -145,9 +173,16 @@ namespace ExPresSXR.Rig
             set
             {
                 _teleportHands = value;
+                
+                if (_leftHandController != null)
+                {
+                    _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
+                }
 
-                _leftHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Left) != 0;
-                _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Right) != 0;
+                if (_rightHandController != null)
+                {
+                    _rightHandController.teleportationEnabled = _teleportationEnabled && (_interactHands & HandCombinations.Right) != 0;
+                }
             }
         }
 
@@ -161,8 +196,15 @@ namespace ExPresSXR.Rig
             {
                 _uiInteractHands = value;
 
-                _leftHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Left) != 0;
-                _rightHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Right) != 0;
+                if (_leftHandController != null)
+                {
+                    _leftHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Left) != 0;
+                }
+
+                if (_rightHandController != null)
+                {
+                    _rightHandController.uiInteractionEnabled = (_uiInteractHands & HandCombinations.Right) != 0;
+                }
             }
         }
 

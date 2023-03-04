@@ -159,9 +159,9 @@ namespace ExPresSXR.Rig
         {
             if (_rayInteractor.TryGetCurrentRaycast(
                     out var raycastHit,
-                    out var raycastHitIndex,
+                    out var _,
                     out var uiRaycastResult,
-                    out var uiRaycastHitIndex,
+                    out _,
                     out var isUIHitClosest))
             {
                 if (uiRaycastResult != null && uiRaycastResult.HasValue && isUIHitClosest)
@@ -203,7 +203,7 @@ namespace ExPresSXR.Rig
         {
             using (StateEvent.From(_fakeInputDevice, out var eventPtr))
             {
-                ((ButtonControl)_fakeInputDevice.forwardButton).WriteValueIntoEvent(1.0f, eventPtr);
+                _fakeInputDevice.forwardButton.WriteValueIntoEvent(1.0f, eventPtr);
                 InputSystem.QueueEvent(eventPtr);
                 // Release button press after a short while
                 StartCoroutine(ReleaseButtonPress());
@@ -215,7 +215,7 @@ namespace ExPresSXR.Rig
             yield return new WaitForSeconds(0.05f);
             using (StateEvent.From(_fakeInputDevice, out var eventPtr))
             {
-                ((ButtonControl)_fakeInputDevice.forwardButton).WriteValueIntoEvent(0.0f, eventPtr);
+                _fakeInputDevice.forwardButton.WriteValueIntoEvent(0.0f, eventPtr);
                 InputSystem.QueueEvent(eventPtr);
             }
 

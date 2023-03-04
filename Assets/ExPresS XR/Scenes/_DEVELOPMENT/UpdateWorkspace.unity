@@ -588,7 +588,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0
@@ -1434,7 +1434,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.01
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 215
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0
@@ -2886,6 +2886,7 @@ MonoBehaviour:
   screenCollisionIndicator: {fileID: 1620528357}
   _pushbackAnchor: {fileID: 841547056}
   _colliderSize: 0.22
+  gravityStrength: -9.81
   _maxFadeDuration: 0.5
   OnCollisionStarted:
     m_PersistentCalls:
@@ -3037,7 +3038,7 @@ GameObject:
   - component: {fileID: 841547058}
   - component: {fileID: 841547059}
   - component: {fileID: 841547060}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ExPresS XR Rig - Teleport
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3100,7 +3101,7 @@ MonoBehaviour:
   _snapTurnEnabled: 1
   _handModelMode: 1
   _interactHands: -1
-  _teleportHands: 2
+  _teleportHands: -1
   _uiInteractHands: 3
   _headCollisionEnabled: 1
   _showCollisionVignetteEffect: 0
@@ -5312,7 +5313,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 215
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 1
   m_HoverToSelect: 0
