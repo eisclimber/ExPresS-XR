@@ -20,12 +20,26 @@ namespace ExPresSXR.Editor
         {
             serializedObject.UpdateIfRequiredOrScript();
 
+            DrawScript();
+
+            EditorGUILayout.Space();
+
+            DrawBaseProperties();          
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        protected virtual void DrawScript()
+        {
             EditorGUI.BeginDisabledGroup(true);
             {
                 EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
             }
             EditorGUI.EndDisabledGroup();
+        }
 
+        protected virtual void DrawBaseProperties()
+        {
             EditorGUI.indentLevel++;
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_showPlayAreaBounds"), true);
@@ -37,8 +51,6 @@ namespace ExPresSXR.Editor
                 targetScript.UpdateBoundaryVisibility();
             }
             EditorGUI.indentLevel--;
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

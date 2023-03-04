@@ -100,7 +100,7 @@ namespace ExPresSXR.Editor
                 Debug.LogWarning("Do not add the suffix '.prefab' to the name. We're accounting for that already.");
                 name = name[..^".prefab".Length];
             }
-            return String.Format(EXPRESS_XR_PREFAB_FORMAT, name);
+            return string.Format(EXPRESS_XR_PREFAB_FORMAT, name);
         }
 
 
