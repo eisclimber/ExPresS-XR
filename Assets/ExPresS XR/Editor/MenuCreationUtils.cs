@@ -45,14 +45,14 @@ namespace ExPresSXR.Editor
 
 
         // Inverse Kinematics
-        [MenuItem("GameObject/ExPresS XR/XR Rig/Inverse Kinematics/Sample - Empty")]
+        [MenuItem("GameObject/ExPresS XR/Inverse Kinematics/Sample - Empty")]
         static void CreateIKSampleEmpty(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "IK/IK Sample - Empty");
         }
 
 
-        [MenuItem("GameObject/ExPresS XR/XR Rig/Inverse Kinematics/Sample - Character")]
+        [MenuItem("GameObject/ExPresS XR/Inverse Kinematics/Sample - Character")]
         static void CreateIKSampleCharacter(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "IK/IK Sample - Character");

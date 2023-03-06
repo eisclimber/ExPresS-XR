@@ -58,8 +58,17 @@ namespace ExPresSXR.Interaction
         // Reset Event
         public UnityEvent OnButtonPressReset;
 
+        [Tooltip("Sound played when the button is NOT in toggle mode and pressed down.")]
         public AudioClip pressedSound;
+
+        [Tooltip("Sound played when the button is NOT in toggle mode and is released.")]
         public AudioClip releasedSound;
+
+        [Tooltip("Sound played when the button is in toggle mode and is toggled from the up to the down position.")]
+        public AudioClip toggledDownSound;
+
+        [Tooltip("Sound played when the button is in toggle mode and is toggled from the down to the up position.")]
+        public AudioClip toggledUpSound;
 
         public Transform baseAnchor;
         public Transform pushAnchor;
@@ -132,9 +141,9 @@ namespace ExPresSXR.Interaction
             audioPlayer = GetComponent<AudioSource>();
             audioPlayer.playOnAwake = false;
             OnPressed.AddListener(PlayPressedSound);
-            OnTogglePressed.AddListener(PlayPressedSound);
+            OnTogglePressed.AddListener(PlayToggledDownSound);
             OnReleased.AddListener(PlayReleasedSound);
-            OnToggleReleased.AddListener(PlayReleasedSound);
+            OnToggleReleased.AddListener(PlayToggledUpSound);
         }
 
         protected override void OnDestroy()
@@ -182,18 +191,6 @@ namespace ExPresSXR.Interaction
             OnButtonPressReset.Invoke();
         }
 
-        // private void Start()
-        // {
-        //     SetMinMax();
-        // }
-
-        // private void SetMinMax()
-        // {
-        //     Collider collider = pushAnchor.GetComponent<Collider>();
-        //     _yMin = pushAnchor.transform.localPosition.y - (collider.bounds.size.y * 0.5f);
-        //     _yMax = pushAnchor.transform.localPosition.y;
-        // }
-
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             base.ProcessInteractable(updatePhase);
@@ -235,51 +232,70 @@ namespace ExPresSXR.Interaction
                 return;
             }
 
-            bool isDown = IsInDownPosition();
-
             if (!toggleMode)
             {
-                if (isDown && !pressed)
-                {
-                    _pressed = true;
-                    OnPressed.Invoke();
-                }
-                else if (!isDown && pressed)
-                {
-                    _pressed = false;
-                    OnReleased.Invoke();
-                }
+                CheckRegularPress();
             }
-            else if (toggleMode && isDown)
+            else
             {
-                if (!pressed)
-                {
-                    _pressed = true;
-                    SetYPosition(_yMin);
-                    OnTogglePressed.Invoke();
-                }
-                else if (pressed)
-                {
-                    _pressed = false;
-                    OnToggleReleased.Invoke();
-                }
+                CheckTogglePress();
             }
         }
 
-        public void PlayPressedSound()
+
+        private void CheckRegularPress()
         {
-            if (pressedSound != null)
+            bool isDown = IsInDownPosition();
+
+            if (isDown && !pressed)
             {
-                audioPlayer.clip = pressedSound;
-                audioPlayer.Play();
+                _pressed = true;
+                OnPressed.Invoke();
+            }
+            else if (!isDown && pressed)
+            {
+                _pressed = false;
+                OnReleased.Invoke();
             }
         }
 
-        public void PlayReleasedSound()
+        private void CheckTogglePress()
         {
-            if (releasedSound != null)
+            if (!IsInDownPosition())
             {
-                audioPlayer.clip = releasedSound;
+                // If not down the button is not considered pressed
+                return;
+            }
+
+            if (!pressed)
+            {
+                _pressed = true;
+                SetYPosition(_yMin);
+                OnTogglePressed.Invoke();
+                PlayToggledDownSound();
+            }
+            else if (pressed)
+            {
+                _pressed = false;
+                OnToggleReleased.Invoke();
+                PlayToggledUpSound();
+            }
+        }
+
+        public void PlayPressedSound() => PlaySound(pressedSound);
+
+        public void PlayReleasedSound() => PlaySound(releasedSound);
+
+        public void PlayToggledDownSound() => PlaySound(toggledDownSound);
+
+        public void PlayToggledUpSound() => PlaySound(toggledUpSound);
+
+
+        private void PlaySound(AudioClip clip)
+        {
+            if (clip != null)
+            {
+                audioPlayer.clip = clip;
                 audioPlayer.Play();
             }
         }

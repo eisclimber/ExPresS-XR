@@ -248,6 +248,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_CustomReticle: {fileID: 0}
   m_FirstHoverEntered:
@@ -280,6 +281,8 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -330,8 +333,10 @@ MonoBehaviour:
   OnButtonPressReset:
     m_PersistentCalls:
       m_Calls: []
-  pressedSound: {fileID: 0}
-  releasedSound: {fileID: 0}
+  pressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
+  releasedSound: {fileID: 8300000, guid: 16e54074595a53243b89758106431e7a, type: 3}
+  toggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
+  toggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
   baseAnchor: {fileID: 5005649190985747532}
   pushAnchor: {fileID: 5005649191158765113}
   _yMin: 0.019
