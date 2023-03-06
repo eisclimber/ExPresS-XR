@@ -91,6 +91,9 @@ namespace ExPresSXR.Editor
 
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelMode"), true);
+
+                EditorGUILayout.Space();
+
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_interactHands"), true);
 
                 EditorGUI.BeginDisabledGroup(!targetScript.teleportationEnabled);

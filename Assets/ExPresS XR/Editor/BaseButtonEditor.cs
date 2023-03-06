@@ -77,6 +77,9 @@ namespace ExPresSXR.Editor
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("pressedSound"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("releasedSound"), true);
+
+            EditorGUILayout.Space();
+
             EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledDownSound"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledUpSound"), true);
             EditorGUI.indentLevel--;
