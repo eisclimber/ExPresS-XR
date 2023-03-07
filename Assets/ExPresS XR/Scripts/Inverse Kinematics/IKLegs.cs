@@ -4,11 +4,13 @@ public class IKLegs : MonoBehaviour
 {
     private const float MAX_RAYCAST_DISTANCE = 2.5f;
 
+    [Tooltip("The height offset added to the heel of the feet.")]
     [SerializeField]
     private float _feetOffset;
 
+    [Tooltip("LayerMask to determine which Layers are considered ground for the feet.")]
     [SerializeField]
-    private LayerMask layerMask;
+    private LayerMask _layerMask;
 
     private Animator animator;
 
@@ -27,7 +29,7 @@ public class IKLegs : MonoBehaviour
         foreach(AvatarIKGoal foot in feet)
         {
             Vector3 footPosition = animator.GetIKPosition(foot);
-            Physics.Raycast(footPosition + Vector3.up, Vector3.down, out RaycastHit hit, MAX_RAYCAST_DISTANCE, layerMask);
+            Physics.Raycast(footPosition + Vector3.up, Vector3.down, out RaycastHit hit, MAX_RAYCAST_DISTANCE, _layerMask);
             animator.SetIKPositionWeight(foot, 1);
             animator.SetIKPosition(foot, hit.point + (Vector3.up * _feetOffset));
         }

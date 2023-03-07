@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using ExPresSXR.Rig;
-using ExPresSXR.Rig.InverseKinematics;
 using UnityEngine;
 
 namespace ExPresSXR.Rig.InverseKinematics
 {
     public class IKBodyPresence : MonoBehaviour
     {
-        [Tooltip("The IK target for the head.")]
+        [Tooltip("The IK target for the head. Determines orientation of the IK model.")]
         [SerializeField]
         private IKTransformMapping _head;
 
@@ -16,7 +12,7 @@ namespace ExPresSXR.Rig.InverseKinematics
         [SerializeField]
         private IKTransformMapping _leftHand;
 
-        [Tooltip("The IK target for the left hand.")]
+        [Tooltip("The IK target for the right hand.")]
         [SerializeField]
         private IKTransformMapping _rightHand;
 

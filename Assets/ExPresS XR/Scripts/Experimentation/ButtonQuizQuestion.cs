@@ -77,7 +77,7 @@ namespace ExPresSXR.Experimentation
                     case FeedbackMode.AlwaysWrong:
                         for (int i = 0; i < answerTexts.Length; i++)
                         {
-                            bool chooseCorrect = (config.feedbackMode == FeedbackMode.AlwaysCorrect);
+                            bool chooseCorrect = config.feedbackMode == FeedbackMode.AlwaysCorrect;
                             if (correctAnswers[i] == chooseCorrect && answerTexts[i] != null && answerTexts[i] != "")
                             {
                                 feedbackString += answerTexts[i];
@@ -139,7 +139,7 @@ namespace ExPresSXR.Experimentation
                     case FeedbackMode.AlwaysWrong:
                         for (int i = 0; i < answerTexts.Length; i++)
                         {
-                            bool chooseCorrect = (config.feedbackMode == FeedbackMode.AlwaysCorrect);
+                            bool chooseCorrect = config.feedbackMode == FeedbackMode.AlwaysCorrect;
                             if (correctAnswers[i] == chooseCorrect && answerObjects[i] != null)
                             {
                                 feedbackGos.Add(answerObjects[i]);

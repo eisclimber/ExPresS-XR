@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ExPresSXR.Experimentation.Timing
+namespace ExPresSXR.Misc.Timing
 {
     public class Stopwatch : MonoBehaviour
     {
@@ -10,7 +8,10 @@ namespace ExPresSXR.Experimentation.Timing
 
         [Tooltip("Time when the stopwatch was started or INACTIVE_STOP_TIME if not started.")]
         private float _startTime = INACTIVE_STOP_TIME;
-        public float startTime { get; private set; }
+        public float startTime
+        {
+            get => _startTime;
+        }
 
         [Tooltip("How long the stopwatch is currently running or INACTIVE_STOP_TIME if not started.")]
         public float currentStopTime
@@ -21,12 +22,16 @@ namespace ExPresSXR.Experimentation.Timing
             }
         }
 
-        [Tooltip("If true, will start the timer OnAwake.")]
+        [Tooltip("If true, will start the timer  during OnAwake().")]
         public bool autoStart;
 
 
+        [Tooltip("Is true if the stopwatch is currently measuring time.")]
         private bool _running;
-        public bool running { get; private set; }
+        public bool running 
+        { 
+            get => _running;
+        }
 
 
         private void Awake() {
@@ -36,21 +41,21 @@ namespace ExPresSXR.Experimentation.Timing
             }
         }
 
-        // Starts the stopwatch
+        // Starts a time measurement with the stopwatch. Only updates the startTime when already running.
         public void StartTimeMeasurement()
         {
             _startTime = Time.time;
-            running = true;
+            _running = true;
         }
 
-        // Stops and resets the stopwatch, returns the final time measurement
+        // Stops and resets the stopwatch, returns the final time measurement.
         public float StopTimeMeasurement(bool _restart = false)
         {
             // Save end time
             float endTime = currentStopTime;
             
             // Halt stopwatch or restart
-            running = _restart;
+            _running = _restart;
             _startTime = _restart ? Time.time : INACTIVE_STOP_TIME;
             
             // Return the previously saved time

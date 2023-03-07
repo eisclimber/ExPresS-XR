@@ -8,6 +8,7 @@ namespace ExPresSXR.Interaction
 {
     public class HapticImpulseTrigger : MonoBehaviour
     {
+        [Tooltip("If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.")]
         [SerializeField]
         private bool _findTargetOnHover;
         public bool findTargetOnHover
@@ -19,18 +20,18 @@ namespace ExPresSXR.Interaction
             }
         }
 
-        // Target to receive haptic events
+        [Tooltip("Target Controller to receive haptic events.")]
         public XRBaseController hapticTarget;
         
         private XRBaseInteractable hoverProvider;
 
 
-        protected void Start()
+        private void Start()
         {
             if (findTargetOnHover && TryGetComponent(out hoverProvider))
             {
                 hoverProvider.hoverEntered.AddListener(AddHapticTargetFromHover);
-                 hoverProvider.hoverExited.AddListener(RemoveHapticTargetFromHover);
+                hoverProvider.hoverExited.AddListener(RemoveHapticTargetFromHover);
             }
             else if (findTargetOnHover)
             {
@@ -54,8 +55,8 @@ namespace ExPresSXR.Interaction
             }
         }
 
-        // Use this function to send haptic Events to the current hapticTarget
-        // Note: If targetOverride is active the hapticTarget will be updated automatically
+        // Use this function to send haptic Events to the current hapticTarget.
+        // Note: If targetOverride is active the hapticTarget will be updated automatically.
         public void PerformHapticEventOnCurrentTarget(float amplitude, float duration, 
                                         XRBaseController targetOverride = null)
         {
@@ -67,7 +68,7 @@ namespace ExPresSXR.Interaction
         }
 
 
-        // Triggers an Haptic Event for a duration with the given strength on the target (if possible)
+        // Triggers an Haptic Event for a duration with the given strength on the target (if possible).
         public static void PerformHapticEvent(float strength, float duration, 
                                         XRBaseController target)
         {

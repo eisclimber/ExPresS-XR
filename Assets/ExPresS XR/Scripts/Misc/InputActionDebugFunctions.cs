@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Misc
 {
-    public class DebugFunctions : MonoBehaviour
+    public class InputActionDebugFunctions : MonoBehaviour
     {
 
         public InputActionReference testInputAction1;

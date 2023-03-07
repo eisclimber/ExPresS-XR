@@ -15,10 +15,10 @@ namespace ExPresSXR.Rig {
         const InputDeviceCharacteristics CONTROLLER_BASE_CHARACTERISTICS = InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HeldInHand;
         
         [SerializeField] 
-        private ControllerSide controllerHand = ControllerSide.Right;
+        private ControllerSide _controllerHand = ControllerSide.Right;
 
         [SerializeField]
-        private string triggerPrefix;
+        private string _triggerPrefix;
 
         private InputDevice currentDevice;
         private Animator animator;
@@ -40,20 +40,20 @@ namespace ExPresSXR.Rig {
         {
             if (currentDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
             {
-                animator.SetFloat(triggerPrefix + "Trigger", triggerValue);
+                animator.SetFloat(_triggerPrefix + "Trigger", triggerValue);
             }
             else
             {
-                animator.SetFloat(triggerPrefix + "Trigger", 0);
+                animator.SetFloat(_triggerPrefix + "Trigger", 0);
             }
 
             if (currentDevice.TryGetFeatureValue(CommonUsages.grip, out float gripValue))
             {
-                animator.SetFloat(triggerPrefix + "Grip", gripValue);
+                animator.SetFloat(_triggerPrefix + "Grip", gripValue);
             }
             else
             {
-                animator.SetFloat(triggerPrefix + "Grip", 0);
+                animator.SetFloat(_triggerPrefix + "Grip", 0);
             }
         }
 
@@ -62,7 +62,7 @@ namespace ExPresSXR.Rig {
         {
             List<InputDevice> devices = new();
 
-            InputDeviceCharacteristics handCharacteristics =  controllerHand == ControllerSide.Left ?
+            InputDeviceCharacteristics handCharacteristics =  _controllerHand == ControllerSide.Left ?
                     InputDeviceCharacteristics.Left : InputDeviceCharacteristics.Right;
 
             InputDeviceCharacteristics deviceCharacteristics = CONTROLLER_BASE_CHARACTERISTICS | handCharacteristics;

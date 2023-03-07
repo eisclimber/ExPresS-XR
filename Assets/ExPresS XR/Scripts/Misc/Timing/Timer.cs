@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ExPresSXR.Experimentation.Timing
+namespace ExPresSXR.Misc.Timing
 {
     public class Timer : MonoBehaviour
     {
@@ -11,7 +11,7 @@ namespace ExPresSXR.Experimentation.Timing
         const float DEFAULT_WAIT_TIME = 1.0f;
         
 
-        [Tooltip("How long the timer takes to timeout.")]
+        [Tooltip("How long the timer takes to timeout. Must be greater than 0.0f.")]
         [SerializeField]
         private float _waitTime = DEFAULT_WAIT_TIME;
         public float waitTime
@@ -30,23 +30,30 @@ namespace ExPresSXR.Experimentation.Timing
             }
         }
 
-        [Tooltip("If true, will start the timer OnAwake.")]
+        [Tooltip("If true, will start the timer during OnAwake()..")]
         public bool autoStart;
 
         [Tooltip("If false, the timer will restart after timeout.")]
         public bool oneShot;
 
 
-        [Tooltip("Emitted when the timer is started.")]
+        [Tooltip("Event that is triggered when the timer was started.")]
         public UnityEvent OnStarted;
 
-        [Tooltip("Emitted when the timer times out.")]
+        [Tooltip("Event that is triggered when the timer times out.")]
         public UnityEvent OnTimeout;
+
+        // Returns the remaining time of the timer.
+        // If the timer is not running the value will be the value of TIMER_INACTIVE_WAIT_TIME.
+        public float remainingTime
+        {
+            get => _remainingTime;
+        }
 
 
         private bool timerActive;
         private bool timerPaused;
-        private float remainingTime;
+        private float _remainingTime;
 
 
         private void Awake() {
@@ -59,7 +66,7 @@ namespace ExPresSXR.Experimentation.Timing
         private void FixedUpdate() {
             if (timerActive && !timerPaused)
             {
-                remainingTime -= Time.fixedDeltaTime;
+                _remainingTime -= Time.fixedDeltaTime;
 
                 if (remainingTime <= 0.0f)
                 {
@@ -68,23 +75,13 @@ namespace ExPresSXR.Experimentation.Timing
             }
         }
 
-        private void HandleTimeout()
-        {
-            StopTimer();
-            OnTimeout.Invoke();
-
-            if (!oneShot)
-            {
-                StartTimer();
-            }
-        }
 
         // (Re-)starts the timer with duration, setting waitTime in the process.
         // If duration is <= 0.0f the value of waitTime is used.
         public void StartTimer(float duration = -1.0f)
         {
             waitTime = duration > 0.0f? duration : waitTime;
-            remainingTime = waitTime;
+            _remainingTime = waitTime;
             timerActive = true;
             OnStarted.Invoke();
         }
@@ -98,15 +95,20 @@ namespace ExPresSXR.Experimentation.Timing
         // Stops and resets the timer whilst not emitting the timeout event
         public void StopTimer()
         {
-            remainingTime = TIMER_INACTIVE_WAIT_TIME;
+            _remainingTime = TIMER_INACTIVE_WAIT_TIME;
             timerActive = false;
         }
 
-        // Returns the remaining time of the timer.
-        // If the timer is not running the value will be the value of TIMER_INACTIVE_WAIT_TIME.
-        public float GetRemainingTime()
+
+        private void HandleTimeout()
         {
-            return remainingTime;
+            StopTimer();
+            OnTimeout.Invoke();
+
+            if (!oneShot)
+            {
+                StartTimer();
+            }
         }
     }
 }

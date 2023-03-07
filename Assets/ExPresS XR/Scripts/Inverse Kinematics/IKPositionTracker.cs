@@ -8,7 +8,7 @@ namespace ExPresSXR.Rig.InverseKinematics
     public class IKPositionTracker : MonoBehaviour
     {
 
-        [Tooltip("The IK mapping for the head.")]
+        [Tooltip("The mapping for tracking an IK target.")]
         [SerializeField]
         private IKTransformMapping _mapping;
 
