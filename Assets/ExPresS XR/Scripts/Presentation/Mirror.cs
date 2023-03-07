@@ -175,7 +175,12 @@ namespace ExPresSXR.Presentation
 
 
         private void Awake() {
-            if (!_trackedTarget.TryGetComponent<Camera>(out _))
+
+            if (_trackedTarget == null)
+            {
+                Debug.LogWarning("The Tracked Target is null. The mirror won't follow anything.");
+            }
+            else if (!_trackedTarget.TryGetComponent<Camera>(out _))
             {
                 Debug.LogWarning("Target was not set to a camera. The mirror might display the wrong perspective.");
             }
