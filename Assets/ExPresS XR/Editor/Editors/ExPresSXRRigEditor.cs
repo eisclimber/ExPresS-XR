@@ -59,7 +59,13 @@ namespace ExPresSXR.Editor
         {
             EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputMethod"), true);
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputMethod"), true);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Prevents warnings for enabling GameObjects during OnValidate()
+                    targetScript.RevalidateInputMethod();
+                }
             EditorGUI.indentLevel--;
         }
 
@@ -79,12 +85,20 @@ namespace ExPresSXR.Editor
         protected virtual void DrawMovementController()
         {
             EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_joystickMovementEnabled"), true);
+                EditorGUI.BeginDisabledGroup(targetScript.snapTurnEnabled);
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_joystickMovementEnabled"), true);
+                }
+                EditorGUI.EndDisabledGroup();
 
                 EditorGUILayout.Space();
                 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportationEnabled"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_snapTurnEnabled"), true);
+                EditorGUI.BeginDisabledGroup(targetScript.joystickMovementEnabled);
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_snapTurnEnabled"), true);
+                }
+                EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);

@@ -24,6 +24,11 @@ namespace ExPresSXR.Rig
             {
                 _inputMethod = value;
 
+                // Make sure the Locomotion is setup correctly when switching
+                teleportationEnabled = _teleportationEnabled;
+                joystickMovementEnabled = _joystickMovementEnabled;
+                snapTurnEnabled = _snapTurnEnabled;
+
                 if (_leftHandController != null)
                 {
                     _leftHandController.gameObject.SetActive(inputMethod == InputMethodType.Controller);
@@ -56,7 +61,7 @@ namespace ExPresSXR.Rig
             {
                 _teleportationEnabled = value;
 
-                bool enableAsDriver = _teleportationEnabled && !_joystickMovementEnabled;
+                bool enableAsDriver = _teleportationEnabled;
 
                 EnableLocomotionProvider<TeleportationProvider>(_teleportationEnabled, enableAsDriver);
 
@@ -77,7 +82,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("If Joystick movement is enabled.")]
+        [Tooltip("If Joystick-Movement is enabled. Can not be used together with SnapTurn.")]
         [SerializeField]
         private bool _joystickMovementEnabled;
         public bool joystickMovementEnabled
@@ -87,20 +92,20 @@ namespace ExPresSXR.Rig
             {
                 _joystickMovementEnabled = value;
 
-                bool enableAsDriver = _joystickMovementEnabled;
+                bool enableAsDriver = _joystickMovementEnabled && inputMethod != InputMethodType.HeadGaze;
 
                 EnableLocomotionProvider<ActionBasedContinuousMoveProvider>(_joystickMovementEnabled, enableAsDriver);
                 EnableLocomotionProvider<ActionBasedContinuousTurnProvider>(_joystickMovementEnabled);
 
                 // Snap Turn and joystick Movement is not allowed
-                if (_joystickMovementEnabled && snapTurnEnabled)
+                if (_joystickMovementEnabled && _snapTurnEnabled)
                 {
                     snapTurnEnabled = false;
                 }
             }
         }
 
-        [Tooltip("If SnapTurn movement is enabled.")]
+        [Tooltip("If SnapTurn movement is enabled. Can not be used together with Joystick-Movement.")]
         [SerializeField]
         private bool _snapTurnEnabled;
         public bool snapTurnEnabled
@@ -113,7 +118,7 @@ namespace ExPresSXR.Rig
                 EnableLocomotionProvider<ActionBasedSnapTurnProvider>(_snapTurnEnabled);
 
                 // Snap Turn and joystick Movement is not allowed
-                if (_snapTurnEnabled && joystickMovementEnabled)
+                if (_snapTurnEnabled && _joystickMovementEnabled)
                 {
                     joystickMovementEnabled = false;
                 }
@@ -554,7 +559,8 @@ namespace ExPresSXR.Rig
 
         // Updates values that are changed from other scripts in the inspector
         private void OnValidate() {
-            inputMethod = _inputMethod;
+            // Not changing inputMethod here as it changes visibility 
+            // => Changed in CustomEditor via RevalidateInputMethod()
             teleportationEnabled = _teleportationEnabled;
             joystickMovementEnabled = _joystickMovementEnabled;
             snapTurnEnabled = _snapTurnEnabled;
@@ -581,6 +587,11 @@ namespace ExPresSXR.Rig
             hud = _hud;
             fadeRect = _fadeRect;
             gameTabDisplayMode = _gameTabDisplayMode;
+        }
+
+        public void RevalidateInputMethod()
+        {
+            inputMethod = _inputMethod;
         }
     }
 

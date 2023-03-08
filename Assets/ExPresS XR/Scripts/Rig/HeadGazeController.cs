@@ -115,6 +115,8 @@ namespace ExPresSXR.Rig
         {
             GameObject newTarget = TryGetNewTarget();
 
+            // Debug.Log(" Target: " + newTarget?.name);
+
             if (newTarget != _hoverTarget)
             {
                 // New Target Found

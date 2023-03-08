@@ -1155,6 +1155,154 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "XRI EyeGaze",
+            "id": "3a24fe37-2616-49c6-8d19-df7c48aa3898",
+            "actions": [
+                {
+                    "name": "centerEyePosition",
+                    "type": "Value",
+                    "id": "4e29508b-9e2d-4e3b-ad34-d728cc0ad590",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "centerEyeRotation",
+                    "type": "Value",
+                    "id": "4a8734a1-a8b3-4b4e-b825-a193bec49203",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "eyeGazePose",
+                    "type": "Value",
+                    "id": "44dc18ed-8723-441e-aa31-bdeac80b7075",
+                    "expectedControlType": "Pose",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "leftEyePosition",
+                    "type": "Value",
+                    "id": "160993c8-2bdd-481e-a74c-238b2cdab5da",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "leftEyeRotation",
+                    "type": "Value",
+                    "id": "c9f82d9f-bd4a-4b12-a8f2-c53868609e25",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "rightEyePosition",
+                    "type": "Value",
+                    "id": "af118e06-3216-42b4-af87-b8ea981a7d3a",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "rightEyeRotation",
+                    "type": "Value",
+                    "id": "ad3f0cc6-9c28-43f1-84c4-a5f6687e5f4a",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ea12aa4f-b5ea-431e-96bf-802109903fa9",
+                    "path": "<XRHMD>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "centerEyePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "050a5137-deae-4c36-9a3b-982f6ec8f983",
+                    "path": "<XRHMD>/leftEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "leftEyePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46541bc0-efa8-4b0f-8e8d-06445e37d9fc",
+                    "path": "<XRHMD>/rightEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "rightEyePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb9c2175-2d7b-4519-bdb0-b3fc588b879e",
+                    "path": "<XRHMD>/centerEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "centerEyeRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "437246d2-fb46-4380-b0c0-f4f731dd3aa3",
+                    "path": "<EyeGaze>/pose",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "eyeGazePose",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f89f33dd-5193-4575-bb3d-d74ad21477b5",
+                    "path": "<XRHMD>/rightEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "rightEyeRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b399dc7f-c68e-41f2-8797-b8aecd393071",
+                    "path": "<XRHMD>/leftEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "leftEyeRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
