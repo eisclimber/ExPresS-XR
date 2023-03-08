@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="step-1-intro" style="flex-grow: 1;">
+        <ui:Label text="How to Create an IK Presence..." display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:Label text="This Setup-Dialog describes the creation of an Inverse Kinematic (IK) representation of a person for the ExPResS XR-Rig. The creation is not automated and due to it&apos;s complexity rather long. ExPresS provides the necessary scripts and animations to make it as easy as possible. It also comes with a sample IK rig that with and without a model. The later is only contains the basic structure and must be configured to match a model." display-tooltip-when-elided="true" name="step-1-description" style="flex-grow: 1; flex-shrink: 1; -unity-text-align: upper-left; white-space: normal; display: flex;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>

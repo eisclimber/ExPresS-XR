@@ -131,6 +131,11 @@ namespace ExPresSXR.Editor.SetupDialogs
             {
                 nextButton.clickable.clicked += FinalizeSetup;
             });
+
+            contentContainer.Query<Button>("close-button").ForEach((nextButton) =>
+            {
+                nextButton.clickable.clicked += Close;
+            });
         }
 
         protected EditorCoroutine ShowErrorElement(VisualElement _errorElement)

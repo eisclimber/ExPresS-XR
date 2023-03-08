@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="step-6-legs" style="flex-grow: 1;">
+        <ui:Label text="Add Bendable Legs..." display-tooltip-when-elided="true" name="step-6-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:Label text="(Optional) Add the ability for the legs to bend according to the height of the vr headset (prevents clipping of the character into the floor). To do so add the &apos;IK Legs&apos;-Component to the IK Presence GameObject. \nMake sure the Animator has a separate AnimationLayer for the lower body. It should have weight 1, the it&apos;s AvatarMask set to the &apos;Lower Body Avatar Mask&apos; and the &apos;IK Pass&apos;-option enabled. \n\nFinally adjust the feetOffset during runtime such that the legs are in an upright position whilst standing but also do not clip (too much) through the floor." display-tooltip-when-elided="true" name="step-6-description" style="flex-grow: 1; flex-shrink: 1; -unity-text-align: upper-left; white-space: normal; display: flex;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>

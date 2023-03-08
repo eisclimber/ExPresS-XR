@@ -1,14 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:Template name="step-1-intro" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-1-intro.uxml?fileID=9197481963319205126&amp;guid=56176aa526f7a214baebfaf53743a606&amp;type=3#step-1-intro" />
     <ui:Template name="step-2-configure-quiz-type" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-2-configure-quiz-type.uxml?fileID=9197481963319205126&amp;guid=2682e8336643e124a9efd79dfd760ca6&amp;type=3#step-2-configure-quiz-type" />
+    <ui:Template name="step-3-create-room" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-3-setup-environment.uxml?fileID=9197481963319205126&amp;guid=bd309d359a434774680ddc3a4e5d29a2&amp;type=3#step-3-setup-environment" />
     <ui:Template name="step-4-place-furniture" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-4-place-furniture.uxml?fileID=9197481963319205126&amp;guid=b80e01b64cf016040a2903a581e51130&amp;type=3#step-4-place-furniture" />
     <ui:Template name="step-5-place-buttons" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-5-place-buttons.uxml?fileID=9197481963319205126&amp;guid=88c03423d7c33ea408ce54f2b648d759&amp;type=3#step-5-place-buttons" />
     <ui:Template name="step-6-place-questioning-display" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-6-place-questioning-display.uxml?fileID=9197481963319205126&amp;guid=66427975dffaa6d46975ab1077130531&amp;type=3#step-6-place-questioning-display" />
     <ui:Template name="step-7-setup-quiz-logic" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-7-setup-quiz-logic.uxml?fileID=9197481963319205126&amp;guid=ffd5ddce25237f644b8f0e811d6a2f67&amp;type=3#step-7-setup-quiz-logic" />
     <ui:Template name="step-8-completion" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-8-completion.uxml?fileID=9197481963319205126&amp;guid=31e07c8fdc9455f40a4b9233b1c64c75&amp;type=3#step-8-completion" />
     <ui:Template name="step-9-data-gathering" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-9-data-gathering.uxml?fileID=9197481963319205126&amp;guid=d2041f980ed84bf44bb7e1ec4e2e7e6c&amp;type=3#step-9-data-gathering" />
-    <ui:Template name="step-3-create-room" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Button%20Quiz/step-3-setup-environment.uxml?fileID=9197481963319205126&amp;guid=bd309d359a434774680ddc3a4e5d29a2&amp;type=3#step-3-setup-environment" />
-    <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
+    <ui:VisualElement name="button-quiz-setup" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); min-width: 58px; padding-top: 4px; align-items: center;">
             <ui:Button text="1" display-tooltip-when-elided="true" name="step-1" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
             <ui:Button text="2" display-tooltip-when-elided="true" name="step-2" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
