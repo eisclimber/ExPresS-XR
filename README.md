@@ -29,7 +29,7 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 - In-editor setup dialogs and tutorials for a quick start with your project.
 - Detailed documentation of the project components and workflow.
 - A fully configurable XR Rig.
-  - Two input modes: Controller, Head Gaze (works with mobile!).
+  - Two input modes: Controller, Head Gaze.
   - Different combinable movement options: Teleportation, Continuous Move, ... .
   - Collision and PlayArea collision detection and visual feedback.
   - Virtual animated hands allowing grabbing and pushing of objects.
