@@ -61,6 +61,9 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 
 ExPresS XR needs your feedback to improve. For that you will find a [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf) in the repository of your project.
 
+If you like the project you can buy me a coffee: https://ko-fi.com/eisclimber
+(We all know: Programmer + Coffe = Code :D)
+
 
 ## Made with ExPresS XR
 
@@ -68,7 +71,7 @@ ExPresS XR needs your feedback to improve. For that you will find a [survey](htt
 
 - [A Sample serving as an VR-Exhibition of the Church in Mühlen using ExPresS XR](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
 
-If you create your own project using ExPresS XR feel free to contact me, so I can add you to the list.
+If you create your own project using ExPresS XR feel free to contact me, so I can add you to the list (also don't forget the [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf)).
 
 ## Known Issues
 
