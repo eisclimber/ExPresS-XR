@@ -177,10 +177,9 @@ namespace ExPresSXR.Experimentation
             _nextQuestionIdx = 0;
 
             // Connect Events
-            bool isMultipleChoice = (config.quizMode == QuizMode.MultipleChoice);
-            bool invertedFeedback = (config.feedbackMode == FeedbackMode.AlwaysWrong);
-            bool feedbackDisabled = (config.feedbackMode == FeedbackMode.None
-                                || config.feedbackMode == FeedbackMode.Random);
+            bool isMultipleChoice = config.quizMode == QuizMode.MultipleChoice;
+            bool invertedFeedback = config.feedbackMode == FeedbackMode.AlwaysWrong;
+            bool feedbackDisabled = config.feedbackMode == FeedbackMode.None || config.feedbackMode == FeedbackMode.Random;
 
             if (mcConfirmButton != null && isMultipleChoice)
             {
@@ -293,15 +292,19 @@ namespace ExPresSXR.Experimentation
                 {
                     if (_buttons[i] != null)
                     {
-                        string answerText = (i < _currentQuestion.answerTexts.Length ? _currentQuestion.answerTexts[i] : "");
-                        GameObject answerGo = (i < _currentQuestion.answerObjects.Length ? _currentQuestion.answerObjects[i] : null);
-                        bool answerCorrect = (i < _currentQuestion.correctAnswers.Length ? _currentQuestion.correctAnswers[i] : false);
+                        string answerText = i < _currentQuestion.answerTexts.Length ? _currentQuestion.answerTexts[i] : "";
+                        GameObject answerGo = i < _currentQuestion.answerObjects.Length ? _currentQuestion.answerObjects[i] : null;
+                        bool answerCorrect = i < _currentQuestion.correctAnswers.Length && _currentQuestion.correctAnswers[i];
 
-                        _buttons[i].DisplayAnswer(
-                            answerText,
-                            answerGo,
-                            answerCorrect
-                        );
+                        if (answerText == "" && answerGo == null && !answerCorrect)
+                        {
+                            // May occur only during differing-answers-multiple-choice-quizzes
+                            // Disable Button as it is not used or part of the answer (=> answerCorrect)
+                            _buttons[i].inputDisabled = true;
+                        }
+                        
+                        // Always display (also empty) answers on the button
+                        _buttons[i].DisplayAnswer(answerText, answerGo, answerCorrect);
                     }
                 }
 
@@ -318,7 +321,7 @@ namespace ExPresSXR.Experimentation
 
                 if (_displayAnchor != null && showObjectQuestion)
                 {
-                    GameObject go = Instantiate<GameObject>(_currentQuestion.questionObject, _displayAnchor.transform);
+                    Instantiate(_currentQuestion.questionObject, _displayAnchor.transform);
                 }
 
                 if (_displayPlayer != null && showVideoQuestion)
@@ -373,13 +376,13 @@ namespace ExPresSXR.Experimentation
 
             if (showTextFeedback)
             {
-                string res = (_showResultTextPrefix ? RESULT_TEXT_PREFIX : "");
+                string res = _showResultTextPrefix ? RESULT_TEXT_PREFIX : "";
                 _displayText.text = res + _displayedFeedbackText;
             }
 
             if (showObjectFeedback)
             {
-                float xOffset = (DISPLAY_OBJECTS_SPACING * (_displayedFeedbackObjects.Length - 1)) / 2.0f;
+                float xOffset = DISPLAY_OBJECTS_SPACING * (_displayedFeedbackObjects.Length - 1) / 2.0f;
 
                 foreach (Transform child in _displayAnchor.transform)
                 {
@@ -390,7 +393,7 @@ namespace ExPresSXR.Experimentation
                 {
                     if (_displayedFeedbackObjects[i] != null)
                     {
-                        GameObject go = GameObject.Instantiate<GameObject>(_displayedFeedbackObjects[i], _displayAnchor.transform);
+                        GameObject go = Instantiate(_displayedFeedbackObjects[i], _displayAnchor.transform);
                         go.transform.localPosition = new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0);
                     }
                 }
@@ -472,8 +475,8 @@ namespace ExPresSXR.Experimentation
 
         private bool IsDisplayValid(ButtonQuizConfig config, TMP_Text displayLabel, GameObject displayAnchor, VideoPlayer displayPlayer)
         {
-            bool needsAllDisplays = (config.questionType == QuestionType.DifferingTypes || config.feedbackType == FeedbackType.DifferingTypes);
-            string errorMessageAppendix = (needsAllDisplays ? " QuestionType or FeedbackType is set to DifferingTypes so all Displays must be provided." : "");
+            bool needsAllDisplays = config.questionType == QuestionType.DifferingTypes || config.feedbackType == FeedbackType.DifferingTypes;
+            string errorMessageAppendix = needsAllDisplays ? " QuestionType or FeedbackType is set to DifferingTypes so all Displays must be provided." : "";
 
             if (displayLabel == null && (needsAllDisplays || config.questionType == QuestionType.Text || config.feedbackType == FeedbackType.Text))
             {
@@ -529,8 +532,8 @@ namespace ExPresSXR.Experimentation
                 Transform restartTransform = RuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Restart Button");
                 Transform closeTransform = RuntimeUtils.RecursiveFindChild(_afterQuizMenu.transform, "Close Button");
 
-                Button restartButton = restartTransform?.GetComponent<Button>();
-                Button closeButton = closeTransform?.GetComponent<Button>();
+                Button restartButton = restartTransform != null ? restartTransform.GetComponent<Button>() : null;
+                Button closeButton = closeTransform != null ? closeTransform.GetComponent<Button>() : null;
 
                 if (restartButton != null)
                 {
@@ -672,9 +675,8 @@ namespace ExPresSXR.Experimentation
             for (int i = 0; i < array.Length; i++)
             {
                 int j = Random.Range(0, array.Length);
-                int temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
+                // Switch values
+                (array[j], array[i]) = (array[i], array[j]);
             }
             return array;
         }
@@ -685,8 +687,8 @@ namespace ExPresSXR.Experimentation
         private void UpdateAnswerExportValues()
         {
             bool isMC = config.quizMode == QuizMode.MultipleChoice;
-            List<int> pressedButtonIdxs = new List<int>();
-            List<QuizButton> pressedButtons = new List<QuizButton>();
+            List<int> pressedButtonIdxs = new();
+            List<QuizButton> pressedButtons = new();
             for (int i = 0; i < _buttons.Length; i++)
             {
                 if (_buttons[i] != null && _buttons[i].pressed)
@@ -786,7 +788,7 @@ namespace ExPresSXR.Experimentation
 
         public string GetDisplayedFeedbackObjects()
         {
-            List<string> _feedbackObjectNames = new List<string>();
+            List<string> _feedbackObjectNames = new();
             if (_displayedFeedbackObjects != null)
             {
                 foreach (GameObject go in _displayedFeedbackObjects)
@@ -819,13 +821,13 @@ namespace ExPresSXR.Experimentation
         public string GetConfigCsvExportValues()
         {
             // Use EXPORT_CSV_COLUMN_STRING for header
-            return config?.GetCsvExportValues() ?? ",,,,,,";
+            return config != null ? config.GetCsvExportValues() : ",,,,,,";
         }
 
         public string GetAllQuestionsCsvExportValues()
         {
             // Use EXPORT_CSV_COLUMN_STRING for header
-            return config?.GetAllQuestionsCsvExportValues() ?? ",,,,,,,,,,,,,,,,,,";
+            return config != null ? config.GetAllQuestionsCsvExportValues() : ",,,,,,,,,,,,,,,,,,";
         }
 
         public string GetFullQuizCsvValues()

@@ -155,8 +155,8 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 public string GetExportCSVHeader()
         {
-            string header = (_includeTimeStamp ? "time" : "");
-            header += (_dataBindings.Length > 0 ? "," : "");
+            string header = _includeTimeStamp ? "time" : "";
+            header += _includeTimeStamp && HasBindingsToExport() ? "," : "";
             // Get Data Bindings headers
             for (int i = 0; i < _dataBindings.Length; i++)
             {
@@ -168,7 +168,7 @@ namespace ExPresSXR.Experimentation.DataGathering
                 }
             }
 
-            // Gez Input Action Data Bindings Header
+            // Get Input Action Data Bindings Header
             for (int i = 0; i < _inputActionDataBindings.Length; i++)
             {
                 header += _inputActionDataBindings[i].name;
@@ -184,8 +184,9 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         public string GetExportCSVLine()
         {
-            string line = (_includeTimeStamp ? DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "");
-            line += (_dataBindings.Length > 0 ? "," : "");
+            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            string line = _includeTimeStamp ? currentTime.ToString() : "";
+            line += _includeTimeStamp && HasBindingsToExport() ? "," : "";
             // Read Data Bindings
             for (int i = 0; i < _dataBindings.Length; i++)
             {
@@ -216,7 +217,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
                 {
-                    Debug.LogWarning(String.Format("The following binding is invalid and will always be empty: {0}",
+                    Debug.LogWarning(string.Format("The following binding is invalid and will always be empty: {0}",
                                                     _dataBindings[i].GetBindingDescription()));
                 }
             }
@@ -275,6 +276,10 @@ namespace ExPresSXR.Experimentation.DataGathering
 #endif
         }
 
+        private bool HasBindingsToExport() 
+            => (_dataBindings != null && _dataBindings.Length > 0) 
+                || (_inputActionDataBindings != null && _inputActionDataBindings.Length > 0);
+
         private void TryStartPeriodicCoroutine()
         {
             if (periodicExportEnabled && Application.isPlaying)
@@ -297,7 +302,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private IEnumerator PostHttpData(string url, string data)
         {
-            UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+            UnityWebRequest request = new(url, UnityWebRequest.kHttpVerbPOST);
 
             if (data != null)
             {
@@ -313,14 +318,14 @@ namespace ExPresSXR.Experimentation.DataGathering
             if (request.result == UnityWebRequest.Result.ProtocolError
                 || request.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log(String.Format("Failed to send data to server: '{0}'.", request.error));
+                Debug.Log(string.Format("Failed to send data to server: '{0}'.", request.error));
             }
         }
 
 
         private IEnumerator TimeTriggerCoroutine()
         {
-            while (true)
+            while (_periodicExportEnabled)
             {
                 yield return new WaitForSeconds(_periodicExportTime);
                 ExportNewCSVLine();

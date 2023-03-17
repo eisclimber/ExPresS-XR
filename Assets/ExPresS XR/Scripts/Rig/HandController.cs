@@ -166,9 +166,11 @@ namespace ExPresSXR.Rig
 
 
         // Disable Interaction Hand Collision when selecting, enable when exiting HOVER (prevents objects from being pushed away when exiting select)
-        public void OnInteractionControllerSelectEntered(SelectEnterEventArgs args) => SetIgnoreHandInteractableCollisions(args, false);
+        public void OnInteractionControllerSelectEntered(SelectEnterEventArgs args) 
+            => SetIgnoreHandInteractableCollisions(args, false);
 
-        public void OnInteractionControllerHoverExited(HoverExitEventArgs args) => SetIgnoreHandInteractableCollisions(args, true);
+        public void OnInteractionControllerHoverExited(HoverExitEventArgs args) 
+            => SetIgnoreHandInteractableCollisions(args, true);
 
         // These can be also used if interactable should be handled differently
         /*
@@ -180,7 +182,7 @@ namespace ExPresSXR.Rig
         {
             if (_interactionController != null && _interactionController.model != null)
             {
-                AutoHandModel handModel = _interactionController.model.gameObject.GetComponent<AutoHandModel>() as AutoHandModel;
+                _interactionController.model.gameObject.TryGetComponent(out AutoHandModel handModel);
 
                 if (handModel != null)
                 {

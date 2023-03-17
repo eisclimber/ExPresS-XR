@@ -214,6 +214,34 @@ namespace ExPresSXR.Rig
         }
 
 
+        /*
+        [Tooltip("The reticle that is displayed at the end of the teleportation raycasts when the target is *valid*.")]
+        [SerializeField]
+        private Transform _validTeleportationReticle;
+        public Transform validTeleportationReticle
+        {
+            get => _validTeleportationReticle;
+            set
+            {
+                _validTeleportationReticle = value;
+            }
+        }
+
+
+        [Tooltip("The reticle that is displayed at the end of the teleportation raycasts when the target is *invalid*.")]
+        [SerializeField]
+        private Transform _invalidTeleportationReticle;
+        public Transform invalidTeleportationReticle
+        {
+            get => _invalidTeleportationReticle;
+            set
+            {
+                _invalidTeleportationReticle = value;
+                
+            }
+        }
+        */
+
         [Tooltip("Prevents the players Camera from clipping through Objects and looking inside them.")]
         [SerializeField]
         private bool _headCollisionEnabled;

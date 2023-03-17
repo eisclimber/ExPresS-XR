@@ -114,78 +114,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.08, z: 0}
---- !u!1 &7231118797711052443
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7231118797711052442}
-  - component: {fileID: 7231118797711052440}
-  - component: {fileID: 7231118797711052441}
-  m_Layer: 0
-  m_Name: Left AutoXR Hand Model With Collisions
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7231118797711052442
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118797711052443}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7231118797792121572}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7231118797711052440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118797711052443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e32b2a802dd9845b4574f8376e7d6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handModelMode: 1
-  controllerCharacteristics: 324
-  controllerModels:
-  - {fileID: 7634514334346526944, guid: c2285fc937be62641b392c24ab84994b, type: 3}
-  - {fileID: 5928091942230486030, guid: f140636c8eaa5024e82f1f336fc443c2, type: 3}
-  - {fileID: 4818293155451206850, guid: b9046a841483cf343a4a28e7faa23c2c, type: 3}
-  - {fileID: 4245457492171364763, guid: 2e1d85736a2beef4289fd6e59a01a718, type: 3}
-  - {fileID: 7523567926693483842, guid: 63a7539aaba64d2458db2a577fa217bb, type: 3}
-  handModel: {fileID: 109434732395284509, guid: 65847589f926b734d9eaed6e25f0046b, type: 3}
-  customModel: {fileID: 8007995345765236298, guid: 3c352584cfbad8b43b4f2ea50cad68d7, type: 3}
-  _collisionsEnabled: 0
---- !u!54 &7231118797711052441
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118797711052443}
-  serializedVersion: 2
-  m_Mass: 20
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!1 &7231118797792121573
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +146,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7231118797711052442}
+  - {fileID: 1426054352029204422}
   m_Father: {fileID: 7231118798700801401}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -239,7 +167,7 @@ MonoBehaviour:
   m_EnableInputActions: 1
   m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 7231118797711052442}
+  m_Model: {fileID: 1426054352029204422}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
@@ -624,78 +552,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ActionAssets:
   - {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
---- !u!1 &7231118797892292919
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7231118797892292918}
-  - component: {fileID: 7231118797892292916}
-  - component: {fileID: 7231118797892292917}
-  m_Layer: 0
-  m_Name: Right AutoXR Hand Model With Collisions
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7231118797892292918
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118797892292919}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7231118798024039753}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7231118797892292916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118797892292919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e32b2a802dd9845b4574f8376e7d6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handModelMode: 1
-  controllerCharacteristics: 580
-  controllerModels:
-  - {fileID: 7634514334346526944, guid: c2285fc937be62641b392c24ab84994b, type: 3}
-  - {fileID: 6654152787936889342, guid: e452d36525a967644aa470471f042e65, type: 3}
-  - {fileID: 357722411443781339, guid: 816247f8855f5c143b1f4a6f5aad4e73, type: 3}
-  - {fileID: 4024951872544157354, guid: 9678f15de925a4c48896f09124fe2186, type: 3}
-  - {fileID: 5191550869875014123, guid: f4f1b0d938c6acf4a8e23cd5f55a988f, type: 3}
-  handModel: {fileID: 5686134208185362930, guid: 1fd3a7c43c8190f4d8c167ebde694364, type: 3}
-  customModel: {fileID: 8007995345765236298, guid: 3c352584cfbad8b43b4f2ea50cad68d7, type: 3}
-  _collisionsEnabled: 0
---- !u!54 &7231118797892292917
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118797892292919}
-  serializedVersion: 2
-  m_Mass: 20
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!1 &7231118797927285479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,7 +1208,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7231118797936246040}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!114 &7231118797936246045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1367,6 +1223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TrackingType: 0
   m_UpdateType: 0
+  m_IgnoreTrackingState: 0
   m_PositionInput:
     m_UseReference: 0
     m_Action:
@@ -1405,6 +1262,18 @@ MonoBehaviour:
         m_Groups: 
         m_Action: Rotation
         m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_TrackingStateInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Tracking State Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 217550ee-5c88-4f19-9cc3-913b3329cdc0
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_PositionAction:
@@ -1477,7 +1346,6 @@ MonoBehaviour:
   screenCollisionIndicator: {fileID: 7231118799024495575}
   _pushbackAnchor: {fileID: 7231118797696537565}
   _colliderSize: 0.22
-  gravityStrength: -9.81
   _maxFadeDuration: 0.5
   OnCollisionStarted:
     m_PersistentCalls:
@@ -1571,7 +1439,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7231118797892292918}
+  - {fileID: 3067348118741401554}
   m_Father: {fileID: 7231118798350684066}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1592,7 +1460,7 @@ MonoBehaviour:
   m_EnableInputActions: 1
   m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 7231118797892292918}
+  m_Model: {fileID: 3067348118741401554}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
@@ -2023,6 +1891,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7231118798027437705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3250,7 +3119,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7231118799692504190}
+  - {fileID: 847629983216386805}
   m_Father: {fileID: 7231118798700801401}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3271,7 +3140,7 @@ MonoBehaviour:
   m_EnableInputActions: 0
   m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 7231118799692504190}
+  m_Model: {fileID: 847629983216386805}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
@@ -3820,7 +3689,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7231118799412471018}
+  - {fileID: 2802076085321897130}
   m_Father: {fileID: 7231118798350684066}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3841,7 +3710,7 @@ MonoBehaviour:
   m_EnableInputActions: 0
   m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 7231118799412471018}
+  m_Model: {fileID: 2802076085321897130}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
@@ -5622,116 +5491,6 @@ Transform:
   m_Father: {fileID: 7231118797696537553}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7231118799412471019
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7231118799412471018}
-  - component: {fileID: 7231118799412471017}
-  m_Layer: 0
-  m_Name: Right Auto XR Hand Model Without Collisions
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7231118799412471018
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118799412471019}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7231118798915894231}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7231118799412471017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118799412471019}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e32b2a802dd9845b4574f8376e7d6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handModelMode: 1
-  controllerCharacteristics: 580
-  controllerModels:
-  - {fileID: 7634514334346526944, guid: 0540e32b498ef284f8e1dcf80dfccd58, type: 3}
-  - {fileID: 6654152787936889342, guid: 61e60013ce1d7d942b8975c98fdf8154, type: 3}
-  - {fileID: 357722411443781339, guid: aafefdd564a300c4d93806fdc271c41f, type: 3}
-  - {fileID: 4024951872544157354, guid: cfa8dc06d611ba340b06bbefba58ee46, type: 3}
-  - {fileID: 5191550869875014123, guid: 0efe8147fc0009d4ea3039b2374d927c, type: 3}
-  handModel: {fileID: 5686134208185362930, guid: 63bdeb8720a595945ad50fb979e6fa90, type: 3}
-  customModel: {fileID: 8007995345765236298, guid: ec18445aa65efa4488f481c98af0292f, type: 3}
-  _collisionsEnabled: 0
---- !u!1 &7231118799692504191
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7231118799692504190}
-  - component: {fileID: 7231118799692504189}
-  m_Layer: 0
-  m_Name: Left Auto XR Hand Model Without Collisions
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7231118799692504190
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118799692504191}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7231118798829978070}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7231118799692504189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7231118799692504191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e32b2a802dd9845b4574f8376e7d6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handModelMode: 1
-  controllerCharacteristics: 324
-  controllerModels:
-  - {fileID: 7634514334346526944, guid: 0540e32b498ef284f8e1dcf80dfccd58, type: 3}
-  - {fileID: 5928091942230486030, guid: c4b9c875ed967534eb12cd57aeeb1183, type: 3}
-  - {fileID: 4818293155451206850, guid: 542a6345c56bbcd41b92f421fac57d92, type: 3}
-  - {fileID: 4245457492171364763, guid: c836783e3928a624e9ff9c70d4f21606, type: 3}
-  - {fileID: 7523567926693483842, guid: b2ec64201e9ec6c4ba155691307536cb, type: 3}
-  handModel: {fileID: 109434732395284509, guid: 51e24332c9ecbe4458ecd5143aeb3e2e, type: 3}
-  customModel: {fileID: 8007995345765236298, guid: ec18445aa65efa4488f481c98af0292f, type: 3}
-  _collisionsEnabled: 0
 --- !u!1 &7231118799789357363
 GameObject:
   m_ObjectHideFlags: 0
@@ -5935,3 +5694,251 @@ MonoBehaviour:
   m_LocomotionProvider: {fileID: 7231118799789357365}
   m_MinHeight: 0
   m_MaxHeight: Infinity
+--- !u!1001 &1252109355149020750
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7231118797792121572}
+    m_Modifications:
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010314, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+      propertyPath: m_Name
+      value: Left Auto Hand Model With Collisions
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+--- !u!4 &1426054352029204422 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 192034326077010312, guid: cec4545b073ef684a88d9935e854985a, type: 3}
+  m_PrefabInstance: {fileID: 1252109355149020750}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2659037819729743821
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7231118798915894231}
+    m_Modifications:
+    - target: {fileID: 145300004505426789, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_Name
+      value: Right Auto Hand Model Without Collisions
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+--- !u!4 &2802076085321897130 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 145300004505426791, guid: 848e9dfa0912eec4db884f0eac3e5081, type: 3}
+  m_PrefabInstance: {fileID: 2659037819729743821}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2899006371561950810
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7231118798024039753}
+    m_Modifications:
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192034326077010314, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+      propertyPath: m_Name
+      value: Right Auto Hand Model With Collisions
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+--- !u!4 &3067348118741401554 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 192034326077010312, guid: c8175853654027448b8c9a23db8d3908, type: 3}
+  m_PrefabInstance: {fileID: 2899006371561950810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6665821136875711363
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7231118798829978070}
+    m_Modifications:
+    - target: {fileID: 6287768329626134900, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_Name
+      value: Left Auto Hand Model Without Collisions
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+--- !u!4 &847629983216386805 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6287768329626134902, guid: 47b1cd15ffaca9847abaf729ae55a9d1, type: 3}
+  m_PrefabInstance: {fileID: 6665821136875711363}
+  m_PrefabAsset: {fileID: 0}

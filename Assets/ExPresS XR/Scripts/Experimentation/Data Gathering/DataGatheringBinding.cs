@@ -8,6 +8,8 @@ namespace ExPresSXR.Experimentation.DataGathering
     [Serializable]
     public class DataGatheringBinding
     {
+        private const string GAME_OBJECT_FULL_NAME = "Game Object";
+
         public string exportColumnName = "";
 
 
@@ -70,8 +72,9 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 string compFullName = ExtractComponentNumber(splitName[0], out int compNumber);
                 string memberName = splitName[1];
-                
-                if (FindIthComponent(compFullName, memberName, compNumber))
+
+                if (FindGameObjectBinding(compFullName, memberName)
+                        || FindIthComponent(compFullName, memberName, compNumber))
                 {
                     return true;
                 }
@@ -81,7 +84,6 @@ namespace ExPresSXR.Experimentation.DataGathering
             _targetMemberInfo = null;
             return false;
         }
-
 
         private string ExtractComponentNumber(string compFullName, out int compNumber)
         {
@@ -103,7 +105,20 @@ namespace ExPresSXR.Experimentation.DataGathering
             return compFullName;
         }
 
+        // Returns true upon success
+        private bool FindGameObjectBinding(string classFullName, string memberName)
+        {
+            if (IsGameObjectBinding(classFullName))
+            {
+                _targetComponent = null;
+                _targetMemberInfo = _targetObject.GetType().GetMember(memberName)[0];
+                Debug.Log(_targetMemberInfo);
+                return true;
+            }
+            return false;
+        }
 
+        // Returns true upon success
         private bool FindIthComponent(string compFullName, string memberName, int compNumber)
         {
             int matchingComps = 0;
@@ -129,26 +144,30 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         private bool IsComponentMatch(Component component, string requiredFullName)
-        {
-            return component != null && component.GetType().FullName == requiredFullName;
-        }
+            => component != null && component.GetType().FullName == requiredFullName;
+
+
+        private bool IsGameObjectBinding(string classFullName) 
+            => classFullName == GAME_OBJECT_FULL_NAME;
 
 
         public string GetBindingValue()
         {
             if (ValidateBinding())
             {
+                // If _targetComponent is null then the binding is to the GameObject
+                object valueProvider = _targetComponent == null ? _targetObject : _targetComponent;
                 object result = null;
                 switch (_targetMemberInfo.MemberType)
                 {
                     case MemberTypes.Method:
-                        result = ((MethodInfo)_targetMemberInfo).Invoke(_targetComponent, new object[0]);
+                        result = ((MethodInfo)_targetMemberInfo).Invoke(valueProvider, new object[0]);
                         break;
                     case MemberTypes.Field:
-                        result = ((FieldInfo)_targetMemberInfo).GetValue(_targetComponent);
+                        result = ((FieldInfo)_targetMemberInfo).GetValue(valueProvider);
                         break;
                     case MemberTypes.Property:
-                        result = ((PropertyInfo)_targetMemberInfo).GetValue(_targetComponent);
+                        result = ((PropertyInfo)_targetMemberInfo).GetValue(valueProvider);
                         break;
                 }
 
@@ -157,15 +176,23 @@ namespace ExPresSXR.Experimentation.DataGathering
                     return result.ToString();
                 }
             }
+            Debug.LogError("The DataGatherer could not validate the "
+                    + GetBoundObjectDescription()
+                    + ". An empty string will be exported.");
             return "";
         }
 
         public string GetBindingDescription()
         {
-            return "The binding to object '" + _targetObject
-                + "', component '" + _targetComponent?.name + "' and value/function '"
-                + _targetMemberInfo?.Name + "' will be exported to column '"
+            return "The " + GetBoundObjectDescription() + " will be exported to column '"
                 + exportColumnName + "'.";
+        }
+
+        public string GetBoundObjectDescription()
+        {
+            return "Binding to object '" + _targetObject
+                + "', component '" + _targetComponent?.name + "' and value/function '"
+                + _targetMemberInfo?.Name + "'";
         }
 
 
@@ -184,7 +211,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             if (info.MemberType == MemberTypes.Method)
             {
                 MethodInfo methodInfo = (MethodInfo)info;
-                // Methods should not be of type void nor have any parameters and has no special name (e.g. auto-generated seeters)
+                // Methods should not be of type void nor have any parameters and has no special name (e.g. auto-generated setters)
                 return IsTypeExportable(methodInfo.ReturnType) && methodInfo.GetParameters().Length <= 0 && !methodInfo.IsSpecialName;
             }
             // A property is valid if it can be read
