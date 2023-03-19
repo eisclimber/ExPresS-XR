@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using Unity.XR.CoreUtils;
 using ExPresSXR.UI;
+
+
 
 namespace ExPresSXR.Rig
 {
@@ -564,6 +568,35 @@ namespace ExPresSXR.Rig
             if (_fadeRect != null)
             {
                 _fadeRect.FadeToClear(instant);
+            }
+        }
+
+
+        // Changes a scene whilst faded out. Supports 'DontDestroyOnLoad' if enabled on the rig
+        public void ChangeSceneWithFade(int sceneIdx)
+        {
+            if (_fadeRect != null)
+            {
+                // Use local functions to automatically remove the listeners on completion
+                void SceneSwitcher()
+                {
+                    SceneManager.LoadScene(sceneIdx, LoadSceneMode.Single);
+                    _fadeRect.OnFadeToColorCompleted.RemoveListener(SceneSwitcher);
+                    _fadeRect.OnFadeToClearCompleted.AddListener(SwitchCleanup);
+                    _fadeRect.FadeToClear(false);
+                }
+
+                void SwitchCleanup()
+                {
+                    _fadeRect.OnFadeToColorCompleted.RemoveListener(SwitchCleanup);
+                }
+
+                _fadeRect.FadeToColor(false);
+                _fadeRect.OnFadeToColorCompleted.AddListener(SceneSwitcher);
+            }
+            else
+            {
+                Debug.LogWarning("No _fadeRect is set for the rig so there is nothing to fade. Provide one or use SceneManager.LoadScene() instead.");
             }
         }
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6935303782577232986}
   - component: {fileID: 6935303782577232985}
   - component: {fileID: 6935303782577232984}
+  - component: {fileID: 6277988875819753050}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -98,6 +99,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &6277988875819753050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6935303782577232998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3daa27cc64cf3ad43a2076a38d0a4a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6935303782968552358
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +181,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6935303783626778074}
   - component: {fileID: 6935303783626778087}
-  - component: {fileID: 6935303783626778073}
   - component: {fileID: 6935303783626778072}
   m_Layer: 0
   m_Name: Camera
@@ -235,14 +247,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &6935303783626778073
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6935303783626778086}
-  m_Enabled: 1
 --- !u!114 &6935303783626778072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,7 +292,7 @@ GameObject:
   - component: {fileID: 6935303783883016350}
   - component: {fileID: 6935303783883016349}
   - component: {fileID: 6935303783883016348}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
