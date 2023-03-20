@@ -93,7 +93,8 @@ namespace ExPresSXR.Editor
 
                 EditorGUILayout.Space();
                 
-                // EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportationEnabled"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportationEnabled"), true);
+                
                 // if (targetScript.teleportationEnabled)
                 // {
                 //     EditorGUI.indentLevel++;
