@@ -62,6 +62,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
             get => _bounceTracePath;
         }
 
+
         private void Awake() {
             _bounceTracePath = new();
         }
@@ -156,7 +157,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
         }
 
 
-        private void OnDrawGizmos() {
+        private void OnDrawGizmosSelected() {
             // Vector3 eyeEnd = _currentEyeDir * GIZMOS_RAY_MAX_LENGTH;
             if (bounceTracePath == null || bounceTracePath.Count == 0)
             {
