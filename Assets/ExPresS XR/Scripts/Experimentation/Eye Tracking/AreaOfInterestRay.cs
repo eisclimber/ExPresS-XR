@@ -13,19 +13,19 @@ namespace ExPresSXR.Experimentation.EyeTracking
         public const string NO_AOI_DETECTED_ID = "None";
 
 
-        [Tooltip("The InputAction that provides the value of the eye's position.")]
+        [Tooltip("The InputActionRef that provides the value of the eye's position.")]
         [SerializeField]
         private InputActionReference _eyePositionRef;
         
-        [Tooltip("The InputAction that provides the value of the eye's rotation.")]
+        [Tooltip("The InputActionRef that provides the value of the eye's rotation.")]
         [SerializeField]
         private InputActionReference _eyeRotationRef;
 
-        [Tooltip("If set to greater than 0 will allow _numAOIBounces until hitting an AOIArea. For a GameObject to bounce the 'AreaOfInterestRayBouncer'-Component must be added and it's layer be set to 'AreaOfInterest'.")]
+        [Tooltip("If set to a value greater than 0 will allow _numAOIBounces until hitting an AOIArea. For a GameObject to bounce the 'AreaOfInterestRayBouncer'-Component must be added and it's layer be set to 'AreaOfInterestBouncer'.")]
         [SerializeField]
         private int _numAOIBounces;
 
-
+        [Tooltip("LayerMask for detecting AOIs and AOIBouncers.")]
         [SerializeField]
         private LayerMask _layerMask = DEFAULT_AOI_LAYER_MASK;
 
@@ -69,7 +69,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (_eyePositionRef == null || _eyeRotationRef == null)
             {
@@ -153,6 +153,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
             if (collider != null && collider.TryGetComponent(out AreaOfInterest aoi))
             {
                 _focusedAoiId = aoi.aoiId;
+            }
+            else
+            {
+                _focusedAoiId = NO_AOI_DETECTED_ID;
             }
         }
 

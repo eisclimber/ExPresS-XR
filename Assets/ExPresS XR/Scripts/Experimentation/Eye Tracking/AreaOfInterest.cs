@@ -7,6 +7,8 @@ namespace ExPresSXR.Experimentation.EyeTracking
     [RequireComponent(typeof(Collider))]
     public class AreaOfInterest : MonoBehaviour
     {
+        public const int AOI_LAYER = 9;
+        
         [SerializeField]
         private string _aoiId = GenerateAoiId();
         public string aoiId
@@ -20,6 +22,15 @@ namespace ExPresSXR.Experimentation.EyeTracking
                 {
                     _aoiId = GenerateAoiId();
                 }
+            }
+        }
+
+        
+        private void Awake() {
+            if (gameObject.layer != AOI_LAYER)
+            {
+                Debug.LogError("GameObject has the wrong Layer for being found by an AOIRay. Setting it's layer to 'AreaOfInterest'.");
+                gameObject.layer = AOI_LAYER;
             }
         }
 

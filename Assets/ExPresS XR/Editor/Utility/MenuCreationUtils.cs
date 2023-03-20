@@ -293,21 +293,21 @@ namespace ExPresSXR.Editor
 
 
         // Misc Menus
-        [MenuItem("GameObject/ExPresS XR/Misc/After Quiz Dialog")]
+        [MenuItem("GameObject/ExPresS XR/UI/Misc/After Quiz Dialog")]
         static void CreateCakeAfterQuizMenu(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Misc/After Quiz Dialog");
         }
 
 
-        [MenuItem("GameObject/ExPresS XR/Misc/Cake Demo UI")]
+        [MenuItem("GameObject/ExPresS XR/UI/Misc/Cake Demo UI")]
         static void CreateCakeDemoUi(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Misc/Cake Demo UI");
         }
 
 
-        [MenuItem("GameObject/ExPresS XR/Misc/Change Movement Menu")]
+        [MenuItem("GameObject/ExPresS XR/UI/Misc/Change Movement Menu")]
         static void CreateChangeMovementMenu(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Misc/Change Movement Menu");
@@ -340,6 +340,20 @@ namespace ExPresSXR.Editor
         static void CreateMirror(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Mirror/Mirror");
+        }
+
+
+        // Eye Tracking
+        [MenuItem("GameObject/ExPresS XR/Eye Tracking/Area Of Interest")]
+        static void CreateAOI(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Eye Tracking/Area Of Interest");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Eye Tracking/Area Of Interest Ray")]
+        static void CreateAOIRay(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Eye Tracking/Area Of Interest Ray");
         }
 
 

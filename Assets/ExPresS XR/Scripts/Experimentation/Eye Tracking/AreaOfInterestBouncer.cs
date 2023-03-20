@@ -7,7 +7,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
     // from this component instead and ensures the correct configuration for AOI
     public class AreaOfInterestBouncer : MonoBehaviour
     {
-        public const int DEFAULT_AOI_BOUNCE_LAYER = 10;
+        public const int AOI_BOUNCER_LAYER = 10;
         private void Awake() {
             if (!TryGetComponent(out Collider collider))
             {
@@ -18,10 +18,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
                 Debug.LogWarning("Ray Bouncer's Collider is a trigger. Nothing can bounce from it.");
             }
             
-            if (gameObject.layer != DEFAULT_AOI_BOUNCE_LAYER)
+            if (gameObject.layer != AOI_BOUNCER_LAYER)
             {
-                Debug.LogError("GameObject has the wrong Layer for being found by an AOI ray. Setting it's layer to 'AreaOfInterest'.");
-                gameObject.layer = DEFAULT_AOI_BOUNCE_LAYER;
+                Debug.LogError("GameObject has the wrong Layer for being found by an AOIRay. Setting it's layer to 'AreaOfInterestBouncer'.");
+                gameObject.layer = AOI_BOUNCER_LAYER;
             }
         }
     }
