@@ -15,7 +15,6 @@ namespace ExPresSXR.Rig
         private InputDevice currentDevice;
         private GameObject currentControllerModel;
         private GameObject currentHandModel;
-        private Animator handAnimator;
 
         public Transform currentAttach
         {
@@ -41,7 +40,22 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Completely disables collisions with the hand/controller models during runtime. Overwrites the functionality of _collisionsEnabled.")]
         [SerializeField]
+        private bool _modelCollisionsEnabled;
+        public bool modelCollisionsEnabled
+        {
+            get => _modelCollisionsEnabled;
+            set
+            {
+                _modelCollisionsEnabled = value;
+                // Update collisions
+                collisionsEnabled = _collisionsEnabled;
+            }
+        }
+
+
+        [Tooltip("Temporary en-/disables collisions if _modelCollisionsEnabled is true. Will be controlled by the HandController. To disable collisions completely use _modelCollisionsEnabled instead.")]
         private bool _collisionsEnabled;
         public bool collisionsEnabled
         {
@@ -50,16 +64,16 @@ namespace ExPresSXR.Rig
             {
                 _collisionsEnabled = value;
 
-                // Disable Rigid Body
+                // Disable RigidBody
                 if (GetComponent<Rigidbody>() != null)
                 {
-                    GetComponent<Rigidbody>().detectCollisions = _collisionsEnabled;
+                    GetComponent<Rigidbody>().detectCollisions = _collisionsEnabled && _modelCollisionsEnabled;
                 }
 
                 // Disable Colliders
                 foreach (Collider collider in gameObject.GetComponentsInChildren<Collider>())
                 {
-                    collider.enabled = _collisionsEnabled;
+                    collider.enabled = _collisionsEnabled && _modelCollisionsEnabled;
                 }
             }
         }
@@ -67,7 +81,7 @@ namespace ExPresSXR.Rig
 
         private void TryInitialize()
         {
-            List<InputDevice> devices = new List<InputDevice>();
+            List<InputDevice> devices = new();
             InputDevices.GetDevicesWithCharacteristics(controllerCharacteristics, devices);
 
             if (devices.Count > 0)
@@ -77,7 +91,7 @@ namespace ExPresSXR.Rig
 
                 if (handModelMode == HandModelMode.Custom)
                 {
-                    currentControllerModel = (customModel != null ? Instantiate(customModel, transform) : null);
+                    currentControllerModel = customModel != null ? Instantiate(customModel, transform) : null;
                 }
                 else if (prefab != null)
                 {
@@ -91,32 +105,10 @@ namespace ExPresSXR.Rig
 
                 currentHandModel = Instantiate(handModel, transform);
 
-                handAnimator = currentHandModel.GetComponent<Animator>();
+                // Ensures to Enable/Disable Collisions on currently loaded models
+                collisionsEnabled = _collisionsEnabled;
             }
         }
-
-
-        private void UpdateHandAnimation()
-        {
-            if (currentDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
-            {
-                handAnimator.SetFloat("Trigger", triggerValue);
-            }
-            else
-            {
-                handAnimator.SetFloat("Trigger", 0);
-            }
-            
-            if (currentDevice.TryGetFeatureValue(CommonUsages.grip, out float gripValue))
-            {
-                handAnimator.SetFloat("Grip", gripValue);
-            }
-            else
-            {
-                handAnimator.SetFloat("Grip", 0);
-            }
-        }
-
 
         // Update is called once per frame
         private void Update()

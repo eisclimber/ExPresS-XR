@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 using ExPresSXR.UI;
 
 
@@ -13,6 +14,7 @@ namespace ExPresSXR.Rig
     public class PlayerHeadCollider : MonoBehaviour
     {
         private const float FLOOR_DISTANCE_THRESHOLD = 0.02f;
+        private const float GRAVITY_STRENGTH = 9.81f;
 
 
         [Tooltip("If true the players camera will be pushed back.")]
@@ -32,24 +34,22 @@ namespace ExPresSXR.Rig
         [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
         [SerializeField]
         private GameObject _pushbackAnchor;
-        public GameObject pushbackAnchor { get; set; }
-
-
+        public GameObject pushbackAnchor {
+            get => _pushbackAnchor; 
+            set => _pushbackAnchor = value;
+        }
 
         [Tooltip("Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.")]
         [SerializeField]
         private float _colliderSize = .25f;
 
-
-        [SerializeField]
-        private float gravityStrength = -9.81f;
-
-
-
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
         private float _maxFadeDuration = .5f;
-        private float maxFadeDuration { get; set; }
+        public float maxFadeDuration { 
+            get => _maxFadeDuration; 
+            set => _maxFadeDuration = value;
+        }
 
 
         [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
@@ -68,7 +68,7 @@ namespace ExPresSXR.Rig
 
         private Vector3 momentaryGravity 
         {
-            get => new(0.0f, gravityStrength * Time.deltaTime, 0.0f);
+            get => new(0.0f, -GRAVITY_STRENGTH * Time.deltaTime, 0.0f);
         }
 
 
@@ -101,7 +101,7 @@ namespace ExPresSXR.Rig
             if (_pushbackAnchor != null && _cooldownCoroutine == null)
             {
                 int hits = CountHits(transform.position);
-
+                
                 if (hits == 0)
                 {
                     HandleNoCollisions();
@@ -120,7 +120,6 @@ namespace ExPresSXR.Rig
             {
                 OnCollisionStarted.AddListener(() =>
                 {
-                    // Debug.Log("Show Vignette.");
                     if (showCollisionVignetteEffect)
                     {
                         screenCollisionIndicator.FadeIn(_maxFadeDuration);
@@ -128,7 +127,6 @@ namespace ExPresSXR.Rig
                 });
                 OnCollisionEnded.AddListener(() =>
                 {
-                    // Debug.Log("Show Vignette.");
                     if (showCollisionVignetteEffect)
                     {
                         screenCollisionIndicator.FadeOut(_maxFadeDuration);
@@ -136,8 +134,7 @@ namespace ExPresSXR.Rig
                 });
             }
         }
-
-
+        
 
         private int CountHits(Vector3 loc)
         {
@@ -146,7 +143,7 @@ namespace ExPresSXR.Rig
 
             for (int i = 0; i < size; i++)
             {
-                if (!_objs[i].CompareTag("Player"))
+                if (!_objs[i].CompareTag("Player") && !IsColliderHeldByInteractable(_objs[i]))
                 {
                     hits++;
                 }
@@ -162,7 +159,6 @@ namespace ExPresSXR.Rig
             if (_colliding)
             {
                 _colliding = false;
-                // Debug.Log("Ending");
                 OnCollisionEnded.Invoke();
             }
             if (_playerController != null && collisionPushbackEnabled)
@@ -192,7 +188,7 @@ namespace ExPresSXR.Rig
 
             if (_playerController != null && collisionPushbackEnabled)
             {
-                // Apply head diference and momentary gravity
+                // Apply head difference and momentary gravity
                 _playerController.Move(-headDiff + momentaryGravity);
             }
 
@@ -200,10 +196,31 @@ namespace ExPresSXR.Rig
             if (!_colliding)
             {
                 _colliding = true;
-                // Debug.Log("Start");
                 // Prevent initial Collision showing up
                 OnCollisionStarted.Invoke();
             }
+        }
+
+
+        private bool IsColliderHeldByInteractable(Collider collider)
+        {
+            if (collider == null 
+                || !collider.gameObject.TryGetComponent(out XRBaseInteractable interactable)
+                || !interactable.isSelected)
+            {
+                // No collider, go is not an interactable or is one but is not selected
+                return false;
+            }
+            
+            foreach (IXRSelectInteractor interactor in interactable.interactorsSelecting)
+            {
+                // Check if it is selected by an DirectInteractor
+                if (interactor is XRDirectInteractor)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private IEnumerator CollisionCooldown()

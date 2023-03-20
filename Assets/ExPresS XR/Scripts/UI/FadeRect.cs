@@ -9,7 +9,7 @@ namespace ExPresSXR.UI
     [RequireComponent(typeof(Image))]
     public class FadeRect : MonoBehaviour
     {
-        public Color fadeColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        public Color fadeColor = new(0.0f, 0.0f, 0.0f, 0.0f);
 
         public float fadeToColorTime = 0.5f;
 
@@ -18,23 +18,23 @@ namespace ExPresSXR.UI
         [SerializeField]
         private Image _fadeImage;
 
-        private float _fadeDirection = 0.0f;
+        private FadeDirection _fadeDirection = FadeDirection.None;
 
 
         public UnityEvent OnFadeToColorCompleted;
-        public UnityEvent OnFadeToCleanCompleted;
+        public UnityEvent OnFadeToClearCompleted;
 
 
         // Screen visible
         public bool screenCompletelyVisible
         {
-            get => (fadeColor.a == 0.0f);
+            get => fadeColor.a == 0.0f;
         }
 
         // Screen NOT visible
         public bool screenCompletelyHidden
         {
-            get => (fadeColor.a == 1.0f);
+            get => fadeColor.a == 1.0f;
         }
 
 
@@ -47,7 +47,7 @@ namespace ExPresSXR.UI
 
         public void FadeToColor(bool instant = false)
         {
-            _fadeDirection = 1.0f;
+            _fadeDirection = FadeDirection.ToColor;
 
             if (instant)
             {
@@ -58,7 +58,7 @@ namespace ExPresSXR.UI
 
         public void FadeToClear(bool instant = false)
         {
-            _fadeDirection = -1.0f;
+            _fadeDirection = FadeDirection.ToClear;
 
             if (instant)
             {
@@ -69,34 +69,40 @@ namespace ExPresSXR.UI
 
         private void Update()
         {
-            float newFadeValue = fadeColor.a;
+            float fadeDelta = Time.deltaTime / fadeToColorTime;
 
-            if (_fadeDirection < 0.0f)
+            if (_fadeDirection == FadeDirection.ToColor)
             {
                 // Fade to Color
-                newFadeValue = Mathf.Max(0.0f, fadeColor.a - (Time.deltaTime / fadeToColorTime));
+                float newFadeValue = Mathf.Clamp01(fadeColor.a + fadeDelta);
 
-                if (fadeColor.a > 1.0f && newFadeValue == 1.0f)
+                // Alpha was below 1 and new value is 1.0f
+                // => Fade to color completed
+                if (fadeColor.a < 1.0f && newFadeValue == 1.0f)
                 {
-                    // Fade to Color completed
                     OnFadeToColorCompleted.Invoke();
+                    _fadeDirection = FadeDirection.None;
                 }
+
+                fadeColor.a = newFadeValue;
+                UpdateFadeImage();
             }
-            else if (_fadeDirection > 0.0f)
+            else if (_fadeDirection == FadeDirection.ToClear)
             {
                 // Fade to Clear
-                newFadeValue = Mathf.Min(1.0f, fadeColor.a + (Time.deltaTime / fadeToClearTime));
+                float newFadeValue = Mathf.Clamp01(fadeColor.a - fadeDelta);
 
-                if (fadeColor.a < 0.0f && newFadeValue == 0.0f)
+                // Alpha was below 1 and new value is 1.0f
+                // => Fade to color completed
+                if (fadeColor.a > 0.0f && newFadeValue == 0.0f)
                 {
-                    // Fade to Clear completed
-                    OnFadeToColorCompleted.Invoke();
+                    OnFadeToClearCompleted.Invoke();
+                    _fadeDirection = FadeDirection.None;
                 }
+
+                fadeColor.a = newFadeValue;
+                UpdateFadeImage();
             }
-
-            fadeColor.a = newFadeValue;
-
-            UpdateFadeImage();
         }
 
         private void UpdateFadeImage()
@@ -116,5 +122,12 @@ namespace ExPresSXR.UI
 #endif
             }
         }
+    }
+
+    public enum FadeDirection
+    {
+        None,
+        ToColor,
+        ToClear
     }
 }

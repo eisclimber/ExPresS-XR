@@ -178,12 +178,11 @@ namespace ExPresSXR.Interaction
             if (_putBackPrefab != null)
             {
                 _putBackObjectInstance = Instantiate(_putBackPrefab, transform);
-                _putBackInteractable = _putBackObjectInstance.GetComponent<XRGrabInteractable>();
 
-                if (_putBackInteractable != null)
+                if (_putBackObjectInstance.TryGetComponent(out _putBackInteractable))
                 {
                     startingSelectedInteractable = _putBackInteractable;
-                    if (_putBackInteractable != null && Application.isPlaying)
+                    if (Application.isPlaying)
                     {
                         interactionManager.SelectEnter(this, (IXRSelectInteractable)_putBackInteractable);
                     }

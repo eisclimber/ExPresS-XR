@@ -33,6 +33,7 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        [Tooltip("If enabled require providing a custom RenderTexture. Else it will be generated automatically.")]
         [SerializeField]
         private bool _provideCustomRenderTexture;
         public bool provideCustomRenderTexture
@@ -45,7 +46,7 @@ namespace ExPresSXR.Presentation
             }
         }
 
-
+        [Tooltip("The RenderTexture that is used when 'provideCustomRenderTexture' is enabled.")]
         [SerializeField]
         private RenderTexture _customRenderTexture;
         public RenderTexture customRenderTexture
@@ -100,7 +101,7 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("Color that is mixed with the displayed image to change it's color. Use white for no tinting.")]
+        [Tooltip("Factor that shifts the bightness the displayed image.")]
         [Range(0.0f, 1.0f)]
         [SerializeField]
         private float _brighteningFactor = 0.0f;
@@ -117,11 +118,14 @@ namespace ExPresSXR.Presentation
         // Targets and GameObjects
 
         [Tooltip("Target for which the mirror effect is simulated. It should be best set to the Camera of an XR Rig.")]
-        public Transform _trackedTarget;
+        [SerializeField]
+        private Transform _trackedTarget;
         
+        [Tooltip("Reference to the Mirror's Camera.")]
         [SerializeField]
         private Camera _mirrorCamera;
 
+        [Tooltip("Reference to the Mirror's Plane.")]
         [SerializeField]
         private Transform _mirrorPlane;
         public Transform mirrorPlane
@@ -152,6 +156,7 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        [Tooltip("The material used to display the RenderTexture.")]
         [SerializeField]
         private Material _mirrorMaterial;
         public Material mirrorMaterial
@@ -169,7 +174,7 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [SerializeField]
+        // [SerializeField]
         private RenderTexture _generatedRenderTexture;
 
 
@@ -212,8 +217,10 @@ namespace ExPresSXR.Presentation
                 texturePixels.x = Mathf.Max(texturePixels.x, 1.0f);
                 texturePixels.y = Mathf.Max(texturePixels.y, 1.0f);
 
-                _generatedRenderTexture = new((int)texturePixels.x, (int)texturePixels.y, RENDER_TEXTURE_DEPTH);
-                _generatedRenderTexture.name = "Generated Mirror Render Texture";
+                _generatedRenderTexture = new((int)texturePixels.x, (int)texturePixels.y, RENDER_TEXTURE_DEPTH)
+                {
+                    name = "Generated Mirror Render Texture"
+                };
             }
             DisplayActiveRenderTexture();
         }

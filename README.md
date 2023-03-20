@@ -29,7 +29,7 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 - In-editor setup dialogs and tutorials for a quick start with your project.
 - Detailed documentation of the project components and workflow.
 - A fully configurable XR Rig.
-  - Two input modes: Controller, Head Gaze (works with mobile!).
+  - Two input modes: Controller, Head Gaze.
   - Different combinable movement options: Teleportation, Continuous Move, ... .
   - Collision and PlayArea collision detection and visual feedback.
   - Virtual animated hands allowing grabbing and pushing of objects.
@@ -61,6 +61,9 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 
 ExPresS XR needs your feedback to improve. For that you will find a [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf) in the repository of your project.
 
+If you like the project you can buy me a coffee: https://ko-fi.com/eisclimber
+(We all know: Programmer + Coffe = Code :D)
+
 
 ## Made with ExPresS XR
 
@@ -68,7 +71,7 @@ ExPresS XR needs your feedback to improve. For that you will find a [survey](htt
 
 - [A Sample serving as an VR-Exhibition of the Church in Mühlen using ExPresS XR](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
 
-If you create your own project using ExPresS XR feel free to contact me, so I can add you to the list.
+If you create your own project using ExPresS XR feel free to contact me, so I can add you to the list (also don't forget the [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf)).
 
 ## Known Issues
 
@@ -82,7 +85,7 @@ luca.dreiling@student.uni-tuebingen.de
 
 ## Version
 
-ExPresS XR was developed and tested with Unity 2021.3.11f.
+ExPresS XR was developed and tested with Unity 2021.3.20f1.
 
 ## License
 

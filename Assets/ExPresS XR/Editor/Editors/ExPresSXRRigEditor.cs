@@ -94,6 +94,14 @@ namespace ExPresSXR.Editor
                 EditorGUILayout.Space();
                 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportationEnabled"), true);
+                
+                // if (targetScript.teleportationEnabled)
+                // {
+                //     EditorGUI.indentLevel++;
+                //         EditorGUILayout.PropertyField(serializedObject.FindProperty("_validTeleportationReticle"), true);
+                //         EditorGUILayout.PropertyField(serializedObject.FindProperty("_invalidTeleportationReticle"), true);
+                //     EditorGUI.indentLevel--;
+                // }
                 EditorGUI.BeginDisabledGroup(targetScript.joystickMovementEnabled);
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_snapTurnEnabled"), true);

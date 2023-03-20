@@ -49,7 +49,7 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawTargetCamera()
         {
-            EditorGUILayout.LabelField("Target");
+            EditorGUILayout.LabelField("Target", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_trackedTarget"), true);
             EditorGUI.indentLevel--;
@@ -57,7 +57,7 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawRenderTextures()
         {
-            EditorGUILayout.LabelField("Render Texture");
+            EditorGUILayout.LabelField("Render Texture", EditorStyles.boldLabel);
 
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_provideCustomRenderTexture"), true);
@@ -76,7 +76,7 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawImageModifications()
         {
-            EditorGUILayout.LabelField("Image Modification");
+            EditorGUILayout.LabelField("Image Modification", EditorStyles.boldLabel);
 
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_tintColor"), true);
