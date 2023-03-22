@@ -49,8 +49,8 @@ namespace ExPresSXR.Rig
             set
             {
                 _modelCollisionsEnabled = value;
-                // Update collisions
-                collisionsEnabled = _collisionsEnabled;
+                // Update collisions (Setting to true enables it automatically)
+                collisionsEnabled = true;
             }
         }
 
@@ -64,7 +64,7 @@ namespace ExPresSXR.Rig
             {
                 _collisionsEnabled = value;
 
-                // Disable RigidBody
+                // // Disable RigidBody
                 if (GetComponent<Rigidbody>() != null)
                 {
                     GetComponent<Rigidbody>().detectCollisions = _collisionsEnabled && _modelCollisionsEnabled;
@@ -106,7 +106,7 @@ namespace ExPresSXR.Rig
                 currentHandModel = Instantiate(handModel, transform);
 
                 // Ensures to Enable/Disable Collisions on currently loaded models
-                collisionsEnabled = _collisionsEnabled;
+                modelCollisionsEnabled = _modelCollisionsEnabled;
             }
         }
 
