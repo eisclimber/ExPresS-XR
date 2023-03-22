@@ -5,7 +5,7 @@ Based on the OpenXR Standard, it aims is to help automate early stages of develo
 
 ## Getting Started & Documentation
 
-If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki.
+If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki and [video tutorials](https://www.youtube.com/playlist?list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_).
 
 The full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
 
@@ -75,18 +75,24 @@ If you create your own project using ExPresS XR feel free to contact me, so I ca
 
 ## Known Issues
 
-ExPress XR is still an alpha build so there may be many issues.  
-If you find any bugs check out the [Issues](https://github.com/eisclimber/ExPresS-XR/issues)-Page.
+ExPress XR tries to evolve together with Unity's XR Interaction Toolkit. If you find any bugs check out the [Issues](https://github.com/eisclimber/ExPresS-XR/issues)-Page and report them. If you want to provide fixes for the Issues or expand ExPresS XR's functionality feel free to open a Pull Request.
 
-## Contact and Support
+and Credits
 
-@eisclimber on Twitter  
-luca.dreiling@student.uni-tuebingen.de
+Created by Luca Dreiling
+
+Special Thanks to Kevin Körner for the great mentoring during and after the creation of the masters thesis this project is subject of.
+
+
+## Contact and Support 
+
+Twitter: [@eisclimber](https://twitter.com/eisclimber)
+E-Mail: [luca.dreiling@student.uni-tuebingen.de](mailto:luca.dreiling@student.uni-tuebingen.de).
 
 ## Version
 
-ExPresS XR was developed and tested with Unity 2021.3.20f1.
+ExPresS XR is currently developed and tested with Unity 2021.3.21f1.
 
 ## License
 
-MIT License (although attribution is appreciated:D)
+MIT License (Attribution is appreciated)
