@@ -5,7 +5,7 @@ Based on the OpenXR Standard, it aims is to help automate early stages of develo
 
 ## Getting Started & Documentation
 
-If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki.
+If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki and [video tutorials](https://www.youtube.com/playlist?list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_).
 
 The full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
 
