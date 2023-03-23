@@ -77,7 +77,7 @@ If you create your own project using ExPresS XR feel free to contact me, so I ca
 
 ExPress XR tries to evolve together with Unity's XR Interaction Toolkit. If you find any bugs check out the [Issues](https://github.com/eisclimber/ExPresS-XR/issues)-Page and report them. If you want to provide fixes for the Issues or expand ExPresS XR's functionality feel free to open a Pull Request.
 
-and Credits
+## Credits
 
 Created by Luca Dreiling
 
