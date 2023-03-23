@@ -22,9 +22,9 @@ namespace ExPresSXR.Experimentation
             {
                 _answerText = value;
 
-                if (_feedbackTextLabel != null)
+                if (_answerTextLabel != null)
                 {
-                    _feedbackTextLabel.text = _answerText;
+                    _answerTextLabel.text = _answerText;
                 }
             }
         }
@@ -38,25 +38,25 @@ namespace ExPresSXR.Experimentation
             {
                 _answerPrefab = value;
 
-                if (_feedbackObjectSocket != null)
+                if (_answerObjectSocket != null)
                 {
-                    _feedbackObjectSocket.putBackPrefab = _answerPrefab;
+                    _answerObjectSocket.putBackPrefab = _answerPrefab;
                 }
             }
         }
 
         [SerializeField]
-        private Text _feedbackTextLabel;
+        private Text _answerTextLabel;
 
 
         [SerializeField]
-        private PutBackSocketInteractor _feedbackObjectSocket;
-        public PutBackSocketInteractor feedbackObjectSocket
+        private PutBackSocketInteractor _answerObjectSocket;
+        public PutBackSocketInteractor answerObjectSocket
         {
-            get => _feedbackObjectSocket;
+            get =>_answerObjectSocket;
             set
             {
-                _feedbackObjectSocket = value;
+                _answerObjectSocket = value;
             }
         }
 

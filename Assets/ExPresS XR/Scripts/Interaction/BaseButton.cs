@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 
 namespace ExPresSXR.Interaction
@@ -113,6 +114,21 @@ namespace ExPresSXR.Interaction
 
         private AudioSource audioPlayer;
 
+
+        // UI Compatibility
+        public bool allowUIPress { get; set; }
+
+
+        private BaseButton _uiPressButton;
+        public Button uiPressButton
+        {
+            get => _uiPressButton;
+            set
+            {
+                _uiPressButton = value;
+            }
+        }
+
         ////////
 
         protected override void Awake()
@@ -126,6 +142,13 @@ namespace ExPresSXR.Interaction
 
             hoverEntered.AddListener(StartPress);
             hoverExited.AddListener(EndPress);
+
+            if (_uiPressButton != null)
+            {
+                _uiPressButton.OnPressed.AddListener(() => { PerformUiButtonPress(true); });
+                uiPressButton.OnReleased.AddListener(() => { PerformUiButtonPress(false); });
+            }
+
 
             // Dis-/Enable 
             if (!_inputDisabled)
@@ -240,6 +263,8 @@ namespace ExPresSXR.Interaction
             {
                 CheckTogglePress();
             }
+
+            CheckUIPress();
         }
 
 
@@ -281,6 +306,70 @@ namespace ExPresSXR.Interaction
                 PlayToggledUpSound();
             }
         }
+
+        // UI
+        private void PerformUiButtonPress(bool uiPressed)
+        {
+            // Only if allowed, "physical" interaction overrides UI
+            if (!allowUiPress || _hoverInteractor != null)
+            {
+                return;
+            }
+
+            if (!toggleMode)
+            {
+                CheckUiRegularPress(uiPressed);
+            }
+            else
+            {
+                CheckUiTogglePress(uiPressed);
+            }
+        }
+
+
+        private void CheckUiRegularPress(bool uiPressed)
+        {
+            if (uiPressed)
+            {
+                pressed = true;
+                SetYPosition(_yMin);
+                OnPressed.Invoke();
+                PlayPressedSound();
+            }
+            else
+            {
+                pressed = false;
+                OnReleased.Invoke();
+                PlayReleasedSound();
+            }
+        }
+
+        private void CheckUiTogglePress(bool uiPressed)
+        {
+            // Do not toggle when the ui button was released
+            if (!uiPressed)
+            {
+                return;
+            }
+
+            // Toggle value
+            pressed = !pressed;
+
+            if (!pressed)
+            {
+                SetYPosition(_yMin);
+                OnTogglePressed.Invoke();
+                PlayToggledDownSound();
+            }
+            else if (pressed)
+            {
+                _pressed = false;
+                SetYPosition(_yMin);
+                OnToggleReleased.Invoke();
+                PlayToggledUpSound();
+            }
+        }
+
 
         public void PlayPressedSound() => PlaySound(pressedSound);
 
