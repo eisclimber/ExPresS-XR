@@ -4,7 +4,7 @@ namespace ExPresSXR.Misc.Timing
 {
     public class Stopwatch : MonoBehaviour
     {
-        const float INACTIVE_STOP_TIME = -1.0f;
+        public const float INACTIVE_STOP_TIME = -1.0f;
 
         [Tooltip("Time when the stopwatch was started or INACTIVE_STOP_TIME if not started.")]
         private float _startTime = INACTIVE_STOP_TIME;
@@ -41,7 +41,7 @@ namespace ExPresSXR.Misc.Timing
             }
         }
 
-        // Starts a time measurement with the stopwatch. Only updates the startTime when already running.
+        // Starts a time measurement with the stopwatch. Updates the startTime when already running.
         public void StartTimeMeasurement()
         {
             _startTime = Time.time;
