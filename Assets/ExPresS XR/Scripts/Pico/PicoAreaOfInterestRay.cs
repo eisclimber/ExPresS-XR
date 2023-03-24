@@ -1,11 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Unity.XR.PXR;
+using ExPresSXR.Misc.Timing;
 
 namespace ExPresSXR.Experimentation.EyeTracking.Pico
 {
-    // Add as Head of your rig
+    /// <summary>
+    /// A temporary modification for the pico while it is not supporting InputActions for EyeTracking.
+    /// Also expanded with reticles for the ray and it's hit point as LivePreview does not work for me._.
+    /// Add this to the **Head**-GameObject of your rig.
+    /// </summary>
     
+
+
     public class PicoAreaOfInterestRay : MonoBehaviour
     {
         private const int DEFAULT_AOI_LAYER_MASK = 1536;
@@ -23,19 +31,12 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
 
         [Tooltip("If set to a value greater than 0 will allow _numAOIBounces until hitting an AOIArea. For a GameObject to bounce the 'AreaOfInterestRayBouncer'-Component must be added and it's layer be set to 'AreaOfInterestBouncer'.")]
         [SerializeField]
-        private int _numAOIBounces;
+        private int _numAOIBounces = 1;
 
         [Tooltip("LayerMask for detecting AOIs and AOIBouncers.")]
         [SerializeField]
         private LayerMask _layerMask = DEFAULT_AOI_LAYER_MASK;
 
-        
-        private string _focusedAoiId = NO_AOI_DETECTED_ID;
-        public string focusedAoiId
-        {
-            get => _focusedAoiId;
-            private set => _focusedAoiId = value;
-        }
 
         // Data Retrieval
         private RaycastHit _currentRaycastHit;
@@ -62,6 +63,43 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
             get => _bounceTracePath;
         }
 
+        // AOI ID
+        private Stopwatch _aoiStopwatch;
+
+        private string _focusedAoiId = NO_AOI_DETECTED_ID;
+        public string focusedAoiId
+        {
+            get => _focusedAoiId;
+            private set => _focusedAoiId = value;
+        }
+
+        public bool hasAOIFocussed
+        {
+            get => IsColliderAoi(_currentRaycastHit.collider);
+        }
+
+        // Time the current aoi (or none) was focussed
+        public float aoiFocusDuration
+        {
+            get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
+        }
+
+        // (UNIX) Start Time of the focus on an aoi
+        public float aoiFocusStart
+        {
+            get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
+        }
+
+        [Space]
+
+        /// <summary>
+        /// Emitted when the focussed AOI changes. 
+        /// Returns following values (in order): oldAOI, newAOI, focusDuration, newStartTime
+        /// </summary>
+        /// <param name="dropdown">The Dropdown to be populated.</param>
+        /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
+        public UnityEvent<string, string, float, float> OnFocussedAoiChanged;
+
         private bool eyeValueDetected
         {
             get
@@ -74,8 +112,16 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
         }
 
 
-        private void Awake() {
+        private void Awake()
+        {
             _bounceTracePath = new();
+
+            if (!TryGetComponent(out _aoiStopwatch))
+            {
+                Debug.LogError("Did not found a 'Stopwatch'-Component.");
+            }
+            // Start to get a valid first measurement (AOI = 'None')
+            _aoiStopwatch.StartTimeMeasurement();
         }
 
 
@@ -90,7 +136,7 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
 
             PerformRaycasts();
             UpdateReticles();
-            UpdateFocussedAOI();
+            UpdateFocussedAoi();
         }
 
 
@@ -101,16 +147,12 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
 
             ResetBounceTracePath(initialHit);
 
-            if (initialHit.collider != null)
-            {
-                _currentRaycastHit = PerformRaycastBounces(initialHit, _currentEyeDir);
-            }
+            _currentRaycastHit = initialHit.collider == null ? initialHit : PerformRaycastBounces(initialHit, _currentEyeDir);
         }
 
 
         private RaycastHit PerformRaycastBounces(RaycastHit initialHit, Vector3 initialDir)
         {
-            RaycastHit previousHit = initialHit;
             RaycastHit currentHit = initialHit;
             Vector3 bounceDir = Vector3.Reflect(initialDir, initialHit.normal);
 
@@ -122,8 +164,6 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
                 // Only continue if the hit exist and can bounce
                 if (IsColliderAoiBouncer(collider))
                 {
-                    previousHit = currentHit;
-
                     Physics.Raycast(initialHit.point, bounceDir, out currentHit, Mathf.Infinity, _layerMask);
 
                     if (currentHit.collider != null)
@@ -135,15 +175,21 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
                 }
                 else
                 {
-                    // Current Hit is invalid, use the previous (valid) Hit
-                    return previousHit;
+                    // No more bounces so were done
+                    break;
                 }
             }
-            // Check if last hit is also valid
-            return IsColliderAoiBouncer(currentHit.collider) ? currentHit : previousHit;
+            return currentHit;
         }
 
-        private bool IsColliderAoiBouncer(Collider collider) => collider != null && collider.TryGetComponent(out AreaOfInterestBouncer _);
+
+        private bool IsColliderAoi(Collider collider)
+            => collider != null && collider.TryGetComponent(out AreaOfInterest _);
+
+
+        private bool IsColliderAoiBouncer(Collider collider)
+            => collider != null && collider.TryGetComponent(out AreaOfInterestBouncer _);
+
 
         private void ResetBounceTracePath(RaycastHit initialHit)
         {
@@ -191,16 +237,34 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
         }
 
 
-        private void UpdateFocussedAOI()
+        private void UpdateFocussedAoi()
         {
             Collider collider = _currentRaycastHit.collider;
             if (collider != null && collider.TryGetComponent(out AreaOfInterest aoi))
             {
-                _focusedAoiId = aoi.aoiId;
+                ChangeFocussedAoiId(aoi.aoiId);
             }
             else
             {
-                _focusedAoiId = NO_AOI_DETECTED_ID;
+                ChangeFocussedAoiId(NO_AOI_DETECTED_ID);
+            }
+        }
+
+        private void ChangeFocussedAoiId(string newAoiId)
+        {
+            // Only emit the event when ids change
+            if (_focusedAoiId != newAoiId)
+            {
+                float finalFocusDuration = aoiFocusDuration;
+                _aoiStopwatch.StartTimeMeasurement();
+
+                float newStartTime = _aoiStopwatch.startTime;
+
+                // Debug.Log($"Switched from '{_focusedAoiId}' to '{newAoiId}' after {finalFocusDuration}s at time: {newStartTime}.");
+
+                OnFocussedAoiChanged.Invoke(_focusedAoiId, newAoiId,
+                                            finalFocusDuration, newStartTime);
+                _focusedAoiId = newAoiId;
             }
         }
 
@@ -228,8 +292,8 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
 
                     if (i == _bounceTracePath.Count - 1)
                     {
-                        // Draw last cube differently
-                        Gizmos.color = Color.green;
+                        // Draw last cube differently (AOI hit = green, no AOI hit = red)
+                        Gizmos.color = hasAOIFocussed ? Color.green : Color.red;
                     }
                     Gizmos.DrawCube(_bounceTracePath[i], Vector3.one * GIZMOS_CUBE_SIZE);
                 }

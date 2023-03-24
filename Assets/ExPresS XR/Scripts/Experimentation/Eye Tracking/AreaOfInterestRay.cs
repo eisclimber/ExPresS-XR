@@ -123,7 +123,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
             PerformRaycasts();
 
-            UpdateFocussedAOI();
+            UpdateFocussedAoi();
         }
 
 
@@ -189,7 +189,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
         }
 
 
-        private void UpdateFocussedAOI()
+        private void UpdateFocussedAoi()
         {
             Collider collider = _currentRaycastHit.collider;
             if (collider != null && collider.TryGetComponent(out AreaOfInterest aoi))
