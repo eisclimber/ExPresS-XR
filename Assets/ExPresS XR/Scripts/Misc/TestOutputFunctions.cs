@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc
 {
-    public class TestButtonScript : MonoBehaviour
+    public class TestOutputFunctions : MonoBehaviour
     {
         public string testMessage1 = "Test Output 1";
         public string testMessage2 = "Test Output 2";

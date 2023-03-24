@@ -1,11 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Template name="step-1-intro 1" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-1-intro.uxml?fileID=9197481963319205126&amp;guid=2455954c66f46674899bb51add566781&amp;type=3#step-1-intro 1" />
     <ui:Template name="step-2-model" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-2-model.uxml?fileID=9197481963319205126&amp;guid=52ea4c12b6178464687fe6ddecceeb04&amp;type=3#step-2-model" />
     <ui:Template name="step-3-constraints" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-3-constraints.uxml?fileID=9197481963319205126&amp;guid=bd8d199aa9e9703428c3d9c81a502d4b&amp;type=3#step-3-constraints" />
     <ui:Template name="step-4-alignment" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-4-alignment.uxml?fileID=9197481963319205126&amp;guid=4e67d2d2a05b9594abf06b71da7576ee&amp;type=3#step-4-alignment" />
     <ui:Template name="step-5-hand-animations" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-5-hand-animations.uxml?fileID=9197481963319205126&amp;guid=81b026e80e3ee2449ae26a160b92112d&amp;type=3#step-5-hand-animations" />
     <ui:Template name="step-6-legs" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-6-legs.uxml?fileID=9197481963319205126&amp;guid=f01d3531db480c64590f974b0da97649&amp;type=3#step-6-legs" />
     <ui:Template name="step-7-expansion" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-7-expansion.uxml?fileID=9197481963319205126&amp;guid=ff55ed61849805640a368603eecb9171&amp;type=3#step-7-expansion" />
+    <ui:Template name="step-1-intro 1" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Inverse%20Kinematics%20Tutorial/step-1-intro.uxml?fileID=9197481963319205126&amp;guid=2455954c66f46674899bb51add566781&amp;type=3#step-1-intro" />
     <ui:VisualElement name="inverse-kinematics-tutorial" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); align-items: center; margin-top: 0; padding-top: 4px;">
             <ui:Button text="1" display-tooltip-when-elided="true" name="step-1" style="width: auto; height: auto; align-items: stretch; justify-content: flex-start; min-width: 50px; min-height: 50px; font-size: 20px;" />
@@ -17,7 +17,7 @@
             <ui:Button text="5" display-tooltip-when-elided="true" name="step-7" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
         </ui:VisualElement>
         <ui:VisualElement name="content-container" style="flex-grow: 1; padding-top: 4px; padding-bottom: 4px; padding-left: 8px; padding-right: 4px;">
-            <ui:Instance template="step-1-intro 1" name="step-1-intro 1" style="flex-grow: 1;" />
+            <ui:Instance template="step-1-intro 1" name="step-1-intro" style="flex-grow: 1;" />
             <ui:Instance template="step-2-model" name="step-2-model" style="flex-grow: 1; display: none;" />
             <ui:Instance template="step-3-constraints" name="step-3-constraints" style="flex-grow: 1; display: none;" />
             <ui:Instance template="step-4-alignment" name="step-4-alignment" style="flex-grow: 1; display: none;" />
