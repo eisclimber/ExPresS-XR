@@ -37,12 +37,12 @@ namespace ExPresSXR.Misc
             string[] stackLines = stackTrace.Split("\n");
             string stackBeginning = stackLines.Length > 0 ? stackLines[0] : "";
 
-            myLog = stackBeginning + " : " + output + "\n" + myLog;
+            myLog = myLog + "\n" + stackBeginning + " : " + output;
 
             // Reduce Size
             if (myLog.Length > 2400)
             {
-                myLog = myLog[..2000];
+                myLog = myLog[^2000..];
             }
         }
 
