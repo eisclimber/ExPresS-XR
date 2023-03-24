@@ -5,8 +5,7 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
 {
     public class PicoAreaOfInterestRay : MonoBehaviour
     {
-        private const int DEFAULT_AOI_LAYER_MASK = 512;
-        private const float GIZMOS_RAY_MAX_LENGTH = 10.0f;
+        private const int DEFAULT_AOI_LAYER_MASK = 1536;
 
         public const string NO_AOI_DETECTED_ID = "None";
 
@@ -76,21 +75,8 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
             if (_lightReticle != null)
             {
                 _lightReticle.position = _currentRaycastHit.point;
+                Debug.Log(_lightReticle.position);
             }
-        }
-
-
-        private void OnDrawGizmosSelected() {
-            Gizmos.color = Color.magenta;
-
-            Vector3 eyeEnd = _currentEyeDir * GIZMOS_RAY_MAX_LENGTH;
-
-            if (_currentRaycastHit.collider != null)
-            {
-                eyeEnd = _currentRaycastHit.point - _currentEyePos;
-            }
-
-            Gizmos.DrawRay(_currentEyePos, eyeEnd);
         }
     }
 }
