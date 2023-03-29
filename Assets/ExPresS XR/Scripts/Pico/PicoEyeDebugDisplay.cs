@@ -25,8 +25,10 @@ namespace ExPresSXR.Experimentation.EyeTracking.Pico
                 PXR_EyeTracking.GetCombineEyeGazePoint(out Vector3 gazePoint);
                 PXR_EyeTracking.GetLeftEyeGazeOpenness(out float opennessLeft);
                 PXR_EyeTracking.GetRightEyeGazeOpenness(out float opennessRight);
-                textDisplay.text = gazeVector.ToString() + "\n" + gazePoint.ToString() 
-                                    + "\n" + opennessLeft + " x " + opennessRight;
+                PXR_EyeTracking.GetCombineEyeGazeVector(out Vector3 gazeDir);
+                textDisplay.text = $"Gaze Vector: {gazeVector} \n Gaze Points: {gazePoint} \n"
+                                    + $"Openness: ${opennessLeft} x {opennessRight} \n"
+                                    + $"EyeGazeDir: {gazeDir}";
             }
         }
     }

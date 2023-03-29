@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Unity.XR.PXR;
 
-namespace ExPresSXR.Experimentation.EyeTracking
+namespace ExPresSXR.Experimentation.EyeTracking.Pico
 {
-    public class IKEyeBlinker : MonoBehaviour
+    public class PicoEyeBlinker : MonoBehaviour
     {
         public const float MAX_BLEND_VALUE = 100.0f;
 
@@ -16,14 +15,6 @@ namespace ExPresSXR.Experimentation.EyeTracking
         {
             get => _blinkBehavior;
         }
-
-        [Tooltip("InputActionReference to the provider of the right eye's openness for the right eye. Should be a float.")]
-        [SerializeField]
-        private InputActionReference _leftEyeOpennessRef;
-
-        [Tooltip("InputActionReference to the provider of the left eye's openness for the right eye. Should be a float.")]
-        [SerializeField]
-        private InputActionReference _rightEyeOpennessRef;
 
         [Tooltip("BlendShape index for the left eye's blink. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
         [SerializeField]
@@ -79,8 +70,11 @@ namespace ExPresSXR.Experimentation.EyeTracking
         {
             if (_blinkBehavior == BlinkBehavior.EyeTracking)
             {
-                _meshRenderer.SetBlendShapeWeight(_leftBlinkIdx, (1.0f - _leftEyeOpennessRef.action.ReadValue<float>()) * MAX_BLEND_VALUE);
-                _meshRenderer.SetBlendShapeWeight(_rightBlinkIdx, (1.0f - _rightEyeOpennessRef.action.ReadValue<float>()) * MAX_BLEND_VALUE);
+                PXR_EyeTracking.GetLeftEyeGazeOpenness(out float leftOpenness);
+                PXR_EyeTracking.GetRightEyeGazeOpenness(out float rightOpenness);
+
+                _meshRenderer.SetBlendShapeWeight(_leftBlinkIdx, (1.0f - leftOpenness) * MAX_BLEND_VALUE);
+                _meshRenderer.SetBlendShapeWeight(_rightBlinkIdx, (1.0f - rightOpenness) * MAX_BLEND_VALUE);
             }
         }
 

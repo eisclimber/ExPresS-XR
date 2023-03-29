@@ -1,22 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Unity.XR.PXR;
 
-namespace ExPresSXR.Experimentation.EyeTracking
-{
-    public class IKEyeDirections : MonoBehaviour
+namespace ExPresSXR.Experimentation.EyeTracking.Pico
+{    public class PicoEyeDirections : MonoBehaviour
     {
         public const float MAX_BLEND_VALUE = 100.0f;
-
-        // Eye Direction Inputs    
-        [Tooltip("InputActionReference to the provider of the left eye's rotation. Should be a Quaternion.")]
-        [SerializeField]
-        private InputActionReference _leftEyeDirRef;
-
-        [Tooltip("InputActionReference to the provider of the right eye's rotation. Should be a Quaternion.")]
-        [SerializeField]
-        private InputActionReference _rightEyeDirRef;
 
         // Eye Look
         [Tooltip("BlendShape indices for the left eye. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
@@ -27,6 +17,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
         [SerializeField]
         private BlendIndices2D _rightEyeDirIdxs; // E.g. for our mesh: 32, 26, 28, 30
 
+
+        [Tooltip("Amplification to the the values received from eye tracking.")]
+        [SerializeField]
+        private Vector2 directionAmplification; // E.g. for our mesh: (2, 2)
 
 
         // Mesh
@@ -54,10 +48,15 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
         private void UpdateEyeLookAt()
         {
-            // Debug.Log(_leftEyeDirRef.action.ReadValue<Quaternion>() * Vector3.forward + " x " + _rightEyeDirRef.action.ReadValue<Quaternion>() * Vector3.forward);
+            // Pico does not seem to have an easy option to access the direction of both eyes
+            // Using the combined direction instead...
+            PXR_EyeTracking.GetCombineEyeGazeVector(out Vector3 combinedDir);
 
-            ApplyInputActionEyeDirections(_leftEyeDirIdxs, _leftEyeDirRef.action.ReadValue<Quaternion>() * Vector3.forward);
-            ApplyInputActionEyeDirections(_rightEyeDirIdxs, _rightEyeDirRef.action.ReadValue<Quaternion>() * Vector3.forward);
+            combinedDir = new Vector3(Mathf.Clamp(combinedDir.x * directionAmplification.x, -1.0f, 1.0f), 
+                                        Mathf.Clamp(combinedDir.y * directionAmplification.y, -1.0f, 1.0f));
+
+            ApplyInputActionEyeDirections(_leftEyeDirIdxs, combinedDir);
+            ApplyInputActionEyeDirections(_rightEyeDirIdxs, combinedDir);
         }
 
 
