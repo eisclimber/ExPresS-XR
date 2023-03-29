@@ -76,8 +76,8 @@ public class IKEyeBlinker : MonoBehaviour
     {
         if (_blinkBehavior == BlinkBehavior.EyeTracking)
         {
-            _meshRenderer.SetBlendShapeWeight(_leftBlinkIdx, _leftEyeOpennessRef.action.ReadValue<float>() * MAX_BLEND_VALUE);
-            _meshRenderer.SetBlendShapeWeight(_rightBlinkIdx, _rightEyeOpennessRef.action.ReadValue<float>() * MAX_BLEND_VALUE);
+            _meshRenderer.SetBlendShapeWeight(_leftBlinkIdx, (1.0f - _leftEyeOpennessRef.action.ReadValue<float>()) * MAX_BLEND_VALUE);
+            _meshRenderer.SetBlendShapeWeight(_rightBlinkIdx, (1.0f - _rightEyeOpennessRef.action.ReadValue<float>()) * MAX_BLEND_VALUE);
         }
     }
 
