@@ -16,7 +16,6 @@ namespace ExPresSXR.Experimentation.EyeTracking
         [SerializeField]
         private InputActionReference _rightEyeDirRef;
 
-
         // Eye Look
         [Tooltip("BlendShape indices for the left eye. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
         [SerializeField]
