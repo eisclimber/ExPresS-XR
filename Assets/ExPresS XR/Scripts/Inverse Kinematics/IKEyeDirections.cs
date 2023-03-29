@@ -10,20 +10,19 @@ namespace ExPresSXR.Experimentation.EyeTracking
         // Eye Direction Inputs    
         [Tooltip("InputActionReference to the provider of the left eye's rotation. Should be a Quaternion.")]
         [SerializeField]
-        private InputActionReference _leftEyeDirRef; // E.g. for our mesh: 31, 25, 29, 27
-
+        private InputActionReference _leftEyeDirRef;
         [Tooltip("InputActionReference to the provider of the right eye's rotation. Should be a Quaternion.")]
         [SerializeField]
-        private InputActionReference _rightEyeDirRef; // E.g. for our mesh: 32, 26, 28, 30
+        private InputActionReference _rightEyeDirRef;
 
         // Eye Look
         [Tooltip("BlendShape indices for the left eye. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
         [SerializeField]
-        private BlendIndices2D _leftEyeDirIdxs;
+        private BlendIndices2D _leftEyeDirIdxs; // E.g. for our mesh: 31, 25, 29, 27
 
         [Tooltip("BlendShape indices for the right eye. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
         [SerializeField]
-        private BlendIndices2D _rightEyeDirIdxs;
+        private BlendIndices2D _rightEyeDirIdxs; // E.g. for our mesh: 32, 26, 28, 30
 
 
 
