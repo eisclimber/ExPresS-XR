@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
-
+using ExPresSXR.UI;
+using ExPresSXR.Rig;
 
 namespace ExPresSXR.Misc
 {
@@ -36,6 +38,50 @@ namespace ExPresSXR.Misc
             return null;
         }
 
+        
+
+        /// <summary>
+        /// Changes a scene whilst the current rig is faded out. Supports 'DontDestroyOnLoad' if enabled on the rig.
+        /// If no rig is provided or it does does not have a fade Rect the Scene will change instant.
+        /// </summary>
+        /// <param name="rig">The rig that is will be attempted to fade. </param>
+        /// <param name="sceneIdx"> The Scene index to change to (from the build settings). </param>
+        /// <param name="keepRig"> </param>
+        public static void ChangeSceneWithFade(ExPresSXRRig rig, int sceneIdx, bool keepRig)
+        {
+            if (rig == null || rig.fadeRect == null)
+            {
+                SceneManager.LoadScene(sceneIdx, LoadSceneMode.Single);
+            }
+            else
+            {
+                FadeRect fadeRect = rig.fadeRect;
+
+                if (keepRig)
+                {
+                    UnityEngine.Object.DontDestroyOnLoad(rig);
+                }
+
+                // Use local functions to automatically remove the listeners on completion
+                void SceneSwitcher()
+                {
+                    SceneManager.LoadScene(sceneIdx, LoadSceneMode.Single);
+                    fadeRect.OnFadeToColorCompleted.RemoveListener(SceneSwitcher);
+                    fadeRect.OnFadeToClearCompleted.AddListener(SwitchCleanup);
+                    fadeRect.FadeToClear(false);
+                }
+
+                void SwitchCleanup()
+                {
+                    fadeRect.OnFadeToColorCompleted.RemoveListener(SwitchCleanup);
+                }
+
+                fadeRect.FadeToColor(false);
+                fadeRect.OnFadeToColorCompleted.AddListener(SceneSwitcher);
+            }
+        }
+
+
 
         /// <summary>
         /// Populates an <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.
@@ -51,7 +97,7 @@ namespace ExPresSXR.Misc
                 Debug.LogError("Parameter 'enumType' was not a Enum.");
             }
 
-            List<Dropdown.OptionData> newOptions = new List<Dropdown.OptionData>();
+            List<Dropdown.OptionData> newOptions = new();
 
             // Populate new Options
             for (int i = 0; i < Enum.GetNames(enumType).Length; i++)

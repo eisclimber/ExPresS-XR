@@ -15,10 +15,11 @@ namespace ExPresSXR.UI
         private float _hintDuration = 0.5f;
         public float hintDuration
         {
-            get { return _hintDuration; }
+            get => _hintDuration;
             set
             {
                 _hintDuration = value;
+
                 if (_animator != null)
                 {
                     _animator.speed = _showHintAnimationDuration / _hintDuration;
@@ -34,6 +35,7 @@ namespace ExPresSXR.UI
                 _animator = GetComponent<Animator>();
                 hintDuration = _hintDuration;
             }
+            
             // Hide Reticle initially
             if (_animator != null)
             {

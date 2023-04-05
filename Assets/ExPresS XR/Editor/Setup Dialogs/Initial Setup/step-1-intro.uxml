@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-1-intro" style="flex-grow: 1;">
+        <ui:Label text="Welcome to ExPresS XR!" display-tooltip-when-elided="true" name="step-1-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:VisualElement name="choice-descriptions" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; white-space: normal;">
+            <ui:Label text="Thank you for choosing ExPresS XR for creating your own VR Experience.\n\nThis setup tutorial will help you find your preferred XR Rig - the base of your application.\nIt determines how you move and interact with the virtual world.\nBe aware that you will have a lot more customization options are available after creating the rig.\n\nPlease let us know if you like this project or find any bugs. Handing in the questionaire at the base of the repository once your project is finished would help us out a lot too." display-tooltip-when-elided="true" name="intro-text" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+    </ui:VisualElement>
+</ui:UXML>

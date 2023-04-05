@@ -10,11 +10,15 @@ namespace ExPresSXR.Editor
     {
         private const string EXPRESS_XR_PREFABS_PATH = "Assets/ExPresS XR/Prefabs/";
         public const string EXPRESS_XR_PREFAB_FORMAT = EXPRESS_XR_PREFABS_PATH + "{0}.prefab";
-        public const string TELEPORT_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Teleport";
-        public const string CONTINUOUS_MOVE_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Continuous Move";
-        public const string HEAD_GAZE_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Head Gaze";
-        public const string HEAD_GAZE_TELEPORT_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Head Gaze Teleport";
-        public const string CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom";
+        public const string TELEPORT_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Teleport";
+        public const string JOYSTICK_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Joystick";
+        public const string GRAB_MOTION_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Grab Motion";
+        public const string GRAB_MANIPULATION_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Grab Manipulation";
+        public const string HEAD_GAZE_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Head Gaze";
+        public const string EYE_GAZE_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Eye Gaze";
+        public const string NONE_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - None";
+        public const string CUSTOM_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom";
+        public const string SAVED_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom (Saved)";
         public const string QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Quiz Button Square";
         public const string MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Multiple Choice Confirm Button Square";
         public const string AFTER_QUIZ_DIALOG_PATH_NAME = "Misc/After Quiz Dialog";
@@ -104,9 +108,9 @@ namespace ExPresSXR.Editor
         }
 
 
-        public static string customXRRigPath
+        public static string savedXRRigPath
         {
-            get => MakeExPresSXRPrefabPath(CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME);
+            get => MakeExPresSXRPrefabPath(SAVED_RIG_PREFAB_NAME);
         }
 
         /// <summary>

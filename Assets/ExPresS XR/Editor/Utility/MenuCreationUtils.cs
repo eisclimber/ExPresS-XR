@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
-using ExPresSXR.Presentation;
 
 
 namespace ExPresSXR.Editor
@@ -13,34 +12,60 @@ namespace ExPresSXR.Editor
         [MenuItem("GameObject/ExPresS XR/XR Rig/Teleport")]
         static void CreateXRRig(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.TELEPORT_EXPRESS_XR_RIG_PREFAB_NAME);
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.TELEPORT_RIG_PREFAB_NAME);
         }
 
-        [MenuItem("GameObject/ExPresS XR/XR Rig/Continuous Move")]
+        [MenuItem("GameObject/ExPresS XR/XR Rig/Joystick")]
         static void CreateXRRigContinuousMove(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.CONTINUOUS_MOVE_EXPRESS_XR_RIG_PREFAB_NAME);
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.JOYSTICK_RIG_PREFAB_NAME);
+        }
+
+        [MenuItem("GameObject/ExPresS XR/XR Rig/Grab Motion")]
+        static void CreateXRRigGrabMove(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.GRAB_MOTION_RIG_PREFAB_NAME);
+        }
+
+        [MenuItem("GameObject/ExPresS XR/XR Rig/Grab Manipulation")]
+        static void CreateXRRigGrabManipulation(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.GRAB_MANIPULATION_RIG_PREFAB_NAME);
         }
 
         [MenuItem("GameObject/ExPresS XR/XR Rig/Head Gaze")]
         static void CreateXRRigHeadGaze(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.HEAD_GAZE_EXPRESS_XR_RIG_PREFAB_NAME);
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.HEAD_GAZE_RIG_PREFAB_NAME);
         }
 
-        [MenuItem("GameObject/ExPresS XR/XR Rig/Head Gaze Teleport")]
-        static void CreateXRRigHeadGazeTeleport(MenuCommand menuCommand)
+        [MenuItem("GameObject/ExPresS XR/XR Rig/Eye Gaze")]
+        static void CreateXRRigEyeGaze(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.HEAD_GAZE_TELEPORT_EXPRESS_XR_RIG_PREFAB_NAME);
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.EYE_GAZE_RIG_PREFAB_NAME);
+        }
+
+
+        [MenuItem("GameObject/ExPresS XR/XR Rig/None")]
+        static void CreateXRRigNone(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.NONE_RIG_PREFAB_NAME);
         }
 
         [MenuItem("GameObject/ExPresS XR/XR Rig/Custom")]
-        public static void CreateXRRigCustom(MenuCommand menuCommand)
+        static void CreateXRRigCustom(MenuCommand menuCommand)
         {
-            GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME);
+            InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.CUSTOM_RIG_PREFAB_NAME);
+        }
+
+
+        [MenuItem("GameObject/ExPresS XR/XR Rig/Custom (Saved)")]
+        public static void CreateXRRigSaved(MenuCommand menuCommand)
+        {
+            GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.SAVED_RIG_PREFAB_NAME);
             if (go == null)
             {
-                Debug.LogWarning("No custom XR Rig found. Create a new one and mark it as custom in the Inspector.");
+                Debug.LogWarning("No custom XR Rig found. Create a new one and save it from the rig's inspector.");
             }
         }
 
@@ -58,7 +83,6 @@ namespace ExPresSXR.Editor
         {
             InstantiatePrefabAtContextTransform(menuCommand, "IK/IK Sample - Character");
         }
-
 
 
         // Interaction

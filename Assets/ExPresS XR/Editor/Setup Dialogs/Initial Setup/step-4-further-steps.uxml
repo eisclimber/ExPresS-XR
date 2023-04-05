@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-3-launch" style="flex-grow: 1;">
+        <ui:Label text="Launch Tutorial..." display-tooltip-when-elided="true" name="step-3-header" style="font-size: 20px; -unity-text-align: upper-center; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:VisualElement name="choices-buttons" style="flex-direction: row; flex-grow: 0;">
+            <ui:Button text="Exhibition" display-tooltip-when-elided="true" name="choice-1-button" style="width: 0.25%; flex-grow: 1; flex-wrap: nowrap; flex-shrink: 0; white-space: normal;" />
+            <ui:Button text="Experimentation" display-tooltip-when-elided="true" name="choice-2-button" style="flex-grow: 1; height: 100px; flex-wrap: nowrap; align-items: stretch; white-space: normal; width: 0.25%;" />
+            <ui:Button text=" General Tutorial" display-tooltip-when-elided="true" name="choice-3-button" style="flex-grow: 1; height: 100px; flex-wrap: nowrap; white-space: normal; width: 0.25%;" />
+            <ui:Button text="None" display-tooltip-when-elided="true" name="choice-4-button" style="flex-grow: 1; height: 100px; flex-wrap: nowrap; flex-direction: column; white-space: normal; width: 0.25%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="choices-descriptions" text="Launch a tutorial scene highlighting all possibilities for your VR Exhibition project. After trying out all the features you can continue with Scene Creation by accessing &apos;ExPresS XR &gt; Scene Creation Tutorial&apos;" style="flex-grow: 1;">
+            <ui:Label text="Launch an example scene highlighting the possibilities for your VR Exhibition project and opens the Exhibition Tutorial." display-tooltip-when-elided="true" name="choice-1-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; white-space: normal;" />
+            <ui:Label text="Launches an example scene for highlighting the possibilities for your VR Exhibition project and opens the Experimentation Tutorial." display-tooltip-when-elided="true" name="choice-2-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: none; white-space: normal;" />
+            <ui:Label text="Launches an example scene for highlighting the possibilities provided by ExPresS XR and opens both Tutorials for Exhibitions and Experimentation." display-tooltip-when-elided="true" name="choice-3-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: none; white-space: normal;" />
+            <ui:Label text="Do not launch a Tutorial and start with an empty scene." display-tooltip-when-elided="true" name="choice-4-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: none; white-space: normal;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="choices-controls" style="flex-direction: row; flex-wrap: nowrap; justify-content: flex-end;">
+            <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+            <ui:Button text="Finish" display-tooltip-when-elided="true" name="finish-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

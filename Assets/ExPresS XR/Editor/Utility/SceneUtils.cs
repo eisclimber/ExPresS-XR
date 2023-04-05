@@ -25,7 +25,7 @@ namespace ExPresSXR.Editor
 
 
         // Helper variable that stores the ExPresS XR Rig wile a new scene gets created
-        private static string _xRRigPrefabName = "";
+        private static string _xrRigPrefabName = "";
 
 
         [MenuItem("ExPresS XR/Scenes.../Create New Basic Scene (ExPresS XR)")]
@@ -57,7 +57,7 @@ namespace ExPresSXR.Editor
 
 
 
-        public static void LoadSceneTemplate(string templateName, string rigName = CreationUtils.CUSTOM_EXPRESS_XR_RIG_PREFAB_NAME)
+        public static void LoadSceneTemplate(string templateName, string rigName = CreationUtils.SAVED_RIG_PREFAB_NAME)
         {
             string path = string.Format(SCENE_TEMPLATE_FORMAT, templateName);
             SceneTemplateAsset templateAsset = AssetDatabase.LoadAssetAtPath<SceneTemplateAsset>(path);
@@ -67,7 +67,7 @@ namespace ExPresSXR.Editor
                 Debug.LogErrorFormat("Could not find SceneTemplate at '{0}'.", path);
             }
 
-            _xRRigPrefabName = rigName;
+            _xrRigPrefabName = rigName;
             EditorSceneManager.sceneOpened += OneShotAddXRRigCallback;
 
             InstantiationResult result = SceneTemplateService.Instantiate(templateAsset, false);
@@ -81,9 +81,9 @@ namespace ExPresSXR.Editor
         private static void OneShotAddXRRigCallback(Scene scene, OpenSceneMode mode)
         {
             GameObject rig = null;
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(_xRRigPrefabName) != null)
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(_xrRigPrefabName) != null)
             {
-                rig = CreationUtils.InstantiateAndPlacePrefab(_xRRigPrefabName, null);
+                rig = CreationUtils.InstantiateAndPlacePrefab(_xrRigPrefabName, null);
             }
 
             if (rig == null)
@@ -93,11 +93,12 @@ namespace ExPresSXR.Editor
             if (rig != null && rig.GetComponent<ExPresSXRRig>() == null)
             {
                 UnityEngine.Object.Destroy(rig);
-                Debug.LogError(string.Format("Could load ExPresS XR-prefab '{0}', but it has no ExPresSXRRig-Component! Please add an ExPresSXRRig via the hierarchy.", _xRRigPrefabName));
+                Debug.LogError(string.Format("Could load ExPresS XR-prefab '{0}', but it has no ExPresSXRRig-Component! "
+                    + "Please add an ExPresSXRRig via the hierarchy.", _xrRigPrefabName));
             }
 
             // Cleanup
-            _xRRigPrefabName = "";
+            _xrRigPrefabName = "";
             EditorSceneManager.sceneOpened -= OneShotAddXRRigCallback;
         }
     }

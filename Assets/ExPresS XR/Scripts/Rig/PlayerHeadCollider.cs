@@ -33,8 +33,8 @@ namespace ExPresSXR.Rig
 
         [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
         [SerializeField]
-        private GameObject _pushbackAnchor;
-        public GameObject pushbackAnchor {
+        private Transform _pushbackAnchor;
+        public Transform pushbackAnchor {
             get => _pushbackAnchor; 
             set => _pushbackAnchor = value;
         }
