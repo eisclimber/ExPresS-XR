@@ -25,9 +25,6 @@ namespace ExPresSXR.Rig
         /// </remarks>
         public const int k_UpdateOrder = XRInteractionUpdateOrder.k_Controllers - 1;
 
-        [Space]
-        [Header("Interactors")]
-
         [SerializeField]
         [Tooltip("The GameObject containing the interaction group used for direct and distant manipulation.")]
         protected XRInteractionGroup m_ManipulationInteractionGroup;
@@ -47,9 +44,6 @@ namespace ExPresSXR.Rig
         [SerializeField]
         [Tooltip("The GameObject containing the poke interactor.")]
         protected XRPokeInteractor m_PokeInteractor;
-
-        [Space]
-        [Header("Controller Actions")]
 
         [SerializeField]
         [Tooltip("The reference to the action to start the teleport aiming mode for this controller.")]

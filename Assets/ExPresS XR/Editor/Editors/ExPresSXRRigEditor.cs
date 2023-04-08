@@ -183,17 +183,17 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawCustomRigButtons()
         {
-            if (File.Exists(CreationUtils.savedXRRigPath))
-            {
-                EditorGUILayout.HelpBox("Custom ExPresS XR Rig already exists. Setting a new one will"
-                    + " override the old one.", MessageType.Warning);
-            }
-
             if (GUILayout.Button("Save as my Custom ExPresS XR Rig"))
             {
                 SaveAsCustomXRRig();
             }
-
+            
+            if (File.Exists(CreationUtils.savedXRRigPath))
+            {
+                EditorGUILayout.HelpBox("Custom ExPresS XR Rig already exists. Setting a new one will"
+                    + " override the old one.", MessageType.Warning);
+                EditorGUILayout.Space();
+            }
         }
 
         protected virtual void DrawObjectRefs()
