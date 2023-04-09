@@ -99,7 +99,6 @@ public class HandControllerManagerEditor : Editor
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiRayInteractionEnabled"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayAnchorControlEnabled"), true);
             EditorGUI.indentLevel--;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_chooseTeleportForwardEnabled"), true);
         EditorGUI.indentLevel--;
     }
 

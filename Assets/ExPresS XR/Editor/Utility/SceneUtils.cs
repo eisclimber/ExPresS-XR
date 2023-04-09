@@ -172,7 +172,6 @@ namespace ExPresSXR.Editor
                 {
                     rig.interactionOptions = interactionOptions;
                 }
-                Debug.Log("Saved: " + interactionOptions);
             }
         }
     }

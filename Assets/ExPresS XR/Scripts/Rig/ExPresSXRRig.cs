@@ -474,6 +474,7 @@ namespace ExPresSXR.Rig
                 _leftHandController.uiRayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiRay);
                 _leftHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
                 _leftHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
+                _leftHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
             }
 
             if (_rightHandController != null)
@@ -485,6 +486,7 @@ namespace ExPresSXR.Rig
                 _rightHandController.uiRayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiRay);
                 _rightHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
                 _rightHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
+                _rightHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
             }
         }
 
@@ -492,6 +494,9 @@ namespace ExPresSXR.Rig
         {
             ApplyCurrentMovementPreset();
             ApplyCurrentInteractions();
+            playerHeadCollider = _playerHeadCollider;
+            headCollisionEnabled = _headCollisionEnabled;
+            showCollisionVignetteEffect = _showCollisionVignetteEffect;
         }
 
         public void RevalidateInputMethod()
@@ -532,7 +537,8 @@ namespace ExPresSXR.Rig
         Ray = 8,
         RayAnchorControl = 16,
         UiRay = 32,
-        ChooseTeleportForward = 64
+        ChooseTeleportForward = 64,
+        CancelTeleportPossible = 128
     }
 
     public enum GameTabDisplayMode

@@ -1,4 +1,4 @@
-using System;
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
@@ -62,10 +62,15 @@ namespace ExPresSXR.Editor
         [MenuItem("GameObject/ExPresS XR/XR Rig/Custom (Saved)")]
         public static void CreateXRRigSaved(MenuCommand menuCommand)
         {
-            GameObject go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.SAVED_RIG_PREFAB_NAME);
+            GameObject go = null;
+            if (File.Exists(CreationUtils.savedXRRigPath))
+            {
+                go = InstantiatePrefabAtContextTransform(menuCommand, CreationUtils.SAVED_RIG_PREFAB_NAME);
+            }
+
             if (go == null)
             {
-                Debug.LogWarning("No custom XR Rig found. Create a new one and save it from the rig's inspector.");
+                Debug.LogError("No custom XR Rig found. Create a new one and save it from the rig's inspector.");
             }
         }
 

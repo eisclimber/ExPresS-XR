@@ -91,19 +91,20 @@ namespace ExPresSXR.Editor
         {
             EditorGUILayout.LabelField("Movement", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_movementPreset"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_movementPreset"), true);
+            EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Interaction", EditorStyles.boldLabel);
-
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_interactionOptions"), true);
+            EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_interactionOptions"), true);
+            EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("Hand Model", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelMode"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelCollisions"), true);
-
+            EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelMode"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelCollisions"), true);
             EditorGUI.indentLevel--;
         }
 

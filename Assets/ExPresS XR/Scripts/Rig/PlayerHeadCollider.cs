@@ -101,7 +101,7 @@ namespace ExPresSXR.Rig
             if (_pushbackAnchor != null && _cooldownCoroutine == null)
             {
                 int hits = CountHits(transform.position);
-                
+
                 if (hits == 0)
                 {
                     HandleNoCollisions();
@@ -125,6 +125,7 @@ namespace ExPresSXR.Rig
                         screenCollisionIndicator.FadeIn(_maxFadeDuration);
                     }
                 });
+
                 OnCollisionEnded.AddListener(() =>
                 {
                     if (showCollisionVignetteEffect)
