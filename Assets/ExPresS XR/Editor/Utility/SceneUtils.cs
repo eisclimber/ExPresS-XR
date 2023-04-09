@@ -29,78 +29,50 @@ namespace ExPresSXR.Editor
         private static RigConfigData _rigConfig = null;
 
 
-        [MenuItem("ExPresS XR/Scenes.../Create New Basic Scene (ExPresS XR)")]
-        static void CreateEmptyScene() => LoadSceneTemplate(BASIC_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New Exhibition Export Scene")]
-        static void CreateExhibitionExportScene() => LoadSceneTemplate(EXHIBITION_EXPORT_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New Exhibition Tutorial Scene")]
-        static void CreateExhibitionTutorialScene() => LoadSceneTemplate(EXHIBITION_TUTORIAL_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New Experimentation Export Scene")]
-        static void CreateExperimentationTutorialScene() => LoadSceneTemplate(EXPERIMENTATION_EXPORT_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New Experimentation Tutorial Scene")]
-        static void CreateExperimentationExportScene() => LoadSceneTemplate(EXPERIMENTATION_TUTORIAL_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New General Export Scene")]
-        static void CreateGeneralExportScene() => LoadSceneTemplate(GENERAL_EXPORT_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New Interaction Tutorial Scene")]
-        static void CreateInteractionTutorialScene() => LoadSceneTemplate(INTERACTION_TUTORIAL_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New Mobile Export Scene")]
-        static void CreateMobileExportScene() => LoadSceneTemplate(MOBILE_EXPORT_SCENE_NAME);
-
-        [MenuItem("ExPresS XR/Scenes.../Create New Movement Tutorial Scene")]
-        static void CreateMovementTutorialScene() => LoadSceneTemplate(MOVEMENT_TUTORIAL_SCENE_NAME);
-
-
         /// <summary>
         /// Instantiates a scene template with the given name and adds a rig to it. 
         /// The rig can be configured using the rigData. If none is provided the users saved rig is used if it exists or else the teleport rig.
         /// </summary>
         /// <param name="templateName"></param>
         /// <param name="rigData">The Data specifying the rigs parameters.</param>
-        public static void LoadSceneTemplate(string templateName, RigConfigData rigData = null)
-        {
-            string path = string.Format(SCENE_TEMPLATE_FORMAT, templateName);
-            SceneTemplateAsset templateAsset = AssetDatabase.LoadAssetAtPath<SceneTemplateAsset>(path);
+        // public static void LoadSceneTemplate(string templateName, RigConfigData rigData = null)
+        // {
+        //     string path = string.Format(SCENE_TEMPLATE_FORMAT, templateName);
+        //     SceneTemplateAsset templateAsset = AssetDatabase.LoadAssetAtPath<SceneTemplateAsset>(path);
 
-            if (templateAsset == null)
-            {
-                Debug.LogError($"Could not find SceneTemplate at '{path}'.");
-            }
+        //     if (templateAsset == null)
+        //     {
+        //         Debug.LogError($"Could not find SceneTemplate at '{path}'.");
+        //     }
 
-            if (rigData != null && File.Exists(CreationUtils.savedXRRigPath))
-            {
-                _rigConfig = rigData;
-            }
-            else if (File.Exists(CreationUtils.savedXRRigPath))
-            {
-                Debug.LogWarning("No Custom Rig found using your saved Rig instead.");
-                rigData ??= new RigConfigData();
-                rigData.basePrefabPath = CreationUtils.SAVED_RIG_PREFAB_NAME;
-                _rigConfig = rigData;
-            }
-            else
-            {
-                Debug.LogWarning("No Custom Rig found using the 'Teleportation'-Rig instead.");
-                rigData ??= new RigConfigData();
-                rigData.basePrefabPath = CreationUtils.TELEPORT_RIG_PREFAB_NAME;
-                _rigConfig = rigData;
-            }
+        //     if (rigData != null && File.Exists(CreationUtils.savedXRRigPath))
+        //     {
+        //         _rigConfig = rigData;
+        //     }
+        //     else if (File.Exists(CreationUtils.savedXRRigPath))
+        //     {
+        //         Debug.LogWarning("No Custom Rig found using your saved Rig instead.");
+        //         rigData ??= new RigConfigData();
+        //         rigData.basePrefabPath = CreationUtils.SAVED_RIG_PREFAB_NAME;
+        //         _rigConfig = rigData;
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning("No Custom Rig found using the 'Teleportation'-Rig instead.");
+        //         rigData ??= new RigConfigData();
+        //         rigData.basePrefabPath = CreationUtils.TELEPORT_RIG_PREFAB_NAME;
+        //         _rigConfig = rigData;
+        //     }
 
-            EditorSceneManager.sceneOpened += OneShotAddXRRigCallback;
+        //     EditorSceneManager.sceneOpened += OneShotAddXRRigCallback;
 
-            InstantiationResult result = SceneTemplateService.Instantiate(templateAsset, false);
+        //     InstantiationResult result = SceneTemplateService.Instantiate(templateAsset, false);
 
-            if (result != null && result.scene != null)
-            {
-                SceneManager.SetActiveScene(result.scene);
-            }
-        }
+        //     if (result != null && result.scene != null)
+        //     {
+        //         SceneManager.SetActiveScene(result.scene);
+        //     }
+        // }
 
 
         private static void OneShotAddXRRigCallback(Scene scene, OpenSceneMode mode)
