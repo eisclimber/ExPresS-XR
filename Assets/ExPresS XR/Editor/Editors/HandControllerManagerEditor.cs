@@ -89,12 +89,17 @@ public class HandControllerManagerEditor : Editor
     {
         EditorGUILayout.LabelField("Interaction Options", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_directInteractionEnabled"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeInteractionEnabled"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractionEnabled"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayAnchorControlEnabled"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiRayInteractionEnabled"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiPokeInteractionEnabled"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_directInteractionEnabled"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeInteractionEnabled"), true);
+            EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiPokeInteractionEnabled"), true);
+            EditorGUI.indentLevel--;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractionEnabled"), true);
+            EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiRayInteractionEnabled"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayAnchorControlEnabled"), true);
+            EditorGUI.indentLevel--;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_chooseTeleportForwardEnabled"), true);
         EditorGUI.indentLevel--;
     }
 

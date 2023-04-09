@@ -528,10 +528,10 @@ namespace ExPresSXR.Rig
         None = 0,
         Direct = 1,
         Poke = 2,
-        Ray = 4,
-        RayAnchorControl = 8,
-        UiRay = 16,
-        UiPoke = 32,
+        UiPoke = 4,
+        Ray = 8,
+        RayAnchorControl = 16,
+        UiRay = 32,
         ChooseTeleportForward = 64
     }
 
