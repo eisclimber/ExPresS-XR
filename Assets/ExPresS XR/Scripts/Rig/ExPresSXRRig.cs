@@ -40,6 +40,11 @@ namespace ExPresSXR.Rig
                 {
                     _headGazeController.gameObject.SetActive(_inputMethod == InputMethod.HeadGaze);
                 }
+
+                if (_headGazeReticle != null)
+                {
+                    _headGazeReticle.gameObject.SetActive(_inputMethod == InputMethod.HeadGaze);
+                }
             }
         }
 
@@ -270,6 +275,51 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Camera that renders the hud. Should be configured as overlay for the Main Camera of the XR Rig.")]
+        [SerializeField]
+        private Camera _hudCamera;
+        public Camera hudCamera
+        {
+            get => _hudCamera;
+            set
+            {
+                _hudCamera = value;
+
+                if (_hudCamera != null)
+                {
+                    _hudCamera.cullingMask = 1 << LayerMask.NameToLayer("UI Always On Top");
+                }
+
+                if (_hud != null)
+                {
+                    _hud.worldCamera = _hudCamera;
+                }
+            }
+        }
+
+
+        [Tooltip("Canvas that acts as a hud for the rig.")]
+        [SerializeField]
+        private Canvas _hud;
+        public Canvas hud
+        {
+            get => _hud;
+            set
+            {
+                _hud = value;
+
+                if (_hud != null)
+                {
+                    if (_hud.gameObject.layer != LayerMask.NameToLayer("UI Always On Top"))
+                    {
+                        Debug.LogWarning("The Hud's layer (and it's children) must be set to 'UI Always On Top'.");
+                    }
+                    _hud.worldCamera = _hudCamera;
+                }
+            }
+        }
+
+
         [Tooltip("Must be a ScreenCollisionIndicator-Component attached to the Hud.")]
         [SerializeField]
         private ScreenCollisionIndicator _screenCollisionIndicator;
@@ -286,6 +336,65 @@ namespace ExPresSXR.Rig
                 }
             }
         }
+
+
+        [Tooltip("Prefab that will be displayed when teleporting to a valid location. Will be overwritten by the teleportation area/anchors reticle.")]
+        [SerializeField]
+        private GameObject _teleportValidReticle;
+        public GameObject teleportValidReticle
+        {
+            get => _teleportValidReticle;
+            set
+            {
+                bool updateReticles = _teleportValidReticle == value;
+
+                _teleportValidReticle = value;
+                
+                if (updateReticles)
+                {
+                    if (_leftHandController != null && _leftHandController.TeleportInteractor != null
+                            && _leftHandController.TeleportInteractor.TryGetComponent(out XRInteractorLineVisual leftLineVisual))
+                    {
+                        leftLineVisual.reticle = _teleportValidReticle;
+                    }
+
+                    if (_rightHandController != null && _rightHandController.TeleportInteractor != null
+                            && _rightHandController.TeleportInteractor.TryGetComponent(out XRInteractorLineVisual rightLineVisual))
+                    {
+                        rightLineVisual.reticle = _teleportValidReticle;
+                    }
+                }
+            }
+        }
+
+        [Tooltip("Prefab that will be displayed when teleporting to an invalid location. Will be overwritten by the teleportation area/anchors reticle.")]
+        [SerializeField]
+        private GameObject _teleportInvalidReticle;
+        public GameObject teleportInvalidReticle
+        {
+            get => _teleportInvalidReticle;
+            set
+            {
+                bool updateReticles = _teleportInvalidReticle == value;
+                _teleportInvalidReticle = value;
+
+                if (updateReticles)
+                {
+                    if (_leftHandController != null && _leftHandController.TeleportInteractor != null
+                            && _leftHandController.TeleportInteractor.TryGetComponent(out XRInteractorLineVisual leftLineVisual))
+                    {
+                        leftLineVisual.blockedReticle = _teleportInvalidReticle;
+                    }
+
+                    if (_rightHandController != null && _rightHandController.TeleportInteractor != null
+                            && _rightHandController.TeleportInteractor.TryGetComponent(out XRInteractorLineVisual rightLineVisual))
+                    {
+                        rightLineVisual.blockedReticle = _teleportInvalidReticle;
+                    }
+                }
+            }
+        }
+
 
         // Utility
         [Tooltip("The way the 'Game'-view displays the rig's camera when entering play mode. Can be changed at runtime at the top right in the 'Game'-tab.")]
@@ -379,7 +488,7 @@ namespace ExPresSXR.Rig
         public void ApplyCurrentMovementPreset()
         {
             if (_inputMethod != InputMethod.Controller
-                && !(_movementPreset == MovementPreset.Teleport 
+                && !(_movementPreset == MovementPreset.Teleport
                         || movementPreset == MovementPreset.None
                         || movementPreset == MovementPreset.Custom))
             {
@@ -494,14 +603,24 @@ namespace ExPresSXR.Rig
         {
             ApplyCurrentMovementPreset();
             ApplyCurrentInteractions();
+
+            // Apply Head Collisions
             playerHeadCollider = _playerHeadCollider;
             headCollisionEnabled = _headCollisionEnabled;
             showCollisionVignetteEffect = _showCollisionVignetteEffect;
         }
 
-        public void RevalidateInputMethod()
+        public void EditorRevalidate()
         {
             inputMethod = _inputMethod;
+
+            // Apply Reticles
+            teleportValidReticle = _teleportValidReticle;
+            teleportInvalidReticle = _teleportInvalidReticle;
+
+            // Setup Hud
+            hud = _hud;
+            hudCamera = _hudCamera;
         }
     }
 

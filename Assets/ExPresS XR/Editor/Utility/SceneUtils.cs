@@ -105,7 +105,7 @@ namespace ExPresSXR.Editor
                 Debug.LogError($"Could load ExPresS XR-prefab '{rigPath}', but it has no ExPresSXRRig-Component! "
                     + "Please add an ExPresSXRRig via the hierarchy.");
             }
-            else if (rigData != null)
+            else
             {
                 // Apply rig Data Config if it exists
                 rigData.ApplyConfigToRig(rig);

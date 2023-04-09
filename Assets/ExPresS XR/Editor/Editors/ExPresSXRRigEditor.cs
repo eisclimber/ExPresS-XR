@@ -62,7 +62,7 @@ namespace ExPresSXR.Editor
                 {
                     // Prevents warnings for enabling GameObjects during OnValidate()
                     serializedObject.ApplyModifiedProperties();
-                    targetScript.RevalidateInputMethod();
+                    targetScript.EditorRevalidate();
                 }
             EditorGUI.indentLevel--;
         }
@@ -92,6 +92,10 @@ namespace ExPresSXR.Editor
             EditorGUILayout.LabelField("Movement", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_movementPreset"), true);
+
+                EditorGUILayout.Space();
+                
+                DrawOptionalTeleportReticles();
             EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Interaction", EditorStyles.boldLabel);
@@ -123,7 +127,7 @@ namespace ExPresSXR.Editor
                     targetScript.movementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
                     serializedObject.Update();
                 }
-
+                
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeTimeToSelect"), true);
@@ -146,8 +150,31 @@ namespace ExPresSXR.Editor
                     targetScript.movementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
                     serializedObject.Update();
                 }
-                EditorGUILayout.HelpBox("Eye Gaze can be changed in the 'Eye Gaze Interactor'-GameObject.", MessageType.Info);
+                
+                EditorGUILayout.Space();
+
+
+                EditorGUILayout.HelpBox("The Eye Gaze behavior can be changed in the 'Eye Gaze Interactor'-GameObject.", MessageType.Info);
             EditorGUI.indentLevel--;
+        }
+
+
+        protected virtual void DrawOptionalTeleportReticles()
+        {
+            if (targetScript.movementPreset == MovementPreset.Teleport)
+            {
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportValidReticle"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportInvalidReticle"), true);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Prevents warnings for enabling GameObjects during OnValidate()
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.EditorRevalidate();
+                }
+            }
         }
 
         protected virtual void DrawHeadCollisions()
@@ -213,7 +240,7 @@ namespace ExPresSXR.Editor
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftHandController"), true);
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightHandController"), true);
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeController"), true);
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeController"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_eyeGazeController"), true);
                     EditorGUI.indentLevel--;
 
                     EditorGUILayout.Space();
@@ -221,6 +248,18 @@ namespace ExPresSXR.Editor
                     EditorGUILayout.LabelField("Systems", EditorStyles.boldLabel);
                     EditorGUI.indentLevel++;
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("_locomotionSystem"), true);
+
+                        EditorGUILayout.Space();
+
+                        EditorGUI.BeginChangeCheck();
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_hud"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_hudCamera"), true);
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            // Prevents warnings for enabling GameObjects during OnValidate()
+                            serializedObject.ApplyModifiedProperties();
+                            targetScript.EditorRevalidate();
+                        }
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("_playerHeadCollider"), true);
                     EditorGUI.indentLevel--;
 

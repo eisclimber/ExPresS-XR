@@ -40,6 +40,10 @@ namespace ExPresSXR.Rig
         [SerializeField]
         [Tooltip("The GameObject containing the interactor used for teleportation.")]
         protected XRRayInteractor m_TeleportInteractor;
+        public XRRayInteractor TeleportInteractor
+        {
+            get => m_TeleportInteractor;
+        }
 
         [SerializeField]
         [Tooltip("The GameObject containing the poke interactor.")]

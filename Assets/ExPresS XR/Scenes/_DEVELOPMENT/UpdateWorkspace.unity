@@ -3476,7 +3476,11 @@ MonoBehaviour:
   _locomotionSystem: {fileID: 1795862175}
   _fadeRect: {fileID: 1403397018}
   _playerHeadCollider: {fileID: 964474571}
+  _hudCamera: {fileID: 0}
+  _hud: {fileID: 0}
   _screenCollisionIndicator: {fileID: 1441487113}
+  _teleportValidReticle: {fileID: 0}
+  _teleportInvalidReticle: {fileID: 0}
   _gameTabDisplayMode: 0
   _handModelMode: 1
   _handModelCollisions: 0
@@ -3549,8 +3553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f6410a0ba7d114091dea7dbd0e9825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionPushbackEnabled: 0
-  _showCollisionVignetteEffect: 0
+  collisionPushbackEnabled: 1
+  _showCollisionVignetteEffect: 1
   screenCollisionIndicator: {fileID: 1441487113}
   _pushbackAnchor: {fileID: 911981628}
   _colliderSize: 0.25
@@ -3803,7 +3807,7 @@ MonoBehaviour:
     m_Bits: 2147483648
   m_DistanceCalculationMode: 1
   m_SelectMode: 1
-  m_CustomReticle: {fileID: 1622911015057595677, guid: 2f13b868d59f25b498dc37182eb55357, type: 3}
+  m_CustomReticle: {fileID: 0}
   m_AllowGazeInteraction: 0
   m_AllowGazeSelect: 0
   m_OverrideGazeTimeToSelect: 0
