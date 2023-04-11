@@ -268,7 +268,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 #if UNITY_EDITOR
             return Path.Combine(Application.dataPath + "/", localExportPath);
 #elif UNITY_ANDROID
-        return Path.Combine(Application.persistentDataPath + localExportPath);
+        return Path.Combine(Application.persistentDataPath + "/" + localExportPath);
 #elif UNITY_IPHONE
         return Path.Combine(Application.persistentDataPath + "/" + localExportPath);
 #else
