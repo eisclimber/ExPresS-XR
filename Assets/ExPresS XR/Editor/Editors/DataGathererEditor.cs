@@ -27,40 +27,47 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.LabelField("Export", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataExportType"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataExportType"), true);
 
-            if (targetScript.dataExportType == DataGathererExportType.Http
-                || targetScript.dataExportType == DataGathererExportType.Both)
-            {
-                // Either Only http or both
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
-            }
-            if (targetScript.dataExportType == DataGathererExportType.Local
-                || targetScript.dataExportType == DataGathererExportType.Both)
-            {
-                // Either Only local or both
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
-            }
+                if (targetScript.dataExportType == DataGathererExportType.Http
+                    || targetScript.dataExportType == DataGathererExportType.Both)
+                {
+                    // Either Only http or both
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
+                }
+                if (targetScript.dataExportType == DataGathererExportType.Local
+                    || targetScript.dataExportType == DataGathererExportType.Both)
+                {
+                    // Either Only local or both
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
+                }
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("Export Triggers", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionTrigger"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportEnabled"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportTime"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_exportDuringUpdateEnabled"), true);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportEnabled"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_periodicExportTime"), true);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionTrigger"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("Exported Values", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
 
-            DrawDataBindings();
+                DrawDataBindings();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionDataBindings"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionDataBindings"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Manual Export", EditorStyles.boldLabel);
