@@ -607,6 +607,7 @@ namespace ExPresSXR.Rig
             // Apply Head Collisions
             playerHeadCollider = _playerHeadCollider;
             headCollisionEnabled = _headCollisionEnabled;
+            handModelCollisions = _handModelCollisions;
             showCollisionVignetteEffect = _showCollisionVignetteEffect;
         }
 

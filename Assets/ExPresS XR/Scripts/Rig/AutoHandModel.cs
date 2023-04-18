@@ -50,30 +50,32 @@ namespace ExPresSXR.Rig
             {
                 _modelCollisionsEnabled = value;
                 // Update collisions (Setting to true enables it automatically)
-                collisionsEnabled = true;
+                collisionsCurrentlyEnabled = true;
+
+                Debug.Log($"ModelEnabled: {_modelCollisionsEnabled} x collisionsCurrent: {_collisionsCurrentlyEnabled}");
             }
         }
 
 
         [Tooltip("Temporary en-/disables collisions if _modelCollisionsEnabled is true. Will be controlled by the HandController. To disable collisions completely use _modelCollisionsEnabled instead.")]
-        private bool _collisionsEnabled;
-        public bool collisionsEnabled
+        private bool _collisionsCurrentlyEnabled;
+        public bool collisionsCurrentlyEnabled
         {
-            get => _collisionsEnabled;
+            get => _collisionsCurrentlyEnabled;
             set
             {
-                _collisionsEnabled = value;
+                _collisionsCurrentlyEnabled = value;
 
-                // // Disable RigidBody
+                // Disable RigidBody
                 if (GetComponent<Rigidbody>() != null)
                 {
-                    GetComponent<Rigidbody>().detectCollisions = _collisionsEnabled && _modelCollisionsEnabled;
+                    GetComponent<Rigidbody>().detectCollisions = _collisionsCurrentlyEnabled && _modelCollisionsEnabled;
                 }
 
                 // Disable Colliders
                 foreach (Collider collider in gameObject.GetComponentsInChildren<Collider>())
                 {
-                    collider.enabled = _collisionsEnabled && _modelCollisionsEnabled;
+                    collider.enabled = _collisionsCurrentlyEnabled && _modelCollisionsEnabled;
                 }
             }
         }

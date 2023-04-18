@@ -81,7 +81,7 @@ public class HandControllerManagerEditor : Editor
         EditorGUILayout.Space();
 
         EditorGUI.indentLevel++;
-            EditorGUILayout.HelpBox("Careful! These might be controlled by it's parent XR Rig.", MessageType.Info);
+            EditorGUILayout.HelpBox("Be Careful! These might be controlled by it's parent XR Rig.", MessageType.Info);
         EditorGUI.indentLevel--;
     }
 
@@ -108,6 +108,12 @@ public class HandControllerManagerEditor : Editor
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelMode"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelCollisions"), true);
+        if (targetScript.handModelCollisions)
+        {
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_afterGrabWaitDuration"), true);
+            EditorGUI.indentLevel--;
+        }
         EditorGUI.indentLevel--;
     }
 

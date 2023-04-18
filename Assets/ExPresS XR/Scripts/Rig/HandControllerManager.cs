@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 
 namespace ExPresSXR.Rig
@@ -128,7 +125,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        
+
         [SerializeField]
         private bool _pokeInteractionEnabled;
         public bool pokeInteractionEnabled
@@ -246,29 +243,60 @@ namespace ExPresSXR.Rig
 
                 if (TryGetAutoHand(out AutoHandModel autoHand))
                 {
-                    autoHand.collisionsEnabled = _handModelCollisions;
+                    autoHand.modelCollisionsEnabled = _handModelCollisions;
                 }
             }
         }
+
+        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
+        [SerializeField]
+        private float _afterGrabWaitDuration = 0.3f;
+        public float afterGrabWaitDuration
+        {
+            get => _afterGrabWaitDuration;
+            set => _afterGrabWaitDuration = value;
+        }
+
+
+        private Coroutine _afterGrabCoroutine;
+
+        protected override void OnEnable() {
+            base.OnEnable();
+
+            if (m_DirectInteractor != null)
+            {
+                m_DirectInteractor.selectExited.AddListener(StartAfterGrabNoHandCollisions);
+                m_DirectInteractor.selectEntered.AddListener(StopAfterGrabNoHandCollisions);
+            }
+
+            // Reticles (AutoHandModels) need to be instantiated so they are available in the next frame
+            StartCoroutine(AutoHandReticleCreationTimer());
+        }
+
+
+        protected override void OnDisable() {
+            base.OnDisable();
+
+            if (m_DirectInteractor != null)
+            {
+                m_DirectInteractor.selectExited.RemoveListener(StartAfterGrabNoHandCollisions);
+                m_DirectInteractor.selectEntered.RemoveListener(StopAfterGrabNoHandCollisions);
+            }
+        }
+
 
         protected override void OnStartTeleport(InputAction.CallbackContext context)
         {
             base.OnStartTeleport(context);
 
-            if (TryGetAutoHand(out AutoHandModel autoHand))
-            {
-                autoHand.collisionsEnabled = false;
-            }
+            SetAutoHandCollisionsCurrentlyEnabled(false);
         }
 
         protected override void OnCancelTeleport(InputAction.CallbackContext context)
         {
             base.OnCancelTeleport(context);
 
-            if (TryGetAutoHand(out AutoHandModel autoHand))
-            {
-                autoHand.collisionsEnabled = true;
-            }
+            SetAutoHandCollisionsCurrentlyEnabled(true);
         }
 
 
@@ -280,6 +308,14 @@ namespace ExPresSXR.Rig
                 return controller.model.TryGetComponent(out autoHand);
             }
             return false;
+        }
+
+        private void SetAutoHandCollisionsCurrentlyEnabled(bool enabled)
+        {
+            if (TryGetAutoHand(out AutoHandModel autoHand))
+            {
+                autoHand.collisionsCurrentlyEnabled = enabled;
+            }
         }
 
 
@@ -313,7 +349,47 @@ namespace ExPresSXR.Rig
             }
         }
 
-        private void OnValidate() {
+
+        private void StartAfterGrabNoHandCollisions(SelectExitEventArgs _)
+        {
+            _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
+        }
+
+
+        private void StopAfterGrabNoHandCollisions(SelectEnterEventArgs _)
+        {
+            if (_afterGrabCoroutine != null)
+            {
+                StopCoroutine(_afterGrabCoroutine);
+            }
+            _afterGrabCoroutine = null;
+        }
+
+
+        private IEnumerator AutoHandReticleCreationTimer()
+        {
+            yield return new WaitForEndOfFrame();
+            handModelMode = _handModelMode;
+            handModelCollisions = _handModelCollisions;
+        } 
+
+
+        private IEnumerator AfterGrabWaitTimer()
+        {
+            // Disable Collisions
+            SetAutoHandCollisionsCurrentlyEnabled(false);
+
+            yield return new WaitForSeconds(_afterGrabWaitDuration);
+
+            // Enable auto hand Collisions
+            SetAutoHandCollisionsCurrentlyEnabled(handModelCollisions);
+            
+            _afterGrabCoroutine = null;
+        }
+
+
+        private void OnValidate()
+        {
             teleportationEnabled = _teleportationEnabled;
             teleportCancelEnabled = _teleportCancelEnabled;
             chooseTeleportForwardEnabled = _chooseTeleportForwardEnabled;
@@ -326,7 +402,9 @@ namespace ExPresSXR.Rig
             rayAnchorControlEnabled = _rayAnchorControlEnabled;
             uiRayInteractionEnabled = _uiRayInteractionEnabled;
             uiPokeInteractionEnabled = _uiPokeInteractionEnabled;
-            
+            handModelMode = _handModelMode;
+            handModelCollisions = _handModelCollisions;
+
             NotifyOverwrittenBehavior();
         }
     }

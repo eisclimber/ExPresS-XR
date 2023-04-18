@@ -175,7 +175,7 @@ namespace ExPresSXR.Rig
             StartCoroutine(OnAfterInteractionEvents());
         }
 
-        protected void OnEnable()
+        protected virtual void OnEnable()
         {
             if (m_TeleportInteractor != null)
                 m_TeleportInteractor.gameObject.SetActive(false);
@@ -183,12 +183,12 @@ namespace ExPresSXR.Rig
             SetupInteractorEvents();
         }
 
-        protected void OnDisable()
+        protected virtual void OnDisable()
         {
             TeardownInteractorEvents();
         }
 
-        protected void Start()
+        protected virtual void Start()
         {
             // Ensure the enabled state of locomotion and turn actions are properly set up.
             // Called in Start so it is done after the InputActionManager enables all input actions earlier in OnEnable.
