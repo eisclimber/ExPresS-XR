@@ -7,10 +7,14 @@ namespace ExPresSXR.Misc
     {
         public Vector3 rotation;
         public float speed;
+        public bool paused;
 
         private void Update()
         {
-            transform.Rotate(speed * Time.deltaTime * rotation);
+            if (!paused)
+            {
+                transform.Rotate(speed * Time.deltaTime * rotation);
+            }
         }
     }
 }

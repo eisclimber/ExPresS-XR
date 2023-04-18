@@ -66,7 +66,7 @@ namespace ExPresSXR.Interaction
         {
             // Calling this in OnEnable (instead of Awake) will also reset the putBackObject when rebuilding
             putBackPrefab = _putBackPrefab;
-            socketActive = (_putBackObjectInstance != null);
+            socketActive = _putBackObjectInstance != null;
             SetHighlighterVisible(_putBackObjectInstance == null);
         }
 
