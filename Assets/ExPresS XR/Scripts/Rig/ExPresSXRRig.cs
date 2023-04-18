@@ -488,11 +488,11 @@ namespace ExPresSXR.Rig
         public void ApplyCurrentMovementPreset()
         {
             if (_inputMethod != InputMethod.Controller
-                && !(_movementPreset == MovementPreset.Teleport
-                        || movementPreset == MovementPreset.None
-                        || movementPreset == MovementPreset.Custom))
+                && _movementPreset != MovementPreset.Teleport
+                && _movementPreset != MovementPreset.None
+                && _movementPreset != MovementPreset.Custom)
             {
-                Debug.LogWarning("InputPresets other than 'None', 'Teleport', 'Custom' will be ignored with InputMethod set to 'Controller'.");
+                Debug.LogWarning("InputPresets other than 'None', 'Teleport', 'Custom' will be ignored with InputMethod not set to 'Controller'.");
             }
 
             if (_movementPreset == MovementPreset.Custom)

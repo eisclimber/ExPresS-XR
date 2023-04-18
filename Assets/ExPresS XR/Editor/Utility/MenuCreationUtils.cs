@@ -350,6 +350,12 @@ namespace ExPresSXR.Editor
             InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display - Object");
         }
 
+        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Object Small")]
+        static void CreateExhibitionDisplayObjectSmall(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display - Object Small");
+        }
+
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Image")]
         static void CreateExhibitionDisplayImage(MenuCommand menuCommand)

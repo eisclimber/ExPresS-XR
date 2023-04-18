@@ -114,12 +114,21 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawHeadGazeOptions()
         {
+            EditorGUILayout.HelpBox("Be aware that for the movement to work properly the Editor must be focussed"
+                    + " and the mouse should be placed inside the GamePreview-Area.", MessageType.Warning);
+
+
             EditorGUILayout.LabelField("Head Gaze Movement", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
                 EditorGUI.BeginChangeCheck();
 
                 bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", targetScript.movementPreset == MovementPreset.Teleport);
                 
+                if (useTeleport && targetScript.movementPreset == MovementPreset.Teleport)
+                {
+                    EditorGUILayout.HelpBox("If you want to add reticles for Head Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
+                }
+
                 // Set value sparingly... just because:)
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -142,6 +151,11 @@ namespace ExPresSXR.Editor
                 EditorGUI.BeginChangeCheck();
 
                 bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", targetScript.movementPreset == MovementPreset.Teleport);
+
+                if (useTeleport && targetScript.movementPreset == MovementPreset.Teleport)
+                {
+                    EditorGUILayout.HelpBox("If you want to add reticles for Eye Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
+                }
                 
                 // Set value sparingly... just because:)
                 if (EditorGUI.EndChangeCheck())

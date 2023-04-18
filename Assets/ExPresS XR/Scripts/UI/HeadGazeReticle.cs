@@ -28,7 +28,7 @@ namespace ExPresSXR.UI
         }
 
 
-        private void Awake()
+        private void Start()
         {
             if (_animator == null)
             {
@@ -37,7 +37,7 @@ namespace ExPresSXR.UI
             }
             
             // Hide Reticle initially
-            if (_animator != null)
+            if (_animator != null && _animator.isActiveAndEnabled)
             {
                 _animator.SetTrigger("TrHide");
             }
@@ -45,7 +45,7 @@ namespace ExPresSXR.UI
 
         public void ShowHint()
         {
-            if (_animator != null)
+            if (_animator != null && _animator.isActiveAndEnabled)
             {
                 _animator.SetTrigger("TrShow");
             }
@@ -53,7 +53,7 @@ namespace ExPresSXR.UI
 
         public void HideHint()
         {
-            if (_animator != null)
+            if (_animator != null && _animator.isActiveAndEnabled)
             {
                 _animator.SetTrigger("TrHide");
             }
