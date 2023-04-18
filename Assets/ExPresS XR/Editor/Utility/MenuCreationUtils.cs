@@ -91,10 +91,10 @@ namespace ExPresSXR.Editor
 
 
         // Interaction
-        [MenuItem("GameObject/ExPresS XR/Interaction/Offset Interactable")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Dynamic Attach Interactable")]
         public static void CreateXROffsetInteractable(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Offset Interactable");
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Dynamic Attach Interactable");
         }
 
         [MenuItem("GameObject/ExPresS XR/Interaction/Highlightable Socket Interactor")]
