@@ -93,6 +93,16 @@ public class HandControllerManagerEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeInteractionEnabled"), true);
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiPokeInteractionEnabled"), true);
+
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_showPokeReticle"), true);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Prevents warnings for enabling GameObjects during OnValidate()
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.EditorRevalidate();
+                }
+
             EditorGUI.indentLevel--;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractionEnabled"), true);
             EditorGUI.indentLevel++;

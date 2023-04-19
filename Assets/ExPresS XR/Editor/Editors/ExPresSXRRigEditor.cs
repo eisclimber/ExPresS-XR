@@ -100,7 +100,14 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.LabelField("Interaction", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
+                EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_interactionOptions"), true);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Prevents warnings for enabling GameObjects during OnValidate()
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.EditorRevalidate();
+                }
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();

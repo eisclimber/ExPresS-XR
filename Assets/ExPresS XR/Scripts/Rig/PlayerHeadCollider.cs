@@ -13,7 +13,6 @@ namespace ExPresSXR.Rig
 {
     public class PlayerHeadCollider : MonoBehaviour
     {
-        private const float FLOOR_DISTANCE_THRESHOLD = 0.02f;
         private const float GRAVITY_STRENGTH = 9.81f;
 
 
@@ -41,15 +40,17 @@ namespace ExPresSXR.Rig
 
         [Tooltip("Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.")]
         [SerializeField]
-        private float _colliderSize = .25f;
+        private float _colliderSize = 0.25f;
 
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
-        private float _maxFadeDuration = .5f;
+        private float _maxFadeDuration = 0.5f;
         public float maxFadeDuration { 
             get => _maxFadeDuration; 
             set => _maxFadeDuration = value;
         }
+
+        [Space]
 
 
         [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
@@ -162,11 +163,12 @@ namespace ExPresSXR.Rig
                 _colliding = false;
                 OnCollisionEnded.Invoke();
             }
-            if (_playerController != null && collisionPushbackEnabled)
-            {
-                // Apply gravity nonetheless
-                _playerController.Move(momentaryGravity);
-            }
+
+            // if (_playerController != null && collisionPushbackEnabled)
+            // {
+            //     // Apply gravity nonetheless
+            //     _playerController.Move(momentaryGravity);
+            // }
         }
 
 

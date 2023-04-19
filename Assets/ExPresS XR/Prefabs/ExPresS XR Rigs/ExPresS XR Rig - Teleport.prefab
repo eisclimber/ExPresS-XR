@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8686929983432395570}
   m_Layer: 0
   m_Name: HUD Camera
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 2592477439981529219}
   m_Layer: 2
   m_Name: Locomotion System
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 2592477440013209822}
   m_Layer: 0
   m_Name: Poke Point
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -576,7 +576,7 @@ GameObject:
   - component: {fileID: 2592477440222919781}
   m_Layer: 6
   m_Name: Head Gaze Reticle
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -647,7 +647,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!95 &2592477440222919780
 Animator:
   serializedVersion: 5
@@ -696,7 +696,7 @@ GameObject:
   - component: {fileID: 2592477440276587225}
   m_Layer: 0
   m_Name: Direct Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 2592477440387170940}
   m_Layer: 5
   m_Name: Screen Collision Indicator
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -921,7 +921,7 @@ GameObject:
   - component: {fileID: 2592477440390884820}
   m_Layer: 0
   m_Name: Teleport Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2097,7 +2097,7 @@ GameObject:
   - component: {fileID: 2592477440457939612}
   m_Layer: 0
   m_Name: Poke Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2194,7 +2194,7 @@ GameObject:
   - component: {fileID: 2592477440591605325}
   m_Layer: 0
   m_Name: Ray Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2598,7 +2598,7 @@ GameObject:
   - component: {fileID: 2592477440702074859}
   m_Layer: 5
   m_Name: Fade Rect
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2698,7 +2698,7 @@ GameObject:
   - component: {fileID: 2592477440711851463}
   m_Layer: 0
   m_Name: Left Hand
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2757,8 +2757,10 @@ MonoBehaviour:
   _rayAnchorControlEnabled: 1
   _uiRayInteractionEnabled: 1
   _uiPokeInteractionEnabled: 1
+  _showPokeReticle: 1
   _handModelMode: 0
-  _handModelCollisions: 0
+  _handModelCollisions: 1
+  _afterGrabWaitDuration: 0.3
 --- !u!114 &2592477440711851461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2998,7 +3000,7 @@ GameObject:
   - component: {fileID: 2592477440717482793}
   m_Layer: 0
   m_Name: Camera Offset
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3038,7 +3040,7 @@ GameObject:
   - component: {fileID: 2592477440812698451}
   m_Layer: 0
   m_Name: Input Management
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3152,7 +3154,7 @@ GameObject:
   - component: {fileID: 2592477441006625848}
   m_Layer: 6
   m_Name: Fill Bar
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3308,7 +3310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 0
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   screenCollisionIndicator: {fileID: 2592477440387170941}
   _pushbackAnchor: {fileID: 2592477441852168241}
   _colliderSize: 0.25
@@ -3476,7 +3478,7 @@ GameObject:
   - component: {fileID: 2592477441058781471}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3559,7 +3561,7 @@ GameObject:
   - component: {fileID: 2592477441099483705}
   m_Layer: 6
   m_Name: Crosshair
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3637,7 +3639,7 @@ GameObject:
   - component: {fileID: 2592477441149000278}
   m_Layer: 0
   m_Name: Ray Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4043,7 +4045,7 @@ GameObject:
   - component: {fileID: 2592477441306375483}
   m_Layer: 0
   m_Name: Teleport Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4626,7 +4628,7 @@ GameObject:
   - component: {fileID: 2592477441312352177}
   m_Layer: 0
   m_Name: Right Hand
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4685,8 +4687,10 @@ MonoBehaviour:
   _rayAnchorControlEnabled: 1
   _uiRayInteractionEnabled: 1
   _uiPokeInteractionEnabled: 1
+  _showPokeReticle: 1
   _handModelMode: 0
-  _handModelCollisions: 0
+  _handModelCollisions: 1
+  _afterGrabWaitDuration: 0.3
 --- !u!114 &2592477441312352191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4929,7 +4933,7 @@ GameObject:
   - component: {fileID: 2592477441316508537}
   m_Layer: 0
   m_Name: Poke Point
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5013,7 +5017,7 @@ GameObject:
   - component: {fileID: 2592477441321066179}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5096,7 +5100,7 @@ GameObject:
   - component: {fileID: 2592477441539684630}
   m_Layer: 6
   m_Name: Background
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5171,7 +5175,7 @@ GameObject:
   - component: {fileID: 2592477441842078914}
   m_Layer: 0
   m_Name: Poke Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5267,7 +5271,7 @@ GameObject:
   - component: {fileID: 2592477441852168244}
   m_Layer: 2
   m_Name: ExPresS XR Rig - Teleport
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5322,7 +5326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputMethod: 1
   _movementPreset: 1
-  _interactionOptions: 127
+  _interactionOptions: 383
   _headGazeCanReselect: 0
   _headGazeTimeToSelect: 0
   _headGazeReticle: {fileID: 2592477440222919781}
@@ -5331,7 +5335,7 @@ MonoBehaviour:
   _eyeGazeController: {fileID: 2592477442081325209}
   _headGazeController: {fileID: 2592477440410697685}
   _headCollisionEnabled: 0
-  _showCollisionVignetteEffect: 0
+  _showCollisionVignetteEffect: 1
   _locomotionSystem: {fileID: 2592477439981529220}
   _fadeRect: {fileID: 2592477440702074859}
   _playerHeadCollider: {fileID: 2592477441055133030}
@@ -5342,7 +5346,7 @@ MonoBehaviour:
   _teleportInvalidReticle: {fileID: 1622911015057595677, guid: c511ef5396547e74cad38f81dc96d2e0, type: 3}
   _gameTabDisplayMode: 0
   _handModelMode: 1
-  _handModelCollisions: 0
+  _handModelCollisions: 1
 --- !u!143 &2592477441852168244
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5374,7 +5378,7 @@ GameObject:
   - component: {fileID: 2592477442010060274}
   m_Layer: 0
   m_Name: Direct Interactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5506,7 +5510,7 @@ GameObject:
   - component: {fileID: 2592477442081325211}
   m_Layer: 0
   m_Name: Eye Gaze
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

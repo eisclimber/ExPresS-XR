@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -213,6 +214,27 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Turns all mesh renderers in children of the PokeInteractor on or off.")]
+        [SerializeField]
+        private bool _showPokeReticle;
+        public bool showPokeReticle
+        {
+            get => _showPokeReticle;
+            set
+            {
+                _showPokeReticle = value;
+
+                if (m_PokeInteractor != null)
+                {
+                    foreach (Renderer renderer in m_PokeInteractor.GetComponentsInChildren<Renderer>(true))
+                    {
+                        renderer.enabled = _showPokeReticle;
+                    }
+                }
+            }
+        }
+
+
         ////////
 
         [SerializeField]
@@ -259,6 +281,7 @@ namespace ExPresSXR.Rig
 
 
         private Coroutine _afterGrabCoroutine;
+
 
         protected override void OnEnable() {
             base.OnEnable();
@@ -406,6 +429,11 @@ namespace ExPresSXR.Rig
             handModelCollisions = _handModelCollisions;
 
             NotifyOverwrittenBehavior();
+        }
+
+        public void EditorRevalidate()
+        {
+            showPokeReticle = _showPokeReticle;
         }
     }
 }

@@ -584,6 +584,9 @@ namespace ExPresSXR.Rig
                 _leftHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
                 _leftHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
                 _leftHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
+
+                // Do not Update showPokeReticle => Updated in EditorRevalidate()
+                // _leftHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
             }
 
             if (_rightHandController != null)
@@ -596,6 +599,9 @@ namespace ExPresSXR.Rig
                 _rightHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
                 _rightHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
                 _rightHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
+                
+                // Do not Update showPokeReticle => Updated in EditorRevalidate()
+                // _rightHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
             }
         }
 
@@ -622,6 +628,17 @@ namespace ExPresSXR.Rig
             // Setup Hud
             hud = _hud;
             hudCamera = _hudCamera;
+
+            // Update showPokeReticle here as it enables/disables a Component
+            if (_leftHandController != null)
+            {
+                _leftHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
+            }
+
+            if (_rightHandController != null)
+            {
+                _rightHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
+            }
         }
     }
 
@@ -658,7 +675,8 @@ namespace ExPresSXR.Rig
         RayAnchorControl = 16,
         UiRay = 32,
         ChooseTeleportForward = 64,
-        CancelTeleportPossible = 128
+        CancelTeleportPossible = 128,
+        ShowPokeReticle = 256
     }
 
     public enum GameTabDisplayMode
