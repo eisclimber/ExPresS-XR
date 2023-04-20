@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace ExPresSXR.Rig {
-    
+namespace ExPresSXR.Rig 
+{
     [RequireComponent(typeof(Animator))]
     public class SingleHandGripAnimator : MonoBehaviour
     {

@@ -12,6 +12,7 @@ namespace ExPresSXR.Rig
     public class ExPresSXRRig : MonoBehaviour
     {
         // Input and Movement
+        [Tooltip("How the rig is controlled, either per controller, via Head Gaze or Eye Gaze.")]
         [SerializeField]
         private InputMethod _inputMethod = InputMethod.Controller;
         public InputMethod inputMethod
@@ -48,7 +49,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        [Tooltip("Presets of how the player can move through space.")]
         [SerializeField]
         private MovementPreset _movementPreset = MovementPreset.Teleport;
         public MovementPreset movementPreset
@@ -62,7 +63,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        [Tooltip("Flags for enabling different interaction options with controllers.")]
         [SerializeField]
         private InteractionOptions _interactionOptions;
         public InteractionOptions interactionOptions
@@ -96,7 +97,7 @@ namespace ExPresSXR.Rig
         }
 
 
-        [Tooltip("Duration after which HeadGaze reselects an hovered interaction if enabled.")]
+        [Tooltip("Determines how long in seconds the head must be kept focussed on an interaction for it to be (re-)selected.")]
         [SerializeField]
         private float _headGazeTimeToSelect;
         public float headGazeTimeToSelect
@@ -114,7 +115,7 @@ namespace ExPresSXR.Rig
         }
 
 
-        [Tooltip("Reference to the HeadGazeReticle of the ExPresS XR Rig.")]
+        [Tooltip("Reference to the HeadGazeReticle that is displayed as interaction indicator and crosshair for Head Gaze.")]
         [SerializeField]
         private HeadGazeReticle _headGazeReticle;
         public HeadGazeReticle headGazeReticle
@@ -134,7 +135,7 @@ namespace ExPresSXR.Rig
 
 
         // XR Controllers
-        [Tooltip("Reference to the *left* HandController of the ExPresS XR Rig.")]
+        [Tooltip("Reference to the *left* HandControllerManager of the ExPresS XR Rig.")]
         [SerializeField]
         private HandControllerManager _leftHandController;
         public HandControllerManager leftHandController
@@ -149,7 +150,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("Reference to the *right* HandController of the ExPresS XR Rig.")]
+        [Tooltip("Reference to the *right* HandControllerManager of the ExPresS XR Rig.")]
         [SerializeField]
         private HandControllerManager _rightHandController;
         public HandControllerManager rightHandController
@@ -196,7 +197,7 @@ namespace ExPresSXR.Rig
 
 
         // Head Collisions
-        [Tooltip("Prevents the players Camera from clipping through Objects and looking inside them.")]
+        [Tooltip("Prevents the players Camera from clipping through Objects and looking inside them by actively puhing the player back.")]
         [SerializeField]
         private bool _headCollisionEnabled;
         public bool headCollisionEnabled
@@ -213,7 +214,8 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them.")]
+        [Tooltip("Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them."
+                    + " Does not require headCollisionEnabled to be enabled to work")]
         [SerializeField]
         private bool _showCollisionVignetteEffect;
         public bool showCollisionVignetteEffect
@@ -432,7 +434,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("Determines how the controllers/hands are rendered in the VR.")]
+        [Tooltip("Enables or disables physical collisions of the controllers/hands with other objects in the VR.")]
         [SerializeField]
         private bool _handModelCollisions = true;
         public bool handModelCollisions
@@ -456,7 +458,7 @@ namespace ExPresSXR.Rig
 
 
         // Start is called before the first frame update
-        void Awake()
+        private void Awake()
         {
             List<XRDisplaySubsystem> displaySubsystems = new();
             SubsystemManager.GetInstances(displaySubsystems);
