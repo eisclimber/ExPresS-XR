@@ -15,10 +15,11 @@ namespace ExPresSXR.UI
         private float _hintDuration = 0.5f;
         public float hintDuration
         {
-            get { return _hintDuration; }
+            get => _hintDuration;
             set
             {
                 _hintDuration = value;
+
                 if (_animator != null)
                 {
                     _animator.speed = _showHintAnimationDuration / _hintDuration;
@@ -27,15 +28,16 @@ namespace ExPresSXR.UI
         }
 
 
-        private void Awake()
+        private void Start()
         {
             if (_animator == null)
             {
                 _animator = GetComponent<Animator>();
                 hintDuration = _hintDuration;
             }
+            
             // Hide Reticle initially
-            if (_animator != null)
+            if (_animator != null && _animator.isActiveAndEnabled)
             {
                 _animator.SetTrigger("TrHide");
             }
@@ -43,7 +45,7 @@ namespace ExPresSXR.UI
 
         public void ShowHint()
         {
-            if (_animator != null)
+            if (_animator != null && _animator.isActiveAndEnabled)
             {
                 _animator.SetTrigger("TrShow");
             }
@@ -51,7 +53,7 @@ namespace ExPresSXR.UI
 
         public void HideHint()
         {
-            if (_animator != null)
+            if (_animator != null && _animator.isActiveAndEnabled)
             {
                 _animator.SetTrigger("TrHide");
             }

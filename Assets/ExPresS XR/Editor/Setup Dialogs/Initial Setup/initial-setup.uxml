@@ -1,17 +1,23 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Template name="step-1-device-type" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-1-device-type.uxml?fileID=9197481963319205126&amp;guid=e7d22a966f5788c419fc5b038cedb471&amp;type=3#step-1-device-type" />
-    <ui:Template name="step-2-controls-presets" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-2-controls-presets.uxml?fileID=9197481963319205126&amp;guid=456cd1c5b5c29e644916c224a49dc89b&amp;type=3#step-2-controls-presets" />
-    <ui:Template name="step-3-launch" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-3-launch.uxml?fileID=9197481963319205126&amp;guid=03527709fe029fc44a7a279edc1e81e7&amp;type=3#step-3-launch" />
+    <ui:Template name="step-1-intro" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-1-intro.uxml?fileID=9197481963319205126&amp;guid=2f34fab08b338a94281715c5ad85eb44&amp;type=3#step-1-intro" />
+    <ui:Template name="step-2-input-method" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-2-input-method.uxml?fileID=9197481963319205126&amp;guid=e7d22a966f5788c419fc5b038cedb471&amp;type=3#step-2-input-method" />
+    <ui:Template name="step-2-controls-presets" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-3-controls-presets.uxml?fileID=9197481963319205126&amp;guid=456cd1c5b5c29e644916c224a49dc89b&amp;type=3#step-3-controls-presets" />
+    <ui:Template name="step-4-input-options" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-4-input-options.uxml?fileID=9197481963319205126&amp;guid=f85afa7227f537b458f1eb44e763f375&amp;type=3#step-4-input-options" />
+    <ui:Template name="step-3-launch" src="project://database/Assets/ExPresS%20XR/Editor/Setup%20Dialogs/Initial%20Setup/step-5-further-steps.uxml?fileID=9197481963319205126&amp;guid=03527709fe029fc44a7a279edc1e81e7&amp;type=3#step-5-further-steps" />
     <ui:VisualElement name="initial-setup" style="flex-direction: row; flex-grow: 1;">
         <ui:VisualElement name="steps-container" style="width: 58px; background-color: rgb(36, 36, 36); min-width: 58px; padding-top: 4px; align-items: center;">
             <ui:Button text="1" display-tooltip-when-elided="true" name="step-1" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
             <ui:Button text="2" display-tooltip-when-elided="true" name="step-2" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
             <ui:Button text="3" display-tooltip-when-elided="true" name="step-3" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="4" display-tooltip-when-elided="true" name="step-4" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
+            <ui:Button text="5" display-tooltip-when-elided="true" name="step-5" style="min-width: 50px; min-height: 50px; font-size: 20px;" />
         </ui:VisualElement>
         <ui:VisualElement name="content-container" style="flex-grow: 1; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;">
-            <ui:Instance template="step-1-device-type" name="step-1-device-type" style="display: flex; flex-grow: 1;" />
-            <ui:Instance template="step-2-controls-presets" name="step-2-controls-presets" style="display: none; flex-grow: 1;" />
-            <ui:Instance template="step-3-launch" name="step-3-launch" style="display: none; flex-grow: 1;" />
+            <ui:Instance template="step-1-intro" name="step-1-intro" style="display: flex; flex-grow: 1;" />
+            <ui:Instance template="step-2-input-method" name="step-2-input-method" style="display: none; flex-grow: 1;" />
+            <ui:Instance template="step-2-controls-presets" name="step-3-controls-presets" style="display: none; flex-grow: 1;" />
+            <ui:Instance template="step-4-input-options" name="step-4-input-options" style="flex-grow: 1; display: none;" />
+            <ui:Instance template="step-3-launch" name="step-5-further-steps" style="display: none; flex-grow: 1;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

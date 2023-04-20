@@ -1,0 +1,58 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Label text="Choose Interaction Options..." display-tooltip-when-elided="true" name="step-4-header" style="font-size: 20px; -unity-text-align: upper-center; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+    <ui:VisualElement name="step-4-controller" style="flex-grow: 1;">
+        <ui:VisualElement name="options-description" style="margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px;">
+            <ui:Label text="Here you can choose how players can interact with the objects the world. Enable the checkboxes to activate the options." display-tooltip-when-elided="true" name="description" style="flex-wrap: wrap-reverse; flex-grow: 0; white-space: normal;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="separator" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px;" />
+        <ui:VisualElement name="options-segment" style="flex-direction: row; flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px;">
+            <ui:VisualElement name="options-choices" style="flex-grow: 0; flex-shrink: 1;">
+                <ui:VisualElement name="choice-1-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px;">
+                    <ui:Button text="Direct Interaction" display-tooltip-when-elided="true" name="show-option-button-1" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left;" />
+                    <ui:Toggle name="option-toggle-1" style="display: flex; flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="separator-1" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px; margin-right: 4px;" />
+                <ui:VisualElement name="choice-2-option" style="flex-direction: row; flex-grow: 0; margin-bottom: 4px; margin-top: 4px;">
+                    <ui:Button text="Poke Interaction" display-tooltip-when-elided="true" name="show-option-button-2" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left;" />
+                    <ui:Toggle name="option-toggle-2" style="display: flex; flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-3-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 8px;">
+                    <ui:Button text="Poke UI Interaction" display-tooltip-when-elided="true" name="show-option-button-3" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 132px; -unity-text-align: middle-left;" />
+                    <ui:Toggle name="option-toggle-3" style="display: flex; flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="separator-2" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px; margin-right: 4px;" />
+                <ui:VisualElement name="choice-4-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px;">
+                    <ui:Button text="Ray Interaction" display-tooltip-when-elided="true" name="show-option-button-4" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left;" />
+                    <ui:Toggle name="option-toggle-4" style="display: flex; flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-5-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-left: 8px; margin-bottom: 4px;">
+                    <ui:Button text="Ray UI Interaction" display-tooltip-when-elided="true" name="show-option-button-5" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 132px; -unity-text-align: middle-left;" />
+                    <ui:Toggle name="option-toggle-5" style="display: flex; flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-6-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 8px;">
+                    <ui:Button text="Ray Anchor Control" display-tooltip-when-elided="true" name="show-option-button-6" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 132px; -unity-text-align: middle-left;" />
+                    <ui:Toggle name="option-toggle-6" style="display: flex; flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="separator-3" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px; margin-right: 4px;" />
+                <ui:VisualElement name="choice-7-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Change TP Forward" display-tooltip-when-elided="true" name="show-option-button-7" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left;" />
+                    <ui:Toggle name="option-toggle-7" style="display: flex; flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="separator" style="margin-left: 8px; margin-right: 8px; margin-top: 0; margin-bottom: 0; background-color: rgb(100, 100, 100); min-width: 1px;" />
+            <ui:VisualElement name="options-descriptions" style="flex-grow: 1;">
+                <ui:Label text="Grab objects like one would in real life." display-tooltip-when-elided="true" name="option-1-description" style="white-space: normal; margin-top: 6px; margin-bottom: 8px;" />
+                <ui:Label text="Poke opjects e.g. press a button with the index finger." display-tooltip-when-elided="true" name="option-2-description" style="white-space: normal; margin-top: 15px; margin-bottom: 8px;" />
+                <ui:Label text="Also poke UI elements. Requires &apos;Poke Interaction&apos; to work" display-tooltip-when-elided="true" name="option-3-description" style="white-space: normal; margin-top: 8px; margin-bottom: 6px;" />
+                <ui:Label text="Interact from a distance by pointing a virtual ray on it." display-tooltip-when-elided="true" name="option-4-description" style="white-space: normal; margin-top: 15px; margin-bottom: 8px;" />
+                <ui:Label text="Use ray with UI elements. Requires &apos;Ray Interaction&apos; to work." display-tooltip-when-elided="true" name="option-5-description" style="white-space: normal; margin-top: 6px; margin-bottom: 8px;" />
+                <ui:Label text="Use the ray to rotate, scale or move objects. Requires &apos;Ray Interaction&apos; to work." display-tooltip-when-elided="true" name="option-6-description" style="white-space: normal; margin-bottom: 8px;" />
+                <ui:Label text="Rotate the controller&apos;s joystick to change direction you are facing after teleportation. Requires &apos;Teleport&apos;-Movement to work." display-tooltip-when-elided="true" name="option-7-description" style="white-space: normal;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+            <ui:Button text="Back" display-tooltip-when-elided="true" name="movement-back-button" />
+            <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

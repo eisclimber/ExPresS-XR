@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="step-2-input-method" style="flex-grow: 1;">
+        <ui:Label text="Choose an Input Method..." display-tooltip-when-elided="true" name="step-2-header" style="flex-direction: row; flex-grow: 0; height: auto; font-size: 20px; -unity-text-align: upper-center; flex-shrink: 1; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;" />
+        <ui:VisualElement name="choices-buttons" style="width: auto; flex-grow: 0; flex-wrap: wrap; flex-direction: row; height: 100px; overflow: hidden;">
+            <ui:Button text="VR Controllers" display-tooltip-when-elided="true" name="choice-1-button" style="flex-grow: 1; flex-wrap: wrap; align-items: stretch; justify-content: flex-start; flex-basis: auto; flex-shrink: 1; width: 0.5%;" />
+            <ui:Button text="Head Gaze" display-tooltip-when-elided="true" name="choice-2-button" style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: 0.5%;" />
+            <ui:Button text="Eye Gaze" display-tooltip-when-elided="true" name="choice-3-button" style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: 0.5%;" />
+            <ui:Button text="None" display-tooltip-when-elided="true" name="choice-4-button" style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: 0.5%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="choice-descriptions" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; white-space: normal;">
+            <ui:Label text="You are planning on using a common VR Headset with controllers such as the Valve Index, HTC Vive, Oculus,... \nInteraction and Movement will be done using the device&apos;s controllers." display-tooltip-when-elided="true" name="choice-1-description" style="flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: nowrap; white-space: normal;" />
+            <ui:Label text="You are planning to deploy your software on VR Headsets without controllers. \nUsers will interact by focusing their head on an object for a short amount of time. Be aware that the controlls (especially for interaction) are limited." display-tooltip-when-elided="true" name="choice-2-description" style="flex-direction: row; justify-content: flex-end; white-space: normal; flex-grow: 1; display: none;" />
+            <ui:Label text="You are planning to deploy your software on VR Headsets with eye gaze support. \nUsers will interact by focusing their eyes on an object for a short amount of time. Be aware that the controlls (especially for interaction) are limited." display-tooltip-when-elided="true" name="choice-3-description" style="flex-direction: row; justify-content: flex-end; white-space: normal; flex-grow: 1; display: none;" />
+            <ui:Label text="You are planning to not use any locomotion in your software. \nMovement of the users within the real world will still be translated to the VR." display-tooltip-when-elided="true" name="choice-4-description" style="flex-direction: row; justify-content: flex-end; white-space: normal; flex-grow: 1; display: none;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">
+        <ui:Button text="Back" display-tooltip-when-elided="true" name="back-button" />
+        <ui:Button text="Next" display-tooltip-when-elided="true" name="movement-next-button" />
+    </ui:VisualElement>
+</ui:UXML>

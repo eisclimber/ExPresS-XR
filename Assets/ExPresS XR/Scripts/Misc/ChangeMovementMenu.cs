@@ -13,27 +13,20 @@ namespace ExPresSXR.Misc
         [SerializeField]
         private ExPresSXRRig rig;
 
-        private TMP_Dropdown controllerTypeDropdown;
-        private Toggle joystickMovementToggle;
-        private Toggle teleportationEnabledToggle;
-        private Toggle snapTurnToggle;
+        private TMP_Dropdown inputMethodDropdown;
+        private TMP_Dropdown movementPresetDropdown;
+
+        private Toggle directInteractionToggle;
+        private Toggle pokeInteractionToggle;
+        private Toggle pokeUiToggle;
+        private Toggle rayInteractionToggle;
+        private Toggle rayAnchorControlToggle;
+        private Toggle rayUiInteractionToggle;
+        private Toggle chooseTpForwardToggle;
+        private Toggle cancelTeleportToggle;
         private TMP_Dropdown handModelDropdown;
-        private TMP_Dropdown interactionHandsDropdown;
-        private TMP_Dropdown teleportationHandsDropdown;
-        private TMP_Dropdown uiInteractionHandsDropdown;
         private Toggle headCollisionEnabled;
         private Toggle headCollisionIndicator;
-        private Toggle showPlayAreaBounds;
-        private Toggle alternativePlayAreaMaterialToggle;
-
-        private readonly string[] handsOptions = { "None", "Left", "Right", "Both" };
-        private readonly HandCombinations[] handsValues = { 
-            HandCombinations.None, 
-            HandCombinations.Left, 
-            HandCombinations.Right, 
-            HandCombinations.Left | HandCombinations.Right
-        };
-
 
         private void Awake() {
             FindUIReferences();
@@ -53,83 +46,85 @@ namespace ExPresSXR.Misc
 
         private void FindUIReferences()
         {
-            controllerTypeDropdown = RuntimeUtils.RecursiveFindChild(transform, "Controller Type Dropdown").GetComponent<TMP_Dropdown>();
-            joystickMovementToggle = RuntimeUtils.RecursiveFindChild(transform, "Joystick Toggle").GetComponent<Toggle>();
-            teleportationEnabledToggle = RuntimeUtils.RecursiveFindChild(transform, "Teleportation Toggle").GetComponent<Toggle>();
-            snapTurnToggle = RuntimeUtils.RecursiveFindChild(transform, "Snap Turn Toggle").GetComponent<Toggle>();
+            inputMethodDropdown = RuntimeUtils.RecursiveFindChild(transform, "Input Method Dropdown").GetComponent<TMP_Dropdown>();
+            movementPresetDropdown = RuntimeUtils.RecursiveFindChild(transform, "Movement Method Dropdown").GetComponent<TMP_Dropdown>();
+
+            directInteractionToggle = RuntimeUtils.RecursiveFindChild(transform, "Direct Interaction Toggle").GetComponent<Toggle>();
+            pokeInteractionToggle = RuntimeUtils.RecursiveFindChild(transform, "Poke Interaction Toggle").GetComponent<Toggle>();
+            pokeUiToggle = RuntimeUtils.RecursiveFindChild(transform, "Poke UI Enabled Toggle").GetComponent<Toggle>();
+            rayInteractionToggle = RuntimeUtils.RecursiveFindChild(transform, "Ray Interaction Toggle").GetComponent<Toggle>();
+            rayAnchorControlToggle = RuntimeUtils.RecursiveFindChild(transform, "Ray Anchor Control Toggle").GetComponent<Toggle>();
+            rayUiInteractionToggle = RuntimeUtils.RecursiveFindChild(transform, "Ray UI Interaction Toggle").GetComponent<Toggle>();
+            chooseTpForwardToggle = RuntimeUtils.RecursiveFindChild(transform, "Choose TP Forward Toggle").GetComponent<Toggle>();
+            cancelTeleportToggle = RuntimeUtils.RecursiveFindChild(transform, "Cancel Teleport Toggle").GetComponent<Toggle>();
+
             handModelDropdown = RuntimeUtils.RecursiveFindChild(transform, "Hand Model Dropdown").GetComponent<TMP_Dropdown>();
-            interactionHandsDropdown = RuntimeUtils.RecursiveFindChild(transform, "Interaction Hand Dropdown").GetComponent<TMP_Dropdown>();
-            teleportationHandsDropdown = RuntimeUtils.RecursiveFindChild(transform, "Teleportation Hand Dropdown").GetComponent<TMP_Dropdown>();
-            uiInteractionHandsDropdown = RuntimeUtils.RecursiveFindChild(transform, "UI Interaction Hand Dropdown").GetComponent<TMP_Dropdown>();
+
             headCollisionEnabled = RuntimeUtils.RecursiveFindChild(transform, "Head Collision Toggle").GetComponent<Toggle>();
             headCollisionIndicator = RuntimeUtils.RecursiveFindChild(transform, "Collision Indicator Toggle").GetComponent<Toggle>();
-            showPlayAreaBounds = RuntimeUtils.RecursiveFindChild(transform, "Play Area Bounds Toggle").GetComponent<Toggle>();
-            alternativePlayAreaMaterialToggle = RuntimeUtils.RecursiveFindChild(transform, "Play Area Material Toggle").GetComponent<Toggle>();
         }
 
         private void PopulateDropdowns()
         {
-            RuntimeUtils.PopulateTMPDropDownWithEnum(controllerTypeDropdown, typeof(InputMethodType));
+            RuntimeUtils.PopulateTMPDropDownWithEnum(inputMethodDropdown, typeof(InputMethod));
+            RuntimeUtils.PopulateTMPDropDownWithEnum(movementPresetDropdown, typeof(MovementPreset));
+
             RuntimeUtils.PopulateTMPDropDownWithEnum(handModelDropdown, typeof(HandModelMode));
-            RuntimeUtils.PopulateTMPDropDownWithCustomValues(interactionHandsDropdown, handsOptions);
-            RuntimeUtils.PopulateTMPDropDownWithCustomValues(teleportationHandsDropdown, handsOptions);
-            RuntimeUtils.PopulateTMPDropDownWithCustomValues(uiInteractionHandsDropdown, handsOptions);
         }
 
 
         private void LoadRigValues()
         {
-            controllerTypeDropdown.value = (int) rig.inputMethod;
-            joystickMovementToggle.isOn = rig.joystickMovementEnabled;
-            teleportationEnabledToggle.isOn = rig.teleportationEnabled;
-            snapTurnToggle.isOn = rig.snapTurnEnabled;
+            inputMethodDropdown.value = (int) rig.inputMethod;
+            movementPresetDropdown.value = (int) rig.movementPreset;
+
+            directInteractionToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.Direct);
+            pokeInteractionToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.Poke);
+            pokeUiToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.UiPoke);
+            rayInteractionToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.Ray);
+            rayAnchorControlToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.RayAnchorControl);
+            rayUiInteractionToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.UiRay);
+            chooseTpForwardToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
+            cancelTeleportToggle.isOn = rig.interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
+
             handModelDropdown.value = (int) rig.handModelMode;
-            interactionHandsDropdown.value = HandCombinationsToDropdownInt(rig.interactHands);
-            teleportationHandsDropdown.value = HandCombinationsToDropdownInt(rig.teleportHands);
-            uiInteractionHandsDropdown.value = HandCombinationsToDropdownInt(rig.uiInteractHands);
+
             headCollisionEnabled.isOn = rig.headCollisionEnabled;
             headCollisionIndicator.isOn = rig.showCollisionVignetteEffect;
-            showPlayAreaBounds.isOn = rig.showPlayAreaBounds;
-            alternativePlayAreaMaterialToggle.isOn = rig.useCustomPlayAreaMaterial;
         }
 
 
         private void AddRigListeners()
         {
-            controllerTypeDropdown.onValueChanged.AddListener((value) => { rig.inputMethod = (InputMethodType)value; });
-            joystickMovementToggle.onValueChanged.AddListener((value) => { rig.joystickMovementEnabled = value; });
-            teleportationEnabledToggle.onValueChanged.AddListener((value) => { rig.teleportationEnabled = value; });
-            snapTurnToggle.onValueChanged.AddListener((value) => { rig.snapTurnEnabled = value; });
+            inputMethodDropdown.onValueChanged.AddListener((value) => { rig.inputMethod = (InputMethod)value; });
+            movementPresetDropdown.onValueChanged.AddListener((value) => { rig.movementPreset = (MovementPreset)value; });
+
+            directInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.Direct, value));
+            pokeInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.Poke, value));
+            pokeUiToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.UiPoke, value));
+            rayInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.Ray, value));
+            rayAnchorControlToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.RayAnchorControl, value));
+            rayUiInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.UiRay, value));
+            chooseTpForwardToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.ChooseTeleportForward, value));
+            cancelTeleportToggle.onValueChanged.AddListener((value) => EnableInteractionOption(InteractionOptions.CancelTeleportPossible, value));
+            
             handModelDropdown.onValueChanged.AddListener((value) => { rig.handModelMode = (HandModelMode)value; });
-            interactionHandsDropdown.onValueChanged.AddListener((value) => { rig.interactHands = DropdownToHandCombinations(value); });
-            teleportationHandsDropdown.onValueChanged.AddListener((value) => { rig.teleportHands = DropdownToHandCombinations(value); });
-            uiInteractionHandsDropdown.onValueChanged.AddListener((value) => { rig.uiInteractHands = DropdownToHandCombinations(value); });
+
             headCollisionEnabled.onValueChanged.AddListener((value) => { rig.headCollisionEnabled = value; });
             headCollisionIndicator.onValueChanged.AddListener((value) => { rig.showCollisionVignetteEffect = value; });
-            showPlayAreaBounds.onValueChanged.AddListener((value) => { rig.showPlayAreaBounds = value; });
-            alternativePlayAreaMaterialToggle.onValueChanged.AddListener((value) => { rig.useCustomPlayAreaMaterial = value; });
         }
 
-
-        private int HandCombinationsToDropdownInt(HandCombinations hands)
+        private void EnableInteractionOption(InteractionOptions option, bool enable)
         {
-            for (int i = 0; i < handsValues.Length; i++)
+            if (enable)
             {
-                if (hands == handsValues[i])
-                {
-                    return i;
-                }
+                rig.interactionOptions |= option;
             }
-            return handsValues.Length - 1;
-        }
-
-        private HandCombinations DropdownToHandCombinations(int idx)
-        {
-            if (idx >= 0 && idx < handsValues.Length)
+            else
             {
-                return handsValues[idx];
+                rig.interactionOptions &= ~option;
             }
-            return HandCombinations.Left | HandCombinations.Right;
+            Debug.Log(rig.interactionOptions);
         }
     }
 }

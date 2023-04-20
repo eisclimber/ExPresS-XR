@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.Video;
 using ExPresSXR.Interaction;
 using ExPresSXR.Misc;
-
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace ExPresSXR.Presentation
 {
@@ -42,9 +42,7 @@ namespace ExPresSXR.Presentation
             {
                 _spinObject = value;
 
-                ObjectSpinner spinner = _socket.GetComponent<ObjectSpinner>();
-
-                if (spinner == null)
+                if (!_socket.TryGetComponent(out ObjectSpinner spinner))
                 {
                     spinner = _socket.gameObject.AddComponent<ObjectSpinner>();
                     spinner.rotation = Vector3.up;
@@ -380,10 +378,10 @@ namespace ExPresSXR.Presentation
 
         public bool infoActive
         {
-            get => (showInfoCoroutine != null
+            get => showInfoCoroutine != null
                     || (_infoCanvas != null && _infoCanvas.gameObject.activeSelf)
                     || (_infoAudioSource != null && _infoAudioSource.isPlaying)
-                    || (_infoVideoPlayer != null && _infoVideoPlayer.isPlaying));
+                    || (_infoVideoPlayer != null && _infoVideoPlayer.isPlaying);
         }
 
         private Coroutine showInfoCoroutine;
@@ -415,6 +413,23 @@ namespace ExPresSXR.Presentation
 
             GenerateRenderTexture();
         }
+
+        private void OnEnable() {
+            if (_socket != null)
+            {
+                _socket.selectEntered.AddListener(UnpauseSpinnerOnSelectEnter);
+                _socket.selectExited.AddListener(PauseSpinnerOnSelectExit);
+            }
+        }
+
+        private void OnDisable() {
+            if (_socket != null)
+            {
+                _socket.selectEntered.RemoveListener(UnpauseSpinnerOnSelectEnter);
+                _socket.selectExited.RemoveListener(PauseSpinnerOnSelectExit);
+            }
+        }
+
 
         private void DisplayInfoContents(bool display)
         {
@@ -554,7 +569,7 @@ namespace ExPresSXR.Presentation
             float videoDuration = 0.0f;
             if (_infoVideoClip)
             {
-                videoDuration = (float)(_infoVideoClip.length) + AFTER_CLIP_TIMEOUT;
+                videoDuration = (float)_infoVideoClip.length + AFTER_CLIP_TIMEOUT;
             }
 
             return Mathf.Max(_showInfoDuration, audioDuration, videoDuration);
@@ -565,12 +580,25 @@ namespace ExPresSXR.Presentation
         {
             if (_infoVideoPlayer != null && _infoVideoDisplayGo != null)
             {
-                RenderTexture renderTexture = new RenderTexture(1080, 720, 16, RenderTextureFormat.ARGB32);
+                RenderTexture renderTexture = new(1080, 720, 16, RenderTextureFormat.ARGB32);
 
                 _infoVideoPlayer.targetTexture = renderTexture;
                 _infoVideoDisplayGo.texture = renderTexture;
             }
         }
+
+
+        public void SetObjectSpinnerPaused(bool paused)
+        {
+            if (_socket.TryGetComponent(out ObjectSpinner spinner))
+            {
+                spinner.paused = paused;
+            }
+        }
+
+        private void UnpauseSpinnerOnSelectEnter(SelectEnterEventArgs args) => SetObjectSpinnerPaused(false);
+
+        private void PauseSpinnerOnSelectExit(SelectExitEventArgs args) => SetObjectSpinnerPaused(true);
 
         private void OnValidate()
         {

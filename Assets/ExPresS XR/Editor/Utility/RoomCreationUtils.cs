@@ -21,8 +21,6 @@ namespace ExPresSXR.Editor
         const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall.mat";
         const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall.mat";
 
-        // Default Reticle Path
-        const string DEFAULT_TELEPORTATION_RETICLE_PATH = "Assets/ExPresS XR/Prefabs/Reticles/Teleport Reticle.prefab";
 
         // Teleportation area placement offset
         const float TELEPORTATION_AREA_Y_OFFSET = 0.001f;
@@ -232,21 +230,22 @@ namespace ExPresSXR.Editor
                 area.interactionLayers = 1 << InteractionLayerMask.NameToLayer("Teleport");
                 area.colliders.Add(areaObject.GetComponent<MeshCollider>());
 
-                // Add/Copy Reticle Teleportation Area
+                // Copy Old Teleportation Area Config
                 if (prevTeleportationArea != null && prevTeleportationArea.GetComponent<TeleportationArea>() != null)
                 {
+                    TeleportationArea prevArea = prevTeleportationArea.GetComponent<TeleportationArea>();
                     // Copy component
-                    area.customReticle = prevTeleportationArea.GetComponent<TeleportationArea>().customReticle;
+                    area.customReticle = prevArea.customReticle;
+
+                    // Copy "Match Directional Input" for teleport anchor control
+                    area.matchDirectionalInput = prevArea.matchDirectionalInput;
                 }
                 else
                 {
-                    // Add Reticle
-                    GameObject reticle = AssetDatabase.LoadAssetAtPath<GameObject>(DEFAULT_TELEPORTATION_RETICLE_PATH);
-                    if (reticle != null)
-                    {
-                        area.customReticle = reticle;
-                    }
+                    // "Match Directional Input" should be set to true per default
+                    area.matchDirectionalInput = true;
                 }
+
 
                 // Delete any previous Teleportation Area if exists under the parent
                 if (prevTeleportationArea != null)

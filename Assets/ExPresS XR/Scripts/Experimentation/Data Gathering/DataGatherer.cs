@@ -41,12 +41,13 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         // Triggers
         [SerializeField]
-        private InputActionReference[] _inputActionTrigger;
-        public InputActionReference[] inputActionTrigger
+        private bool _exportDuringUpdateEnabled;
+        public bool exportDuringUpdateEnabled
         {
-            get => _inputActionTrigger;
-            set => _inputActionTrigger = value;
+            get => _exportDuringUpdateEnabled;
+            set => _exportDuringUpdateEnabled = value;
         }
+
 
 
         [SerializeField]
@@ -76,6 +77,15 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             get => _periodicExportTime;
             set => _periodicExportTime = value;
+        }
+
+
+        [SerializeField]
+        private InputActionReference[] _inputActionTrigger;
+        public InputActionReference[] inputActionTrigger
+        {
+            get => _inputActionTrigger;
+            set => _inputActionTrigger = value;
         }
 
 
@@ -126,6 +136,15 @@ namespace ExPresSXR.Experimentation.DataGathering
 
             SetupExport();
         }
+
+
+        private void FixedUpdate() {
+            if (exportDuringUpdateEnabled)
+            {
+                ExportNewCSVLine();
+            }
+        }
+
 
         private void OnDestroy()
         {
@@ -217,8 +236,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
                 {
-                    Debug.LogWarning(string.Format("The following binding is invalid and will always be empty: {0}",
-                                                    _dataBindings[i].GetBindingDescription()));
+                    Debug.LogWarning($"The following binding is invalid and will always be empty: {_dataBindings[i].GetBindingDescription()}");
                 }
             }
         }
@@ -245,10 +263,14 @@ namespace ExPresSXR.Experimentation.DataGathering
                         localExportPath += ".csv";
                         fullPath += ".csv";
                         Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
-                             + String.Format("Appending '.csv' and creating a new file if necessary. New path is: '{0}'. ", localExportPath));
+                             + $"Appending '.csv' and creating a new file if necessary. New path is: '{localExportPath}'.");
                     }
 
+                                        // Create folder if not exists
+                    CreateDirectoryIfNotExist(fullPath);
+
                     _outputWriter = new StreamWriter(fullPath);
+
                     // If empty append csv header
                     if (new FileInfo(fullPath).Length == 0)
                     {
@@ -266,14 +288,24 @@ namespace ExPresSXR.Experimentation.DataGathering
         public string GetLocalSavePath()
         {
 #if UNITY_EDITOR
-            return Path.Combine(Application.dataPath + "/", localExportPath);
-#elif UNITY_ANDROID
-        return Path.Combine(Application.persistentDataPath + localExportPath);
-#elif UNITY_IPHONE
-        return Path.Combine(Application.persistentDataPath + "/" + localExportPath);
+        return Path.Combine(Application.dataPath, localExportPath);
 #else
-        return Path.Combine(Application.dataPath + "/" + localExportPath);
+        return Path.Combine(Application.persistentDataPath, localExportPath);
 #endif
+        }
+
+        private void CreateDirectoryIfNotExist(string filePath)
+        {
+            string dirPath = Path.GetDirectoryName(filePath);
+
+            if (dirPath == "")
+            {
+                throw new IOException($"Could not verify Directory existence for filePath {filePath}. Directory path was {dirPath}.");
+            }
+            else if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
         }
 
         private bool HasBindingsToExport() 
@@ -318,7 +350,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             if (request.result == UnityWebRequest.Result.ProtocolError
                 || request.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log(string.Format("Failed to send data to server: '{0}'.", request.error));
+                Debug.Log($"Failed to send data to server: '{request.error}'.");
             }
         }
 

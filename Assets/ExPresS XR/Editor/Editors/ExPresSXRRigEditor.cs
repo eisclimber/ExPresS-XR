@@ -27,14 +27,11 @@ namespace ExPresSXR.Editor
             DrawScript();
             DrawInputMethod();
             EditorGUILayout.Space();
-            DrawMovementType();
+            DrawInputConfigOptions();
             EditorGUILayout.Space();
             DrawHeadCollisions();
             EditorGUILayout.Space();
-            DrawPlayAreaHighlighting();
-            EditorGUILayout.Space();
             DrawDisplayMode();
-            EditorGUILayout.Space();
             EditorGUILayout.Space();
             DrawFadeButtons();
             EditorGUILayout.Space();
@@ -57,87 +54,148 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawInputMethod()
         {
-            EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Input Method", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputMethod"), true);
                 if (EditorGUI.EndChangeCheck())
                 {
                     // Prevents warnings for enabling GameObjects during OnValidate()
-                    targetScript.RevalidateInputMethod();
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.EditorRevalidate();
                 }
             EditorGUI.indentLevel--;
         }
 
-        protected virtual void DrawMovementType()
+        protected virtual void DrawInputConfigOptions()
+        {
+            if (targetScript.inputMethod == InputMethod.Controller)
+            {
+                DrawControllerOptions();
+            }
+            else if (targetScript.inputMethod == InputMethod.HeadGaze)
+            {
+                DrawHeadGazeOptions();
+            }
+            else if (targetScript.inputMethod == InputMethod.EyeGaze)
+            {
+                DrawEyeGazeOptions();
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("The Rig is setup with InputType 'None'. Change InputType to enable and configure movement.", MessageType.Info);
+            }
+        }
+
+        protected virtual void DrawControllerOptions()
         {
             EditorGUILayout.LabelField("Movement", EditorStyles.boldLabel);
-            if (targetScript.inputMethod == InputMethodType.Controller)
-            {
-                DrawMovementController();
-            }
-            else if (targetScript.inputMethod == InputMethodType.HeadGaze)
-            {
-                DrawMovementHeadGaze();
-            }
-        }
-
-        protected virtual void DrawMovementController()
-        {
             EditorGUI.indentLevel++;
-                EditorGUI.BeginDisabledGroup(targetScript.snapTurnEnabled);
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_joystickMovementEnabled"), true);
-                }
-                EditorGUI.EndDisabledGroup();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_movementPreset"), true);
 
                 EditorGUILayout.Space();
                 
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportationEnabled"), true);
-                
-                // if (targetScript.teleportationEnabled)
-                // {
-                //     EditorGUI.indentLevel++;
-                //         EditorGUILayout.PropertyField(serializedObject.FindProperty("_validTeleportationReticle"), true);
-                //         EditorGUILayout.PropertyField(serializedObject.FindProperty("_invalidTeleportationReticle"), true);
-                //     EditorGUI.indentLevel--;
-                // }
-                EditorGUI.BeginDisabledGroup(targetScript.joystickMovementEnabled);
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_snapTurnEnabled"), true);
-                }
-                EditorGUI.EndDisabledGroup();
+                DrawOptionalTeleportReticles();
             EditorGUI.indentLevel--;
 
-            EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Interaction", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_interactionOptions"), true);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Prevents warnings for enabling GameObjects during OnValidate()
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.EditorRevalidate();
+                }
+            EditorGUI.indentLevel--;
 
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Hand Model", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelMode"), true);
-
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_interactHands"), true);
-
-                EditorGUI.BeginDisabledGroup(!targetScript.teleportationEnabled);
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportHands"), true);
-                }
-                EditorGUI.EndDisabledGroup();
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiInteractHands"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelCollisions"), true);
             EditorGUI.indentLevel--;
         }
 
-        protected virtual void DrawMovementHeadGaze()
+        protected virtual void DrawHeadGazeOptions()
         {
-            EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportationEnabled"), true);
+            EditorGUILayout.HelpBox("Be aware that for the movement to work properly the Editor must be focussed"
+                    + " and the mouse should be placed inside the GamePreview-Area.", MessageType.Warning);
 
+
+            EditorGUILayout.LabelField("Head Gaze Movement", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+                EditorGUI.BeginChangeCheck();
+
+                bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", targetScript.movementPreset == MovementPreset.Teleport);
+                
+                if (useTeleport && targetScript.movementPreset == MovementPreset.Teleport)
+                {
+                    EditorGUILayout.HelpBox("If you want to add reticles for Head Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
+                }
+
+                // Set value sparingly... just because:)
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.movementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
+                    serializedObject.Update();
+                }
+                
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeTimeToSelect"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeCanReselect"), true);
             EditorGUI.indentLevel--;
+        }
+
+        protected virtual void DrawEyeGazeOptions()
+        {
+            EditorGUILayout.LabelField("Eye Gaze Movement", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+                EditorGUI.BeginChangeCheck();
+
+                bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", targetScript.movementPreset == MovementPreset.Teleport);
+
+                if (useTeleport && targetScript.movementPreset == MovementPreset.Teleport)
+                {
+                    EditorGUILayout.HelpBox("If you want to add reticles for Eye Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
+                }
+                
+                // Set value sparingly... just because:)
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.movementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
+                    serializedObject.Update();
+                }
+                
+                EditorGUILayout.Space();
+
+
+                EditorGUILayout.HelpBox("The Eye Gaze behavior can be changed in the 'Eye Gaze Interactor'-GameObject.", MessageType.Info);
+            EditorGUI.indentLevel--;
+        }
+
+
+        protected virtual void DrawOptionalTeleportReticles()
+        {
+            if (targetScript.movementPreset == MovementPreset.Teleport)
+            {
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportValidReticle"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportInvalidReticle"), true);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Prevents warnings for enabling GameObjects during OnValidate()
+                    serializedObject.ApplyModifiedProperties();
+                    targetScript.EditorRevalidate();
+                }
+            }
         }
 
         protected virtual void DrawHeadCollisions()
@@ -146,21 +204,6 @@ namespace ExPresSXR.Editor
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headCollisionEnabled"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_showCollisionVignetteEffect"), true);
-            EditorGUI.indentLevel--;
-        }
-
-        protected virtual void DrawPlayAreaHighlighting()
-        {
-            EditorGUILayout.LabelField("Play Area Highlighting", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_showPlayAreaBounds"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_useCustomPlayAreaMaterial"), true);
-                
-                if (targetScript.showPlayAreaBounds && !targetScript.useCustomPlayAreaMaterial)
-                {
-                    EditorGUILayout.HelpBox("If the VR is configured for standing position the default play area"
-                        + " won't show. Use useCustomPlayAreaMaterial to still see the play area.", MessageType.Info);
-                }
             EditorGUI.indentLevel--;
         }
 
@@ -189,17 +232,17 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawCustomRigButtons()
         {
-            if (File.Exists(CreationUtils.customXRRigPath))
-            {
-                EditorGUILayout.HelpBox("Custom ExPresS XR Rig already set. Setting a new one will"
-                    + " override the old one.", MessageType.Warning);
-            }
-
-            if (GUILayout.Button("Set As Custom ExPresS XR Rig"))
+            if (GUILayout.Button("Save as my Custom ExPresS XR Rig"))
             {
                 SaveAsCustomXRRig();
             }
-
+            
+            if (File.Exists(CreationUtils.savedXRRigPath))
+            {
+                EditorGUILayout.HelpBox("Custom ExPresS XR Rig already exists. Setting a new one will"
+                    + " override the old one.", MessageType.Warning);
+                EditorGUILayout.Space();
+            }
         }
 
         protected virtual void DrawObjectRefs()
@@ -209,19 +252,46 @@ namespace ExPresSXR.Editor
             if (_showObjectRefs)
             {
                 EditorGUI.indentLevel++;
-                    EditorGUILayout.LabelField("Handle these carefully! Thank you:)");
+                    EditorGUILayout.LabelField("Handle these with care! Thank you:)");
 
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftHandController"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightHandController"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeController"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeReticle"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputActionManager"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_locomotionSystem"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_playerHeadCollider"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_screenCollisionIndicator"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_playAreaBoundingBox"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_hud"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_fadeRect"), true);
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.LabelField("Interactors", EditorStyles.boldLabel);
+                    EditorGUI.indentLevel++;
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftHandController"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightHandController"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeController"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_eyeGazeController"), true);
+                    EditorGUI.indentLevel--;
+
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.LabelField("Systems", EditorStyles.boldLabel);
+                    EditorGUI.indentLevel++;
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_locomotionSystem"), true);
+
+                        EditorGUILayout.Space();
+
+                        EditorGUI.BeginChangeCheck();
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_hud"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_hudCamera"), true);
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            // Prevents warnings for enabling GameObjects during OnValidate()
+                            serializedObject.ApplyModifiedProperties();
+                            targetScript.EditorRevalidate();
+                        }
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_playerHeadCollider"), true);
+                    EditorGUI.indentLevel--;
+
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.LabelField("UI", EditorStyles.boldLabel);
+                    EditorGUI.indentLevel++;
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_screenCollisionIndicator"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_fadeRect"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeReticle"), true);
+                    EditorGUI.indentLevel--;
                 EditorGUI.indentLevel--;
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -234,11 +304,11 @@ namespace ExPresSXR.Editor
             if (PrefabUtility.IsAnyPrefabInstanceRoot(go))
             {
                 GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(go);
-                PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.customXRRigPath);
+                PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.savedXRRigPath);
             }
             else
             {
-                PrefabUtility.SaveAsPrefabAsset(targetScript.gameObject, CreationUtils.customXRRigPath);
+                PrefabUtility.SaveAsPrefabAsset(targetScript.gameObject, CreationUtils.savedXRRigPath);
             }
         }
 

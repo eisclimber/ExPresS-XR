@@ -102,6 +102,12 @@ namespace ExPresSXR.Rig
         {
             teleportationEnabled = _teleportationEnabled;
             preventInteractionReference.action.performed += TeleportModeReset;
+
+            if (_rayInteractor == null && !TryGetComponent(out _rayInteractor))
+                {
+                Debug.Log("Could not find a RayInteractor-Component. Provide one for HeadGaze to work!");
+            }
+
             if (_headGazeReticle != null)
             {
                 _headGazeReticle.hintDuration = _timeToSelect;
