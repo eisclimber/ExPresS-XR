@@ -51,8 +51,6 @@ namespace ExPresSXR.Rig
                 _modelCollisionsEnabled = value;
                 // Update collisions (Setting to true enables it automatically)
                 collisionsCurrentlyEnabled = true;
-
-                Debug.Log($"ModelEnabled: {_modelCollisionsEnabled} x collisionsCurrent: {_collisionsCurrentlyEnabled}");
             }
         }
 
