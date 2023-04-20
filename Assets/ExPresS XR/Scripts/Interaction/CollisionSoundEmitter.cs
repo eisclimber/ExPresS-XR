@@ -67,7 +67,7 @@ namespace ExPresSXR.Interaction
         {
             // Play only when the audioSource is set and the initial wait time is over
             // Player Collisions (i.e. Player-Tag) will be ignored
-            if (_audioSource != null && _initialWaitCoroutine == null
+            if (_audioSource != null && _audioSource.isActiveAndEnabled && _initialWaitCoroutine == null
                 && collision.collider != null && !collision.collider.CompareTag("Player"))
             {
                 _audioSource.Play();
