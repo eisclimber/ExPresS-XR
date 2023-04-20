@@ -3,6 +3,10 @@
 ExPresS XR (**Ex**perimentation and **Pres**entation for **S**cience with Open**XR**) is a toolkit for VR and XR in Unity.
 Based on the OpenXR Standard, it aims is to help automate early stages of development by providing configurable base implementations of components that are expected to be useful for scientific XR projects.  
 
+## Now using the brand new Interaction Toolkit 2.3.0
+
+ExPresS XR is now using Unity's XR Interaction Toolkit 2.3.0. This comes with an overhaul to the XR Rig, many new features such as Poke-Interactions and loads of bug fixes.  
+
 ## Getting Started & Documentation
 
 If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki and [video tutorials](https://www.youtube.com/playlist?list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_).
@@ -29,18 +33,22 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 - In-editor setup dialogs and tutorials for a quick start with your project.
 - Detailed documentation of the project components and workflow.
 - A fully configurable XR Rig.
-  - Two input modes: Controller, Head Gaze.
-  - Different combinable movement options: Teleportation, Continuous Move, ... .
+  - Three input modes: Controller, Head Gaze, Eye Gaze (untested).
+  - Different movement options: Teleportation, Continuous Move, Grab Move, ... .
+  - Customizable interaction options: Ray, Grab/Direct, Poke, UI, ... .
   - Collision and PlayArea collision detection and visual feedback.
   - Virtual animated hands allowing grabbing and pushing of objects.
   - The Controllers that are used can be displayed in game.
+  - A system for Hand Animations when grabbing.
+  - A basic implementation of Inverse Kinematics (IK). For more elaborate IK use addons like FinalIK.
 - A great expansion of Unity's interaction toolkit.
-  - Allow grabbing objects on the outside, rather than a single fixed attach point.
   - Sockets that are highlight their size and can be setup to accept certain objects.
   - A Socket that will move objects back to to socket's position when no interaction is performed.
   - Physical Buttons with toggle mode.
   - Custom Teleportation Areas and Sockets.
   - UI keyboards usable with XR.
+  - Sound-Emission uppon Collision
+  - (Deprecated -> Supported by XRGrabInteractable now) Allow grabbing objects on the outside, rather than a single fixed attach point.
 - A HUD-system, allowing full screen fades and other permanent ui elements.
 - Configurable displays to present objects and further information in VR.
   - The objects can be picked up and inspected.
