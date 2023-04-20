@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace ExPresSXR.Interaction
 {
+    /// <summary>
+    /// An alternative to the affordance system
+    /// </summary>
+    [Obsolete("HoverScaler is deprecated as the behavior is implemented in the new Affordance System.")]
     public class HoverScaler : MonoBehaviour
     {
         [SerializeField]
@@ -23,9 +28,9 @@ namespace ExPresSXR.Interaction
         
         private Vector3 initialScale;
 
-        XRBaseInteractable interactable;
+        private XRBaseInteractable interactable;
 
-        Coroutine scalingCoroutine;
+        private Coroutine scalingCoroutine;
         
 
         private void Awake() 
