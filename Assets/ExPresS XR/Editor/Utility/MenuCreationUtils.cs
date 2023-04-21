@@ -121,6 +121,12 @@ namespace ExPresSXR.Editor
             InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Object Check Socket Interactor");
         }
 
+        [MenuItem("GameObject/ExPresS XR/Interaction/Exit Game Interactable")]
+        public static void CreateXRExitGameInteractable(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Exit Game Interactable");
+        }
+
         // Buttons
         [MenuItem("GameObject/ExPresS XR/Buttons/Button Empty Text")]
         public static void CreateBaseButtonEmptyText(MenuCommand menuCommand)
