@@ -63,7 +63,9 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.LabelField("Exported Values", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeTimeStamp"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeUnixTimeStamp"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeUnityTime"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeDeltaTime"), true);
 
                 DrawDataBindings();
 
