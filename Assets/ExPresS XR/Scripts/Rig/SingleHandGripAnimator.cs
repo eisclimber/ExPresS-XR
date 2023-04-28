@@ -93,16 +93,16 @@ namespace ExPresSXR.Rig
             if (devices.Count > 0)
             {
                 currentDevice = devices[0];
-                _animator = GetComponent<Animator>();
-            }
+                TryGetComponent(out _animator);
 
-            if (_animator == null)
-            {
-                Debug.LogError("No animator found, make sure an one was added.");
-            }
-            else
-            {
-                ValidateTriggers();
+                if (_animator == null)
+                {
+                    Debug.LogError("No animator found, make sure an one was added.");
+                }
+                else
+                {
+                    ValidateTriggers();
+                }
             }
         }
 
