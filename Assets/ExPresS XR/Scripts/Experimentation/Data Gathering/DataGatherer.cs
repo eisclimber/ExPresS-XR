@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Collections;
 using System.IO;
@@ -11,7 +12,10 @@ namespace ExPresSXR.Experimentation.DataGathering
 {
     public class DataGatherer : MonoBehaviour
     {
-        const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
+        public const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
+        public const string UNIX_TIME_COLUMN_NAME = "unix_time";
+        public const string UNITY_TIME_COLUMN_NAME = "unity_time";
+        public const string DELTA_TIME_COLUMN_NAME = "delta_time";
 
         [SerializeField]
         private DataGathererExportType _dataExportType;
@@ -27,7 +31,13 @@ namespace ExPresSXR.Experimentation.DataGathering
         public string localExportPath
         {
             get => _localExportPath;
-            set => _localExportPath = value;
+            set
+            {
+                _localExportPath = value;
+
+                // Update FileWriter when the path changes during runtime
+                SetupExport();
+            }
         }
 
         [SerializeField]
@@ -48,6 +58,14 @@ namespace ExPresSXR.Experimentation.DataGathering
             set => _exportDuringUpdateEnabled = value;
         }
 
+
+        [SerializeField]
+        private InputActionReference[] _inputActionTrigger;
+        public InputActionReference[] inputActionTrigger
+        {
+            get => _inputActionTrigger;
+            set => _inputActionTrigger = value;
+        }
 
 
         [SerializeField]
@@ -80,22 +98,30 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
+        // Data
         [SerializeField]
-        private InputActionReference[] _inputActionTrigger;
-        public InputActionReference[] inputActionTrigger
+        private bool _includeUnixTimeStamp = true;
+        public bool includeUnixTimeStamp
         {
-            get => _inputActionTrigger;
-            set => _inputActionTrigger = value;
+            get => _includeUnixTimeStamp;
+            set => _includeUnixTimeStamp = value;
         }
 
 
-        // Data
         [SerializeField]
-        private bool _includeTimeStamp = true;
-        public bool includeTimeStamp
+        private bool _includeUnityTime = true;
+        public bool includeUnityTime
         {
-            get => _includeTimeStamp;
-            set => _includeTimeStamp = value;
+            get => _includeUnityTime;
+            set => _includeUnityTime = value;
+        }
+
+        [SerializeField]
+        private bool _includeDeltaTime = true;
+        public bool includeDeltaTime
+        {
+            get => _includeDeltaTime;
+            set => _includeDeltaTime = value;
         }
 
 
@@ -137,14 +163,12 @@ namespace ExPresSXR.Experimentation.DataGathering
             SetupExport();
         }
 
-
         private void FixedUpdate() {
             if (exportDuringUpdateEnabled)
             {
                 ExportNewCSVLine();
             }
         }
-
 
         private void OnDestroy()
         {
@@ -164,18 +188,28 @@ namespace ExPresSXR.Experimentation.DataGathering
                 // Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
                 StartCoroutine(PostHttpData(httpExportPath, data));
             }
+
             if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
             {
-                // Debug.Log(String.Format("Saving '{0}' at '{1}'.",  data,  GetLocalSavePath());
+                // Debug.Log($"Saving '{data}' at '{GetLocalSavePath()}'.");
                 _outputWriter.WriteLine(data);
             }
         }
 
 
-                public string GetExportCSVHeader()
+        public string GetExportCSVHeader()
         {
-            string header = _includeTimeStamp ? "time" : "";
-            header += _includeTimeStamp && HasBindingsToExport() ? "," : "";
+            string[] prependedHeaders = {
+                _includeUnixTimeStamp ? UNIX_TIME_COLUMN_NAME : "",
+                _includeUnityTime ? UNITY_TIME_COLUMN_NAME : "",
+                _includeDeltaTime ? DELTA_TIME_COLUMN_NAME : ""
+            };
+
+            // Join all non-empty prepended headers together with commas in-between
+            string header = string.Join(",", prependedHeaders.Where(s => !string.IsNullOrEmpty(s)));
+            // Add another comma at the end if columns were added and there are more bindings to export
+            header += (header != "" && HasBindingsToExport()) ? "," : "";
+
             // Get Data Bindings headers
             for (int i = 0; i < _dataBindings.Length; i++)
             {
@@ -203,9 +237,17 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         public string GetExportCSVLine()
         {
-            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            string line = _includeTimeStamp ? currentTime.ToString() : "";
-            line += _includeTimeStamp && HasBindingsToExport() ? "," : "";
+            string[] prependedValues = {
+                _includeUnixTimeStamp ? DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "",
+                _includeUnityTime ? Time.time.ToString() : "",
+                _includeDeltaTime ? Time.deltaTime.ToString() : ""
+            };
+
+            // Join all non-empty prepended values together with commas in-between
+            string line = string.Join(",", prependedValues.Where(s => !string.IsNullOrEmpty(s)));
+            // Add another comma at the end if values were added and there are more bindings to export
+            line += (line != "" && HasBindingsToExport()) ? "," : "";
+
             // Read Data Bindings
             for (int i = 0; i < _dataBindings.Length; i++)
             {
@@ -236,7 +278,8 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
                 {
-                    Debug.LogWarning($"The following binding is invalid and will always be empty: {_dataBindings[i].GetBindingDescription()}");
+                    Debug.LogWarning("The following binding is invalid and will always be empty: "
+                        + $"{_dataBindings[i].GetBindingDescription()}");
                 }
             }
         }
@@ -263,10 +306,10 @@ namespace ExPresSXR.Experimentation.DataGathering
                         localExportPath += ".csv";
                         fullPath += ".csv";
                         Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
-                             + $"Appending '.csv' and creating a new file if necessary. New path is: '{localExportPath}'.");
+                             + $"Appending '.csv' and creating a new file if necessary. New path is: '{localExportPath}'. ");
                     }
 
-                                        // Create folder if not exists
+                    // Create folder if not exists
                     CreateDirectoryIfNotExist(fullPath);
 
                     _outputWriter = new StreamWriter(fullPath);
@@ -308,8 +351,9 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        private bool HasBindingsToExport() 
-            => (_dataBindings != null && _dataBindings.Length > 0) 
+
+        private bool HasBindingsToExport()
+            => (_dataBindings != null && _dataBindings.Length > 0)
                 || (_inputActionDataBindings != null && _inputActionDataBindings.Length > 0);
 
         private void TryStartPeriodicCoroutine()
@@ -350,7 +394,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             if (request.result == UnityWebRequest.Result.ProtocolError
                 || request.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log($"Failed to send data to server: '{request.error}'.");
+                Debug.Log(string.Format("Failed to send data to server: '{0}'.", request.error));
             }
         }
 
