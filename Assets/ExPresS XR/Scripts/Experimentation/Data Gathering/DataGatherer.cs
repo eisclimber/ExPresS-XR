@@ -31,7 +31,13 @@ namespace ExPresSXR.Experimentation.DataGathering
         public string localExportPath
         {
             get => _localExportPath;
-            set => _localExportPath = value;
+            set
+            {
+                _localExportPath = value;
+
+                // Update FileWriter when the path changes during runtime
+                SetupExport();
+            }
         }
 
         [SerializeField]
