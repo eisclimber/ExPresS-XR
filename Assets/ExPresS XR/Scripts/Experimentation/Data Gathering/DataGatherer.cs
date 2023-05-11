@@ -13,6 +13,7 @@ namespace ExPresSXR.Experimentation.DataGathering
     public class DataGatherer : MonoBehaviour
     {
         public const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
+        public const char DEFAULT_COLUMN_SEPARATOR = ';';
         public const string UNIX_TIME_COLUMN_NAME = "unix_time";
         public const string UNITY_TIME_COLUMN_NAME = "unity_time";
         public const string DELTA_TIME_COLUMN_NAME = "delta_time";
@@ -23,6 +24,15 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             get => _dataExportType;
             set => _dataExportType = value;
+        }
+
+
+        [SerializeField]
+        private char _columnSeparator = DEFAULT_COLUMN_SEPARATOR;
+        public char columnSeparator
+        {
+            get => _columnSeparator;
+            set => _columnSeparator = value;
         }
 
 
@@ -206,9 +216,9 @@ namespace ExPresSXR.Experimentation.DataGathering
             };
 
             // Join all non-empty prepended headers together with commas in-between
-            string header = string.Join(",", prependedHeaders.Where(s => !string.IsNullOrEmpty(s)));
+            string header = string.Join(_columnSeparator, prependedHeaders.Where(s => !string.IsNullOrEmpty(s)));
             // Add another comma at the end if columns were added and there are more bindings to export
-            header += (header != "" && HasBindingsToExport()) ? "," : "";
+            header += (header != "" && HasBindingsToExport()) ? _columnSeparator : "";
 
             // Get Data Bindings headers
             for (int i = 0; i < _dataBindings.Length; i++)
@@ -217,7 +227,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 if (i < _dataBindings.Length - 1 || _inputActionDataBindings.Length > 0)
                 {
-                    header += ",";
+                    header += _columnSeparator;
                 }
             }
 
@@ -228,7 +238,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 if (i < _dataBindings.Length - 1)
                 {
-                    header += ",";
+                    header += _columnSeparator;
                 }
             }
             return header;
@@ -244,9 +254,9 @@ namespace ExPresSXR.Experimentation.DataGathering
             };
 
             // Join all non-empty prepended values together with commas in-between
-            string line = string.Join(",", prependedValues.Where(s => !string.IsNullOrEmpty(s)));
+            string line = string.Join(_columnSeparator, prependedValues.Where(s => !string.IsNullOrEmpty(s)));
             // Add another comma at the end if values were added and there are more bindings to export
-            line += (line != "" && HasBindingsToExport()) ? "," : "";
+            line += (line != "" && HasBindingsToExport()) ? _columnSeparator : "";
 
             // Read Data Bindings
             for (int i = 0; i < _dataBindings.Length; i++)
@@ -255,7 +265,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 if (i < _dataBindings.Length - 1 || _inputActionDataBindings.Length > 0)
                 {
-                    line += ",";
+                    line += _columnSeparator;
                 }
             }
             // Read Input Action Data Bindings
@@ -265,7 +275,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 if (i < _dataBindings.Length - 1)
                 {
-                    line += ",";
+                    line += _columnSeparator;
                 }
             }
 

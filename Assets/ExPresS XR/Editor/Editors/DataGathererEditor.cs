@@ -29,6 +29,15 @@ namespace ExPresSXR.Editor
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataExportType"), true);
 
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_columnSeparator"), true);
+
+                if (targetScript.columnSeparator != DataGatherer.DEFAULT_COLUMN_SEPARATOR)
+                {
+                    EditorGUILayout.HelpBox("Using separators different to ';' (especially ',' or '.') will interfere "
+                        + "with the printing of Vectors or float values. You will need to make sure your program will not produce such values "
+                        + "or parse the values later in an external program.", MessageType.Warning);
+                }
+
                 if (targetScript.dataExportType == DataGathererExportType.Http
                     || targetScript.dataExportType == DataGathererExportType.Both)
                 {
