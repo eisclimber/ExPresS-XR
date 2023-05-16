@@ -353,27 +353,27 @@ namespace ExPresSXR.Editor
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Object")]
         static void CreateExhibitionDisplayObject(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display - Object");
+            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Object");
         }
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Object Small")]
         static void CreateExhibitionDisplayObjectSmall(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display - Object Small");
+            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Object Small");
         }
 
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Image")]
         static void CreateExhibitionDisplayImage(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display - Image");
+            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Image");
         }
 
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Empty")]
         static void CreateExhibitionDisplayEmpty(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition/Exhibition Display - Empty");
+            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Empty");
         }
 
         // Mirror

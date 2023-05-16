@@ -17,17 +17,9 @@ namespace ExPresSXR.Interaction
             get => _inputDisabled;
             set
             {
-                if (value && !_inputDisabled)
-                {
-                    OnInputEnabled.Invoke();
-                }
-                else if (!value && _inputDisabled)
-                {
-                    OnInputDisabled.Invoke();
-                }
-
-
                 _inputDisabled = value;
+
+                InternalEmitInputDisabledEvents();
             }
         }
 
@@ -96,12 +88,21 @@ namespace ExPresSXR.Interaction
         }
 
 
+        [Tooltip("If enabled requires interactions through an XRDirectInteractor."
+            + " If disabled other Interactors like RayInteractors can push the button too.")]
+        [SerializeField]
+        private bool _requireDirectInteraction = true;
+
+
         private bool _pressed = false;
         public bool pressed
         {
             get => _pressed;
             private set => _pressed = value;
         }
+
+        [SerializeField]
+        private AudioSource _defaultAudioPlayer;
 
 
         private float _previousHandHeight = 0.0f;
@@ -110,8 +111,6 @@ namespace ExPresSXR.Interaction
 
         // Is true when the button is in toggle mode is being toggled up
         private bool _toBeToggledDown;
-
-        private AudioSource audioPlayer;
 
         ////////
 
@@ -124,10 +123,29 @@ namespace ExPresSXR.Interaction
                 Debug.LogWarning("Button has no ColliderSize, pressing it won't work.");
             }
 
+            // Connect hover events
             hoverEntered.AddListener(StartPress);
             hoverExited.AddListener(EndPress);
 
-            // Dis-/Enable 
+            // Connect Audio
+            if (_defaultAudioPlayer == null && !TryGetComponent(out _defaultAudioPlayer) 
+                    && (releasedSound != null || pressedSound != null || toggledDownSound != null || toggledUpSound != null))
+            {
+                Debug.LogWarning("No AudioPlayer found to play sounds.");
+            }
+            else if (_defaultAudioPlayer)
+            {
+                _defaultAudioPlayer.playOnAwake = false;
+            }
+            
+            OnPressed.AddListener(PlayPressedSound);
+            OnTogglePressed.AddListener(PlayToggledDownSound);
+            OnReleased.AddListener(PlayReleasedSound);
+            OnToggleReleased.AddListener(PlayToggledUpSound);
+        }
+
+        protected virtual void Start()
+        {
             if (!_inputDisabled)
             {
                 OnInputEnabled.Invoke();
@@ -136,14 +154,6 @@ namespace ExPresSXR.Interaction
             {
                 OnInputDisabled.Invoke();
             }
-
-            // Connect Audio
-            audioPlayer = GetComponent<AudioSource>();
-            audioPlayer.playOnAwake = false;
-            OnPressed.AddListener(PlayPressedSound);
-            OnTogglePressed.AddListener(PlayToggledDownSound);
-            OnReleased.AddListener(PlayReleasedSound);
-            OnToggleReleased.AddListener(PlayToggledUpSound);
         }
 
         protected override void OnDestroy()
@@ -152,6 +162,13 @@ namespace ExPresSXR.Interaction
             hoverEntered.RemoveListener(StartPress);
             hoverExited.RemoveListener(EndPress);
         }
+
+
+        public override bool IsHoverableBy(IXRHoverInteractor interactor)
+        {
+            return !inputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor);
+        }
+
 
         private void StartPress(HoverEnterEventArgs args)
         {
@@ -291,12 +308,19 @@ namespace ExPresSXR.Interaction
         public void PlayToggledUpSound() => PlaySound(toggledUpSound);
 
 
-        private void PlaySound(AudioClip clip)
+        protected void PlaySound(AudioClip clip, AudioSource player = null)
         {
+            if (player == null)
+            {
+                player = _defaultAudioPlayer;
+            }
+
+
+
             if (clip != null)
             {
-                audioPlayer.clip = clip;
-                audioPlayer.Play();
+                player.clip = clip;
+                player.Play();
             }
         }
 
@@ -308,10 +332,28 @@ namespace ExPresSXR.Interaction
             return downPct <= PRESS_PCT;
         }
 
+        // Editor Only
+
         private void OnValidate()
         {
             // Prevents weird behavior
             colliderSize = _colliderSize;
+        }
+
+
+        /// <summary>
+        /// For internal use only. Re-emits the input disabled signals.
+        /// </summary>
+        public virtual void InternalEmitInputDisabledEvents()
+        {
+            if (_inputDisabled)
+            {
+                OnInputDisabled.Invoke();
+            }
+            else if (!_inputDisabled)
+            {
+                OnInputEnabled.Invoke();
+            }
         }
     }
 }

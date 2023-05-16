@@ -152,7 +152,7 @@ namespace ExPresSXR.Experimentation
 
         // Setup
         public void Setup(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
-                                TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer, 
+                                TMP_Text displayText, GameObject displayAnchor, VideoPlayer displayPlayer,
                                 RawImage displayVideoImage, Canvas afterQuizDialog)
         {
             // Set values
@@ -261,13 +261,9 @@ namespace ExPresSXR.Experimentation
         {
             OnQuizCompleted.Invoke();
 
-            for (int i = 0; i < _buttons.Length; i++)
-            {
-                if (_buttons[i] != null)
-                {
-                    _buttons[i].ClearAnswer();
-                }
-            }
+            ClearAnswers();
+
+            SetButtonsDisabled(true);
 
             quizUndergoing = false;
 
@@ -296,13 +292,6 @@ namespace ExPresSXR.Experimentation
                         GameObject answerGo = i < _currentQuestion.answerObjects.Length ? _currentQuestion.answerObjects[i] : null;
                         bool answerCorrect = i < _currentQuestion.correctAnswers.Length && _currentQuestion.correctAnswers[i];
 
-                        if (answerText == "" && answerGo == null && !answerCorrect)
-                        {
-                            // May occur only during differing-answers-multiple-choice-quizzes
-                            // Disable Button as it is not used or part of the answer (=> answerCorrect)
-                            _buttons[i].inputDisabled = true;
-                        }
-                        
                         // Always display (also empty) answers on the button
                         _buttons[i].DisplayAnswer(answerText, answerGo, answerCorrect);
                     }
@@ -346,30 +335,30 @@ namespace ExPresSXR.Experimentation
                 OnFeedbackCompleted();
                 return;
             }
-
-            SetButtonsDisabled(true);
+            
+            SetButtonsDisabled(true, true);
 
             bool showFeedback = _config.feedbackMode != FeedbackMode.None;
             bool showIfAvailable = _config.feedbackType == FeedbackType.DifferingTypes;
             bool showAnswerType = config.feedbackType == FeedbackType.ShowAnswers;
             bool showAnyAnswerType = showAnswerType && (config.answerType == AnswerType.DifferingTypes);
 
-            bool showTextFeedback = _displayText != null 
-                                        && showFeedback 
+            bool showTextFeedback = _displayText != null
+                                        && showFeedback
                                         && (_config.feedbackType == FeedbackType.Text
                                             || (showAnswerType && config.answerType == AnswerType.Text)
                                             || (showIfAvailable && _currentQuestion.feedbackText != null)
                                             || showAnyAnswerType);
-            bool showObjectFeedback = _displayAnchor != null 
+            bool showObjectFeedback = _displayAnchor != null
                                         && showFeedback
-                                        && ( _config.feedbackType == FeedbackType.Object
+                                        && (_config.feedbackType == FeedbackType.Object
                                             || (showAnswerType && config.answerType == AnswerType.Object)
-                                            || (showIfAvailable &&  _currentQuestion.feedbackObject != null)
+                                            || (showIfAvailable && _currentQuestion.feedbackObject != null)
                                             || showAnyAnswerType);
             bool showVideoFeedback = _displayPlayer != null
                                         && showFeedback
                                         && (_config.feedbackType == FeedbackType.Video
-                                            || (showIfAvailable &&  _currentQuestion.feedbackVideo != null));
+                                            || (showIfAvailable && _currentQuestion.feedbackVideo != null));
 
 
             SetQuizDisplayEnabled(showTextFeedback, showObjectFeedback, showVideoFeedback);
@@ -438,12 +427,13 @@ namespace ExPresSXR.Experimentation
         }
 
 
-        private void SetButtonsDisabled(bool disabled)
+        private void SetButtonsDisabled(bool disabled, bool overrideEvents = false)
         {
             foreach (QuizButton button in _buttons)
             {
                 if (button != null)
                 {
+                    button.overrideInputDisabledEvents = overrideEvents;
                     button.inputDisabled = disabled;
                 }
             }
@@ -451,6 +441,17 @@ namespace ExPresSXR.Experimentation
             if (_mcConfirmButton != null)
             {
                 _mcConfirmButton.inputDisabled = disabled;
+            }
+        }
+
+        private void ClearAnswers()
+        {
+            for (int i = 0; i < _buttons.Length; i++)
+            {
+                if (_buttons[i] != null)
+                {
+                    _buttons[i].ClearAnswer();
+                }
             }
         }
 
@@ -721,8 +722,8 @@ namespace ExPresSXR.Experimentation
             OnFeedbackCompleted();
         }
 
-        private void OnFeedbackVideoCompleted(VideoPlayer evt) =>  OnFeedbackCompleted();
-        
+        private void OnFeedbackVideoCompleted(VideoPlayer evt) => OnFeedbackCompleted();
+
         private void CloseAfterQuizMenu()
         {
             if (_afterQuizMenu != null)

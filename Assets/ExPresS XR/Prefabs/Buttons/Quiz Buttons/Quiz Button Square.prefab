@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 879532188256843321}
   - component: {fileID: 3032875347758627282}
   - component: {fileID: 8771372950462264913}
+  - component: {fileID: 2580785492563670800}
   m_Layer: 0
   m_Name: Quiz Button Square
   m_TagString: Untagged
@@ -57,6 +58,13 @@ MonoBehaviour:
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -89,6 +97,7 @@ MonoBehaviour:
       m_Calls: []
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -120,10 +129,34 @@ MonoBehaviour:
   _toggleMode: 0
   OnInputDisabled:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2407607199826124596}
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateAlternativeMaterial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnInputEnabled:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2407607199826124596}
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateOriginalMaterial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnPressed:
     m_PersistentCalls:
       m_Calls: []
@@ -133,8 +166,8 @@ MonoBehaviour:
   OnTogglePressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2407607199826124596}
-        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
+      - m_Target: {fileID: 7631762620362741998}
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.ColorSwitcher, Assembly-CSharp
         m_MethodName: ActivateAlternativeMaterial
         m_Mode: 1
         m_Arguments:
@@ -148,8 +181,8 @@ MonoBehaviour:
   OnToggleReleased:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2407607199826124596}
-        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
+      - m_Target: {fileID: 7631762620362741998}
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.ColorSwitcher, Assembly-CSharp
         m_MethodName: ActivateOriginalMaterial
         m_Mode: 1
         m_Arguments:
@@ -164,31 +197,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 879532189004701954}
-        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
-        m_MethodName: ActivateOriginalMaterial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 15272736109910073}
-        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
-        m_MethodName: ActivateOriginalMaterial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2407607199826124596}
-        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.ColorSwitcher, Assembly-CSharp
         m_MethodName: ActivateOriginalMaterial
         m_Mode: 1
         m_Arguments:
@@ -208,6 +217,8 @@ MonoBehaviour:
   _yMin: 0.019
   _yMax: 0.029
   _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
+  _requireDirectInteraction: 1
+  _defaultAudioPlayer: {fileID: 8771372950462264913}
   correctChoice: 0
   feedbackDisabled: 0
   invertedFeedback: 0
@@ -215,12 +226,15 @@ MonoBehaviour:
   _answerPrefab: {fileID: 0}
   _feedbackTextLabel: {fileID: 8171433780582446880}
   _feedbackObjectSocket: {fileID: 4128894649871341087}
-  OnPressedCorrect:
+  answeredCorrectSound: {fileID: 8300000, guid: c78e51dc01092a344b84fb6de865ac11, type: 3}
+  answeredIncorrectSound: {fileID: 8300000, guid: cb0b4b45ea34969418dae32138cc9e37, type: 3}
+  _answerFeedbackAudioPlayer: {fileID: 2580785492563670800}
+  OnAnsweredCorrect:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 15272736109910073}
-        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
-        m_MethodName: ActivateAlternativeMaterialForASecond
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateAlternativeMaterialForSwitchDuration
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -230,12 +244,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnPressedIncorrect:
+  OnAnsweredIncorrect:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 879532189004701954}
-        m_TargetAssemblyTypeName: ColorSwitcher, Assembly-CSharp
-        m_MethodName: ActivateAlternativeMaterialForASecond
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.ColorSwitcher, Assembly-CSharp
+        m_MethodName: ActivateAlternativeMaterialForSwitchDuration
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -246,6 +260,102 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!82 &8771372950462264913
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879532188256843320}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &2580785492563670800
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -466,8 +576,9 @@ GameObject:
   - component: {fileID: 879532189004701959}
   - component: {fileID: 879532189004701957}
   - component: {fileID: 879532189004701956}
-  - component: {fileID: 879532189004701954}
   - component: {fileID: 15272736109910073}
+  - component: {fileID: 879532189004701954}
+  - component: {fileID: 7631762620362741998}
   - component: {fileID: 2407607199826124596}
   m_Layer: 0
   m_Name: Push
@@ -519,7 +630,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 59486a3801b6194469aaaed068d2850f, type: 2}
+  - {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -541,20 +652,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &879532189004701954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 879532189004701958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53d5fa914a73f4a4094acc0b67945c25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alternativeMaterial: {fileID: 2100000, guid: f6f596704738d6147905929251ecfc6b, type: 2}
-  switchDuration: 1
 --- !u!114 &15272736109910073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,6 +666,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alternativeMaterial: {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
   switchDuration: 1
+  requireOriginalMaterialMatch: 0
+  requireAlternativeMaterialMatch: 0
+--- !u!114 &879532189004701954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879532189004701958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d5fa914a73f4a4094acc0b67945c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alternativeMaterial: {fileID: 2100000, guid: f6f596704738d6147905929251ecfc6b, type: 2}
+  switchDuration: 1
+  requireOriginalMaterialMatch: 0
+  requireAlternativeMaterialMatch: 0
+--- !u!114 &7631762620362741998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879532189004701958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d5fa914a73f4a4094acc0b67945c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alternativeMaterial: {fileID: 2100000, guid: 716f54f3727c27544a037b1361775152, type: 2}
+  switchDuration: 1
+  requireOriginalMaterialMatch: 0
+  requireAlternativeMaterialMatch: 0
 --- !u!114 &2407607199826124596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,8 +712,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d5fa914a73f4a4094acc0b67945c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alternativeMaterial: {fileID: 2100000, guid: fdf71cbaf6d05ec44870654f43bd77c6, type: 2}
+  alternativeMaterial: {fileID: 2100000, guid: 59486a3801b6194469aaaed068d2850f, type: 2}
   switchDuration: 1
+  requireOriginalMaterialMatch: 0
+  requireAlternativeMaterialMatch: 0
 --- !u!1 &879532189368720654
 GameObject:
   m_ObjectHideFlags: 0

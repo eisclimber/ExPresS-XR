@@ -10,9 +10,9 @@ namespace ExPresSXR.Editor
     {
         protected BaseButton baseButton;
 
-        [SerializeField]
-        protected bool _showEvents = false;
-        protected bool _showObjectRefs = false;
+        
+        protected static bool _showEvents = false;
+        protected static bool _showObjectRefs = false;
 
         protected virtual void OnEnable()
         {
@@ -56,8 +56,21 @@ namespace ExPresSXR.Editor
         {
             EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
+
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_inputDisabled"), true);
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                baseButton.InternalEmitInputDisabledEvents();
+            }
+            
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_toggleMode"), true);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_requireDirectInteraction"), true);
+
             EditorGUI.indentLevel--;
         }
 
@@ -129,6 +142,7 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("baseAnchor"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("pushAnchor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_defaultAudioPlayer"), true);
             
             EditorGUI.indentLevel--;
         }

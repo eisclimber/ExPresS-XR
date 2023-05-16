@@ -61,8 +61,28 @@ namespace ExPresSXR.Experimentation
         }
 
 
-        public UnityEvent OnPressedCorrect;
-        public UnityEvent OnPressedIncorrect;
+        // Used to not emit inputDisabled Events after an answer was given
+        private bool _overrideInputDisabledEvents;
+        public bool overrideInputDisabledEvents {
+            get => _overrideInputDisabledEvents;
+            set => _overrideInputDisabledEvents = value;
+        }
+
+        // Sounds
+        [Tooltip("Sound played when the button pressed with a correct answer.")]
+        public AudioClip answeredCorrectSound;
+
+        [Tooltip("Sound played when the button pressed with an incorrect answer.")]
+        public AudioClip answeredIncorrectSound;
+
+
+        [SerializeField]
+        private AudioSource _answerFeedbackAudioPlayer;
+
+
+        // Events
+        public UnityEvent OnAnsweredCorrect;
+        public UnityEvent OnAnsweredIncorrect;
 
 
         ///////////
@@ -91,20 +111,34 @@ namespace ExPresSXR.Experimentation
             {
                 answerText = _answerText;
             }
+
             if (answerPrefab != null)
             {
                 answerPrefab = _answerPrefab;
             }
 
+            if (_answerFeedbackAudioPlayer == null)
+            {
+                Debug.Log("No Answer Feedback Audio Player specified. No extra sound will be played when answering questions.");
+            }
+
             OnPressed.AddListener(NotifyChoice);
+            OnAnsweredCorrect.AddListener(PlayAnsweredCorrectSound);
+            OnAnsweredIncorrect.AddListener(PlayAnsweredIncorrectSound);
 
             triggerStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
         }
 
-
         public void DisplayAnswer(string answerText, GameObject answerObject, bool correctChoice)
         {
             ClearAnswer();
+
+            if (answerText == "" && answerObject == null && !correctChoice)
+            {
+                // May occur only during differing-answers-multiple-choice-quizzes
+                // Disable Button as it is not used or part of the answer (=> answerCorrect)
+                inputDisabled = true;
+            }
 
             this.answerText = answerText;
             this.answerPrefab = answerObject;
@@ -134,11 +168,11 @@ namespace ExPresSXR.Experimentation
                 // (no invertedFeedback and correct) or (inverted and not correct)
                 if (correctChoice != invertedFeedback)
                 {
-                    OnPressedCorrect.Invoke();
+                    OnAnsweredCorrect.Invoke();
                 }
                 else
                 {
-                    OnPressedIncorrect.Invoke();
+                    OnAnsweredIncorrect.Invoke();
                 }
             }
         }
@@ -152,9 +186,24 @@ namespace ExPresSXR.Experimentation
                 return false;
             }
 
-            bool correctlyToggled = (pressed == correctChoice);
+            bool correctlyToggled = pressed == correctChoice;
 
             return correctlyToggled;
+        }
+
+
+        public void PlayAnsweredCorrectSound() => PlaySound(answeredCorrectSound, _answerFeedbackAudioPlayer);
+
+        public void PlayAnsweredIncorrectSound() => PlaySound(answeredIncorrectSound, _answerFeedbackAudioPlayer);
+
+
+
+        public override void InternalEmitInputDisabledEvents()
+        {
+            if (!_overrideInputDisabledEvents)
+            {
+                base.InternalEmitInputDisabledEvents();
+            }
         }
     }
 }

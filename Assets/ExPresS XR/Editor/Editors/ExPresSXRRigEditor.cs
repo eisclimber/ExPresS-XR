@@ -12,8 +12,7 @@ namespace ExPresSXR.Editor
     {
         ExPresSXRRig targetScript;
 
-        [SerializeField]
-        private bool _showObjectRefs = false;
+        private static bool _showObjectRefs = false;
 
         void OnEnable()
         {

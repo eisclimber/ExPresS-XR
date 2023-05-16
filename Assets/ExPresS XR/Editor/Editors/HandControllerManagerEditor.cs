@@ -10,11 +10,9 @@ public class HandControllerManagerEditor : Editor
 {
     HandControllerManager targetScript;
 
-    [SerializeField]
-    private bool _showMovementOptions = false;
+    private static bool _showMovementOptions = false;
 
-    [SerializeField]
-    private bool _showObjectRefs = false;
+    private static bool _showObjectRefs = false;
 
     void OnEnable()
     {

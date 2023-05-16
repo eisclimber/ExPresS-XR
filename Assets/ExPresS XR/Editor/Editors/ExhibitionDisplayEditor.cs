@@ -11,7 +11,7 @@ namespace ExPresSXR.Editor
     {
         ExhibitionDisplay targetScript;
 
-        private bool _showObjectRefs = false;
+        private static bool _showObjectRefs = false;
 
         void OnEnable()
         {

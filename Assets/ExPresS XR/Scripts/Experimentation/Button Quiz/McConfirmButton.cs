@@ -27,11 +27,11 @@ namespace ExPresSXR.Experimentation
 
             if (allCorrect != invertedFeedback)
             {
-                OnPressedCorrect.Invoke();
+                OnAnsweredCorrect.Invoke();
             }
             else
             {
-                OnPressedIncorrect.Invoke();
+                OnAnsweredIncorrect.Invoke();
             }
         }
     }

@@ -10,9 +10,8 @@ namespace ExPresSXR.Editor
     {
         protected IKEyeBlinker blinker;
 
-        [SerializeField]
-        protected bool _showEvents = false;
-        protected bool _showObjectRefs = false;
+        protected static bool _showEvents = false;
+        protected static bool _showObjectRefs = false;
 
         protected virtual void OnEnable()
         {

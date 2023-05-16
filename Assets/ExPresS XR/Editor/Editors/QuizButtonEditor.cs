@@ -33,6 +33,25 @@ namespace ExPresSXR.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        protected override void DrawSoundsProperties()
+        {
+            EditorGUILayout.LabelField("Sounds", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("answeredCorrectSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("answeredIncorrectSound"), true);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("pressedSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("releasedSound"), true);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledDownSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledUpSound"), true);
+            EditorGUI.indentLevel--;
+        }
+
         protected void DrawFeedback()
         {
             EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
@@ -55,13 +74,24 @@ namespace ExPresSXR.Editor
         protected override void DrawEvents()
         {
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedCorrect"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPressedIncorrect"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnAnsweredCorrect"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("OnAnsweredIncorrect"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
 
             base.DrawEvents();
+        }
+
+        protected override void DrawObjectRefs()
+        {
+            base.DrawObjectRefs();
+
+            EditorGUI.indentLevel++;
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerFeedbackAudioPlayer"), true);
+            
+            EditorGUI.indentLevel--;
         }
     }
 }

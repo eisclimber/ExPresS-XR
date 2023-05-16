@@ -60,8 +60,6 @@ namespace ExPresSXR.Interaction
             socketActive = _putBackObjectInstance != null;
         }
 
-
-
         protected override void OnEnable()
         {
             // Calling this in OnEnable (instead of Awake) will also reset the putBackObject when rebuilding
