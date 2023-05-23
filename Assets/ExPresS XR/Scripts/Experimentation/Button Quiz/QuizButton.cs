@@ -63,7 +63,8 @@ namespace ExPresSXR.Experimentation
 
         // Used to not emit inputDisabled Events after an answer was given
         private bool _overrideInputDisabledEvents;
-        public bool overrideInputDisabledEvents {
+        public bool overrideInputDisabledEvents
+        {
             get => _overrideInputDisabledEvents;
             set => _overrideInputDisabledEvents = value;
         }
@@ -155,6 +156,11 @@ namespace ExPresSXR.Experimentation
             if (answerPrefab != null)
             {
                 answerPrefab = null;
+            }
+
+            if (_answerFeedbackAudioPlayer != null)
+            {
+                _answerFeedbackAudioPlayer.Stop();
             }
 
             ResetButtonPress();

@@ -375,7 +375,10 @@ namespace ExPresSXR.Rig
 
         private void StartAfterGrabNoHandCollisions(SelectExitEventArgs _)
         {
-            _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
+            if (isActiveAndEnabled)
+            {
+                _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
+            }
         }
 
 

@@ -162,7 +162,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7108650210939657143}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.1089}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 0.0015, y: 0.0015, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -172,7 +172,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.40000007, y: 0.106}
+  m_AnchoredPosition: {x: 0.40000007, y: 0.078}
   m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7108650210939657147
@@ -698,7 +698,7 @@ GameObject:
   - component: {fileID: 7108650211175002977}
   - component: {fileID: 7108650211175002979}
   - component: {fileID: 7108650211175002978}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Text Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2287,7 +2287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afd74ebe6fe0d341a28227db38bf879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: {x: 0, y: 1, z: 0}
+  rotationAxis: {x: 0, y: 1, z: 0}
   speed: 30
   paused: 0
 --- !u!1 &7108650211643966068
@@ -2373,7 +2373,7 @@ GameObject:
   - component: {fileID: 7108650211657442355}
   - component: {fileID: 7108650211657442357}
   - component: {fileID: 7108650211657442356}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2450,7 +2450,7 @@ GameObject:
   - component: {fileID: 7108650211792463304}
   - component: {fileID: 7108650211792463305}
   - component: {fileID: 7108650211792463303}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2600,7 +2600,7 @@ GameObject:
   - component: {fileID: 7108650211904850524}
   - component: {fileID: 7108650211904850523}
   - component: {fileID: 6921079255661544782}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Video Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2688,7 +2688,7 @@ GameObject:
   - component: {fileID: 7108650212178286233}
   - component: {fileID: 7108650212178286234}
   - component: {fileID: 5501246090225301401}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2912,7 +2912,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7108650212511702066}
   - component: {fileID: 7108650212511702067}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2975,6 +2975,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7108650211048694861}
     m_Modifications:
+    - target: {fileID: 7572910124195641420, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
+      propertyPath: m_Text
+      value: Info
+      objectReference: {fileID: 0}
     - target: {fileID: 7624080256522762078, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
       propertyPath: m_Name
       value: Base Button Square Text

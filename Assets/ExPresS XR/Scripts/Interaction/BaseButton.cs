@@ -205,6 +205,12 @@ namespace ExPresSXR.Interaction
             _previousHandHeight = 0.0f;
             _pressed = false;
             SetYPosition(_yMax);
+            
+            if (_defaultAudioPlayer != null)
+            {
+                _defaultAudioPlayer.Stop();
+            }
+
             OnButtonPressReset.Invoke();
         }
 

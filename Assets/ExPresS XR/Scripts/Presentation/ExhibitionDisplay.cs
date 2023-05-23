@@ -45,7 +45,7 @@ namespace ExPresSXR.Presentation
                 if (!_socket.TryGetComponent(out ObjectSpinner spinner))
                 {
                     spinner = _socket.gameObject.AddComponent<ObjectSpinner>();
-                    spinner.rotation = Vector3.up;
+                    spinner.rotationAxis = Vector3.up;
                     spinner.speed = 30;
                 }
 

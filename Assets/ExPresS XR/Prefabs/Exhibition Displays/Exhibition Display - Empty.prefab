@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8399286574643392366}
   - component: {fileID: 7472150213146230778}
   - component: {fileID: 2100597939072786383}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Video Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5652803660710218870}
   - component: {fileID: 7501642290191640501}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 7874652400820787213}
   - component: {fileID: 5524860912833173165}
   - component: {fileID: 8173516349682310443}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   - component: {fileID: 5250526869994567500}
   - component: {fileID: 5250526869994567488}
   - component: {fileID: 5250526869994567503}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Text Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 5250526870431948576}
   - component: {fileID: 5250526870431948578}
   - component: {fileID: 5250526870431948577}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -841,7 +841,7 @@ GameObject:
   - component: {fileID: 5250526870702089070}
   - component: {fileID: 5250526870702089069}
   - component: {fileID: 4876046631667824796}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Info Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1519,6 +1519,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5250526870683087828}
     m_Modifications:
+    - target: {fileID: 7572910124195641420, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
+      propertyPath: m_Text
+      value: Info
+      objectReference: {fileID: 0}
     - target: {fileID: 7624080256522762078, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
       propertyPath: m_Name
       value: Base Button Square Text
@@ -1671,7 +1675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afd74ebe6fe0d341a28227db38bf879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: {x: 0, y: 1, z: 0}
+  rotationAxis: {x: 0, y: 1, z: 0}
   speed: 30
   paused: 0
 --- !u!114 &9108806282846458619 stripped
