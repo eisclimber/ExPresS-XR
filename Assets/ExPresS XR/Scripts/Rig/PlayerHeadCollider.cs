@@ -50,6 +50,10 @@ namespace ExPresSXR.Rig
             set => _maxFadeDuration = value;
         }
 
+        [Tooltip("Physics Layers used to detect collisions.")]
+        [SerializeField]
+        private LayerMask _layerMask = 1; // Layer: Default
+
         [Space]
 
 
@@ -59,8 +63,6 @@ namespace ExPresSXR.Rig
         [Tooltip("Will be invoked once when a collision with wall ends.")]
         public UnityEvent OnCollisionEnded;
 
-
-        private LayerMask _layerMask;
         private Collider[] _objs = new Collider[10];
         private Vector3 _prevHeadPos;
         private bool _colliding;
@@ -90,7 +92,6 @@ namespace ExPresSXR.Rig
             // Prevent Collision during setup
             _cooldownCoroutine = StartCoroutine(CollisionCooldown());
 
-            _layerMask = LayerMask.NameToLayer("Everything");
             _colliding = false;
             _prevHeadPos = transform.position;
 

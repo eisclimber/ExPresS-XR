@@ -15,7 +15,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         public static Vector2 defaultWindowSize
         {
-            get => new Vector2(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+            get => new(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         }
 
         protected VisualElement contentContainer;

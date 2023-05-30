@@ -1,22 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
+using ExPresSXR.Experimentation.DataGathering;
 
 
-namespace ExPresSXR.Experimentation
+namespace ExPresSXR.Interaction.ButtonQuiz
 {
     [System.Serializable]
     public class ButtonQuizQuestion
     {
-        public const string QUESTION_CSV_HEADER_STRING = "itemIdx,questionVideo,questionObject,questionText,"
-                + "answerObject0,answerObject1,answerObject2,answerObject3,"
-                + "answerText0,answerText1,answerText2,answerText3,"
-                + "correctAnswers0,correctAnswers1,correctAnswers2,correctAnswers3,"
-                + "feedbackVideo,feedbackObject,feedbackText";
+        public const string QUESTION_CSV_HEADER_STRING = "itemIdx" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "questionVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "questionObject" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "questionText" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerObject0" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerObject1" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerObject2" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerObject3" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerText0" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerText1" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerText2" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "answerText3" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "correctAnswers0" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "correctAnswers1" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "correctAnswers2" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "correctAnswers3" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "feedbackVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "feedbackObject" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                        + "feedbackText";
 
-        // ExPresSXR.Experimentation.ButtonQuizQuestion, Assembly-CSharp
+        // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizQuestion, Assembly-CSharp
         public int itemIdx;
         public VideoClip questionVideo;
+        public string questionVideoUrl;
         public GameObject questionObject;
         public string questionText;
 
@@ -27,17 +43,19 @@ namespace ExPresSXR.Experimentation
 
 
         public VideoClip feedbackVideo;
+        public string feedbackVideoUrl;
         public GameObject feedbackObject;
         public string feedbackText;
 
 
-        public ButtonQuizQuestion(int itemIdx, VideoClip questionVideo, GameObject questionObject, string questionText,
-                            GameObject[] answerObjects, string[] answerTexts, bool[] correctAnswers,
-                            VideoClip feedbackVideo, GameObject feedbackObject, string feedbackText)
+        public ButtonQuizQuestion(int itemIdx, VideoClip questionVideo, string questionVideoUrl, GameObject questionObject,
+                            string questionText, GameObject[] answerObjects, string[] answerTexts, bool[] correctAnswers,
+                            VideoClip feedbackVideo, string feedbackVideoUrl, GameObject feedbackObject, string feedbackText)
         {
             this.itemIdx = itemIdx;
 
             this.questionVideo = questionVideo;
+            this.questionVideoUrl = questionVideoUrl;
             this.questionObject = questionObject;
             this.questionText = questionText;
 
@@ -47,6 +65,7 @@ namespace ExPresSXR.Experimentation
             this.correctAnswers = correctAnswers;
 
             this.feedbackVideo = feedbackVideo;
+            this.feedbackVideoUrl = feedbackVideoUrl;
             this.feedbackObject = feedbackObject;
             this.feedbackText = feedbackText;
         }
@@ -131,7 +150,7 @@ namespace ExPresSXR.Experimentation
             if (config.feedbackType == FeedbackType.ShowAnswers
                     && (config.answerType == AnswerType.Object || config.answerType == AnswerType.DifferingTypes))
             {
-                List<GameObject> feedbackGos = new List<GameObject>();
+                List<GameObject> feedbackGos = new();
 
                 switch (config.feedbackMode)
                 {
@@ -196,28 +215,39 @@ namespace ExPresSXR.Experimentation
             return null;
         }
 
+        // Export Values
+
+        public static string emptyCsvExportValues 
+        {
+            get => CsvUtility.EmptyCSVColumns(19);
+        }
+
 
         public string GetCsvExportValues()
         {
-            return itemIdx + "," 
-                + (questionVideo != null? questionVideo.name : "") + "," 
-                + (questionObject != null? questionObject.name : "") + ",\"" 
-                + questionText + "\","
-                + (answerObjects.Length > 0 && answerObjects[0] != null? answerObjects[0].name : "") + "," 
-                + (answerObjects.Length > 1 && answerObjects[1] != null? answerObjects[1].name : "") + "," 
-                + (answerObjects.Length > 2 && answerObjects[2] != null? answerObjects[2].name : "") + "," 
-                + (answerObjects.Length > 3 && answerObjects[3] != null? answerObjects[3].name : "") + ",\"" 
-                + (answerTexts.Length > 0? answerTexts[0] : "") + "\",\"" 
-                + (answerTexts.Length > 1? answerTexts[1] : "") + "\",\"" 
-                + (answerTexts.Length > 2? answerTexts[2] : "") + "\",\"" 
-                + (answerTexts.Length > 3? answerTexts[3] : "") + "\","
-                + (correctAnswers.Length > 0? correctAnswers[0].ToString() : "false") + "," 
-                + (correctAnswers.Length > 1? correctAnswers[1].ToString() : "false") + "," 
-                + (correctAnswers.Length > 2? correctAnswers[2].ToString() : "false") + "," 
-                + (correctAnswers.Length > 3? correctAnswers[3].ToString() : "false") + ","
-                + (feedbackVideo != null? feedbackVideo.name : "") + "," 
-                + (feedbackObject != null? feedbackObject.name : "") + "," 
-                + feedbackText;
+            return CsvUtility.JoinAsCsv(
+                new object[] {
+                    itemIdx,
+                    CsvUtility.GetVideoName(questionVideo, questionVideoUrl),
+                    questionObject != null? questionObject.name : "",
+                    "\"" + questionText + "\"",
+                    answerObjects.Length > 0 && answerObjects[0] != null? answerObjects[0].name : "",
+                    answerObjects.Length > 1 && answerObjects[1] != null? answerObjects[1].name : "",
+                    answerObjects.Length > 2 && answerObjects[2] != null? answerObjects[2].name : "",
+                    answerObjects.Length > 3 && answerObjects[3] != null? answerObjects[3].name : "",
+                    "\"" + (answerTexts.Length > 0? answerTexts[0] : "") + "\"",
+                    "\"" + (answerTexts.Length > 1? answerTexts[1] : "") + "\"",
+                    "\"" + (answerTexts.Length > 2? answerTexts[2] : "") + "\"",
+                    "\"" + (answerTexts.Length > 3? answerTexts[3] : "") + "\"",
+                    correctAnswers.Length > 0? correctAnswers[0].ToString() : "false",
+                    correctAnswers.Length > 1? correctAnswers[1].ToString() : "false",
+                    correctAnswers.Length > 2? correctAnswers[2].ToString() : "false",
+                    correctAnswers.Length > 3? correctAnswers[3].ToString() : "false",
+                    feedbackVideo != null? feedbackVideo.name : feedbackVideoUrl,
+                    feedbackObject != null? feedbackObject.name : "",
+                    feedbackText
+                }
+            );
         }
     }
 }

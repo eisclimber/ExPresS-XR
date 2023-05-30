@@ -7,7 +7,10 @@
             <uie:ObjectField label="Game Object Field:" name="game-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="padding-top: 2px; padding-bottom: 2px;" />
             <uie:ObjectField label="Video Player:" type="UnityEngine.Video.VideoPlayer, UnityEngine.VideoModule" name="video-player-field" style="padding-top: 2px; padding-bottom: 2px;" />
             <uie:ObjectField label="Video Display:" type="UnityEngine.UI.RawImage, UnityEngine.UI" name="video-image-field" style="padding-top: 2px; padding-bottom: 2px;" />
-            <uie:ObjectField label="(Opt.) After Quiz Menu:" type="UnityEngine.Canvas, UnityEngine.UIModule" name="after-quiz-menu-field" style="padding-top: 2px; padding-bottom: 2px; display: flex;" />
+            <ui:VisualElement name="quiz-menu-optional" style="flex-grow: 1; flex-direction: row; margin-top: 4px;">
+                <ui:Toggle name="after-quiz-toggle" value="true" />
+                <uie:ObjectField label="After Quiz Menu:" type="UnityEngine.Canvas, UnityEngine.UIModule" name="after-quiz-menu-field" style="padding-top: 2px; padding-bottom: 2px; display: flex; flex-grow: 1;" />
+            </ui:VisualElement>
             <ui:Button text="Create Questioning Displays" display-tooltip-when-elided="true" name="create-questioning-display-button" style="margin-top: 10px; margin-bottom: 10px; width: auto; margin-left: 20px; margin-right: 20px;" />
         </ui:VisualElement>
     </ui:VisualElement>

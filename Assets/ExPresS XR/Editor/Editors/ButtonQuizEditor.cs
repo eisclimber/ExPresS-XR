@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using ExPresSXR.Experimentation;
+using ExPresSXR.Interaction.ButtonQuiz;
 
 namespace ExPresSXR.Editor
 {
@@ -34,18 +34,18 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.LabelField("Buttons", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_buttons"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_mcConfirmButton"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("buttons"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("mcConfirmButton"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("Display Objects", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayText"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayAnchor"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayPlayer"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_displayVideoImage"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayText"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayAnchor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayPlayer"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayVideoImage"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
@@ -53,8 +53,7 @@ namespace ExPresSXR.Editor
             EditorGUILayout.LabelField("Feedback Options", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_canRestartFromAfterQuizDialog"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_afterQuizMenu"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_showResultTextPrefix"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("afterQuizMenu"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_showQuizCompletedText"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDuration"), true);
             EditorGUI.indentLevel--;

@@ -31,7 +31,7 @@ namespace ExPresSXR.Editor
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_columnSeparator"), true);
 
-                if (targetScript.columnSeparator != DataGatherer.DEFAULT_COLUMN_SEPARATOR)
+                if (targetScript.columnSeparator != CsvUtility.DEFAULT_COLUMN_SEPARATOR)
                 {
                     EditorGUILayout.HelpBox("Using separators different to ';' (especially ',' or '.') will interfere "
                         + "with the printing of Vectors or float values. You will need to make sure your program will not produce such values "

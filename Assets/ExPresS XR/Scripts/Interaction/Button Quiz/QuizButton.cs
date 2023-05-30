@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using ExPresSXR.Interaction;
 
-namespace ExPresSXR.Experimentation
+namespace ExPresSXR.Interaction.ButtonQuiz
 {
-    // ExPresSXR.Experimentation.QuizButton, Assembly-CSharp
+    // ExPresSXR.Interaction.ButtonQuiz.QuizButton, Assembly-CSharp
 
     public class QuizButton : BaseButton
     {

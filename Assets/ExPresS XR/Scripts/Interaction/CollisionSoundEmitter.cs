@@ -40,7 +40,7 @@ namespace ExPresSXR.Interaction
         [SerializeField]
         private float _initialSilenceDuration = 0.5f;
 
-        private Coroutine _initialWaitCoroutine = null;
+        protected Coroutine _silenceCoroutine = null;
 
 
 
@@ -55,11 +55,7 @@ namespace ExPresSXR.Interaction
                 Debug.LogError("No AudioSource was provided and none was found in the GameObject. No sound will be played when this object is dropped.");
             }
 
-            // Only use silent time if the trigger time is greater than zero
-            if (_initialSilenceDuration > 0.0f)
-            {
-                _initialWaitCoroutine = StartCoroutine(InitialWaitTime());
-            }
+            StartNoAudioWaitTime();
         }
 
 
@@ -67,7 +63,7 @@ namespace ExPresSXR.Interaction
         {
             // Play only when the audioSource is set and the initial wait time is over
             // Player Collisions (i.e. Player-Tag) will be ignored
-            if (_audioSource != null && _audioSource.isActiveAndEnabled && _initialWaitCoroutine == null
+            if (_audioSource != null && _audioSource.isActiveAndEnabled && _silenceCoroutine == null
                 && collision.collider != null && !collision.collider.CompareTag("Player"))
             {
                 _audioSource.Play();
@@ -77,7 +73,21 @@ namespace ExPresSXR.Interaction
         private IEnumerator InitialWaitTime()
         {
             yield return new WaitForSeconds(_initialSilenceDuration);
-            _initialWaitCoroutine = null;
+            _silenceCoroutine = null;
+        }
+
+        public void StartNoAudioWaitTime()
+        {
+            if (_silenceCoroutine != null)
+            {
+                StopCoroutine(_silenceCoroutine);
+            }
+
+            // Only use silent time if the trigger time is greater than zero
+            if (_initialSilenceDuration > 0.0f)
+            {
+                _silenceCoroutine = StartCoroutine(InitialWaitTime());
+            }
         }
     }
 }

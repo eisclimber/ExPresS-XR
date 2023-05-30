@@ -3,44 +3,46 @@
         <ui:Label text="1" display-tooltip-when-elided="true" name="number-label" style="-unity-text-align: middle-center; font-size: 24px; margin-left: 20px; margin-right: 20px;" />
         <ui:VisualElement name="question-content" style="flex-grow: 1;">
             <ui:VisualElement name="question-row">
-                <uie:ObjectField label="Question:" name="question-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 75px; display: flex;" />
-                <uie:ObjectField label="Question:" name="question-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 75px; display: none;" />
-                <ui:TextField picking-mode="Ignore" label="Question:" text="Enter Question..." name="question-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
+                <uie:ObjectField label="Question Object:" name="question-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 75px; display: flex;" />
+                <uie:ObjectField label="Question Video:" name="question-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 75px; display: none;" />
+                <ui:TextField picking-mode="Ignore" label="Question Streamed Video:" text="Enter StreamingAsset Question URL..." name="question-video-url-field" tooltip="Should be used to load videos from the &quot;StreamingAssets/&quot;-folder to increase performance with weaker VR headsets like the Quest 2. The Path should be realtive to StreamingAssets." style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
+                <ui:TextField picking-mode="Ignore" label="Question Text:" text="Enter Question..." name="question-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
             </ui:VisualElement>
-            <ui:VisualElement name="answers" style="flex-grow: 1; margin-top: 4px;">
+            <ui:VisualElement name="answers" style="flex-grow: 1; margin-top: 8px; margin-bottom: 8px;">
                 <ui:VisualElement name="answer-1" style="flex-direction: row;">
                     <ui:VisualElement name="answer-inputs" style="flex-grow: 1;">
-                        <uie:ObjectField label="Answer 1:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="height: 18px;" />
-                        <ui:TextField picking-mode="Ignore" label="Answer 1:" text="Enter Answer 1..." name="answer-text-field" style="display: none;" />
+                        <uie:ObjectField label="Answer 1 Object:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="height: 18px;" />
+                        <ui:TextField picking-mode="Ignore" label="Answer 1 Text:" text="Enter Answer 1..." name="answer-text-field" style="display: none;" />
                     </ui:VisualElement>
                     <ui:Toggle name="correct-toggle" value="false" style="margin-left: 30px; margin-right: 30px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="answer-2" style="flex-direction: row;">
                     <ui:VisualElement name="answer-inputs" style="flex-grow: 1;">
-                        <uie:ObjectField label="Answer 2:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" />
-                        <ui:TextField picking-mode="Ignore" label="Answer 2:" text="Enter Answer 2..." name="answer-text-field" style="display: none;" />
+                        <uie:ObjectField label="Answer 2 Object:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" />
+                        <ui:TextField picking-mode="Ignore" label="Answer 2 Text:" text="Enter Answer 2..." name="answer-text-field" style="display: none;" />
                     </ui:VisualElement>
                     <ui:Toggle name="correct-toggle" style="margin-left: 30px; margin-right: 30px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="answer-3" style="flex-direction: row;">
                     <ui:VisualElement name="answer-inputs" style="flex-grow: 1;">
-                        <uie:ObjectField label="Answer 3:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" />
-                        <ui:TextField picking-mode="Ignore" label="Answer 3:" text="Enter Answer 3..." name="answer-text-field" style="display: none;" />
+                        <uie:ObjectField label="Answer 3 Object:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" />
+                        <ui:TextField picking-mode="Ignore" label="Answer 3 Text:" text="Enter Answer 3..." name="answer-text-field" style="display: none;" />
                     </ui:VisualElement>
                     <ui:Toggle name="correct-toggle" style="margin-left: 30px; margin-right: 30px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="answer-4" style="flex-direction: row;">
                     <ui:VisualElement name="answer-inputs" style="flex-grow: 1;">
-                        <uie:ObjectField label="Answer 4:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" />
-                        <ui:TextField picking-mode="Ignore" label="Answer 4:" text="Enter Answer 4..." name="answer-text-field" style="display: none;" />
+                        <uie:ObjectField label="Answer 4 Object:" name="answer-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" />
+                        <ui:TextField picking-mode="Ignore" label="Answer 4 Text:" text="Enter Answer 4..." name="answer-text-field" style="display: none;" />
                     </ui:VisualElement>
                     <ui:Toggle name="correct-toggle" style="margin-left: 30px; margin-right: 30px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="feedback" style="margin-top: 4px;">
-                <uie:ObjectField label="Feedback:" name="feedback-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 75px; display: flex;" />
-                <uie:ObjectField label="Question:" name="feedback-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 75px; display: none;" />
-                <ui:TextField picking-mode="Ignore" label="Question:" text="Enter Feedback..." name="feedback-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
+                <uie:ObjectField label="Feedback Object:" name="feedback-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 75px; display: flex;" />
+                <uie:ObjectField label="Feedback Video:" name="feedback-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 75px; display: none;" />
+                <ui:TextField picking-mode="Ignore" label="Feedback Streamed Video:" text="Enter StreamingAsset Feedback URL..." name="feedback-video-url-field" tooltip="Should be used to load videos from the &quot;StreamingAssets/&quot;-folder to increase performance with weaker VR headsets like the Quest 2. The Path should be realtive to StreamingAssets." style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
+                <ui:TextField picking-mode="Ignore" label="Feedback Text:" text="Enter Feedback..." name="feedback-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

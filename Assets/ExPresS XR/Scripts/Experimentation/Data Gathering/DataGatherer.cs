@@ -13,7 +13,6 @@ namespace ExPresSXR.Experimentation.DataGathering
     public class DataGatherer : MonoBehaviour
     {
         public const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
-        public const char DEFAULT_COLUMN_SEPARATOR = ';';
         public const string UNIX_TIME_COLUMN_NAME = "unix_time";
         public const string UNITY_TIME_COLUMN_NAME = "unity_time";
         public const string DELTA_TIME_COLUMN_NAME = "delta_time";
@@ -28,7 +27,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
-        private char _columnSeparator = DEFAULT_COLUMN_SEPARATOR;
+        private char _columnSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         public char columnSeparator
         {
             get => _columnSeparator;

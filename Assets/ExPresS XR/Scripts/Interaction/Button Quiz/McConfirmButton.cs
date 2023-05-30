@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace ExPresSXR.Experimentation
+namespace ExPresSXR.Interaction.ButtonQuiz
 {
     public class McConfirmButton : QuizButton
     {
-        // ExPresSXR.Experimentation.McConfirmButton, Assembly-CSharp
+        // ExPresSXR.Interaction.ButtonQuiz.McConfirmButton, Assembly-CSharp
 
         [SerializeField]
         private QuizButton[] _answerButtons;
