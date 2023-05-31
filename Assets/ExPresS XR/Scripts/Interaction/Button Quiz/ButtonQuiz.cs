@@ -148,6 +148,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         {
             get => _displayedFeedbackText;
         }
+
         private GameObject[] _displayedFeedbackObjects;
         public GameObject[] latestFeedbackObjects
         {
@@ -667,7 +668,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public string GetAnswersPermutation() => CsvUtility.ArrayToString(_latestAnswersPermutation);
 
         /// <summary>
-        /// Returns a string representing the of the latest chosen answer
+        /// Returns a string representing the of the latest chosen answer.
         /// </summary>
         /// <returns>Either a single integer of the answer or a csv escaped array of values. </returns>
         public string GetChosenAnswersString() => _latestChosenAnswersIdxs;

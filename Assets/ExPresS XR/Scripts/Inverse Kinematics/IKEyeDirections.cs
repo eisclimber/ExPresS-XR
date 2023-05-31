@@ -11,6 +11,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
         [Tooltip("InputActionReference to the provider of the left eye's rotation. Should be a Quaternion.")]
         [SerializeField]
         private InputActionReference _leftEyeDirRef;
+        
         [Tooltip("InputActionReference to the provider of the right eye's rotation. Should be a Quaternion.")]
         [SerializeField]
         private InputActionReference _rightEyeDirRef;

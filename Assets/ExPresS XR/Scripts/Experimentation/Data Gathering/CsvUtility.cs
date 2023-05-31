@@ -25,7 +25,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         /// <summary>
-        /// Joins the strings into a CSV line.
+        /// Joins the values into a CSV line using the given separator and filtering empty values if desired.
         /// </summary>
         /// <param name="values">Values to be converted to a CSV line. </param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
@@ -41,7 +41,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
         /// <summary>
-        /// Joins the strings into a csv
+        /// Joins the values into a string representing an array using the given separator.
         /// </summary>
         /// <param name="values">Values to be converted to a CSV line. </param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
