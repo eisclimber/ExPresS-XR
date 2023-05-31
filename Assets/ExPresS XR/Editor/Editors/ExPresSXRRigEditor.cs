@@ -107,6 +107,16 @@ namespace ExPresSXR.Editor
                     serializedObject.ApplyModifiedProperties();
                     targetScript.EditorRevalidate();
                 }
+
+                // Info Box
+                if (!targetScript.interactionOptions.HasFlag(InteractionOptions.Ray) 
+                    && targetScript.interactionOptions.HasFlag(InteractionOptions.UiRay))
+                {
+                    EditorGUILayout.HelpBox("The Interaction option 'Ray' must be enabled for 'UiRay' to have an effect. " 
+                            + "If you want the ray to be visible only for UI set the 'Invalid Color Gradient' of the "
+                            + "'XR Ray Interactor Line Visual's of both RayInteractors to be fully transparent"
+                            + "and set the 'Raycast Mask' of the 'XR Ray Interactors' to only UI.", MessageType.Info);
+                }
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();

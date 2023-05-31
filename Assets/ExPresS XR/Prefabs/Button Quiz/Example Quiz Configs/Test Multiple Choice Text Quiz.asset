@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Test Multiple Choice Text Quiz
   m_EditorClassIdentifier: 
   quizMode: 1
-  questionOrdering: 1
-  answersAmount: 1
+  questionOrdering: 0
+  answersAmount: 3
+  answerOrdering: 0
   questionType: 2
   answerType: 1
   feedbackMode: 1
   feedbackType: 0
+  feedbackPrefixEnabled: 0
+  feedbackPrefixText: 'Correct Answer was:'
   questions:
   - itemIdx: 0
     questionVideo: {fileID: 0}
+    questionVideoUrl: 
     questionObject: {fileID: 0}
     questionText: Question 1
     answerObjects: []
@@ -32,10 +36,12 @@ MonoBehaviour:
     - A1.4
     correctAnswers: 01000000
     feedbackVideo: {fileID: 0}
+    feedbackVideoUrl: 
     feedbackObject: {fileID: 0}
     feedbackText: 
   - itemIdx: 1
     questionVideo: {fileID: 0}
+    questionVideoUrl: 
     questionObject: {fileID: 0}
     questionText: Question 2
     answerObjects: []
@@ -46,10 +52,12 @@ MonoBehaviour:
     - A2.4
     correctAnswers: 00010100
     feedbackVideo: {fileID: 0}
+    feedbackVideoUrl: 
     feedbackObject: {fileID: 0}
     feedbackText: 
   - itemIdx: 2
     questionVideo: {fileID: 0}
+    questionVideoUrl: 
     questionObject: {fileID: 0}
     questionText: Question 3
     answerObjects: []
@@ -60,5 +68,6 @@ MonoBehaviour:
     - X A3.4
     correctAnswers: 01010101
     feedbackVideo: {fileID: 0}
+    feedbackVideoUrl: 
     feedbackObject: {fileID: 0}
     feedbackText: 

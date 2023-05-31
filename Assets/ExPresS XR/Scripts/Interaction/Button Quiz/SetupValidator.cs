@@ -91,7 +91,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             {
                 if (quiz.buttons[i] == null)
                 {
-                    Debug.LogError("A required QuizButton-Reference was null.");
+                    Debug.LogError($"The required QuizButton-Reference with index {i} was null.");
                     return false;
                 }
 

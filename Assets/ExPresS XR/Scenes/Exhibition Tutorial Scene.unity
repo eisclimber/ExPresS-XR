@@ -227,7 +227,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26268
+  m_Name: pb_Mesh197706
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -483,6 +483,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alternativeMaterial: {fileID: 2100000, guid: f6f596704738d6147905929251ecfc6b, type: 2}
   switchDuration: 1
+  requireOriginalMaterialMatch: 0
+  requireAlternativeMaterialMatch: 0
 --- !u!1 &201350853
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1356,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26680
+  m_Name: pb_Mesh197950
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1601,7 +1603,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26860
+  m_Name: pb_Mesh198088
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1920,7 +1922,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26504
+  m_Name: pb_Mesh197850
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5087,8 +5089,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afd74ebe6fe0d341a28227db38bf879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: {x: 0, y: 1, z: 0}
+  rotationAxis: {x: 0, y: 1, z: 0}
   speed: 30
+  paused: 0
 --- !u!135 &1237712277
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5713,7 +5716,7 @@ GameObject:
   - component: {fileID: 1528477019}
   - component: {fileID: 1528477018}
   m_Layer: 0
-  m_Name: Exhibition Display - Object
+  m_Name: Exhibition Display - Glowstick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5964,6 +5967,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alternativeMaterial: {fileID: 2100000, guid: f6f596704738d6147905929251ecfc6b, type: 2}
   switchDuration: 1
+  requireOriginalMaterialMatch: 0
+  requireAlternativeMaterialMatch: 0
 --- !u!1 &1573735328
 GameObject:
   m_ObjectHideFlags: 0
@@ -6127,6 +6132,8 @@ MonoBehaviour:
   _yMin: 0.019
   _yMax: 0.029
   _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
+  _requireDirectInteraction: 1
+  _defaultAudioPlayer: {fileID: 0}
 --- !u!4 &1573735330
 Transform:
   m_ObjectHideFlags: 0
@@ -7910,7 +7917,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26366
+  m_Name: pb_Mesh197776
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8179,8 +8186,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afd74ebe6fe0d341a28227db38bf879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: {x: 0, y: 1, z: 0}
+  rotationAxis: {x: 0, y: 1, z: 0}
   speed: 30
+  paused: 0
 --- !u!135 &1898419889
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9363,6 +9371,8 @@ MonoBehaviour:
   _yMin: 0.019
   _yMax: 0.029
   _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
+  _requireDirectInteraction: 1
+  _defaultAudioPlayer: {fileID: 0}
 --- !u!4 &2008560570
 Transform:
   m_ObjectHideFlags: 0
@@ -9482,7 +9492,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26536
+  m_Name: pb_Mesh197882
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9980,7 +9990,7 @@ GameObject:
   - component: {fileID: 2135669577}
   - component: {fileID: 2135669576}
   m_Layer: 0
-  m_Name: Exhibition Display - Image
+  m_Name: Exhibition Display - Sunflower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

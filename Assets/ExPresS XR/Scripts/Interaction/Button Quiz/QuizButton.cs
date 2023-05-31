@@ -170,7 +170,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         {
             if (!feedbackDisabled && !toggleMode)
             {
-                // (no invertedFeedback and correct) or (inverted and not correct)
+                // (not invertedFeedback and correct) or (inverted and not correct)
                 if (correctChoice != invertedFeedback)
                 {
                     OnAnsweredCorrect.Invoke();

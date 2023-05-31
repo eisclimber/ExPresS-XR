@@ -43,7 +43,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
             {
                 // First empty question should be last as non-empty questions are prohibited
-                if (question.answerObjects[i] == null && string.IsNullOrEmpty(question.answerTexts[i]))
+                if (question.answerObjects.Length >= i && question.answerObjects[i] == null 
+                        && question.answerTexts.Length >= i && string.IsNullOrEmpty(question.answerTexts[i]))
                 {
                     return numAnswers;
                 }

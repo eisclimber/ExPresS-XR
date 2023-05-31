@@ -197,9 +197,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             int numAnswers = 0;
             for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
             {
-                if (answerObjects[i] != null || (answerTexts[i] != null && answerTexts[i] != ""))
+                if (i < answerObjects.Length && answerObjects[i] != null 
+                    || i < answerTexts.Length && !string.IsNullOrEmpty(answerTexts[i]))
                 {
-                    numAnswers = i + 1;
+                    numAnswers++;
                 }
             }
             return numAnswers;

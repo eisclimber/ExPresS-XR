@@ -184,7 +184,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             }
             else
             {
-                SetButtonsDisabled(false);
+                SetButtonsDisabled(true);
+                ClearVideoDisplay();
             }
 
             // Always disable AfterQuizMenu
@@ -279,6 +280,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 _quizPlaythroughNumber++;
                 Setup(_config, buttons, mcConfirmButton, displayText, displayAnchor, displayPlayer, displayVideoImage, afterQuizMenu);
                 DisplayNextQuestion();
+                OnQuizStarted.Invoke();
             }
         }
 
@@ -507,6 +509,15 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 {
                     buttons[i].ClearAnswer();
                 }
+            }
+        }
+
+
+        private void ClearVideoDisplay()
+        {
+            if (displayPlayer != null && displayPlayer.targetTexture != null)
+            {
+                displayPlayer.targetTexture.Release();
             }
         }
 
