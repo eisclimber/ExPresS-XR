@@ -9,7 +9,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     [System.Serializable]
     public class ButtonQuizQuestion
     {
-        public const string QUESTION_CSV_HEADER_STRING = "itemIdx" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+        public const string QUESTION_CSV_HEADER_STRING = "questionIdx" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
                                                         + "questionVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
                                                         + "questionObject" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
                                                         + "questionText" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING

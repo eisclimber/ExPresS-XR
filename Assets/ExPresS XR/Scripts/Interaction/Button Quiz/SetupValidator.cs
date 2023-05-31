@@ -216,13 +216,13 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         private static bool CheckQuestionFeedback(ButtonQuizConfig config, ButtonQuizQuestion question, int questionIdx)
         {
             bool feedbackOk = true;
-            if (config.feedbackType == FeedbackType.Object && question.questionObject == null)
+            if (config.feedbackType == FeedbackType.Object && question.feedbackObject == null)
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has FeedbackType 'Object' but the object was null.");
                 feedbackOk = false;
             }
 
-            if (config.feedbackType == FeedbackType.Text && string.IsNullOrEmpty(question.questionText))
+            if (config.feedbackType == FeedbackType.Text && string.IsNullOrEmpty(question.feedbackText))
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has FeedbackType 'Text' but it was null or empty.");
                 feedbackOk = false;

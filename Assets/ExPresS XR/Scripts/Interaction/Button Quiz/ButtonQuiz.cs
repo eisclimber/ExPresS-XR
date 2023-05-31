@@ -21,15 +21,17 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         public const string DEFAULT_QUIZ_COMPLETED_TEXT = "Quiz Completed";
 
-        public const string FULL_QUIZ_CSV_HEADER = "isQuizActive" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + "currentQuestionNumber" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + "currentQuestionIdx" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + "answerPressTime" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + "chosenAnswerString" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + "displayedFeedbackText" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + "displayedFeedbackObjects" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + "displayedFeedbackVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
-                                                + ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING 
+        public const string FULL_QUIZ_CSV_HEADER = "isQuizActive" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "quizPlaythroughNumber" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "currentQuestionNumber" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "currentQuestionIdx" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "answerPressTime" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "answerPermutation" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "chosenAnswerString" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "displayedFeedbackText" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "displayedFeedbackObjects" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + "displayedFeedbackVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
+                                                + ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
                                                 + ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
 
 
@@ -128,6 +130,13 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             get => _latestChosenAnswersIdxs;
         }
 
+
+        private int[] _latestAnswersPermutation = { };
+        public int[] latestAnswersPermutation
+        {
+            get => _latestAnswersPermutation;
+        }
+
         private float _latestAnswerPressTime;
         public float latestAnswerPressTime
         {
@@ -149,6 +158,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public VideoClip latestFeedbackVideo
         {
             get => _displayedFeedbackVideo;
+        }
+
+        private int _quizPlaythroughNumber = 0;
+        public int quizPlaythroughNumber
+        {
+            get => _quizPlaythroughNumber;
         }
 
 
@@ -261,6 +276,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             {
                 quizUndergoing = true;
                 _quizStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _quizPlaythroughNumber++;
+                Debug.Log(_quizPlaythroughNumber);
                 Setup(_config, buttons, mcConfirmButton, displayText, displayAnchor, displayPlayer, displayVideoImage, afterQuizMenu);
                 DisplayNextQuestion();
             }
@@ -293,13 +310,21 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
                 SetButtonsDisabled(false);
 
-                for (int i = 0; i < buttons.Length; i++)
+                _latestAnswersPermutation = QuizUtility.GetAnswerPermutation(config, _currentQuestion);
+
+                for (int i = 0; i < _latestAnswersPermutation.Length; i++)
                 {
+                    int answerIdx = _latestAnswersPermutation[i];
+
                     if (buttons[i] != null)
                     {
-                        string answerText = i < _currentQuestion.answerTexts.Length ? _currentQuestion.answerTexts[i] : "";
-                        GameObject answerGo = i < _currentQuestion.answerObjects.Length ? _currentQuestion.answerObjects[i] : null;
-                        bool answerCorrect = i < _currentQuestion.correctAnswers.Length && _currentQuestion.correctAnswers[i];
+                        bool answerTextPossible = answerIdx >= 0 && answerIdx < _currentQuestion.answerTexts.Length;
+                        bool answerObjectPossible = answerIdx >= 0 && answerIdx < _currentQuestion.answerObjects.Length;
+                        bool answerCorrectPossible = answerIdx >= 0 && answerIdx < _currentQuestion.correctAnswers.Length;
+
+                        string answerText = answerTextPossible ? _currentQuestion.answerTexts[answerIdx] : "";
+                        GameObject answerGo = answerObjectPossible ? _currentQuestion.answerObjects[answerIdx] : null;
+                        bool answerCorrect = answerCorrectPossible && _currentQuestion.correctAnswers[answerIdx];
 
                         // Always display (also empty) answers on the button
                         buttons[i].DisplayAnswer(answerText, answerGo, answerCorrect);
@@ -611,6 +636,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         // Continuous Polling
 
+        public int GetQuizPlaythroughNumber() => _quizPlaythroughNumber;
+
         public float GetQuizUnixStartTime() => quizUndergoing ? quizStartTime : -1.0f;
 
         public float GetCurrentQuizUnixTimeMillisecondsDuration() => quizUndergoing ? (quizStartTime - System.DateTimeOffset.Now.ToUnixTimeMilliseconds()) : -1.0f;
@@ -626,6 +653,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         // After Events
         public float GetAnswerPressTime() => _latestAnswerPressTime;
+
+        public string GetAnswersPermutation() => CsvUtility.ArrayToString(_latestAnswersPermutation);
 
         /// <summary>
         /// Returns a string representing the of the latest chosen answer
@@ -671,9 +700,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public string GetFullQuizCsvValues() => CsvUtility.JoinAsCsv(
             new object[] {
                 IsQuizActive(),
+                GetQuizPlaythroughNumber(),
                 GetCurrentQuestionNumber(),
                 GetCurrentQuestionIdx(),
                 GetAnswerPressTime(),
+                GetAnswersPermutation(),
                 GetChosenAnswersString(),
                 GetDisplayedFeedbackText(),
                 GetDisplayedFeedbackObjects(),

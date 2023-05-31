@@ -276,6 +276,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                 _textLabelField.value = _quizGo.displayText;
                 _gameObjectField.value = _quizGo.displayAnchor;
                 _videoPlayerField.value = _quizGo.displayPlayer;
+                _videoImageField.value = _quizGo.displayVideoImage;
 
                 _createAfterQuizMenuField.value = _quizGo.afterQuizMenu != null;
                 _afterQuizMenuField.value = _quizGo.afterQuizMenu;
@@ -342,7 +343,6 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private void FeedbackPrefixEnabledChangedCallback(ChangeEvent<bool> evt)
         {
-            Debug.Log(evt.newValue);
             _quizConfig.feedbackPrefixEnabled = evt.newValue;
             UpdateQuizConfig(_quizConfig);
         }
@@ -893,24 +893,32 @@ namespace ExPresSXR.Editor.SetupDialogs
             {
                 GameObject canvasGo = new("Questioning Display Canvas");
                 canvasGo.transform.SetParent(_quizGo.transform);
-                canvasGo.AddComponent<Canvas>();
+                Canvas canvasComp = canvasGo.AddComponent<Canvas>();
                 canvasGo.AddComponent<UnityEngine.UI.GraphicRaycaster>();
                 canvasGo.AddComponent<TrackedDeviceGraphicRaycaster>();
                 canvasGo.AddComponent<UnityEngine.UI.CanvasScaler>();
-                Canvas canvasComp = canvasGo.GetComponent<Canvas>();
+                RectTransform canvasRectTransform = canvasGo.GetComponent<RectTransform>();
+
                 canvasComp.renderMode = RenderMode.WorldSpace;
+                canvasRectTransform.sizeDelta = new(160, 100);
 
                 if (needsText)
                 {
                     GameObject textLabel = new("Questioning Display Text");
                     TextMeshProUGUI tmpText = textLabel.AddComponent<TextMeshProUGUI>();
+                    RectTransform textRectTransform = textLabel.GetComponent<RectTransform>();
 
-                    tmpText.fontSize = 16;
+                    textRectTransform.sizeDelta = new(0, 0);
+                    textRectTransform.anchorMin = new(0, 0);
+                    textRectTransform.anchorMax = new(1, 1);
+                    textRectTransform.pivot = new(0.5f, 0.5f);
+
+                    tmpText.fontSize = 7;
                     tmpText.alignment = TextAlignmentOptions.Center;
 
-                    _textLabelField.value = textLabel;
-
                     textLabel.transform.SetParent(canvasGo.transform);
+
+                    _textLabelField.value = textLabel;
                 }
 
                 if (needsVideoPlayer)
@@ -921,15 +929,14 @@ namespace ExPresSXR.Editor.SetupDialogs
                     videoPlayerComp.aspectRatio = VideoAspectRatio.FitInside;
 
                     videoPlayerGo.transform.SetParent(canvasGo.transform);
-                    
-                    _videoPlayerField.value = videoPlayerGo;
 
                     // Create & saveRender texture
                     RenderTexture renderTexture = new(1080, 720, 16, RenderTextureFormat.ARGB32);
                     renderTexture.name = "Button Quiz Render Texture - " + Mathf.Abs(renderTexture.GetInstanceID());
 
                     videoPlayerComp.targetTexture = renderTexture;
-                    
+
+                    _videoPlayerField.value = videoPlayerGo;
                 }
 
                 if (needsVideoDisplay)
@@ -939,6 +946,13 @@ namespace ExPresSXR.Editor.SetupDialogs
                     videoDisplayGo.transform.SetParent(canvasGo.transform);
                     _videoImageField.value = videoDisplayGo;
                     videoDisplayComp.texture = ((VideoPlayer)_videoPlayerField.value).targetTexture;
+
+                    RectTransform videoRectTransform = videoDisplayGo.GetComponent<RectTransform>();
+
+                    videoRectTransform.sizeDelta = new(0, 0);
+                    videoRectTransform.anchorMin = new(0, 0);
+                    videoRectTransform.anchorMax = new(1, 1);
+                    videoRectTransform.pivot = new(0.5f, 0.5f);
                 }
 
                 canvasGo.transform.localScale = new Vector3(0.02f, 0.02f, 1f);

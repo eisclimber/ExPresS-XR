@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
-
+using ExPresSXR.Experimentation.DataGathering;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
@@ -31,6 +31,47 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             }
             return array;
         }
+
+        public static int GetNumAnswersForQuestion(ButtonQuizConfig config, ButtonQuizQuestion question)
+        {
+            if (config.answersAmount != AnswersAmount.DifferingAmounts)
+            {
+                return (int)config.answersAmount + 1;
+            }
+
+            int numAnswers = 0;
+            for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
+            {
+                // First empty question should be last as non-empty questions are prohibited
+                if (question.answerObjects[i] == null && string.IsNullOrEmpty(question.answerTexts[i]))
+                {
+                    return numAnswers;
+                }
+                numAnswers++;
+            }
+            return numAnswers;
+        }
+
+
+        public static int[] GetAnswerPermutation(ButtonQuizConfig config, ButtonQuizQuestion question)
+        {
+            int length = GetNumAnswersForQuestion(config, question);
+            int[] array = GenerateIdentityArray(length);
+
+            if (config.answerOrdering == AnswerOrdering.Randomize)
+            {
+                array = Shuffle(array);
+            }
+
+            // Resize and set -1 as value for empty questions
+            System.Array.Resize(ref array, ButtonQuiz.NUM_ANSWERS);
+            for (int i = length; i < ButtonQuiz.NUM_ANSWERS; i++)
+            {
+                array[i] = -1;
+            }
+            return array;
+        }
+
 
         public static string MakeStreamingAssetsVideoPath(string filePath)
         {
