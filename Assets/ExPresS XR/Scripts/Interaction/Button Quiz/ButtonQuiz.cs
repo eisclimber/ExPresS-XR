@@ -277,7 +277,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 quizUndergoing = true;
                 _quizStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 _quizPlaythroughNumber++;
-                Debug.Log(_quizPlaythroughNumber);
                 Setup(_config, buttons, mcConfirmButton, displayText, displayAnchor, displayPlayer, displayVideoImage, afterQuizMenu);
                 DisplayNextQuestion();
             }
