@@ -47,7 +47,7 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
   - Physical Buttons with toggle mode.
   - Custom Teleportation Areas and Sockets.
   - UI keyboards usable with XR.
-  - Sound-Emission uppon Collision
+  - Sound-Emission upon Collision
   - (Deprecated -> Supported by XRGrabInteractable now) Allow grabbing objects on the outside, rather than a single fixed attach point.
 - A HUD-system, allowing full screen fades and other permanent ui elements.
 - Configurable displays to present objects and further information in VR.
@@ -65,13 +65,6 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
   - Everything can be exported via the data gathering system.
 - Various little helpers for making life a bit easier.
 
-## Help Us Out
-
-ExPresS XR needs your feedback to improve. For that you will find a [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf) in the repository of your project.
-
-If you like the project you can buy me a coffee: https://ko-fi.com/eisclimber
-(We all know: Programmer + Coffe = Code :D)
-
 
 ## Made with ExPresS XR
 
@@ -84,6 +77,14 @@ If you create your own project using ExPresS XR feel free to contact me, so I ca
 ## Known Issues
 
 ExPress XR tries to evolve together with Unity's XR Interaction Toolkit. If you find any bugs check out the [Issues](https://github.com/eisclimber/ExPresS-XR/issues)-Page and report them. If you want to provide fixes for the Issues or expand ExPresS XR's functionality feel free to open a Pull Request.
+
+## Help Us Out
+
+ExPresS XR needs your feedback to improve. For that you will find a [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf) in the repository of your project.
+
+If you like the project you can buy me a coffee: https://ko-fi.com/eisclimber  
+(We all know: Programmer + Coffee = Code :D)
+
 
 ## Credits
 
