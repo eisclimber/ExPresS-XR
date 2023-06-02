@@ -68,7 +68,7 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 ![MadeWithExPresSXR](https://github.com/eisclimber/ExPresS-XR/assets/49446532/b0220144-5b62-4bcd-a0eb-a79c20472d0f)
 
 - A numismatic/roman inspired exhibition with awesome minigames (Link will follow shortly)
-- A Workshop on using VR for Cultural Heritage Presentation using ExPresS XR for the CIVIS Days 2023 (Link will follow shortly)
+- [A Workshop on using VR for Cultural Heritage Presentation using ExPresS XR for the CIVIS Days 2023](https://github.com/eisclimber/VRMuseumTemplate)
 - [A Sample serving as an VR-Exhibition of the Church in Mühlen using ExPresS XR](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
 - And of course the ready-to-play Scenes/Samples from the project itself
 
