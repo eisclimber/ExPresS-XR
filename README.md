@@ -3,10 +3,6 @@
 ExPresS XR (**Ex**perimentation and **Pres**entation for **S**cience with Open**XR**) is a toolkit for VR and XR in Unity.
 Based on the OpenXR Standard, it aims is to help automate early stages of development by providing configurable base implementations of components that are expected to be useful for scientific XR projects.  
 
-## Now using the brand new Interaction Toolkit 2.3.0
-
-ExPresS XR is now using Unity's XR Interaction Toolkit 2.3.0. This comes with an overhaul to the XR Rig, many new features such as Poke-Interactions and loads of bug fixes.  
-
 ## Getting Started & Documentation
 
 If you are new check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki and [video tutorials](https://www.youtube.com/playlist?list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_).
@@ -64,13 +60,17 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
   - The Feedback can be shown in different ways or be omitted.
   - Everything can be exported via the data gathering system.
 - Various little helpers for making life a bit easier.
+- [YouTube Tutorials](https://www.youtube.com/watch?v=-k2wBBZ9a1w&list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_)
 
 
 ## Made with ExPresS XR
 
-![ProjectsHeader](https://user-images.githubusercontent.com/49446532/221184626-22493d7d-66d8-422f-ae5b-192f57d661fe.png)
+![MadeWithExPresSXR](https://github.com/eisclimber/ExPresS-XR/assets/49446532/b0220144-5b62-4bcd-a0eb-a79c20472d0f)
 
+- A numismatic/roman inspired exhibition with awesome minigames (Link will follow shortly)
+- A Workshop on using VR for Cultural Heritage Presentation using ExPresS XR for the CIVIS Days 2023 (Link will follow shortly)
 - [A Sample serving as an VR-Exhibition of the Church in Mühlen using ExPresS XR](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
+- And of course the ready-to-play Scenes/Samples from the project itself
 
 If you create your own project using ExPresS XR feel free to contact me, so I can add you to the list (also don't forget the [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf)).
 
@@ -82,8 +82,8 @@ ExPress XR tries to evolve together with Unity's XR Interaction Toolkit. If you 
 
 ExPresS XR needs your feedback to improve. For that you will find a [survey](https://github.com/eisclimber/ExPresS-XR/blob/main/ExPresS%20XR%20Survey.pdf) in the repository of your project.
 
-If you like the project you can buy me a coffee: https://ko-fi.com/eisclimber  
-(We all know: Programmer + Coffee = Code :D)
+If you like the project you can buy me a coffee (Programmer + Coffee = Code :D): https://ko-fi.com/eisclimber  
+
 
 
 ## Credits
@@ -100,7 +100,7 @@ E-Mail: [luca.dreiling@student.uni-tuebingen.de](mailto:luca.dreiling@student.un
 
 ## Version
 
-ExPresS XR is currently developed and tested with Unity 2021.3.21f1.
+ExPresS XR is currently developed and tested with Unity 2022.3.0f1.
 
 ## License
 
