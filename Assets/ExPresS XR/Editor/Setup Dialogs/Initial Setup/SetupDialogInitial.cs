@@ -9,7 +9,7 @@ namespace ExPresSXR.Editor.SetupDialogs
     class SetupDialogInitial : SetupDialogBase
     {
 
-        [MenuItem("ExPresS XR/Initial Setup", false, 0)]
+        [MenuItem("ExPresS XR/Tutorials.../Initial Setup", false, 0)]
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:

@@ -580,30 +580,34 @@ namespace ExPresSXR.Rig
             {
                 _leftHandController.directInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Direct);
                 _leftHandController.pokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Poke);
+                _leftHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
+                // Do not Update showPokeReticle => Updated in EditorRevalidate()
+                // _leftHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
                 _leftHandController.rayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Ray);
                 _leftHandController.rayAnchorControlEnabled = _interactionOptions.HasFlag(InteractionOptions.RayAnchorControl);
                 _leftHandController.uiRayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiRay);
-                _leftHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
+                
                 _leftHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
                 _leftHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
 
-                // Do not Update showPokeReticle => Updated in EditorRevalidate()
-                // _leftHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
+                _leftHandController.scaleGrabbedObjects = _interactionOptions.HasFlag(InteractionOptions.ScaleGrabbedObjects);
             }
 
             if (_rightHandController != null)
             {
                 _rightHandController.directInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Direct);
                 _rightHandController.pokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Poke);
+                _rightHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
+                // Do not Update showPokeReticle => Updated in EditorRevalidate()
+                // _rightHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
                 _rightHandController.rayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Ray);
                 _rightHandController.rayAnchorControlEnabled = _interactionOptions.HasFlag(InteractionOptions.RayAnchorControl);
                 _rightHandController.uiRayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiRay);
-                _rightHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
+                
                 _rightHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
                 _rightHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
                 
-                // Do not Update showPokeReticle => Updated in EditorRevalidate()
-                // _rightHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
+                _rightHandController.scaleGrabbedObjects = _interactionOptions.HasFlag(InteractionOptions.ScaleGrabbedObjects);
             }
         }
 
@@ -674,12 +678,13 @@ namespace ExPresSXR.Rig
         Direct = 1,
         Poke = 2,
         UiPoke = 4,
-        Ray = 8,
-        RayAnchorControl = 16,
-        UiRay = 32,
-        ChooseTeleportForward = 64,
-        CancelTeleportPossible = 128,
-        ShowPokeReticle = 256
+        ShowPokeReticle = 8,
+        Ray = 16,
+        RayAnchorControl = 32,
+        UiRay = 64,
+        ChooseTeleportForward = 128,
+        CancelTeleportPossible = 256,
+        ScaleGrabbedObjects = 512
     }
 
     public enum GameTabDisplayMode

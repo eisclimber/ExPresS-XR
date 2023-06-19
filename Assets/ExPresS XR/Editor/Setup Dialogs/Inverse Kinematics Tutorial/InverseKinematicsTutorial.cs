@@ -5,7 +5,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 {
     public class InverseKinematicsTutorial : SetupDialogBase
     {
-        [MenuItem("ExPresS XR/Inverse Kinematics Tutorial", false, 5)]
+        [MenuItem("ExPresS XR/Tutorials.../Inverse Kinematics", false, 4)]
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:

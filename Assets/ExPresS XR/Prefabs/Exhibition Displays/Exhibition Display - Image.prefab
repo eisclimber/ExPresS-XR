@@ -398,9 +398,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1389413680421138644}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
@@ -619,7 +627,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -739,7 +749,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1424,9 +1436,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5250526870683087827}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
@@ -1891,9 +1911,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5250526870838030964}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
@@ -1959,7 +1987,7 @@ MonoBehaviour:
   _infoVideoClip: {fileID: 0}
   _usePhysicalInfoButton: 1
   _toggleInfo: 0
-  _showInfoDuration: 3
+  _showInfoDuration: 30
   _socket: {fileID: 9108806282846458619}
   _labelTextGo: {fileID: 5250526870596112271}
   _infoCanvas: {fileID: 5250526869994567488}
@@ -2028,7 +2056,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2250,6 +2280,7 @@ VideoPlayer:
   m_RenderMode: 2
   m_AspectRatio: 2
   m_DataSource: 0
+  m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
   m_TargetAudioSources:
@@ -2404,6 +2435,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5250526870683087828}
     m_Modifications:
     - target: {fileID: 7572910124195641420, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
@@ -2459,6 +2491,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
 --- !u!4 &7382779011319317678 stripped
 Transform:
@@ -2481,11 +2516,16 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5250526870915085312}
     m_Modifications:
     - target: {fileID: 3942168457875969026, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
       propertyPath: m_Name
       value: Put Back Socket Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942168457875969027, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
+      propertyPath: _putBackTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3942168457875969027, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
       propertyPath: _putBackObject
@@ -2560,6 +2600,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3942168457875969026, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5250526869659643656}
   m_SourcePrefab: {fileID: 100100000, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
 --- !u!1 &9108806282846458618 stripped
 GameObject:

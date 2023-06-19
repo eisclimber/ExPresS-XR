@@ -236,6 +236,42 @@ namespace ExPresSXR.Rig
 
 
         ////////
+        
+
+        [Tooltip("Enables scaling grabbed objects by pushing the joystick back and forward. (Requires Scaling[Direct/Ray]Interactors and AnchorControl to be enabled on the Ray).")]
+        [SerializeField]
+        private bool _scaleGrabbedObjects;
+        public bool scaleGrabbedObjects
+        {
+            get => _scaleGrabbedObjects;
+            set
+            {
+                _scaleGrabbedObjects = value;
+
+                if (m_DirectInteractor != null)
+                {
+                    ScalingDirectInteractor scalingDirect = m_DirectInteractor as ScalingDirectInteractor;
+
+                    if (scalingDirect != null)
+                    {
+                        scalingDirect.scalingEnabled = _scaleGrabbedObjects;
+                    }
+                }
+
+                if (m_RayInteractor != null)
+                {
+                    ScalingRayInteractor scalingRay = m_RayInteractor as ScalingRayInteractor;
+
+                    if (scalingRay != null)
+                    {
+                        scalingRay.anchorControlMode = _scaleGrabbedObjects ? AnchorControlMode.ScaleWithTranslateFallback : AnchorControlMode.Translate;
+                    }
+                }
+            }
+        }
+
+
+        ////////
 
         [SerializeField]
         private HandModelMode _handModelMode;
@@ -283,13 +319,14 @@ namespace ExPresSXR.Rig
         private Coroutine _afterGrabCoroutine;
 
 
-        protected override void OnEnable() {
+        protected override void OnEnable()
+        {
             base.OnEnable();
 
             if (m_DirectInteractor != null)
             {
-                m_DirectInteractor.selectExited.AddListener(StartAfterGrabNoHandCollisions);
-                m_DirectInteractor.selectEntered.AddListener(StopAfterGrabNoHandCollisions);
+                m_DirectInteractor.selectExited.AddListener(OnDirectInteractorSelectExited);
+                m_DirectInteractor.selectEntered.AddListener(OnDirectInteractorSelectEntered);
             }
 
             // Reticles (AutoHandModels) need to be instantiated so they are available in the next frame
@@ -297,13 +334,14 @@ namespace ExPresSXR.Rig
         }
 
 
-        protected override void OnDisable() {
+        protected override void OnDisable()
+        {
             base.OnDisable();
 
             if (m_DirectInteractor != null)
             {
-                m_DirectInteractor.selectExited.RemoveListener(StartAfterGrabNoHandCollisions);
-                m_DirectInteractor.selectEntered.RemoveListener(StopAfterGrabNoHandCollisions);
+                m_DirectInteractor.selectExited.RemoveListener(OnDirectInteractorSelectExited);
+                m_DirectInteractor.selectEntered.RemoveListener(OnDirectInteractorSelectEntered);
             }
         }
 
@@ -370,25 +408,58 @@ namespace ExPresSXR.Rig
             {
                 Debug.LogWarning("SmoothMove and/or SmoothTurn are both enabled with SnapTurn on this hand. SnapTurn is disabled, as it is overwritten by SmoothMove/SmoothTurn.");
             }
-        }
 
-
-        private void StartAfterGrabNoHandCollisions(SelectExitEventArgs _)
-        {
-            if (isActiveAndEnabled)
+            if (!_rayAnchorControlEnabled && scaleGrabbedObjects)
             {
-                _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
+                Debug.LogWarning("Scaling objects using the RayInteractor will require 'RayAnchorControl' to be enabled.");
             }
         }
 
 
-        private void StopAfterGrabNoHandCollisions(SelectEnterEventArgs _)
+        private void OnDirectInteractorSelectExited(SelectExitEventArgs _)
         {
+            // Start wait timer 
+            if (gameObject.activeInHierarchy && isActiveAndEnabled)
+            {
+                _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
+            }
+
+            // Enable the snap turn InputAction if it was previously enabled
+            if (hasDirectInteractorScalingSelection)
+            {
+                SetEnabled(m_SnapTurn, !smoothMoveEnabled && !smoothTurnEnabled && snapTurnEnabled);
+            }
+        }
+
+
+        private void OnDirectInteractorSelectEntered(SelectEnterEventArgs _)
+        {
+            // Stop wait timer
             if (_afterGrabCoroutine != null)
             {
                 StopCoroutine(_afterGrabCoroutine);
             }
             _afterGrabCoroutine = null;
+
+            // Disable the snap turn InputAction turn while grabbing when the interactor has anchor control enabled
+            if (hasDirectInteractorScalingSelection)
+            {
+                SetEnabled(m_SnapTurn, false);
+            }
+        }
+
+
+        private bool hasDirectInteractorScalingSelection
+        {
+            get
+            {
+                ScalingDirectInteractor scalableInteractor = m_DirectInteractor as ScalingDirectInteractor;
+                if (scalableInteractor != null)
+                {
+                    return scalableInteractor.hasScalingSelection;
+                }
+                return false;
+            }
         }
 
 
@@ -397,7 +468,7 @@ namespace ExPresSXR.Rig
             yield return new WaitForEndOfFrame();
             handModelMode = _handModelMode;
             handModelCollisions = _handModelCollisions;
-        } 
+        }
 
 
         private IEnumerator AfterGrabWaitTimer()
@@ -409,7 +480,7 @@ namespace ExPresSXR.Rig
 
             // Enable auto hand Collisions
             SetAutoHandCollisionsCurrentlyEnabled(handModelCollisions);
-            
+
             _afterGrabCoroutine = null;
         }
 
@@ -430,6 +501,7 @@ namespace ExPresSXR.Rig
             uiPokeInteractionEnabled = _uiPokeInteractionEnabled;
             handModelMode = _handModelMode;
             handModelCollisions = _handModelCollisions;
+            scaleGrabbedObjects = _scaleGrabbedObjects;
 
             NotifyOverwrittenBehavior();
         }

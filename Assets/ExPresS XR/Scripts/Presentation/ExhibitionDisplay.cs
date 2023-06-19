@@ -71,7 +71,7 @@ namespace ExPresSXR.Presentation
         }
 
         [SerializeField]
-        private float _putBackTime;
+        private float _putBackTime = 30.0f;
         public float putBackTime
         {
             get => _putBackTime;

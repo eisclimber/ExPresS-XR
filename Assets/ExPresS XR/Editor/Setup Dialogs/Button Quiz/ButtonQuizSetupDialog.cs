@@ -23,7 +23,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
 
 
-        [MenuItem("ExPresS XR/Button Quiz Setup", false, 4)]
+        [MenuItem("ExPresS XR/Button Quiz Editor", false, 2)]
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:

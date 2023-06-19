@@ -121,6 +121,14 @@ namespace ExPresSXR.Editor
             InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Object Check Socket Interactor");
         }
 
+
+        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Trigger Interactable")]
+        public static void CreateXRGrabTriggerInteractable(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Grab Trigger Interactable");
+        }
+
+
         [MenuItem("GameObject/ExPresS XR/Interaction/Exit Game Interactable")]
         public static void CreateXRExitGameInteractable(MenuCommand menuCommand)
         {

@@ -4,11 +4,11 @@ using ExPresSXR.Editor.SetupDialogs;
 
 public class SetupDialogExperimentationTutorial : SetupDialogBase
 {
-    [MenuItem("ExPresS XR/Create Experiments Tutorial", false, 2)]
+    [MenuItem("ExPresS XR/Tutorials.../Create Experiments", false, 2)]
     public static void ShowWindow()
     {
         // Get existing open window or if none, make a new one:
-        EditorWindow window = GetWindow<SetupDialogExperimentationTutorial>("Create Experiments Tutorial");
+        EditorWindow window = GetWindow<SetupDialogExperimentationTutorial>("Create Experiments");
         window.minSize = defaultWindowSize;
     }
 

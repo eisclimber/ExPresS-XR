@@ -40,6 +40,10 @@ namespace ExPresSXR.Editor
             EditorGUI.indentLevel++;
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackPrefab"), true);
+            // Display reference to the actual held prefab instance
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObjectInstance"), true);
+            EditorGUI.EndDisabledGroup();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
             if (EditorGUI.EndChangeCheck())
             {

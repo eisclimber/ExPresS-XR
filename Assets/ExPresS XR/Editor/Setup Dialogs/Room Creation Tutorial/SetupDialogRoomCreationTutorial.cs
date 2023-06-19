@@ -5,7 +5,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 {
     public class SetupDialogRoomCreation : SetupDialogBase
     {
-        [MenuItem("ExPresS XR/Room Creation Tutorial", false, 3)]
+        [MenuItem("ExPresS XR/Tutorials.../Room Creation", false, 2)]
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:

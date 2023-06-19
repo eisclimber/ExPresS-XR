@@ -22,7 +22,7 @@ namespace ExPresSXR.Interaction
 
         [Tooltip("Target Controller to receive haptic events.")]
         public XRBaseController hapticTarget;
-        
+
         private XRBaseInteractable hoverProvider;
 
 
@@ -40,12 +40,12 @@ namespace ExPresSXR.Interaction
         }
 
 
-        private void AddHapticTargetFromHover(HoverEnterEventArgs args) 
+        private void AddHapticTargetFromHover(HoverEnterEventArgs args)
         {
             args?.interactorObject?.transform.TryGetComponent(out hapticTarget);
         }
 
-        private void RemoveHapticTargetFromHover(HoverExitEventArgs args) 
+        private void RemoveHapticTargetFromHover(HoverExitEventArgs args)
         {
             XRBaseController interactor = null;
             args?.interactorObject?.transform.TryGetComponent(out interactor);
@@ -57,7 +57,11 @@ namespace ExPresSXR.Interaction
 
         // Use this function to send haptic Events to the current hapticTarget.
         // Note: If targetOverride is active the hapticTarget will be updated automatically.
-        public void PerformHapticEventOnCurrentTarget(float amplitude, float duration, 
+        public void PerformHapticEventOnCurrentTarget(RumbleDescription rumble, XRBaseController targetOverride = null)
+            => PerformHapticEventOnCurrentTarget(rumble.strength, rumble.duration, targetOverride);
+        
+
+        public void PerformHapticEventOnCurrentTarget(float amplitude, float duration,
                                         XRBaseController targetOverride = null)
         {
             if (targetOverride)
@@ -69,7 +73,10 @@ namespace ExPresSXR.Interaction
 
 
         // Triggers an Haptic Event for a duration with the given strength on the target (if possible).
-        public static void PerformHapticEvent(float strength, float duration, 
+        public static void PerformHapticEvent(RumbleDescription rumble, XRBaseController target) 
+            => PerformHapticEvent(rumble.strength, rumble.duration, target);
+
+        public static void PerformHapticEvent(float strength, float duration,
                                         XRBaseController target)
         {
             if (target == null)
@@ -81,5 +88,16 @@ namespace ExPresSXR.Interaction
                 Debug.LogError("The given target was not able to perform a haptic impulse.");
             }
         }
+    }
+
+    [System.Serializable]
+    public class RumbleDescription
+    {
+        [Tooltip("Rumble strength.")]
+        [Range(0.0f, 1.0f)]
+        public float strength = 0.3f;
+
+        [Tooltip("Rumble duration (in s).")]
+        public float duration = 0.1f;
     }
 }

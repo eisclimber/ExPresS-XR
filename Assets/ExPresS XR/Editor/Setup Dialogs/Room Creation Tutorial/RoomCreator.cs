@@ -12,7 +12,7 @@ namespace ExPresSXR.Editor.SetupDialogs
     {
         public const float ERROR_MESSAGE_DURATION = 3.0f;
 
-        [MenuItem("ExPresS XR/Rooms.../Open Room Creator")]
+        [MenuItem("ExPresS XR/Room Creation.../Open Room Creator", false, 29)]
         public static void ShowWindow()
         {
             // Get existing open window or if none, make a new one:

@@ -28,39 +28,51 @@ namespace ExPresSXR.Editor
         // Threshold of an face to recognized as floor (dot product of two normalized vectors)
         const float DOT_FLOOR_THRESHOLD = 0.95f;
 
-        [MenuItem("ExPresS XR/Rooms.../Create Default Experimentation Room")]
-        public static void CreateExperimentationRoom(MenuCommand menuCommand)
+        [MenuItem("ExPresS XR/Room Creation.../Create Default Experimentation Room", false, 5)]
+        public static void CreateExperimentationRoom()
         {
             CreateRoom(6f, 3f, 5f, true, WallMode.SeparateFloor, MaterialPreset.Experimentation);
         }
 
-        [MenuItem("ExPresS XR/Rooms.../Create Default Exhibition Room")]
-        public static void CreateExhibitionRoom(MenuCommand menuCommand)
+        [MenuItem("ExPresS XR/Room Creation.../Create Default Exhibition Room", false, 6)]
+        public static void CreateExhibitionRoom()
         {
             CreateRoom(5f, 3f, 4f, true, WallMode.SeparateFloor, MaterialPreset.Exhibition);
         }
 
-        [MenuItem("ExPresS XR/Rooms.../Update Teleportation of Selected Rooms")]
-        public static void UpdateSelectedTeleportationAreas()
+        [MenuItem("ExPresS XR/Room Creation.../Add Teleportation to Selected Rooms", false, 17)]
+        public static void AddSelectedTeleportationAreas()
         {
-            var selection = MeshSelection.top;
+            bool performedAction = false;
+            IEnumerable<ProBuilderMesh> selection = MeshSelection.top;
 
             foreach (ProBuilderMesh mesh in selection)
             {
-                UpdateTeleportationArea(mesh);
+                bool needsNewTeleportArea = mesh.name != "Teleportation Area"
+                                                && mesh.transform.Find("Teleportation Area") == null;
+                performedAction |= UpdateTeleportationArea(mesh, needsNewTeleportArea);
+            }
+
+            if (!performedAction)
+            {
+                Debug.Log("No Rooms or ProBuilderMeshes were selected that needed an Teleportation Area. Select the ones you want to add a Teleportation Area to.");
             }
         }
 
-        [MenuItem("ExPresS XR/Rooms.../Add Teleportation to Selected Rooms")]
-        public static void AddSelectedTeleportationAreas()
+        [MenuItem("ExPresS XR/Room Creation.../Update Teleportation of Selected Rooms", false, 18)]
+        public static void UpdateSelectedTeleportationAreas()
         {
-            var selection = MeshSelection.top;
+            bool performedAction = false;
+            IEnumerable<ProBuilderMesh> selection = MeshSelection.top;
 
             foreach (ProBuilderMesh mesh in selection)
             {
-                bool needsNewTeleportArea = mesh.name != "Teleportation Area" 
-                    	                        && mesh.transform.Find("Teleportation Area") == null;
-                UpdateTeleportationArea(mesh, needsNewTeleportArea);
+                performedAction |= UpdateTeleportationArea(mesh);
+            }
+
+            if (!performedAction)
+            {
+                Debug.Log("No Rooms or ProBuilderMeshes were selected that needed an update of their Teleportation Area. Select the ones you want to update their Teleportation Area.");
             }
         }
 
@@ -163,7 +175,7 @@ namespace ExPresSXR.Editor
         }
 
 
-        public static void UpdateTeleportationArea(ProBuilderMesh parentMesh, bool addIfNotExists = false)
+        public static bool UpdateTeleportationArea(ProBuilderMesh parentMesh, bool addIfNotExists = false)
         {
             Transform tpTransform = parentMesh.transform.Find("Teleportation Area");
             bool needsUpdate = tpTransform != null || (addIfNotExists && tpTransform == null);
@@ -184,7 +196,7 @@ namespace ExPresSXR.Editor
                 if (inverse.Count >= parentMesh.faceCount)
                 {
                     Debug.LogError("Could not find any suitable floors in the room. No TeleportationAreas created.");
-                    return;
+                    return false;
                 }
 
                 // Copy new Floor
@@ -216,6 +228,7 @@ namespace ExPresSXR.Editor
                 MakeMeshTeleportationArea(copy.gameObject, parentMesh.transform, tpTransform);
             }
             ProBuilderEditor.Refresh();
+            return needsUpdate;
         }
 
         private static void MakeMeshTeleportationArea(GameObject areaObject, Transform roomTransform, Transform prevTeleportationArea)
