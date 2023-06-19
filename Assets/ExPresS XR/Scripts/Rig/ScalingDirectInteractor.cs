@@ -46,7 +46,7 @@ namespace ExPresSXR.Rig
 
                     if (inPressed || outPressed)
                     {
-                        var directionAmount = inPressed ? 1f : -1f;
+                        var directionAmount = inPressed ? 1.0f : -1.0f;
                         ScaleSelection(directionAmount);
                     }
                 }

@@ -425,10 +425,8 @@ namespace ExPresSXR.Rig
             }
 
             // Enable the snap turn InputAction if it was previously enabled
-            if (hasDirectInteractorScalingSelection)
-            {
-                SetEnabled(m_SnapTurn, !smoothMoveEnabled && !smoothTurnEnabled && snapTurnEnabled);
-            }
+            SetEnabled(m_SnapTurn, !smoothMoveEnabled && !smoothTurnEnabled && snapTurnEnabled);
+            SetEnabled(m_TeleportModeActivate, !smoothMoveEnabled && teleportationEnabled);
         }
 
 
@@ -445,6 +443,7 @@ namespace ExPresSXR.Rig
             if (hasDirectInteractorScalingSelection)
             {
                 SetEnabled(m_SnapTurn, false);
+                SetEnabled(m_TeleportModeActivate, false);
             }
         }
 
