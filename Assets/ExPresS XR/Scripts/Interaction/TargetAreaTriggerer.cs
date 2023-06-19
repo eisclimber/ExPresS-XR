@@ -15,9 +15,6 @@ namespace ExPresSXR.Interaction
         [SerializeField]
         private TargetArea[] targets;
 
-        [SerializeField]
-        private Collider powderCollider;
-
         [Space]
 
         public UnityEvent OnTargetAreaActionPerformed;
@@ -35,16 +32,16 @@ namespace ExPresSXR.Interaction
 
         private void Start()
         {
-            if (!powderCollider && !TryGetComponent(out powderCollider))
+            if (!TryGetComponent(out Collider col))
             {
                 Debug.LogError("Could not find a Collider-Component so we won't be able to be detected targets.");
                 return;
             }
 
-            if (!powderCollider.isTrigger)
+            if (!col.isTrigger)
             {
                 Debug.LogWarning("Setting the Collider as trigger to not collide with objects. Please make the Collider a trigger via the inspector. ");
-                powderCollider.isTrigger = true;
+                col.isTrigger = true;
             }
 
             foreach (TargetArea target in targets)

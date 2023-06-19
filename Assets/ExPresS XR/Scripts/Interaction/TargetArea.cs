@@ -14,10 +14,6 @@ namespace ExPresSXR.Interaction
         [SerializeField]
         private int _actionsToComplete = 1;
 
-
-        [SerializeField]
-        private Collider targetCollider;
-
         private bool _completed;
         public bool completed
         {
@@ -33,11 +29,6 @@ namespace ExPresSXR.Interaction
 
         private void Start()
         {
-            if (targetCollider && !TryGetComponent(out targetCollider))
-            {
-                Debug.LogError("Could not find a collision. The target won't be able to be detected.");
-            }
-
             if (_actionsToComplete < 1)
             {
                 Debug.LogWarning("ActionsToComplete must be greater than zero. Setting it to 1.");
@@ -55,12 +46,13 @@ namespace ExPresSXR.Interaction
 
             _performedActions++;
 
+            OnActionPerformed.Invoke();
+
             if (_performedActions >= _actionsToComplete)
             {
                 _completed = true;
                 OnCompleted.Invoke();
             }
-            OnActionPerformed.Invoke();
         }
     }
 }
