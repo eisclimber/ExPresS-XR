@@ -1,6 +1,7 @@
 # ExPresS XR
 
-ExPresS XR (**Ex**perimentation and **Pres**entation for **S**cience with Open**XR**) is a toolkit for VR and XR in Unity.
+<img align="left" width="80" height="80" src="https://github.com/eisclimber/ExPresS-XR/assets/49446532/1935b2c9-000b-4440-8bd6-53c087d49b34">
+ ExPresS XR (**Ex**perimentation and **Pres**entation for **S**cience with Open**XR**) is a toolkit for VR and XR in Unity.
 Based on the OpenXR Standard, it aims is to help automate early stages of development by providing configurable base implementations of components that are expected to be useful for scientific XR projects.  
 
 ## Getting Started & Documentation
@@ -38,13 +39,16 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
   - A system for Hand Animations when grabbing.
   - A basic implementation of Inverse Kinematics (IK). For more elaborate IK use addons like FinalIK.
 - A great expansion of Unity's interaction toolkit.
+  - Scaling of held objects.
   - Sockets that are highlight their size and can be setup to accept certain objects.
   - A Socket that will move objects back to to socket's position when no interaction is performed.
   - Physical Buttons with toggle mode.
   - Custom Teleportation Areas and Sockets.
   - UI keyboards usable with XR.
-  - Sound-Emission upon Collision
+  - Sound- and rumble-emission upon collision.
   - (Deprecated -> Supported by XRGrabInteractable now) Allow grabbing objects on the outside, rather than a single fixed attach point.
+  - Grab and interaction triggers.
+  - Some minigames and much more!
 - A HUD-system, allowing full screen fades and other permanent ui elements.
 - Configurable displays to present objects and further information in VR.
   - The objects can be picked up and inspected.
@@ -59,6 +63,7 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
   - Supports Questions, Answers and Feedback in the form of Text, GameObjects, Images and Videos.
   - The Feedback can be shown in different ways or be omitted.
   - Everything can be exported via the data gathering system.
+- A Main Menu UI and Scene
 - Various little helpers for making life a bit easier.
 - [YouTube Tutorials](https://www.youtube.com/watch?v=-k2wBBZ9a1w&list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_)
 
@@ -77,7 +82,7 @@ If you create your own project using ExPresS XR feel free to contact me, so I ca
 
 ## Known Issues
 
-ExPress XR tries to evolve together with Unity's XR Interaction Toolkit. If you find any bugs check out the [Issues](https://github.com/eisclimber/ExPresS-XR/issues)-Page and report them. If you want to provide fixes for the Issues or expand ExPresS XR's functionality feel free to open a Pull Request.
+ExPress XR tries to evolve together with Unity's XR Interaction Toolkit. If you find any bugs check out the [Issues](https://github.com/eisclimber/ExPresS-XR/issues)-Page and report them. If you want to provide fixes for the issues or expand ExPresS XR's functionality feel free to open a Pull Request.
 
 ## Help Us Out
 
