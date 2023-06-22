@@ -336,6 +336,12 @@ namespace ExPresSXR.Editor
 
 
         // Misc Menus
+        [MenuItem("GameObject/ExPresS XR/UI/Main Menu UI")]
+        static void CreateMainMenuUI(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "UI/Main Menu UI");
+        }
+
         [MenuItem("GameObject/ExPresS XR/UI/Misc/After Quiz Dialog")]
         static void CreateCakeAfterQuizMenu(MenuCommand menuCommand)
         {

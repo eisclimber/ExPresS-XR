@@ -156,7 +156,7 @@ namespace ExPresSXR.Rig
 
                 if (m_RayInteractor != null)
                 {
-                    m_RayInteractor.enabled = _rayAnchorControlEnabled;
+                    m_RayInteractor.enabled = _rayInteractionEnabled;
                 }
             }
         }
