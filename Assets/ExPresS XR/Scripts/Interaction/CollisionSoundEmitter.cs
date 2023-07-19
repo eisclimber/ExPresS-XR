@@ -35,6 +35,16 @@ namespace ExPresSXR.Interaction
         }
 
 
+        [Tooltip("Prevents playing the sound again if it is already played. Good for longer sound samples.")]
+        [SerializeField]
+        private bool _requireAudioCompletion;
+        public bool requireAudioCompletion
+        {
+             get => _requireAudioCompletion;
+             set => _requireAudioCompletion = value;
+        }
+
+
         [Tooltip("The duration after OnAwake() in seconds during which no sound is emitted."
                 + " This can be used to prevent a sound being played at the start of the game while the physics still settles.")]
         [SerializeField]
@@ -63,8 +73,8 @@ namespace ExPresSXR.Interaction
         {
             // Play only when the audioSource is set and the initial wait time is over
             // Player Collisions (i.e. Player-Tag) will be ignored
-            if (_audioSource != null && _audioSource.isActiveAndEnabled && _silenceCoroutine == null
-                && collision.collider != null && !collision.collider.CompareTag("Player"))
+            if (_audioSource != null && _audioSource.isActiveAndEnabled && !(_audioSource.isPlaying && requireAudioCompletion) 
+                && _silenceCoroutine == null && collision.collider != null && !collision.collider.CompareTag("Player"))
             {
                 _audioSource.Play();
             }

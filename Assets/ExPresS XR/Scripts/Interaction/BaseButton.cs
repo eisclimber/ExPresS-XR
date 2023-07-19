@@ -199,7 +199,7 @@ namespace ExPresSXR.Interaction
             }
         }
 
-        protected void ResetButtonPress()
+        public void ResetButtonPress()
         {
             _hoverInteractor = null;
             _previousHandHeight = 0.0f;

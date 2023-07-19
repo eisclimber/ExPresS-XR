@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -18,13 +19,73 @@ namespace ExPresSXR.Interaction
             get => _scaleFactor;
             set
             {
-                float factorDelta = value - _scaleFactor;
-
                 _scaleFactor = GetClampedScaleFactor(value);
 
-                ScaleChildren(factorDelta);
+                ScaleChildren();
             }
         }
+
+
+        [SerializeField]
+        private bool _scaleAllChildren = true;
+        public bool scaleAllChildren
+        {
+            get => _scaleAllChildren;
+        }
+
+
+        [Tooltip("Setting this value during runtime will use the current scales as initial scale.")]
+        [SerializeField]
+        private Transform[] _scaledChildren;
+        public Transform[] scaledChildren
+        {
+            get => _scaledChildren;
+            set
+            {
+                _scaledChildren = value;
+
+                // Load scales
+                _initialScales = new Vector3[_scaledChildren.Length];
+
+                for (int i = 0; i < _scaledChildren.Length; i++)
+                {
+                    _initialScales[i] = _scaledChildren[i] != null ? _scaledChildren[i].localScale : Vector3.one;
+                }
+            }
+
+        }
+
+        private Vector3[] _initialScales;
+
+
+        private void Start()
+        {
+            List<Transform> children = new();
+            if (_scaleAllChildren)
+            {
+                foreach (Transform t in transform)
+                {
+                    children.Add(t);
+                }
+            }
+            else
+            {
+                foreach (Transform t in scaledChildren)
+                {
+                    children.Add(t);
+                }
+            }
+            scaledChildren = children.ToArray();
+        }
+
+        private void ScaleChildren()
+        {
+            for (int i = 0; i < _scaledChildren.Length; i++)
+            {
+                _scaledChildren[i].transform.localScale = _initialScales[i] * scaleFactor;
+            }
+        }
+
 
         private float GetClampedScaleFactor(float value)
         {
@@ -32,16 +93,6 @@ namespace ExPresSXR.Interaction
             float maxValue = _maxScaleFactor >= 0 ? _maxScaleFactor : value;
 
             return Mathf.Clamp(value, minValue, maxValue);
-        }
-
-
-        private void ScaleChildren(float factorDelta)
-        {
-            foreach (Transform child in transform)
-            {
-                // Use the child's current scale with the delta => 1.0f + factorDelta
-                child.transform.localScale *= 1.0f + factorDelta;
-            }
         }
     }
 }

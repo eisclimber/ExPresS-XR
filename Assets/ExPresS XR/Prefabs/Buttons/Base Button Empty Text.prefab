@@ -56,7 +56,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -168,8 +170,13 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2041103613787556284, guid: f95c91c6f009146409a9107266eb649e, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2043245904061212416, guid: f95c91c6f009146409a9107266eb649e, type: 3}
       propertyPath: m_Name
       value: Base Button Empty Text
@@ -219,6 +226,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2043245903876833251, guid: f95c91c6f009146409a9107266eb649e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 847857614}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f95c91c6f009146409a9107266eb649e, type: 3}
 --- !u!4 &4386547815715240620 stripped
 Transform:

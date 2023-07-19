@@ -20,6 +20,12 @@ namespace ExPresSXR.Editor
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ScalableGrabInteractable.maxScaleFactor"/>.</summary>
         protected SerializedProperty _maxScaleFactor;
 
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ScalableGrabInteractable.maxScaleFactor"/>.</summary>
+        protected SerializedProperty _scaleAllChildren;
+
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ScalableGrabInteractable.maxScaleFactor"/>.</summary>
+        protected SerializedProperty _scaledChildren;
+
 
         private ScalableGrabInteractable scaleInteractable;
 
@@ -29,6 +35,9 @@ namespace ExPresSXR.Editor
 
             _minScaleFactor = serializedObject.FindProperty("_minScaleFactor");
             _maxScaleFactor = serializedObject.FindProperty("_maxScaleFactor");
+
+            _scaleAllChildren = serializedObject.FindProperty("_scaleAllChildren");
+            _scaledChildren = serializedObject.FindProperty("_scaledChildren");
 
             scaleInteractable = (ScalableGrabInteractable)target;
         }
@@ -47,7 +56,7 @@ namespace ExPresSXR.Editor
 
         protected virtual void DrawScalingProperties()
         {
-            EditorGUILayout.LabelField("Answer Buttons", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Scaling", EditorStyles.boldLabel);
 
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(_minScaleFactor, true);
@@ -58,6 +67,13 @@ namespace ExPresSXR.Editor
             float _ = EditorGUILayout.FloatField("(Readonly) Current Scale Factor", scaleInteractable.scaleFactor);
             EditorGUI.indentLevel--;
             EditorGUI.EndDisabledGroup();
+
+            EditorGUILayout.PropertyField(_scaleAllChildren, true);
+
+            if (!scaleInteractable.scaleAllChildren)
+            {
+                EditorGUILayout.PropertyField(_scaledChildren, true);
+            }
 
             if (scaleInteractable.transform.childCount < 1)
             {
