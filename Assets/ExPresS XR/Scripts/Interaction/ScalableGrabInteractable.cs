@@ -68,13 +68,18 @@ namespace ExPresSXR.Interaction
                     children.Add(t);
                 }
             }
-            else
+            else if (scaledChildren.Length > 0)
             {
                 foreach (Transform t in scaledChildren)
                 {
                     children.Add(t);
                 }
             }
+            else
+            {
+                Debug.LogError("Scalable Grab interactable has no children to scale. Either enable '_scaleAllChildren' or add objects to the 'scaledChildren' array.");
+            }
+
             scaledChildren = children.ToArray();
         }
 

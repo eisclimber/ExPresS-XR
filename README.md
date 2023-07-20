@@ -106,7 +106,7 @@ E-Mail: [luca.dreiling@student.uni-tuebingen.de](mailto:luca.dreiling@student.un
 
 ## Version
 
-ExPresS XR is currently developed and tested with Unity 2022.3.0f1.
+ExPresS XR is currently developed and tested with Unity 2022.3.5f1.
 
 ## License
 
