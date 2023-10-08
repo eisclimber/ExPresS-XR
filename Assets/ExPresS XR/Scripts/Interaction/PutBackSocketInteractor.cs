@@ -50,6 +50,14 @@ namespace ExPresSXR.Interaction
             set => _putBackTime = value;
         }
 
+        [SerializeField]
+        private bool _hideHighlighterWhileGrabbed;
+        public bool hideHighlighterWhileGrabbed
+        {
+            get => _hideHighlighterWhileGrabbed;
+            set => _hideHighlighterWhileGrabbed = value;
+        }
+
         private Coroutine putBackCoroutine;
 
 
@@ -62,6 +70,8 @@ namespace ExPresSXR.Interaction
 
         protected override void OnEnable()
         {
+            base.OnEnable(); 
+
             // Calling this in OnEnable (instead of Awake) will also reset the putBackObject when rebuilding
             putBackPrefab = _putBackPrefab;
             socketActive = _putBackObjectInstance != null;
@@ -70,12 +80,12 @@ namespace ExPresSXR.Interaction
 
         public override bool CanHover(IXRHoverInteractable interactable)
         {
-            return base.CanHover(interactable) && IsObjectMatch(interactable);
+            return IsObjectMatch(interactable) && base.CanHover(interactable);
         }
 
         public override bool CanSelect(IXRSelectInteractable interactable)
         {
-            return base.CanSelect(interactable) && IsObjectMatch(interactable);
+            return IsObjectMatch(interactable) && base.CanSelect(interactable);
         }
 
         private void StartPutBackTimer(SelectExitEventArgs args)
@@ -96,7 +106,7 @@ namespace ExPresSXR.Interaction
                 // Put Object back
                 interactionManager.SelectEnter(this, (IXRSelectInteractable)_putBackInteractable);
             }
-            else
+            else if (isActiveAndEnabled)
             {
                 putBackCoroutine = StartCoroutine(CreatePutBackCoroutine(_putBackTime));
             }
@@ -127,9 +137,8 @@ namespace ExPresSXR.Interaction
 
         public override void SetHighlighterVisible(bool visible)
         {
-            base.SetHighlighterVisible(_putBackObjectInstance == null && visible);
+            base.SetHighlighterVisible((_putBackObjectInstance == null || !hideHighlighterWhileGrabbed) && visible);
         }
-
 
         public void UpdatePutBackObject()
         {
@@ -180,7 +189,7 @@ namespace ExPresSXR.Interaction
                 if (_putBackObjectInstance.TryGetComponent(out _putBackInteractable))
                 {
                     startingSelectedInteractable = _putBackInteractable;
-                    if (Application.isPlaying)
+                    if (interactionManager != null && Application.isPlaying)
                     {
                         interactionManager.SelectEnter(this, (IXRSelectInteractable)_putBackInteractable);
                     }

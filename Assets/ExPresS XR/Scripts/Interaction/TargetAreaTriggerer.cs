@@ -13,10 +13,23 @@ namespace ExPresSXR.Interaction
     public class TargetAreaTriggerer : MonoBehaviour
     {
         [SerializeField]
-        private TargetArea[] targets;
+        private TargetArea[] _targets;
+        public TargetArea[] targets
+        {
+            get => _targets;
+            set => _targets = value;
+        }
+
+        [SerializeField]
+        private bool _setupOnAwake;
+
+        [SerializeField]
+        [Tooltip("If enabled all events each of the three events below will be called mutually exclusive. This prevents errors when using these for different haptic feedbacks.")]
+        private bool _emitEventsExclusively = true;
 
         [Space]
 
+        
         public UnityEvent OnTargetAreaActionPerformed;
         public UnityEvent OnSingleTargetCompleted;
         public UnityEvent OnAllTargetsCompleted;
@@ -24,13 +37,13 @@ namespace ExPresSXR.Interaction
 
         public int numTargets
         {
-            get => targets != null ? targets.Length : 0;
+            get => _targets != null ? _targets.Length : 0;
         }
 
         private int _numCompleted = 0;
 
 
-        private void Start()
+        private void Awake()
         {
             if (!TryGetComponent(out Collider col))
             {
@@ -44,7 +57,15 @@ namespace ExPresSXR.Interaction
                 col.isTrigger = true;
             }
 
-            foreach (TargetArea target in targets)
+            if (_setupOnAwake)
+            {
+                SetupTargets();
+            }
+        }
+
+        public void SetupTargets()
+        {
+            foreach (TargetArea target in _targets)
             {
                 if (target != null)
                 {
@@ -58,13 +79,18 @@ namespace ExPresSXR.Interaction
             }
         }
 
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent(out TargetArea target)
                 && IsUncompletedTarget(target))
             {
                 target.QueueAction();
-                OnTargetAreaActionPerformed.Invoke();
+
+                if (!_emitEventsExclusively || !target.completed)
+                {
+                    OnTargetAreaActionPerformed.Invoke();
+                }
             }
         }
 
@@ -76,12 +102,16 @@ namespace ExPresSXR.Interaction
             {
                 OnAllTargetsCompleted.Invoke();
             }
-            OnSingleTargetCompleted.Invoke();
+            
+            if (!_emitEventsExclusively || _numCompleted != numTargets)
+            {
+                OnSingleTargetCompleted.Invoke();
+            }
         }
 
         private bool IsUncompletedTarget(TargetArea target)
         {
-            foreach (TargetArea t in targets)
+            foreach (TargetArea t in _targets)
             {
                 // Found target => Return if it was not already completed
                 if (t == target)

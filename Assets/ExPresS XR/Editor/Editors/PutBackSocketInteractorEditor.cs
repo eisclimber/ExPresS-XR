@@ -45,6 +45,8 @@ namespace ExPresSXR.Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObjectInstance"), true);
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_hideHighlighterWhileGrabbed"), true);
+
             if (EditorGUI.EndChangeCheck())
             {
                 // Update Displayed Prefab only when necessary

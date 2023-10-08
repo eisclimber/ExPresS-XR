@@ -39,10 +39,9 @@ namespace ExPresSXR.Interaction
             }
         }
 
-
         private void AddHapticTargetFromHover(HoverEnterEventArgs args)
         {
-            args?.interactorObject?.transform.TryGetComponent(out hapticTarget);
+            hapticTarget = FindControllerOfInteractor(args?.interactorObject?.transform);
         }
 
         private void RemoveHapticTargetFromHover(HoverExitEventArgs args)
@@ -53,6 +52,20 @@ namespace ExPresSXR.Interaction
             {
                 hapticTarget = null;
             }
+        }
+
+        private XRBaseController FindControllerOfInteractor(Transform fromTransform)
+        {
+            if (fromTransform == null)
+            {
+                return null;
+            }
+            
+            if (!fromTransform.TryGetComponent(out XRBaseController ctrl))
+            {
+                fromTransform.parent.TryGetComponent(out ctrl);
+            }
+            return ctrl;
         }
 
         // Use this function to send haptic Events to the current hapticTarget.
@@ -95,9 +108,9 @@ namespace ExPresSXR.Interaction
     {
         [Tooltip("Rumble strength.")]
         [Range(0.0f, 1.0f)]
-        public float strength = 0.3f;
+        public float strength;
 
         [Tooltip("Rumble duration (in s).")]
-        public float duration = 0.1f;
+        public float duration;
     }
 }
