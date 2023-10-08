@@ -80,8 +80,8 @@ namespace ExPresSXR.UI
                 // => Fade to color completed
                 if (fadeColor.a < 1.0f && newFadeValue == 1.0f)
                 {
-                    OnFadeToColorCompleted.Invoke();
                     _fadeDirection = FadeDirection.None;
+                    OnFadeToColorCompleted.Invoke();
                 }
 
                 fadeColor.a = newFadeValue;
@@ -96,8 +96,8 @@ namespace ExPresSXR.UI
                 // => Fade to color completed
                 if (fadeColor.a > 0.0f && newFadeValue == 0.0f)
                 {
+                    _fadeDirection = FadeDirection.None;                    
                     OnFadeToClearCompleted.Invoke();
-                    _fadeDirection = FadeDirection.None;
                 }
 
                 fadeColor.a = newFadeValue;

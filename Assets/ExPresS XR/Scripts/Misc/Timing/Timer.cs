@@ -43,8 +43,10 @@ namespace ExPresSXR.Misc.Timing
         [Tooltip("Event that is triggered when the timer times out.")]
         public UnityEvent OnTimeout;
 
-        // Returns the remaining time of the timer.
-        // If the timer is not running the value will be the value of TIMER_INACTIVE_WAIT_TIME.
+        /// <summary>
+        /// Returns the remaining time of the timer.
+        /// If the timer is not running the value will be the value of TIMER_INACTIVE_WAIT_TIME.
+        /// </summary>
         public float remainingTime
         {
             get => _remainingTime;
@@ -75,9 +77,13 @@ namespace ExPresSXR.Misc.Timing
             }
         }
 
-
-        // (Re-)starts the timer with duration, setting waitTime in the process.
-        // If duration is <= 0.0f the value of waitTime is used.
+        /// <summary>
+        /// (Re-)starts the timer with duration, setting waitTime in the process.
+        /// If duration is <= 0.0f the value of waitTime is used.
+        /// </summary>
+        /// <param name="duration">The duration the timer will run. 
+        ///     If the value is zero or negative the <see cref="waitTime"/> will be used. Default: -1.0f
+        /// </param>
         public void StartTimer(float duration = -1.0f)
         {
             waitTime = duration > 0.0f? duration : waitTime;
@@ -86,13 +92,24 @@ namespace ExPresSXR.Misc.Timing
             OnStarted.Invoke();
         }
 
-        // Pauses the timer, maintaining it's current waitTime
+
+        /// <summary>
+        /// Starts the timer using <see cref="waitTime"/>. Prevents the need to provide a value if invoked via UnityEvents.
+        /// </summary>
+        public void StartTimerDefault() => StartTimer(-1.0f);
+
+        /// <summary>
+        /// Pauses the timer, maintaining it's current waitTime
+        /// </summary>
+        /// <param name="paused"> If the timer should be paused or not.</param>
         public void PauseTimer(bool paused)
         {
             timerPaused = paused;
         }
 
-        // Stops and resets the timer whilst not emitting the timeout event
+        /// <summary>
+        /// Stops and resets the timer whilst not emitting the timeout event.
+        /// </summary>
         public void StopTimer()
         {
             _remainingTime = TIMER_INACTIVE_WAIT_TIME;
@@ -100,6 +117,9 @@ namespace ExPresSXR.Misc.Timing
         }
 
 
+        /// <summary>
+        /// Handles the timers timeout, invoking the event restarting it if neccessary.
+        /// </summary>
         private void HandleTimeout()
         {
             StopTimer();

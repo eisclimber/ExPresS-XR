@@ -494,6 +494,12 @@ namespace ExPresSXR.Presentation
         public void HideInfo()
         {
             DisplayInfoContents(false);
+            
+            if (showInfoCoroutine != null)
+            {
+                StopCoroutine(showInfoCoroutine);
+                showInfoCoroutine = null;
+            }
         }
 
         private void OnUiShowInfoButtonPressed()

@@ -409,10 +409,12 @@ namespace ExPresSXR.Rig
                 Debug.LogWarning("SmoothMove and/or SmoothTurn are both enabled with SnapTurn on this hand. SnapTurn is disabled, as it is overwritten by SmoothMove/SmoothTurn.");
             }
 
-            if (!_rayAnchorControlEnabled && scaleGrabbedObjects)
-            {
-                Debug.LogWarning("Scaling objects using the RayInteractor will require 'RayAnchorControl' to be enabled.");
-            }
+            // Disabling the comment as to not spam this warning if that behavior is not desired
+            // Is reflected in the Inspector anyways
+            // if (!_rayAnchorControlEnabled && scaleGrabbedObjects)
+            // {
+            //     Debug.LogWarning("Scaling objects using the RayInteractor will require 'RayAnchorControl' to be enabled.");
+            // }
         }
 
 
