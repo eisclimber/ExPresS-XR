@@ -72,8 +72,9 @@ Apart from the code itself the wiki features useful workflow tutorials that aim 
 
 ![MadeWithExPresSXR](https://github.com/eisclimber/ExPresS-XR/assets/49446532/b0220144-5b62-4bcd-a0eb-a79c20472d0f)
 
+- Hornmoldhaus VR, an interactive and engaging exhibition of the city museum in Bietigheim-Bissingen. Released on [Sidequest](https://sidequestvr.com/app/21084/hornmoldhaus-vr) and [Itch.io](https://eisclimber.itch.io/hornmoldhaus-vr).
 - A numismatic/roman inspired exhibition with awesome minigames *(Link will follow shortly)*
-- [A workshop on using VR for Cultural Heritage Presentation using ExPresS XR for the CIVIS Days 2023](https://github.com/eisclimber/VRMuseumTemplate)
+- [Workshops on using VR for Cultural Heritage Presentation using ExPresS XR for the CIVIS Days 2023 and FORGE 2023](https://github.com/eisclimber/VRMuseumTemplate)
 - [A recreation of an Egyptian burial chamber](https://github.com/eisclimber/VR-Burial-Chamber)
 - [A sample serving as an VR-Exhibition of the church in Mühlen a. N.](https://github.com/eisclimber/express-xr-exhibition-kirche-muehlen)
 - And of course the ready-to-play Scenes/Samples from the project itself:)
@@ -96,7 +97,10 @@ If you like the project you can buy me a coffee (Programmer + Coffee = Code :D):
 
 Created by Luca Dreiling
 
-Special Thanks to Kevin Körner for the great mentoring during and after the creation of the masters thesis this project is subject of.
+Special Thanks to Kevin Körner for the great mentoring during and after the creation of the masters thesis this project is subject of. 
+Also thanks to Stefan Krmnicek for his continuous engagement in this project and projects using ExPresS XR.
+
+Supported by the VWStiftung.
 
 
 ## Contact and Support 
