@@ -106,7 +106,7 @@ Supported by the VWStiftung.
 ## Contact and Support 
 
 Twitter: [@eisclimber](https://twitter.com/eisclimber)
-E-Mail: [luca.dreiling@student.uni-tuebingen.de](mailto:luca.dreiling@student.uni-tuebingen.de).
+E-Mail: [luca.dreiling@student.uni-tuebingen.de](mailto:luca.dreiling@gmx.de).
 
 ## Version
 
