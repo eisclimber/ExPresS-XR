@@ -191,7 +191,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         public void ExportNewCSVLine()
         {
-            if (isActiveAndEnabled)
+            if (!isActiveAndEnabled)
             {
                 Debug.LogError("Trying to Export a new CSV line of a disabled DataGatherer. This is not allowed.");
                 return;

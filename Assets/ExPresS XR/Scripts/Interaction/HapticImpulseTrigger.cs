@@ -68,6 +68,10 @@ namespace ExPresSXR.Interaction
             return ctrl;
         }
 
+
+        // Add test function
+        public void PerformTestHapticOnCurrentTarget() => PerformHapticEventOnCurrentTarget(1.0f, 1.0f, null);
+
         // Use this function to send haptic Events to the current hapticTarget.
         // Note: If targetOverride is active the hapticTarget will be updated automatically.
         public void PerformHapticEventOnCurrentTarget(RumbleDescription rumble, XRBaseController targetOverride = null)
@@ -96,7 +100,7 @@ namespace ExPresSXR.Interaction
             {
                 Debug.LogError("No target was provided.");
             }
-            if (!target.SendHapticImpulse(Mathf.Clamp01(strength), duration))
+            else if (!target.SendHapticImpulse(Mathf.Clamp01(strength), duration))
             {
                 Debug.LogError("The given target was not able to perform a haptic impulse.");
             }

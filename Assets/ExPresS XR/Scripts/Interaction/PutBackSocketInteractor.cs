@@ -43,7 +43,7 @@ namespace ExPresSXR.Interaction
 
 
         [SerializeField]
-        private float _putBackTime;
+        private float _putBackTime = 1.0f;
         public float putBackTime
         {
             get => _putBackTime;

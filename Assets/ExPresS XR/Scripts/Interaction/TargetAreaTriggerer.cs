@@ -21,7 +21,7 @@ namespace ExPresSXR.Interaction
         }
 
         [SerializeField]
-        private bool _setupOnAwake;
+        private bool _setupOnAwake = true;
 
         [SerializeField]
         [Tooltip("If enabled all events each of the three events below will be called mutually exclusive. This prevents errors when using these for different haptic feedbacks.")]
@@ -65,6 +65,11 @@ namespace ExPresSXR.Interaction
 
         public void SetupTargets()
         {
+            if (_targets.Length <= 0)
+            {
+                Debug.LogWarning("no targets were specified. This TargetAreaTrigger won't have an effect.", this);
+            }
+
             foreach (TargetArea target in _targets)
             {
                 if (target != null)

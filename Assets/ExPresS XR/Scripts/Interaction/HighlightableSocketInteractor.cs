@@ -136,8 +136,9 @@ namespace ExPresSXR.Interaction
         }
 
 
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
             UpdateHighlighterScaleWithCollider();
         }
     }

@@ -90,50 +90,57 @@ namespace ExPresSXR.Editor
         }
 
 
-        // Interaction
-        [MenuItem("GameObject/ExPresS XR/Interaction/Dynamic Attach Interactable")]
+        // Interaction (Interactables)
+        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Dynamic Attach")]
         public static void CreateXROffsetInteractable(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Dynamic Attach Interactable");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Interaction/Highlightable Socket Interactor")]
-        public static void CreateHighlightableSocketInteractor(MenuCommand menuCommand)
+        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Scalable")]
+        public static void CreateScalableInteractable(MenuCommand menuCommand)
         {
-            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Highlightable Socket Interactor");
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Dynamic Attach Interactable");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Interaction/Put Back Socket Interactor")]
-        public static void CreatePutBackSocketInteractor(MenuCommand menuCommand)
-        {
-            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Put Back Socket Interactor");
-        }
-
-        [MenuItem("GameObject/ExPresS XR/Interaction/Tag Check Socket Interactor")]
-        public static void CreateTagCheckSocketInteractor(MenuCommand menuCommand)
-        {
-            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Tag Check Socket Interactor");
-        }
-
-        [MenuItem("GameObject/ExPresS XR/Interaction/Object Check Socket Interactor")]
-        public static void CreateObjectCheckSocketInteractor(MenuCommand menuCommand)
-        {
-            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Object Check Socket Interactor");
-        }
-
-
-        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Trigger Interactable")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Grab Trigger")]
         public static void CreateXRGrabTriggerInteractable(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Grab Trigger Interactable");
         }
 
-
-        [MenuItem("GameObject/ExPresS XR/Interaction/Exit Game Interactable")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Exit Game")]
         public static void CreateXRExitGameInteractable(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Exit Game Interactable");
         }
+
+
+        // Interaction (Sockets)
+        [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Highlightable")]
+        public static void CreateHighlightableSocketInteractor(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Highlightable Socket Interactor");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Put Back")]
+        public static void CreatePutBackSocketInteractor(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Put Back Socket Interactor");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Tag Check")]
+        public static void CreateTagCheckSocketInteractor(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Tag Check Socket Interactor");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Object Check")]
+        public static void CreateObjectCheckSocketInteractor(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Interaction/Object Check Socket Interactor");
+        }
+
 
         // Buttons
         [MenuItem("GameObject/ExPresS XR/Buttons/Button Empty Text")]
