@@ -29,17 +29,17 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         }
 
         [SerializeField]
-        private GameObject _answerPrefab;
-        public GameObject answerPrefab
+        private GameObject _answerObject;
+        public GameObject answerObject
         {
-            get => _answerPrefab;
+            get => _answerObject;
             set
             {
-                _answerPrefab = value;
+                _answerObject = value;
 
                 if (_feedbackObjectSocket != null)
                 {
-                    _feedbackObjectSocket.putBackPrefab = _answerPrefab;
+                    _feedbackObjectSocket.putBackPrefab = _answerObject;
                 }
             }
         }
@@ -50,15 +50,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         [SerializeField]
         private PutBackSocketInteractor _feedbackObjectSocket;
-        public PutBackSocketInteractor feedbackObjectSocket
-        {
-            get => _feedbackObjectSocket;
-            set
-            {
-                _feedbackObjectSocket = value;
-            }
-        }
-
 
         // Used to not emit inputDisabled Events after an answer was given
         private bool _overrideInputDisabledEvents;
@@ -112,9 +103,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 answerText = _answerText;
             }
 
-            if (answerPrefab != null)
+            if (answerObject != null)
             {
-                answerPrefab = _answerPrefab;
+                answerObject = _answerObject;
             }
 
             if (_answerFeedbackAudioPlayer == null)
@@ -141,7 +132,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             }
 
             this.answerText = answerText;
-            this.answerPrefab = answerObject;
+            this.answerObject = answerObject;
             this.correctChoice = correctChoice;
 
             RestartTriggerTimer();
@@ -152,9 +143,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         {
             answerText = "";
             correctChoice = false;
-            if (answerPrefab != null)
+            if (answerObject != null)
             {
-                answerPrefab = null;
+                answerObject = null;
             }
 
             if (_answerFeedbackAudioPlayer != null)

@@ -371,27 +371,34 @@ namespace ExPresSXR.Editor
 
 
         // Exhibition Displays
-        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Object")]
+        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Object")]
         static void CreateExhibitionDisplayObject(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Object");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Object Small")]
+        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Object Small")]
         static void CreateExhibitionDisplayObjectSmall(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Object Small");
         }
 
 
-        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Image")]
+        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Image")]
         static void CreateExhibitionDisplayImage(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Image");
         }
 
 
-        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Display - Empty")]
+        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Info Stand")]
+        static void CreateExhibitionDisplayInfoStand(MenuCommand menuCommand)
+        {
+            InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Info Stand");
+        }
+
+
+        [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Empty")]
         static void CreateExhibitionDisplayEmpty(MenuCommand menuCommand)
         {
             InstantiatePrefabAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Empty");

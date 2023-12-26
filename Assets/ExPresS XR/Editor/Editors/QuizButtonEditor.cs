@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction.ButtonQuiz;
 
@@ -56,10 +57,10 @@ namespace ExPresSXR.Editor
         {
             EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_correctChoice"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDisabled"), true);
             EditorGUI.BeginDisabledGroup(quizButton.feedbackDisabled);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("invertedFeedback"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_invertedFeedback"), true);
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
 

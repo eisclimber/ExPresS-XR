@@ -23,9 +23,9 @@ namespace ExPresSXR.Editor
         {
             base.OnInspectorGUI();
 
-            if (GUILayout.Button("Perform Test Haptics") && Application.isPlaying)
+            if (GUILayout.Button("Perform Default Haptics") && Application.isPlaying)
             {
-                targetScript.PerformTestHapticOnCurrentTarget();
+                targetScript.PerformDefaultHapticEventOnCurrentTarget();
             }
         }
     }

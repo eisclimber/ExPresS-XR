@@ -137,7 +137,7 @@ namespace ExPresSXR.Interaction
 
         public override void SetHighlighterVisible(bool visible)
         {
-            base.SetHighlighterVisible((_putBackObjectInstance == null || !hideHighlighterWhileGrabbed) && visible);
+            base.SetHighlighterVisible((_putBackObjectInstance == null || !_hideHighlighterWhileGrabbed) && visible);
         }
 
         public void UpdatePutBackObject()
@@ -184,7 +184,12 @@ namespace ExPresSXR.Interaction
         {
             if (_putBackPrefab != null)
             {
-                _putBackObjectInstance = Instantiate(_putBackPrefab, transform);
+                Transform attachParent = attachTransform != null ? attachTransform : transform;
+
+                _putBackObjectInstance = Instantiate(_putBackPrefab, attachParent);
+
+                Transform _putBackTransform = _putBackObjectInstance.transform;
+                
 
                 if (_putBackObjectInstance.TryGetComponent(out _putBackInteractable))
                 {
@@ -194,8 +199,7 @@ namespace ExPresSXR.Interaction
                         interactionManager.SelectEnter(this, (IXRSelectInteractable)_putBackInteractable);
                     }
 
-                    _putBackObjectInstance.transform.position = transform.position;
-                    _putBackObjectInstance.transform.SetParent(transform);
+                    _putBackTransform.SetPositionAndRotation(attachParent.position, attachParent.rotation);
 
                     _putBackInteractable.selectExited.AddListener(StartPutBackTimer);
                     _putBackInteractable.selectEntered.AddListener(ResetPutBackTimer);
@@ -203,7 +207,7 @@ namespace ExPresSXR.Interaction
                 else if (allowNonInteractables)
                 {
                     // Debug.Log("PutBackPrefab it is not an XRGrabInteractable, you won't be able to pick it up");
-                    _putBackObjectInstance.transform.position = transform.position;
+                    _putBackTransform.SetPositionAndRotation(attachParent.position, attachParent.rotation);
                 }
                 else
                 {

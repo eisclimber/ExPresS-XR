@@ -25,9 +25,9 @@ namespace ExPresSXR.Editor
 
         protected void DrawTagCheckProperties()
         {
-            EditorGUILayout.LabelField("Tag", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("targetTag"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_targetTags"), true);
             EditorGUI.indentLevel--;
         }
     }

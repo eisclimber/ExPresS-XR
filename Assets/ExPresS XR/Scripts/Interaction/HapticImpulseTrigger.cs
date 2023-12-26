@@ -10,7 +10,7 @@ namespace ExPresSXR.Interaction
     {
         [Tooltip("If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.")]
         [SerializeField]
-        private bool _findTargetOnHover;
+        private bool _findTargetOnHover = true;
         public bool findTargetOnHover
         {
             get => _findTargetOnHover;
@@ -19,6 +19,10 @@ namespace ExPresSXR.Interaction
                 _findTargetOnHover = value;
             }
         }
+
+        [Tooltip("The default rumble that is performed when calling 'PerformDefaultRumble()'.")]
+        [SerializeField]
+        private RumbleDescription _defaultRumble = new(0.5f, 0.5f);
 
         [Tooltip("Target Controller to receive haptic events.")]
         public XRBaseController hapticTarget;
@@ -46,8 +50,7 @@ namespace ExPresSXR.Interaction
 
         private void RemoveHapticTargetFromHover(HoverExitEventArgs args)
         {
-            XRBaseController interactor = null;
-            args?.interactorObject?.transform.TryGetComponent(out interactor);
+            XRBaseController interactor = FindControllerOfInteractor(args?.interactorObject?.transform);
             if (hapticTarget == interactor)
             {
                 hapticTarget = null;
@@ -69,8 +72,10 @@ namespace ExPresSXR.Interaction
         }
 
 
-        // Add test function
-        public void PerformTestHapticOnCurrentTarget() => PerformHapticEventOnCurrentTarget(1.0f, 1.0f, null);
+        /// <summary>
+        /// Performs the rumble specified by '_defaultRumble'.
+        /// </summary>
+        public void PerformDefaultHapticEventOnCurrentTarget() => PerformHapticEventOnCurrentTarget(_defaultRumble, null);
 
         // Use this function to send haptic Events to the current hapticTarget.
         // Note: If targetOverride is active the hapticTarget will be updated automatically.
@@ -116,5 +121,11 @@ namespace ExPresSXR.Interaction
 
         [Tooltip("Rumble duration (in s).")]
         public float duration;
+
+        public RumbleDescription(float strength, float duration)
+        {
+            this.strength = Mathf.Clamp01(strength);
+            this.duration = duration;
+        }
     }
 }
