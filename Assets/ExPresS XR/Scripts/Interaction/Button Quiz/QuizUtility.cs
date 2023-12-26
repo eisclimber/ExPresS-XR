@@ -84,5 +84,38 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             }
             return Path.Combine(Application.streamingAssetsPath, filePath);
         }
+
+        public static string GameObjectArrayToNameString(GameObject[] objects, char sep = ',')
+        {
+            if (objects == null)
+            {
+                return "[]"
+            }
+            return CsvUtility.ArrayToString(objects.map(o => o?.name ?? ""), sep);
+        }
+
+        /// <summary>
+        /// Converts an array of QuizButtons to a bool array representing their pressed states.
+        /// Null-Buttons are considered not pressed
+        /// </summary>
+        /// <param name="buttons">Quiz Buttons to be converted</param>
+        /// <returns>Boolean array</returns>
+        public static bool[] ExtractButtonPressStates(QuizButton[] buttons) => buttons.map(b => b != null && b.pressed);
+
+        /// <summary>
+        /// Checks if all values are true
+        /// </summary>
+        /// <param name="values">array to check</param>
+        /// <returns>if all values were true</returns>
+        public static bool AllEntriesTrue(bool[] values) => values.All(v => v);
+
+
+        /// <summary>
+        /// Returns the maximum trigger time of *pressed* QuizButtons.
+        /// If none is pressed or the array is empty returns -1.0f
+        /// </summary>
+        /// <param name="buttons">Buttons for which the trigger time should be extracted.</param>
+        /// <returns>Longest Trigger time of the pressed buttons</returns>
+        public static float SelectedButtonMaxTriggerTime(QuizButton[] buttons) => buttons.Max(b => b?.pressed ? b.GetTriggerTimerValue() : -1.0f);
     }
 }

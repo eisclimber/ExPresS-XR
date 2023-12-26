@@ -6,83 +6,58 @@ using UnityEngine.Video;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
-    // public class QuizRoundData
-    // {
-    //     public bool answerCorrect { get; private set; }
-    //     public bool[] answerChosen { get; private set; }
-    //     public int[] answerPermutation { get; private set; }
-    //     public float answerPressTime { get; private set; }
+    public class QuizRoundData
+    {
+        public QuizQuestion question { get; private set; }
+
+        public bool answerCorrect { get; private set; }
+
+        public bool[] answerChosen { get; private set; }
+
+        public string answerChosenText { get => CsvUtility.ArrayToString(AnswerChosen ?? new bool[0]); }
+
+        public int[] answerPermutation { get; private set; }
+
+        public string answerPermutationText { get => CsvUtility.ArrayToString(AnswerPermutation ?? new int[0]); }
+
+        public int askOrderIdx { get; private set; }
+
+        public int questionIdx { get => question.itemIdx; }
+
+        public float answerPressTime { get; private set; }
+
+        public string feedbackText  { get => question.feedbackText; }
+
+        public GameObject[] feedbackObjects  { get => question.feedbackObjects; }
+        public string feedbackObjectsText { get => QuizUtility.GameObjectArrayToNameString(feedbackObjects); }
+
+        public VideoClip feedbackVideo  { get => question.feedbackVideo; }
+
+        public string feedbackVideoText { get => _feedbackVideo?.name ?? "" }
 
 
-    //     public static QuizRoundData GenerateQuizRoundDataSC(ButtonQuizQuestion question, QuizButton[] buttons, int[] answersPermutation)
-    //     {
-    //         if (question == null)
-    //         {
-    //             Debug.LogError("Could not generate QuizRoundData the provided question was null.");
-    //             return null;
-    //         }
-
-    //         // Correct 
-    //         bool allCorrect = true;
-    //         bool[] buttonsPressed = new bool[ButtonQuiz.NUM_ANSWERS];
-    //         for (int i = 0; i < question.correctAnswers.Length; i++)
-    //         {
-    //             int buttonIdx = answersPermutation[i];
-    //             bool shouldBeCorrect = question.correctAnswers[i];
-    //             bool wasPressed = buttons[i] != null ? buttons[buttonIdx].pressed : false;
-                
-    //             buttonsPressed[i] = wasPressed;
-    //             allCorrect &= shouldBeCorrect == wasPressed;
-    //         }
+        public QuizRoundData Create(QuizQuestion question, QuizButtons buttons, McConfirmButton mcConfirmButton, QuizConfig config)
+        {
+            bool isMC = config.quizMode == QuizMode.MultipleChoice;
+            bool[] answerChosen = QuizUtility.ExtractButtonPressStated(buttons);
+            bool answerCorrect = QuizUtility.AllEntriesTrue(chosenAnswers);
+            float pressTime = isMC
+                            ? mcConfirmButton.GetTriggerTimerValue();
+                            QuizUtility.SelectedButtonMaxTriggerTime(buttons);
+            
+            return new QuizRoundData(question, answerCorrect, answerChosen, answerPermutation, askOrderIdx, answerPressTime);
+        }
 
 
-
-
-
-
-
-
-
-    //         // Create and return QuizRoundData
-    //         return null; // new QuizRoundData();
-    //     }
-
-    //     public static QuizRoundData GenerateQuizRoundDataMC(ButtonQuizQuestion question, QuizButton[] buttons, int[] answersPermutation, McConfirmButton confirmButton)
-    //     {
-    //         if (question == null)
-    //         {
-    //             Debug.LogError("Could not generate QuizRoundData the provided question was null.");
-    //             return null;
-    //         }
-
-    //         // Aggregate button infos
-    //         List<int> pressedButtonIdxs = new();
-    //         List<QuizButton> pressedButtons = new();
-    //         for (int i = 0; i < buttons.Length; i++)
-    //         {
-    //             if (buttons[i] != null && buttons[i].pressed)
-    //             {
-    //                 pressedButtonIdxs.Add(i);
-    //                 pressedButtons.Add(buttons[i]);
-    //             }
-    //         }
-
-    //         bool correct = false;
-
-
-    //         // Create and return QuizRoundData
-    //         return null; /*new QuizRoundData(
-
-    //         );*/
-    //     }
-
-
-    //     private QuizRoundData(bool answerCorrect, int[] answerChosen, int[] answerPermutation, float answerPressTime)
-    //     {
-    //         this.answerCorrect = answerCorrect;
-    //         this.answerChosen = answerChosen;
-    //         this.answerPermutation = answerPermutation;
-    //         this.answerPressTime = answerPressTime;
-    //     }
-    // }
+        private QuizRoundData(QuizQuestion question, bool answerCorrect, bool[] answerChosen,
+                                 int[] answerPermutation, int askOrderIdx, float answerPressTime)
+        {
+            this.question = question;
+            this.answerCorrect = answerCorrect;
+            this.answerChosen = answerChosen;
+            this.answerPermutation = answerPermutation;
+            this.askOrderIdx = askOrderIdx;
+            this.answerPressTime = answerPressTime;
+        }
+    }
 }
