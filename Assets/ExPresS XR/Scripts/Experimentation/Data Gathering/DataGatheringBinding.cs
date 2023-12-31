@@ -112,7 +112,6 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 _targetComponent = null;
                 _targetMemberInfo = _targetObject.GetType().GetMember(memberName)[0];
-                Debug.Log(_targetMemberInfo);
                 return true;
             }
             return false;
@@ -127,10 +126,17 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 if (IsComponentMatch(component, compFullName))
                 {
+                    MemberInfo[] memberInfos = component.GetType().GetMember(memberName);
+                    if (memberInfos == null || memberInfos.Length <= 0)
+                    {
+                        Debug.LogError($"Found a matching component but it has no member. Please reconnect the binding { component.name }({ compNumber })/{ memberName }.");
+                        return false;
+                    }
+
                     if (matchingComps == compNumber)
                     {
                         _targetComponent = component;
-                        _targetMemberInfo = component.GetType().GetMember(memberName)[0];
+                        _targetMemberInfo = memberInfos[0];
                         return true;
                     }
                     else

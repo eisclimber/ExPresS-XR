@@ -50,6 +50,7 @@ namespace ExPresSXR.Editor
                     // Either Only local or both
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
                 }
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_newExportFilePerPlaythrough"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
@@ -72,7 +73,8 @@ namespace ExPresSXR.Editor
 
             EditorGUILayout.LabelField("Exported Values", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeUnixTimeStamp"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeHumanReadableTimestamp"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeUnixTimestamp"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeUnityTime"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_includeDeltaTime"), true);
 

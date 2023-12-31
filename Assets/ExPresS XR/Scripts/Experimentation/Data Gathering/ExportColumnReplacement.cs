@@ -54,7 +54,8 @@ namespace ExPresSXR.Experimentation.DataGathering
                 new("ButtonQuiz", "GetFullQuizCsvExportValues", ButtonQuiz.GetFullQuizCsvHeader(sep)),
                 new("ButtonQuiz", "GetConfigCsvExportValues", ButtonQuizConfig.GetConfigCsvHeader(sep)),
                 new("ButtonQuiz", "GetAllQuestionsCsvExportValues", ButtonQuizQuestion.GetQuestionCsvHeader(sep), 
-                        "`GetAllQuestionsCsvExportValues(char? sep)` will export multiple lines of values which might break the formatting of the csv.")                
+                        "`GetAllQuestionsCsvExportValues(char? sep)` will export multiple lines of values which might break the formatting of the csv. "
+                        + "Also do not export this value with timestamps.")                
             };
         }
     }

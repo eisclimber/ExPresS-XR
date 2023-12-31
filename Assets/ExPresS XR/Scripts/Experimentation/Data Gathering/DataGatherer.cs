@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -13,9 +14,15 @@ namespace ExPresSXR.Experimentation.DataGathering
     public class DataGatherer : MonoBehaviour
     {
         public const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
+        public const string HUMAN_READABLE_TIME_COLUMN_NAME = "time";
         public const string UNIX_TIME_COLUMN_NAME = "unix_time";
         public const string UNITY_TIME_COLUMN_NAME = "unity_time";
         public const string DELTA_TIME_COLUMN_NAME = "delta_time";
+
+        public static readonly string[] EXPORT_FILE_ENDINGS = { "csv", "log", "txt" };
+
+        public static readonly string timestampPretty = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        public static readonly string timestampSafe = DateTimeOffset.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
         [SerializeField]
         private DataGathererExportType _dataExportType;
@@ -44,9 +51,21 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 _localExportPath = value;
 
-                // Update FileWriter when the path changes during runtime
-                SetupExport();
+                if (Application.isPlaying)
+                {
+                    // Redo setup as the file stream needs to be reopened
+                    SetupExport();
+                }
             }
+        }
+
+
+        [SerializeField]
+        private bool _newExportFilePerPlaythrough;
+        public bool newExportFilePerPlaythrough
+        {
+            get => _newExportFilePerPlaythrough;
+            set => _newExportFilePerPlaythrough = value;
         }
 
         [SerializeField]
@@ -109,11 +128,20 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         // Data
         [SerializeField]
-        private bool _includeUnixTimeStamp = true;
-        public bool includeUnixTimeStamp
+        [Tooltip("Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). Its value is relative to the computers local timezone.")]
+        private bool _includeHumanReadableTimestamp = true;
+        public bool includeHumanReadableTimestamp
         {
-            get => _includeUnixTimeStamp;
-            set => _includeUnixTimeStamp = value;
+            get => _includeHumanReadableTimestamp;
+            set => _includeHumanReadableTimestamp = value;
+        }
+
+        [SerializeField]
+        private bool _includeUnixTimestamp = true;
+        public bool includeUnixTimestamp
+        {
+            get => _includeUnixTimestamp;
+            set => _includeUnixTimestamp = value;
         }
 
 
@@ -172,7 +200,8 @@ namespace ExPresSXR.Experimentation.DataGathering
             SetupExport();
         }
 
-        private void FixedUpdate() {
+        private void FixedUpdate()
+        {
             if (exportDuringUpdateEnabled)
             {
                 ExportNewCSVLine();
@@ -215,7 +244,8 @@ namespace ExPresSXR.Experimentation.DataGathering
         public string GetExportCSVHeader()
         {
             string[] prependedHeaders = {
-                _includeUnixTimeStamp ? UNIX_TIME_COLUMN_NAME : "",
+                _includeHumanReadableTimestamp ? HUMAN_READABLE_TIME_COLUMN_NAME : "",
+                _includeUnixTimestamp ? UNIX_TIME_COLUMN_NAME : "",
                 _includeUnityTime ? UNITY_TIME_COLUMN_NAME : "",
                 _includeDeltaTime ? DELTA_TIME_COLUMN_NAME : ""
             };
@@ -253,7 +283,8 @@ namespace ExPresSXR.Experimentation.DataGathering
         public string GetExportCSVLine()
         {
             string[] prependedValues = {
-                _includeUnixTimeStamp ? DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "",
+                _includeHumanReadableTimestamp ? timestampPretty : "",
+                _includeUnixTimestamp ? DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() : "",
                 _includeUnityTime ? Time.time.ToString() : "",
                 _includeDeltaTime ? Time.deltaTime.ToString() : ""
             };
@@ -294,13 +325,20 @@ namespace ExPresSXR.Experimentation.DataGathering
                 if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
                 {
                     Debug.LogWarning("The following binding is invalid and will always be empty: "
-                        + $"{_dataBindings[i].GetBindingDescription()}");
+                        + $"{_dataBindings[i].GetBindingDescription()}", this);
                 }
             }
         }
 
         private void SetupExport()
         {
+            // Clean up old Output writer if exits
+            if (_outputWriter != null)
+            {
+                _outputWriter.Flush();
+                _outputWriter.Close();
+            }
+
             if (dataExportType == DataGathererExportType.Http || dataExportType == DataGathererExportType.Both)
             {
                 StartCoroutine(PostHttpData(httpExportPath, GetExportCSVHeader()));
@@ -308,21 +346,19 @@ namespace ExPresSXR.Experimentation.DataGathering
 
             if (dataExportType == DataGathererExportType.Local || dataExportType == DataGathererExportType.Both)
             {
+                if (!HasExportableFileEnding(localExportPath))
+                {
+                    Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
+                            + $"Appending '.csv' and creating a new file if necessary. New path is: '{localExportPath}.csv'.");
+                    _localExportPath += ".csv";
+                }
+
                 string path = GetLocalSavePath();
 
                 try
                 {
-                    // Throws an error if invalid
+                    // Throws an error if the path format is invalid
                     string fullPath = Path.GetFullPath(path);
-
-
-                    if (!fullPath.EndsWith(".txt") && !fullPath.EndsWith(".csv") && !fullPath.EndsWith(".log"))
-                    {
-                        localExportPath += ".csv";
-                        fullPath += ".csv";
-                        Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
-                             + $"Appending '.csv' and creating a new file if necessary. New path is: '{localExportPath}'. ");
-                    }
 
                     // Create folder if not exists
                     CreateDirectoryIfNotExist(fullPath);
@@ -345,10 +381,12 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         public string GetLocalSavePath()
         {
+            string path = _newExportFilePerPlaythrough ? InsertBeforeExportPostfixes(localExportPath, $"_{timestampSafe}") : localExportPath;
+
 #if UNITY_EDITOR
-        return Path.Combine(Application.dataPath, localExportPath);
+            return Path.Combine(Application.dataPath, path);
 #else
-        return Path.Combine(Application.persistentDataPath, localExportPath);
+            return Path.Combine(Application.persistentDataPath, path);
 #endif
         }
 
@@ -393,7 +431,8 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private IEnumerator PostHttpData(string url, string data)
         {
-            UnityWebRequest request = new(url, UnityWebRequest.kHttpVerbPOST);
+            string actualUrl = _newExportFilePerPlaythrough ? url + $"_{timestampSafe}" : url;
+            UnityWebRequest request = new(actualUrl, UnityWebRequest.kHttpVerbPOST);
 
             if (data != null)
             {
@@ -423,7 +462,26 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
+
         private void OnInputActionExportRequested(InputAction.CallbackContext callback) => ExportNewCSVLine();
+
+        // Utiltiy
+
+        private static bool HasExportableFileEnding(string path) => EXPORT_FILE_ENDINGS.Any(ending => path.EndsWith($".{ending}"));
+
+        private static string InsertBeforeExportPostfixes(string path, string toInsert)
+        {
+            string pattern = $"(\\.{string.Join("|\\.", EXPORT_FILE_ENDINGS)})$";
+
+            if (Regex.IsMatch(path, pattern))
+            {
+                // String ends with one of the postfixes, insert text before the postfix
+                return Regex.Replace(path, pattern, @$"{toInsert}$1");
+            }
+
+            // String does not end with any of the postfixes, simply append the text
+            return path + toInsert;
+        }
     }
 
     public enum DataGathererExportType

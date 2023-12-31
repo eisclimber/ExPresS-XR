@@ -25,6 +25,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 {
                     _feedbackTextLabel.text = _answerText;
                 }
+                else if (!string.IsNullOrEmpty(_answerText))
+                {
+                    Debug.LogWarning("An AnswerText was provided for a QuizButton but it does not have a "
+                                        + "`_feedbackTextLabel` configured. Please check your setup!", this);
+                }
             }
         }
 
@@ -40,6 +45,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 if (_feedbackObjectSocket != null)
                 {
                     _feedbackObjectSocket.putBackPrefab = _answerObject;
+                }
+                else if (_answerObject != null)
+                {
+                    Debug.LogWarning("An AnswerObject was provided for a QuizButton but it does not have a "
+                                        + "`_feedbackObjectSocket` configured. Please check your setup!", this);
                 }
             }
         }
@@ -81,15 +91,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         // Can be used to measure the time since between any point in time and a button press
         // Will be automatically started when input is (re-)enabled
-        public void RestartTriggerTimer()
-        {
-            triggerStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        }
+        public void RestartTriggerTimer() => triggerStartTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-        public float GetTriggerTimerValue()
-        {
-            return System.DateTimeOffset.Now.ToUnixTimeMilliseconds() - triggerStartTime;
-        }
+        public float GetTriggerTimerValue() => System.DateTimeOffset.Now.ToUnixTimeMilliseconds() - triggerStartTime;
 
 
         ////// 

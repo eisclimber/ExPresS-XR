@@ -90,8 +90,10 @@ namespace ExPresSXR.Editor
 
             EditorGUI.indentLevel++;
 
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackTextLabel"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackObjectSocket"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerFeedbackAudioPlayer"), true);
-            
+
             EditorGUI.indentLevel--;
         }
     }
