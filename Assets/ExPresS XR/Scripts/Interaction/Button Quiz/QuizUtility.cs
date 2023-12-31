@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using ExPresSXR.Experimentation.DataGathering;
+using System.Linq;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
@@ -43,7 +44,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
             {
                 // First empty question should be last as non-empty questions are prohibited
-                if (question.answerObjects.Length >= i && question.answerObjects[i] == null 
+                if (question.answerObjects.Length >= i && question.answerObjects[i] == null
                         && question.answerTexts.Length >= i && string.IsNullOrEmpty(question.answerTexts[i]))
                 {
                     return numAnswers;
@@ -73,12 +74,34 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return array;
         }
 
+        public static T[] PermuteArray<T>(T[] array, int[] permutation)
+        {
+            if (array.Length != permutation.Length)
+            {
+                Debug.LogError("Could not perform permutation, the lengths of the array and permutation do not match.");
+                return array;
+            }
+
+            T[] permutedArray = new T[array.Length];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                int originalIndex = permutation[i];
+                if (originalIndex >= 0 && originalIndex < array.Length)
+                {
+                    permutedArray[originalIndex] = array[i];
+                }
+            }
+
+            return permutedArray;
+        }
+
 
         public static string MakeStreamingAssetsVideoPath(string filePath)
         {
             if (!filePath.EndsWith(".mp4") && !filePath.EndsWith(".mov"))
             {
-                Debug.LogWarning("File did not end with either '.mp4' or '.mov'. Add the file extension to the path " 
+                Debug.LogWarning("File did not end with either '.mp4' or '.mov'. Add the file extension to the path "
                                 + "or convert your video to one of those types. Adding '.mp4' as per default.");
                 filePath += ".mp4";
             }
@@ -89,9 +112,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         {
             if (objects == null)
             {
-                return "[]"
+                return "[]";
             }
-            return CsvUtility.ArrayToString(objects.map(o => o?.name ?? ""), sep);
+            return CsvUtility.ArrayToString(objects.Select(o => o != null ? o.name : "").ToArray(), sep);
         }
 
         /// <summary>
@@ -100,7 +123,15 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <param name="buttons">Quiz Buttons to be converted</param>
         /// <returns>Boolean array</returns>
-        public static bool[] ExtractButtonPressStates(QuizButton[] buttons) => buttons.map(b => b != null && b.pressed);
+        public static bool[] ExtractButtonPressStates(QuizButton[] buttons) => buttons.Select(b => b != null && b.pressed).ToArray();
+
+
+        /// <summary>
+        /// Extracts the first index where an entry is true. Returns -1 if none is true.
+        /// </summary>
+        /// <param name="pressedStates">Array of booleans</param>
+        /// <returns>Index of first true</returns>
+        public static int FirstIndexTrue(bool[] pressedStates) => System.Array.IndexOf(pressedStates, true);
 
         /// <summary>
         /// Checks if all values are true
@@ -111,11 +142,21 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
 
         /// <summary>
+        /// Checks if bth arrays are equal regarding their elements. 
+        /// Can be used to check if a question was answered completely right or wrong.
+        /// </summary>
+        /// <param name="a">first array to check</param>
+        /// <param name="a">second array to check</param>
+        /// <returns>if all value pairs matched</returns>
+        public static bool ArrayMatch(bool[] a, bool[] b) => Enumerable.SequenceEqual(a, b);
+
+
+        /// <summary>
         /// Returns the maximum trigger time of *pressed* QuizButtons.
         /// If none is pressed or the array is empty returns -1.0f
         /// </summary>
         /// <param name="buttons">Buttons for which the trigger time should be extracted.</param>
         /// <returns>Longest Trigger time of the pressed buttons</returns>
-        public static float SelectedButtonMaxTriggerTime(QuizButton[] buttons) => buttons.Max(b => b?.pressed ? b.GetTriggerTimerValue() : -1.0f);
+        public static float SelectedButtonMaxTriggerTime(QuizButton[] buttons) => buttons.Max(b => b != null && b.pressed ? b.GetTriggerTimerValue() : -1.0f);
     }
 }

@@ -110,7 +110,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                     stepButton.clickable.clicked += () => { currentStep = j; };
 
                     // Set the button's toggle
-                    stepButton.style.backgroundColor = (i == currentStep ? Color.gray : Color.black);
+                    stepButton.style.backgroundColor = i == currentStep ? Color.gray : Color.black;
                 }
             }
         }

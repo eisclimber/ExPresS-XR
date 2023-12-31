@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
 using ExPresSXR.Interaction.ButtonQuiz;
+using System.Text.RegularExpressions;
 
 
 namespace ExPresSXR.Editor
@@ -56,11 +57,11 @@ namespace ExPresSXR.Editor
 
                 string[] popupOptions = GetPopupMemberNames(property.FindPropertyRelative("_prettyMemberNameList"));
                 SerializedProperty memberIdx = property.FindPropertyRelative("_memberIdx");
-                
+
                 EditorGUI.BeginChangeCheck();
-                    // Popup (Add subtract 1 to account for an invalid member)
-                    memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
-                
+                // Popup (Add subtract 1 to account for an invalid member)
+                memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
+
                 if (EditorGUI.EndChangeCheck())
                 {
                     // Change ExportColumnName if special Methods of TutorialQuiz were selected
@@ -169,7 +170,7 @@ namespace ExPresSXR.Editor
                     foreach (MemberInfo info in component.GetType().GetMembers())
                     {
                         if (DataGatheringBinding.IsExportableMemberInfo(info))
-                        {                           
+                        {
                             availableMemberNames.InsertArrayElementAtIndex(i);
                             availableMemberNames.GetArrayElementAtIndex(i).stringValue =
                                     $"{compFullName}/{info.Name}";
@@ -192,27 +193,39 @@ namespace ExPresSXR.Editor
             if (idx >= 0 && idx < prettyMembers.Length)
             {
                 string[] splitName = prettyMembers[idx].Split('/');
-                
-                if (splitName.Length == 2 && splitName[0].StartsWith("ButtonQuiz"))
-                {
-                    string memberName = splitName[1];
 
-                    if (memberName == "string GetConfigCsvExportValues()")
+                // Sanity check, is pretty member name formatted
+                if (splitName.Length != 2)
+                {
+                    Debug.LogError($"Binding '{prettyMembers[idx]}' was not formatted properly. This should not happen.");
+                    return;
+                }
+
+                ExportColumnReplacement[] replacements = ExportColumnReplacement.GetStandardReplacements();
+                int i = 0;
+                foreach (ExportColumnReplacement replacement in replacements)
+                {
+                    if (replacement == null || !replacement.IsComplete())
                     {
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
+                        Debug.LogWarning($"Replacement `{replacement}` is not valid. Please remove it via the Data Gathering Config Window!");
+                        continue;
                     }
-                    else if (memberName == "string GetAllQuestionsCsvExportValues()")
+
+                    if (splitName[0].EndsWith(replacement.componentName))
                     {
-                        Debug.Log("`GetQuestionsCsvExportValues()` will export multiple lines of values which might break the formatting of the csv.");
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
-                    }
-                    else if (memberName == "string GetCurrentQuestionCsvExportValue()")
-                    {
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
-                    }
-                    else if (memberName == "string GetFullQuizCsvValues()")
-                    {
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuiz.FULL_QUIZ_CSV_HEADER;
+                        string pattern = $@"\w+ {replacement.memberName}(\((char\?? sep)?\))?";
+                        Match m = Regex.Match(splitName[1], pattern);
+
+                        if (m.Success)
+                        {
+                            property.FindPropertyRelative("exportColumnName").stringValue = replacement.replacementHeader;
+                            if (!string.IsNullOrEmpty(replacement.matchInfoMessage))
+                            {
+                                Debug.Log($"Special Export Column found: {replacement.matchInfoMessage}");
+                            }
+                            break;
+                        }
+                        i++;
                     }
                 }
             }
@@ -230,8 +243,8 @@ namespace ExPresSXR.Editor
             }
             if (info.MemberType == MemberTypes.Method)
             {
-                // Add brackets to functions
-                prettyName += "()";
+                // Add brackets and optional 'char? sep' to functions
+                prettyName += DataGatheringBinding.HasSeparatorType((MethodInfo)info) ? "(char? sep)" : "()";
             }
 
             return prettyName;

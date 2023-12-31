@@ -147,11 +147,11 @@ namespace ExPresSXR.Experimentation.DataGathering
             => component != null && component.GetType().FullName == requiredFullName;
 
 
-        private bool IsGameObjectBinding(string classFullName) 
+        private bool IsGameObjectBinding(string classFullName)
             => classFullName == GAME_OBJECT_FULL_NAME;
 
 
-        public string GetBindingValue()
+        public string GetBindingValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
             if (ValidateBinding())
             {
@@ -161,7 +161,10 @@ namespace ExPresSXR.Experimentation.DataGathering
                 switch (_targetMemberInfo.MemberType)
                 {
                     case MemberTypes.Method:
-                        result = ((MethodInfo)_targetMemberInfo).Invoke(valueProvider, new object[0]);
+                        MethodInfo methodInfo = (MethodInfo)_targetMemberInfo;
+                        // Allow passing a separator to other functions
+                        object[] args = HasSeparatorType(methodInfo) ? new object[] { sep } : new object[0];
+                        result = methodInfo.Invoke(valueProvider, args);
                         break;
                     case MemberTypes.Field:
                         result = ((FieldInfo)_targetMemberInfo).GetValue(valueProvider);
@@ -200,11 +203,8 @@ namespace ExPresSXR.Experimentation.DataGathering
         //          Static functions
         //////////////////////////////////////////
 
-        public static bool IsTypeExportable(Type type)
-        {
-            return type.IsPrimitive || type == typeof(string) || type == typeof(Vector2)
-            || type == typeof(Vector3) || type == typeof(Quaternion);
-        }
+        public static bool IsTypeExportable(Type type) => type.IsPrimitive || type == typeof(string) || type == typeof(Vector2)
+                                                        || type == typeof(Vector3) || type == typeof(Quaternion);
 
         public static bool IsExportableMemberInfo(MemberInfo info)
         {
@@ -212,13 +212,13 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 MethodInfo methodInfo = (MethodInfo)info;
                 // Methods should not be of type void nor have any parameters and has no special name (e.g. auto-generated setters)
-                return IsTypeExportable(methodInfo.ReturnType) && methodInfo.GetParameters().Length <= 0 && !methodInfo.IsSpecialName;
+                return IsTypeExportable(methodInfo.ReturnType) && AreParametersValid(methodInfo) && !methodInfo.IsSpecialName;
             }
             // A property is valid if it can be read
             bool validProperty = info.MemberType == MemberTypes.Property
                                 && ((PropertyInfo)info).CanRead
                                 && IsTypeExportable(((PropertyInfo)info).PropertyType);
-            // fields are considered valid
+            // Exposed fields are considered valid
             bool validField = info.MemberType == MemberTypes.Field
                                 && IsTypeExportable(((FieldInfo)info).FieldType);
             return validProperty || validField;
@@ -243,6 +243,37 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
 
             return null;
+        }
+
+        public static bool AreParametersValid(MethodInfo methodInfo)
+        {
+            // No Parameters are always valid
+            ParameterInfo[] parameters = methodInfo.GetParameters();
+            if (parameters.Length <= 0)
+            {
+                return true;
+            }
+
+            // Check parameters
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                ParameterInfo currentParam = parameters[i];
+                // To be valid the first may be a non-optional of type char (as separator)
+                // All others must be optional
+                if (i == 0 && currentParam.GetType() != typeof(char) && !currentParam.IsOptional
+                    || i > 0 && !currentParam.IsOptional)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Can accept parameters if the first parameter is a separator (does not guarantee validity!)
+        public static bool HasSeparatorType(MethodInfo methodInfo)
+        {
+            ParameterInfo[] parameters = methodInfo.GetParameters();
+            return parameters.Length > 0 && parameters[0].GetType() != typeof(char);
         }
     }
 }

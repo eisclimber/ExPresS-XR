@@ -9,25 +9,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     [System.Serializable]
     public class ButtonQuizQuestion
     {
-        public const string QUESTION_CSV_HEADER_STRING = "questionIdx" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "questionVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "questionObject" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "questionText" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerObject0" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerObject1" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerObject2" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerObject3" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerText0" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerText1" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerText2" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "answerText3" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "correctAnswers0" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "correctAnswers1" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "correctAnswers2" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "correctAnswers3" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "feedbackVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "feedbackObject" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                        + "feedbackText";
+        public const int NUM_CSV_EXPORT_COLUMNS = 19;
+
+        public static string questionCsvHeader { get => GetQuestionCsvHeader(); }
+        
 
         // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizQuestion, Assembly-CSharp
         public int itemIdx;
@@ -197,7 +182,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             int numAnswers = 0;
             for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
             {
-                if (i < answerObjects.Length && answerObjects[i] != null 
+                if (i < answerObjects.Length && answerObjects[i] != null
                     || i < answerTexts.Length && !string.IsNullOrEmpty(answerTexts[i]))
                 {
                     numAnswers++;
@@ -216,15 +201,21 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return null;
         }
 
-        // Export Values
 
-        public static string emptyCsvExportValues 
+        public string GetFeedbackVideoUrl(ButtonQuizConfig config)
         {
-            get => CsvUtility.EmptyCSVColumns(19);
+            if (config.feedbackType == FeedbackType.Video || config.feedbackType == FeedbackType.DifferingTypes)
+            {
+                return feedbackVideoUrl;
+            }
+
+            return "";
         }
 
+        // Export Values
+        public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(19, sep);
 
-        public string GetCsvExportValues()
+        public string GetQuestionCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
             return CsvUtility.JoinAsCsv(
                 new object[] {
@@ -247,8 +238,35 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                     feedbackVideo != null? feedbackVideo.name : feedbackVideoUrl,
                     feedbackObject != null? feedbackObject.name : "",
                     feedbackText
-                }
+                },
+                sep
             );
         }
+
+        public static string GetQuestionCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
+            new object[]
+            {
+                        "questionIdx",
+                        "questionVideo",
+                        "questionObject",
+                        "questionText",
+                        "answerObject0",
+                        "answerObject1",
+                        "answerObject2",
+                        "answerObject3",
+                        "answerText0",
+                        "answerText1",
+                        "answerText2",
+                        "answerText3",
+                        "correctAnswers0",
+                        "correctAnswers1",
+                        "correctAnswers2",
+                        "correctAnswers3",
+                        "feedbackVideo",
+                        "feedbackObject",
+                        "feedbackText"
+            },
+            sep
+        );
     }
 }

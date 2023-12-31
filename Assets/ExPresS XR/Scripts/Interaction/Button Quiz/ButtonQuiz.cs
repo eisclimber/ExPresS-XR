@@ -9,6 +9,7 @@ using TMPro;
 using ExPresSXR.Misc;
 using ExPresSXR.Experimentation.DataGathering;
 using System;
+using System.IO;
 
 
 namespace ExPresSXR.Interaction.ButtonQuiz
@@ -22,19 +23,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         public const string DEFAULT_QUIZ_COMPLETED_TEXT = "Quiz Completed";
 
-        public const string FULL_QUIZ_CSV_HEADER = "quizUndergoing" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "quizPlaythroughNumber" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "currentQuestionNumber" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "currentQuestionIdx" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "answerPressTime" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "answerPermutation" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "chosenAnswerString" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "displayedFeedbackText" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "displayedFeedbackObjects" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + "displayedFeedbackVideo" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                + ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
 
+        public const int NUM_CSV_EXPORT_COLUMNS = 2 + QuizRoundData.NUM_CSV_EXPORT_COLUMNS + ButtonQuizConfig.NUM_CSV_EXPORT_COLUMNS;
+
+        public static string fullQuizCsvHeader { get => GetFullQuizCsvHeader(); }
 
         [SerializeField]
         private ButtonQuizConfig _config;
@@ -47,8 +39,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
                 if (_config != null)
                 {
-                    _questions = _config.questions;
-                    _numQuestions = _config.questions.Length;
+                    questions = _config.questions;
+                    numQuestions = _config.questions.Length;
                 }
             }
         }
@@ -72,15 +64,17 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         [SerializeField]
         private float _feedbackDuration = DEFAULT_FEEDBACK_DURATION;
 
-        private ButtonQuizQuestion[] _questions;
+        public ButtonQuizQuestion[] questions { get; private set; }
 
-        public int _numQuestions { get; private set; }
+        public int numQuestions { get; private set; }
 
         public int[] questionPermutation { get; private set; }
 
         public int currentQuestionIdx { get; private set; }
 
         public ButtonQuizQuestion currentQuestion { get; private set; }
+
+        public int[] currentAnswerPermutation { get; private set; }
 
         public QuizRoundData latestRoundData { get; private set; }
 
@@ -96,16 +90,20 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         private bool _canRestartFromAfterQuizDialog = true;
 
 
-        // Feedback
-        private string _displayedFeedbackText { get; private set; }
+        // Playthrough information
+        public long quizStartTime { get; private set; }
 
-        private GameObject[] _displayedFeedbackObjects { get; private set; }
+        public int quizPlaythroughNumber { get; private set; }
 
-        public string displayedFeedbackObjectsText { get => QuizUtility.GameObjectArrayToNameString(_displayedFeedbackObjects); }
 
-        public VideoClip _displayedFeedbackVideo { get; private set; }
+        // Feedback (Internal Use)
+        private string currentFeedbackText;
 
-        public string displayedFeedbackVideoText { get => _displayedFeedbackVideo?.name ?? ""}
+        private GameObject[] currentFeedbackObjects;
+
+        private VideoClip currentFeedbackVideo;
+
+        private string currentFeedbackVideoUrl;
 
 
         // References
@@ -124,18 +122,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         public Canvas afterQuizMenu;
 
-
         // Events
         public UnityEvent OnQuizStarted;
         public UnityEvent OnAnswerGiven;
         public UnityEvent OnQuizCompleted;
-
-
-        // Playthrough information
-        public long quizStartTime { get; private set; }
-
-        public int quizPlaythroughNumber { get; private set; }
-
 
         // Coroutines
         private Coroutine _feedbackWaitCoroutine = null;
@@ -184,14 +174,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             this.displayVideoImage = displayVideoImage;
             this.afterQuizMenu = afterQuizMenu;
 
-            _questions = _config.questions;
-            _numQuestions = _config.questions.Length;
+            questions = _config.questions;
+            numQuestions = _config.questions.Length;
 
             // Create Question Permutation
-            _questionPermutation = QuizUtility.GenerateIdentityArray(_numQuestions);
+            questionPermutation = QuizUtility.GenerateIdentityArray(numQuestions);
             if (config.questionOrdering == QuestionOrdering.Randomize)
             {
-                _questionPermutation = QuizUtility.Shuffle(_questionPermutation);
+                questionPermutation = QuizUtility.Shuffle(questionPermutation);
             }
             currentQuestionIdx = -1; // Quiz not started yet, Will be incremented to >= 0 during DisplayNextQuestion
 
@@ -272,22 +262,22 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         // Runtime logic
         private void DisplayNextQuestion()
         {
-            if (currentQuestionIdx > _numQuestions)
+            if (currentQuestionIdx >= numQuestions - 1)
             {
                 StopQuiz();
             }
             else
             {
                 currentQuestionIdx++;
-                currentQuestion = _questions[_questionPermutation[currentQuestionIdx]];
+                currentQuestion = questions[questionPermutation[currentQuestionIdx]];
 
                 SetButtonsDisabled(false);
 
-                latestAnswerPermutation = QuizUtility.GetAnswerPermutation(config, currentQuestion);
+                currentAnswerPermutation = QuizUtility.GetAnswerPermutation(config, currentQuestion);
 
-                for (int i = 0; i < latestAnswerPermutation.Length; i++)
+                for (int i = 0; i < currentAnswerPermutation.Length; i++)
                 {
-                    int answerIdx = latestAnswerPermutation[i];
+                    int answerIdx = currentAnswerPermutation[i];
 
                     if (buttons[i] != null)
                     {
@@ -341,10 +331,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         private void ShowFeedback()
         {
+            // Populate variables with new feedback
             GenerateFeedback();
-
+            // Everything about this question was gathered, make it available for export and notify listeners
             UpdateAnswerExportValues();
-
             OnAnswerGiven.Invoke();
 
 
@@ -389,23 +379,23 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
             if (showTextFeedback)
             {
-                displayText.text = config.usedFeedbackPrefix + _displayedFeedbackText;
+                displayText.text = config.usedFeedbackPrefix + currentFeedbackText;
             }
 
             if (showObjectFeedback)
             {
-                float xOffset = DISPLAY_OBJECTS_SPACING * (_displayedFeedbackObjects.Length - 1) / 2.0f;
+                float xOffset = DISPLAY_OBJECTS_SPACING * (currentFeedbackObjects.Length - 1) / 2.0f;
 
                 foreach (Transform child in displayAnchor.transform)
                 {
                     Destroy(child.gameObject);
                 }
 
-                for (int i = 0; i < _displayedFeedbackObjects.Length; i++)
+                for (int i = 0; i < currentFeedbackObjects.Length; i++)
                 {
-                    if (_displayedFeedbackObjects[i] != null)
+                    if (currentFeedbackObjects[i] != null)
                     {
-                        GameObject go = Instantiate(_displayedFeedbackObjects[i], displayAnchor.transform);
+                        GameObject go = Instantiate(currentFeedbackObjects[i], displayAnchor.transform);
                         go.transform.localPosition = new Vector3((DISPLAY_OBJECTS_SPACING * i) - xOffset, 0, 0);
                     }
                 }
@@ -551,8 +541,26 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         }
 
         // Update After Event Export Values
-        private void UpdateAnswerExportValues() => latestRoundData = new QuizRoundData(currentQuestion, buttons, mcConfirmButton, config);
-        
+        private void UpdateAnswerExportValues()
+                => latestRoundData = QuizRoundData.Create(currentQuestion,
+                                                            buttons,
+                                                            mcConfirmButton,
+                                                            config,
+                                                            currentAnswerPermutation,
+                                                            currentQuestionIdx,
+                                                            currentFeedbackText,
+                                                            currentFeedbackObjects,
+                                                            currentFeedbackVideo,
+                                                            currentFeedbackVideoUrl);
+
+
+        private void GenerateFeedback()
+        {
+            currentFeedbackText = currentQuestion?.GetFeedbackText(config) ?? "";
+            currentFeedbackObjects = currentQuestion.GetFeedbackGameObjects(config) ?? new GameObject[0];
+            currentFeedbackVideo = currentQuestion.GetFeedbackVideo(config);
+            currentFeedbackVideoUrl = currentQuestion.GetFeedbackVideoUrl(config);
+        }
 
         // Coroutines & Actions
         private IEnumerator WaitForFeedbackCompletion()
@@ -584,7 +592,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             }
         }
 
-
+        #region ExportFunctions
         /////////////////////////////////////////////////
         //              Export Functions               //
         //  (Also refer to the properties at the top)  //
@@ -600,91 +608,46 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         public int GetCurrentAskOrderIdx() => quizUndergoing ? currentQuestionIdx : -1; // From the current Question, not the latest!
 
-        public string GetCurrentQuestionCsvExportValue() => currentQuestion?.GetCsvExportValues() ?? ButtonQuizQuestion.emptyCsvExportValues;
-
         // Latest Question (Available after answering)
+        public string GetLatestRoundDataExportValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) 
+                => latestRoundData?.GetCsvExportValues(sep) ?? QuizRoundData.GetEmptyCsvExportValues(sep);
 
-        // public string GetDisplayedFeedbackVideo() => displayedFeedbackVideo != null ? displayedFeedbackVideo.name : "";
+        public string GetCurrentQuestionCsvExportValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+                => currentQuestion?.GetQuestionCsvExportValues(sep) ?? ButtonQuizQuestion.GetEmptyCsvExportValues(sep);
+
+        public string GetFullQuizCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
+            new object[]
+            {
+                    quizUndergoing,
+                    quizPlaythroughNumber,
+                    GetLatestRoundDataExportValue(),
+                    GetConfigCsvExportValues()
+            },
+            sep
+        );
+
+        public static string GetFullQuizCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
+            new object[]
+            {
+                "quizUndergoing",
+                "quizPlaythroughNumber",
+                QuizRoundData.GetQuizRoundCsvHeader(sep),
+                ButtonQuizConfig.GetConfigCsvHeader(sep)
+            },
+            sep
+        );
+
+        // Use ButtonQuizConfig.CONFIG_CSV_HEADER_STRING for header
+        public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => config != null ? config.GetConfigCsvExportValues(sep) : ButtonQuizConfig.GetEmptyCsvExportValues();
+
+
+        // Use ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING for header
+        public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => config != null ? config.GetAllQuestionsCsvExportValues(sep) : ButtonQuizQuestion.GetEmptyCsvExportValues();
 
         // Misc
-        public string GetQuestionPermutationAsCsvString() => CsvUtility.ArrayToString(_questionPermutation);
+        public string GetQuestionPermutationAsCsvString() => CsvUtility.ArrayToString(questionPermutation);
 
-        // Use EXPORT_CSV_COLUMN_STRING for header
-        public string GetConfigCsvExportValues() => config?.GetCsvExportValues() ?? ButtonQuizConfig.emptyCsvExportValues;
-
-        // Use EXPORT_CSV_COLUMN_STRING for header
-        public string GetAllQuestionsCsvExportValues() => config?.GetAllQuestionsCsvExportValues() ?? "";
-
-
-        public string GetFullQuizCsvValues() => CsvUtility.JoinAsCsv(
-            new object[] {
-                quizUndergoing,
-                quizPlaythroughNumber,
-
-                latestAnswerChosenText,
-                latestAnswerCorrect,
-                latestAnswerPressTime,
-                latestAskOrderIdx,
-                latestQuestionIdx,
-                latestAnswerPermutation,
-                GetCurrentQuestionCsvExportValue(),
-                GetConfigCsvExportValues()
-            });
+        public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(NUM_CSV_EXPORT_COLUMNS, sep);
+        #endregion
     }
 }
-
-/*
-// Timing
-unix_time
-unity_time
-delta_time
-
-
-
-// General
-isQuizUndergoing -> If the quiz is currently undergoing
-quizPlaythroughNumber -> How many times the quiz has been played (since the last app start)
-
-// Latest Question
-answerWasCorrect -> If the answer was completely correct
-answerChosen -> Which button(s) were pressed as array
-answerPressTime -> Press time for submitting an answer (choosing one button or pressing the mcConfirm)
-askOrderIdx -> Order of the question during quiz
-questionIdx -> Index of question in the config quiz
-answerPermutation -> Permutation in which the answer options were presented (can be used with MC to determine which answer was incorrectly chosen)
-
-// Displayed Feedback
-displayedFeedbackText
-displayedFeedbackObjects
-displayedFeedbackVideo
-
-// Current Question Config
-questionIdx
-questionVideo
-questionObject
-questionText
-answerObject0
-answerObject1
-answerObject2
-answerObject3
-answerText0
-answerText1
-answerText2
-answerText3
-correctAnswers0
-correctAnswers1
-correctAnswers2
-correctAnswers3
-feedbackVideo
-feedbackObject
-feedbackText
-// Config
-quizMode
-questionOrdering
-answersAmount
-answersOrdering
-questionType
-answerType
-feedbackMode
-feedbackType
-*/

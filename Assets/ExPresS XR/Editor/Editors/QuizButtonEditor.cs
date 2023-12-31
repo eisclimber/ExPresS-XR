@@ -57,10 +57,10 @@ namespace ExPresSXR.Editor
         {
             EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_correctChoice"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDisabled"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);
             EditorGUI.BeginDisabledGroup(quizButton.feedbackDisabled);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_invertedFeedback"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("invertedFeedback"), true);
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
 
@@ -68,7 +68,7 @@ namespace ExPresSXR.Editor
 
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerPrefab"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerObject"), true);
             EditorGUI.indentLevel--;
         }
 

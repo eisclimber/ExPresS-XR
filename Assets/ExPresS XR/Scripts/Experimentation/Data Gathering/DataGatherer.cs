@@ -266,7 +266,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             // Read Data Bindings
             for (int i = 0; i < _dataBindings.Length; i++)
             {
-                line += _dataBindings[i].GetBindingValue();
+                line += _dataBindings[i].GetBindingValue(_columnSeparator);
 
                 if (i < _dataBindings.Length - 1 || _inputActionDataBindings.Length > 0)
                 {

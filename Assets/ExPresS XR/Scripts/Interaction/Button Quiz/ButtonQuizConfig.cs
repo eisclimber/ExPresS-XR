@@ -1,20 +1,17 @@
 using UnityEngine;
 using ExPresSXR.Experimentation.DataGathering;
 using System;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
+using System.Linq;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
     [System.Serializable]
     public class ButtonQuizConfig : ScriptableObject
     {
-        public const string CONFIG_CSV_HEADER_STRING = "quizMode" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                    + "questionOrdering" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                    + "answersAmount" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                    + "answersOrdering" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                    + "questionType" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                    + "answerType" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                    + "feedbackMode" + CsvUtility.DEFAULT_COLUMN_SEPARATOR_STRING
-                                                    + "feedbackType";
+        public const int NUM_CSV_EXPORT_COLUMNS = 8;
+
+        public static string configCsvHeader { get => GetConfigCsvHeader(); }
 
         public const string DEFAULT_FEEDBACK_PREFIX = "Correct Answer was:";
 
@@ -41,12 +38,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
 
         // Export
-        public static string emptyCsvExportValues
-        {
-            get => CsvUtility.EmptyCSVColumns(8);
-        }
-
-        public string GetCsvExportValues()
+        public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(NUM_CSV_EXPORT_COLUMNS, sep);
+        
+        public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
             return CsvUtility.JoinAsCsv(
                 new object[] {
@@ -58,26 +52,30 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                     answerType, 
                     feedbackMode, 
                     feedbackType
-                }
+                },
+                sep
             );
         }
 
-        public string GetAllQuestionsCsvExportValues()
-        {
-            string res = "";
-            if (questions != null)
+        public static string GetConfigCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
+            new object[]
             {
-                foreach (ButtonQuizQuestion question in questions)
-                {
-                    res += question.GetCsvExportValues() + "\n";
-                }
-            }
-            return res;
-        }
+                "quizMode",
+                "questionOrdering",
+                "answersAmount",
+                "answersOrdering",
+                "questionType",
+                "answerType",
+                "feedbackMode",
+                "feedbackType"
+            },
+            sep
+        );
 
-        public static implicit operator ButtonQuizConfig(GameObject v)
+        public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
-            throw new NotImplementedException();
+            string[] questionExports = questions.Select(q => q.GetQuestionCsvExportValues(sep)).ToArray();
+            return string.Join("\n", questionExports);
         }
     }
 
