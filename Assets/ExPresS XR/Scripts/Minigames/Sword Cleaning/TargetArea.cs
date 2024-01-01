@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Minigames.SwordCleaning
 {
     /// <summary>
     /// Triggers <seealso cref="TargetArea"> that are set as target and tracks the progress of triggering all targets.
