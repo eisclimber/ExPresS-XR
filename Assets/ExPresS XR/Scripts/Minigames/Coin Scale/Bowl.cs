@@ -1,3 +1,11 @@
+/*
+    Script Name: Bowl.cs
+    Author: Kevin Koerner
+    Refactoring & Integration: Luca Dreiling
+    Purpose: This script represents a bowl of a scale, detecting coins and calculates
+                a weight (1 for real, 0 for fake coins) from all coins in the bowl. 
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +25,11 @@ namespace ExPresSXR.Minigames.CoinScale
 
         [SerializeField]
         [Tooltip("Defines whether the bowl is on the left or the right.")]
-        public ScaleSide side { get; }
+        public ScaleSide _side;
+        public ScaleSide side
+        {
+            get => _side;
+        }
 
         private Vector3 _initialPos;
 
@@ -45,7 +57,7 @@ namespace ExPresSXR.Minigames.CoinScale
             }
         }
 
-        public int GetWeight() => _containedCoins.Sum(cw => cw.isFake ? 1 : 0);
+        public int GetWeight() => _containedCoins.Sum(cw => cw.isFake ? 0 : 1);
 
         public void ResetBowl()
         {

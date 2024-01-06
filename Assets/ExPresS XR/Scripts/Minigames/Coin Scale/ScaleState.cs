@@ -1,3 +1,9 @@
+/*
+    Script Name: ScaleState.cs
+    Author: Kevin Koerner
+    Refactoring & Integration: Luca Dreiling
+    Purpose: Represents the state of a scale (one side heavier or both equal).
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,20 +23,17 @@ namespace ExPresSXR.Minigames.CoinScale
         public BowlPosition rightBowlPosition { get; }
 
 
-        public ScaleState(int leftWeight, int rightWeight)
+        public static ScaleState CreateFromWeights(int leftWeight, int rightWeight)
         {
             if (leftWeight < rightWeight)
             {
-                new ScaleState(BowlPosition.Up, BowlPosition.Down);
+                return new ScaleState(BowlPosition.Up, BowlPosition.Down);
             }
             else if (leftWeight > rightWeight)
             {
-                new ScaleState(BowlPosition.Down, BowlPosition.Up);
+                return new ScaleState(BowlPosition.Down, BowlPosition.Up);
             }
-            else
-            {
-                new ScaleState(BowlPosition.Center, BowlPosition.Center);
-            }
+            return new ScaleState(BowlPosition.Center, BowlPosition.Center);
         }
 
         private ScaleState(BowlPosition left, BowlPosition right)

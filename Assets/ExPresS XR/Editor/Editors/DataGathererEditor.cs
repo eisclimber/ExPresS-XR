@@ -84,7 +84,7 @@ namespace ExPresSXR.Editor
             EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Manual Export", EditorStyles.boldLabel);
-            if (GUILayout.Button("Print Values"))
+            if (GUILayout.Button("Print Current Values"))
             {
                 Debug.Log("The Header is: " + targetScript.GetExportCSVHeader());
                 Debug.Log("The Value is: " + targetScript.GetExportCSVLine());

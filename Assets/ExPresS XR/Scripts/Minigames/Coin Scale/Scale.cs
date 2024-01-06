@@ -1,3 +1,9 @@
+/*
+    Script Name: Scale.cs
+    Author: Kevin Koerner
+    Refactoring & Integration: Luca Dreiling
+    Purpose: Compares the weight in both bowls.
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +23,7 @@ namespace ExPresSXR.Minigames.CoinScale
 
         public UnityEvent<ScaleState> OnScaleCheck;
 
-        public void CheckBowls() => OnScaleCheck.Invoke(new ScaleState(_leftBowl.GetWeight(), _rightBowl.GetWeight()));
+        public void CheckBowls() => OnScaleCheck.Invoke(ScaleState.CreateFromWeights(_leftBowl.GetWeight(), _rightBowl.GetWeight()));
 
         public void ResetScale()
         {
