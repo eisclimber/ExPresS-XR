@@ -975,7 +975,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
             if (needsAfterQuizMenu)
             {
-                GameObject afterMenuGo = CreationUtils.InstantiateAndPlacePrefab(CreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
+                GameObject afterMenuGo = CreationUtils.InstantiateAndPlaceGameObject(CreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
 
                 afterMenuGo.transform.SetParent(_quizGo.transform);
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
+using TMPro;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
@@ -55,7 +55,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         }
 
         [SerializeField]
-        private Text _feedbackTextLabel;
+        private TMP_Text _feedbackTextLabel;
 
 
         [SerializeField]
@@ -98,9 +98,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         ////// 
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
 
             if (answerText != null && answerText != "")
             {

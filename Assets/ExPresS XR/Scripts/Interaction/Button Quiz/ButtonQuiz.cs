@@ -146,6 +146,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             else
             {
                 SetButtonsDisabled(true);
+                ClearAnswers();
                 ClearVideoDisplay();
             }
 
@@ -228,6 +229,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return SetupValidator.IsSetupValid(config, this);
         }
 
+        [ContextMenu("Start Quiz")]
         public void StartQuiz()
         {
             if (!SetupValidator.IsSetupValid(_config, this))

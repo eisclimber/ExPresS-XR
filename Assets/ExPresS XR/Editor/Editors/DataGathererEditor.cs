@@ -29,23 +29,31 @@ namespace ExPresSXR.Editor
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_dataExportType"), true);
 
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_columnSeparator"), true);
+                EditorGUILayout.Space();
 
-                if (targetScript.columnSeparator != CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_separatorType"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_escapeColumns"), true);
+
+                if (targetScript.separatorType == DataGatherer.SeparatorType.Custom)
                 {
-                    EditorGUILayout.HelpBox("Using separators different to ';' (especially ',' or '.') will interfere "
-                        + "with the printing of Vectors or float values. You will need to make sure your program will not produce such values "
-                        + "or parse the values later in an external program.", MessageType.Warning);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_columnSeparator"), true);
                 }
 
-                if (targetScript.dataExportType == DataGathererExportType.Http
-                    || targetScript.dataExportType == DataGathererExportType.Both)
+                if (targetScript.separatorType != DataGatherer.SeparatorType.Semicolon && !targetScript.escapeColumns)
+                {
+                    EditorGUILayout.HelpBox("Using separators different to ';' (especially ',' or '.') will interfere "
+                        + "with the printing of Vectors or float values. You can prevent this by enabling checking 'Escape Columns'."
+                        + "Otherwise you will need to make sure your program will not produce such values.", MessageType.Warning);
+                }
+
+                if (targetScript.dataExportType == DataGatherer.ExportType.Http
+                    || targetScript.dataExportType == DataGatherer.ExportType.Both)
                 {
                     // Either Only http or both
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
                 }
-                if (targetScript.dataExportType == DataGathererExportType.Local
-                    || targetScript.dataExportType == DataGathererExportType.Both)
+                if (targetScript.dataExportType == DataGatherer.ExportType.Local
+                    || targetScript.dataExportType == DataGatherer.ExportType.Both)
                 {
                     // Either Only local or both
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);

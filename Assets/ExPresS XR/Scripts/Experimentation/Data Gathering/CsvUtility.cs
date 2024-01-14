@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Video;
@@ -7,15 +8,20 @@ namespace ExPresSXR.Experimentation.DataGathering
     public class CsvUtility : MonoBehaviour
     {
         /// <summary>
+        /// The comma character.
+        /// </summary>
+        public const char COMMA_COLUMN_SEPARATOR = ',';
+
+        /// <summary>
+        /// The comma character.
+        /// </summary>
+        public const char SEMICOLON_COLUMN_SEPARATOR = ';';
+
+        /// <summary>
         /// The character that is used as default for separating csv columns.
         /// The default is not ',' as it interferes with string representations of vectors and floats.
         /// </summary>
-        public const char DEFAULT_COLUMN_SEPARATOR = ';';
-
-        /// <summary>
-        /// Same as DEFAULT_COLUMN_SEPARATOR but as string so it can be used with static strings.
-        /// </summary>
-        public const string DEFAULT_COLUMN_SEPARATOR_STRING = ";";
+        public const char DEFAULT_COLUMN_SEPARATOR = SEMICOLON_COLUMN_SEPARATOR;
 
         /// <summary>
         /// The character that is used to separate values in an array.
@@ -23,21 +29,34 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// </summary>
         public const char DEFAULT_ARRAY_SEPARATOR = ',';
 
+        /// <summary>
+        /// The character that is used to escape fields that may contain the separator and would break the format.
+        /// </summary>
+        public const char DEFAULT_ESCAPE_CHARACTER = '"';
+
 
         /// <summary>
         /// Joins the values into a CSV line using the given separator and filtering empty values if desired.
         /// </summary>
         /// <param name="values">Values to be converted to a CSV line. </param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
-        /// <param name="filterEmpty">If true will filter empty or null-strings, omitting creating an empty column for such. </param>
+        /// <param name="safe">If true Escape all values using the DEFAULT_ESCAPE_CHARACTER (and replace it in the string)</param>
         /// <returns></returns>
-        public static string JoinAsCsv<T>(T[] values, char sep = DEFAULT_COLUMN_SEPARATOR, bool filterEmpty = false)
+        public static string JoinAsCsv<T>(IEnumerable<T> values, char sep = DEFAULT_COLUMN_SEPARATOR, bool safe = true, char escapeChar = DEFAULT_ESCAPE_CHARACTER)
         {
-            if (filterEmpty)
+            if (safe)
             {
-                return string.Join(sep, values.Where(v => !string.IsNullOrEmpty(v.ToString())));
+                return string.Join(sep, values.Select(v => GetValueSafe(v, escapeChar)));
             }
             return string.Join(sep, values);
+        }
+
+
+        public static string GetValueSafe<T>(T value, char escapeChar = DEFAULT_ESCAPE_CHARACTER)
+        {
+            // Convert to string and replace any occurrences of the escapeChar
+            string valueString = value != null ? value.ToString().Replace("" + escapeChar, "\\" + escapeChar) : "";
+            return DEFAULT_ESCAPE_CHARACTER + valueString + DEFAULT_ESCAPE_CHARACTER;
         }
 
         /// <summary>
@@ -46,7 +65,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <param name="values">Values to be converted to a CSV line. </param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
         /// <returns></returns>
-        public static string ArrayToString<T>(T[] values, char sep = DEFAULT_ARRAY_SEPARATOR) => $"[{string.Join(sep, values)}]";
+        public static string ArrayToString<T>(T[] values, char sep = DEFAULT_ARRAY_SEPARATOR) => $"\"[{string.Join(sep, values)}]\"";
 
 
         /// <summary>
@@ -55,7 +74,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <param name="num"> The number of columns</param>
         /// <param name="sepChar"> Separator used. Default: DEFAULT_COLUMN_SEPARATOR = ';'.</param>
         /// <returns></returns>
-        public static string EmptyCSVColumns(int numCols, char sepChar = DEFAULT_COLUMN_SEPARATOR) => numCols > 1 ?new string(sepChar, numCols - 1) : "";
+        public static string EmptyCSVColumns(int numCols, char sepChar = DEFAULT_COLUMN_SEPARATOR) => numCols > 1 ? new string(sepChar, numCols - 1) : "";
 
 
         /// <summary>
@@ -67,7 +86,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <returns></returns>
         public static string GetVideoName(VideoClip video, string streamedVideo = "")
         {
-            return video != null? video.name : streamedVideo;
+            return video != null ? video.name : streamedVideo;
         }
     }
 }

@@ -32,10 +32,10 @@ namespace ExPresSXR.Editor
         /// <param name="name">The name of the prefab to be instantiated.</param>
         /// <returns> A Reference the object that was created or <see langword="null"/> if the prefab was 
         /// not found.</returns>
-        public static GameObject InstantiatePrefabAtContextTransform(MenuCommand menuCommand, string prefabName)
+        public static GameObject InstantiateGameObjectAtContextTransform(MenuCommand menuCommand, string prefabName)
         {
             Transform parent = GetContextTransform(menuCommand);
-            return InstantiateAndPlacePrefab(prefabName, parent);
+            return InstantiateAndPlaceGameObject(prefabName, parent);
         }
 
 
@@ -46,7 +46,7 @@ namespace ExPresSXR.Editor
         /// <param name="path">The object passed to custom menu item functions to operate on.</param>
         /// <returns> A Reference the object that was created or <see langword="null"/> if the prefab was 
         /// not found.</returns>
-        public static GameObject InstantiateAndPlacePrefab(string name, Transform parent = null)
+        public static GameObject InstantiateAndPlaceGameObject(string name, Transform parent = null)
         {
             string path = MakeExPresSXRPrefabPath(name);
             UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
@@ -85,7 +85,6 @@ namespace ExPresSXR.Editor
             }
             return null;
         }
-
 
         /// <summary>
         /// Creates an path that *MAY* be a path to an ExPresSXR Prefab by using the EXPRESS_XR_PREFAB_FORMAT.

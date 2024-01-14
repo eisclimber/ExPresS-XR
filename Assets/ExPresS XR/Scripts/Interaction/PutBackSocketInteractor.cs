@@ -189,7 +189,6 @@ namespace ExPresSXR.Interaction
                 _putBackObjectInstance = Instantiate(_putBackPrefab, attachParent);
 
                 Transform _putBackTransform = _putBackObjectInstance.transform;
-                
 
                 if (_putBackObjectInstance.TryGetComponent(out _putBackInteractable))
                 {
@@ -198,8 +197,8 @@ namespace ExPresSXR.Interaction
                     {
                         interactionManager.SelectEnter(this, (IXRSelectInteractable)_putBackInteractable);
                     }
-
-                    _putBackTransform.SetPositionAndRotation(attachParent.position, attachParent.rotation);
+                    
+                    _putBackTransform.SetPositionAndRotation(attachParent.position, Quaternion.identity);
 
                     _putBackInteractable.selectExited.AddListener(StartPutBackTimer);
                     _putBackInteractable.selectEntered.AddListener(ResetPutBackTimer);

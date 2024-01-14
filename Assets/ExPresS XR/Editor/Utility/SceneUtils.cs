@@ -92,7 +92,7 @@ namespace ExPresSXR.Editor
             string fullRigPath = string.Format(CreationUtils.EXPRESS_XR_PREFAB_FORMAT, rigPath);
             if (AssetDatabase.LoadAssetAtPath<GameObject>(fullRigPath) != null)
             {
-                rigObject = CreationUtils.InstantiateAndPlacePrefab(rigPath, null);
+                rigObject = CreationUtils.InstantiateAndPlaceGameObject(rigPath, null);
             }
 
             if (rigObject == null)

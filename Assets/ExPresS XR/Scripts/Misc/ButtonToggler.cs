@@ -19,8 +19,8 @@ namespace ExPresSXR.Misc
                 if (btn != null)
                 {
                     ColorBlock colors = btn.colors;
-                    colors.normalColor = (pressed ? pressedColor : normalColor);
-                    colors.selectedColor = (pressed ? pressedColor : normalColor);
+                    colors.normalColor = pressed ? pressedColor : normalColor;
+                    colors.selectedColor = pressed ? pressedColor : normalColor;
                     btn.colors = colors;
                 }
             }
@@ -36,12 +36,17 @@ namespace ExPresSXR.Misc
         private Color pressedColor;
 
 
-        private void Awake()
+        private void OnEnable()
         {
             btn = gameObject.GetComponent<Button>();
             normalColor = btn.colors.normalColor;
             pressedColor = btn.colors.pressedColor;
             btn.onClick.AddListener(ToggleButton);
+        }
+
+        private void OnDisable()
+        {
+            btn.onClick.RemoveListener(ToggleButton);
         }
 
         private void ToggleButton()

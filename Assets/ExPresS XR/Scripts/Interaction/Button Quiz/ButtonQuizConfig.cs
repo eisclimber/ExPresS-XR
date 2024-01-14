@@ -1,7 +1,6 @@
 using UnityEngine;
 using ExPresSXR.Experimentation.DataGathering;
 using System;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using System.Linq;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
