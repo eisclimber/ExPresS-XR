@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 2592477439981529216}
   - component: {fileID: 2592477439981529217}
   - component: {fileID: 3805691677783075539}
+  - component: {fileID: 4718767264467246484}
   - component: {fileID: 2592477439981529219}
   m_Layer: 3
   m_Name: Locomotion System
@@ -306,7 +307,7 @@ MonoBehaviour:
   m_EnableStrafe: 1
   m_EnableFly: 0
   m_UseGravity: 1
-  m_GravityApplicationMode: 0
+  m_GravityApplicationMode: 1
   m_ForwardSource: {fileID: 0}
   m_LeftHandMoveAction:
     m_UseReference: 1
@@ -332,6 +333,26 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -8198699208435500284, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+--- !u!114 &4718767264467246484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592477439981529221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 496880615cd240be960d436c1c8ae570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 0}
+  m_ClimbSettings:
+    m_UseConstant: 1
+    m_ConstantValue:
+      m_AllowFreeXMovement: 1
+      m_AllowFreeYMovement: 1
+      m_AllowFreeZMovement: 1
+    m_Variable: {fileID: 0}
 --- !u!114 &2592477439981529219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5791,7 +5812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputMethod: 1
   _movementPreset: 1
-  _interactionOptions: 759
+  _interactionOptions: 1783
   _headGazeCanReselect: 0
   _headGazeTimeToSelect: 0
   _headGazeReticle: {fileID: 2592477440222919781}
@@ -5801,7 +5822,7 @@ MonoBehaviour:
   _headGazeController: {fileID: 2592477440410697685}
   _headCollisionEnabled: 0
   _showCollisionVignetteEffect: 1
-  _locomotionSystem: {fileID: 0}
+  _locomotionSystem: {fileID: 6348543323860794035}
   _fadeRect: {fileID: 2592477440702074859}
   _playerHeadCollider: {fileID: 2592477441055133030}
   _hudCamera: {fileID: 8395335889131688276}

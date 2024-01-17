@@ -190,7 +190,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             string rigBasePath = GetRigBasePath();
             InputMethod input = DialogToNormalMovementPreset(inputMethod);
             MovementPreset preset = DialogToNormalMovementPreset(movementPreset);
-            SceneUtils.RigConfigData rigLoadData = new(rigBasePath, input, preset, interactionOptions);
+            SceneUtils.RigCreationData rigLoadData = new(rigBasePath, input, preset, interactionOptions);
 
             // Show Tutorials
             ShowTutorialsSetupDialogs();

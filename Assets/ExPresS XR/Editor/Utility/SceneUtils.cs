@@ -12,8 +12,6 @@ namespace ExPresSXR.Editor
 {
     public static class SceneUtils
     {
-        private const string SCENE_TEMPLATE_FORMAT = "Assets/ExPresS XR/Scene Templates/{0}.scenetemplate";
-
         public const string BASIC_SCENE_NAME = "Basic Scene (ExPresS XR)";
         public const string EXHIBITION_EXPORT_SCENE_NAME = "Exhibition Export Scene";
         public const string EXHIBITION_TUTORIAL_SCENE_NAME = "Exhibition Tutorial Scene";
@@ -25,67 +23,7 @@ namespace ExPresSXR.Editor
         public const string MOVEMENT_TUTORIAL_SCENE_NAME = "Movement Tutorial Scene";
 
 
-        // Helper variable that stores the ExPresS XR Rig wile a new scene gets created
-        private static RigConfigData _rigConfig = null;
-
-
-        /// <summary>
-        /// Instantiates a scene template with the given name and adds a rig to it. 
-        /// The rig can be configured using the rigData. If none is provided the users saved rig is used if it exists or else the teleport rig.
-        /// </summary>
-        /// <param name="templateName"></param>
-        /// <param name="rigData">The Data specifying the rigs parameters.</param>
-        // public static void LoadSceneTemplate(string templateName, RigConfigData rigData = null)
-        // {
-        //     string path = string.Format(SCENE_TEMPLATE_FORMAT, templateName);
-        //     SceneTemplateAsset templateAsset = AssetDatabase.LoadAssetAtPath<SceneTemplateAsset>(path);
-
-        //     if (templateAsset == null)
-        //     {
-        //         Debug.LogError($"Could not find SceneTemplate at '{path}'.");
-        //     }
-
-        //     if (rigData != null && File.Exists(CreationUtils.savedXRRigPath))
-        //     {
-        //         _rigConfig = rigData;
-        //     }
-        //     else if (File.Exists(CreationUtils.savedXRRigPath))
-        //     {
-        //         Debug.LogWarning("No Custom Rig found using your saved Rig instead.");
-        //         rigData ??= new RigConfigData();
-        //         rigData.basePrefabPath = CreationUtils.SAVED_RIG_PREFAB_NAME;
-        //         _rigConfig = rigData;
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning("No Custom Rig found using the 'Teleportation'-Rig instead.");
-        //         rigData ??= new RigConfigData();
-        //         rigData.basePrefabPath = CreationUtils.TELEPORT_RIG_PREFAB_NAME;
-        //         _rigConfig = rigData;
-        //     }
-
-        //     EditorSceneManager.sceneOpened += OneShotAddXRRigCallback;
-
-        //     InstantiationResult result = SceneTemplateService.Instantiate(templateAsset, false);
-
-        //     if (result != null && result.scene != null)
-        //     {
-        //         SceneManager.SetActiveScene(result.scene);
-        //     }
-        // }
-
-
-        private static void OneShotAddXRRigCallback(Scene scene, OpenSceneMode mode)
-        {
-            AddRigWithConfigData(_rigConfig);
-
-            // Cleanup
-            _rigConfig = null;
-            EditorSceneManager.sceneOpened -= OneShotAddXRRigCallback;
-        }
-
-
-        public static void AddRigWithConfigData(RigConfigData rigData)
+        public static void AddRigWithConfigData(RigCreationData rigData)
         {
             GameObject rigObject = null;
             string rigPath = rigData?.basePrefabPath ?? "";
@@ -101,9 +39,9 @@ namespace ExPresSXR.Editor
             }
             else if (!rigObject.TryGetComponent(out ExPresSXRRig rig))
             {
+                Debug.LogError($"Could load ExPresS XR-prefab at '{rigPath}', but it has no ExPresSXRRig-Component! "
+                                + "Please add an ExPresSXRRig via the hierarchy.");
                 UnityEngine.Object.Destroy(rig);
-                Debug.LogError($"Could load ExPresS XR-prefab '{rigPath}', but it has no ExPresSXRRig-Component! "
-                    + "Please add an ExPresSXRRig via the hierarchy.");
             }
             else
             {
@@ -112,7 +50,7 @@ namespace ExPresSXR.Editor
             }
         }
 
-        public class RigConfigData
+        public class RigCreationData
         {
             /// <summary>
             /// Path to the prefab that shall be used as base for the rig.
@@ -129,11 +67,10 @@ namespace ExPresSXR.Editor
             public bool useInteractionOptions;
             public InteractionOptions interactionOptions;
 
+    
+            public RigCreationData() => new RigCreationData(CreationUtils.SAVED_RIG_PREFAB_NAME);
 
-
-            public RigConfigData() => new RigConfigData(CreationUtils.SAVED_RIG_PREFAB_NAME);
-
-            public RigConfigData(string basePrefabPath)
+            public RigCreationData(string basePrefabPath)
             {
                 this.basePrefabPath = basePrefabPath;
 
@@ -142,7 +79,7 @@ namespace ExPresSXR.Editor
                 useInteractionOptions = false;
             }
 
-            public RigConfigData(string basePrefabPath, InputMethod inputMethod, MovementPreset movementPreset, InteractionOptions interactionOptions)
+            public RigCreationData(string basePrefabPath, InputMethod inputMethod, MovementPreset movementPreset, InteractionOptions interactionOptions)
             {
                 this.basePrefabPath = basePrefabPath;
 

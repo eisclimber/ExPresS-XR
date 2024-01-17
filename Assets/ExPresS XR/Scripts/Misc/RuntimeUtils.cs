@@ -7,6 +7,7 @@ using TMPro;
 using ExPresSXR.UI;
 using ExPresSXR.Rig;
 using UnityEditor;
+using UnityEngine.XR;
 
 namespace ExPresSXR.Misc
 {
@@ -143,6 +144,7 @@ namespace ExPresSXR.Misc
             rig = null;
             return false;
         }
+        
 
         /// <summary>
         /// Populates an <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.

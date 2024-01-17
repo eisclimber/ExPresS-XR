@@ -109,6 +109,12 @@ namespace ExPresSXR.Editor
             InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Grab Trigger Interactable");
         }
 
+        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Climb")]
+        public static void CreateXRClimbInteractable(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Climb Interactable");
+        }
+
         [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Exit Game")]
         public static void CreateXRExitGameInteractable(MenuCommand menuCommand)
         {

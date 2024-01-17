@@ -418,7 +418,7 @@ namespace ExPresSXR.Rig
         }
 
 
-        private void OnDirectInteractorSelectExited(SelectExitEventArgs _)
+        private void OnDirectInteractorSelectExited(SelectExitEventArgs args)
         {
             // Start wait timer 
             if (gameObject.activeInHierarchy && isActiveAndEnabled)
@@ -432,7 +432,7 @@ namespace ExPresSXR.Rig
         }
 
 
-        private void OnDirectInteractorSelectEntered(SelectEnterEventArgs _)
+        private void OnDirectInteractorSelectEntered(SelectEnterEventArgs args)
         {
             // Stop wait timer
             if (_afterGrabCoroutine != null)

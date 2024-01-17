@@ -4,6 +4,7 @@ using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using Unity.XR.CoreUtils;
 using ExPresSXR.UI;
+using ExPresSXR.Misc;
 
 namespace ExPresSXR.Rig
 {
@@ -11,7 +12,7 @@ namespace ExPresSXR.Rig
     [RequireComponent(typeof(XROrigin))]
     public class ExPresSXRRig : MonoBehaviour
     {
-        // Input and Movement
+        #region Config
         [Tooltip("How the rig is controlled, either per controller, via Head Gaze or Eye Gaze.")]
         [SerializeField]
         private InputMethod _inputMethod = InputMethod.Controller;
@@ -59,7 +60,7 @@ namespace ExPresSXR.Rig
             {
                 _movementPreset = value;
 
-                ApplyCurrentMovementPreset();
+                RigConfigurator.ApplyMovementPreset(currentConfigData);
             }
         }
 
@@ -73,12 +74,12 @@ namespace ExPresSXR.Rig
             {
                 _interactionOptions = value;
 
-                ApplyCurrentInteractions();
+                RigConfigurator.ApplyInteractionsOptions(currentConfigData);
             }
         }
+        #endregion
 
-
-        // Head Gaze controls
+        #region Head Gaze
         [Tooltip("Allow reselection of currently hovered Interactable with HeadGaze.")]
         [SerializeField]
         private bool _headGazeCanReselect;
@@ -132,9 +133,9 @@ namespace ExPresSXR.Rig
                 }
             }
         }
+        #endregion
 
-
-        // XR Controllers
+        #region XR Controllers
         [Tooltip("Reference to the *left* HandControllerManager of the ExPresS XR Rig.")]
         [SerializeField]
         private HandControllerManager _leftHandController;
@@ -145,8 +146,7 @@ namespace ExPresSXR.Rig
             {
                 _leftHandController = value;
 
-                ApplyCurrentMovementPreset();
-                ApplyCurrentInteractions();
+                RigConfigurator.ApplyEverything(currentConfigData);
             }
         }
 
@@ -160,8 +160,7 @@ namespace ExPresSXR.Rig
             {
                 _rightHandController = value;
 
-                ApplyCurrentMovementPreset();
-                ApplyCurrentInteractions();
+                RigConfigurator.ApplyEverything(currentConfigData);
             }
         }
 
@@ -175,8 +174,7 @@ namespace ExPresSXR.Rig
             {
                 _eyeGazeController = value;
 
-                ApplyCurrentMovementPreset();
-                ApplyCurrentInteractions();
+                RigConfigurator.ApplyEverything(currentConfigData);
             }
         }
 
@@ -190,13 +188,12 @@ namespace ExPresSXR.Rig
             {
                 _headGazeController = value;
 
-                ApplyCurrentMovementPreset();
-                ApplyCurrentInteractions();
+                RigConfigurator.ApplyEverything(currentConfigData);
             }
         }
+        #endregion
 
-
-        // Head Collisions
+        #region Head Collisions
         [Tooltip("Prevents the players Camera from clipping through Objects and looking inside them by actively puhing the player back.")]
         [SerializeField]
         private bool _headCollisionEnabled;
@@ -231,8 +228,9 @@ namespace ExPresSXR.Rig
                 }
             }
         }
+        #endregion
 
-        // Component References
+        #region Misc References
         [Tooltip("Reference to the LocomotionManager of the ExPresS XR Rig.")]
         [SerializeField]
         private LocomotionSystem _locomotionSystem;
@@ -351,7 +349,7 @@ namespace ExPresSXR.Rig
                 bool updateReticles = _teleportValidReticle == value;
 
                 _teleportValidReticle = value;
-                
+
                 if (updateReticles)
                 {
                     if (_leftHandController != null && _leftHandController.TeleportInteractor != null
@@ -396,9 +394,9 @@ namespace ExPresSXR.Rig
                 }
             }
         }
+        #endregion
 
-
-        // Utility
+        #region General Utility
         [Tooltip("The way the 'Game'-view displays the rig's camera when entering play mode. Can be changed at runtime at the top right in the 'Game'-tab.")]
         [SerializeField]
         private GameTabDisplayMode _gameTabDisplayMode;
@@ -456,17 +454,22 @@ namespace ExPresSXR.Rig
             }
         }
 
+        // Object containing all necessary references for configuration
+        public ConfigData currentConfigData
+        {
+            get => new(inputMethod, movementPreset, interactionOptions,
+                        leftHandController, rightHandController,
+                        eyeGazeController, headGazeController, locomotionSystem);
+        }
+        #endregion
+
 
         // Start is called before the first frame update
         private void Awake()
         {
-            List<XRDisplaySubsystem> displaySubsystems = new();
-            SubsystemManager.GetInstances(displaySubsystems);
-
-            if (displaySubsystems.Count > 0)
-            {
-                displaySubsystems[0].SetPreferredMirrorBlitMode((int)gameTabDisplayMode);
-            }
+#if UNITY_EDITOR
+            RuntimeEditorUtils.ChangeGameTabDisplayMode(gameTabDisplayMode);
+#endif
         }
 
         // Fade
@@ -486,135 +489,10 @@ namespace ExPresSXR.Rig
             }
         }
 
-        // Config
-        public void ApplyCurrentMovementPreset()
-        {
-            if (_inputMethod != InputMethod.Controller
-                && _movementPreset != MovementPreset.Teleport
-                && _movementPreset != MovementPreset.None
-                && _movementPreset != MovementPreset.Custom)
-            {
-                Debug.LogWarning("InputPresets other than 'None', 'Teleport', 'Custom' will be ignored with InputMethod not set to 'Controller'.");
-            }
-
-            if (_movementPreset == MovementPreset.Custom)
-            {
-                // Do not change anything for custom preset
-                return;
-            }
-
-            ApplyLeftHandPreset();
-            ApplyRightHandPreset();
-            ApplyEyeGazePreset();
-            ApplyHeadGazePreset();
-            ApplyLocomotionSystemPreset();
-        }
-
-        private void ApplyLeftHandPreset()
-        {
-            if (_leftHandController != null)
-            {
-                _leftHandController.teleportationEnabled = _movementPreset == MovementPreset.Teleport;
-                _leftHandController.snapTurnEnabled = _movementPreset == MovementPreset.Teleport;
-                _leftHandController.smoothMoveEnabled = _movementPreset == MovementPreset.Joystick
-                                                        || movementPreset == MovementPreset.JoystickNoTurn;
-                _leftHandController.smoothTurnEnabled = _movementPreset == MovementPreset.JoystickInverse;
-                _leftHandController.grabMoveEnabled = _movementPreset == MovementPreset.GrabWorldMotion
-                                                    || _movementPreset == MovementPreset.GrabWorldManipulation;
-            }
-        }
-
-        private void ApplyRightHandPreset()
-        {
-            if (_rightHandController != null)
-            {
-                _rightHandController.teleportationEnabled = _movementPreset == MovementPreset.Teleport;
-                _rightHandController.snapTurnEnabled = _movementPreset == MovementPreset.Teleport;
-                _rightHandController.smoothMoveEnabled = _movementPreset == MovementPreset.JoystickInverse
-                                                        || movementPreset == MovementPreset.JoystickNoTurn;
-                _rightHandController.smoothTurnEnabled = _movementPreset == MovementPreset.Joystick;
-                _rightHandController.grabMoveEnabled = _movementPreset == MovementPreset.GrabWorldMotion
-                                                    || _movementPreset == MovementPreset.GrabWorldManipulation;
-            }
-        }
-
-        private void ApplyEyeGazePreset()
-        {
-            if (_eyeGazeController != null)
-            {
-                if (_movementPreset == MovementPreset.Teleport)
-                {
-                    _eyeGazeController.interactionLayers |= 1 << InteractionLayerMask.NameToLayer("Teleport");
-                }
-                else
-                {
-                    _eyeGazeController.interactionLayers &= ~(1 << InteractionLayerMask.NameToLayer("Teleport"));
-                }
-            }
-        }
-
-        private void ApplyHeadGazePreset()
-        {
-            if (_headGazeController != null)
-            {
-                _headGazeController.teleportationEnabled = _movementPreset == MovementPreset.Teleport;
-            }
-        }
-
-        private void ApplyLocomotionSystemPreset()
-        {
-            if (_locomotionSystem != null)
-            {
-                if (_locomotionSystem.TryGetComponent(out TwoHandedGrabMoveProvider grabProvider))
-                {
-                    grabProvider.enabled = _movementPreset == MovementPreset.GrabWorldManipulation;
-                }
-            }
-        }
-
-
-        // Interactions
-        public void ApplyCurrentInteractions()
-        {
-            if (_leftHandController != null)
-            {
-                _leftHandController.directInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Direct);
-                _leftHandController.pokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Poke);
-                _leftHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
-                // Do not Update showPokeReticle => Updated in EditorRevalidate()
-                // _leftHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
-                _leftHandController.rayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Ray);
-                _leftHandController.rayAnchorControlEnabled = _interactionOptions.HasFlag(InteractionOptions.RayAnchorControl);
-                _leftHandController.uiRayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiRay);
-                
-                _leftHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
-                _leftHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
-
-                _leftHandController.scaleGrabbedObjects = _interactionOptions.HasFlag(InteractionOptions.ScaleGrabbedObjects);
-            }
-
-            if (_rightHandController != null)
-            {
-                _rightHandController.directInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Direct);
-                _rightHandController.pokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Poke);
-                _rightHandController.uiPokeInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiPoke);
-                // Do not Update showPokeReticle => Updated in EditorRevalidate()
-                // _rightHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
-                _rightHandController.rayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.Ray);
-                _rightHandController.rayAnchorControlEnabled = _interactionOptions.HasFlag(InteractionOptions.RayAnchorControl);
-                _rightHandController.uiRayInteractionEnabled = _interactionOptions.HasFlag(InteractionOptions.UiRay);
-                
-                _rightHandController.chooseTeleportForwardEnabled = _interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
-                _rightHandController.teleportCancelEnabled = _interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
-                
-                _rightHandController.scaleGrabbedObjects = _interactionOptions.HasFlag(InteractionOptions.ScaleGrabbedObjects);
-            }
-        }
-
+        #region Editor Functions
         private void OnValidate()
         {
-            ApplyCurrentMovementPreset();
-            ApplyCurrentInteractions();
+            RigConfigurator.ApplyEverything(currentConfigData);
 
             // Apply Head Collisions
             playerHeadCollider = _playerHeadCollider;
@@ -647,54 +525,6 @@ namespace ExPresSXR.Rig
                 _rightHandController.showPokeReticle = _interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
             }
         }
-    }
-
-
-    public enum InputMethod
-    {
-        None,
-        Controller,
-        HeadGaze,
-        EyeGaze
-    }
-
-    public enum MovementPreset
-    {
-        None,
-        Teleport,
-        Joystick,
-        JoystickInverse,
-        JoystickNoTurn,
-        GrabWorldMotion,
-        GrabWorldManipulation,
-        Custom
-    }
-
-
-    [System.Flags]
-    public enum InteractionOptions
-    {
-        None = 0,
-        Direct = 1,
-        Poke = 2,
-        UiPoke = 4,
-        ShowPokeReticle = 8,
-        Ray = 16,
-        RayAnchorControl = 32,
-        UiRay = 64,
-        ChooseTeleportForward = 128,
-        CancelTeleportPossible = 256,
-        ScaleGrabbedObjects = 512
-    }
-
-    public enum GameTabDisplayMode
-    {
-        Default = 0,
-        LeftEye = -1,
-        RightEye = -2,
-        SideBySide = -3,
-        SideBySideOcclusionMesh = -4,
-        Distort = -5,
-        None = -6
+        #endregion
     }
 }
