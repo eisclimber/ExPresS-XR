@@ -12,7 +12,9 @@ namespace ExPresSXR.Minigames.CoinThrow
 {
     public class CoinReset : MonoBehaviour
     {
-
+        /// <summary>
+        /// Position to reset the coin after hitting / missing. If null, uses its own Transform during awake.
+        /// </summary>
         [SerializeField]
         [Tooltip("Position to reset the coin after hitting / missing. If null, uses its own Transform during awake.")]
         private Transform _resetTransform;
@@ -36,15 +38,9 @@ namespace ExPresSXR.Minigames.CoinThrow
             }
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other != null && !other.CompareTag("Player"))
-            {
-                ResetOwnPosition();
-            }
-        }
-
-
+        /// <summary>
+        /// Resets the transform either to _resetTransform or the initial Transform if _resetTransform is null.
+        /// </summary>
         public void ResetOwnPosition()
         {
             if (_resetTransform != null)
@@ -54,6 +50,15 @@ namespace ExPresSXR.Minigames.CoinThrow
             else
             {
                 transform.SetPositionAndRotation(_initialPos, _initialRot);
+            }
+        }
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other != null && !other.CompareTag("Player"))
+            {
+                ResetOwnPosition();
             }
         }
     }

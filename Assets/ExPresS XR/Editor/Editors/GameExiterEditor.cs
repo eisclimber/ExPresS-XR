@@ -5,7 +5,7 @@ using UnityEditor;
 using ExPresSXR.Misc;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(GameExiter))]
     [CanEditMultipleObjects]

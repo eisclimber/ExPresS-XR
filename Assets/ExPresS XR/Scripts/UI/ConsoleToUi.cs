@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
  *
  * A discussion and credits to bboysil on this topic: https://answers.unity.com/questions/125049/is-there-any-way-to-view-the-console-in-a-build.html
  */
-namespace ExPresSXR.Misc
+namespace ExPresSXR.UI
 {
     public class ConsoleToGUI : MonoBehaviour
     {

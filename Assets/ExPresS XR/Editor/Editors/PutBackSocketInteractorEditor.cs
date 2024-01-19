@@ -4,7 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 using ExPresSXR.Interaction;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(PutBackSocketInteractor))]
     [CanEditMultipleObjects]

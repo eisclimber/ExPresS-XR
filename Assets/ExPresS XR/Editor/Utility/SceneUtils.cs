@@ -8,7 +8,7 @@ using UnityEditor.SceneTemplate;
 using ExPresSXR.Rig;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Utility
 {
     public static class SceneUtils
     {

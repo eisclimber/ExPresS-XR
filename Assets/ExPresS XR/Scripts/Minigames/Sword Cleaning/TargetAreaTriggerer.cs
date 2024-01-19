@@ -12,6 +12,9 @@ namespace ExPresSXR.Minigames.SwordCleaning
     /// </summary>
     public class TargetAreaTriggerer : MonoBehaviour
     {
+        /// <summary>
+        /// The TargetAreas that are required to be completed.
+        /// </summary>
         [SerializeField]
         private TargetArea[] _targets;
         public TargetArea[] targets
@@ -20,9 +23,15 @@ namespace ExPresSXR.Minigames.SwordCleaning
             set => _targets = value;
         }
 
+        /// <summary>
+        /// The number of targets to be completed.
+        /// </summary>
         [SerializeField]
         private bool _setupOnAwake = true;
 
+        /// <summary>
+        /// If enabled all events each of the three events below will be called mutually exclusive. This prevents errors when using these for different haptic feedbacks.
+        /// </summary>
         [SerializeField]
         [Tooltip("If enabled all events each of the three events below will be called mutually exclusive. This prevents errors when using these for different haptic feedbacks.")]
         private bool _emitEventsExclusively = true;

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using ExPresSXR.Rig;
+using ExPresSXR.Editor.Utility;
 
 namespace ExPresSXR.Editor.SetupDialogs
 {

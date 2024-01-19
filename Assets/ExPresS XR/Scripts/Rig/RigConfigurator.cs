@@ -23,10 +23,12 @@ namespace ExPresSXR.Rig
             HandControllerManager leftHandController = configData.leftHandController;
             HandControllerManager rightHandController = configData.rightHandController;
 
+            ClimbingManager climbingManager = configData.climbingManager;
+
             ApplyHandInteractionOptions(leftHandController, interactionOptions);
             ApplyHandInteractionOptions(rightHandController, interactionOptions);
 
-            ApplyLocomotionInteractionOptions(locomotionSystem, leftHandController, rightHandController, interactionOptions);
+            ApplyLocomotionInteractionOptions(locomotionSystem, climbingManager, interactionOptions);
         }
 
         private static void ApplyHandInteractionOptions(HandControllerManager handController, InteractionOptions interactionOptions)
@@ -49,21 +51,24 @@ namespace ExPresSXR.Rig
             }
         }
 
-        private static void ApplyLocomotionInteractionOptions(LocomotionSystem locomotionSystem, HandControllerManager leftHandController, HandControllerManager rightHandController, InteractionOptions interactionOptions)
+        private static void ApplyLocomotionInteractionOptions(LocomotionSystem locomotionSystem, ClimbingManager climbingManager, 
+                                                                InteractionOptions interactionOptions)
         {
             if (locomotionSystem == null)
             {
                 return;
             }
 
+            // Enable locomotion Provider
+            bool climbEnabled = interactionOptions.HasFlag(InteractionOptions.Climb);
             if (locomotionSystem.TryGetComponent(out ClimbProvider climbProvider))
             {
-                // Enable Climb Locomotion
-                climbProvider.enabled = interactionOptions.HasFlag(InteractionOptions.Climb);
-                /// <summary>
-                /// //////////////////////////////////TODODOOOOOOOOOOOOO
-                /// </summary>
-                /// <param name="configData"></param>
+                climbProvider.enabled = climbEnabled;
+            }
+
+            if (climbingManager != null)
+            {
+                climbingManager.enabled = climbEnabled;
             }
         }
         #endregion
@@ -167,7 +172,7 @@ namespace ExPresSXR.Rig
         }
     }
 
-    #region  Enums & Structs
+    #region Enums & Structs
     public enum InputMethod
     {
         None,
@@ -226,8 +231,9 @@ namespace ExPresSXR.Rig
         public HeadGazeController headGazeController;
 
 
-        // Locomotion System
+        // Locomotion
         public LocomotionSystem locomotionSystem;
+        public ClimbingManager climbingManager;
 
 
         public ConfigData(InputMethod inputMethod,
@@ -237,7 +243,8 @@ namespace ExPresSXR.Rig
                             HandControllerManager rightHandController,
                             XRGazeInteractor eyeGazeController,
                             HeadGazeController headGazeController,
-                            LocomotionSystem locomotionSystem)
+                            LocomotionSystem locomotionSystem,
+                            ClimbingManager climbingManager)
         {
             this.inputMethod = inputMethod;
             this.movementPreset = movementPreset;
@@ -249,6 +256,7 @@ namespace ExPresSXR.Rig
             this.headGazeController = headGazeController;
 
             this.locomotionSystem = locomotionSystem;
+            this.climbingManager = climbingManager;
         }
     }
     #endregion

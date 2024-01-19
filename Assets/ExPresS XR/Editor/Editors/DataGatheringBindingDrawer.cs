@@ -8,7 +8,7 @@ using ExPresSXR.Interaction.ButtonQuiz;
 using System.Text.RegularExpressions;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomPropertyDrawer(typeof(DataGatheringBinding))]
     public class DataGatheringBindingDrawer : PropertyDrawer

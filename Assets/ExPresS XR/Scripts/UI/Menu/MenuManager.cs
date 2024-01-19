@@ -40,8 +40,7 @@ public class MenuManager : MonoBehaviour
     private bool currentlyLerping = false;
 
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (followPlayer && followTransform == null)
         {
@@ -62,7 +61,7 @@ public class MenuManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() => FollowPlayer();
+    private void Update() => FollowPlayer();
 
     private void FollowPlayer()
     {

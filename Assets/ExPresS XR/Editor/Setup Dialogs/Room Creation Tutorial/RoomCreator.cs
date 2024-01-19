@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Unity.EditorCoroutines.Editor;
-using ExPresSXR.Editor;
+using ExPresSXR.Editor.Utility;
 
 namespace ExPresSXR.Editor.SetupDialogs
 {

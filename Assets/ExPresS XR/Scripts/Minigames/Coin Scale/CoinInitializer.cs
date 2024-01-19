@@ -2,7 +2,7 @@
     Script Name: CoinInitializer.cs
     Author: Kevin Koerner
     Refactoring & Integration: Luca Dreiling
-    Purpose: (Re-)Sets the positions of coins and optionally randomizes the fake one.
+    Purpose: (Re-)Sets the positions of coins and optionally randomizes the fake coin.
 */
 
 using System.Collections;
@@ -16,27 +16,35 @@ namespace ExPresSXR.Minigames.CoinScale
 {
     public class CoinInitializer : MonoBehaviour
     {
-
+        /// <summary>
+        /// GameObjects of the for coins/objects to scale.
+        /// </summary>
         [SerializeField]
-        [Tooltip("GameObjects of the for coins/objects to scale")]
+        [Tooltip("GameObjects of the for coins/objects to scale.")]
         private List<CoinWeight> _coins;
 
+        /// <summary>
+        /// Transforms of the objects positions where the coins/objects shall be placed randomly.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Transforms of the objects positions where the coins/objects shall be placed randomly")]
+        [Tooltip("Transforms of the objects positions where the coins/objects shall be placed randomly.")]
         private Transform[] _positions;
 
+        /// <summary>
+        /// If enabled will set a random coin weight to be fake.
+        /// </summary>
         [SerializeField]
-        [Tooltip("If enabled will set a random coin weight to be fake")]
+        [Tooltip("If enabled will set a random coin weight to be fake.")]
         private bool _randomizeFakeCoin = true;
 
-        // Start is called before the first frame update
+
         private void Start()
         {
             ResetCoins();
         }
 
         /// <summary>
-        /// Resets the coins, shuffles them and optionally randomizes the fake one
+        /// Resets the coins, shuffles them and optionally randomizes the fake one.
         /// </summary>
         public void ResetCoins()
         {

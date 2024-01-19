@@ -137,6 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2592477439981529229}
+  - component: {fileID: 2665148796415111372}
   - component: {fileID: 6348543323860794035}
   - component: {fileID: 2592477439981529230}
   - component: {fileID: 2592477439981529231}
@@ -145,6 +146,7 @@ GameObject:
   - component: {fileID: 3805691677783075539}
   - component: {fileID: 4718767264467246484}
   - component: {fileID: 2592477439981529219}
+  - component: {fileID: 332150261165767408}
   m_Layer: 3
   m_Name: Locomotion System
   m_TagString: Player
@@ -167,6 +169,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2592477441852168241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2665148796415111372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592477439981529221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a5df2202a8b96488c744be3bd0c33e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Timeout: 10
+  m_XROrigin: {fileID: 2592477441852168242}
 --- !u!114 &6348543323860794035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2213c36610e3b1c4bbf886810ed9db12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_System: {fileID: 6348543323860794035}
+  m_System: {fileID: 0}
   m_TurnAmount: 45
   m_DebounceTime: 0.5
   m_EnableTurnLeftRight: 1
@@ -250,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_System: {fileID: 6348543323860794035}
+  m_System: {fileID: 0}
   m_DelayTime: 0
 --- !u!114 &2592477439981529217
 MonoBehaviour:
@@ -264,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 919e39492806b334982b6b84c90dd927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_System: {fileID: 6348543323860794035}
+  m_System: {fileID: 0}
   m_TurnSpeed: 60
   m_LeftHandTurnAction:
     m_UseReference: 1
@@ -365,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760ff70c1c91bdd45907d0ff0cdcaf7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_System: {fileID: 6348543323860794035}
+  m_System: {fileID: 2665148796415111372}
   m_EnableFreeXMovement: 1
   m_EnableFreeYMovement: 0
   m_EnableFreeZMovement: 1
@@ -380,6 +396,29 @@ MonoBehaviour:
   m_EnableScaling: 0
   m_MinimumScale: 0.2
   m_MaximumScale: 5
+--- !u!114 &332150261165767408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592477439981529221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f5c48551e238b4281f4a9824f3f658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minGrabbedHolds: 1
+  _climbInteractors:
+  - {fileID: 3261307983711417257}
+  - {fileID: 1392445890273226888}
+  _gravityProvider: {fileID: 3805691677783075539}
+  OnGrabHoldSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGrabHoldFailed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2592477440013209808
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,7 +1576,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: -5908353012961274365, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_UIScrollAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: UI Scroll
       m_Type: 0
@@ -3007,9 +3046,9 @@ MonoBehaviour:
   _uiPokeInteractionEnabled: 1
   _showPokeReticle: 0
   _scaleGrabbedObjects: 1
+  _afterGrabWaitDuration: 0.3
   _handModelMode: 1
   _handModelCollisions: 1
-  _afterGrabWaitDuration: 0.3
 --- !u!114 &2592477440711851461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3617,7 +3656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionPushbackEnabled: 0
-  _showCollisionVignetteEffect: 1
+  _showCollisionVignetteEffect: 0
   screenCollisionIndicator: {fileID: 2592477440387170941}
   _pushbackAnchor: {fileID: 2592477441852168241}
   _colliderSize: 0.25
@@ -5120,9 +5159,9 @@ MonoBehaviour:
   _uiPokeInteractionEnabled: 1
   _showPokeReticle: 0
   _scaleGrabbedObjects: 1
+  _afterGrabWaitDuration: 0.3
   _handModelMode: 1
   _handModelCollisions: 1
-  _afterGrabWaitDuration: 0.3
 --- !u!114 &2592477441312352191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5821,8 +5860,9 @@ MonoBehaviour:
   _eyeGazeController: {fileID: 2592477442081325209}
   _headGazeController: {fileID: 2592477440410697685}
   _headCollisionEnabled: 0
-  _showCollisionVignetteEffect: 1
+  _showCollisionVignetteEffect: 0
   _locomotionSystem: {fileID: 6348543323860794035}
+  _climbingManager: {fileID: 0}
   _fadeRect: {fileID: 2592477440702074859}
   _playerHeadCollider: {fileID: 2592477441055133030}
   _hudCamera: {fileID: 8395335889131688276}

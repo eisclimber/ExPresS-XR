@@ -2,9 +2,9 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Rig;
+using ExPresSXR.Editor.Utility;
 
-
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(ExPresSXRRig))]
     [CanEditMultipleObjects]

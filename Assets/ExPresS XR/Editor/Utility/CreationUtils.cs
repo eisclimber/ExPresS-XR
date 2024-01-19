@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Utility
 {
     public class CreationUtils
     {

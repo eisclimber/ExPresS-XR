@@ -19,10 +19,22 @@ namespace ExPresSXR.Minigames.CoinScale
             Up
         }
 
+        /// <summary>
+        /// The elevation state of the left bowl.
+        /// </summary>
         public BowlPosition leftBowlPosition { get; }
+
+        /// <summary>
+        /// The elevation state of the right bowl.
+        /// </summary>
         public BowlPosition rightBowlPosition { get; }
 
-
+        /// <summary>
+        /// Creates a new `ScaleState`-Instance using the weights of two bowls.
+        /// </summary>
+        /// <param name="leftWeight">Left Weight</param>
+        /// <param name="rightWeight">Right Weight</param>
+        /// <returns>The resulting scale state.</returns>
         public static ScaleState CreateFromWeights(int leftWeight, int rightWeight)
         {
             if (leftWeight < rightWeight)

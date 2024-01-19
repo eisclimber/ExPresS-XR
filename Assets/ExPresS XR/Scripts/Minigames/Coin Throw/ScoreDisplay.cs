@@ -2,7 +2,7 @@
     Script Name: ScoreDisplay.cs
     Author: Kevin Koerner
     Refactoring & Integration: Luca Dreiling
-    Purpose: Displays a numerical score on a text.
+    Purpose: Displays and stores a numerical score via ui.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +13,9 @@ namespace ExPresSXR.Minigames.CoinThrow
 {
     public class ScoreDisplay : MonoBehaviour
     {
+        /// <summary>
+        /// Reference to the TMP_Text that displays the value.
+        /// </summary>
         [SerializeField]
         private TMP_Text _textDisplay;
 
@@ -23,6 +26,10 @@ namespace ExPresSXR.Minigames.CoinThrow
             }
         }
 
+        /// <summary>
+        /// Amount to add to the current score. Can be negative.
+        /// </summary>
+        /// <param name="score">Amount to add.</param>
         public void AddScore(int score)
         {
             int currentScore = int.Parse(_textDisplay.text);
@@ -30,6 +37,10 @@ namespace ExPresSXR.Minigames.CoinThrow
             _textDisplay.text = currentScore.ToString();
         }
 
+        /// <summary>
+        /// Amount to subtract to the current score. Can be negative.
+        /// </summary>
+        /// <param name="score">Amount to subtract.</param>
         public void SubtractScore(int score)
         {
             int currentScore = int.Parse(_textDisplay.text);

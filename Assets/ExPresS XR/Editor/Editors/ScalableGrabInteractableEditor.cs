@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEditor.XR.Interaction.Toolkit;
 using ExPresSXR.Interaction;
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     /// <summary>
     /// Custom editor for an <see cref="ScalableGrabInteractable"/>.

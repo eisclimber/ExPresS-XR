@@ -4,7 +4,7 @@ using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Utility
 {
     public static class MenuCreationUtils
     {
@@ -91,34 +91,34 @@ namespace ExPresSXR.Editor
 
 
         // Interaction (Interactables)
-        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Dynamic Attach")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/Dynamic Attach")]
         public static void CreateXROffsetInteractable(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Dynamic Attach Interactable");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/Dynamic Attach Interactable");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Scalable")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/Scalable")]
         public static void CreateScalableInteractable(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Dynamic Attach Interactable");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/Dynamic Attach Interactable");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Grab Trigger")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/Grab Trigger")]
         public static void CreateXRGrabTriggerInteractable(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Grab Trigger Interactable");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/Grab Trigger Interactable");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Climb")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/Climb")]
         public static void CreateXRClimbInteractable(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Climb Interactable");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/Climb Interactable");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Interaction/Grab Interactables/Exit Game")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/Exit Game")]
         public static void CreateXRExitGameInteractable(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Exit Game Interactable");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/Exit Game Interactable");
         }
 
 
@@ -126,25 +126,25 @@ namespace ExPresSXR.Editor
         [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Highlightable")]
         public static void CreateHighlightableSocketInteractor(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Highlightable Socket Interactor");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Socket Interactors/Highlightable Socket Interactor");
         }
 
         [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Put Back")]
         public static void CreatePutBackSocketInteractor(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Put Back Socket Interactor");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Socket Interactors/Put Back Socket Interactor");
         }
 
         [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Tag Check")]
         public static void CreateTagCheckSocketInteractor(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Tag Check Socket Interactor");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Socket Interactors/Tag Check Socket Interactor");
         }
 
         [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Object Check")]
         public static void CreateObjectCheckSocketInteractor(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Object Check Socket Interactor");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Socket Interactors/Object Check Socket Interactor");
         }
 
 

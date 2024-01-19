@@ -10,6 +10,10 @@ namespace ExPresSXR.Misc
 {
     public class GameExiter : MonoBehaviour
     {
+        /// <summary>
+        /// How the game is exited. QuitGame quits the game completely 
+        /// while the other two switch to another (menu-)scene with optional fade.
+        /// </summary>
         [SerializeField]
         private ExitType _exitType = ExitType.QuitGame;
         public ExitType exitType
@@ -17,49 +21,54 @@ namespace ExPresSXR.Misc
             get => _exitType;
         }
 
+        /// <summary>
+        /// The scene index of your menu scene.
+        /// It must be added via the Build Settings and should usually be 0.
+        /// </summary>
         [SerializeField]
         [Tooltip("The scene index of your menu scene. It must be added via the Build Settings and should usually be 0.")]
         private int _menuSceneIndex = 0; // Default value should be the menu scene
 
+        /// <summary>
+        /// A reference to the rig. Will prevent interactions after exiting and required for fading out.
+        /// </summary>
         [SerializeField]
-        private ExPresSXRRig rig;
+        private ExPresSXRRig _rig;
 
+        /// <summary>
+        /// If enabled will try to find the current ExPresSXRRig. 
+        /// As this operation is rather expensive, it is best to directly set the reference directly.
+        /// </summary>
         [SerializeField]
-        private bool findRigIfMissing = true;
-
-
-        private Coroutine loadSceneCoroutine;
+        private bool _findRigIfMissing = true;
 
 
         private void Start()
         {
-            if (rig == null && findRigIfMissing)
+            if (_rig == null && _findRigIfMissing)
             {
-                rig = FindFirstObjectByType<ExPresSXRRig>();
+                _rig = FindFirstObjectByType<ExPresSXRRig>();
             }
         }
 
-        public void StartGameEnd()
+        /// <summary>
+        /// Exits the game as configured.
+        /// </summary>
+        public void QuitGame()
         {
-            if (rig != null)
+            // Disable interactions while exiting
+            if (_rig != null)
             {
-                rig.FadeToColor();
-                // Disable interactions while the game is loading
-                rig.interactionOptions = 0;
-
-                rig.fadeRect.OnFadeToColorCompleted.AddListener(QuitGame);
+                _rig.interactionOptions = 0;
             }
-            else
-            {
-                QuitGame();
-            }
-        }
 
-        private void QuitGame()
-        {
             if (_exitType == ExitType.ToScene)
             {
-                ChangeToMenuScene();
+                RuntimeUtils.ChangeSceneWithFade(_rig, _menuSceneIndex, false, null);
+            }
+            else if (_exitType == ExitType.ToScene)
+            {
+                RuntimeUtils.SwitchSceneAsync(_menuSceneIndex, null);
             }
             else
             {
@@ -70,31 +79,12 @@ namespace ExPresSXR.Misc
             }
         }
 
-        private void ChangeToMenuScene()
-        {
-            if (loadSceneCoroutine == null)
-            {
-                // Only start if not already loading a scene
-                loadSceneCoroutine = StartCoroutine(ChangeToMenuSceneAsync());
-            }
-        }
-
-        private IEnumerator ChangeToMenuSceneAsync()
-        {
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(_menuSceneIndex, LoadSceneMode.Single);
-
-            // Wait for the scene to load
-            while (!asyncLoad.isDone)
-            {
-                yield return null;
-            }
-        }
-
 
         public enum ExitType
         {
             QuitGame,
-            ToScene
+            ToScene,
+            ToSceneNoFade
         }
     }
 }

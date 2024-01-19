@@ -110,7 +110,7 @@ E-Mail: [luca.dreiling@gmx.de](mailto:luca.dreiling@gmx.de).
 
 ## Version
 
-ExPresS XR is currently developed and tested with Unity 2022.3.5f1.
+ExPresS XR is currently developed and tested with Unity 2022.3.16f1.
 
 ## License
 

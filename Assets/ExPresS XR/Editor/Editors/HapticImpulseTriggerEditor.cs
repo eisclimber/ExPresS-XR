@@ -6,7 +6,7 @@ using ExPresSXR.Interaction;
 using UnityEditor.UIElements;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(HapticImpulseTrigger))]
     [CanEditMultipleObjects]

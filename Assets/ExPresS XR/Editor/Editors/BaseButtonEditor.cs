@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction;
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(BaseButton))]
     [CanEditMultipleObjects]

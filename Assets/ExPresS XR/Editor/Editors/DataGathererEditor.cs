@@ -3,7 +3,7 @@ using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
 using System.IO;
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(DataGatherer))]
     public class DataGathererEditor : UnityEditor.Editor

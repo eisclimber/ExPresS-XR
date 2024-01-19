@@ -41,7 +41,8 @@ namespace ExPresSXR.Interaction
         }
         
 
-        private void Awake() {
+        private void Awake()
+        {
             if (_leftXrController == null && _rightXrController == null)
             {
                 Debug.LogWarning("No XR Controller was provided. This Component will have no effect.");

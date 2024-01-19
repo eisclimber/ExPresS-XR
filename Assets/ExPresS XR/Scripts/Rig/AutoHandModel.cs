@@ -6,31 +6,43 @@ namespace ExPresSXR.Rig
 {
     public class AutoHandModel : MonoBehaviour
     {
-        public HandModelMode handModelMode;
+        [SerializeField]
+        private HandModelMode _handModelMode;
+        public HandModelMode handModelMode
+        {
+            get => _handModelMode;
+            set
+            {
+                _handModelMode = value;
+
+                LoadControllerModel();
+                ShowCorrectModel();
+            }
+        }
         public InputDeviceCharacteristics controllerCharacteristics;
         public List<GameObject> controllerModels;
         public GameObject handModel;
         public GameObject customModel;
 
-        private InputDevice currentDevice;
-        private GameObject currentControllerModel;
-        private GameObject currentHandModel;
+        private InputDevice _currentDevice;
+        private GameObject _currentControllerModel;
+        private GameObject _currentHandModel;
 
         public Transform currentAttach
         {
             get
             {
-                if (currentHandModel != null && (handModelMode == HandModelMode.Hand || handModelMode == HandModelMode.Both))
+                if (_currentHandModel != null && (handModelMode == HandModelMode.Hand || handModelMode == HandModelMode.Both))
                 {
-                    Transform handAttach = currentHandModel.transform.Find("Attach");
+                    Transform handAttach = _currentHandModel.transform.Find("Attach");
                     if (handAttach != null)
                     {
                         return handAttach;
                     }
                 }
-                else if (currentControllerModel != null && handModelMode == HandModelMode.Controller)
+                else if (_currentControllerModel != null && handModelMode == HandModelMode.Controller)
                 {
-                    Transform controllerAttach = currentControllerModel.transform.Find("Attach");
+                    Transform controllerAttach = _currentControllerModel.transform.Find("Attach");
                     if (controllerAttach != null)
                     {
                         return controllerAttach;
@@ -86,24 +98,11 @@ namespace ExPresSXR.Rig
 
             if (devices.Count > 0)
             {
-                currentDevice = devices[0];
-                GameObject prefab = controllerModels.Find(controller => controller.name.StartsWith(currentDevice.name));
+                _currentDevice = devices[0];
 
-                if (handModelMode == HandModelMode.Custom)
-                {
-                    currentControllerModel = customModel != null ? Instantiate(customModel, transform) : null;
-                }
-                else if (prefab != null)
-                {
-                    currentControllerModel = Instantiate(prefab, transform);
-                }
-                else
-                {
-                    Debug.LogWarning("No Model with name: '" + currentDevice.name + "' found, using a generic model instead.");
-                    currentControllerModel = Instantiate(controllerModels[0], transform);
-                }
+                LoadControllerModel();
 
-                currentHandModel = Instantiate(handModel, transform);
+                _currentHandModel = Instantiate(handModel, transform);
 
                 // Ensures to Enable/Disable Collisions on currently loaded models
                 modelCollisionsEnabled = _modelCollisionsEnabled;
@@ -113,22 +112,42 @@ namespace ExPresSXR.Rig
         // Update is called once per frame
         private void Update()
         {
-            if (!currentDevice.isValid)
+            if (!_currentDevice.isValid)
             {
                 TryInitialize();
+                ShowCorrectModel();
+            }
+        }
+
+        private void ShowCorrectModel()
+        {
+            bool showHand = handModelMode == HandModelMode.Hand 
+                                || handModelMode == HandModelMode.Both;
+                
+            // Also show controller for mode Custom
+            bool showController = handModelMode == HandModelMode.Controller 
+                                || handModelMode == HandModelMode.Custom
+                                || handModelMode == HandModelMode.Both;
+            
+            _currentHandModel.SetActive(showHand);
+            _currentControllerModel.SetActive(showController);
+        }
+
+        private void LoadControllerModel()
+        {
+            GameObject prefab = controllerModels.Find(controller => controller.name.StartsWith(_currentDevice.name));
+            if (handModelMode == HandModelMode.Custom)
+            {
+                _currentControllerModel = customModel != null ? Instantiate(customModel, transform) : null;
+            }
+            else if (prefab != null)
+            {
+                _currentControllerModel = Instantiate(prefab, transform);
             }
             else
             {
-                bool showHand = handModelMode == HandModelMode.Hand 
-                                || handModelMode == HandModelMode.Both;
-                
-                // Also show controller for mode Custom
-                bool showController = handModelMode == HandModelMode.Controller 
-                                    || handModelMode == HandModelMode.Custom
-                                    || handModelMode == HandModelMode.Both;
-                
-                currentHandModel.SetActive(showHand);
-                currentControllerModel.SetActive(showController);
+                Debug.LogWarning("No Model with name: '" + _currentDevice.name + "' found, using a generic model instead.");
+                _currentControllerModel = Instantiate(controllerModels[0], transform);
             }
         }
     }

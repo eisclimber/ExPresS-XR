@@ -7,6 +7,7 @@ using UnityEditor.UIElements;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 using TMPro;
 using ExPresSXR.Interaction.ButtonQuiz;
+using ExPresSXR.Editor.Utility;
 
 namespace ExPresSXR.Editor.SetupDialogs
 {

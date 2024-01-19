@@ -27,22 +27,37 @@ namespace ExPresSXR.Minigames.CoinScale
             Up = 1
         }
 
+        /// <summary>
+        /// Max. height of this scale side.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Min. height")]
+        [Tooltip("Min. height of this scale side.")]
         private float _minHeight = -0.1f;
 
+        /// <summary>
+        /// Max. height of this scale side.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Max. height")]
+        [Tooltip("Max. height of this scale side.")]
         private float _maxHeight = 0.1f;
 
+        /// <summary>
+        /// Center height of this scale side.")]
+        /// </summary>
         [SerializeField]
-        [Tooltip("Center height")]
+        [Tooltip("Center height of this scale side.")]
         private float _centerHeight = 0.0f;
 
+        /// <summary>
+        /// Speed when changing elevation.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Transition Speed")]
+        [Tooltip("Speed when changing elevation.")]
         private float _speed = 0.1f;
 
+        /// <summary>
+        /// Deadzone for reaching the neutral position.
+        /// </summary>
         [SerializeField]
         [Tooltip("Deadzone for reaching the neutral position.")]
         private float _middleDeadzoneThreshold = 0.01f;

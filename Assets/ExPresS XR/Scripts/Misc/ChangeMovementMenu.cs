@@ -9,22 +9,31 @@ namespace ExPresSXR.Misc
 {
     public class ChangeMovementMenu : MonoBehaviour
     {
-
+        /// <summary>
+        /// The rig affected by the movement changes.s
+        /// </summary>
         [SerializeField]
-        private ExPresSXRRig rig;
+        private ExPresSXRRig _rig;
 
+        /// <summary>
+        /// References to the ui elements used to change various rig settings.
+        /// </summary>
         [SerializeField]
-        private MovementMenuData data = new();
+        private MovementMenuData _data = new();
 
+        /// <summary>
+        /// If enabled tries to find the correct references by name.
+        /// It is recommended to set these manually as this operation is expensive.
+        /// </summary>
         [SerializeField]
-        private bool findMissingReferences;
+        private bool _findMissingReferences;
 
 
         private void Awake()
         {
-            if (data != null && rig != null)
+            if (_data != null && _rig != null)
             {
-                data.SetupMenu(transform, rig, findMissingReferences);
+                _data.SetupMenu(transform, _rig, _findMissingReferences);
             }
             else
             {
@@ -48,10 +57,16 @@ namespace ExPresSXR.Misc
             public Toggle climbToggle;
             public Toggle climbControlGravityToggle;
             public TMP_Dropdown handModelDropdown;
-            public Toggle headCollisionEnabled;
-            public Toggle headCollisionIndicator;
+            public Toggle headCollisionEnabledToggle;
+            public Toggle headCollisionIndicatorToggle;
 
 
+            /// <summary>
+            /// Completely sets up the references and connects them to the rig.
+            /// </summary>
+            /// <param name="rootTransform">Transform to search references from.</param>
+            /// <param name="rig">Rig to be connected to.</param>
+            /// <param name="findMissingReferences">If true, will try to find missing ui references.</param>
             public void SetupMenu(Transform rootTransform, ExPresSXRRig rig, bool findMissingReferences)
             {
                 if (findMissingReferences)
@@ -64,6 +79,10 @@ namespace ExPresSXR.Misc
             }
 
 
+            /// <summary>
+            /// Tries to find missing ui refrences based on the given transform.
+            /// </summary>
+            /// <param name="searchTransform">Tranform to search from.</param>
             public void FindMissing(Transform searchTransform)
             {
                 FindComponentIfMissing(ref inputMethodDropdown, searchTransform, "Input Method Dropdown");
@@ -82,11 +101,15 @@ namespace ExPresSXR.Misc
 
                 FindComponentIfMissing(ref handModelDropdown, searchTransform, "Hand Model Dropdown");
 
-                FindComponentIfMissing(ref headCollisionEnabled, searchTransform, "Head Collision Toggle");
-                FindComponentIfMissing(ref headCollisionIndicator, searchTransform, "Collision Indicator Toggle");
+                FindComponentIfMissing(ref headCollisionEnabledToggle, searchTransform, "Head Collision Toggle");
+                FindComponentIfMissing(ref headCollisionIndicatorToggle, searchTransform, "Collision Indicator Toggle");
             }
 
 
+            /// <summary>
+            /// Connects change value events with the rig.
+            /// </summary>
+            /// <param name="rig">Rig t connect to</param>
             public void AddRigListeners(ExPresSXRRig rig)
             {
                 inputMethodDropdown.onValueChanged.AddListener((value) => { rig.inputMethod = (InputMethod)value; });
@@ -105,12 +128,15 @@ namespace ExPresSXR.Misc
 
                 handModelDropdown.onValueChanged.AddListener((value) => { rig.handModelMode = (HandModelMode)value; });
 
-                headCollisionEnabled.onValueChanged.AddListener((value) => { rig.headCollisionEnabled = value; });
-                headCollisionIndicator.onValueChanged.AddListener((value) => { rig.showCollisionVignetteEffect = value; });
+                headCollisionEnabledToggle.onValueChanged.AddListener((value) => { rig.headCollisionEnabled = value; });
+                headCollisionIndicatorToggle.onValueChanged.AddListener((value) => { rig.showCollisionVignetteEffect = value; });
             }
 
 
-            private void PopulateDropdowns()
+            /// <summary>
+            /// Populates the dropdowns with the values of the enums.
+            /// </summary>
+            public void PopulateDropdowns()
             {
                 if (inputMethodDropdown != null)
                 {
@@ -128,7 +154,10 @@ namespace ExPresSXR.Misc
                 }
             }
 
-
+            /// <summary>
+            /// Loads the config of the given rig and sets the values in the ui.
+            /// </summary>
+            /// <param name="rig">Rig to load from</param>
             public void LoadValuesFromRig(ExPresSXRRig rig)
             {
                 if (rig == null)
@@ -154,8 +183,8 @@ namespace ExPresSXR.Misc
 
                 TrySetToggleValue(directInteractionToggle, rig.interactionOptions.HasFlag(InteractionOptions.Direct));
 
-                TrySetToggleValue(headCollisionEnabled, rig.headCollisionEnabled);
-                TrySetToggleValue(headCollisionIndicator, rig.showCollisionVignetteEffect);
+                TrySetToggleValue(headCollisionEnabledToggle, rig.headCollisionEnabled);
+                TrySetToggleValue(headCollisionIndicatorToggle, rig.showCollisionVignetteEffect);
             }
 
 
@@ -190,7 +219,6 @@ namespace ExPresSXR.Misc
                     dropdown.value = value;
                 }
             }
-
 
 
             private static void FindComponentIfMissing<T>(ref T component, Transform searchTransform, string objectName) where T : Component

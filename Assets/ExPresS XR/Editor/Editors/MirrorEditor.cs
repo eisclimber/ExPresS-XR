@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Presentation;
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(Mirror))]
     [CanEditMultipleObjects]

@@ -10,7 +10,7 @@ namespace ExPresSXR.Rig
     [AddComponentMenu("ExPresS XR/Hand Controller")]
     public class HandControllerManager : ControllerManagerBase
     {
-        // Movement
+        #region Movement Configuration
         [SerializeField]
         private bool _teleportationEnabled;
         public bool teleportationEnabled
@@ -106,10 +106,9 @@ namespace ExPresSXR.Rig
                 }
             }
         }
+        #endregion
 
-
-        ////////
-        // Interaction
+        #region Interaction Config
         [SerializeField]
         private bool _directInteractionEnabled;
         public bool directInteractionEnabled
@@ -235,9 +234,6 @@ namespace ExPresSXR.Rig
         }
 
 
-        ////////
-        
-
         [Tooltip("Enables scaling grabbed objects by pushing the joystick back and forward. (Requires Scaling[Direct/Ray]Interactors and AnchorControl to be enabled on the Ray).")]
         [SerializeField]
         private bool _scaleGrabbedObjects;
@@ -270,9 +266,18 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
+        [SerializeField]
+        private float _afterGrabWaitDuration = 0.3f;
+        public float afterGrabWaitDuration
+        {
+            get => _afterGrabWaitDuration;
+            set => _afterGrabWaitDuration = value;
+        }
+        #endregion
 
-        ////////
 
+        #region Hand Models
         [SerializeField]
         private HandModelMode _handModelMode;
         public HandModelMode handModelMode
@@ -305,15 +310,7 @@ namespace ExPresSXR.Rig
                 }
             }
         }
-
-        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
-        [SerializeField]
-        private float _afterGrabWaitDuration = 0.3f;
-        public float afterGrabWaitDuration
-        {
-            get => _afterGrabWaitDuration;
-            set => _afterGrabWaitDuration = value;
-        }
+        #endregion
 
 
         private Coroutine _afterGrabCoroutine;

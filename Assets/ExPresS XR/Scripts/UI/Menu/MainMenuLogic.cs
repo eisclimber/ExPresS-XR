@@ -50,11 +50,8 @@ namespace ExPresSXR.UI.Menu
 
         private void ChangeToGameScene()
         {
-            if (loadSceneCoroutine == null)
-            {
-                // Only start if not already loading a scene
-                loadSceneCoroutine = StartCoroutine(ChangeToGameSceneAsync());
-            }
+            // Only start if not already loading a scene
+            loadSceneCoroutine ??= StartCoroutine(ChangeToGameSceneAsync());
         }
 
         private IEnumerator ChangeToGameSceneAsync()

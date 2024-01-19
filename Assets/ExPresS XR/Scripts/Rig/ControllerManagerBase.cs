@@ -32,10 +32,18 @@ namespace ExPresSXR.Rig
         [SerializeField]
         [Tooltip("The GameObject containing the interactor used for direct manipulation.")]
         protected XRDirectInteractor m_DirectInteractor;
+        public XRDirectInteractor DirectInteractor
+        {
+            get => DirectInteractor;
+        }
 
         [SerializeField]
         [Tooltip("The GameObject containing the interactor used for distant/ray manipulation.")]
         protected XRRayInteractor m_RayInteractor;
+        public XRRayInteractor RayInteractor
+        {
+            get => m_RayInteractor;
+        }
 
         [SerializeField]
         [Tooltip("The GameObject containing the interactor used for teleportation.")]

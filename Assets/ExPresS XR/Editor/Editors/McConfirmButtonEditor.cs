@@ -2,7 +2,7 @@ using UnityEditor;
 using ExPresSXR.Interaction.ButtonQuiz;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(McConfirmButton))]
     [CanEditMultipleObjects]

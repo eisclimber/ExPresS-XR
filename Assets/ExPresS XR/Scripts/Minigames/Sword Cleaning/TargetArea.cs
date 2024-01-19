@@ -11,9 +11,16 @@ namespace ExPresSXR.Minigames.SwordCleaning
     [RequireComponent(typeof(Collider))]
     public class TargetArea : MonoBehaviour
     {
+        /// <summary>
+        /// How many times the triggerer must enter and exit for the target to be completed.
+        /// </summary>
         [SerializeField]
         private int _actionsToComplete = 1;
 
+
+        /// <summary>
+        /// If the number of actions were performed and the target is completed, not registering any more actions.
+        /// </summary>
         private bool _completed;
         public bool completed
         {
@@ -36,6 +43,9 @@ namespace ExPresSXR.Minigames.SwordCleaning
             }
         }
 
+        /// <summary>
+        /// Adds another action to be performed and handle completion.
+        /// </summary>
         public void QueueAction()
         {
             if (completed)

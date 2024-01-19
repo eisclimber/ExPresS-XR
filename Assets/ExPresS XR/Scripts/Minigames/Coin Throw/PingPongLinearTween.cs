@@ -14,13 +14,22 @@ namespace ExPresSXR.Minigames.CoinThrow
 {
     public class PingPongLinearTween : MonoBehaviour
     {
+        /// <summary>
+        /// Offset relative to the GOs initial position.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Relative to the GOs initial position.")]
+        [Tooltip("Offset to move to relative to the GOs initial position.")]
         private Vector3 _offset;
 
+        /// <summary>
+        /// Duration of the tween for one direction.
+        /// </summary>
         [SerializeField]
         private float _duration = 1.0f;
 
+        /// <summary>
+        /// If enabled, the tween starts automatically.
+        /// </summary>
         [SerializeField]
         private bool _startOnAwake;
 
@@ -55,12 +64,19 @@ namespace ExPresSXR.Minigames.CoinThrow
             }
         }
 
+        /// <summary>
+        /// Starts the tween and/or resets its progress.
+        /// </summary>
         public void StartTween()
         {
             _started = true;
             _startTime = Time.time;
         }
 
+        /// <summary>
+        /// Stops the tween and resets the position if resetPos is true.
+        /// </summary>
+        /// <param name="resetPos">If the position of the tweened object should be reset.</param>
         public void StopTween(bool resetPos = false)
         {
             _started = false;
@@ -71,6 +87,9 @@ namespace ExPresSXR.Minigames.CoinThrow
             }
         }
 
+        /// <summary>
+        /// Resets the position of the tweened object to its initial position.
+        /// </summary>
         public void ResetTween()
         {
             transform.position = _from;

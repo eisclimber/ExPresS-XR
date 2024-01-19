@@ -3,7 +3,7 @@ using UnityEditor;
 using ExPresSXR.Rig;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(PlayAreaBoundingBox))]
     [CanEditMultipleObjects]

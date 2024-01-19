@@ -7,7 +7,7 @@ using UnityEditor.ProBuilder;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Utility
 {
     public static class RoomCreationUtils
     {
@@ -329,35 +329,29 @@ namespace ExPresSXR.Editor
 
         private static string GetWallPathFromPreset(MaterialPreset materialPreset)
         {
-            switch (materialPreset)
+            return materialPreset switch
             {
-                case MaterialPreset.Exhibition:
-                    return EXHIBITION_WALL_MATERIAL_PATH;
-                default:
-                    return EXPERIMENTATION_WALL_MATERIAL_PATH;
-            }
+                MaterialPreset.Exhibition => EXHIBITION_WALL_MATERIAL_PATH,
+                _ => EXPERIMENTATION_WALL_MATERIAL_PATH,
+            };
         }
 
         private static string GetFloorPathFromPreset(MaterialPreset materialPreset)
         {
-            switch (materialPreset)
+            return materialPreset switch
             {
-                case MaterialPreset.Exhibition:
-                    return EXHIBITION_FLOOR_MATERIAL_PATH;
-                default:
-                    return EXPERIMENTATION_FLOOR_MATERIAL_PATH;
-            }
+                MaterialPreset.Exhibition => EXHIBITION_FLOOR_MATERIAL_PATH,
+                _ => EXPERIMENTATION_FLOOR_MATERIAL_PATH,
+            };
         }
 
         private static string GetCeilingPathFromPreset(MaterialPreset materialPreset)
         {
-            switch (materialPreset)
+            return materialPreset switch
             {
-                case MaterialPreset.Exhibition:
-                    return EXHIBITION_CEILING_MATERIAL_PATH;
-                default:
-                    return EXPERIMENTATION_CEILING_MATERIAL_PATH;
-            }
+                MaterialPreset.Exhibition => EXHIBITION_CEILING_MATERIAL_PATH,
+                _ => EXPERIMENTATION_CEILING_MATERIAL_PATH,
+            };
         }
     }
 

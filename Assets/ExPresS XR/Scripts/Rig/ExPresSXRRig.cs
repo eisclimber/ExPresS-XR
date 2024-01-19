@@ -243,6 +243,17 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Reference to the ClimbingManager of the ExPresS XR Rig.")]
+        [SerializeField]
+        private ClimbingManager _climbingManager;
+        public ClimbingManager climbingManager
+        {
+            get => _climbingManager;
+            set
+            {
+                _climbingManager = value;
+            }
+        }
 
         [Tooltip("Reference to the fadeRect of the ExPresS XR Rig.")]
         [SerializeField]
@@ -459,7 +470,8 @@ namespace ExPresSXR.Rig
         {
             get => new(inputMethod, movementPreset, interactionOptions,
                         leftHandController, rightHandController,
-                        eyeGazeController, headGazeController, locomotionSystem);
+                        eyeGazeController, headGazeController,
+                        locomotionSystem, climbingManager);
         }
         #endregion
 

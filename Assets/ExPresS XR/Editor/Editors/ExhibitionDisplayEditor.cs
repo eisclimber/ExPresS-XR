@@ -3,7 +3,7 @@ using UnityEditor;
 using ExPresSXR.Presentation;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ExhibitionDisplay))]

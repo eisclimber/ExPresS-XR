@@ -13,12 +13,18 @@ namespace ExPresSXR.Minigames.CoinScale
 {
     public class Scale : MonoBehaviour
     {
+        /// <summary>
+        /// Reference to the left Bowl.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Ref. to the left Bowl")]
+        [Tooltip("Reference to the left Bowl.")]
         private Bowl _leftBowl;
 
+        /// <summary>
+        /// Reference to the right Bowl.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Ref. to the right Bowl")]
+        [Tooltip("Reference to the right Bowl.")]
         private Bowl _rightBowl;
 
         public UnityEvent<ScaleState> OnScaleCheck;
