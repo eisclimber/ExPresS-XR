@@ -23,12 +23,12 @@ namespace ExPresSXR.Rig
             HandControllerManager leftHandController = configData.leftHandController;
             HandControllerManager rightHandController = configData.rightHandController;
 
-            ClimbingManager climbingManager = configData.climbingManager;
+            ClimbingGravityManager climbingGravityManager = configData.climbingGravityManager;
 
             ApplyHandInteractionOptions(leftHandController, interactionOptions);
             ApplyHandInteractionOptions(rightHandController, interactionOptions);
 
-            ApplyLocomotionInteractionOptions(locomotionSystem, climbingManager, interactionOptions);
+            ApplyLocomotionInteractionOptions(locomotionSystem, climbingGravityManager, interactionOptions);
         }
 
         private static void ApplyHandInteractionOptions(HandControllerManager handController, InteractionOptions interactionOptions)
@@ -51,24 +51,22 @@ namespace ExPresSXR.Rig
             }
         }
 
-        private static void ApplyLocomotionInteractionOptions(LocomotionSystem locomotionSystem, ClimbingManager climbingManager, 
+        private static void ApplyLocomotionInteractionOptions(LocomotionSystem locomotionSystem, ClimbingGravityManager climbingManager, 
                                                                 InteractionOptions interactionOptions)
         {
-            if (locomotionSystem == null)
-            {
-                return;
-            }
-
+            
             // Enable locomotion Provider
             bool climbEnabled = interactionOptions.HasFlag(InteractionOptions.Climb);
-            if (locomotionSystem.TryGetComponent(out ClimbProvider climbProvider))
+            bool climbGravityEnabled = interactionOptions.HasFlag(InteractionOptions.ClimbControlGravity);
+            if (locomotionSystem != null && locomotionSystem.TryGetComponent(out ClimbProvider climbProvider))
             {
                 climbProvider.enabled = climbEnabled;
             }
 
             if (climbingManager != null)
             {
-                climbingManager.enabled = climbEnabled;
+                // Only enabled when both climbing and controlGravity is enabled
+                climbingManager.enabled = climbEnabled && climbGravityEnabled;
             }
         }
         #endregion
@@ -233,7 +231,7 @@ namespace ExPresSXR.Rig
 
         // Locomotion
         public LocomotionSystem locomotionSystem;
-        public ClimbingManager climbingManager;
+        public ClimbingGravityManager climbingGravityManager;
 
 
         public ConfigData(InputMethod inputMethod,
@@ -244,7 +242,7 @@ namespace ExPresSXR.Rig
                             XRGazeInteractor eyeGazeController,
                             HeadGazeController headGazeController,
                             LocomotionSystem locomotionSystem,
-                            ClimbingManager climbingManager)
+                            ClimbingGravityManager climbingGravityManager)
         {
             this.inputMethod = inputMethod;
             this.movementPreset = movementPreset;
@@ -256,7 +254,7 @@ namespace ExPresSXR.Rig
             this.headGazeController = headGazeController;
 
             this.locomotionSystem = locomotionSystem;
-            this.climbingManager = climbingManager;
+            this.climbingGravityManager = climbingGravityManager;
         }
     }
     #endregion

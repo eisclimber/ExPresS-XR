@@ -112,24 +112,41 @@ namespace ExPresSXR.Misc
             /// <param name="rig">Rig t connect to</param>
             public void AddRigListeners(ExPresSXRRig rig)
             {
-                inputMethodDropdown.onValueChanged.AddListener((value) => { rig.inputMethod = (InputMethod)value; });
-                movementPresetDropdown.onValueChanged.AddListener((value) => { rig.movementPreset = (MovementPreset)value; });
+                if (inputMethodDropdown != null)
+                {
+                    inputMethodDropdown.onValueChanged.AddListener((value) => { rig.inputMethod = (InputMethod)value; });
+                }
 
-                directInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.Direct, value));
-                pokeInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.Poke, value));
-                pokeUiToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.UiPoke, value));
-                rayInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.Ray, value));
-                rayAnchorControlToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.RayAnchorControl, value));
-                rayUiInteractionToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.UiRay, value));
-                chooseTpForwardToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.ChooseTeleportForward, value));
-                cancelTeleportToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.CancelTeleportPossible, value));
-                climbToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.Climb, value));
-                climbControlGravityToggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, InteractionOptions.ClimbControlGravity, value));
+                if (movementPresetDropdown != null)
+                {
+                    movementPresetDropdown.onValueChanged.AddListener((value) => { rig.movementPreset = (MovementPreset)value; });
+                }
 
-                handModelDropdown.onValueChanged.AddListener((value) => { rig.handModelMode = (HandModelMode)value; });
+                AddInteractionOptionsListenerToToggle(directInteractionToggle, rig, InteractionOptions.Direct);
+                AddInteractionOptionsListenerToToggle(pokeInteractionToggle, rig, InteractionOptions.Poke);
+                AddInteractionOptionsListenerToToggle(pokeUiToggle, rig, InteractionOptions.UiPoke);
+                AddInteractionOptionsListenerToToggle(rayInteractionToggle, rig, InteractionOptions.Ray);
+                AddInteractionOptionsListenerToToggle(rayAnchorControlToggle, rig, InteractionOptions.RayAnchorControl);
+                AddInteractionOptionsListenerToToggle(rayUiInteractionToggle, rig, InteractionOptions.UiRay);
+                AddInteractionOptionsListenerToToggle(chooseTpForwardToggle, rig, InteractionOptions.ChooseTeleportForward);
+                AddInteractionOptionsListenerToToggle(cancelTeleportToggle, rig, InteractionOptions.CancelTeleportPossible);
+                AddInteractionOptionsListenerToToggle(climbToggle, rig, InteractionOptions.Climb);
+                AddInteractionOptionsListenerToToggle(climbControlGravityToggle, rig, InteractionOptions.ClimbControlGravity);
 
-                headCollisionEnabledToggle.onValueChanged.AddListener((value) => { rig.headCollisionEnabled = value; });
-                headCollisionIndicatorToggle.onValueChanged.AddListener((value) => { rig.showCollisionVignetteEffect = value; });
+                if (handModelDropdown != null)
+                {
+                    handModelDropdown.onValueChanged.AddListener((value) => { rig.handModelMode = (HandModelMode)value; });
+                }
+
+                if (headCollisionEnabledToggle != null)
+                {
+                    headCollisionEnabledToggle.onValueChanged.AddListener((value) => { rig.headCollisionEnabled = value; });
+                }
+
+                if (headCollisionIndicatorToggle != null)
+                {
+                    headCollisionIndicatorToggle.onValueChanged.AddListener((value) => { rig.showCollisionVignetteEffect = value; });
+                }
             }
 
 
@@ -187,6 +204,28 @@ namespace ExPresSXR.Misc
                 TrySetToggleValue(headCollisionIndicatorToggle, rig.showCollisionVignetteEffect);
             }
 
+            // Find Missing Helpers
+            private static void FindComponentIfMissing<T>(ref T component, Transform searchTransform, string objectName) where T : Component
+            {
+                component ??= FindComponentInNamedObject<T>(searchTransform, objectName);
+            }
+
+            private static T FindComponentInNamedObject<T>(Transform searchTransform, string objectName) where T : Component
+            {
+                // Try find GO with name
+                Transform target = RuntimeUtils.RecursiveFindChild(searchTransform, objectName);
+                // Return Component if found
+                return target != null ? target.GetComponent<T>() : null;
+            }
+
+            // Add Listeners
+            private void AddInteractionOptionsListenerToToggle(Toggle toggle, ExPresSXRRig rig, InteractionOptions option)
+            {
+                if (toggle != null)
+                {
+                    toggle.onValueChanged.AddListener((value) => EnableInteractionOption(rig, option, value));
+                }
+            }
 
 
             private void EnableInteractionOption(ExPresSXRRig rig, InteractionOptions option, bool enable)
@@ -199,11 +238,9 @@ namespace ExPresSXR.Misc
                 {
                     rig.interactionOptions &= ~option;
                 }
-                Debug.Log(rig.interactionOptions);
             }
 
-
-
+            // Load Values
             private static void TrySetToggleValue(Toggle toggle, bool value)
             {
                 if (toggle != null)
@@ -218,21 +255,6 @@ namespace ExPresSXR.Misc
                 {
                     dropdown.value = value;
                 }
-            }
-
-
-            private static void FindComponentIfMissing<T>(ref T component, Transform searchTransform, string objectName) where T : Component
-            {
-                component ??= FindComponentInNamedObject<T>(searchTransform, objectName);
-            }
-
-
-            private static T FindComponentInNamedObject<T>(Transform searchTransform, string objectName) where T : Component
-            {
-                // Try find GO with name
-                Transform target = RuntimeUtils.RecursiveFindChild(searchTransform, objectName);
-                // Return Component if found
-                return target != null ? target.GetComponent<T>() : null;
             }
         }
     }

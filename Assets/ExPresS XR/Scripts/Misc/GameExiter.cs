@@ -19,6 +19,7 @@ namespace ExPresSXR.Misc
         public ExitType exitType
         {
             get => _exitType;
+            // private set => _exitType = value;
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace ExPresSXR.Misc
         /// As this operation is rather expensive, it is best to directly set the reference directly.
         /// </summary>
         [SerializeField]
-        private bool _findRigIfMissing = true;
+        private bool _findRigIfMissing;
 
 
         private void Start()
@@ -62,27 +63,38 @@ namespace ExPresSXR.Misc
                 _rig.interactionOptions = 0;
             }
 
-            if (_exitType == ExitType.ToScene)
+            if (_exitType == ExitType.QuitGame)
+            {
+                _rig.fadeRect.OnFadeToColorCompleted.AddListener(ExitGame);
+                _rig.FadeToColor();
+            }
+            else if (_exitType == ExitType.ToScene)
             {
                 RuntimeUtils.ChangeSceneWithFade(_rig, _menuSceneIndex, false, null);
             }
-            else if (_exitType == ExitType.ToScene)
+            else if (_exitType == ExitType.ToSceneNoFade)
             {
                 RuntimeUtils.SwitchSceneAsync(_menuSceneIndex, null);
             }
             else
             {
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#endif
-                Application.Quit();
+                ExitGame();
             }
+        }
+
+        private void ExitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
         }
 
 
         public enum ExitType
         {
             QuitGame,
+            QuitGameNoFade,
             ToScene,
             ToSceneNoFade
         }

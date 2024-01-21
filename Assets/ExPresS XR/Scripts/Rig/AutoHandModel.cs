@@ -15,8 +15,8 @@ namespace ExPresSXR.Rig
             {
                 _handModelMode = value;
 
-                LoadControllerModel();
-                ShowCorrectModel();
+                // Allows updating the model during runtime
+                UpdateDisplayedModel();
             }
         }
         public InputDeviceCharacteristics controllerCharacteristics;
@@ -90,8 +90,39 @@ namespace ExPresSXR.Rig
             }
         }
 
+        private void Update()
+        {
+            if (!_currentDevice.isValid)
+            {
+                UpdateDisplayedModel();
+            }
+        }
 
-        private void TryInitialize()
+        private void UpdateDisplayedModel()
+        {
+            if (TryInitialize())
+            {
+                UpdateModelVisibility();
+            }
+        }
+
+
+        private void UpdateModelVisibility()
+        {
+            bool showHand = handModelMode == HandModelMode.Hand
+                                || handModelMode == HandModelMode.Both;
+
+            // Also show controller for mode Custom
+            bool showController = handModelMode == HandModelMode.Controller
+                                || handModelMode == HandModelMode.Custom
+                                || handModelMode == HandModelMode.Both;
+
+            _currentHandModel.SetActive(showHand);
+            _currentControllerModel.SetActive(showController);
+        }
+
+
+        private bool TryInitialize()
         {
             List<InputDevice> devices = new();
             InputDevices.GetDevicesWithCharacteristics(controllerCharacteristics, devices);
@@ -100,41 +131,35 @@ namespace ExPresSXR.Rig
             {
                 _currentDevice = devices[0];
 
-                LoadControllerModel();
-
-                _currentHandModel = Instantiate(handModel, transform);
+                LoadModels();
 
                 // Ensures to Enable/Disable Collisions on currently loaded models
                 modelCollisionsEnabled = _modelCollisionsEnabled;
+                return true;
             }
+            return false;
         }
 
-        // Update is called once per frame
-        private void Update()
+        private void LoadModels()
         {
-            if (!_currentDevice.isValid)
+            if (_currentDevice == null || !_currentDevice.isValid)
             {
-                TryInitialize();
-                ShowCorrectModel();
+                return;
             }
-        }
 
-        private void ShowCorrectModel()
-        {
-            bool showHand = handModelMode == HandModelMode.Hand 
-                                || handModelMode == HandModelMode.Both;
-                
-            // Also show controller for mode Custom
-            bool showController = handModelMode == HandModelMode.Controller 
-                                || handModelMode == HandModelMode.Custom
-                                || handModelMode == HandModelMode.Both;
-            
-            _currentHandModel.SetActive(showHand);
-            _currentControllerModel.SetActive(showController);
-        }
+            // Load hand Model
+            if (_currentHandModel != null)
+            {
+                Destroy(_currentHandModel);
+            }
+            _currentHandModel = Instantiate(handModel, transform);
 
-        private void LoadControllerModel()
-        {
+            // Load Controller Model
+            if (_currentControllerModel != null)
+            {
+                Destroy(_currentControllerModel);
+            }
+
             GameObject prefab = controllerModels.Find(controller => controller.name.StartsWith(_currentDevice.name));
             if (handModelMode == HandModelMode.Custom)
             {

@@ -392,8 +392,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _exitType: 0
   _menuSceneIndex: 0
-  rig: {fileID: 0}
-  findRigIfMissing: 1
+  _rig: {fileID: 0}
+  _findRigIfMissing: 1
 --- !u!114 &8254138436444216827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,7 +595,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: -0.0000019073486}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8254138436444216704
 Rigidbody:
   m_ObjectHideFlags: 0

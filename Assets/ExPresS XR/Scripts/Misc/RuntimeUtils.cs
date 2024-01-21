@@ -40,6 +40,48 @@ namespace ExPresSXR.Misc
             return null;
         }
 
+
+        /// <summary>
+        /// Finds the first ExPresSXRRig in the scene (if exists).
+        /// The rig must be tagged as "Player"!
+        /// !! This operation is expensive, call it sparingly and using direct References using SerializedProperties!!
+        /// </summary>
+        /// <param name="rig">The rig or null.</param>
+        /// <returns>If a rig was found</returns>
+        public static bool TryFindExPresSXRRigReference(out ExPresSXRRig rig)
+        {
+            GameObject[] playerGos = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject go in playerGos)
+            {
+                if (go.TryGetComponent(out rig))
+                {
+                    return true;
+                }
+            }
+            rig = null;
+            return false;
+        }
+        
+
+        /// <summary>
+        /// Helper class to calculate the positive modulo for integers.
+        /// It differs from the remainder function (%) as it will return only positive values including zero.
+        /// </summary>
+        /// <param name="a">Dividend of the modulo operation.</param>
+        /// <param name="m">Divider of the modulo operation.</param>
+        /// <returns>The positive modulo of 'a mod n'.</returns>
+        public static int PosMod(int a, int n)
+        {
+            if (n < 0)
+            {
+                n = -n;
+            }
+
+            int r = a % n;
+            return r < 0 ? r + n : r;
+        }
+
+        #region Scene Switching
         /// <summary>
         /// Changes a scene whilst the current rig is faded out. Supports 'DontDestroyOnLoad' if enabled on the rig.
         /// If no rig is provided or it does does not have a fade Rect the Scene will change instant.
@@ -47,7 +89,7 @@ namespace ExPresSXR.Misc
         /// <param name="rig">The rig that is will be attempted to fade. </param>
         /// <param name="sceneIdx"> The Scene index to change to (from the build settings). </param>
         /// <param name="keepRig"> Wether or not the rig should be kept after loading the new scene. </param>
-        /// <param name="sceneLoadedCallback"> A callback that will be executed after the new scene loaded. </param>
+        /// <param name="sceneLoadedCallback"> A callback that will be executed after the new scene loaded. Can be null. </param>
         public static void ChangeSceneWithFade(ExPresSXRRig rig, int sceneIdx, bool keepRig, Action sceneLoadedCallback)
         {
             if (rig == null || rig.fadeRect == null)
@@ -96,8 +138,8 @@ namespace ExPresSXR.Misc
                     fadeRect.FadeToColor(true);
                     fadeRect.FadeToClear(false);
 
-                    // Invoke Callback
-                    sceneLoadedCallback.Invoke();
+                    // Invoke Callback if provided
+                    sceneLoadedCallback?.Invoke();
                 }
 
                 void SwitchCleanup()
@@ -116,36 +158,15 @@ namespace ExPresSXR.Misc
         /// Switches the scene to the given index (if possible) and invokes a callback after completion.
         /// </summary>
         /// <param name="sceneIdx">The scene's index. Must be added to the BuildSetting to receive an index.</param>
-        /// <param name="callback">The callback invoked after completing the AsyncLoad.</param>
+        /// <param name="callback">The callback invoked after completing the AsyncLoad. Can be null. </param>
         public static void SwitchSceneAsync(int sceneIdx, Action callback)
         {
             AsyncOperation op = SceneManager.LoadSceneAsync(sceneIdx, LoadSceneMode.Single);
-            op.completed += (_) => { callback.Invoke(); };
+            op.completed += (_) => { callback?.Invoke(); };
         }
+        #endregion
 
-
-        /// <summary>
-        /// Finds the first ExPresSXRRig in the scene (if exists).
-        /// The rig must be tagged as "Player"!
-        /// !! This operation is expensive, call it sparingly and using direct References using SerializedProperties!!
-        /// </summary>
-        /// <param name="rig">The rig or null.</param>
-        /// <returns>If a rig was found</returns>
-        public static bool TryFindExPresSXRRigReference(out ExPresSXRRig rig)
-        {
-            GameObject[] playerGos = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject go in playerGos)
-            {
-                if (go.TryGetComponent(out rig))
-                {
-                    return true;
-                }
-            }
-            rig = null;
-            return false;
-        }
-        
-
+        # region Dropdown Helper
         /// <summary>
         /// Populates an <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.
         /// </summary>
@@ -299,5 +320,6 @@ namespace ExPresSXR.Misc
             int maxEnumValue = (int)Mathf.Pow(2.0f, Enum.GetNames(typeof(T)).Length);
             return intValue >= 0 && intValue < maxEnumValue ? intValue : maxEnumValue;
         }
+        #endregion
     }
 }

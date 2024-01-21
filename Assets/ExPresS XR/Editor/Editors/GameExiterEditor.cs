@@ -33,12 +33,18 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_exitType"), true);
 
-            if (targetScript.exitType == GameExiter.ExitType.ToScene)
+            if (targetScript.exitType == GameExiter.ExitType.ToScene
+                || targetScript.exitType == GameExiter.ExitType.ToSceneNoFade)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_menuSceneIndex"), true);
             }
 
-            DrawPropertiesExcluding(serializedObject, "m_Script", "_exitType", "_menuSceneIndex");
+            if (targetScript.exitType == GameExiter.ExitType.QuitGame
+                || targetScript.exitType == GameExiter.ExitType.ToScene)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rig"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_findRigIfMissing"), true);
+            }
         }
 
         protected virtual void DrawScript()

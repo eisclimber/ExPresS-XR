@@ -127,6 +127,7 @@ namespace ExPresSXR.Editor.Editors
             bool hasRay = targetScript.interactionOptions.HasFlag(InteractionOptions.Ray);
             bool hasUiRay = targetScript.interactionOptions.HasFlag(InteractionOptions.UiRay);
             bool hasClimb = targetScript.interactionOptions.HasFlag(InteractionOptions.Climb);
+            bool hasClimbGravity = targetScript.interactionOptions.HasFlag(InteractionOptions.ClimbControlGravity);
 
             // Info Box (Ray only for UI)
             if (!hasRay && hasUiRay)
@@ -154,8 +155,15 @@ namespace ExPresSXR.Editor.Editors
             {
                 // No way of interaction
                 EditorGUILayout.HelpBox("The Interaction option 'Climb' is enabled and both 'Direct' and 'Ray' interactions are enabled. "
-                                        + "You will probably want to add a special InteractionLayer for your ClimbInteractables "
-                                        + "that only your hands DirectInteractors can interact with.", MessageType.Info);
+                                        + "You will probably want to add the 'Climb'-Interaction Layer for your ClimbInteractables "
+                                        + "and DirectInteractors.", MessageType.Info);
+            }
+            
+            if (hasClimb && !hasClimbGravity)
+            {
+                // Better with gravity
+                EditorGUILayout.HelpBox("Not applying gravity during climbing. Be sure to enable fly and/or "
+                                        + "disable gravity in your ContinuosMoveProvider.", MessageType.Warning);
             }
         }
 
@@ -310,9 +318,10 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.LabelField("Systems", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_locomotionSystem"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_climbingGravityManager"), true);
 
                 EditorGUILayout.Space();
-
+                EditorGUILayout.LabelField("Hud", EditorStyles.boldLabel);
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_hud"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_hudCamera"), true);

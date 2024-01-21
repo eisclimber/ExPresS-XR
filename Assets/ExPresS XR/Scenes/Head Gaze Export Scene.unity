@@ -164,6 +164,7 @@ MonoBehaviour:
     m_Bits: 2147483648
   m_DistanceCalculationMode: 1
   m_SelectMode: 1
+  m_FocusMode: 1
   m_CustomReticle: {fileID: 0}
   m_AllowGazeInteraction: 0
   m_AllowGazeSelect: 0
@@ -194,6 +195,18 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
     m_PersistentCalls:
       m_Calls: []
   m_Activated:
@@ -320,13 +333,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210839602}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1496486821
 GameObject:
@@ -415,13 +428,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496486821}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &1496486824
 MonoBehaviour:
@@ -446,7 +459,7 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!1001 &2007389719
+--- !u!1001 &1593779191
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -454,75 +467,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2592477440410697675, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 7789569447456739800, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_Name
+      value: ExPresS XR Rig - Head Gaze
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477440711851321, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2592477441312352179, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168241, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168243, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-      propertyPath: _inputMethod
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2592477441852168245, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-      propertyPath: m_Name
-      value: ExPresS XR Rig - Head Gaze Teleport
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
 --- !u!1001 &2023509869
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -800,3 +793,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 1496486823}
+  - {fileID: 210839607}
+  - {fileID: 2023509869}
+  - {fileID: 1593779191}

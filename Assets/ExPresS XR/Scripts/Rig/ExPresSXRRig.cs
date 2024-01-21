@@ -245,13 +245,13 @@ namespace ExPresSXR.Rig
 
         [Tooltip("Reference to the ClimbingManager of the ExPresS XR Rig.")]
         [SerializeField]
-        private ClimbingManager _climbingManager;
-        public ClimbingManager climbingManager
+        private ClimbingGravityManager _climbingGravityManager;
+        public ClimbingGravityManager climbingGravityManager
         {
-            get => _climbingManager;
+            get => _climbingGravityManager;
             set
             {
-                _climbingManager = value;
+                _climbingGravityManager = value;
             }
         }
 
@@ -471,7 +471,7 @@ namespace ExPresSXR.Rig
             get => new(inputMethod, movementPreset, interactionOptions,
                         leftHandController, rightHandController,
                         eyeGazeController, headGazeController,
-                        locomotionSystem, climbingManager);
+                        locomotionSystem, climbingGravityManager);
         }
         #endregion
 
@@ -509,7 +509,6 @@ namespace ExPresSXR.Rig
             // Apply Head Collisions
             playerHeadCollider = _playerHeadCollider;
             headCollisionEnabled = _headCollisionEnabled;
-            handModelMode = _handModelMode;
             handModelCollisions = _handModelCollisions;
             showCollisionVignetteEffect = _showCollisionVignetteEffect;
         }
@@ -525,6 +524,9 @@ namespace ExPresSXR.Rig
             // Setup Hud
             hud = _hud;
             hudCamera = _hudCamera;
+
+            // Set Hand Model mode
+            handModelMode = _handModelMode;
 
             // Update showPokeReticle here as it enables/disables a Component
             if (_leftHandController != null)

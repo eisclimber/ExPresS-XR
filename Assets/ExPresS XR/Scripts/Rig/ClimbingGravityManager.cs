@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace ExPresSXR.Rig
 {
-    public class ClimbingManager : MonoBehaviour
+    public class ClimbingGravityManager : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("How many interactables (inclusive) must be held to not fall. SHould be greater than 0.")]
@@ -34,7 +34,7 @@ namespace ExPresSXR.Rig
 
         private void OnEnable()
         {
-            if (_climbInteractors.Count >= 0)
+            if (_climbInteractors.Count <= 0)
             {
                 Debug.LogWarning("No Climb Interactors were provided.", this);
             }
@@ -64,6 +64,13 @@ namespace ExPresSXR.Rig
         {
             foreach (XRBaseControllerInteractor interactor in _climbInteractors)
             {
+                // Check if the interactors can interact
+                if ((interactor.interactionLayers & InteractionLayerMask.NameToLayer("Climb")) != 0)
+                {
+                    Debug.LogWarning($"The climbing interactor { interactor.name } does not interact with the InteractionLayer 'Climb'. "
+                        + "Using this layer for interactors and interactables is recommended to prevent interactions of other interactors with ClimbInteractables.", this);
+                }
+
                 interactor.selectEntered.AddListener(AddGrabbedHold);
                 interactor.selectExited.AddListener(RemoveGrabbedHold);
             }
@@ -115,7 +122,6 @@ namespace ExPresSXR.Rig
                 }
             }
         }
-
 
         private void DisableGravity()
         {
