@@ -9,13 +9,13 @@
         <uie:EnumField label="Question Type:" value="Text" name="question-type" type="ExPresSXR.Interaction.ButtonQuiz.QuestionType, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
         <ui:Label text="Please specify how in which way answered should be presented on the buttons" display-tooltip-when-elided="true" name="Label" style="margin-left: 8px; margin-right: 8px; margin-top: 10px; margin-bottom: 10px;" />
         <uie:EnumField label="Answer Type:" value="Text" name="answer-type" type="ExPresSXR.Interaction.ButtonQuiz.AnswerType, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
-        <uie:EnumField label="Answer Ordering:" value="Randomize" name="answer-order" type="ExPresSXR.Interaction.ButtonQuiz.AnswerOrdering, Assembly-CSharp" include-obsolete-values="false" style="margin-left: 20px; margin-right: 20px; margin-top: 3px; margin-bottom: 3px;" />
+        <uie:EnumField label="Answer Ordering:" name="answer-order" type="ExPresSXR.Interaction.ButtonQuiz.AnswerOrdering, Assembly-CSharp" value="Randomize" style="margin-left: 20px; margin-right: 20px;" />
         <ui:Label text="Please specify if and how feedback should be presented" display-tooltip-when-elided="true" name="Label" style="margin-left: 8px; margin-right: 8px; margin-top: 10px; margin-bottom: 10px;" />
         <uie:EnumField label="Feedback Mode:" value="AlwaysCorrect" name="feedback-mode" type="ExPresSXR.Interaction.ButtonQuiz.FeedbackMode, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px;" />
         <uie:EnumField label="Feedback Type:" value="ShowAnswers" name="feedback-type" type="ExPresSXR.Interaction.ButtonQuiz.FeedbackType, Assembly-CSharp" style="margin-left: 20px; margin-right: 20px; margin-bottom: 3px; margin-top: 3px;" />
-        <ui:VisualElement name="generic-feedback" style="flex-shrink: 0; margin-left: 20px; margin-right: 20px; flex-direction: row;">
-            <ui:Toggle name="prefix-enabled" value="false" style="display: flex; align-items: stretch;" />
-            <ui:TextField picking-mode="Ignore" label="Feedback Prefix" value="Enter Feedback Prefix..." name="prefix-text" multiline="false" style="flex-grow: 1; flex-shrink: 0; display: flex; align-items: center;" />
+        <ui:VisualElement name="generic-feedback" style="flex-shrink: 0; margin-left: 20px; margin-right: 20px; flex-direction: row; justify-content: space-between;">
+            <ui:Toggle name="prefix-enabled" value="false" style="display: flex; align-items: flex-end;" />
+            <ui:TextField picking-mode="Ignore" label="Feedback Prefix" value="Enter Feedback Prefix..." name="prefix-text" multiline="false" style="flex-grow: 1; flex-shrink: 0; display: flex; align-items: flex-start; justify-content: flex-end; margin-right: 21px;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end;">

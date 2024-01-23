@@ -1,15 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/ExPresS%20XR/Scenes/_DEVELOPMENT/test.uss?fileID=7433441132597879392&amp;guid=b90ab0e395c56bb47911771986384475&amp;type=3#test" />
     <ui:VisualElement name="room-creation-form" style="margin-bottom: 20px; height: auto;">
         <ui:Label text="Create Rooms:" display-tooltip-when-elided="true" name="create-room-label" style="-unity-font-style: bold; margin-top: 5px; margin-right: 0; margin-left: 5px;" />
-        <uie:BoundsField label="Room Dimensions" name="room-dimensions" cx="0" ex="2" ey="2" ez="2" style="align-items: stretch; margin-left: 20px; margin-right: 20px;" />
+        <ui:Label tabindex="-1" text="Room Dimensions" parse-escape-sequences="true" display-tooltip-when-elided="true" name="room-dimensions-label" style="margin-right: 20px; margin-left: 20px; margin-top: 8px;" />
+        <ui:Vector3Field label="  Center" name="room-dimensions-center" binding-path="roomCenter" style="margin-top: 4px; margin-right: 20px; margin-left: 40px; margin-bottom: 2px;" />
+        <ui:Vector3Field label="  Size" name="room-dimensions-size" binding-path="roomSize" x="1" y="1" z="1" style="margin-top: 4px; margin-right: 20px; margin-bottom: 2px; margin-left: 40px;" />
         <ui:VisualElement name="teleportation" style="flex-grow: 0; flex-direction: row; margin-left: 20px; margin-top: 5px;">
-            <ui:Toggle label="Add Teleportation Area" name="teleportation-toggle" value="true" style="margin-left: 3px; min-width: auto; flex-direction: row;" />
+            <ui:Toggle label="Add Teleport Area" name="teleportation-toggle" value="true" style="margin-left: 3px; min-width: auto; flex-direction: row;" />
         </ui:VisualElement>
         <ui:VisualElement name="wall-mode" style="margin-left: 20px; margin-top: 5px; margin-right: 20px;">
-            <uie:EnumField label="Wall Mode" value="SeparateFloor" type="ExPresSXR.Editor.WallMode,Assembly-CSharp-Editor" name="wall-mode-field" style="flex-shrink: 0; justify-content: flex-start;" />
+            <uie:EnumField label="Wall Mode" type="ExPresSXR.Editor.Utility.WallMode,Assembly-CSharp-Editor" name="wall-mode-field" style="flex-shrink: 0; justify-content: flex-start;" />
         </ui:VisualElement>
-        <ui:VisualElement name="material-preset" style="margin-top: 5px; margin-left: 20px;">
-            <uie:EnumField label="Material Preset" value="Experimentation" type="ExPresSXR.Editor.MaterialPreset,Assembly-CSharp-Editor" name="material-preset-field" style="margin-right: 20px;" />
+        <ui:VisualElement name="material-preset" style="margin-top: 5px; margin-left: 20px; margin-right: 20px;">
+            <uie:EnumField label="Material Preset" type="ExPresSXR.Editor.Utility.MaterialPreset,Assembly-CSharp-Editor" name="material-preset-field" style="margin-right: 3px;" />
         </ui:VisualElement>
         <ui:VisualElement name="create-room" style="align-items: center; margin-top: 10px;">
             <ui:Button text="Create a new Room" display-tooltip-when-elided="true" name="create-room-button" />

@@ -21,7 +21,9 @@ namespace ExPresSXR.Editor.SetupDialogs
         }
 
         private VisualElement _contentRootForm;
-        private BoundsField _roomDimensionsField;
+
+        private Vector3Field _roomDimensionsCenter;
+        private Vector3Field _roomDimensionsSize;
         private Toggle _teleportationToggle;
 
         private EnumField _wallModeField;
@@ -34,6 +36,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private EditorCoroutine _errorCoroutine;
 
+
         public virtual string uxmlName
         {
             get => "Assets/ExPresS XR/Editor/Setup Dialogs/Room Creation Tutorial/room-creation-form.uxml";
@@ -45,8 +48,9 @@ namespace ExPresSXR.Editor.SetupDialogs
             original.CloneTree(rootVisualElement);
 
             _contentRootForm = rootVisualElement.Q<VisualElement>("room-creation-form");
-
-            _roomDimensionsField = _contentRootForm.Q<BoundsField>("room-dimensions");
+            
+            _roomDimensionsCenter = _contentRootForm.Q<Vector3Field>("room-dimensions-center");
+            _roomDimensionsSize = _contentRootForm.Q<Vector3Field>("room-dimensions-size");
 
             _teleportationToggle = _contentRootForm.Q<Toggle>("teleportation-toggle");
 
@@ -62,16 +66,14 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private void TryCreateRoom()
         {
-            Bounds bounds = _roomDimensionsField.value;
-            Vector3 roomSize = bounds.size;
-            Vector3 roomPos = bounds.center + new Vector3(0.0f, roomSize.y / 2.0f, 0.0f);
-
+            Vector3 roomSize = _roomDimensionsSize.value;
+            Vector3 roomPos = _roomDimensionsCenter.value + new Vector3(0.0f, roomSize.y / 2.0f, 0.0f);
 
             bool addTeleportation = _teleportationToggle.value;
             MaterialPreset materialPreset = (MaterialPreset)_materialPresetField.value;
             WallMode wallMode = (WallMode)_wallModeField.value;
 
-            bool canCreate = (roomSize.x > 0 && roomSize.y > 0 && roomSize.z > 0);
+            bool canCreate = roomSize.x > 0 && roomSize.y > 0 && roomSize.z > 0;
 
             if (canCreate)
             {

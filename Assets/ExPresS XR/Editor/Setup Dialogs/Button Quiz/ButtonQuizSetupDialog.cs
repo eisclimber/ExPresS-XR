@@ -365,7 +365,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                 _quizModeField.value = _quizConfig.quizMode;
                 _questionOrderField.value = _quizConfig.questionOrdering;
                 _answersAmountsField.value = _quizConfig.answersAmount;
-                _answerOrderField.value = _quizConfig.questionOrdering;
+                _answerOrderField.value = _quizConfig.answerOrdering;
                 _questionTypeField.value = _quizConfig.questionType;
                 _answerTypeField.value = _quizConfig.answerType;
                 _feedbackModeField.value = _quizConfig.feedbackMode;

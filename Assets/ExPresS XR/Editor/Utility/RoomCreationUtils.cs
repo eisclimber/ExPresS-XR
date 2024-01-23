@@ -6,6 +6,7 @@ using UnityEngine.ProBuilder;
 using UnityEditor.ProBuilder;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.ProBuilder.Shapes;
 
 namespace ExPresSXR.Editor.Utility
 {
@@ -110,11 +111,8 @@ namespace ExPresSXR.Editor.Utility
             // Assign Materials to faces
             AssignRoomMaterials(room, mode, materialPreset);
 
-
             // Mesh cleanup
-            room.ToMesh();
-            room.Refresh();
-            room.Optimize();
+            PerformProBuilderMeshUpdate(room);
 
             // Add Collision
             room.gameObject.AddComponent<MeshCollider>();
@@ -183,7 +181,7 @@ namespace ExPresSXR.Editor.Utility
             if (needsUpdate)
             {
                 // Find faces to be deleted (= no floors)
-                List<int> inverse = new List<int>();
+                List<int> inverse = new();
                 for (int i = 0; i < parentMesh.faceCount; i++)
                 {
                     if (!IsFloor(parentMesh, parentMesh.faces[i]))
@@ -201,6 +199,7 @@ namespace ExPresSXR.Editor.Utility
 
                 // Copy new Floor
                 ProBuilderMesh copy = Object.Instantiate(parentMesh.gameObject, parentMesh.transform.parent).GetComponent<ProBuilderMesh>();
+                copy.MakeUnique();
                 UnityEditor.ProBuilder.EditorUtility.SynchronizeWithMeshFilter(copy);
 
                 if (copy.transform.childCount > 0)
@@ -210,7 +209,7 @@ namespace ExPresSXR.Editor.Utility
                         Object.DestroyImmediate(copy.transform.GetChild(i).gameObject);
                     }
 
-                    foreach (var child in parentMesh.transform.GetComponentsInChildren<ProBuilderMesh>())
+                    foreach (ProBuilderMesh child in parentMesh.transform.GetComponentsInChildren<ProBuilderMesh>())
                     {
                         UnityEditor.ProBuilder.EditorUtility.SynchronizeWithMeshFilter(child);
                     }
@@ -219,12 +218,8 @@ namespace ExPresSXR.Editor.Utility
                 Undo.RegisterCreatedObjectUndo(copy.gameObject, "Update Floor Teleportation");
 
                 copy.DeleteFaces(inverse);
-                copy.ToMesh();
-                copy.Refresh();
-                copy.Optimize();
-                copy.ClearSelection();
+                PerformProBuilderMeshUpdate(copy);
 
-                // Debug.Log(copy.gameObject + " x " + mesh.gameObject.transform + " x " + teleportationArea);
                 MakeMeshTeleportationArea(copy.gameObject, parentMesh.transform, tpTransform);
             }
             ProBuilderEditor.Refresh();
@@ -263,7 +258,7 @@ namespace ExPresSXR.Editor.Utility
                 // Delete any previous Teleportation Area if exists under the parent
                 if (prevTeleportationArea != null)
                 {
-                    GameObject.DestroyImmediate(prevTeleportationArea.gameObject);
+                    Object.DestroyImmediate(prevTeleportationArea.gameObject);
                 }
 
                 // Parent it to the room and move up (prevents errors with teleportation detection)
@@ -276,6 +271,15 @@ namespace ExPresSXR.Editor.Utility
                 Debug.LogError("Invalid areaObject or roomTransform");
             }
         }
+
+
+        private static void PerformProBuilderMeshUpdate(ProBuilderMesh mesh)
+        {
+            mesh.ToMesh();
+            mesh.Refresh();
+            mesh.Optimize();
+        }
+
 
         private static Vector3 GetFaceNormal(ProBuilderMesh mesh, Face face)
         {
@@ -325,8 +329,6 @@ namespace ExPresSXR.Editor.Utility
         }
 
 
-
-
         private static string GetWallPathFromPreset(MaterialPreset materialPreset)
         {
             return materialPreset switch
@@ -361,7 +363,7 @@ namespace ExPresSXR.Editor.Utility
         SeparateFloor,
         SeparateFloorAndCeiling,
         AllSeparate
-        // Assembly Name: ExPresSXR.Editor.WallMode,Assembly-CSharp-Editor
+        // Assembly Name: ExPresSXR.Editor.Utility.WallMode,Assembly-CSharp-Editor
     }
 
     public enum MaterialPreset
@@ -369,7 +371,7 @@ namespace ExPresSXR.Editor.Utility
         Experimentation,
         Exhibition
 
-        // Assembly Name: ExPresSXR.Editor.MaterialPreset,Assembly-CSharp-Editor
+        // Assembly Name: ExPresSXR.Editor.Utility.MaterialPreset,Assembly-CSharp-Editor
     }
 
 
