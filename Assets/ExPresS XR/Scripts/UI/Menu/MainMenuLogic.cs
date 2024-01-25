@@ -12,17 +12,17 @@ namespace ExPresSXR.UI.Menu
     {
         /// <summary>
         /// The scene index of your game scene.
-        /// /// It must be added via the Build Settings and should be greater than 0 (index 0 is the startup scene which should be the menu scene)
+        /// It must be added via the Build Settings and should be greater than 0 (index 0 is the startup scene which should be the menu scene)
         /// </summary>
         [SerializeField]
         [Tooltip("The scene index of your game scene. It must be added via the Build Settings and should be greater than 0 (index 0 is the startup scene which should be the menu scene)")]
         private int _gameSceneIndex = 1; // Default value should be the game scene
 
         /// <summary>
-        /// If enabled will change to the new scene with fade. A reference to the rig is required if set to true.
+        /// If enabled, will change to the new scene with fade. A reference to the rig is required if set to true.
         /// </summary>
         [SerializeField]
-        [Tooltip("If enabled will change to the new scene with fade. A reference to the rig is required if set to true.")]
+        [Tooltip("If enabled, will change to the new scene with fade. A reference to the rig is required if set to true.")]
         private bool _changeWithFade = true;
 
         /// <summary>

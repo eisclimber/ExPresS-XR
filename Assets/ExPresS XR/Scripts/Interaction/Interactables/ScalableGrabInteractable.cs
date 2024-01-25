@@ -25,7 +25,6 @@ namespace ExPresSXR.Interaction
             }
         }
 
-
         [SerializeField]
         private bool _scaleAllChildren = true;
         public bool scaleAllChildren
@@ -55,10 +54,28 @@ namespace ExPresSXR.Interaction
 
         }
 
+        [SerializeField]
+        private bool _resetScaleInSockets;
+
         private Vector3[] _initialScales;
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            // Load initial scales
+            LoadInitialScales();
+            // Add Listener to reset scale
+            selectEntered.AddListener(TryResetScaleInSockets);
+        }
 
-        private void Start()
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            // Remove Listener to reset scale
+            selectEntered.RemoveListener(TryResetScaleInSockets);
+        }
+
+        private void LoadInitialScales()
         {
             List<Transform> children = new();
             if (_scaleAllChildren)
@@ -83,6 +100,7 @@ namespace ExPresSXR.Interaction
             scaledChildren = children.ToArray();
         }
 
+
         private void ScaleChildren()
         {
             for (int i = 0; i < _scaledChildren.Length; i++)
@@ -98,6 +116,19 @@ namespace ExPresSXR.Interaction
             float maxValue = _maxScaleFactor >= 0 ? _maxScaleFactor : value;
 
             return Mathf.Clamp(value, minValue, maxValue);
+        }
+
+        /// <summary>
+        /// Resets the scale of all (scaled) children to 1.0f
+        /// </summary>
+        public void ResetScale() => scaleFactor = 1.0f;
+
+        private void TryResetScaleInSockets(SelectEnterEventArgs args)
+        {
+            if (_resetScaleInSockets && args.interactorObject is XRSocketInteractor)
+            {
+                ResetScale();
+            }
         }
     }
 }

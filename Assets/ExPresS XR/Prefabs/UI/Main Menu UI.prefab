@@ -4700,7 +4700,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7128533499863752321}
-  - component: {fileID: 1796583999115683552}
+  - component: {fileID: 6023247043749737048}
+  - component: {fileID: 1130811050288316793}
   - component: {fileID: 7421088619215805484}
   - component: {fileID: 5901255628749910302}
   - component: {fileID: 7061138840101110609}
@@ -4734,7 +4735,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 1.75}
   m_SizeDelta: {x: 360, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1796583999115683552
+--- !u!114 &6023247043749737048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4746,13 +4747,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 506cdcac326875a48968da42385e1bfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuContainer: {fileID: 2340180177771585555}
-  startMenu: {fileID: 3286954114158998749}
-  followPlayer: 1
-  followTransform: {fileID: 0}
-  followDistance: 3
-  followSpeed: 1
-  menuMoveAngleThreshold: 20
+  _menuContainer: {fileID: 2340180177771585555}
+  _startMenu: {fileID: 3286954114158998749}
+--- !u!114 &1130811050288316793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9043540462322065748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56393aeb017c3c8459140a82dc57e910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _followTransform: {fileID: 0}
+  _centerAtTransform: 1
+  _orbitDistance: 3
+  _speed: 1
+  _moveAngleThreshold: 20
 --- !u!223 &7421088619215805484
 Canvas:
   m_ObjectHideFlags: 0
@@ -4798,7 +4811,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7061138840101110609
 MonoBehaviour:
   m_ObjectHideFlags: 0

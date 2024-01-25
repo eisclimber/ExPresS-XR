@@ -390,7 +390,6 @@ namespace ExPresSXR.Experimentation.DataGathering
             if (_outputWriter != null)
             {
                 // Write everything that might not be written & close writer
-                _outputWriter.Flush();
                 _outputWriter.Close();
             }
         }
