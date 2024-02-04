@@ -164,7 +164,7 @@ namespace ExPresSXR.Editor
                     // If each side has it's own material, use a mapping of face index to material index
                     for (int i = 0; i < roomRenderer.sharedMaterials.Length; i++)
                     {
-                        room.faces[(int)RoomFaceIds.Floor].submeshIndex = i;
+                        room.faces[i].submeshIndex = i;
                     }
                     break;
                 default: // == WallMode.SINGLE
