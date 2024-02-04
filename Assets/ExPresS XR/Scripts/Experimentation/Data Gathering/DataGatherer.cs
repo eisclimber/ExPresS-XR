@@ -45,11 +45,13 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 _separatorType = value;
 
+                Debug.Log(" xxx " + separatorType);
+
                 if (_separatorType == SeparatorType.Comma)
                 {
                     columnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
                 }
-                else if (_separatorType == SeparatorType.Comma)
+                else if (_separatorType == SeparatorType.Semicolon)
                 {
                     columnSeparator = CsvUtility.SEMICOLON_COLUMN_SEPARATOR;
                 }
@@ -73,6 +75,8 @@ namespace ExPresSXR.Experimentation.DataGathering
             set
             {
                 _columnSeparator = value;
+
+                Debug.Log(_columnSeparator);
 
                 foreach (DataGatheringBinding binding in dataBindings)
                 {
@@ -491,11 +495,6 @@ namespace ExPresSXR.Experimentation.DataGathering
                 Directory.CreateDirectory(dirPath);
             }
         }
-
-
-        private bool HasBindingsToExport()
-            => (_dataBindings != null && _dataBindings.Length > 0)
-                || (_inputActionDataBindings != null && _inputActionDataBindings.Length > 0);
 
         private static bool HasExportableFileEnding(string path) => EXPORT_FILE_ENDINGS.Any(ending => path.EndsWith($".{ending}"));
 

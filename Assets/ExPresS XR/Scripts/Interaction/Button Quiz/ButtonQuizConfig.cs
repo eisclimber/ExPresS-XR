@@ -45,6 +45,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) 
             => CsvUtility.JoinAsCsv(GetConfigCsvExportValuesList(), sep);
 
+
         public List<object> GetConfigCsvExportValuesList()
             => new()
                 {

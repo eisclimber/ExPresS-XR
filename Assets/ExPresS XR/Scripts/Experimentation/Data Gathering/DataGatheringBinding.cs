@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Text.RegularExpressions;
 using System.Data;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
@@ -12,14 +13,17 @@ namespace ExPresSXR.Experimentation.DataGathering
     {
         public string exportColumnName = "";
 
-        private char _headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;//
+        private char _headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         public char headerSeparator
         {
             get => _headerSeparator;
             set
             {
                 _headerSeparator = value;
-                UpdateExportColumnName();
+                if (AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo))
+                {
+                    exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
+                }
             }
         }
 
@@ -91,16 +95,14 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void UpdateInvocationInfo(MemberInfo memberInfo, Component component = null)
         {
+            bool hadHeaderReplacement = AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo);
             _targetMemberInfo = memberInfo;
             _targetComponent = component;
-            UpdateExportColumnName();
-        }
-
-        private void UpdateExportColumnName()
-        {
-            exportColumnName = _targetMemberInfo != null 
-                                ? AttributeHelpers.GetReplacementHeader(_targetMemberInfo, headerSeparator) 
-                                : "";
+            bool hasHeaderReplacement = AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo);
+            if (hadHeaderReplacement || hasHeaderReplacement)
+            {
+                exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
+            }
         }
 
         private (MemberInfo, Component) SelectIthComponent(string compFullName, string memberName, int compNumber)

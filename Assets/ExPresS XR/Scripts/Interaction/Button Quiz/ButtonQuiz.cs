@@ -612,12 +612,19 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public int GetCurrentAskOrderIdx() => quizUndergoing ? currentQuestionIdx : -1; // From the current Question, not the latest!
 
         // Latest Question (Available after answering)
-        public string GetLatestRoundDataExportValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+        [MultiColumnValue]
+        [HeaderReplacement("answerWasCorrect", "answerChosen", "firstPressedButtonIdx", "answerPressTime", "askOrderIdx", "answerPermutation",
+                            "displayedFeedbackText", "displayedFeedbackObjects", "displayedFeedbackVideo")]
+        public string GetLatestRoundDataExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
                 => latestRoundData?.GetCsvExportValues(sep) ?? QuizRoundData.GetEmptyCsvExportValues(sep);
         
         public List<object> GetLatestRoundDataExportValueList()
                 => latestRoundData?.GetCsvExportValuesList() ?? new List<object>(QuizRoundData.NUM_CSV_EXPORT_COLUMNS);
 
+        [MultiColumnValue]
+        [HeaderReplacement("questionIdx", "questionVideo", "questionObject", "questionText", "answerObject0", "answerObject1", "answerObject2", "answerObject3",
+                    "answerText0", "answerText1", "answerText2", "answerText3", "correctAnswers0", "correctAnswers1", "correctAnswers2", "correctAnswers3",
+                    "feedbackVideo", "feedbackObject", "feedbackText")]
         public string GetCurrentQuestionCsvExportValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
                 => currentQuestion?.GetQuestionCsvExportValues(sep) ?? ButtonQuizQuestion.GetEmptyCsvExportValues(sep);
 
@@ -662,7 +669,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return header;
         }
 
-        // Use ButtonQuizConfig.CONFIG_CSV_HEADER_STRING for header
+        [MultiColumnValue]
+        [HeaderReplacement("quizMode", "questionOrdering", "answersAmount", "answersOrdering", "questionType", "answerType", "feedbackMode", "feedbackType")]
         public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
             => config != null ? config.GetConfigCsvExportValues(sep) : ButtonQuizConfig.GetEmptyCsvExportValues();
 
@@ -670,8 +678,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             => config != null ? config.GetConfigCsvExportValuesList() : new List<object>(ButtonQuizConfig.NUM_CSV_EXPORT_COLUMNS);
 
 
-        // Use ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING for header
-        //(no need for an ...Array function as it should be used as single value)
+        [HeaderReplacement("questionIdx", "questionVideo", "questionObject", "questionText", "answerObject0", "answerObject1", "answerObject2", "answerObject3",
+                            "answerText0", "answerText1", "answerText2", "answerText3", "correctAnswers0", "correctAnswers1", "correctAnswers2", "correctAnswers3",
+                            "feedbackVideo", "feedbackObject", "feedbackText")]
+        [HeaderReplacementNotice("`GetAllQuestionsCsvExportValues(char? sep)` will export multiple "
+                                    + "lines of values which might break the formatting of the csv. "
+                                    + "Also do not export this value with timestamps.")]
         public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
             => config != null ? config.GetAllQuestionsCsvExportValues(sep) : ButtonQuizQuestion.GetEmptyCsvExportValues();
 

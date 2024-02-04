@@ -49,7 +49,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
         public static bool HasAttribute<T>(MemberInfo memberInfo) where T : Attribute
-            => GetAttribute<T>(memberInfo) != null;
+            => memberInfo != null && GetAttribute<T>(memberInfo) != null;
 
 
         private static T GetAttribute<T>(MemberInfo memberInfo) where T : Attribute
