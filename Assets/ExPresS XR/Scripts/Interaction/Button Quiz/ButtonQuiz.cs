@@ -613,8 +613,13 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         // Latest Question (Available after answering)
         [MultiColumnValue]
-        [HeaderReplacement("answerWasCorrect", "answerChosen", "firstPressedButtonIdx", "answerPressTime", "askOrderIdx", "answerPermutation",
-                            "displayedFeedbackText", "displayedFeedbackObjects", "displayedFeedbackVideo")]
+        [HeaderReplacement(// Latest Round Data (General)
+                            "answerWasCorrect", "answerChosen", "firstPressedButtonIdx", "answerPressTime", 
+                            "askOrderIdx", "answerPermutation", "displayedFeedbackText", "displayedFeedbackObjects", "displayedFeedbackVideo",
+                            // Latest Round Data (Current Question Data)
+                            "questionIdx", "questionVideo", "questionObject", "questionText", "answerObject0", "answerObject1", "answerObject2", "answerObject3",
+                            "answerText0", "answerText1", "answerText2", "answerText3", "correctAnswers0", "correctAnswers1", "correctAnswers2", "correctAnswers3",
+                            "feedbackVideo", "feedbackObject", "feedbackText")]
         public string GetLatestRoundDataExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
                 => latestRoundData?.GetCsvExportValues(sep) ?? QuizRoundData.GetEmptyCsvExportValues(sep);
         
@@ -632,9 +637,16 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 => currentQuestion?.GetQuestionCsvExportValuesList() ?? new List<object>(QuizRoundData.NUM_CSV_EXPORT_COLUMNS);
 
         [MultiColumnValue]
-        [HeaderReplacement("quizUndergoing", "quizPlaythroughNumber", "answerWasCorrect", "answerChosen", "firstPressedButtonIdx", "answerPressTime", 
-                            "askOrderIdx", "answerPermutation", "displayedFeedbackText", "displayedFeedbackObjects", "displayedFeedbackVideo", "quizMode",
-                            "questionOrdering", "answersAmount", "answersOrdering", "questionType", "answerType", "feedbackMode", "feedbackType")]
+        [HeaderReplacement("quizUndergoing", "quizPlaythroughNumber", // General Quiz Stuff
+                            // Latest Round Data (General)
+                            "answerWasCorrect", "answerChosen", "firstPressedButtonIdx", "answerPressTime", 
+                            "askOrderIdx", "answerPermutation", "displayedFeedbackText", "displayedFeedbackObjects", "displayedFeedbackVideo",
+                            // Latest Round Data (Current Question Data)
+                            "questionIdx", "questionVideo", "questionObject", "questionText", "answerObject0", "answerObject1", "answerObject2", "answerObject3",
+                            "answerText0", "answerText1", "answerText2", "answerText3", "correctAnswers0", "correctAnswers1", "correctAnswers2", "correctAnswers3",
+                            "feedbackVideo", "feedbackObject", "feedbackText",
+                            // Quiz Config
+                            "quizMode", "questionOrdering", "answersAmount", "answersOrdering", "questionType", "answerType", "feedbackMode", "feedbackType")]
         public string GetFullQuizCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
             GetFullQuizCsvExportValuesList(),
             sep

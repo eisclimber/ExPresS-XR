@@ -189,5 +189,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             _memberIdx = -1;
             headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         }
+
+        public bool IsBoundToMultiColumnValue() => AttributeHelpers.HasAttribute<MultiColumnValueAttribute>(_targetMemberInfo);
     }
 }

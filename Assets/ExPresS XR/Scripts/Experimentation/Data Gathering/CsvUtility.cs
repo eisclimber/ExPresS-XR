@@ -36,12 +36,13 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         /// <summary>
-        /// Joins the values into a CSV line using the given separator and filtering empty values if desired.
+        /// Joins the values into a CSV line using the given separator and csv-escaping (all) values if desired.
         /// </summary>
-        /// <param name="values">Values to be converted to a CSV line. </param>
-        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
-        /// <param name="safe">If true Escape all values using the DEFAULT_ESCAPE_CHARACTER (and replace it in the string)</param>
-        /// <returns></returns>
+        /// <param name="values">Values to be converted to a CSV line.</param>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
+        /// <param name="safe">If true escapes all values using the DEFAULT_ESCAPE_CHARACTER (and replace it in the string).</param>
+        /// <typeparam name="T">Type of values to be converted.</typeparam>
+        /// <returns>A (csv)-string representation of the values-array.</returns>
         public static string JoinAsCsv<T>(IEnumerable<T> values, char sep = DEFAULT_COLUMN_SEPARATOR, bool safe = true)
         {
             if (safe)
@@ -50,6 +51,22 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
             return string.Join(sep, values);
         }
+
+        /// <summary>
+        /// Joins the values into a CSV line using the given separator. Allows csv-escaping value individually.
+        /// If the lists do not match in lengths, iteration will stop at the shorter one.
+        /// </summary>
+        /// <param name="values">Values to be converted to a CSV line.</param>
+        /// <param name="safeIndividual">A list</param>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
+        /// <typeparam name="T">Type of values to be converted.</typeparam>
+        /// <returns>A (csv)-string representation of the values-array.</returns>
+        public static string JoinAsCsv<T>(IEnumerable<T> values, IEnumerable<bool> safeIndividual, char sep = DEFAULT_COLUMN_SEPARATOR)
+        {
+            var escapedValues = values.Zip(safeIndividual, (value, safe) => safe ? GetValueSafe(value, sep) : value.ToString()).ToList();
+            return string.Join(sep, escapedValues);
+        }
+
 
 
         /// <summary>

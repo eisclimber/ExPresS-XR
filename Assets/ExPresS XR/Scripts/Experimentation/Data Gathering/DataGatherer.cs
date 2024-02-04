@@ -302,12 +302,20 @@ namespace ExPresSXR.Experimentation.DataGathering
             };
             // Add prepended values
             List<string> bindingValues = new(prependedValues.Where(s => !string.IsNullOrEmpty(s)));
+            List<bool> escapeIndividual = new(bindingValues.Count);
             // Add DataGatheringBindings
-            bindingValues.AddRange(_dataBindings.Select(v => v != null ? v.GetBindingValue() : ""));
+            bindingValues.AddRange(_dataBindings.Select(v => v?.GetBindingValue() ?? ""));
+            escapeIndividual.AddRange(_dataBindings.Select(v => v?.IsBoundToMultiColumnValue() ?? false));
             // Add InputActionBindings
             bindingValues.AddRange(_inputActionDataBindings.Select(v => v != null ? v.action.ReadValueAsObject().ToString() : ""));
+            escapeIndividual.AddRange(Enumerable.Repeat(false, bindingValues.Count - escapeIndividual.Count));
+
             // Convert to string
-            return CsvUtility.JoinAsCsv(bindingValues.ToArray(), columnSeparator, escapeColumns);
+            if (escapeColumns)
+            {
+                return CsvUtility.JoinAsCsv(bindingValues, escapeIndividual, columnSeparator);
+            }
+            return CsvUtility.JoinAsCsv(bindingValues.ToArray(), columnSeparator, false);
         }
 
         private IEnumerator PostHttpData(string url, string data)
