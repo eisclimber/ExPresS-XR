@@ -8,6 +8,8 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Networking;
+using ExPresSXR.Misc;
+using System.ComponentModel.Design;
 
 
 namespace ExPresSXR.Experimentation.DataGathering
@@ -45,11 +47,11 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 if (_separatorType == SeparatorType.Comma)
                 {
-                    _columnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
+                    columnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
                 }
                 else if (_separatorType == SeparatorType.Comma)
                 {
-                    _columnSeparator = CsvUtility.SEMICOLON_COLUMN_SEPARATOR;
+                    columnSeparator = CsvUtility.SEMICOLON_COLUMN_SEPARATOR;
                 }
             }
         }
@@ -68,7 +70,15 @@ namespace ExPresSXR.Experimentation.DataGathering
         public char columnSeparator
         {
             get => _columnSeparator;
-            set => _columnSeparator = value;
+            set
+            {
+                _columnSeparator = value;
+
+                foreach (DataGatheringBinding binding in dataBindings)
+                {
+                    binding.headerSeparator = _columnSeparator;
+                }
+            }
         }
 
 
@@ -91,12 +101,13 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
-        private bool _newExportFilePerPlaythrough;
+        private bool _newExportFilePerPlaythrough = true;
         public bool newExportFilePerPlaythrough
         {
             get => _newExportFilePerPlaythrough;
             set => _newExportFilePerPlaythrough = value;
         }
+
 
         [SerializeField]
         private string _httpExportPath;
@@ -158,7 +169,8 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         // Data
         [SerializeField]
-        [Tooltip("Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). Its value is relative to the computers local timezone.")]
+        [Tooltip("Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). "
+                    + "Its value is relative to the computers local timezone.")]
         private bool _includeHumanReadableTimestamp = true;
         public bool includeHumanReadableTimestamp
         {
@@ -193,7 +205,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
-        private DataGatheringBinding[] _dataBindings;
+        private DataGatheringBinding[] _dataBindings = new DataGatheringBinding[0];
         public DataGatheringBinding[] dataBindings
         {
             get => _dataBindings;
@@ -217,7 +229,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             TryStartPeriodicCoroutine();
             ConnectInputActions();
-            ValidateBindings();
+            ValidateBindings(false);
             SetupExport();
         }
 
@@ -249,7 +261,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             string data = GetExportCSVLine();
             if (dataExportType == ExportType.Http || dataExportType == ExportType.Both)
             {
-                // Debug.Log(String.Format("Posting '{0}' to '{1}'.", httpExportPath, data));
+                // Debug.Log($"Posting '{httpExportPath}' to '{data}'.");
                 StartCoroutine(PostHttpData(httpExportPath, data));
             }
 
@@ -288,19 +300,19 @@ namespace ExPresSXR.Experimentation.DataGathering
                 _includeUnityTime ? Time.time.ToString() : "",
                 _includeDeltaTime ? Time.deltaTime.ToString() : ""
             };
-            // Add prepended headers
-            List<string> bindingHeaders = new(prependedValues.Where(s => !string.IsNullOrEmpty(s)));
+            // Add prepended values
+            List<string> bindingValues = new(prependedValues.Where(s => !string.IsNullOrEmpty(s)));
             // Add DataGatheringBindings
-            bindingHeaders.AddRange(_dataBindings.Select(v => v != null ? v.GetBindingValue(_columnSeparator) : ""));
+            bindingValues.AddRange(_dataBindings.Select(v => v != null ? v.GetBindingValue() : ""));
             // Add InputActionBindings
-            bindingHeaders.AddRange(_inputActionDataBindings.Select(v => v != null ? v.action.ReadValueAsObject().ToString() : ""));
+            bindingValues.AddRange(_inputActionDataBindings.Select(v => v != null ? v.action.ReadValueAsObject().ToString() : ""));
             // Convert to string
-            return CsvUtility.JoinAsCsv(bindingHeaders.ToArray(), columnSeparator, escapeColumns);
+            return CsvUtility.JoinAsCsv(bindingValues.ToArray(), columnSeparator, escapeColumns);
         }
 
         private IEnumerator PostHttpData(string url, string data)
         {
-            string actualUrl = _newExportFilePerPlaythrough ? url + $"_{timestampSafe}" : url;
+            string actualUrl = _newExportFilePerPlaythrough ? $"{url}_{timestampSafe}" : url;
             UnityWebRequest request = new(actualUrl, UnityWebRequest.kHttpVerbPOST);
 
             if (data != null)
@@ -317,7 +329,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             if (request.result == UnityWebRequest.Result.ProtocolError
                 || request.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log(string.Format("Failed to send data to server: '{0}'.", request.error));
+                Debug.Log($"Failed to send data to server: '{request.error}'.");
             }
         }
         #endregion
@@ -342,7 +354,8 @@ namespace ExPresSXR.Experimentation.DataGathering
                 if (!HasExportableFileEnding(localExportPath))
                 {
                     Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
-                            + $"Appending '.csv' and creating a new file if necessary. New path is: '{localExportPath}.csv'.");
+                            + "Appending '.csv' and creating a new file if necessary. "
+                            + $"New path is: '{localExportPath}.csv'.");
                     _localExportPath += ".csv";
                 }
 
@@ -372,14 +385,18 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        public void ValidateBindings()
+        public void ValidateBindings(bool warnInvalid = true)
         {
-            for (int i = 0; i < _dataBindings.Length; i++)
+            foreach (DataGatheringBinding binding in _dataBindings)
             {
-                if (_dataBindings[i] != null && !_dataBindings[i].ValidateBinding())
+                if (binding == null || !binding.ValidateBinding())
                 {
-                    Debug.LogWarning("The following binding is invalid and will always be empty: "
-                        + $"{_dataBindings[i].GetBindingDescription()}", this);
+                    if (warnInvalid)
+                    {
+                        // Check separately to update data upon validation!!
+                        Debug.LogWarning("The following binding is invalid and will always be empty: "
+                            + $"{binding.GetBindingDescription()}", this);
+                    }
                 }
             }
         }
@@ -494,6 +511,14 @@ namespace ExPresSXR.Experimentation.DataGathering
 
             // String does not end with any of the postfixes, simply append the text
             return path + toInsert;
+        }
+
+
+        private void OnValidate()
+        {
+            separatorType = _separatorType;
+            columnSeparator = _columnSeparator;
+            ValidateBindings(false);
         }
         #endregion
 

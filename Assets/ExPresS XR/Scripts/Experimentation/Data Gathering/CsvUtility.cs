@@ -32,7 +32,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <summary>
         /// The character that is used to escape fields that may contain the separator and would break the format.
         /// </summary>
-        public const char DEFAULT_ESCAPE_CHARACTER = '"';
+        public const char DEFAULT_ESCAPE_CHAR = '"';
 
 
         /// <summary>
@@ -42,22 +42,50 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
         /// <param name="safe">If true Escape all values using the DEFAULT_ESCAPE_CHARACTER (and replace it in the string)</param>
         /// <returns></returns>
-        public static string JoinAsCsv<T>(IEnumerable<T> values, char sep = DEFAULT_COLUMN_SEPARATOR, bool safe = true, char escapeChar = DEFAULT_ESCAPE_CHARACTER)
+        public static string JoinAsCsv<T>(IEnumerable<T> values, char sep = DEFAULT_COLUMN_SEPARATOR, bool safe = true)
         {
             if (safe)
             {
-                return string.Join(sep, values.Select(v => GetValueSafe(v, escapeChar)));
+                return string.Join(sep, values.Select(v => GetValueSafe(v, sep)));
             }
             return string.Join(sep, values);
         }
 
 
-        public static string GetValueSafe<T>(T value, char escapeChar = DEFAULT_ESCAPE_CHARACTER)
+        /// <summary>
+        /// Converts any arbitrary value to a safe CSV column entry with the provided separator and escape char.
+        /// This is done by 
+        /// </summary>
+        /// <param name="values">Values to be converted to a safe CSV column entry. </param>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
+        /// <typeparam name="T">Type to be converted.</typeparam>
+        /// <returns>A (if required CSV-escaped) string.</returns>
+        public static string GetValueSafe<T>(T value, char sep = DEFAULT_COLUMN_SEPARATOR)
         {
-            // Convert to string and replace any occurrences of the escapeChar
-            string valueString = value != null ? value.ToString().Replace("" + escapeChar, "\\" + escapeChar) : "";
-            return DEFAULT_ESCAPE_CHARACTER + valueString + DEFAULT_ESCAPE_CHARACTER;
+            string valueString = value.ToString();
+            if (!IsEscaped(valueString) && NeedsEscaping(valueString, sep))
+            {
+                valueString = $"\"{ valueString.Replace("\"", "\"\"") }\"";
+            }
+            return valueString;
         }
+
+
+        /// <summary>
+        /// Returns true if the given string is properly CSV-escaped (starts and ends with a '"').
+        /// </summary>
+        /// <param name="value">String to be checked</param>
+        /// <returns>If the string is properly escaped.</returns>
+        public static bool IsEscaped(string value) => value.StartsWith("\"") && value.EndsWith("\"");
+
+
+        /// <summary>
+        /// Returns true if the given string is properly CSV-escaped (starts and ends with a '"').
+        /// </summary>
+        /// <param name="value">String to be checked</param>
+        /// <returns>If the string is properly escaped.</returns>
+        public static bool NeedsEscaping(string value, char sep = DEFAULT_COLUMN_SEPARATOR) => value.Contains(sep) || value.Contains("\"");
+
 
         /// <summary>
         /// Joins the values into a string representing an array using the given separator.
@@ -65,7 +93,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <param name="values">Values to be converted to a CSV line. </param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
         /// <returns></returns>
-        public static string ArrayToString<T>(T[] values, char sep = DEFAULT_ARRAY_SEPARATOR) => $"\"[{string.Join(sep, values)}]\"";
+        public static string ArrayToString<T>(T[] values, char sep = DEFAULT_ARRAY_SEPARATOR) => $"[{string.Join(sep, values)}]";
 
 
         /// <summary>

@@ -6,6 +6,7 @@ using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
 using ExPresSXR.Interaction.ButtonQuiz;
 using System.Text.RegularExpressions;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 
 namespace ExPresSXR.Editor.Editors
@@ -15,6 +16,7 @@ namespace ExPresSXR.Editor.Editors
     {
         private const int PROPERTY_SPACING = 2;
         private const string NO_VALUE_TEXT = "No Value";
+
 
         // Draw the property inside the given rect
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -58,15 +60,8 @@ namespace ExPresSXR.Editor.Editors
                 string[] popupOptions = GetPopupMemberNames(property.FindPropertyRelative("_prettyMemberNameList"));
                 SerializedProperty memberIdx = property.FindPropertyRelative("_memberIdx");
 
-                EditorGUI.BeginChangeCheck();
                 // Popup (Add subtract 1 to account for an invalid member)
                 memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    // Change ExportColumnName if special Methods of TutorialQuiz were selected
-                    TryAddingSpecialExportColumnName(property, popupOptions, memberIdx.intValue + 1);
-                }
 
                 EditorGUI.EndDisabledGroup();
             }
@@ -98,10 +93,8 @@ namespace ExPresSXR.Editor.Editors
         }
 
 
-        private bool IsObjectPropertyNull(SerializedProperty property)
-        {
-            return property == null || property.objectReferenceValue == null;
-        }
+        private bool IsObjectPropertyNull(SerializedProperty property) => property == null || property.objectReferenceValue == null;
+        
 
         private void UpdateMembers(SerializedProperty property, GameObject targetObject)
         {
@@ -118,7 +111,7 @@ namespace ExPresSXR.Editor.Editors
                 // Methods from the GameObject itself
                 foreach (MemberInfo info in targetObject.GetType().GetMembers())
                 {
-                    if (DataGatheringBinding.IsExportableMemberInfo(info))
+                    if (DataGatheringHelpers.IsExportableMemberInfo(info))
                     {
                         availableMemberNames.InsertArrayElementAtIndex(i);
                         availableMemberNames.GetArrayElementAtIndex(i).stringValue =
@@ -169,7 +162,7 @@ namespace ExPresSXR.Editor.Editors
 
                     foreach (MemberInfo info in component.GetType().GetMembers())
                     {
-                        if (DataGatheringBinding.IsExportableMemberInfo(info))
+                        if (DataGatheringHelpers.IsExportableMemberInfo(info))
                         {
                             availableMemberNames.InsertArrayElementAtIndex(i);
                             availableMemberNames.GetArrayElementAtIndex(i).stringValue =
@@ -188,53 +181,10 @@ namespace ExPresSXR.Editor.Editors
             }
         }
 
-        private void TryAddingSpecialExportColumnName(SerializedProperty property, string[] prettyMembers, int idx)
-        {
-            if (idx >= 0 && idx < prettyMembers.Length)
-            {
-                string[] splitName = prettyMembers[idx].Split('/');
-
-                // Sanity check, is pretty member name formatted
-                if (splitName.Length != 2)
-                {
-                    Debug.LogError($"Binding '{prettyMembers[idx]}' was not formatted properly. This should not happen.");
-                    return;
-                }
-
-                ExportColumnReplacement[] replacements = ExportColumnReplacement.GetStandardReplacements();
-                int i = 0;
-                foreach (ExportColumnReplacement replacement in replacements)
-                {
-                    if (replacement == null || !replacement.IsComplete())
-                    {
-                        Debug.LogWarning($"Replacement `{replacement}` is not valid. Please remove it via the Data Gathering Config Window!");
-                        continue;
-                    }
-
-                    if (splitName[0].EndsWith(replacement.componentName))
-                    {
-                        string pattern = $@"\w+ {replacement.memberName}(\((char\?? sep)?\))?";
-                        Match m = Regex.Match(splitName[1], pattern);
-
-                        if (m.Success)
-                        {
-                            property.FindPropertyRelative("exportColumnName").stringValue = replacement.replacementHeader;
-                            if (!string.IsNullOrEmpty(replacement.matchInfoMessage))
-                            {
-                                Debug.Log($"Special Export Column found: {replacement.matchInfoMessage}");
-                            }
-                            break;
-                        }
-                        i++;
-                    }
-                }
-            }
-        }
-
 
         private string GetPrettifiedMemberName(MemberInfo info)
         {
-            Type infoType = DataGatheringBinding.GetMemberValueType(info);
+            Type infoType = DataGatheringHelpers.GetMemberValueType(info);
             string prettyName = info.Name;
 
             if (primitiveTypeKeywords.ContainsKey(infoType))
@@ -243,8 +193,10 @@ namespace ExPresSXR.Editor.Editors
             }
             if (info.MemberType == MemberTypes.Method)
             {
-                // Add brackets and optional 'char? sep' to functions
-                prettyName += DataGatheringBinding.HasSeparatorType((MethodInfo)info) ? "(char? sep)" : "()";
+                string optString = DataGatheringHelpers.HasOptionalSeparatorType((MethodInfo)info) ? "?" : "";
+                prettyName += DataGatheringHelpers.HasSeparatorType((MethodInfo)info)
+                                ? $"(char{ optString } sep)" 
+                                : "()";
             }
 
             return prettyName;

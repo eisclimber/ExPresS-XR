@@ -12,7 +12,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public const int NUM_CSV_EXPORT_COLUMNS = 19;
 
         public static string questionCsvHeader { get => GetQuestionCsvHeader(); }
-        
+
 
         // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizQuestion, Assembly-CSharp
         public int itemIdx;
@@ -216,57 +216,63 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(19, sep);
 
         public string GetQuestionCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
-        {
-            return CsvUtility.JoinAsCsv(
-                new object[] {
-                    itemIdx,
-                    CsvUtility.GetVideoName(questionVideo, questionVideoUrl),
-                    questionObject != null? questionObject.name : "",
-                    "\"" + questionText + "\"",
-                    answerObjects.Length > 0 && answerObjects[0] != null? answerObjects[0].name : "",
-                    answerObjects.Length > 1 && answerObjects[1] != null? answerObjects[1].name : "",
-                    answerObjects.Length > 2 && answerObjects[2] != null? answerObjects[2].name : "",
-                    answerObjects.Length > 3 && answerObjects[3] != null? answerObjects[3].name : "",
-                    "\"" + (answerTexts.Length > 0? answerTexts[0] : "") + "\"",
-                    "\"" + (answerTexts.Length > 1? answerTexts[1] : "") + "\"",
-                    "\"" + (answerTexts.Length > 2? answerTexts[2] : "") + "\"",
-                    "\"" + (answerTexts.Length > 3? answerTexts[3] : "") + "\"",
-                    correctAnswers.Length > 0? correctAnswers[0].ToString() : "false",
-                    correctAnswers.Length > 1? correctAnswers[1].ToString() : "false",
-                    correctAnswers.Length > 2? correctAnswers[2].ToString() : "false",
-                    correctAnswers.Length > 3? correctAnswers[3].ToString() : "false",
-                    feedbackVideo != null? feedbackVideo.name : feedbackVideoUrl,
-                    feedbackObject != null? feedbackObject.name : "",
-                    feedbackText
-                },
+            => CsvUtility.JoinAsCsv(
+                GetQuestionCsvExportValuesList(),
                 sep
             );
-        }
 
-        public static string GetQuestionCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
-            new object[]
-            {
-                        "questionIdx",
-                        "questionVideo",
-                        "questionObject",
-                        "questionText",
-                        "answerObject0",
-                        "answerObject1",
-                        "answerObject2",
-                        "answerObject3",
-                        "answerText0",
-                        "answerText1",
-                        "answerText2",
-                        "answerText3",
-                        "correctAnswers0",
-                        "correctAnswers1",
-                        "correctAnswers2",
-                        "correctAnswers3",
-                        "feedbackVideo",
-                        "feedbackObject",
-                        "feedbackText"
-            },
+        public List<object> GetQuestionCsvExportValuesList()
+            => new()
+                {
+                        itemIdx,
+                        CsvUtility.GetVideoName(questionVideo, questionVideoUrl),
+                        questionObject != null? questionObject.name : "",
+                        questionText,
+                        answerObjects.Length > 0 && answerObjects[0] != null? answerObjects[0].name : "",
+                        answerObjects.Length > 1 && answerObjects[1] != null? answerObjects[1].name : "",
+                        answerObjects.Length > 2 && answerObjects[2] != null? answerObjects[2].name : "",
+                        answerObjects.Length > 3 && answerObjects[3] != null? answerObjects[3].name : "",
+                        answerTexts.Length > 0? answerTexts[0] : "",
+                        answerTexts.Length > 1? answerTexts[1] : "",
+                        answerTexts.Length > 2? answerTexts[2] : "",
+                        answerTexts.Length > 3? answerTexts[3] : "",
+                        correctAnswers.Length > 0? correctAnswers[0].ToString() : "false",
+                        correctAnswers.Length > 1? correctAnswers[1].ToString() : "false",
+                        correctAnswers.Length > 2? correctAnswers[2].ToString() : "false",
+                        correctAnswers.Length > 3? correctAnswers[3].ToString() : "false",
+                        feedbackVideo != null? feedbackVideo.name : feedbackVideoUrl,
+                        feedbackObject != null? feedbackObject.name : "",
+                        feedbackText
+                };
+
+        public static string GetQuestionCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+            => CsvUtility.JoinAsCsv(
+            GetQuestionCsvHeaderList(),
             sep
         );
+
+        public static List<object> GetQuestionCsvHeaderList()
+            => new()
+                {
+                    "questionIdx",
+                    "questionVideo",
+                    "questionObject",
+                    "questionText",
+                    "answerObject0",
+                    "answerObject1",
+                    "answerObject2",
+                    "answerObject3",
+                    "answerText0",
+                    "answerText1",
+                    "answerText2",
+                    "answerText3",
+                    "correctAnswers0",
+                    "correctAnswers1",
+                    "correctAnswers2",
+                    "correctAnswers3",
+                    "feedbackVideo",
+                    "feedbackObject",
+                    "feedbackText"
+                };
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using ExPresSXR.Interaction.ButtonQuiz;
 using UnityEngine;
 using UnityEngine.Video;
+using System.Linq;
+using System.Windows.Markup;
 
 
 namespace ExPresSXR.Experimentation.DataGathering
@@ -88,28 +90,41 @@ namespace ExPresSXR.Experimentation.DataGathering
         public string GetCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
             return CsvUtility.JoinAsCsv(
-                new object[] {
-                    answerCorrect,
-                    answerChosenString,
-                    firstPressedButtonIdx,
-                    answerPressTime,
-                    askOrderIdx,
-                    answerPermutationString,
-                    // Feedback
-                    feedbackText,
-                    feedbackObjectsString,
-                    feedbackVideoString,
-                    // Question
-                    question.GetQuestionCsvExportValues(sep)
-                },
+                GetCsvExportValuesList(),
                 sep
             );
         }
 
+        public List<object> GetCsvExportValuesList()
+        {
+            List<object> values =  new ()
+            {
+                answerCorrect,
+                answerChosenString,
+                firstPressedButtonIdx,
+                answerPressTime,
+                askOrderIdx,
+                answerPermutationString,
+                // Feedback
+                feedbackText,
+                feedbackObjectsString,
+                feedbackVideoString
+            };
+            values.AddRange(question.GetQuestionCsvExportValuesList());
+            return values;
+        }
+            
+
         public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(NUM_CSV_EXPORT_COLUMNS, sep);
 
         public static string GetQuizRoundCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
-            new object[]
+            GetQuizRoundCsvHeaderList(),
+            sep
+        );
+
+        public static List<object> GetQuizRoundCsvHeaderList()
+        {
+            List<object> header = new()
             {
                 "answerWasCorrect",
                 "answerChosen",
@@ -120,11 +135,10 @@ namespace ExPresSXR.Experimentation.DataGathering
                 // Feedback
                 "displayedFeedbackText",
                 "displayedFeedbackObjects",
-                "displayedFeedbackVideo",
-                // Question
-                ButtonQuizQuestion.GetQuestionCsvHeader(sep)
-            },
-            sep
-        );
+                "displayedFeedbackVideo"
+            };
+            header.AddRange(ButtonQuizQuestion.GetQuestionCsvHeaderList());
+            return header;
+        }
     }
 }

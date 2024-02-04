@@ -2,6 +2,8 @@ using UnityEngine;
 using ExPresSXR.Experimentation.DataGathering;
 using System;
 using System.Linq;
+using UnityEditor.Build.Pipeline;
+using System.Collections.Generic;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
@@ -37,45 +39,47 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
 
         // Export
-        public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(NUM_CSV_EXPORT_COLUMNS, sep);
-        
-        public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
-        {
-            return CsvUtility.JoinAsCsv(
-                new object[] {
-                    quizMode, 
-                    questionOrdering, 
+        public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+            => CsvUtility.EmptyCSVColumns(NUM_CSV_EXPORT_COLUMNS, sep);
+
+        public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) 
+            => CsvUtility.JoinAsCsv(GetConfigCsvExportValuesList(), sep);
+
+        public List<object> GetConfigCsvExportValuesList()
+            => new()
+                {
+                    quizMode,
+                    questionOrdering,
                     answersAmount,
                     answerOrdering,
-                    questionType, 
-                    answerType, 
-                    feedbackMode, 
+                    questionType,
+                    answerType,
+                    feedbackMode,
                     feedbackType
-                },
-                sep
-            );
-        }
+                };
 
-        public static string GetConfigCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
-            new object[]
-            {
-                "quizMode",
-                "questionOrdering",
-                "answersAmount",
-                "answersOrdering",
-                "questionType",
-                "answerType",
-                "feedbackMode",
-                "feedbackType"
-            },
-            sep
-        );
+        public static string GetConfigCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) 
+            => CsvUtility.JoinAsCsv(GetConfigCsvHeaderList(), sep);
+
+        public static List<object> GetConfigCsvHeaderList()
+            => new()
+                {
+                    "quizMode",
+                    "questionOrdering",
+                    "answersAmount",
+                    "answersOrdering",
+                    "questionType",
+                    "answerType",
+                    "feedbackMode",
+                    "feedbackType"
+                };
 
         public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
             string[] questionExports = questions.Select(q => q.GetQuestionCsvExportValues(sep)).ToArray();
             return string.Join("\n", questionExports);
         }
+
     }
 
 

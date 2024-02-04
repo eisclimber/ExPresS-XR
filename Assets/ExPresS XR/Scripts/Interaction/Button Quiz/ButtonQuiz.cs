@@ -10,6 +10,8 @@ using ExPresSXR.Misc;
 using ExPresSXR.Experimentation.DataGathering;
 using System;
 using System.IO;
+using System.Linq;
+using Newtonsoft.Json.Bson;
 
 
 namespace ExPresSXR.Interaction.ButtonQuiz
@@ -601,50 +603,77 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /////////////////////////////////////////////////
 
         // Continuous Polling
-
         public float GetQuizUnixStartTime() => quizUndergoing ? quizStartTime : -1.0f;
 
-        public float GetCurrentQuizUnixTimeMillisecondsDuration() => quizUndergoing ? (quizStartTime - DateTimeOffset.Now.ToUnixTimeMilliseconds()) : -1.0f;
+        public float GetCurrentQuizUnixTimeMillisecondsDuration() => quizUndergoing ? quizStartTime - DateTimeOffset.Now.ToUnixTimeMilliseconds() : -1.0f;
 
         public int GetCurrentQuestionIdx() => currentQuestion?.itemIdx ?? -1; // From the current Question, not the latest!
 
         public int GetCurrentAskOrderIdx() => quizUndergoing ? currentQuestionIdx : -1; // From the current Question, not the latest!
 
         // Latest Question (Available after answering)
-        public string GetLatestRoundDataExportValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) 
+        public string GetLatestRoundDataExportValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
                 => latestRoundData?.GetCsvExportValues(sep) ?? QuizRoundData.GetEmptyCsvExportValues(sep);
+        
+        public List<object> GetLatestRoundDataExportValueList()
+                => latestRoundData?.GetCsvExportValuesList() ?? new List<object>(QuizRoundData.NUM_CSV_EXPORT_COLUMNS);
 
         public string GetCurrentQuestionCsvExportValue(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
                 => currentQuestion?.GetQuestionCsvExportValues(sep) ?? ButtonQuizQuestion.GetEmptyCsvExportValues(sep);
 
+        public List<object> GetCurrentQuestionCsvExportValueList()
+                => currentQuestion?.GetQuestionCsvExportValuesList() ?? new List<object>(QuizRoundData.NUM_CSV_EXPORT_COLUMNS);
+
+        [MultiColumnValue]
+        [HeaderReplacement("quizUndergoing", "quizPlaythroughNumber", "answerWasCorrect", "answerChosen", "firstPressedButtonIdx", "answerPressTime", 
+                            "askOrderIdx", "answerPermutation", "displayedFeedbackText", "displayedFeedbackObjects", "displayedFeedbackVideo", "quizMode",
+                            "questionOrdering", "answersAmount", "answersOrdering", "questionType", "answerType", "feedbackMode", "feedbackType")]
         public string GetFullQuizCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
-            new object[]
-            {
-                    quizUndergoing,
-                    quizPlaythroughNumber,
-                    GetLatestRoundDataExportValue(),
-                    GetConfigCsvExportValues()
-            },
+            GetFullQuizCsvExportValuesList(),
             sep
         );
 
+        public List<object> GetFullQuizCsvExportValuesList()
+        {
+            List<object> values = new()
+            {
+                    quizUndergoing,
+                    quizPlaythroughNumber
+            };
+            values.AddRange(GetLatestRoundDataExportValueList());
+            values.AddRange(GetConfigCsvExportValuesList());
+            return values;
+        }
+
         public static string GetFullQuizCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
-            new object[]
+            GetFullQuizCsvHeaderList(),
+            sep
+        );
+
+        public static List<object> GetFullQuizCsvHeaderList()
+        {
+            List<object> header = new()
             {
                 "quizUndergoing",
                 "quizPlaythroughNumber",
-                QuizRoundData.GetQuizRoundCsvHeader(sep),
-                ButtonQuizConfig.GetConfigCsvHeader(sep)
-            },
-            sep
-        );
+            };
+            header.AddRange(QuizRoundData.GetQuizRoundCsvHeaderList());
+            header.AddRange(ButtonQuizConfig.GetConfigCsvHeaderList());
+            return header;
+        }
 
         // Use ButtonQuizConfig.CONFIG_CSV_HEADER_STRING for header
-        public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => config != null ? config.GetConfigCsvExportValues(sep) : ButtonQuizConfig.GetEmptyCsvExportValues();
+        public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+            => config != null ? config.GetConfigCsvExportValues(sep) : ButtonQuizConfig.GetEmptyCsvExportValues();
+
+        public List<object> GetConfigCsvExportValuesList()
+            => config != null ? config.GetConfigCsvExportValuesList() : new List<object>(ButtonQuizConfig.NUM_CSV_EXPORT_COLUMNS);
 
 
         // Use ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING for header
-        public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => config != null ? config.GetAllQuestionsCsvExportValues(sep) : ButtonQuizQuestion.GetEmptyCsvExportValues();
+        //(no need for an ...Array function as it should be used as single value)
+        public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+            => config != null ? config.GetAllQuestionsCsvExportValues(sep) : ButtonQuizQuestion.GetEmptyCsvExportValues();
 
         // Misc
         public string GetQuestionPermutationAsCsvString() => CsvUtility.ArrayToString(questionPermutation);
