@@ -20,6 +20,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             set
             {
                 _headerSeparator = value;
+
                 if (AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo))
                 {
                     exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
@@ -96,12 +97,21 @@ namespace ExPresSXR.Experimentation.DataGathering
         private void UpdateInvocationInfo(MemberInfo memberInfo, Component component = null)
         {
             bool hadHeaderReplacement = AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo);
+            bool memberChanged = _targetMemberInfo != memberInfo;
             _targetMemberInfo = memberInfo;
             _targetComponent = component;
             bool hasHeaderReplacement = AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo);
+
+            // Clear only if there was a replacement or if a replacement should be added/updated
             if (hadHeaderReplacement || hasHeaderReplacement)
             {
                 exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
+            }
+
+            // Print Notice (only if changed)
+            if (memberChanged && AttributeHelpers.TryGetAttribute(_targetMemberInfo, out HeaderReplacementNoticeAttribute notice))
+            {
+                Debug.LogWarning(notice.notice);
             }
         }
 

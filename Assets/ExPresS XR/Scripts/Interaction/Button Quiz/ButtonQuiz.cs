@@ -683,7 +683,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                             "feedbackVideo", "feedbackObject", "feedbackText")]
         [HeaderReplacementNotice("`GetAllQuestionsCsvExportValues(char? sep)` will export multiple "
                                     + "lines of values which might break the formatting of the csv. "
-                                    + "Also do not export this value with timestamps.")]
+                                    + "Also do not export this value with timestamps!")]
         public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
             => config != null ? config.GetAllQuestionsCsvExportValues(sep) : ButtonQuizQuestion.GetEmptyCsvExportValues();
 

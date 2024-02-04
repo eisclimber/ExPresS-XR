@@ -45,8 +45,6 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 _separatorType = value;
 
-                Debug.Log(" xxx " + separatorType);
-
                 if (_separatorType == SeparatorType.Comma)
                 {
                     columnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
@@ -75,8 +73,6 @@ namespace ExPresSXR.Experimentation.DataGathering
             set
             {
                 _columnSeparator = value;
-
-                Debug.Log(_columnSeparator);
 
                 foreach (DataGatheringBinding binding in dataBindings)
                 {

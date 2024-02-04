@@ -52,10 +52,16 @@ namespace ExPresSXR.Experimentation.DataGathering
             => memberInfo != null && GetAttribute<T>(memberInfo) != null;
 
 
-        private static T GetAttribute<T>(MemberInfo memberInfo) where T : Attribute
+        public static T GetAttribute<T>(MemberInfo memberInfo) where T : Attribute
         {
             object[] customAttributes = memberInfo?.GetCustomAttributes(typeof(T), false);
             return customAttributes != null && customAttributes.Length > 0 ? (T)customAttributes[0] : null;
+        }
+
+        public static bool TryGetAttribute<T>(MemberInfo memberInfo, out T attribute) where T : Attribute
+        {
+            attribute = GetAttribute<T>(memberInfo);
+            return attribute != null;
         }
     }
 }

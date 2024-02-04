@@ -7,6 +7,7 @@ using UnityEditor.ProBuilder;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.ProBuilder.Shapes;
+using ExPresSXR.Experimentation.DataGathering;
 
 namespace ExPresSXR.Editor.Utility
 {
@@ -159,10 +160,11 @@ namespace ExPresSXR.Editor.Utility
                 case WallMode.AllSeparate:
                     // Make a list of materials
                     roomRenderer.materials = new Material[] { wallMaterial, wallMaterial, wallMaterial, wallMaterial, ceilingMaterial, floorMaterial };
+
                     // If each side has it's own material, use a mapping of face index to material index
                     for (int i = 0; i < roomRenderer.sharedMaterials.Length; i++)
                     {
-                        room.faces[(int)RoomFaceIds.Floor].submeshIndex = i;
+                        room.faces[i].submeshIndex = i;
                     }
                     break;
                 default: // == WallMode.SINGLE
