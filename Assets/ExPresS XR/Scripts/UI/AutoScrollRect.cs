@@ -10,6 +10,9 @@ namespace ExPresSXR.UI
     [RequireComponent(typeof(ScrollRect))]
     public class AutoScrollRect : MonoBehaviour
     {
+        /// <summary>
+        /// If enabled, the rect will scroll automatically.
+        /// </summary>
         [SerializeField]
         [Tooltip("If enabled, the rect will scroll automatically.")]
         private bool _autoScrolling;
@@ -28,27 +31,48 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// Direction in which the Rect moves.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Direction in which the Rect moves")]
+        [Tooltip("Direction in which the Rect moves.")]
         private ScrollDirection _scrollDirection = ScrollDirection.Down;
 
+        /// <summary>
+        /// Duration in seconds to scroll from the top to the bottom.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Duration in seconds to scroll from the top to the bottom")]
+        [Tooltip("Duration in seconds to scroll from the top to the bottom.")]
         private float _scrollDuration = 15.0f;
 
+        /// <summary>
+        /// Time in seconds until scrolling starts after awake. 
+        /// Values below zero won't start scrolling. Zero starts scrolling instantaneously.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Time in seconds until scrolling starts after awake. Values below zero won't start scrolling. Zero starts scrolling instantaneously")]
+        [Tooltip("Time in seconds until scrolling starts after awake. Values below zero won't start scrolling. Zero starts scrolling instantaneously.")]
         private float _initialWaitTime = -1.0f;
 
         [Space]
 
+        /// <summary>
+        /// Reference to the scroll rect to be controlled.
+        /// </summary>
         [SerializeField]
-        [Tooltip("A reference to the scroll rect to be controlled.")]
+        [Tooltip("Reference to the scroll rect to be controlled.")]
         private ScrollRect _scrollRect;
 
-
+        /// <summary>
+        /// Event emitted when a scroll is started or the direction is changed.
+        /// </summary>
         public UnityEvent<ScrollDirection> OnScrollStarted;
+        /// <summary>
+        /// Emitted when the scroll stops at the top.
+        /// </summary>
         public UnityEvent OnScrollUpCompleted;
+        /// <summary>
+        /// Emitted when the scroll stops at the bottom.
+        /// </summary>
         public UnityEvent OnScrollDownCompleted;
 
 
@@ -126,7 +150,7 @@ namespace ExPresSXR.UI
         }
 
         /// <summary>
-        /// Scrolls the scroll rect to the top instantly
+        /// Scrolls to the top instantly.
         /// </summary>
         /// <param name="keepScrolling">If false will disable '_autoScrolling', if true will not change the value of '_autoScrolling'. </param>
         [ContextMenu("Scroll To Top")]
@@ -140,7 +164,7 @@ namespace ExPresSXR.UI
         }
 
         /// <summary>
-        /// Scrolls the scroll rect to the top instantly
+        /// Scrolls to the bottom instantly.
         /// </summary>
         /// <param name="keepScrolling">If false will disable '_autoScrolling', if true will not change the value of '_autoScrolling'. </param>
         [ContextMenu("Scroll To Bottom")]

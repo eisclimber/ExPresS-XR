@@ -11,6 +11,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
     public class QuizUtility : MonoBehaviour
     {
+        /// <summary>
+        /// Generates an array with size equal `length` where every element holds its index, i.e. [0, 1, 2, ..., length]
+        /// </summary>
+        /// <param name="length">Length of the array.</param>
+        /// <returns>An identity permutation of the desired length.</returns>
         public static int[] GenerateIdentityArray(int length)
         {
             int[] array = new int[length];
@@ -21,6 +26,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return array;
         }
 
+        /// <summary>
+        /// Returns a shuffled copy of the given array.
+        /// Uses a Fisher-Yates-Shuffle.
+        /// </summary>
+        /// <param name="array">Array to be shuffled.</param>
+        /// <returns>A shuffled copy of the array.</returns>
         public static int[] Shuffle(int[] array)
         {
             // Fisher-Yates-Shuffle
@@ -33,6 +44,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return array;
         }
 
+        /// <summary>
+        /// eturns the number of answers for a question.
+        /// </summary>
+        /// <param name="config">Configuration of the Quiz.</param>
+        /// <param name="question">Question for which the number of answers should be determined.</param>
+        /// <returns>Number of answers for the question.</returns>
         public static int GetNumAnswersForQuestion(ButtonQuizConfig config, ButtonQuizQuestion question)
         {
             if (config.answersAmount != AnswersAmount.DifferingAmounts)
@@ -54,7 +71,13 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return numAnswers;
         }
 
-
+        /// <summary>
+        /// Get a permutation of the valid answers of a question.
+        /// Indices of unused answer indices will be set to -1.
+        /// </summary>
+        /// <param name="config">Configuration of the Quiz.</param>
+        /// <param name="question">Question for which a answer permutation should be created.</param>
+        /// <returns>A Permutation of the answers indices.</returns>
         public static int[] GetAnswerPermutation(ButtonQuizConfig config, ButtonQuizQuestion question)
         {
             int length = GetNumAnswersForQuestion(config, question);
@@ -74,6 +97,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return array;
         }
 
+        /// <summary>
+        /// Permutes an array using the given permutation as indices. Both arrays must be of same length.
+        /// Entries in the permutation array < 0 will be ignored and no entries will be added. 
+        /// </summary>
+        /// <typeparam name="T">Type of the permuted array.</typeparam>
+        /// <param name="array">Array to be permuted.</param>
+        /// <param name="permutation">Permutation to be applied.</param>
+        /// <returns>A permuted array.</returns>
         public static T[] PermuteArray<T>(T[] array, int[] permutation)
         {
             if (array.Length != permutation.Length)
@@ -96,7 +127,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return permutedArray;
         }
 
-
+        /// <summary>
+        ///Converts a relative path to a StreamingAssets-Path whilst ensuring the path refers to an `.mp4` or `.mov` video file.
+        /// </summary>
+        /// <param name="filePath">Relative path in the StreamingAssets-Folder</param>
+        /// <returns>A path relative to 'Application.streamingAssetsPath'.</returns>
         public static string MakeStreamingAssetsVideoPath(string filePath)
         {
             if (!filePath.EndsWith(".mp4") && !filePath.EndsWith(".mov"))
@@ -108,6 +143,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return Path.Combine(Application.streamingAssetsPath, filePath);
         }
 
+        /// <summary>
+        /// Converts a GameObject to a array representation using the GameObjects name or an empty string.
+        /// </summary>
+        /// <param name="objects">Objects to be converted.</param>
+        /// <param name="sep">Separator character.</param>
+        /// <returns></returns>
         public static string GameObjectArrayToNameString(GameObject[] objects, char sep = ',')
         {
             if (objects == null)
@@ -119,7 +160,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         /// <summary>
         /// Converts an array of QuizButtons to a bool array representing their pressed states.
-        /// Null-Buttons are considered not pressed
+        /// Null-Buttons are considered not pressed.
         /// </summary>
         /// <param name="buttons">Quiz Buttons to be converted</param>
         /// <returns>Boolean array</returns>
@@ -134,7 +175,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public static int FirstIndexTrue(bool[] pressedStates) => System.Array.IndexOf(pressedStates, true);
 
         /// <summary>
-        /// Checks if all values are true
+        /// Checks if all values are true.
         /// </summary>
         /// <param name="values">array to check</param>
         /// <returns>if all values were true</returns>
@@ -153,7 +194,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         /// <summary>
         /// Returns the maximum trigger time of *pressed* QuizButtons.
-        /// If none is pressed or the array is empty returns -1.0f
+        /// If none is pressed or the array is empty returns -1.0f.
         /// </summary>
         /// <param name="buttons">Buttons for which the trigger time should be extracted.</param>
         /// <returns>Longest Trigger time of the pressed buttons</returns>

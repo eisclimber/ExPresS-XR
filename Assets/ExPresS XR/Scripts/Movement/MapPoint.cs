@@ -8,11 +8,11 @@ namespace ExPresSXR.Movement
 {
     public class MapPoint : MonoBehaviour
     {
-        private const string TP_OPTION_PATH = "Assets/ExPresS XR/Prefabs/Movement/Teleport Option.prefab";
+        private const string TP_OPTION_PREFAB_LOCATION = "Movement/Teleport Option";
         private const float DEFAULT_TP_OPTION_CREATION_RADIUS = 2.0f;
 
         /// <summary>
-        /// Visible when the player is in TP-Mode
+        /// Visible when the player is in TP-Mode.
         /// 
         /// !Attention!: This GameObject will stay be visible/active when the player is NOT present.
         /// To hide it, configure this as (child) of _playerPresentVisible.
@@ -30,13 +30,20 @@ namespace ExPresSXR.Movement
         private GameObject _hideInTpMode;
 
         /// <summary>
-        /// Visible when the player is present.
+        /// Visible only when the player is present.
+        /// 
+        /// Attention!: You will usually want to add a PlayerDetector control `SetPlayerPresent()` with its Events. 
+        /// Otherwise the visibility of `_playerPresentVisible`and its children will not be affected.
         /// </summary>
         [SerializeField]
         private GameObject _playerPresentVisible;
 
-        
-        // For adding Tp Options
+
+        /// <summary>
+        /// Default distance at which new teleport options are placed.
+        /// The Tp Options will always be placed at the origin of this transform
+        /// but their first object will be shifted by `Vector3.forward * _createdTpOptionRadius`
+        /// </summary>
         [SerializeField]
         private float _createdTpOptionRadius = DEFAULT_TP_OPTION_CREATION_RADIUS;
 
@@ -49,7 +56,7 @@ namespace ExPresSXR.Movement
 
         /// <summary>
         /// Changes visibility of the 'Show In TP Mode' and 'Hide In TP Mode' GameObjects.
-        /// Their state will be always inverse ('Show In TP Mode'.active = !'Hide In TP Mode'.active)
+        /// Their state will be always inverse ('Show In TP Mode'.active = !'Hide In TP Mode'.active).
         /// </summary>
         /// <param name="visible">If 'Show In TP Mode' should be visible or not</param>    
         public void SetTeleportModeVisible(bool visible)
@@ -78,12 +85,15 @@ namespace ExPresSXR.Movement
         }
 
         /// <summary>
-        /// Creates the a new MapPoint, only available in the editor
+        /// Creates the a new default TP-Option to teleport to at `Vector3.forward * _createdTpOptionRadius`.
+        /// Make sure to configure it properly by setting a destination and rotating/moving it.
+        /// Attention!: Only available in the editor.
         /// </summary>
         public void CreateNewTpOptionObject()
         {
 #if UNITY_EDITOR
-            UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(TP_OPTION_PATH, typeof(UnityEngine.Object));
+            string prefabPath = RuntimeEditorUtils.MakeExPresSXRPrefabPath(TP_OPTION_PREFAB_LOCATION);
+            Object prefab = AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Object));
             GameObject tpOption = (GameObject)PrefabUtility.InstantiatePrefab(prefab, _showInTpMode.transform);
 
             if (tpOption != null && tpOption.transform.childCount > 0)
@@ -92,13 +102,13 @@ namespace ExPresSXR.Movement
                 float distance = _createdTpOptionRadius >= 0.0f ? _createdTpOptionRadius : DEFAULT_TP_OPTION_CREATION_RADIUS;
                 // Offset the transform of the first (and only) child of the by the specified distance
                 offsetTransform.localPosition = Vector3.forward * distance;
-                Debug.Log($"Created new Tp Option as a child of '{ _showInTpMode.gameObject.name }' "
-                            + $"and offset it by { _createdTpOptionRadius }. Rotate it to your likings and "
+                Debug.Log($"Created new Tp Option as a child of '{_showInTpMode.gameObject.name}' "
+                            + $"and offset it by {_createdTpOptionRadius}. Rotate it to your likings and "
                             + "set to 'Teleport Anchor Transform' of the TPOptions first child to your teleportation target.", this);
             }
             else
             {
-                Debug.LogError($"Could not create a new Tp Option for '{ gameObject.name }'. Make sure the default tp Option was not deleted "
+                Debug.LogError($"Could not create a new Tp Option for '{gameObject.name}'. Make sure the default tp Option was not deleted "
                                 + "and it has at least one child to offset.", this);
             }
 #else

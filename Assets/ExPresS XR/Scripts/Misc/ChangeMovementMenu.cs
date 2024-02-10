@@ -10,7 +10,7 @@ namespace ExPresSXR.Misc
     public class ChangeMovementMenu : MonoBehaviour
     {
         /// <summary>
-        /// The rig affected by the movement changes.s
+        /// The rig affected by the movement changes.
         /// </summary>
         [SerializeField]
         private ExPresSXRRig _rig;

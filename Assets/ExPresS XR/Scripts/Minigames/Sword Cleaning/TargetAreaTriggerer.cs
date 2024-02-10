@@ -38,12 +38,22 @@ namespace ExPresSXR.Minigames.SwordCleaning
 
         [Space]
 
-        
+        /// <summary>
+        /// If an action was performed on a valid TargetArea.
+        /// </summary>
         public UnityEvent OnTargetAreaActionPerformed;
+        /// <summary>
+        /// If a single TargetArea was completed but not all.
+        /// </summary>
         public UnityEvent OnSingleTargetCompleted;
+        /// <summary>
+        /// If a all TargetAreas were completed.
+        /// </summary>
         public UnityEvent OnAllTargetsCompleted;
 
-
+        /// <summary>
+        /// How many targets are available/required for this TargetAreaTriggerer.
+        /// </summary>
         public int numTargets
         {
             get => _targets != null ? _targets.Length : 0;
@@ -72,6 +82,9 @@ namespace ExPresSXR.Minigames.SwordCleaning
             }
         }
 
+        /// <summary>
+        /// Connects this to the TagetAreas in _targets.
+        /// </summary>
         public void SetupTargets()
         {
             if (_targets.Length <= 0)

@@ -40,11 +40,13 @@ namespace ExPresSXR.Misc
             return null;
         }
 
-
         /// <summary>
         /// Finds the first ExPresSXRRig in the scene (if exists).
-        /// The rig must be tagged as "Player"!
-        /// !! This operation is expensive, call it sparingly and using direct References using SerializedProperties!!
+        /// Returns true if the rig was found and set to the out parameter and false otherwise.
+        /// 
+        /// 
+        /// Be aware that the rig must be tagged as "Player"!
+        /// !!This operation is expensive, call it sparingly and rather use direct References to the rig whenever possible!!
         /// </summary>
         /// <param name="rig">The rig or null.</param>
         /// <returns>If a rig was found</returns>
@@ -68,7 +70,7 @@ namespace ExPresSXR.Misc
         /// It differs from the remainder function (%) as it will return only positive values including zero.
         /// </summary>
         /// <param name="a">Dividend of the modulo operation.</param>
-        /// <param name="m">Divider of the modulo operation.</param>
+        /// <param name="n">Divider of the modulo operation.</param>
         /// <returns>The positive modulo of 'a mod n'.</returns>
         public static int PosMod(int a, int n)
         {
@@ -168,7 +170,7 @@ namespace ExPresSXR.Misc
 
         # region Dropdown Helper
         /// <summary>
-        /// Populates an <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.
+        /// Populates a <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
         /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
@@ -196,7 +198,7 @@ namespace ExPresSXR.Misc
 
 
         /// <summary>
-        /// Populates an <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
+        /// Populates a <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
         /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
@@ -221,7 +223,7 @@ namespace ExPresSXR.Misc
         }
 
         /// <summary>
-        /// Populates an <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
+        /// Populates a <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
         /// Be careful as this will produce an entry for every combination, meaning 2^{Enum.Length} entries.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
@@ -276,7 +278,7 @@ namespace ExPresSXR.Misc
 
 
         /// <summary>
-        /// Populates an <see cref="TMP_Dropdown"/> with the names proved by stringOptions.
+        /// Populates a <see cref="TMP_Dropdown"/> with the names proved by stringOptions.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
         /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>

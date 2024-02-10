@@ -31,8 +31,14 @@ namespace ExPresSXR.Localization
             get => _initialized ? _numLocales : -1;
         }
 
+        /// <summary>
+        /// If the language server was initialized, meaning locales are replaced and can be switched.
+        /// </summary>
         private bool _initialized;
-
+        public bool initialized
+        {
+            get => _initialized;
+        }
 
         /// <summary>
         /// Event emitted when the locale changes.
@@ -83,7 +89,7 @@ namespace ExPresSXR.Localization
         }
 
         /// <summary>
-        /// Sets the locale, if it is available.
+        /// Sets the locale using a Locale object, if it is available.
         /// </summary>
         /// <param name="locale">Locale to set.</param>
         public void SetLocale(Locale locale)
@@ -100,7 +106,7 @@ namespace ExPresSXR.Localization
         }
 
         /// <summary>
-        /// Sets the locale, if it is available.
+        /// Sets the locale using its identifierCode, if it is available.
         /// </summary>
         /// <param name="desiredLocale">The locales identifier code (en, de, ...).</param>
         public void SetLocale(string identifierCode)
@@ -117,7 +123,7 @@ namespace ExPresSXR.Localization
         }
 
         /// <summary>
-        /// Sets the current locale.
+        /// Sets the current locale using its index from the Localization Settings.
         /// </summary>
         /// <param name="localeIdx">Index of the locale as in the localization settings.</param>
         public void SetLocale(int localeIdx)

@@ -2,7 +2,7 @@
     Script Name: ScoreDisplay.cs
     Author: Kevin Koerner
     Refactoring & Integration: Luca Dreiling
-    Purpose: Displays and stores a numerical score via ui.
+    Purpose: Displays and stores a numerical score via UI.
 */
 using System.Collections;
 using System.Collections.Generic;

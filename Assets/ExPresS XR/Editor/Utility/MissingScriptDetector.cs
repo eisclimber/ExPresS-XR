@@ -1,4 +1,3 @@
-#nullable enable
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,7 +27,7 @@ namespace ExPresSXR.Editor.Utility
             }
         }
 
-        static int FindInGO(GameObject gameObject, int numMissing)
+        private static int FindInGO(GameObject gameObject, int numMissing)
         {
             Component[] components = gameObject.GetComponents<Component>();
             for (int i = 0; i < components.Length; i++)

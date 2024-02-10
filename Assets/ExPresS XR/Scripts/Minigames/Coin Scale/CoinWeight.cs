@@ -2,7 +2,7 @@
     Script Name: CoinWeight.cs
     Author: Kevin Koerner
     Refactoring & Integration: Luca Dreiling
-    Purpose: Assigns a binary "weight" (fake/real) to a gameobject.
+    Purpose: Assigns a binary "weight" (fake/real) to a GameObject.
 */
 using System.Collections;
 using System.Collections.Generic;

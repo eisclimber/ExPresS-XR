@@ -9,6 +9,16 @@ namespace ExPresSXR.Editor.SetupDialogs
 {
     class SetupDialogInitial : SetupDialogBase
     {
+        public const string BASIC_SCENE_NAME = "Basic Scene (ExPresS XR)";
+        public const string EXHIBITION_EXPORT_SCENE_NAME = "Exhibition Export Scene";
+        public const string EXHIBITION_TUTORIAL_SCENE_NAME = "Exhibition Tutorial Scene";
+        public const string EXPERIMENTATION_EXPORT_SCENE_NAME = "Experimentation Export Scene";
+        public const string EXPERIMENTATION_TUTORIAL_SCENE_NAME = "Experimentation Tutorial Scene";
+        public const string GENERAL_EXPORT_SCENE_NAME = "General Export Scene";
+        public const string INTERACTION_TUTORIAL_SCENE_NAME = "Interaction Tutorial Scene";
+        public const string MOBILE_EXPORT_SCENE_NAME = "Mobile Export Scene";
+        public const string MOVEMENT_TUTORIAL_SCENE_NAME = "Movement Tutorial Scene";
+
 
         [MenuItem("ExPresS XR/Tutorials.../Initial Setup", false, 0)]
         public static void ShowWindow()
@@ -37,7 +47,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             set
             {
                 SwitchStepValue(step2Container, (int)_inputMethod, (int)value);
-                
+
                 _inputMethod = value;
 
                 // Disable Controller Options for Eye/HeadGaze devices in the next container
@@ -116,7 +126,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             for (int i = 0; i < Enum.GetNames(typeof(DialogInputMethod)).Length; i++)
             {
-                Button button = step2Container.Q<Button>("choice-" + (i + 1) + "-button");
+                Button button = step2Container.Q<Button>($"choice-{i + 1}-button");
                 if (button != null)
                 {
                     // Move first entry ('None') to the last button
@@ -131,7 +141,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             for (int i = 0; i < Enum.GetNames(typeof(DialogMovementPreset)).Length; i++)
             {
-                Button button = step3Container.Q<Button>("choice-" + (i + 1) + "-button");
+                Button button = step3Container.Q<Button>($"choice-{i + 1}-button");
                 if (button != null)
                 {
                     DialogMovementPreset j = (DialogMovementPreset)i;
@@ -142,7 +152,8 @@ namespace ExPresSXR.Editor.SetupDialogs
 
             contentContainer.Query<Button>("movement-next-button").ForEach((nextButton) =>
             {
-                nextButton.clickable.clicked += () => { 
+                nextButton.clickable.clicked += () =>
+                {
                     int nextStepDelta = inputMethod == DialogInputMethod.Controller ? 1 : 2;
                     currentStep += nextStepDelta;
                 };
@@ -154,7 +165,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             // Start at i=1 to ignore 'None'
             for (int i = 1; i < Enum.GetNames(typeof(InteractionOptions)).Length; i++)
             {
-                Toggle toggle = step4Container.Q<Toggle>("option-toggle-" + i);
+                Toggle toggle = step4Container.Q<Toggle>($"option-toggle-{i}");
                 if (toggle != null)
                 {
                     InteractionOptions j = (InteractionOptions)(1 << (i - 1));
@@ -168,7 +179,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             for (int i = 0; i < Enum.GetNames(typeof(LaunchOption)).Length; i++)
             {
-                Button button = step5Container.Q<Button>("choice-" + (i + 1) + "-button");
+                Button button = step5Container.Q<Button>($"choice-{i + 1}-button");
                 if (button != null)
                 {
                     LaunchOption j = (LaunchOption)i;
@@ -179,7 +190,8 @@ namespace ExPresSXR.Editor.SetupDialogs
 
             contentContainer.Query<Button>("movement-back-button").ForEach((nextButton) =>
             {
-                nextButton.clickable.clicked += () => { 
+                nextButton.clickable.clicked += () =>
+                {
                     int nextStepDelta = inputMethod == DialogInputMethod.Controller ? 1 : 2;
                     currentStep -= nextStepDelta;
                 };
@@ -188,16 +200,14 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         protected override void FinalizeSetup()
         {
-            string rigBasePath = GetRigBasePath();
             InputMethod input = DialogToNormalMovementPreset(inputMethod);
             MovementPreset preset = DialogToNormalMovementPreset(movementPreset);
-            SceneUtils.RigCreationData rigLoadData = new(rigBasePath, input, preset, interactionOptions);
+
+            // Create Rig
+            CreationUtils.InstantiateAndConfigureExPresSXRRig(input, preset, interactionOptions);
 
             // Show Tutorials
             ShowTutorialsSetupDialogs();
-
-            // Add Rig
-            SceneUtils.AddRigWithConfigData(rigLoadData);
 
             // Open ProBuilder-Window
             EditorApplication.ExecuteMenuItem("Tools/ProBuilder/ProBuilder Window");
@@ -213,7 +223,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             {
                 SetupDialogExhibitionTutorial.ShowWindow();
             }
-            
+
             if (launchOption == LaunchOption.Experimentation || launchOption == LaunchOption.Both)
             {
                 SetupDialogExperimentationTutorial.ShowWindow();
@@ -234,47 +244,14 @@ namespace ExPresSXR.Editor.SetupDialogs
         }
 
 
-        private string GetRigBasePath()
-        {
-            if (inputMethod == DialogInputMethod.EyeGaze)
-            {
-                return CreationUtils.EYE_GAZE_RIG_PREFAB_NAME;
-            }
-            else if (inputMethod == DialogInputMethod.HeadGaze)
-            {
-                return CreationUtils.HEAD_GAZE_RIG_PREFAB_NAME;
-            }
-            else if (inputMethod == DialogInputMethod.Controller)
-            {
-                if (movementPreset == DialogMovementPreset.Teleport)
-                {
-                    return CreationUtils.TELEPORT_RIG_PREFAB_NAME;
-                }
-                else if (movementPreset == DialogMovementPreset.Joystick)
-                {
-                    return CreationUtils.JOYSTICK_RIG_PREFAB_NAME;
-                }
-                else if (movementPreset == DialogMovementPreset.GrabWorldMotion)
-                {
-                    return CreationUtils.GRAB_MOTION_RIG_PREFAB_NAME;
-                }
-                else if (movementPreset == DialogMovementPreset.GrabWorldManipulation)
-                {
-                    return CreationUtils.GRAB_MANIPULATION_RIG_PREFAB_NAME;
-                }
-            }
-            return CreationUtils.CUSTOM_RIG_PREFAB_NAME;
-        }
-
-
         public string GetSceneNameFromLaunchOption()
         {
             return launchOption switch
             {
-                LaunchOption.Exhibition => SceneUtils.EXHIBITION_TUTORIAL_SCENE_NAME,
-                LaunchOption.Experimentation => SceneUtils.EXPERIMENTATION_TUTORIAL_SCENE_NAME,
-                LaunchOption.Both => SceneUtils.GENERAL_EXPORT_SCENE_NAME,
-                _ => SceneUtils.BASIC_SCENE_NAME,
+                LaunchOption.Exhibition => EXHIBITION_TUTORIAL_SCENE_NAME,
+                LaunchOption.Experimentation => EXPERIMENTATION_TUTORIAL_SCENE_NAME,
+                LaunchOption.Both => GENERAL_EXPORT_SCENE_NAME,
+                _ => BASIC_SCENE_NAME
             };
         }
 
@@ -286,15 +263,19 @@ namespace ExPresSXR.Editor.SetupDialogs
                 DialogMovementPreset.Joystick => MovementPreset.Joystick,
                 DialogMovementPreset.GrabWorldMotion => MovementPreset.GrabWorldMotion,
                 DialogMovementPreset.GrabWorldManipulation => MovementPreset.GrabWorldManipulation,
-                DialogMovementPreset.None => MovementPreset.None,
-                _ => MovementPreset.None,
+                _ => MovementPreset.None
             };
         }
 
         public InputMethod DialogToNormalMovementPreset(DialogInputMethod input)
         {
-            int numMethods = Enum.GetNames(typeof(DialogInputMethod)).Length;
-            return (InputMethod)(((int)input + numMethods - 1) % numMethods);
+            return input switch
+            {
+                DialogInputMethod.Controller => InputMethod.Controller,
+                DialogInputMethod.HeadGaze => InputMethod.HeadGaze,
+                DialogInputMethod.EyeGaze => InputMethod.EyeGaze,
+                _ => InputMethod.None
+            };
         }
     }
 

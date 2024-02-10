@@ -28,7 +28,7 @@ namespace ExPresSXR.Minigames.CoinThrow
         private float _duration = 1.0f;
 
         /// <summary>
-        /// If enabled, the tween starts automatically.
+        /// If enabled, the tween starts automatically during Awake().
         /// </summary>
         [SerializeField]
         private bool _startOnAwake;

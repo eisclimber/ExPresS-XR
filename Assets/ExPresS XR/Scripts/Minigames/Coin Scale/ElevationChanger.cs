@@ -2,7 +2,7 @@
     Script Name: ElevationChanger.cs
     Author: Kevin Koerner
     Refactoring & Integration: Luca Dreiling
-    Purpose: This script represents one side of a scale, changing it's position as a delegate of a scale. 
+    Purpose: This script represents one side of a scale, changing it's position as a delegate of a scale.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace ExPresSXR.Minigames.CoinScale
     /// <summary>
     /// Make sure to add a Rigidbody (as a child) and lock it's movement/rotation.
     /// This guarantees that objects are pushed correctly.
-    /// (See the "Push Bases" of the Scale)
+    /// (See the "Push Bases" of the Scale for reference).
     /// </summary>
 
     [RequireComponent(typeof(Bowl))]
@@ -28,7 +28,7 @@ namespace ExPresSXR.Minigames.CoinScale
         }
 
         /// <summary>
-        /// Max. height of this scale side.
+        /// Min. height of this scale side.
         /// </summary>
         [SerializeField]
         [Tooltip("Min. height of this scale side.")]
@@ -42,7 +42,7 @@ namespace ExPresSXR.Minigames.CoinScale
         private float _maxHeight = 0.1f;
 
         /// <summary>
-        /// Center height of this scale side.")]
+        /// Center height of this scale side.
         /// </summary>
         [SerializeField]
         [Tooltip("Center height of this scale side.")]
@@ -74,6 +74,10 @@ namespace ExPresSXR.Minigames.CoinScale
             UpdateElevation();
         }
 
+        /// <summary>
+        /// Starts the transitions from the current to the provided state (=elevation).
+        /// </summary>
+        /// <param name="state">Desired state.</param>
         public void Activate(ScaleState state)
         {
             if (_bowl.side == Bowl.ScaleSide.Left)

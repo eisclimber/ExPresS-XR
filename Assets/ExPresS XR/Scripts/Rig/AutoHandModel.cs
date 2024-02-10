@@ -6,6 +6,9 @@ namespace ExPresSXR.Rig
 {
     public class AutoHandModel : MonoBehaviour
     {
+        /// <summary>
+        /// Determines which model is displayed.
+        /// </summary>
         [SerializeField]
         private HandModelMode _handModelMode;
         public HandModelMode handModelMode
@@ -19,14 +22,23 @@ namespace ExPresSXR.Rig
                 UpdateDisplayedModel();
             }
         }
+        /// <summary>
+        /// Characteristics of the controller to search for, which is used to get the correct controller for the correct hand.
+        /// </summary>
         public InputDeviceCharacteristics controllerCharacteristics;
+        /// <summary>
+        /// A list of models from which the correct model for the used controller when is chosen `handModelMode` is set to `Controller` or `Both`. 
+        /// If no model was found for the controller a generic model will be shown.
+        /// </summary>
         public List<GameObject> controllerModels;
+        /// <summary>
+        /// The model that is displayed and animated when `handModelMode` is set to `Hand` or `Both`.
+        /// </summary>
         public GameObject handModel;
+        /// <summary>
+        /// A custom model that is shown when `handModelMode` is set to `Custom`.
+        /// </summary>
         public GameObject customModel;
-
-        private InputDevice _currentDevice;
-        private GameObject _currentControllerModel;
-        private GameObject _currentHandModel;
 
         public Transform currentAttach
         {
@@ -52,6 +64,10 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Completely disables collisions with the hand/controller models during runtime.
+        /// Overwrites the functionality of `_collisionsEnabled`.
+        /// </summary>
         [Tooltip("Completely disables collisions with the hand/controller models during runtime. Overwrites the functionality of _collisionsEnabled.")]
         [SerializeField]
         private bool _modelCollisionsEnabled;
@@ -66,7 +82,10 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        /// <summary>
+        /// Temporary en-/disables collisions if `_modelCollisionsEnabled` is true. Will be controlled by the HandController.
+        /// To disable collisions completely use `_modelCollisionsEnabled` instead.
+        /// </summary>
         [Tooltip("Temporary en-/disables collisions if _modelCollisionsEnabled is true. Will be controlled by the HandController. To disable collisions completely use _modelCollisionsEnabled instead.")]
         private bool _collisionsCurrentlyEnabled;
         public bool collisionsCurrentlyEnabled
@@ -89,6 +108,11 @@ namespace ExPresSXR.Rig
                 }
             }
         }
+
+
+        private InputDevice _currentDevice;
+        private GameObject _currentControllerModel;
+        private GameObject _currentHandModel;
 
         private void Update()
         {

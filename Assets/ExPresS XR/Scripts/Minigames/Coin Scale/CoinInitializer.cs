@@ -93,7 +93,9 @@ namespace ExPresSXR.Minigames.CoinScale
             }
         }
 
-        // Shuffle Coins using random new guids as order indices
+        /// <summary>
+        /// Shuffle Coins using random new guids as order indices.
+        /// </summary>
         private void ShuffleCoins()  => _coins = _coins.OrderBy(a => Guid.NewGuid()).ToList();
     }
 }

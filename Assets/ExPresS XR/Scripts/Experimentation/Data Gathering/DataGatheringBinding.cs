@@ -52,6 +52,17 @@ namespace ExPresSXR.Experimentation.DataGathering
         [SerializeField]
         private int _memberIdx = -1;
 
+        // Constructors
+        public DataGatheringBinding() { }
+
+
+        public DataGatheringBinding(Component targetComponent, string memberName)
+        {
+            _targetObject = targetComponent.gameObject;
+            _targetComponent = targetComponent;
+            
+        }
+
         private string GetTargetMemberName()
         {
             if (_targetObject != null && _memberNameList != null

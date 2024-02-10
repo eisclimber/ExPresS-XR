@@ -16,7 +16,6 @@ namespace ExPresSXR.Minigames.CoinScale
         /// <summary>
         /// Reference to the left Bowl.
         /// </summary>
-        [SerializeField]
         [Tooltip("Reference to the left Bowl.")]
         private Bowl _leftBowl;
 
@@ -27,10 +26,19 @@ namespace ExPresSXR.Minigames.CoinScale
         [Tooltip("Reference to the right Bowl.")]
         private Bowl _rightBowl;
 
+        /// <summary>
+        /// Emitted when `CheckBowls()` is called, returning the current state of the scale.
+        /// </summary>
         public UnityEvent<ScaleState> OnScaleCheck;
 
+        /// <summary>
+        /// Checks and calculates the current state of the scale (which side is lower), emits the result via the Event `OnScaleCheck`.
+        /// </summary>
         public void CheckBowls() => OnScaleCheck.Invoke(ScaleState.CreateFromWeights(_leftBowl.GetWeight(), _rightBowl.GetWeight()));
 
+        /// <summary>
+        /// Resets the state of the scale, by resetting both bowls.
+        /// </summary>
         public void ResetScale()
         {
             _leftBowl.ResetBowl();

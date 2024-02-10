@@ -7,8 +7,14 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider))]
 public class PlayerDetector : MonoBehaviour
 {
-
+    /// <summary>
+    /// Event emitted when the player enters.
+    /// </summary>
     public UnityEvent OnPlayerEntered;
+
+    /// <summary>
+    /// Event emitted when the player exits.
+    /// </summary>
     public UnityEvent OnPlayerExited;
 
 

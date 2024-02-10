@@ -9,10 +9,18 @@ namespace ExPresSXR.Misc.Timing
 {
     public class Timer : MonoBehaviour
     {
+        /// <summary>
+        ///  Value of `remainingTime` when the timer is not active.
+        /// </summary>
         const float TIMER_INACTIVE_WAIT_TIME = -1.0f;
+        /// <summary>
+        /// Default wait time.
+        /// </summary>
         const float DEFAULT_WAIT_TIME = 1.0f;
 
-
+        /// <summary>
+        /// How long the timer takes to timeout. Must be greater than 0.0f.
+        /// </summary>
         [Tooltip("How long the timer takes to timeout. Must be greater than 0.0f.")]
         [SerializeField]
         private float _waitTime = DEFAULT_WAIT_TIME;
@@ -38,16 +46,27 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public bool running { get => remainingTime >= 0.0f && !timerPaused; }
 
-        [Tooltip("If true, will start the timer during OnAwake()..")]
+        /// <summary>
+        /// If true, will start the timer during OnAwake()...
+        /// </summary>
+        [Tooltip("If true, will start the timer during OnAwake()...")]
         public bool autoStart = false;
 
+        /// <summary>
+        /// If false, the timer will restart after timeout.
+        /// </summary>
         [Tooltip("If false, the timer will restart after timeout.")]
         public bool oneShot = true;
 
 
+        /// <summary>
+        /// Event that is triggered when the timer was started. A started timer automatically be unpaused.
+        /// </summary>
         [Tooltip("Event that is triggered when the timer was started. A started timer automatically be unpaused.")]
         public UnityEvent OnStarted;
-
+        /// <summary>
+        /// Event that is triggered when the timer times out.
+        /// </summary>
         [Tooltip("Event that is triggered when the timer times out.")]
         public UnityEvent OnTimeout;
 
@@ -133,7 +152,7 @@ namespace ExPresSXR.Misc.Timing
         public void PauseTimer() => SetTimerPaused(true);
 
         /// <summary>
-        /// Pauses the timer if possible.
+        /// Unpauses the timer if possible.
         /// </summary>
         [ContextMenu("Unpause Timer")]
         public void UnpauseTimer() => SetTimerPaused(false);

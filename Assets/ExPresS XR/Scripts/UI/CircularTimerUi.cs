@@ -7,14 +7,26 @@ using TMPro;
 
 namespace ExPresSXR.UI
 {
+    /// <summary>
+    /// Visualizes an ExPresSXR Timer as a filling circle.
+    /// </summary>
     public class CircularTimerUi : MonoBehaviour
     {
+        /// <summary>
+        /// Reference to the timer to visualize.
+        /// </summary>
         [SerializeField]
         private Timer _timer;
 
+        /// <summary>
+        /// Object that holds the settings for for visualization.
+        /// </summary>
         [SerializeField]
         private FillSettings _fillSettings;
 
+        /// <summary>
+        /// Object that holds the settings for the text.
+        /// </summary>
         [SerializeField]
         private TextSettings _textSettings;
 
@@ -55,9 +67,11 @@ namespace ExPresSXR.UI
 
 
         // Event Listeners
-
         private void HandleTimeout() => ResetVisualization();
 
+        /// <summary>
+        /// Resets the visualization.
+        /// </summary>
         public void ResetVisualization() => _fillSettings.ResetVisualization();
 
         // Helper classes

@@ -31,6 +31,22 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
+            if (targetScript.dataExportType == DataGatherer.ExportType.Http
+                || targetScript.dataExportType == DataGatherer.ExportType.Both)
+            {
+                // Either Only http or both
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
+            }
+            if (targetScript.dataExportType == DataGatherer.ExportType.Local
+                || targetScript.dataExportType == DataGatherer.ExportType.Both)
+            {
+                // Either Only local or both
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
+            }
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_newExportFilePerPlaythrough"), true);
+
+            EditorGUILayout.Space();
+
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_separatorType"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_escapeColumns"), true);
 
@@ -45,20 +61,6 @@ namespace ExPresSXR.Editor.Editors
                     + "with the printing of Vectors or float values. You can prevent this by enabling checking 'Escape Columns'."
                     + "Otherwise you will need to make sure your program will not produce such values.", MessageType.Warning);
             }
-
-            if (targetScript.dataExportType == DataGatherer.ExportType.Http
-                || targetScript.dataExportType == DataGatherer.ExportType.Both)
-            {
-                // Either Only http or both
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
-            }
-            if (targetScript.dataExportType == DataGatherer.ExportType.Local
-                || targetScript.dataExportType == DataGatherer.ExportType.Both)
-            {
-                // Either Only local or both
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
-            }
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_newExportFilePerPlaythrough"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();

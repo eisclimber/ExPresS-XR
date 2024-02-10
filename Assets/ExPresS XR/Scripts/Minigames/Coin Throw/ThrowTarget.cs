@@ -32,7 +32,13 @@ namespace ExPresSXR.Minigames.CoinThrow
             set => _detectHits = value;
         }
 
+        /// <summary>
+        /// Emitted when a hit from a Rigidbodys with a CoinReset-Component is detected.
+        /// </summary>
         public UnityEvent OnHitInfo;
+        /// <summary>
+        /// Same as `OnHitInfo` but passing `_score`.
+        /// </summary>
         public UnityEvent<int> OnHit;
 
         private void OnTriggerEnter(Collider other)

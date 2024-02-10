@@ -6,17 +6,27 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace ExPresSXR.Rig
 {
-    public class RigConfigurator
+    public static class RigConfigurator
     {
-        public static void ApplyEverything(ConfigData configData)
+        /// <summary>
+        /// Applies both the interaction options and the movement preset to the rig.
+        /// </summary>
+        /// <param name="configData">Data providing all necessary references and the required data how the rig should be configured.</param>
+        public static void ApplyConfigData(ConfigData configData)
         {
             ApplyMovementPreset(configData);
             ApplyInteractionsOptions(configData);
         }
 
         #region Interaction Options
+        /// <summary>
+        /// Applies only the interaction options to the rig.
+        /// </summary>
+        /// <param name="configData"></param>
         public static void ApplyInteractionsOptions(ConfigData configData)
         {
+            ExPresSXRRig rig = configData.rig;
+
             InteractionOptions interactionOptions = configData.interactionOptions;
 
             LocomotionSystem locomotionSystem = configData.locomotionSystem;
@@ -24,6 +34,11 @@ namespace ExPresSXR.Rig
             HandControllerManager rightHandController = configData.rightHandController;
 
             ClimbingGravityManager climbingGravityManager = configData.climbingGravityManager;
+
+            if (rig != null)
+            {
+                rig.interactionOptions = interactionOptions;
+            }
 
             ApplyHandInteractionOptions(leftHandController, interactionOptions);
             ApplyHandInteractionOptions(rightHandController, interactionOptions);
@@ -72,6 +87,10 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region MovementPreset
+        /// <summary>
+        /// Applies only the movement preset to the rig.
+        /// </summary>
+        /// <param name="configData">Data providing all necessary references and the required data how the rig should be configured.</param>
         public static void ApplyMovementPreset(ConfigData configData)
         {
             if (!ShouldApplyMovementPreset(configData.inputMethod, configData.movementPreset))
@@ -79,7 +98,15 @@ namespace ExPresSXR.Rig
                 return;
             }
 
+            ExPresSXRRig rig = configData.rig;
+            InputMethod inputMethod = configData.inputMethod;
             MovementPreset movementPreset = configData.movementPreset;
+
+            if (rig != null)
+            {
+                rig.inputMethod = inputMethod;
+                rig.movementPreset = movementPreset;
+            }
 
             ApplyPresetLeftHand(configData.leftHandController, movementPreset);
             ApplyPresetRightHand(configData.rightHandController, movementPreset);
@@ -149,7 +176,6 @@ namespace ExPresSXR.Rig
                 }
             }
         }
-        #endregion
 
         public static bool ShouldApplyMovementPreset(InputMethod inputMethod, MovementPreset movementPreset)
         {
@@ -168,6 +194,7 @@ namespace ExPresSXR.Rig
             }
             return true;
         }
+        #endregion
     }
 
     #region Enums & Structs
@@ -192,7 +219,7 @@ namespace ExPresSXR.Rig
     }
 
 
-    [System.Flags]
+    [Flags]
     public enum InteractionOptions
     {
         None = 0,
@@ -212,10 +239,13 @@ namespace ExPresSXR.Rig
 
 
     /// <summary>
-    /// Object containing all necessary references for configuration
+    /// Object containing all necessary references for configuration.
     /// </summary>
     public class ConfigData
     {
+        // Rig Optional
+        public ExPresSXRRig rig;
+
         // Config
         public InputMethod inputMethod;
         public MovementPreset movementPreset;
@@ -244,6 +274,8 @@ namespace ExPresSXR.Rig
                             LocomotionSystem locomotionSystem,
                             ClimbingGravityManager climbingGravityManager)
         {
+            rig = null;
+
             this.inputMethod = inputMethod;
             this.movementPreset = movementPreset;
             this.interactionOptions = interactionOptions;
@@ -255,6 +287,26 @@ namespace ExPresSXR.Rig
 
             this.locomotionSystem = locomotionSystem;
             this.climbingGravityManager = climbingGravityManager;
+        }
+
+        public ConfigData(ExPresSXRRig rig,
+                            InputMethod inputMethod,
+                            MovementPreset movementPreset,
+                            InteractionOptions interactionOptions)
+        {
+            this.rig = rig;
+
+            this.inputMethod = inputMethod;
+            this.movementPreset = movementPreset;
+            this.interactionOptions = interactionOptions;
+
+            leftHandController = rig.leftHandController;
+            rightHandController = rig.rightHandController;
+            eyeGazeController = rig.eyeGazeController;
+            headGazeController = rig.headGazeController;
+
+            locomotionSystem = rig.locomotionSystem;
+            climbingGravityManager = rig.climbingGravityManager;
         }
     }
     #endregion

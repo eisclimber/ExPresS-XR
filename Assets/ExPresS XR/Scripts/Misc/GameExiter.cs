@@ -19,7 +19,6 @@ namespace ExPresSXR.Misc
         public ExitType exitType
         {
             get => _exitType;
-            // private set => _exitType = value;
         }
 
         /// <summary>
@@ -28,7 +27,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         [SerializeField]
         [Tooltip("The scene index of your menu scene. It must be added via the Build Settings and should usually be 0.")]
-        private int _menuSceneIndex = 0; // Default value should be the menu scene
+        private int _menuSceneIdx = 0; // Default value should be the menu scene
 
         /// <summary>
         /// A reference to the rig. Will prevent interactions after exiting and required for fading out.
@@ -70,11 +69,11 @@ namespace ExPresSXR.Misc
             }
             else if (_exitType == ExitType.ToScene)
             {
-                RuntimeUtils.ChangeSceneWithFade(_rig, _menuSceneIndex, false, null);
+                RuntimeUtils.ChangeSceneWithFade(_rig, _menuSceneIdx, false, null);
             }
             else if (_exitType == ExitType.ToSceneNoFade)
             {
-                RuntimeUtils.SwitchSceneAsync(_menuSceneIndex, null);
+                RuntimeUtils.SwitchSceneAsync(_menuSceneIdx, null);
             }
             else
             {

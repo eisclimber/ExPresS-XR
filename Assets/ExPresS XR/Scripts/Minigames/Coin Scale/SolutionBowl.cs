@@ -14,25 +14,28 @@ namespace ExPresSXR.Minigames.CoinScale
 {
     public class SolutionBowl : MonoBehaviour
     {
-        public UnityEvent CorrectSolving;
-        public UnityEvent FalseSolving;
+        public UnityEvent OnCorrectSolving;
+        public UnityEvent OnFalseSolving;
 
         [SerializeField, Tooltip("Transform of the respawn position")]
         private Transform _respawnPosition;
 
         private CoinWeight _currentSelection;
 
+        /// <summary>
+        /// Checks the selected solution for correct and incorrect solving, emitting the result via  
+        /// </summary>
         public void CheckSolution()
         {
 
             // Correct is finding the fake coin
             if (_currentSelection != null && _currentSelection.isFake)
             {
-                CorrectSolving?.Invoke();
+                OnCorrectSolving?.Invoke();
             }
             else
             {
-                FalseSolving?.Invoke();
+                OnFalseSolving?.Invoke();
             }
 
         }
@@ -65,7 +68,9 @@ namespace ExPresSXR.Minigames.CoinScale
             }
         }
 
-
+        /// <summary>
+        /// Resets the solution by resetting the selected solution.
+        /// </summary>
         public void ResetSolutionBowl()
         {
             _currentSelection = null;

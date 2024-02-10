@@ -13,7 +13,7 @@ namespace ExPresSXR.Minigames.CoinThrow
     public class CoinReset : MonoBehaviour
     {
         /// <summary>
-        /// Position to reset the coin after hitting / missing. If null, uses its own Transform during awake.
+        /// Position and rotation to reset the coin after hitting/missing. If null, uses its own Transform during awake.
         /// </summary>
         [SerializeField]
         [Tooltip("Position to reset the coin after hitting / missing. If null, uses its own Transform during awake.")]

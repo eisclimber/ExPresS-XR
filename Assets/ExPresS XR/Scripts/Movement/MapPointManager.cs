@@ -3,34 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEditor;
+using ExPresSXR.Misc;
 
 namespace ExPresSXR.Movement
 {
     public class MapPointManager : MonoBehaviour
     {
-        private const string MAP_POINT_PATH = "Assets/ExPresS XR/Prefabs/Movement/Map Point.prefab";
+        private const string MAP_POINT_LOCATION = "Movement/Map Point";
         private const float POST_TELEPORT_WAIT_TIME = 0.1f;
 
+        /// <summary>
+        /// Map points to be managed.
+        /// </summary>
         [SerializeField]
         private List<MapPoint> _mapPoints;
 
+        /// <summary>
+        /// Map Point which is initially active.
+        /// </summary>
         [SerializeField]
         private MapPoint _initialMapPoint;
 
         [Space]
 
+        /// <summary>
+        /// InputActionReference to the action that enters TP-Mode with the left hand.
+        /// </summary>
         [SerializeField]
         private InputActionReference _leftTeleportModeActivate;
 
+        /// <summary>
+        /// InputActionReference to the action that enters TP-Mode with the right hand.
+        /// </summary>
         [SerializeField]
         private InputActionReference _rightTeleportModeActivate;
 
         [Space]
 
-
+        /// <summary>
+        /// InputActionReference to the action that cancels TP-Mode with the left hand.
+        /// </summary>
         [SerializeField]
         private InputActionReference _leftTeleportModeCancel;
 
+        /// <summary>
+        /// InputActionReference to the action that cancels TP-Mode with the right hand.
+        /// </summary>
         [SerializeField]
         private InputActionReference _rightTeleportModeCancel;
 
@@ -82,7 +100,7 @@ namespace ExPresSXR.Movement
 
 
         /// <summary>
-        /// Sets all active or inactive.
+        /// Sets all MapPoints active or inactive.
         /// </summary>
         /// <param name="mapPointActive">If the points should be active or inactive</param>
         public void SetMapPointsActive(bool mapPointActive)
@@ -206,12 +224,14 @@ namespace ExPresSXR.Movement
 
 
         /// <summary>
-        /// Creates the a new MapPoint, only available in the editor
+        /// Creates the a new MapPoint.
+        /// Attention!: Only available in the editor.
         /// </summary>
         public void CreateNewMapPointObject()
         {
 #if UNITY_EDITOR
-            Object prefab = AssetDatabase.LoadAssetAtPath(MAP_POINT_PATH, typeof(Object));
+            string prefabPath = RuntimeEditorUtils.MakeExPresSXRPrefabPath(MAP_POINT_LOCATION);
+            Object prefab = AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Object));
             GameObject mapPointGo = (GameObject)PrefabUtility.InstantiatePrefab(prefab, transform);
 
             if (mapPointGo != null && mapPointGo.TryGetComponent(out MapPoint mapPoint))
@@ -221,18 +241,18 @@ namespace ExPresSXR.Movement
                 if (_mapPoints.Count == 1)
                 {
                     _initialMapPoint = mapPoint;
-                    Debug.Log($"Created the first MapPoint as a child of '{ gameObject.name }' "
+                    Debug.Log($"Created the first MapPoint as a child of '{gameObject.name}' "
                             + $"and added it to it's managed MapPoints as well as initial mapPoint.", this);
                 }
                 else
                 {
-                    Debug.Log($"Created new MapPoint as a child of '{ gameObject.name }' "
+                    Debug.Log($"Created new MapPoint as a child of '{gameObject.name}' "
                             + $"and added it to it's managed MapPoints.", this);
                 }
             }
             else
             {
-                Debug.LogError($"Could not create a new MapPoint for '{ gameObject.name }'. "
+                Debug.LogError($"Could not create a new MapPoint for '{gameObject.name}'. "
                                 + "Make sure the default MapPoint was not deleted.", this);
             }
 #else

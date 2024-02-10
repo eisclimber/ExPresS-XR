@@ -8,6 +8,8 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 using TMPro;
 using ExPresSXR.Interaction.ButtonQuiz;
 using ExPresSXR.Editor.Utility;
+using ExPresSXR.Misc;
+using ExPresSXR.Experimentation.DataGathering;
 
 namespace ExPresSXR.Editor.SetupDialogs
 {
@@ -252,7 +254,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
             // Setup step 9
             _createDataGathererButton = _step9Container.Q<Button>("create-data-gatherer-button");
-            _createDataGathererButton.clickable.clicked += () => { MenuCreationUtils.CreateDataGatherer(null); };
+            _createDataGathererButton.clickable.clicked += CreateDataGatherer;
 
             // Bind remaining UI Elements
             base.BindUiElements();
@@ -846,7 +848,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
                 ObjectField[] buttonFields = { _button1Field, _button2Field, _button3Field, _button4Field };
 
-                string buttonPrefabPath = CreationUtils.MakeExPresSXRPrefabPath(CreationUtils.QUIZ_BUTTON_SQUARE_PREFAB_NAME);
+                string buttonPrefabPath = RuntimeEditorUtils.MakeExPresSXRPrefabPath(CreationUtils.QUIZ_BUTTON_SQUARE_PREFAB_NAME);
                 QuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<QuizButton>(buttonPrefabPath);
                 for (int i = 0; i < numButtons; i++)
                 {
@@ -862,7 +864,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                 // Add Multiple Choice Button if necessary
                 if (_quizConfig.quizMode == QuizMode.MultipleChoice)
                 {
-                    string multiChoiceButtonPrefabPath = CreationUtils.MakeExPresSXRPrefabPath(CreationUtils.MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
+                    string multiChoiceButtonPrefabPath = RuntimeEditorUtils.MakeExPresSXRPrefabPath(CreationUtils.MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
                     QuizButton multiChoiceButtonPrefab = AssetDatabase.LoadAssetAtPath<QuizButton>(multiChoiceButtonPrefabPath);
 
                     QuizButton button = Instantiate(multiChoiceButtonPrefab, new Vector3(xOffset + QUIZ_BUTTON_SPACING, 0, 0), Quaternion.identity);
@@ -1017,6 +1019,18 @@ namespace ExPresSXR.Editor.SetupDialogs
             {
                 quizField.value = _quizGo;
                 configField.value = _quizConfig;
+            }
+        }
+
+        private void CreateDataGatherer()
+        {
+            DataGatherer dataGatherer = MenuCreationUtils.CreateDataGatherer(null);
+            
+            if (_quizGo != null)
+            {
+                // DataGatheringBinding binding = new(_quizGo, "");
+                // dataGatherer.dataBindings = new DataGatheringBinding[] { binding };
+                _quizGo.OnAnswerGiven.AddListener(() => dataGatherer.ExportNewCSVLine());
             }
         }
 

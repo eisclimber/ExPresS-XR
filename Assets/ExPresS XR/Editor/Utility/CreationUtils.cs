@@ -2,14 +2,14 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using ExPresSXR.Rig;
+using ExPresSXR.Misc;
 
 
 namespace ExPresSXR.Editor.Utility
 {
     public class CreationUtils
     {
-        private const string EXPRESS_XR_PREFABS_PATH = "Assets/ExPresS XR/Prefabs/";
-        public const string EXPRESS_XR_PREFAB_FORMAT = EXPRESS_XR_PREFABS_PATH + "{0}.prefab";
         public const string TELEPORT_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Teleport";
         public const string JOYSTICK_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Joystick";
         public const string GRAB_MOTION_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Grab Motion";
@@ -22,7 +22,6 @@ namespace ExPresSXR.Editor.Utility
         public const string QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Quiz Button Square";
         public const string MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Multiple Choice Confirm Button Square";
         public const string AFTER_QUIZ_DIALOG_PATH_NAME = "Misc/After Quiz Dialog";
-
 
 
         /// <summary>
@@ -39,6 +38,34 @@ namespace ExPresSXR.Editor.Utility
         }
 
 
+        public static GameObject InstantiateAndConfigureExPresSXRRig(InputMethod inputMethod, MovementPreset movementPreset, 
+                                                                        InteractionOptions interactionOptions, string rigGoName = "ExPresS XR Rig")
+        {
+            // Use Teleport Rig Prefab as base go 
+            string fullRigPath = string.Format(RuntimeEditorUtils.EXPRESS_XR_PREFAB_FORMAT, TELEPORT_RIG_PREFAB_NAME);
+            GameObject rigAsset = AssetDatabase.LoadAssetAtPath<GameObject>(fullRigPath);
+            GameObject rigGo = UnityEngine.Object.Instantiate(rigAsset, null);
+            rigGo.name = rigGoName;
+
+            if (rigGo.TryGetComponent(out ExPresSXRRig rig))
+            {
+                ConfigData configData = new(rig, inputMethod, movementPreset, interactionOptions);
+                RigConfigurator.ApplyConfigData(configData);
+            }
+            else
+            {
+                Debug.LogError("Could not configure the instantiate ExPresS XR Rig, the component was not found. Canceling creation.");
+                UnityEngine.Object.Destroy(rig);
+            }
+            
+            // Utility
+            Undo.RegisterCreatedObjectUndo(rigGo, "Created new ExPresS XR Rig");
+            Selection.activeGameObject = rigGo;
+            GameObjectUtility.EnsureUniqueNameForSibling(rigGo);
+
+            return rigGo;
+        }
+
         /// <summary>
         /// Creates an <see cref="GameObject"> from a given prefab and adds it under the current selection
         /// </summary>
@@ -48,7 +75,7 @@ namespace ExPresSXR.Editor.Utility
         /// not found.</returns>
         public static GameObject InstantiateAndPlaceGameObject(string name, Transform parent = null)
         {
-            string path = MakeExPresSXRPrefabPath(name);
+            string path = RuntimeEditorUtils.MakeExPresSXRPrefabPath(name);
             UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
 
             if (prefab != null)
@@ -58,7 +85,7 @@ namespace ExPresSXR.Editor.Utility
                 if (parent == null)
                 {
                     Transform goTransform = go.transform;
-                    SceneView view = SceneView.lastActiveSceneView;
+                    // SceneView view = SceneView.lastActiveSceneView;
                     // if (view != null)
                     //     view.MoveToView(goTransform);
                     // else
@@ -86,30 +113,10 @@ namespace ExPresSXR.Editor.Utility
             return null;
         }
 
-        /// <summary>
-        /// Creates an path that *MAY* be a path to an ExPresSXR Prefab by using the EXPRESS_XR_PREFAB_FORMAT.
-        /// </summary>
-        /// <param name="name">The name (or subpath) to an prefab.</param>
-        /// <returns>Returns the formatted <see cref="string"/>.</returns>
-        public static string MakeExPresSXRPrefabPath(string name)
-        {
-            if (name.StartsWith(EXPRESS_XR_PREFABS_PATH))
-            {
-                Debug.LogWarning("Do not add the ExPresSXRPrefabPath to the name. We're accounting for that already.");
-                name = name[EXPRESS_XR_PREFABS_PATH.Length..];
-            }
-            if (name.EndsWith(".prefab"))
-            {
-                Debug.LogWarning("Do not add the suffix '.prefab' to the name. We're accounting for that already.");
-                name = name[..^".prefab".Length];
-            }
-            return string.Format(EXPRESS_XR_PREFAB_FORMAT, name);
-        }
-
 
         public static string savedXRRigPath
         {
-            get => MakeExPresSXRPrefabPath(SAVED_RIG_PREFAB_NAME);
+            get => RuntimeEditorUtils.MakeExPresSXRPrefabPath(SAVED_RIG_PREFAB_NAME);
         }
 
         /// <summary>

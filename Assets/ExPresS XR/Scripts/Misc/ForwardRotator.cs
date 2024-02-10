@@ -30,7 +30,7 @@ namespace ExPresSXR.Misc
         private float _lerpSpeed = 1.0f;
 
         /// <summary>
-        /// The angle threshold for following. Slight movements will not trigger movement to keep it more stable
+        /// The angle threshold for following. Slight movements will not trigger movement to keep it more stable.
         /// </summary>
         [Tooltip("The angle threshold for following. Slight movements will not trigger movement to keep it more stable.")]
         [SerializeField]

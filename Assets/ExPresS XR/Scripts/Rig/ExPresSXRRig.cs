@@ -146,7 +146,7 @@ namespace ExPresSXR.Rig
             {
                 _leftHandController = value;
 
-                RigConfigurator.ApplyEverything(currentConfigData);
+                RigConfigurator.ApplyConfigData(currentConfigData);
             }
         }
 
@@ -160,7 +160,7 @@ namespace ExPresSXR.Rig
             {
                 _rightHandController = value;
 
-                RigConfigurator.ApplyEverything(currentConfigData);
+                RigConfigurator.ApplyConfigData(currentConfigData);
             }
         }
 
@@ -174,7 +174,7 @@ namespace ExPresSXR.Rig
             {
                 _eyeGazeController = value;
 
-                RigConfigurator.ApplyEverything(currentConfigData);
+                RigConfigurator.ApplyConfigData(currentConfigData);
             }
         }
 
@@ -188,7 +188,7 @@ namespace ExPresSXR.Rig
             {
                 _headGazeController = value;
 
-                RigConfigurator.ApplyEverything(currentConfigData);
+                RigConfigurator.ApplyConfigData(currentConfigData);
             }
         }
         #endregion
@@ -504,7 +504,7 @@ namespace ExPresSXR.Rig
         #region Editor Functions
         private void OnValidate()
         {
-            RigConfigurator.ApplyEverything(currentConfigData);
+            RigConfigurator.ApplyConfigData(currentConfigData);
 
             // Apply Head Collisions
             playerHeadCollider = _playerHeadCollider;

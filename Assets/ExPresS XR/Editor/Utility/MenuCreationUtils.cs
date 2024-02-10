@@ -467,7 +467,7 @@ namespace ExPresSXR.Editor.Utility
         [MenuItem("GameObject/ExPresS XR/Movement/Map Point Teleport/Teleport Option")]
         static void CreateMapMapPointTeleportOption(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Movement/Map Point Teleport Option");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Movement/Teleport Option");
         }
 
         [MenuItem("GameObject/ExPresS XR/Movement/Map Point Teleport/Manager")]
@@ -498,12 +498,13 @@ namespace ExPresSXR.Editor.Utility
 
         // Data
         [MenuItem("GameObject/ExPresS XR/Data Gatherer")]
-        public static void CreateDataGatherer(MenuCommand menuCommand)
+        public static DataGatherer CreateDataGatherer(MenuCommand _)
         {
             GameObject go = new("Data Gatherer");
-            go.AddComponent<DataGatherer>();
+            DataGatherer dataGatherer = go.AddComponent<DataGatherer>();
             GameObjectUtility.EnsureUniqueNameForSibling(go);
             Undo.RegisterCreatedObjectUndo(go, "Create Data Gatherer Game Object");
+            return dataGatherer;
         }
 
 

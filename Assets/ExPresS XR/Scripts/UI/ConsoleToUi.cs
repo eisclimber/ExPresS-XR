@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.Text.RegularExpressions;
 
 
 /*
@@ -19,14 +16,24 @@ namespace ExPresSXR.UI
 {
     public class ConsoleToGUI : MonoBehaviour
     {
+        /// <summary>
+        /// Number of max lines after which the oldest lines get removed. No restriction if less or equal to 0.
+        /// </summary>
         [SerializeField]
         [Tooltip("Number of max lines after which the oldest lines get removed. No restriction if less or equal to 0.")]
         private int _maxLines = -1;
 
+        /// <summary>
+        /// Which types of logs should be displayed.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Which types of logs should be displayed.")]
         private LogTypeFilter _logTypeFilter = LogTypeFilter.Error | LogTypeFilter.Assert | LogTypeFilter.Warning 
-                                                | LogTypeFilter.Log | LogTypeFilter.Exception; // default: Everything
+                                                | LogTypeFilter.Log | LogTypeFilter.Exception; // Default: Everything
         
+        /// <summary>
+        /// Reference to the TMP_Text that should display the console log.
+        /// </summary>
         [SerializeField]
         private TMP_Text _textDisplay;
 
@@ -52,6 +59,13 @@ namespace ExPresSXR.UI
             Application.logMessageReceived -= AppendToLog;
         }
 
+        /// <summary>
+        /// Adds an entry to the logs displayed. 
+        /// Will be automatically be called when something is logged to the console.
+        /// </summary>
+        /// <param name="logString">String to be logged.</param>
+        /// <param name="stackTrace">Stack trace of that log entry.</param>
+        /// <param name="type">Type/Severity of the log.</param>
         public void AppendToLog(string logString, string stackTrace, LogType type)
         {
             if (!IsLogTypeMatch(type))
@@ -75,12 +89,17 @@ namespace ExPresSXR.UI
             }
         }
 
-
+        /// <summary>
+        /// Helper functions to log a short string via the Components context menu
+        /// </summary>
         [ContextMenu("Append Test Entry (Short)")]
-        public void AppendTestEntryShort() 
+        public void AppendTestEntryShort()
                         => AppendToLog("Lorem ipsum dolor sit amet, consetetur",
                                         "Stack Trace Lorem Ipsum", GetRandomLogType());
 
+        /// <summary>
+        /// Helper functions to log a long string via the Components context menu
+        /// </summary>
         [ContextMenu("Append Test Entry (Long)")]
         public void AppendTestEntryLong() 
                         => AppendToLog("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy "
@@ -102,7 +121,7 @@ namespace ExPresSXR.UI
         {
             return type switch
             {
-                LogType.Error or LogType.Exception => "red",
+                LogType.Error or LogType.Exception or LogType.Assert => "red",
                 LogType.Warning => "yellow",
                 _ => "white",
             };
@@ -111,30 +130,15 @@ namespace ExPresSXR.UI
         private LogType GetRandomLogType() => (LogType) UnityEngine.Random.Range(0, Enum.GetValues(typeof(LogType)).Length);
 
 
-        // Same as UnityEngine.LogType
+        // Reflects UnityEngine.LogType but as flags.
         [Flags]
         public enum LogTypeFilter
         {
-            //
-            // Summary:
-            //     LogType used for Errors.
-            Error,
-            //
-            // Summary:
-            //     LogType used for Asserts. (These could also indicate an error inside Unity itself.)
-            Assert,
-            //
-            // Summary:
-            //     LogType used for Warnings.
-            Warning,
-            //
-            // Summary:
-            //     LogType used for regular log messages.
-            Log,
-            //
-            // Summary:
-            //     LogType used for Exceptions.
-            Exception
+            Error, // LogType used for Errors.
+            Assert, // LogType used for Asserts (These could also indicate an Unity internal error).
+            Warning, // LogType used for Warnings.
+            Log, // LogType used for regular log messages.
+            Exception// LogType used for Exceptions.
         }
     }
 }
