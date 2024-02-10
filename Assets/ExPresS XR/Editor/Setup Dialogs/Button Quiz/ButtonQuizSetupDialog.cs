@@ -10,6 +10,7 @@ using ExPresSXR.Interaction.ButtonQuiz;
 using ExPresSXR.Editor.Utility;
 using ExPresSXR.Misc;
 using ExPresSXR.Experimentation.DataGathering;
+using UnityEditor.Events;
 
 namespace ExPresSXR.Editor.SetupDialogs
 {
@@ -1025,12 +1026,17 @@ namespace ExPresSXR.Editor.SetupDialogs
         private void CreateDataGatherer()
         {
             DataGatherer dataGatherer = MenuCreationUtils.CreateDataGatherer(null);
-            
             if (_quizGo != null)
             {
-                // DataGatheringBinding binding = new(_quizGo, "");
-                // dataGatherer.dataBindings = new DataGatheringBinding[] { binding };
-                _quizGo.OnAnswerGiven.AddListener(() => dataGatherer.ExportNewCSVLine());
+                DataGatheringBinding binding = new(_quizGo, "ButtonQuiz/string GetFullQuizCsvExportValues(char? sep)");
+                // Set dataBindings directly as it has been newly created as empty array
+                dataGatherer.dataBindings = new[] { binding };
+                #if UNITY_EDITOR
+                UnityAction exportAction = new(dataGatherer.ExportNewCSVLine);
+                UnityEventTools.AddPersistentListener(_quizGo.OnAnswerGiven, exportAction);
+                #else
+                _quizGo.OnAnswerGiven.AddListener(dataGatherer.ExportNewCSVLine());
+                #endif
             }
         }
 

@@ -16,14 +16,14 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// Returns the name without the number and returns the component number to the out parameter.
         /// </summary>
         /// <param name="compFullName">Component name to extract the component number from.</param>
-        /// <param name="compNumber">Value that will be filled with hte component number or -1 if not found.</param>
+        /// <param name="compNumber">Value that will be filled with hte component number or 0 if not found.</param>
         /// <returns>Component name without the component number.</returns>
         public static string ExtractComponentNumber(string compFullName, out int compNumber)
         {
             // Matches any number in brackets and a space in front at the end of the name
             Match match = Regex.Match(compFullName, @" \(\d+\)$");
-            compNumber = -1;
-            
+            compNumber = 0;
+
             if (match.Success)
             {
                 // Remove padding literals from number value
@@ -34,7 +34,7 @@ namespace ExPresSXR.Experimentation.DataGathering
                 return compFullName[..match.Index];
             }
             // FullName does not contain a number -> must be the first or a unique component
-            return compFullName; 
+            return compFullName;
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <param name="type">Type to be checked.</param>
         /// <returns>If the type is exportable.</returns>
         public static bool IsTypeExportable(Type type)
-            => type.IsPrimitive || type == typeof(string) || type == typeof(Vector2) 
+            => type.IsPrimitive || type == typeof(string) || type == typeof(Vector2)
                                 || type == typeof(Vector3) || type == typeof(Quaternion);
 
         /// <summary>
@@ -208,6 +208,61 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
             return args;
         }
-        #endregion 
+        #endregion
+
+        #region Member Names
+        /// <summary>
+        /// Generates a pretty name for a member, adding the members (return)type.
+        /// If the member is a method, brackets are added including the notion for the optional separator char.
+        /// </summary>
+        /// <param name="info">MemberInfo for which the name should be created.</param>
+        /// <returns>Ad pretty member name.</returns>
+        public static string GetPrettifiedMemberName(MemberInfo info)
+        {
+            Type infoType = GetMemberValueType(info);
+            string prettyName = info.Name;
+
+            if (primitiveTypeKeywords.ContainsKey(infoType))
+            {
+                prettyName = $"{primitiveTypeKeywords[infoType]} {info.Name}";
+            }
+
+            if (info.MemberType == MemberTypes.Method)
+            {
+                string optString = HasOptionalSeparatorType((MethodInfo)info) ? "?" : "";
+                prettyName += HasSeparatorType((MethodInfo)info)
+                                ? $"(char{optString} sep)"
+                                : "()";
+            }
+
+            return prettyName;
+        }
+
+        /// <summary>
+        /// Mapping of types to their name of supported types for exporting with the DataGatherer.
+        /// The supported types are: bool, byte, char, decimal, double, float, int, long, sbyte, short, 
+        ///     string, uint, ulong, ushort, Vector2, Vector3 and Quaternion.
+        /// </summary>
+        public static readonly Dictionary<Type, string> primitiveTypeKeywords = new()
+        {
+            { typeof(bool), "bool" },
+            { typeof(byte), "byte" },
+            { typeof(char), "char" },
+            { typeof(decimal), "decimal" },
+            { typeof(double), "double" },
+            { typeof(float), "float" },
+            { typeof(int), "int" },
+            { typeof(long), "long" },
+            { typeof(sbyte), "sbyte" },
+            { typeof(short), "short" },
+            { typeof(string), "string" },
+            { typeof(uint), "uint" },
+            { typeof(ulong), "ulong" },
+            { typeof(ushort), "ushort" },
+            { typeof(Vector2), "Vector2" },
+            { typeof(Vector3), "Vector3" },
+            { typeof(Quaternion), "Quaternion" }
+        };
+        #endregion
     }
 }

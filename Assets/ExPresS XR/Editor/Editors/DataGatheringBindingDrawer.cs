@@ -43,9 +43,9 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUI.ObjectField(positionRect, property.FindPropertyRelative("_targetObject"));
                 if (EditorGUI.EndChangeCheck())
                 {
-                    // Update members and reset _memberIdx if _targetObject changed
-                    UpdateMembers(property, property.FindPropertyRelative("_targetObject").objectReferenceValue as GameObject);
+                    // New targetObject = reset memberIndex
                     property.FindPropertyRelative("_memberIdx").intValue = -1;
+                    UpdateMemberList(property);
                 }
 
                 positionRect = new Rect(positionRect.x,
@@ -92,135 +92,41 @@ namespace ExPresSXR.Editor.Editors
             return new string[] { NO_VALUE_TEXT };
         }
 
+        private void UpdateMemberList(SerializedProperty property)
+        {
+            property.serializedObject.ApplyModifiedProperties();
+            int ownIndex = ParseOwnArrayIndex(property.propertyPath);
+            DataGatherer dataGatherer = (DataGatherer)property.serializedObject.targetObject;
+            dataGatherer.dataBindings[ownIndex].UpdateMemberList();
+        }
+
 
         private bool IsObjectPropertyNull(SerializedProperty property) => property == null || property.objectReferenceValue == null;
-        
 
-        private void UpdateMembers(SerializedProperty property, GameObject targetObject)
+
+        /// <summary>
+        /// Extract the index of the currently displayed DataGatheringBinding from the propertyPath.
+        /// The propertyPath should look something like this: _dataBindings.Array.data[1].
+        /// Returns -1 if not possible.
+        /// </summary>
+        /// <param name="path">The propertyPath to be parse.</param>
+        /// <returns>The index of the property or -1 if not possible.</returns>
+        private int ParseOwnArrayIndex(string path)
         {
-            SerializedProperty availableMemberNames = property.FindPropertyRelative("_memberNameList");
-            SerializedProperty prettyMemberNames = property.FindPropertyRelative("_prettyMemberNameList");
+            int startIndex = path.IndexOf("[") + 1;
+            int endIndex = path.IndexOf("]");
 
-            availableMemberNames.ClearArray();
-            prettyMemberNames.ClearArray();
-
-            int i = 0;
-
-            if (targetObject != null)
+            if (startIndex != -1 && endIndex != -1)
             {
-                // Methods from the GameObject itself
-                foreach (MemberInfo info in targetObject.GetType().GetMembers())
+                string indexStr = path.Substring(startIndex, endIndex - startIndex);
+                int index;
+                if (int.TryParse(indexStr, out index))
                 {
-                    if (DataGatheringHelpers.IsExportableMemberInfo(info))
-                    {
-                        availableMemberNames.InsertArrayElementAtIndex(i);
-                        availableMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                        string.Format("{0}/{1}", "Game Object", info.Name);
-
-                        prettyMemberNames.InsertArrayElementAtIndex(i);
-                        prettyMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    string.Format("{0}/{1}", "Game Object", GetPrettifiedMemberName(info));
-
-                        i++;
-                    }
-                }
-
-                Component[] components = targetObject.GetComponents<Component>();
-                Dictionary<string, int> compCounts = new();
-                Dictionary<string, int> compFullNameCounts = new();
-
-                foreach (Component component in components)
-                {
-                    // Found a duplicates of the simple/short names
-                    if (compCounts.TryGetValue(component.GetType().Name, out int duplicatesCount))
-                    {
-                        duplicatesCount++;
-                    }
-                    compCounts[component.GetType().Name] = duplicatesCount;
-                }
-
-                // Methods from all the  other components
-                foreach (Component component in components)
-                {
-                    Type componentType = component.GetType();
-                    int duplicatesCount = 0;
-                    string compName = componentType.Name;
-                    string compFullName = componentType.FullName;
-                    if (compCounts[componentType.Name] > 0)
-                    {
-                        // If "simple" names have duplicates try using the full names or index
-                        if (compFullNameCounts.TryGetValue(componentType.FullName, out duplicatesCount))
-                        {
-                            compName = $"{componentType.FullName} ({duplicatesCount})";
-                            compFullName = compName;
-                        }
-                        else
-                        {
-                            compName = componentType.FullName;
-                        }
-                    }
-
-                    foreach (MemberInfo info in component.GetType().GetMembers())
-                    {
-                        if (DataGatheringHelpers.IsExportableMemberInfo(info))
-                        {
-                            availableMemberNames.InsertArrayElementAtIndex(i);
-                            availableMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    $"{compFullName}/{info.Name}";
-
-                            prettyMemberNames.InsertArrayElementAtIndex(i);
-                            prettyMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    $"{compName}/{GetPrettifiedMemberName(info)}";
-
-                            i++;
-                        }
-                    }
-
-                    compFullNameCounts[componentType.FullName] = duplicatesCount + 1;
+                    return index;
                 }
             }
+            // Error or not an array element
+            return -1;
         }
-
-
-        private string GetPrettifiedMemberName(MemberInfo info)
-        {
-            Type infoType = DataGatheringHelpers.GetMemberValueType(info);
-            string prettyName = info.Name;
-
-            if (primitiveTypeKeywords.ContainsKey(infoType))
-            {
-                prettyName = $"{primitiveTypeKeywords[infoType]} {info.Name}";
-            }
-            if (info.MemberType == MemberTypes.Method)
-            {
-                string optString = DataGatheringHelpers.HasOptionalSeparatorType((MethodInfo)info) ? "?" : "";
-                prettyName += DataGatheringHelpers.HasSeparatorType((MethodInfo)info)
-                                ? $"(char{ optString } sep)" 
-                                : "()";
-            }
-
-            return prettyName;
-        }
-
-        static readonly Dictionary<Type, string> primitiveTypeKeywords = new()
-        {
-            { typeof(bool), "bool" },
-            { typeof(byte), "byte" },
-            { typeof(char), "char" },
-            { typeof(decimal), "decimal" },
-            { typeof(double), "double" },
-            { typeof(float), "float" },
-            { typeof(int), "int" },
-            { typeof(long), "long" },
-            { typeof(sbyte), "sbyte" },
-            { typeof(short), "short" },
-            { typeof(string), "string" },
-            { typeof(uint), "uint" },
-            { typeof(ulong), "ulong" },
-            { typeof(ushort), "ushort" },
-            { typeof(Vector2), "Vector2" },
-            { typeof(Vector3), "Vector3" },
-            { typeof(Quaternion), "Quaternion" }
-        };
     }
 }

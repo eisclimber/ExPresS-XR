@@ -8,6 +8,8 @@ using ExPresSXR.UI;
 using ExPresSXR.Rig;
 using UnityEditor;
 using UnityEngine.XR;
+using System.Reflection;
+using UnityEngine.Events;
 
 namespace ExPresSXR.Misc
 {

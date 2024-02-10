@@ -8,8 +8,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Networking;
-using ExPresSXR.Misc;
-using System.ComponentModel.Design;
 
 
 namespace ExPresSXR.Experimentation.DataGathering
@@ -214,7 +212,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
-        private InputActionReference[] _inputActionDataBindings;
+        private InputActionReference[] _inputActionDataBindings = new InputActionReference[0];
         public InputActionReference[] inputActionDataBindings
         {
             get => _inputActionDataBindings;
