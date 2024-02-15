@@ -13,7 +13,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         public const char COMMA_COLUMN_SEPARATOR = ',';
 
         /// <summary>
-        /// The comma character.
+        /// The semicolon character.
         /// </summary>
         public const char SEMICOLON_COLUMN_SEPARATOR = ';';
 
@@ -25,7 +25,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         /// <summary>
         /// The character that is used to separate values in an array.
-        /// The default is not ',' as it interferes with string representations of vectors and floats.
+        /// Be careful as this might cause issues of csv files that use ',' as column separator.
         /// </summary>
         public const char DEFAULT_ARRAY_SEPARATOR = ',';
 
@@ -70,8 +70,8 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         /// <summary>
-        /// Converts any arbitrary value to a safe CSV column entry with the provided separator and escape char.
-        /// This is done by 
+        /// Converts any arbitrary value to a safe CSV column entry with the provided separator.
+        /// This is done by using the DEFAULT_ESCAPE_CHAR to surround the value.
         /// </summary>
         /// <param name="values">Values to be converted to a safe CSV column entry. </param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
@@ -97,7 +97,8 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         /// <summary>
-        /// Returns true if the given string is properly CSV-escaped (starts and ends with a '"').
+        /// Returns true if the given string contains characters that interfere with the csv format. 
+        /// These are: The separator character and the escape character itself.
         /// </summary>
         /// <param name="value">String to be checked</param>
         /// <returns>If the string is properly escaped.</returns>

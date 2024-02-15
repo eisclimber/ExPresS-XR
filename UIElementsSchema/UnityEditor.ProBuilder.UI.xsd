@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns:AddressablesGUI="UnityEditor.AddressableAssets.GUIElements" xmlns="UnityEditor.Overlays" elementFormDefault="qualified" targetNamespace="UnityEditor.UIElements.Debugger" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns:AddressablesGUI="UnityEditor.AddressableAssets.GUIElements" xmlns="UnityEditor.Overlays" elementFormDefault="qualified" targetNamespace="UnityEditor.ProBuilder.UI" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="UnityEngine.UIElements.xsd" namespace="UnityEngine.UIElements" />
-  <xs:complexType name="EventTypeSearchFieldType">
+  <xs:complexType name="ToolbarMenuItemType">
     <xs:complexContent mixed="false">
       <xs:restriction base="engine:VisualElementType">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -21,5 +21,5 @@
       </xs:restriction>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="EventTypeSearchField" substitutionGroup="engine:VisualElement" xmlns:q1="UnityEditor.UIElements.Debugger" type="q1:EventTypeSearchFieldType" />
+  <xs:element name="ToolbarMenuItem" substitutionGroup="engine:VisualElement" xmlns:q1="UnityEditor.ProBuilder.UI" type="q1:ToolbarMenuItemType" />
 </xs:schema>

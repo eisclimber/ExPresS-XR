@@ -7,31 +7,69 @@ using ExPresSXR.Experimentation.DataGathering;
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
     [System.Serializable]
+    // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizQuestion, Assembly-CSharp
     public class ButtonQuizQuestion
     {
+        /// <summary>
+        /// Number of csv-columns of values returned the export functions.
+        /// </summary>
         public const int NUM_CSV_EXPORT_COLUMNS = 19;
 
-        public static string questionCsvHeader { get => GetQuestionCsvHeader(); }
-
-
-        // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizQuestion, Assembly-CSharp
+        /// <summary>
+        /// The index of the question.
+        /// It should be the same as it's index in the `QuizConfig.question` it is contained in.
+        /// Will be automatically set when editing via the SetupDialog.
+        /// </summary>
         public int itemIdx;
+        /// <summary>
+        /// The video clip shown as question. Has higher priority than the `videoUrl`.
+        /// </summary>
         public VideoClip questionVideo;
+        /// <summary>
+        /// The video url (link to the 'StreamingAsset/'-folder) shown as question.
+        /// Will be overwritten by `questionVideo`.
+        /// </summary>
         public string questionVideoUrl;
+        /// <summary>
+        /// The GameObject shown as question.
+        /// </summary>
         public GameObject questionObject;
+        /// <summary>
+        /// The text shown as question.
+        /// </summary>
         public string questionText;
 
+        /// <summary>
+        /// An array of size 4 holding the GameObjects shown as answer option on a QuizButton.
+        /// </summary>
         public GameObject[] answerObjects;
+        /// <summary>
+        /// An array of size 4 holding the strings shown as answer option on a QuizButton.
+        /// </summary>
         public string[] answerTexts;
 
+        /// <summary>
+        /// An array of 4 booleans where true marks ans answer and their associated text and GameObject as correct.
+        /// </summary>
         public bool[] correctAnswers;
 
-
+        /// <summary>
+        /// The video shown as feedback.
+        /// </summary>
         public VideoClip feedbackVideo;
+        /// <summary>
+        /// The GameObject shown as feedback. Has higher priority than the `videoUrl`.
+        /// </summary>
         public string feedbackVideoUrl;
+        /// <summary>
+        /// The video url (link to the 'StreamingAsset/'-folder) shown as feedback. 
+        /// Will be overwritten by `feedbackVideo`.
+        /// </summary>
         public GameObject feedbackObject;
+        /// <summary>
+        /// The text shown as feedback.
+        /// </summary>
         public string feedbackText;
-
 
         public ButtonQuizQuestion(int itemIdx, VideoClip questionVideo, string questionVideoUrl, GameObject questionObject,
                             string questionText, GameObject[] answerObjects, string[] answerTexts, bool[] correctAnswers,
@@ -55,6 +93,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             this.feedbackText = feedbackText;
         }
 
+
+        /// <summary>
+        /// Generates a feedback text as specified by the config.
+        /// </summary>
+        /// <param name="config">Config to determine how the feedback is generated.</param>
+        /// <returns>The feedback string for the config.</returns>
         public string GetFeedbackText(ButtonQuizConfig config)
         {
             // No Feedback
@@ -113,6 +157,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return "";
         }
 
+
+        /// <summary>
+        /// Generates an array feedback GameObject as specified by the config.
+        /// </summary>
+        /// <param name="config">Config to determine how the feedback is generated.</param>
+        /// <returns>The feedback objects-array for the config.</returns>
         public GameObject[] GetFeedbackGameObjects(ButtonQuizConfig config)
         {
             // No Feedback
@@ -177,20 +227,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return new GameObject[0];
         }
 
-        private int GetNumValidAnswers()
-        {
-            int numAnswers = 0;
-            for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
-            {
-                if (i < answerObjects.Length && answerObjects[i] != null
-                    || i < answerTexts.Length && !string.IsNullOrEmpty(answerTexts[i]))
-                {
-                    numAnswers++;
-                }
-            }
-            return numAnswers;
-        }
-
+        /// <summary>
+        /// Returns a feedback video clip as specified by the config (if exists).
+        /// </summary>
+        /// <param name="config">Config to determine how the feedback is generated.</param>
+        /// <returns>The feedback VideoClip for the config.</returns>
         public VideoClip GetFeedbackVideo(ButtonQuizConfig config)
         {
             if (config.feedbackType == FeedbackType.Video || config.feedbackType == FeedbackType.DifferingTypes)
@@ -201,7 +242,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return null;
         }
 
-
+        /// <summary>
+        /// Returns a feedback video url as specified by the config (if exists).
+        /// </summary>
+        /// <param name="config">Config to determine how the feedback is generated.</param>
+        /// <returns>The feedback url string for the config.</returns>
         public string GetFeedbackVideoUrl(ButtonQuizConfig config)
         {
             if (config.feedbackType == FeedbackType.Video || config.feedbackType == FeedbackType.DifferingTypes)
@@ -212,15 +257,25 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             return "";
         }
 
-        // Export Values
-        public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(19, sep);
-
-        public string GetQuestionCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
-            => CsvUtility.JoinAsCsv(
+        /// <summary>
+        /// Returns the csv header of the question as csv-string.
+        /// </summary>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
+        /// <returns>A multi-line csv string of the export data of all questions.</returns>
+        [MultiColumnValue]
+        [HeaderReplacement("questionIdx", "questionVideo", "questionObject", "questionText", "answerObject0", "answerObject1",
+                    "answerObject2", "answerObject3", "answerText0", "answerText1", "answerText2", "answerText3",
+                    "correctAnswers0", "correctAnswers1", "correctAnswers2", "correctAnswers3", "feedbackVideo",
+                    "feedbackObject", "feedbackText")]
+        public string GetQuestionCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
                 GetQuestionCsvExportValuesList(),
                 sep
             );
 
+        /// <summary>
+        /// Returns the question data of this config as list of objects.
+        /// </summary>
+        /// <returns>A list of objects of the quiz config.</returns>
         public List<object> GetQuestionCsvExportValuesList()
             => new()
                 {
@@ -245,12 +300,30 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                         feedbackText
                 };
 
+
+        /// <summary>
+        /// Returns an empty CSV string matching the column count of NUM_CSV_EXPORT_COLUMNS.
+        /// </summary>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
+        /// <returns>A string containing NUM_CSV_EXPORT_COLUMNS empty csv-columns.</returns>
+        public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
+            => CsvUtility.EmptyCSVColumns(NUM_CSV_EXPORT_COLUMNS, sep);
+
+        /// <summary>
+        /// Returns the csv header of the question.
+        /// </summary>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
+        /// <returns>The configs csv header string.</returns>
         public static string GetQuestionCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
             => CsvUtility.JoinAsCsv(
             GetQuestionCsvHeaderList(),
             sep
         );
 
+        /// <summary>
+        /// Returns the csv header of the question as a list of objects.
+        /// </summary>
+        /// <returns>List of objects containing the header as strings.</returns>
         public static List<object> GetQuestionCsvHeaderList()
             => new()
                 {
@@ -274,5 +347,19 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                     "feedbackObject",
                     "feedbackText"
                 };
+
+        private int GetNumValidAnswers()
+        {
+            int numAnswers = 0;
+            for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
+            {
+                if (i < answerObjects.Length && answerObjects[i] != null
+                    || i < answerTexts.Length && !string.IsNullOrEmpty(answerTexts[i]))
+                {
+                    numAnswers++;
+                }
+            }
+            return numAnswers;
+        }
     }
 }

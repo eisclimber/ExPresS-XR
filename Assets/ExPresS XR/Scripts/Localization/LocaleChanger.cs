@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization.Settings;
-using TMPro;
 using UnityEngine.Localization;
 using ExPresSXR.Misc;
 using System.Text.RegularExpressions;

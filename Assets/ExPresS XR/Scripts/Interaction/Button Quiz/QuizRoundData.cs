@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using ExPresSXR.Interaction.ButtonQuiz;
 using UnityEngine;
 using UnityEngine.Video;
-using System.Linq;
-using System.Windows.Markup;
 
 
 namespace ExPresSXR.Experimentation.DataGathering

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns:AddressablesGUI="UnityEditor.AddressableAssets.GUIElements" xmlns="UnityEditor.Overlays" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns:AddressablesGUI="UnityEditor.AddressableAssets.GUIElements" xmlns="UnityEditor.Overlays" elementFormDefault="qualified" targetNamespace="UnityEditor.Overlays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="UnityEngine.UIElements.xsd" namespace="UnityEngine.UIElements" />
-  <xs:complexType name="TabbedViewType">
+  <xs:complexType name="ToolbarOverlayContainerType">
     <xs:complexContent mixed="false">
       <xs:restriction base="engine:VisualElementType">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -17,12 +17,14 @@
         <xs:attribute default="" name="class" type="xs:string" use="optional" />
         <xs:attribute default="" name="content-container" type="xs:string" use="optional" />
         <xs:attribute default="" name="style" type="xs:string" use="optional" />
+        <xs:attribute default="false" name="horizontal" type="xs:boolean" use="optional" />
+        <xs:attribute default="" name="supported-overlay-layout" type="xs:string" use="optional" />
         <xs:anyAttribute processContents="lax" />
       </xs:restriction>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="TabbedView" substitutionGroup="engine:VisualElement" type="TabbedViewType" />
-  <xs:complexType name="TabButtonType">
+  <xs:element name="ToolbarOverlayContainer" substitutionGroup="engine:VisualElement" type="ToolbarOverlayContainerType" />
+  <xs:complexType name="OverlayContainerType">
     <xs:complexContent mixed="false">
       <xs:restriction base="engine:VisualElementType">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -38,11 +40,11 @@
         <xs:attribute default="" name="class" type="xs:string" use="optional" />
         <xs:attribute default="" name="content-container" type="xs:string" use="optional" />
         <xs:attribute default="" name="style" type="xs:string" use="optional" />
-        <xs:attribute default="" name="text" type="xs:string" use="optional" />
-        <xs:attribute default="" name="target" type="xs:string" use="optional" />
+        <xs:attribute default="false" name="horizontal" type="xs:boolean" use="optional" />
+        <xs:attribute default="" name="supported-overlay-layout" type="xs:string" use="optional" />
         <xs:anyAttribute processContents="lax" />
       </xs:restriction>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="TabButton" substitutionGroup="engine:VisualElement" type="TabButtonType" />
+  <xs:element name="OverlayContainer" substitutionGroup="engine:VisualElement" type="OverlayContainerType" />
 </xs:schema>

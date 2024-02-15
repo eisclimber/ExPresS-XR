@@ -560,7 +560,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                                         (QuizButton)_button4Field.value };
 
             if (CreateQuiz(_quizConfig, buttons, (McConfirmButton)_mcConfirmButtonField.value,
-                            (TMP_Text)_textLabelField.value, (GameObject)_gameObjectField.value,
+                            (TMP_Text)_textLabelField.value, ((GameObject)_gameObjectField.value)?.transform,
                             (VideoPlayer)_videoPlayerField.value, (UnityEngine.UI.RawImage)_videoImageField.value,
                             (Canvas)_afterQuizMenuField.value))
             {
@@ -990,12 +990,12 @@ namespace ExPresSXR.Editor.SetupDialogs
         }
 
         public static bool CreateQuiz(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
-                                TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer,
+                                TMP_Text displayText, Transform displayAnchor, VideoPlayer displayPlayer,
                                 UnityEngine.UI.RawImage displayVideoImage, Canvas afterQuizDialog)
         {
             CreateNewQuizGoIfNull();
 
-            if (!_quizGo.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, displayVideoImage, afterQuizDialog))
+            if (!_quizGo.Setup(config, buttons, mcConfirmButton, displayText, displayAnchor, displayPlayer, displayVideoImage, afterQuizDialog))
             {
                 return false;
             }
