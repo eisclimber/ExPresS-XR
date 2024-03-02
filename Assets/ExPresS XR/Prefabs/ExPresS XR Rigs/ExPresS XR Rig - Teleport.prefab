@@ -239,7 +239,7 @@ MonoBehaviour:
   m_MoveSpeed: 1
   m_EnableStrafe: 1
   m_EnableFly: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_GravityApplicationMode: 1
   m_ForwardSource: {fileID: 0}
   m_LeftHandMoveAction:
@@ -268,8 +268,7 @@ MonoBehaviour:
     m_Reference: {fileID: -8198699208435500284, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   characterController: {fileID: 2592477441852168244}
   _velocity: {x: 0, y: 0, z: 0}
-  _airLerpFactor: 0.03
-  _floorLerpFactor: 0.5
+  _lerpFactor: 0.03
 --- !u!114 &2592477439981529216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,7 +386,8 @@ MonoBehaviour:
   - {fileID: 1392445890273226888}
   _applyReleaseVelocity: 1
   _releaseStrengthFactor: 1000
-  _rigidMovementProvider: {fileID: 8366963688746347505}
+  _playerGravity: {fileID: 0}
+  _playerRigidForce: {fileID: 0}
   OnGrabHoldSuccess:
     m_PersistentCalls:
       m_Calls: []
@@ -4974,7 +4974,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 71106601250685021, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_UIScrollAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: UI Scroll
       m_Type: 0

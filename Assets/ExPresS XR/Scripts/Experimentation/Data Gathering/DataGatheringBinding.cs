@@ -73,14 +73,16 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// </summary>
         /// <param name="targetComponent">Component(&Object) to be bound.</param>
         /// <param name="valueName">Name of the member to bind to.</param>
-        public DataGatheringBinding(Component targetComponent, string valueName)
+        public DataGatheringBinding(Component targetComponent, string valueName, string exportColumnName = "")
         {
             _targetObject = targetComponent.gameObject;
             _targetComponent = targetComponent;
+            this.exportColumnName = exportColumnName;
             UpdateMemberList();
             _memberIdx = Array.FindIndex(_prettyMemberNameList, s => s.EndsWith(valueName));
             ValidateBinding();
         }
+
 
         /// <summary>
         /// Checks if the current binding is valid, meaning the class, component and MemberInfo are valid.

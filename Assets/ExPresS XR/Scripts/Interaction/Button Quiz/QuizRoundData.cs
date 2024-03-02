@@ -104,7 +104,7 @@ namespace ExPresSXR.Experimentation.DataGathering
                 askOrderIdx,
                 answerPermutationString,
                 // Feedback
-                feedbackText,
+                feedbackText.Replace("\n", "\\n"), // Escape new lines for csv serialization
                 feedbackObjectsString,
                 feedbackVideoString
             };

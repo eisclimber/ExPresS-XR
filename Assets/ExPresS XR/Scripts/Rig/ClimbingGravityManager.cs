@@ -123,14 +123,14 @@ namespace ExPresSXR.Rig
 
         private void RegisterGravityProvider()
         {
-            OnGrabHoldSuccess.AddListener(DisableGravity);
-            OnGrabHoldFailed.AddListener(EnableGravity);
+            OnGrabHoldSuccess.AddListener(DisableExternalForces);
+            OnGrabHoldFailed.AddListener(EnableExternalForces);
         }
 
         private void UnregisterGravityProvider()
         {
-            OnGrabHoldSuccess.RemoveListener(DisableGravity);
-            OnGrabHoldFailed.RemoveListener(EnableGravity);
+            OnGrabHoldSuccess.RemoveListener(DisableExternalForces);
+            OnGrabHoldFailed.RemoveListener(EnableExternalForces);
         }
 
 
@@ -174,12 +174,12 @@ namespace ExPresSXR.Rig
             // // Ignore interactors that are not used for climbing
             if (idx >= 0)
             {
-                Debug.Log(CsvUtility.ArrayToString(_interactorsVelocities) + " x " + idx);
-                // _rigidMovementProvider.ApplyHorizontalImpulse(_interactorsVelocities[idx] * _releaseStrengthFactor);
+                Debug.Log(CsvUtility.ArrayToString(_interactorsVelocities) + " x " + idx + " - " + _interactorsVelocities[idx]);
+                _playerRigidForce.ApplyImpulseUpperHalfSphere(_interactorsVelocities[idx] * _releaseStrengthFactor);
             }
         }
 
-        private void DisableGravity()
+        private void DisableExternalForces()
         {
             if (_playerGravity != null)
             {
@@ -188,11 +188,11 @@ namespace ExPresSXR.Rig
 
             if (_playerRigidForce != null)
             {
-                // _playerRigidForce.applyGravity = true;
+                _playerRigidForce.applyForce = false;
             }
         }
 
-        private void EnableGravity()
+        private void EnableExternalForces()
         {
             if (_playerGravity != null)
             {
@@ -201,7 +201,7 @@ namespace ExPresSXR.Rig
 
             if (_playerRigidForce != null)
             {
-                // _playerRigidForce.applyGravity = true;
+                _playerRigidForce.applyForce = true;
             }
         }
     }

@@ -68,7 +68,6 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
-
         /// <summary>
         /// Converts any arbitrary value to a safe CSV column entry with the provided separator.
         /// This is done by using the DEFAULT_ESCAPE_CHAR to surround the value.

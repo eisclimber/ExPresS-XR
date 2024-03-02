@@ -281,12 +281,20 @@ namespace ExPresSXR.Experimentation.DataGathering
             };
             // Add prepended headers
             List<string> bindingHeaders = new(prependedHeaders.Where(s => !string.IsNullOrEmpty(s)));
+            List<bool> escapeIndividual = new(Enumerable.Repeat(_escapeColumns, bindingHeaders.Count));
             // Add data bindings
             bindingHeaders.AddRange(_dataBindings.Select(v => v != null ? v.exportColumnName : ""));
+            escapeIndividual.AddRange(_dataBindings.Select(v => !(v?.IsBoundToMultiColumnValue() ?? false) && _escapeColumns));
             // Add InputAction bindings
             bindingHeaders.AddRange(_inputActionDataBindings.Select(v => v != null ? v.name : ""));
+            escapeIndividual.AddRange(Enumerable.Repeat(_escapeColumns, bindingHeaders.Count - escapeIndividual.Count));
+            
             // Convert to string
-            return CsvUtility.JoinAsCsv(bindingHeaders.ToArray(), columnSeparator, escapeColumns);
+            if (escapeColumns)
+            {
+                return CsvUtility.JoinAsCsv(bindingHeaders, escapeIndividual, columnSeparator);
+            }
+            return CsvUtility.JoinAsCsv(bindingHeaders.ToArray(), columnSeparator, false);
         }
 
 
@@ -300,10 +308,10 @@ namespace ExPresSXR.Experimentation.DataGathering
             };
             // Add prepended values
             List<string> bindingValues = new(prependedValues.Where(s => !string.IsNullOrEmpty(s)));
-            List<bool> escapeIndividual = new(bindingValues.Count);
+            List<bool> escapeIndividual = new(Enumerable.Repeat(_escapeColumns, bindingValues.Count));
             // Add DataGatheringBindings
             bindingValues.AddRange(_dataBindings.Select(v => v?.GetBindingValue() ?? ""));
-            escapeIndividual.AddRange(_dataBindings.Select(v => v?.IsBoundToMultiColumnValue() ?? false));
+            escapeIndividual.AddRange(_dataBindings.Select(v => !(v?.IsBoundToMultiColumnValue() ?? false) && _escapeColumns));
             // Add InputActionBindings
             bindingValues.AddRange(_inputActionDataBindings.Select(v => v != null ? v.action.ReadValueAsObject().ToString() : ""));
             escapeIndividual.AddRange(Enumerable.Repeat(false, bindingValues.Count - escapeIndividual.Count));
@@ -410,6 +418,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         /// <summary>
         /// Adds a DataGatheringBinding to the end of the exported Data Bindings.
+        /// Use this function carefully as this rather expensive and it will not add a new column the header, if the file is already open.
         /// </summary>
         /// <param name="binding">The binding to add.</param>
         public void AddNewBinding(DataGatheringBinding binding)
