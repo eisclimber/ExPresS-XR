@@ -139,12 +139,14 @@ GameObject:
   - component: {fileID: 2592477439981529229}
   - component: {fileID: 2665148796415111372}
   - component: {fileID: 2592477439981529231}
-  - component: {fileID: 8366963688746347505}
+  - component: {fileID: 2500531590502321424}
   - component: {fileID: 2592477439981529216}
   - component: {fileID: 2592477439981529217}
   - component: {fileID: 4718767264467246484}
   - component: {fileID: 2592477439981529219}
   - component: {fileID: 332150261165767408}
+  - component: {fileID: 2379305425196754971}
+  - component: {fileID: 2805352740849149108}
   m_Layer: 3
   m_Name: Locomotion System
   m_TagString: Player
@@ -223,7 +225,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -8525429354371678379, guid: c348712bda248c246b8c49b3db54643f, type: 3}
---- !u!114 &8366963688746347505
+--- !u!114 &2500531590502321424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,7 +234,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2592477439981529221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b377a5ec524c1f48aef876da38d7d37, type: 3}
+  m_Script: {fileID: 11500000, guid: 0bf296fc962d7184ab14ad1841598d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_System: {fileID: 0}
@@ -240,15 +242,15 @@ MonoBehaviour:
   m_EnableStrafe: 1
   m_EnableFly: 0
   m_UseGravity: 0
-  m_GravityApplicationMode: 1
+  m_GravityApplicationMode: 0
   m_ForwardSource: {fileID: 0}
   m_LeftHandMoveAction:
     m_UseReference: 1
     m_Action:
       m_Name: Left Hand Move
       m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: aff1f0b7-318a-48db-8f2b-da9ce9f04977
+      m_ExpectedControlType: 
+      m_Id: 75f1b245-c357-48c8-9acb-8967bec9dda2
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -259,16 +261,13 @@ MonoBehaviour:
     m_Action:
       m_Name: Right Hand Move
       m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: 0dd5b301-57c5-42ef-9596-f7cae6ab95dd
+      m_ExpectedControlType: 
+      m_Id: 6bf6c732-e011-46b1-acc5-b649a4ec5f10
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -8198699208435500284, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  characterController: {fileID: 2592477441852168244}
-  _velocity: {x: 0, y: 0, z: 0}
-  _lerpFactor: 0.03
 --- !u!114 &2592477439981529216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,14 +385,54 @@ MonoBehaviour:
   - {fileID: 1392445890273226888}
   _applyReleaseVelocity: 1
   _releaseStrengthFactor: 1000
-  _playerGravity: {fileID: 0}
-  _playerRigidForce: {fileID: 0}
+  _playerGravity: {fileID: 2379305425196754971}
+  _playerRigidForce: {fileID: 2805352740849149108}
+  _playerAverageVelocity: {fileID: 7696452160439762536}
   OnGrabHoldSuccess:
     m_PersistentCalls:
       m_Calls: []
   OnGrabHoldFailed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2379305425196754971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592477439981529221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b40f3954fe0de4bb7988a421a22d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputActionPausingForce:
+  - {fileID: 1263111715868034790, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  - {fileID: -8061240218431744966, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  _forcePauseDuration: 0.1
+  _characterController: {fileID: 2592477441852168244}
+  _applyGravity: 1
+  _gravity: {x: 0, y: -9.81, z: 0}
+--- !u!114 &2805352740849149108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592477439981529221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f2d0a72bba6b4bb993e46b0b6e55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputActionPausingForce:
+  - {fileID: 1263111715868034790, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  - {fileID: -8061240218431744966, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  _forcePauseDuration: 0.1
+  _characterController: {fileID: 2592477441852168244}
+  _applyForce: 1
+  _airLerpFactor: 0.1
+  _floorLerpFactor: 0.4
 --- !u!1 &2592477440013209808
 GameObject:
   m_ObjectHideFlags: 0
@@ -4446,7 +4485,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 2147483648
+    m_Bits: 0
   m_InteractionLayers:
     m_Bits: 2147483648
   m_AttachTransform: {fileID: 0}
@@ -4535,7 +4574,7 @@ MonoBehaviour:
   m_ConeCastAngle: 6
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 2147483681
+    m_Bits: 33
   m_RaycastTriggerInteraction: 1
   m_RaycastSnapVolumeInteraction: 1
   m_HitClosestOnly: 0
@@ -4887,7 +4926,7 @@ MonoBehaviour:
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
-      m_Flags: 1
+      m_Flags: -1
     m_Reference: {fileID: 0}
   m_TrackingStateAction:
     m_UseReference: 0
@@ -5769,6 +5808,7 @@ GameObject:
   - component: {fileID: 2592477441852168242}
   - component: {fileID: 2592477441852168243}
   - component: {fileID: 2592477441852168244}
+  - component: {fileID: 7696452160439762536}
   m_Layer: 3
   m_Name: ExPresS XR Rig - Teleport
   m_TagString: Player
@@ -5837,7 +5877,7 @@ MonoBehaviour:
   _headCollisionEnabled: 0
   _showCollisionVignetteEffect: 0
   _locomotionSystem: {fileID: 0}
-  _climbingGravityManager: {fileID: 332150261165767408}
+  _climbingGravityManager: {fileID: 0}
   _fadeRect: {fileID: 2592477440702074859}
   _playerHeadCollider: {fileID: 2592477441055133030}
   _hudCamera: {fileID: 8395335889131688276}
@@ -5874,6 +5914,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.76072, z: 0}
+--- !u!114 &7696452160439762536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592477441852168245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19994ed64be04fd45bc6fedd56ca8330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _numSamples: 3
 --- !u!1 &2592477442010060276
 GameObject:
   m_ObjectHideFlags: 0

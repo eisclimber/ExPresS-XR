@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using ExPresSXR.Experimentation.DataGathering;
 using ExPresSXR.Movement;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -41,12 +37,11 @@ namespace ExPresSXR.Rig
         [SerializeField]
         private PlayerRigidForce _playerRigidForce;
 
+        [SerializeField]
+        private AverageVelocity _playerAverageVelocity;
+
         
         private int _grabbedHolds;
-
-        private Vector3[] _interactorPrevPos;
-        private Vector3[] _interactorsVelocities;
-
 
         public UnityEvent OnGrabHoldSuccess;
         public UnityEvent OnGrabHoldFailed;
@@ -74,26 +69,8 @@ namespace ExPresSXR.Rig
             UnregisterGravityProvider();
         }
 
-
-        private void Update() {
-            // Update Velocities
-            for (int i = 0; i < _climbInteractors.Length; i++)
-            {
-                // Debug.Log(" x " + _interactorPrevPos);
-                if (_interactorPrevPos[i] != null)
-                {
-                    _interactorsVelocities[i] = _climbInteractors[i].transform.position - _interactorPrevPos[i];
-                }
-                _interactorPrevPos[i] = _climbInteractors[i].transform.position;
-            }
-        }
-
-
         public void RegisterInteractors()
         {
-            _interactorPrevPos = new Vector3[_climbInteractors.Length];
-            _interactorsVelocities = new Vector3[_climbInteractors.Length];
-
             for (int i = 0; i < _climbInteractors.Length; i++)
             {
                 XRBaseControllerInteractor interactor = _climbInteractors[i];
@@ -106,9 +83,6 @@ namespace ExPresSXR.Rig
 
                 interactor.selectEntered.AddListener(AddGrabbedHold);
                 interactor.selectExited.AddListener(RemoveGrabbedHold);
-
-                _interactorPrevPos[i] = interactor.transform.position;
-                _interactorsVelocities[i] = Vector3.zero;
             }
         }
 
@@ -171,11 +145,10 @@ namespace ExPresSXR.Rig
 
             int idx = Array.FindIndex(_climbInteractors, x => x == (UnityEngine.Object)interactor);
 
-            // // Ignore interactors that are not used for climbing
+            // Ignore interactors that are not used for climbing
             if (idx >= 0)
             {
-                Debug.Log(CsvUtility.ArrayToString(_interactorsVelocities) + " x " + idx + " - " + _interactorsVelocities[idx]);
-                _playerRigidForce.ApplyImpulseUpperHalfSphere(_interactorsVelocities[idx] * _releaseStrengthFactor);
+                _playerRigidForce.ApplyImpulseUpperHalfSphere(_playerAverageVelocity.GetEstimatedVelocity() * _releaseStrengthFactor);
             }
         }
 
