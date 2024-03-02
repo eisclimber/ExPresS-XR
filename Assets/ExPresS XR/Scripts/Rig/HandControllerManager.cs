@@ -132,7 +132,7 @@ namespace ExPresSXR.Rig
 
         #region Interaction Config
         /// <summary>
-        /// hether or not direct interaction (i.e. grabbing) is enabled.
+        /// Whether or not direct interaction (i.e. grabbing) is enabled.
         /// </summary>
         [SerializeField]
         private bool _directInteractionEnabled;

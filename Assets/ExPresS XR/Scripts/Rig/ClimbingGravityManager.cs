@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using ExPresSXR.Experimentation.DataGathering;
+using ExPresSXR.Movement;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -15,17 +19,33 @@ namespace ExPresSXR.Rig
 
         [SerializeField]
         [Tooltip("The interactors used for climbing. Usually direct interactors.")]
-        private List<XRBaseControllerInteractor> _climbInteractors;
-        public List<XRBaseControllerInteractor> climbInteractors
+        private XRBaseControllerInteractor[] _climbInteractors;
+        public XRBaseControllerInteractor[] climbInteractors
         {
             get => _climbInteractors;
-            set => _climbInteractors = value;
         }
 
-        [SerializeField]
-        private ContinuousMoveProviderBase _gravityProvider;
+        [Space]
 
+        [SerializeField]
+        private bool _applyReleaseVelocity;
+
+        [SerializeField]
+        private float _releaseStrengthFactor;
+
+        [Space]
+
+        [SerializeField]
+        private PlayerGravity _playerGravity;
+
+        [SerializeField]
+        private PlayerRigidForce _playerRigidForce;
+
+        
         private int _grabbedHolds;
+
+        private Vector3[] _interactorPrevPos;
+        private Vector3[] _interactorsVelocities;
 
 
         public UnityEvent OnGrabHoldSuccess;
@@ -34,19 +54,14 @@ namespace ExPresSXR.Rig
 
         private void OnEnable()
         {
-            if (_climbInteractors.Count <= 0)
+            if (_climbInteractors.Length <= 0)
             {
                 Debug.LogWarning("No Climb Interactors were provided.", this);
             }
 
-            if (_minGrabbedHolds <= 0 || _minGrabbedHolds > _climbInteractors.Count)
+            if (_minGrabbedHolds <= 0 || _minGrabbedHolds > _climbInteractors.Length)
             {
                 Debug.LogWarning("MinGrabbedHolds was either below 1 or more than the number of Climb Interactors. This won't work!", this);
-            }
-
-            if (_gravityProvider == null)
-            {
-                Debug.LogWarning("No Gravity Provider was provided, can't control gravity!", this);
             }
 
             RegisterInteractors();
@@ -60,10 +75,28 @@ namespace ExPresSXR.Rig
         }
 
 
+        private void Update() {
+            // Update Velocities
+            for (int i = 0; i < _climbInteractors.Length; i++)
+            {
+                // Debug.Log(" x " + _interactorPrevPos);
+                if (_interactorPrevPos[i] != null)
+                {
+                    _interactorsVelocities[i] = _climbInteractors[i].transform.position - _interactorPrevPos[i];
+                }
+                _interactorPrevPos[i] = _climbInteractors[i].transform.position;
+            }
+        }
+
+
         public void RegisterInteractors()
         {
-            foreach (XRBaseControllerInteractor interactor in _climbInteractors)
+            _interactorPrevPos = new Vector3[_climbInteractors.Length];
+            _interactorsVelocities = new Vector3[_climbInteractors.Length];
+
+            for (int i = 0; i < _climbInteractors.Length; i++)
             {
+                XRBaseControllerInteractor interactor = _climbInteractors[i];
                 // Check if the interactors can interact
                 if ((interactor.interactionLayers & InteractionLayerMask.NameToLayer("Climb")) != 0)
                 {
@@ -73,6 +106,9 @@ namespace ExPresSXR.Rig
 
                 interactor.selectEntered.AddListener(AddGrabbedHold);
                 interactor.selectExited.AddListener(RemoveGrabbedHold);
+
+                _interactorPrevPos[i] = interactor.transform.position;
+                _interactorsVelocities[i] = Vector3.zero;
             }
         }
 
@@ -103,6 +139,7 @@ namespace ExPresSXR.Rig
             if (args.interactableObject is ClimbInteractable)
             {
                 _grabbedHolds = Math.Max(_grabbedHolds + 1, 0);
+                // Only emit the event when the threshold is met 
                 if (_grabbedHolds == _minGrabbedHolds)
                 {
                     // Added the the required min hold right now
@@ -118,26 +155,53 @@ namespace ExPresSXR.Rig
                 _grabbedHolds = Math.Max(_grabbedHolds - 1, 0);
                 if (_grabbedHolds == _minGrabbedHolds - 1)
                 {
+                    ApplyReleaseVelocity(args.interactorObject);
                     OnGrabHoldFailed.Invoke();
                 }
             }
         }
 
+
+        private void ApplyReleaseVelocity(IXRSelectInteractor interactor)
+        {
+            if (!_applyReleaseVelocity)
+            {
+                return;
+            }
+
+            int idx = Array.FindIndex(_climbInteractors, x => x == (UnityEngine.Object)interactor);
+
+            // // Ignore interactors that are not used for climbing
+            if (idx >= 0)
+            {
+                Debug.Log(CsvUtility.ArrayToString(_interactorsVelocities) + " x " + idx);
+                // _rigidMovementProvider.ApplyHorizontalImpulse(_interactorsVelocities[idx] * _releaseStrengthFactor);
+            }
+        }
+
         private void DisableGravity()
         {
-            if (_gravityProvider)
+            if (_playerGravity != null)
             {
-                // Only manipulate enableFly as it will override useGravity
-                _gravityProvider.enableFly = true;
+                _playerGravity.applyGravity = false;
+            }
+
+            if (_playerRigidForce != null)
+            {
+                // _playerRigidForce.applyGravity = true;
             }
         }
 
         private void EnableGravity()
         {
-            if (_gravityProvider)
+            if (_playerGravity != null)
             {
-                // Only manipulate enableFly as it will override useGravity
-                _gravityProvider.enableFly = false;
+                _playerGravity.applyGravity = true;
+            }
+
+            if (_playerRigidForce != null)
+            {
+                // _playerRigidForce.applyGravity = true;
             }
         }
     }

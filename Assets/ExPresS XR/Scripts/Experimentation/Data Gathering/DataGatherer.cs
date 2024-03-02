@@ -408,6 +408,16 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
+        /// <summary>
+        /// Adds a DataGatheringBinding to the end of the exported Data Bindings.
+        /// </summary>
+        /// <param name="binding">The binding to add.</param>
+        public void AddNewBinding(DataGatheringBinding binding)
+        {
+            _dataBindings = _dataBindings.Concat(new DataGatheringBinding[] { binding }).ToArray();
+        }
+
+
         private void CloseFileWriter()
         {
             if (_outputWriter != null)

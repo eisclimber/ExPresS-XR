@@ -415,6 +415,26 @@ namespace ExPresSXR.Editor.Utility
             InstantiateGameObjectAtContextTransform(menuCommand, "Mirror/Mirror");
         }
 
+        // Epi Sphere
+        [MenuItem("GameObject/ExPresS XR/Presentation/EpiSphere/EpiSphere")]
+        static void CreateEpiSphere(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "EpiSphere/EpiSphere");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Presentation/EpiSphere/EpiDome")]
+        static void CreateEpiDome(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "EpiSphere/EpiDome");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Presentation/EpiSphere/EpiSphereVideo")]
+        static void CreateEpiSphereVideo(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "EpiSphere/EpiSphereVideo");
+        }
+
+
         // Misc Interaction
         [MenuItem("GameObject/ExPresS XR/Presentation/Highlighter Area")]
         static void CreateHighlighterArea(MenuCommand menuCommand)

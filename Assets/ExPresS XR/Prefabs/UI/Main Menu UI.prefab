@@ -1412,7 +1412,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: -40
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -1675,9 +1675,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6801848257637326043}
-        m_TargetAssemblyTypeName: ExPresSXR.UI.Menu.ExitMenuLogic, Assembly-CSharp
-        m_MethodName: ExitGame
+      - m_Target: {fileID: 2257131816093783525}
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.GameExiter, Assembly-CSharp
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3237,11 +3237,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6801848257637326043}
         m_TargetAssemblyTypeName: ExPresSXR.UI.Menu.BasicMenuLogic, Assembly-CSharp
-        m_MethodName: GoToMenu
-        m_Mode: 2
+        m_MethodName: GoBack
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8653983813300499976}
-          m_ObjectArgumentAssemblyTypeName: ExPresSXR.UI.Menu.BasicMenuLogic, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3484,7 +3484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _exitType: 0
-  _menuSceneIndex: 0
+  _menuSceneIdx: 0
   _rig: {fileID: 0}
   _findRigIfMissing: 1
 --- !u!1 &6747369920503614266
@@ -4762,9 +4762,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _followTransform: {fileID: 0}
-  _centerAtTransform: 1
   _orbitDistance: 3
-  _speed: 1
+  _lerpSpeed: 1
   _moveAngleThreshold: 20
 --- !u!223 &7421088619215805484
 Canvas:
@@ -4811,7 +4810,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7061138840101110609
 MonoBehaviour:
   m_ObjectHideFlags: 0
