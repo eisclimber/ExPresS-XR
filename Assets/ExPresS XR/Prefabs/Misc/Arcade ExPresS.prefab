@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4040681906726915578}
   - component: {fileID: 3104375868115125570}
   - component: {fileID: 2876175257400312498}
-  - component: {fileID: 9056314695126614745}
+  - component: {fileID: 7587329130512302495}
   - component: {fileID: 8025784721200961378}
   m_Layer: 0
   m_Name: Grab Trigger Interactable
@@ -201,8 +201,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hoveredMaterial: {fileID: 2100000, guid: 0b8891f4ec1f09542b59a3b49ae8b8c6, type: 2}
---- !u!135 &9056314695126614745
-SphereCollider:
+--- !u!64 &7587329130512302495
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -219,9 +219,10 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: -0.0000019073486}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &8025784721200961378
 Rigidbody:
   m_ObjectHideFlags: 0

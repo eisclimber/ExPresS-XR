@@ -82,7 +82,8 @@ namespace ExPresSXR.Rig
         {
             if (_scalingEnabled && TryGetSelectedScaleInteractableWrapper(out ScalableGrabInteractable _scaleInteractable))
             {
-                _scaleInteractable.scaleFactor += directionAmount * _scaleSpeed * Time.deltaTime;
+                float speed = _scaleInteractable.hasScaleSpeedOverride ? _scaleInteractable.scaleSpeedOverride : _scaleSpeed;
+                _scaleInteractable.scaleFactor += directionAmount * speed * Time.deltaTime;
             }
         }
 

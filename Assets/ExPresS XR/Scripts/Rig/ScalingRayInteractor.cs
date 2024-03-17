@@ -28,7 +28,8 @@ namespace ExPresSXR.Rig
             bool canScale = TryGetSelectedScaleInteractableWrapper(out ScalableGrabInteractable _scaleInteractable);
             if (canScale && (anchorControlMode == AnchorControlMode.Scale || anchorControlMode == AnchorControlMode.ScaleWithTranslateFallback))
             {
-                _scaleInteractable.scaleFactor += directionAmount * _scaleSpeed * Time.deltaTime;
+                float speed = _scaleInteractable.hasScaleSpeedOverride ? _scaleInteractable.scaleSpeedOverride : _scaleSpeed;
+                _scaleInteractable.scaleFactor += directionAmount * speed * Time.deltaTime;
             }
             else if (anchorControlMode == AnchorControlMode.Translate || anchorControlMode == AnchorControlMode.ScaleWithTranslateFallback)
             {

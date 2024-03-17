@@ -2,8 +2,14 @@ using UnityEngine;
 
 namespace ExPresSXR.Movement
 {
+    /// <summary>
+    /// Applies a constant gravity on the player while still allowing teleportation, climbing, other movement.
+    /// </summary>
     public class PlayerGravity : PlayerForceBase
     {
+        /// <summary>
+        /// Whether or not gravity should be applied.
+        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not gravity should be applied.")]
         private bool _applyGravity = true;
@@ -13,6 +19,9 @@ namespace ExPresSXR.Movement
             set => _applyGravity = value;
         }
 
+        /// <summary>
+        /// The gravity applied to the player. The default is Unity's default gravity.
+        /// </summary>
         [SerializeField]
         [Tooltip("The gravity applied to the player. The default is Unity's default gravity.")]
         private Vector3 _gravity = Physics.gravity;
@@ -22,7 +31,7 @@ namespace ExPresSXR.Movement
             set => _gravity = value;
         }
 
-        public void Update()
+        private void Update()
         {
             if (_characterController != null && _applyGravity && !forceTemporarilyDisabled)
             {
