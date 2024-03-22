@@ -119,7 +119,7 @@ namespace ExPresSXR.Interaction
         }
 
 
-        private void ShowHighlighter(SelectExitEventArgs args)
+        protected void ShowHighlighter(SelectExitEventArgs args)
         {
             if (showHighlighter)
             {
@@ -127,7 +127,7 @@ namespace ExPresSXR.Interaction
             }
         }
 
-        private void HideHighlighter(SelectEnterEventArgs args)
+        protected void HideHighlighter(SelectEnterEventArgs args)
         {
             if (showHighlighter)
             {

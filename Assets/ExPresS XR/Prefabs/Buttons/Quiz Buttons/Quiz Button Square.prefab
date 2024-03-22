@@ -392,10 +392,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  pressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
-  releasedSound: {fileID: 8300000, guid: 16e54074595a53243b89758106431e7a, type: 3}
-  toggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
-  toggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
   baseAnchor: {fileID: 879532188554278062}
   pushAnchor: {fileID: 879532188442078939}
   _yMin: 0.019
@@ -403,13 +399,17 @@ MonoBehaviour:
   _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
   _requireDirectInteraction: 1
   _defaultAudioPlayer: {fileID: 8771372950462264913}
+  pressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
+  releasedSound: {fileID: 8300000, guid: 16e54074595a53243b89758106431e7a, type: 3}
+  toggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
+  toggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
   correctChoice: 0
   feedbackDisabled: 0
   invertedFeedback: 0
   _answerText: 
   _answerObject: {fileID: 0}
-  _feedbackTextLabel: {fileID: 1384225190523228788}
   _feedbackObjectSocket: {fileID: 4128894649871341087}
+  _feedbackTextLabel: {fileID: 1384225190523228788}
   answeredCorrectSound: {fileID: 8300000, guid: c78e51dc01092a344b84fb6de865ac11, type: 3}
   answeredIncorrectSound: {fileID: 8300000, guid: cb0b4b45ea34969418dae32138cc9e37, type: 3}
   _answerFeedbackAudioPlayer: {fileID: 2580785492563670800}
@@ -1130,7 +1130,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2516506118124284289, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3942168457875969026, guid: 1cb3df373ba028f42820f48d4a804c7b, type: 3}
       propertyPath: m_Name

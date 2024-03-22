@@ -391,7 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _exitType: 0
-  _menuSceneIndex: 0
+  _menuSceneIdx: 0
   _rig: {fileID: 0}
   _findRigIfMissing: 1
 --- !u!114 &8254138436444216827
@@ -407,7 +407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 8254138436444216831}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -470,8 +471,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 766354729359013182}
-        m_TargetAssemblyTypeName: GameExiter, Assembly-CSharp
-        m_MethodName: StartGameEnd
+        m_TargetAssemblyTypeName: ExPresSXR.Misc.GameExiter, Assembly-CSharp
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

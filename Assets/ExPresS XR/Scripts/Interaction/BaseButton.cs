@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.Events;
+using System.Linq;
+using System.Collections.Generic;
 
 
 namespace ExPresSXR.Interaction
@@ -165,8 +167,14 @@ namespace ExPresSXR.Interaction
         /// </summary>
         protected override void Awake()
         {
+            // (Dirty) hack to allow nesting interactables required for quiz buttons
+            List<XRBaseInteractable> nestedInteractables = new();
+            GetComponentsInChildren(nestedInteractables);
+            SetNestedInteractablesActive(nestedInteractables, false);
+            
             base.Awake();
 
+            // Check ColliderSize
             if (colliderSize == Vector3.zero)
             {
                 Debug.LogWarning("Button has no ColliderSize, pressing it won't work.");
@@ -177,7 +185,7 @@ namespace ExPresSXR.Interaction
             hoverExited.AddListener(EndPress);
 
             // Connect Audio
-            if (_defaultAudioPlayer == null && !TryGetComponent(out _defaultAudioPlayer) 
+            if (_defaultAudioPlayer == null && !TryGetComponent(out _defaultAudioPlayer)
                     && (releasedSound != null || pressedSound != null || toggledDownSound != null || toggledUpSound != null))
             {
                 Debug.LogWarning("No AudioPlayer found to play sounds.");
@@ -186,11 +194,14 @@ namespace ExPresSXR.Interaction
             {
                 _defaultAudioPlayer.playOnAwake = false;
             }
-            
+
             OnPressed.AddListener(PlayPressedSound);
             OnTogglePressed.AddListener(PlayToggledDownSound);
             OnReleased.AddListener(PlayReleasedSound);
             OnToggleReleased.AddListener(PlayToggledUpSound);
+
+            // (Dirty) hack to allow nesting interactables required for quiz buttons
+            SetNestedInteractablesActive(nestedInteractables, true);
         }
 
         /// <summary>
@@ -269,7 +280,7 @@ namespace ExPresSXR.Interaction
             _previousHandHeight = 0.0f;
             _pressed = false;
             SetYPosition(_yMax);
-            
+
             if (_defaultAudioPlayer != null)
             {
                 _defaultAudioPlayer.Stop();
@@ -420,6 +431,15 @@ namespace ExPresSXR.Interaction
             downPct = Mathf.Clamp(downPct, 0.0f, 1.0f);
 
             return downPct <= PRESS_PCT;
+        }
+
+
+        private void SetNestedInteractablesActive(List<XRBaseInteractable> interactables, bool newActive)
+        {
+            foreach (XRBaseInteractable interactable in interactables)
+            {
+                interactable.gameObject.SetActive(newActive);
+            }
         }
 
         #region Editor Utility
