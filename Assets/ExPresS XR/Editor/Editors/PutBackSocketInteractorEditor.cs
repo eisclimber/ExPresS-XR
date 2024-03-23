@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.XR.Interaction.Toolkit;
 using ExPresSXR.Interaction;
+using UnityEditor.VersionControl;
 
 
 namespace ExPresSXR.Editor.Editors
@@ -36,45 +37,45 @@ namespace ExPresSXR.Editor.Editors
 
         protected void DrawPutBackProperties()
         {
+            bool locked = putBackSocket.externallyControlled;
             EditorGUILayout.LabelField("Put Back Object", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackPrefab"), true);
-
-            if (EditorGUI.EndChangeCheck())
+            
+            if (locked)
             {
-                // Update displayed prefab only when necessary
-                serializedObject.ApplyModifiedProperties();
-                putBackSocket.UpdatePutBackObject();
-            }
-            else if (!putBackSocket.ArePutBackReferencesValid())
-            {
-                // Displayed prefab seems invalid -> Try Update/Recreate
-                Debug.LogWarning("The references of your PutBackPrefab seem invalid! Maybe you deleted the object. "
-                                    + $"If you want to delete it for good, remove it the PutBackPrefab of { putBackSocket }.");
-                serializedObject.ApplyModifiedProperties();
-                putBackSocket.UpdatePutBackObject();
+                EditorGUILayout.HelpBox("This object is currently controlled by an Exhibition Display. "
+                    + "Please use that to edit the putbackPrefab.", MessageType.Warning);
             }
 
-            /*
-            if (IsObjectInNeedOfInteractable(putBackSocket.putBackPrefab))
-            {
-                EditorGUILayout.HelpBox("PutBackObject is not an XRGrabInteractable. If you want it to be picked up a XRGrabInteractable needs to be added.", MessageType.Warning);
-            }
-            */
+            EditorGUI.BeginDisabledGroup(locked);
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackPrefab"), true);
 
-            // Display reference to the actual held prefab instance
-            EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackInstance"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackInteractable"), true);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Update displayed prefab only when necessary
+                    serializedObject.ApplyModifiedProperties();
+                    putBackSocket.UpdatePutBackObject();
+                }
+                else if (!putBackSocket.ArePutBackReferencesValid())
+                {
+                    // Displayed prefab seems invalid -> Try Update/Recreate
+                    Debug.LogWarning("The references of your PutBackPrefab seem invalid! Maybe you deleted the object. "
+                                        + $"If you want to delete it for good, remove it the PutBackPrefab of { putBackSocket }.");
+                    serializedObject.ApplyModifiedProperties();
+                    putBackSocket.UpdatePutBackObject();
+                }
+
+                // Display reference to the actual held prefab instance
+                EditorGUI.BeginDisabledGroup(true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackInstance"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackInteractable"), true);
+                EditorGUI.EndDisabledGroup();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
             EditorGUI.EndDisabledGroup();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
-
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
             EditorGUI.indentLevel--;
         }
-
-        private bool IsObjectInNeedOfInteractable(GameObject go)
-            => go != null && !go.TryGetComponent(out IXRSelectInteractable _);
     }
 }

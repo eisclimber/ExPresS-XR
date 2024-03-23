@@ -8,6 +8,9 @@ namespace ExPresSXR.Interaction
 {
     public class PutBackSocketInteractor : HighlightableSocketInteractor
     {
+        /// <summary>
+        /// The prefab that is displayed at the socket. Will automatically create an instance of the prefab and update the references.
+        /// </summary>
         [SerializeField]
         private GameObject _putBackPrefab;
         public GameObject putBackPrefab
@@ -21,6 +24,9 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <summary>
+        /// The current instance of the putBackPrefab. Can not be changed via the editor.
+        /// </summary>
         [SerializeField]
         private GameObject _putBackInstance;
         public GameObject putBackObjectInstance
@@ -28,6 +34,10 @@ namespace ExPresSXR.Interaction
             get => _putBackInstance;
         }
 
+        /// <summary>
+        /// The current interactable of the putBackPrefab. Can not be changed via the editor. 
+        /// May be null if the `putBackPrefab` has no `XRBaseInteractable`-Component and `allowNonInteractables` is true.
+        /// </summary>
         [SerializeField]
         private XRBaseInteractable _putBackInteractable;
         public XRBaseInteractable putBackInteractable
@@ -36,7 +46,10 @@ namespace ExPresSXR.Interaction
         }
 
 
-        [Tooltip("If true GameObjects will be added to the socket but won't be able to be picked up")]
+        /// <summary>
+        /// If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`. Otherwise the provided prefab will be set to null.
+        /// </summary>
+        [Tooltip("If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`. Otherwise the provided prefab will be set to null.")]
         [SerializeField]
         private bool _allowNonInteractables;
         public bool allowNonInteractables
@@ -45,7 +58,10 @@ namespace ExPresSXR.Interaction
             set => _allowNonInteractables = value;
         }
 
-
+        /// <summary>
+        /// The duration in seconds how long the put back object can be unselected outside the socket until being snapped back to the socket. 
+        /// If less or equal to 0, the object will snap back instantaneous.
+        /// </summary>
         [SerializeField]
         private float _putBackTime = 1.0f;
         public float putBackTime
@@ -54,9 +70,27 @@ namespace ExPresSXR.Interaction
             set => _putBackTime = value;
         }
 
+    
+        /// <summary>
+        /// Hidden in the editor!
+        /// Used to disable certain fields in the editor when controlled by an Exhibition Display.
+        /// </summary>
+        [SerializeField]
+        private bool _externallyControlled;
+        public bool externallyControlled
+        {
+            get => _externallyControlled;
+            set => _externallyControlled = value;
+        }
+
+
         private Coroutine putBackCoroutine;
 
 
+        /// <summary>
+        /// Deactivates the socket if no `putBackObjectInstance` could be created and sets up the inherited socket classes. 
+        /// Can be overwritten, but `base.Awake()` should be called to ensure correct behavior.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -64,6 +98,11 @@ namespace ExPresSXR.Interaction
             socketActive = _putBackInstance != null;
         }
 
+
+        /// <summary>
+        /// Resets the putBackObject when rebuilding to prevent errors.
+        /// Can be overwritten, but `base.OnEnable()` should be called to ensure correct behavior.
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -81,6 +120,11 @@ namespace ExPresSXR.Interaction
             selectExited.AddListener(ShowHighlighter);
         }
 
+
+        /// <summary>
+        /// Determines if a `XRGrabInteractable` can hover, e.g. is considered a valid target.
+        /// Can be overwritten, but `base.CanHover(interactable)` should be called to ensure correct behavior.
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -90,8 +134,20 @@ namespace ExPresSXR.Interaction
             selectExited.RemoveListener(ShowHighlighter);
         }
 
+        /// <summary>
+        /// Determines if a `XRGrabInteractable` can hover, i.e. is considered a valid target.
+        /// Can be overwritten, but `base.CanHover(interactable)` should be called to ensure correct behavior.
+        /// </summary>
+        /// <param name="interactable">Interactable hovering.</param>
+        /// <returns>If the interactable can hover.</returns>
         public override bool CanHover(IXRHoverInteractable interactable) => IsObjectMatch(interactable) && base.CanHover(interactable);
 
+        /// <summary>
+        /// Determines if a `XRGrabInteractable` can be selected, i.e. is considered a valid target.
+        /// Can be overwritten, but `base.CanSelect(interactable)` should be called to ensure correct behavior.
+        /// </summary>
+        /// <param name="interactable">Interactable selecting</param>
+        /// <returns>If the interactable can select.</returns>
         public override bool CanSelect(IXRSelectInteractable interactable) => IsObjectMatch(interactable) && base.CanSelect(interactable);
 
         private void StartPutBackTimer(SelectExitEventArgs args)
@@ -140,6 +196,11 @@ namespace ExPresSXR.Interaction
         private bool IsObjectMatch(IXRInteractable interactable)
             => _putBackInteractable != null && interactable.transform.gameObject == _putBackInteractable.transform.gameObject;
 
+
+        /// <summary>
+        /// Updates the `putBackPrefab` by destroying and creating instances, adding/removing listeners and de-/selecting the interactable. 
+        /// Will be automatically called when setting `putBackPrefab`.
+        /// </summary>
         public void UpdatePutBackObject()
         {
             if (!ValidatePutBackPrefab())
@@ -239,6 +300,11 @@ namespace ExPresSXR.Interaction
             SetHighlighterVisible(showHighlighter && _putBackInstance == null);
         }
 
+
+        /// <summary>
+        /// Checks if all references derived from the putBackPrefab are valid.
+        /// </summary>
+        /// <returns>If all references are valid.</returns>
         public bool ArePutBackReferencesValid()
         {
             bool hasPrefab = _putBackPrefab != null;
@@ -252,6 +318,10 @@ namespace ExPresSXR.Interaction
         }
 
 
+        /// <summary>
+        /// Checks if the putBackPrefab is valid with respect to the current configuration.
+        /// </summary>
+        /// <returns>If the putBackPrefab is valid.</returns>
         private bool ValidatePutBackPrefab()
         {
 #if UNITY_EDITOR
