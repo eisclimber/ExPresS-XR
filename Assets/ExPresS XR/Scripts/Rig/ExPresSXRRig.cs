@@ -196,23 +196,23 @@ namespace ExPresSXR.Rig
         #region Head Collisions
         [Tooltip("Prevents the players Camera from clipping through Objects and looking inside them by actively puhing the player back.")]
         [SerializeField]
-        private bool _headCollisionEnabled;
-        public bool headCollisionEnabled
+        private bool _headCollisionPushback;
+        public bool headCollisionPushback
         {
-            get => _headCollisionEnabled;
+            get => _headCollisionPushback;
             set
             {
-                _headCollisionEnabled = value;
+                _headCollisionPushback = value;
 
                 if (_playerHeadCollider != null)
                 {
-                    _playerHeadCollider.collisionPushbackEnabled = _headCollisionEnabled;
+                    _playerHeadCollider.collisionPushbackEnabled = _headCollisionPushback;
                 }
             }
         }
 
         [Tooltip("Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them."
-                    + " Does not require headCollisionEnabled to be enabled to work")]
+                    + " Does not require headCollisionPushback to be enabled to work")]
         [SerializeField]
         private bool _showCollisionVignetteEffect;
         public bool showCollisionVignetteEffect
@@ -508,7 +508,7 @@ namespace ExPresSXR.Rig
 
             // Apply Head Collisions
             playerHeadCollider = _playerHeadCollider;
-            headCollisionEnabled = _headCollisionEnabled;
+            headCollisionPushback = _headCollisionPushback;
             handModelCollisions = _handModelCollisions;
             showCollisionVignetteEffect = _showCollisionVignetteEffect;
         }

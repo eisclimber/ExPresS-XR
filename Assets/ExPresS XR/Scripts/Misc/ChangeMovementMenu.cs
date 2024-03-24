@@ -57,7 +57,7 @@ namespace ExPresSXR.Misc
             public Toggle climbToggle;
             public Toggle climbControlGravityToggle;
             public TMP_Dropdown handModelDropdown;
-            public Toggle headCollisionEnabledToggle;
+            public Toggle headCollisionPushbackToggle;
             public Toggle headCollisionIndicatorToggle;
 
 
@@ -101,7 +101,7 @@ namespace ExPresSXR.Misc
 
                 FindComponentIfMissing(ref handModelDropdown, searchTransform, "Hand Model Dropdown");
 
-                FindComponentIfMissing(ref headCollisionEnabledToggle, searchTransform, "Head Collision Toggle");
+                FindComponentIfMissing(ref headCollisionPushbackToggle, searchTransform, "Head Collision Pushback");
                 FindComponentIfMissing(ref headCollisionIndicatorToggle, searchTransform, "Collision Indicator Toggle");
             }
 
@@ -138,9 +138,9 @@ namespace ExPresSXR.Misc
                     handModelDropdown.onValueChanged.AddListener((value) => { rig.handModelMode = (HandModelMode)value; });
                 }
 
-                if (headCollisionEnabledToggle != null)
+                if (headCollisionPushbackToggle != null)
                 {
-                    headCollisionEnabledToggle.onValueChanged.AddListener((value) => { rig.headCollisionEnabled = value; });
+                    headCollisionPushbackToggle.onValueChanged.AddListener((value) => { rig.headCollisionPushback = value; });
                 }
 
                 if (headCollisionIndicatorToggle != null)
@@ -200,7 +200,7 @@ namespace ExPresSXR.Misc
 
                 TrySetToggleValue(directInteractionToggle, rig.interactionOptions.HasFlag(InteractionOptions.Direct));
 
-                TrySetToggleValue(headCollisionEnabledToggle, rig.headCollisionEnabled);
+                TrySetToggleValue(headCollisionPushbackToggle, rig.headCollisionPushback);
                 TrySetToggleValue(headCollisionIndicatorToggle, rig.showCollisionVignetteEffect);
             }
 

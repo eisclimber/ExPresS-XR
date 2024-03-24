@@ -251,7 +251,7 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.LabelField("Head Collisions", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_headCollisionEnabled"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_headCollisionPushback"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_showCollisionVignetteEffect"), true);
             EditorGUI.indentLevel--;
         }

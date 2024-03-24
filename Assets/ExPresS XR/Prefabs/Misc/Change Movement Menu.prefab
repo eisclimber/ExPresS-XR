@@ -3552,7 +3552,7 @@ MonoBehaviour:
     climbToggle: {fileID: 6781155476867549205}
     climbControlGravityToggle: {fileID: 2675675735085979118}
     handModelDropdown: {fileID: 5941111357981079129}
-    headCollisionEnabledToggle: {fileID: 5918176893380491280}
+    headCollisionPushbackToggle: {fileID: 5918176893380491280}
     headCollisionIndicatorToggle: {fileID: 2413429957906632476}
   _findMissingReferences: 0
 --- !u!223 &4934983673057966877
@@ -3600,7 +3600,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8430650568201772439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7758,7 +7758,7 @@ GameObject:
   - component: {fileID: 8319994394121709615}
   - component: {fileID: 5332301290875659293}
   m_Layer: 0
-  m_Name: Head Collision Text (TMP)
+  m_Name: Head Collision Pushabck Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7811,7 +7811,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Head Collision Enabled:'
+  m_text: 'Head Collision Pushback:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8613,7 +8613,7 @@ GameObject:
   - component: {fileID: 8432877630112555982}
   - component: {fileID: 7872150911273045592}
   m_Layer: 5
-  m_Name: Head Collision
+  m_Name: Head Collision Pushback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9722,7 +9722,7 @@ GameObject:
   - component: {fileID: 3285780316954728104}
   - component: {fileID: 5918176893380491280}
   m_Layer: 5
-  m_Name: Head Collision Toggle
+  m_Name: Head Collision Pushback Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

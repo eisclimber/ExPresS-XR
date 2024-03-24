@@ -32,7 +32,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("Wether or not multiple interactions can be performed when keeping the focus on an interactable.")]
+        [Tooltip("Whether or not multiple interactions can be performed when keeping the focus on an interactable.")]
         [SerializeField]
         private bool _canReselect = true;
         public bool canReselect
