@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192034326077010314}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6639484643018219743
 MonoBehaviour:
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e32b2a802dd9845b4574f8376e7d6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handModelMode: 1
+  _handModelMode: 0
   controllerCharacteristics: 580
   controllerModels:
   - {fileID: 7634514334346526944, guid: c2285fc937be62641b392c24ab84994b, type: 3}
@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 357722411443781339, guid: 816247f8855f5c143b1f4a6f5aad4e73, type: 3}
   - {fileID: 4024951872544157354, guid: 9678f15de925a4c48896f09124fe2186, type: 3}
   - {fileID: 5191550869875014123, guid: f4f1b0d938c6acf4a8e23cd5f55a988f, type: 3}
+  - {fileID: 977136328569608616, guid: f6ad6da5a870c32478276bfccb0d46cf, type: 3}
   handModel: {fileID: 5686134208185362930, guid: 1fd3a7c43c8190f4d8c167ebde694364, type: 3}
   customModel: {fileID: 8007995345765236298, guid: 3c352584cfbad8b43b4f2ea50cad68d7, type: 3}
   _modelCollisionsEnabled: 1
@@ -63,10 +64,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192034326077010314}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1978963367721589592
+--- !u!1 &253468589172771648
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7792998826270551900}
-  - component: {fileID: 1781642125213132486}
-  - component: {fileID: 1734565694245791902}
+  - component: {fileID: 6286888464729064708}
+  - component: {fileID: 8470401422963190285}
+  - component: {fileID: 8909942901880624841}
   m_Layer: 5
   m_Name: World Space Canvas
   m_TagString: Untagged
@@ -18,33 +18,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &7792998826270551900
+--- !u!224 &6286888464729064708
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978963367721589592}
+  m_GameObject: {fileID: 253468589172771648}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1024199974460417203}
-  m_Father: {fileID: 7134948107943827917}
+  - {fileID: 3511211135511082732}
+  m_Father: {fileID: 4722797936819303191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 89, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!223 &1781642125213132486
+--- !u!223 &8470401422963190285
 Canvas:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978963367721589592}
+  m_GameObject: {fileID: 253468589172771648}
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
@@ -61,13 +61,13 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1734565694245791902
+--- !u!114 &8909942901880624841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978963367721589592}
+  m_GameObject: {fileID: 253468589172771648}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!1 &4533338470599802659
+--- !u!1 &5858086751668190650
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,41 +92,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7134948107943827917}
-  m_Layer: 0
-  m_Name: Sunflower Display Image(Clone)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7134948107943827917
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4533338470599802659}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.000000029802322, y: 0, z: 0.000000033527613}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7792998826270551900}
-  m_Father: {fileID: 8315827386276863486}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6351687451072656001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1024199974460417203}
-  - component: {fileID: 4444360834989067887}
-  - component: {fileID: 7827266949096366090}
+  - component: {fileID: 3511211135511082732}
+  - component: {fileID: 2207822901384174136}
+  - component: {fileID: 5890368119975389589}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -134,40 +102,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1024199974460417203
+--- !u!224 &3511211135511082732
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6351687451072656001}
+  m_GameObject: {fileID: 5858086751668190650}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7792998826270551900}
+  m_Father: {fileID: 6286888464729064708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4444360834989067887
+--- !u!222 &2207822901384174136
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6351687451072656001}
+  m_GameObject: {fileID: 5858086751668190650}
   m_CullTransparentMesh: 1
---- !u!114 &7827266949096366090
+--- !u!114 &5890368119975389589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6351687451072656001}
+  m_GameObject: {fileID: 5858086751668190650}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -191,6 +159,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &7674835315462630309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4722797936819303191}
+  m_Layer: 0
+  m_Name: Sunflower Display Image(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4722797936819303191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7674835315462630309}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6286888464729064708}
+  m_Father: {fileID: 8315827386276863486}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &941036814026116867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -249,7 +249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5250526870915085326, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
       propertyPath: m_Name
-      value: Exhibition Display - Sunflower Variant
+      value: Exhibition Display - Sunflower
       objectReference: {fileID: 0}
     - target: {fileID: 5250526870915085327, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
       propertyPath: _infoText
@@ -268,15 +268,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4147733392915238304, guid: 1d0eec4aac7a46942a2752df761e2996, type: 3}
     - target: {fileID: 9108806282846458619, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
-      propertyPath: _putBackObjectInstance
+      propertyPath: _putBackInstance
       value: 
-      objectReference: {fileID: 4533338470599802659}
+      objectReference: {fileID: 7674835315462630309}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9108806282846458621, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7134948107943827917}
+      addedObject: {fileID: 4722797936819303191}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
 --- !u!4 &8315827386276863486 stripped

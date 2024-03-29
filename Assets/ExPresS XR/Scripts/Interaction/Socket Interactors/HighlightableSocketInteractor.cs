@@ -66,14 +66,22 @@ namespace ExPresSXR.Interaction
             }
         }
 
-        protected override void Awake()
+        protected override void OnEnable()
         {
-            base.Awake();
+            base.OnEnable();
 
             SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
 
             selectEntered.AddListener(HideHighlighter);
             selectExited.AddListener(ShowHighlighter);
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            selectEntered.RemoveListener(HideHighlighter);
+            selectExited.RemoveListener(ShowHighlighter);
         }
 
 

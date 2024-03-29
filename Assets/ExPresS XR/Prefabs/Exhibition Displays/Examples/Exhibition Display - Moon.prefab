@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1642657082922269080
+--- !u!1 &1995819792958332948
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 811085327005413310}
-  - component: {fileID: 8587527945725489390}
-  - component: {fileID: 8655352421174583305}
-  - component: {fileID: 6514153161907929643}
-  - component: {fileID: 1973071576801002664}
-  - component: {fileID: 6805319151343274889}
+  - component: {fileID: 1019978744811723327}
+  - component: {fileID: 2689223257254852595}
+  - component: {fileID: 6447727867243439399}
   m_Layer: 0
-  m_Name: Moon Interactable(Clone)
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &811085327005413310
+--- !u!4 &1019978744811723327
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642657082922269080}
+  m_GameObject: {fileID: 1995819792958332948}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5835772150343542585}
+  m_Father: {fileID: 3282331893910375741}
   m_LocalEulerAnglesHint: {x: -13.173, y: 98.53, z: 20.419}
---- !u!33 &8587527945725489390
+--- !u!33 &2689223257254852595
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642657082922269080}
+  m_GameObject: {fileID: 1995819792958332948}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8655352421174583305
+--- !u!23 &6447727867243439399
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642657082922269080}
+  m_GameObject: {fileID: 1995819792958332948}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -86,64 +83,51 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6514153161907929643
-SphereCollider:
+--- !u!1 &4380633723565558394
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642657082922269080}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &1973071576801002664
-Rigidbody:
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3282331893910375741}
+  - component: {fileID: 7980700770965408169}
+  - component: {fileID: 1487914433140644487}
+  - component: {fileID: 5514687753694173810}
+  m_Layer: 0
+  m_Name: Moon Interactable(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3282331893910375741
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642657082922269080}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &6805319151343274889
+  m_GameObject: {fileID: 4380633723565558394}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1019978744811723327}
+  m_Father: {fileID: 5835772150343542585}
+  m_LocalEulerAnglesHint: {x: -13.173, y: 98.53, z: 20.419}
+--- !u!114 &7980700770965408169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642657082922269080}
+  m_GameObject: {fileID: 4380633723565558394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5dd4e9ff7751e9c4fa0f5a70211bccdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
@@ -286,6 +270,60 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+  _minScaleFactor: 0.5
+  _maxScaleFactor: 3
+  _scaleSpeedOverride: -1
+  _resetScaleInSockets: 1
+  _scaleAllChildren: 1
+  _scaledChildren: []
+--- !u!135 &1487914433140644487
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4380633723565558394}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &5514687753694173810
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4380633723565558394}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &3356352514297492932
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -358,7 +396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5250526870915085326, guid: 214324f6677dc394d81b5c93ccfefb88, type: 3}
       propertyPath: m_Name
-      value: Exhibition Display - Moon Variant
+      value: Exhibition Display - Moon
       objectReference: {fileID: 0}
     - target: {fileID: 5250526870915085327, guid: 214324f6677dc394d81b5c93ccfefb88, type: 3}
       propertyPath: _infoText
@@ -391,19 +429,23 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4200220840152259745, guid: 315a01dce81f0404cba04e93d4d4279d, type: 3}
     - target: {fileID: 9108806282846458619, guid: 214324f6677dc394d81b5c93ccfefb88, type: 3}
-      propertyPath: _putBackObjectInstance
+      propertyPath: _putBackInstance
       value: 
-      objectReference: {fileID: 1642657082922269080}
+      objectReference: {fileID: 4380633723565558394}
+    - target: {fileID: 9108806282846458619, guid: 214324f6677dc394d81b5c93ccfefb88, type: 3}
+      propertyPath: _putBackInteractable
+      value: 
+      objectReference: {fileID: 7980700770965408169}
     - target: {fileID: 9108806282846458619, guid: 214324f6677dc394d81b5c93ccfefb88, type: 3}
       propertyPath: m_StartingSelectedInteractable
       value: 
-      objectReference: {fileID: 6805319151343274889}
+      objectReference: {fileID: 7980700770965408169}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9108806282846458621, guid: 214324f6677dc394d81b5c93ccfefb88, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 811085327005413310}
+      addedObject: {fileID: 3282331893910375741}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 214324f6677dc394d81b5c93ccfefb88, type: 3}
 --- !u!4 &5835772150343542585 stripped

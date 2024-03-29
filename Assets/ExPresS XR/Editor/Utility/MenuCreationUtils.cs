@@ -368,6 +368,12 @@ namespace ExPresSXR.Editor.Utility
             InstantiateGameObjectAtContextTransform(menuCommand, "Misc/Cake Demo UI");
         }
 
+        [MenuItem("GameObject/ExPresS XR/UI/Misc/Console To UI")]
+        static void CreateConsoleToUi(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "UI/Console To Ui");
+        }
+
 
         [MenuItem("GameObject/ExPresS XR/UI/Misc/Change Movement Menu")]
         static void CreateChangeMovementMenu(MenuCommand menuCommand)
@@ -475,7 +481,7 @@ namespace ExPresSXR.Editor.Utility
         [MenuItem("GameObject/ExPresS XR/Movement/Map Point Teleport/Basic Setup")]
         static void CreateBasicMapPointSetup(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Movement/Map Point Basic Setup");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Movement/Basic Map Point Setup");
         }
 
         [MenuItem("GameObject/ExPresS XR/Movement/Map Point Teleport/Map Point")]
