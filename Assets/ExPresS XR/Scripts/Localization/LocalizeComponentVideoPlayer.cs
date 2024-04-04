@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Video;
 using UnityEditor;
-using UnityEditor.Events;
 
 namespace ExPresSXR.Localization
 {
     internal static class LocalizeComponentVideoPlayer
     {
+#if UNITY_EDITOR
         /// <summary>
         /// Add ContextMenu-entry to localize a VideoPlayer.
         /// </summary>
@@ -22,7 +22,7 @@ namespace ExPresSXR.Localization
 
         /// <summary>
         /// Adds and sets up a VideoPlayer for Localization.
-        /// </summary>
+        /// /// </summary>
         /// <param name="target">VideoPlayer to add localization to.</param>
         public static void SetupForLocalization(VideoPlayer target)
         {
@@ -37,9 +37,10 @@ namespace ExPresSXR.Localization
             UnityAction<VideoClip> methodDelegate = System.Delegate.CreateDelegate(typeof(UnityAction<VideoClip>), target, setStringMethod) as UnityAction<VideoClip>;
             UnityAction methodPlayVideoDelegate = System.Delegate.CreateDelegate(typeof(UnityAction), target, playVideoMethod) as UnityAction;
 
-            UnityEventTools.AddVoidPersistentListener(comp.OnUpdateAsset, methodStopVideoDelegate);
-            UnityEventTools.AddPersistentListener(comp.OnUpdateAsset, methodDelegate);
-            UnityEventTools.AddVoidPersistentListener(comp.OnUpdateAsset, methodPlayVideoDelegate);
+            UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(comp.OnUpdateAsset, methodStopVideoDelegate);
+            UnityEditor.Events.UnityEventTools.AddPersistentListener(comp.OnUpdateAsset, methodDelegate);
+            UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(comp.OnUpdateAsset, methodPlayVideoDelegate);
         }
+#endif
     }
 }

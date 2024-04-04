@@ -63,6 +63,7 @@ namespace ExPresSXR.Misc
             return string.Format(EXPRESS_XR_PREFAB_FORMAT, name);
 #else
             Debug.LogError("Prefabs should not be loaded during runtime using paths. Use a reference to the prefab instead!");
+            return "";
 #endif
         }
     }

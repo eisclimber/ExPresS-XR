@@ -44,6 +44,7 @@ namespace ExPresSXR.Movement
         /// The Tp Options will always be placed at the origin of this transform
         /// but their first object will be shifted by `Vector3.forward * _createdTpOptionRadius`
         /// </summary>
+        #pragma warning disable CS0414 // Not used outside the editor
         [SerializeField]
         private float _createdTpOptionRadius = DEFAULT_TP_OPTION_CREATION_RADIUS;
 

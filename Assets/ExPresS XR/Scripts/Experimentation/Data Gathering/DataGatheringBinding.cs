@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEditor;
 using System.Text.RegularExpressions;
 using System.Data;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
 using System.Linq;
