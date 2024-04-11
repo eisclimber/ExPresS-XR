@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Video;
 
 namespace ExPresSXR.Experimentation.DataGathering
@@ -34,6 +36,12 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// </summary>
         public const char DEFAULT_ESCAPE_CHAR = '"';
 
+
+        /// <summary>
+        /// String used when an Input action is tried to be exported but is invalid.
+        /// This happens most likely when the input action is not set up correctly.
+        /// </summary>
+        public const string INPUT_ACTION_ERROR_STRING = "ERROR";
 
         /// <summary>
         /// Joins the values into a CSV line using the given separator and csv-escaping (all) values if desired.
@@ -78,11 +86,18 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <returns>A (if required CSV-escaped) string.</returns>
         public static string GetValueSafe<T>(T value, char sep = DEFAULT_COLUMN_SEPARATOR)
         {
+            if (value == null)
+            {
+                return "";
+            }
+
             string valueString = value.ToString();
+
             if (!IsEscaped(valueString) && NeedsEscaping(valueString, sep))
             {
-                valueString = $"\"{ valueString.Replace("\"", "\"\"") }\"";
+                valueString = $"\"{valueString.Replace("\"", "\"\"")}\"";
             }
+            
             return valueString;
         }
 
@@ -132,6 +147,29 @@ namespace ExPresSXR.Experimentation.DataGathering
         public static string GetVideoName(VideoClip video, string streamedVideo = "")
         {
             return video != null ? video.name : streamedVideo;
+        }
+
+        /// <summary>
+        /// Returns the value of the input actions type as string.
+        /// If the input action is unavailable its `expectedControlType` (surrounded by pointed backet) will be returned,
+        /// that usually reflects the expected type but can be null. That can happen outside the editor and if no device is available.
+        /// If the action ref is invalid, `INPUT_ACTION_ERROR_STRING` wil be returned instead.
+        /// </summary>
+        /// <param name="actionRef">Action to be converted.</param>
+        /// <returns>String of the actions value.</returns>
+        public static string GetInputActionAsSafeString(InputActionReference actionRef)
+        {
+            if (actionRef != null && actionRef.action != null)
+            {
+                InputAction action = actionRef.action;
+                object valueObj = action.ReadValueAsObject();
+                if (valueObj != null)
+                {
+                    return $"{valueObj}"; 
+                }
+                return $"<{action.expectedControlType}>";
+            }
+            return INPUT_ACTION_ERROR_STRING;
         }
     }
 }

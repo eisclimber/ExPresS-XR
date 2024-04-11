@@ -313,7 +313,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             bindingValues.AddRange(_dataBindings.Select(v => v?.GetBindingValue() ?? ""));
             escapeIndividual.AddRange(_dataBindings.Select(v => !(v?.IsBoundToMultiColumnValue() ?? false) && _escapeColumns));
             // Add InputActionBindings
-            bindingValues.AddRange(_inputActionDataBindings.Select(v => v != null ? v.action.ReadValueAsObject().ToString() : ""));
+            bindingValues.AddRange(_inputActionDataBindings.Select(v => CsvUtility.GetInputActionAsSafeString(v)));
             escapeIndividual.AddRange(Enumerable.Repeat(false, bindingValues.Count - escapeIndividual.Count));
 
             // Convert to string

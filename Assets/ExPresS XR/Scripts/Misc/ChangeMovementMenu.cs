@@ -80,9 +80,9 @@ namespace ExPresSXR.Misc
 
 
             /// <summary>
-            /// Tries to find missing ui refrences based on the given transform.
+            /// Tries to find missing ui references based on the given transform.
             /// </summary>
-            /// <param name="searchTransform">Tranform to search from.</param>
+            /// <param name="searchTransform">Transform to search from.</param>
             public void FindMissing(Transform searchTransform)
             {
                 FindComponentIfMissing(ref inputMethodDropdown, searchTransform, "Input Method Dropdown");

@@ -753,8 +753,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// Returns a list of objects of the latest answered question.
         /// </summary>
         /// <returns>A list of objects for the latest question.</returns>
-        public List<object> GetLatestRoundDataExportValueList()
-                => latestRoundData?.GetCsvExportValuesList() ?? new List<object>(QuizRoundData.NUM_CSV_EXPORT_COLUMNS);
+        public List<object> GetLatestRoundDataExportValueList() => latestRoundData?.GetCsvExportValuesList() ?? new( new object[QuizRoundData.NUM_CSV_EXPORT_COLUMNS] );
 
 
         /// <summary>
@@ -774,7 +773,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <returns>A list of objects for the currently displayed question.</returns>
         public List<object> GetCurrentQuestionCsvExportValueList()
-                => currentQuestion?.GetQuestionCsvExportValuesList() ?? new List<object>(QuizRoundData.NUM_CSV_EXPORT_COLUMNS);
+                => currentQuestion?.GetQuestionCsvExportValuesList() ?? new( new object[QuizRoundData.NUM_CSV_EXPORT_COLUMNS] );
 
 
         /// <summary>
@@ -829,7 +828,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <returns>A list of objects containing all important values of the quiz config.</returns>
         public List<object> GetConfigCsvExportValuesList()
-            => config != null ? config.GetConfigCsvExportValuesList() : new List<object>(ButtonQuizConfig.NUM_CSV_EXPORT_COLUMNS);
+            => config != null ? config.GetConfigCsvExportValuesList() : new( new object[ButtonQuizConfig.NUM_CSV_EXPORT_COLUMNS] );
 
 
         /// <summary>

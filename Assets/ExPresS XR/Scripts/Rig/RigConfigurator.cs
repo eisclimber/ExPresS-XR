@@ -221,7 +221,7 @@ namespace ExPresSXR.Rig
     [Flags]
     public enum InteractionOptions
     {
-        None = 0,
+        Nothing = 0,
         Direct = 1,
         Poke = 2,
         UiPoke = 4,

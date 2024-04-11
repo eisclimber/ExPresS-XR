@@ -128,7 +128,7 @@ namespace ExPresSXR.Rig
         }
 
         /// <summary>
-        /// Unregisters the configured ClimbInteractors.
+        /// Unregister the configured ClimbInteractors.
         /// </summary>
         public void UnregisterInteractors()
         {
@@ -164,6 +164,7 @@ namespace ExPresSXR.Rig
             if (_playerRigidForce != null)
             {
                 _playerRigidForce.applyForce = false;
+                _playerRigidForce.ClearVelocity();
             }
         }
 

@@ -58,7 +58,7 @@ namespace ExPresSXR.Misc
             // Disable interactions while exiting
             if (_rig != null)
             {
-                _rig.interactionOptions = 0;
+                _rig.interactionOptions = InteractionOptions.Nothing;
             }
 
             if (_useFade)
