@@ -60,6 +60,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Eye Gaze Is Tracked",
+                    "type": "Button",
+                    "id": "1687e6cf-b730-4e8b-8cfa-f0e01427fe6f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Eye Gaze Tracking State",
                     "type": "Value",
                     "id": "73053154-2fbc-4d78-9cac-000282b64f79",
@@ -308,6 +317,17 @@
                 },
                 {
                     "name": "",
+                    "id": "6101ff96-8b36-4338-aac2-3af2b0d4e5b9",
+                    "path": "<HeadGazeDevice>/headGazeSelect",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Head Gaze Perform Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "50e25fd3-e5e8-4199-acd8-2dbef6d1e2dc",
                     "path": "<Keyboard>/t",
                     "interactions": "",
@@ -316,6 +336,50 @@
                     "action": "Test",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Button Fallback",
+                    "id": "fd75a925-3389-44e1-b750-2923ac545ab4",
+                    "path": "ButtonFallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Eye Gaze Is Tracked",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "256b7aa9-f4c3-46bb-8693-7b12828508b7",
+                    "path": "<EyeGaze>/pose/isTracked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Eye Gaze Is Tracked",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "94405584-ea49-47d4-8603-2486862d2ba3",
+                    "path": "<XRHMD>/isTracked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Eye Gaze Is Tracked",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "a7d1084a-db09-411c-828e-5c111df7b758",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Eye Gaze Is Tracked",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -387,6 +451,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Aim Flags",
+                    "type": "Value",
+                    "id": "cdab4ba2-4dec-40b0-8a0e-d143f1dba125",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Pinch Position",
                     "type": "Value",
                     "id": "cac52a91-5970-4ad2-8c86-a8c0e91a1837",
@@ -408,6 +481,24 @@
                     "name": "Poke Rotation",
                     "type": "Value",
                     "id": "0565b7f7-f841-4395-98df-a77f4dd6d9c9",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Grip Position",
+                    "type": "Value",
+                    "id": "22409ed1-04a7-4f0e-b774-1d53b3bbbfeb",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Grip Rotation",
+                    "type": "Value",
+                    "id": "e7515153-aa85-4c8d-aa01-df48fc04dbb2",
                     "expectedControlType": "Quaternion",
                     "processors": "",
                     "interactions": "",
@@ -612,6 +703,39 @@
                     "action": "Is Tracked",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dca75169-498b-48b0-896f-8ee104dfd9b3",
+                    "path": "<XRHandDevice>{LeftHand}/gripRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Grip Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "32a9c797-692e-46d8-a59b-c0fb7f87afd5",
+                    "path": "<XRHandDevice>{LeftHand}/gripPosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Grip Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46d16f48-05e5-4d60-9359-7ed572771daf",
+                    "path": "<MetaAimHand>{LeftHand}/aimFlags",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Aim Flags",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -674,6 +798,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "UI Scroll",
+                    "type": "Value",
+                    "id": "4013f39c-113f-4552-8130-dec16aae6ef0",
+                    "expectedControlType": "Vector2",
+                    "processors": "InvertVector2(invertY=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Rotate Anchor",
                     "type": "Value",
                     "id": "21b75b25-12ad-410f-b4f8-a7745b7aca27",
@@ -686,6 +819,24 @@
                     "name": "Translate Anchor",
                     "type": "Value",
                     "id": "bfa204c7-3c92-4193-bad1-39eb71920042",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Scale Toggle",
+                    "type": "Button",
+                    "id": "acc0b9e2-6658-4204-a082-24c332cfc91a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Scale Delta",
+                    "type": "Value",
+                    "id": "b93febd4-8b1d-441f-863b-28d606b60ebc",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -822,6 +973,39 @@
                     "processors": "ScaleVector2(x=0),StickDeadzone",
                     "groups": "Generic XR Controller",
                     "action": "Translate Anchor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c86cdadb-d26f-4675-9851-f35045b35bf0",
+                    "path": "<XRController>{LeftHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "UI Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75e72fb3-4b90-4e91-aca9-33cb2886bad4",
+                    "path": "<XRController>{LeftHand}/{Primary2DAxisClick}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Scale Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "581fed51-f58f-48d3-a0eb-1956783b54f3",
+                    "path": "<XRController>{LeftHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=0),StickDeadzone",
+                    "groups": "Generic XR Controller",
+                    "action": "Scale Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1063,6 +1247,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Aim Flags",
+                    "type": "Value",
+                    "id": "fd74da6c-964a-462c-b413-2f79c38f29bf",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Pinch Position",
                     "type": "Value",
                     "id": "7a2e5dcd-3e49-4622-90ea-6607994f2be0",
@@ -1084,6 +1277,24 @@
                     "name": "Poke Rotation",
                     "type": "Value",
                     "id": "3767652c-5427-421b-8f8d-660106453cb1",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Grip Position",
+                    "type": "Value",
+                    "id": "df209d1b-10f9-49ed-9a8b-d46715608e41",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Grip Rotation",
+                    "type": "Value",
+                    "id": "2903736b-73bc-462a-89d2-262875501b89",
                     "expectedControlType": "Quaternion",
                     "processors": "",
                     "interactions": "",
@@ -1288,6 +1499,39 @@
                     "action": "Is Tracked",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b3e4ece-4a6f-4fd0-9bc8-0babbf12cb89",
+                    "path": "<MetaAimHand>{RightHand}/aimFlags",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Aim Flags",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "696483f4-02f8-4f0c-ae61-252511f78636",
+                    "path": "<XRHandDevice>{RightHand}/gripPosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Grip Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26512910-97ea-4a5d-80f5-e639045b6b25",
+                    "path": "<XRHandDevice>{RightHand}/gripRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Grip Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1350,6 +1594,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "UI Scroll",
+                    "type": "Value",
+                    "id": "c2860fd2-3bbb-4124-a5bb-32444258f658",
+                    "expectedControlType": "Vector2",
+                    "processors": "InvertVector2(invertY=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Rotate Anchor",
                     "type": "Value",
                     "id": "9b5d8312-f609-4895-b70f-81a722b2ae11",
@@ -1362,6 +1615,24 @@
                     "name": "Translate Anchor",
                     "type": "Value",
                     "id": "6f7cf253-7062-443b-b10f-2be48a33f027",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Scale Toggle",
+                    "type": "Button",
+                    "id": "37395f95-8d38-4d45-a204-4bc07bd20210",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Scale Delta",
+                    "type": "Value",
+                    "id": "55b69376-7fa8-44cc-8200-9c02675ea35c",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -1498,6 +1769,39 @@
                     "processors": "ScaleVector2(x=0),StickDeadzone",
                     "groups": "Generic XR Controller",
                     "action": "Translate Anchor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d48e419-9f54-4021-bda6-fb72a67ef856",
+                    "path": "<XRController>{RightHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "UI Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b148e87f-9392-417b-a9b2-4fc977e564c9",
+                    "path": "<XRController>{RightHand}/{Primary2DAxisClick}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Scale Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "022f378d-6b4c-4eed-b9e7-4f1490fff4aa",
+                    "path": "<XRController>{RightHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=0),StickDeadzone",
+                    "groups": "Generic XR Controller",
+                    "action": "Scale Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2131,6 +2435,227 @@
                     "processors": "",
                     "groups": "",
                     "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Touchscreen Gestures",
+            "id": "fc6a3c03-b2f2-40a1-aaf0-0210c9c8b702",
+            "actions": [
+                {
+                    "name": "Tap Start Position",
+                    "type": "Value",
+                    "id": "784b161d-ed6f-4508-b868-444016cc8ec9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Drag Current Position",
+                    "type": "Value",
+                    "id": "3a0e5631-e96a-4093-a4b7-cb95b399a58c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Drag Delta",
+                    "type": "Value",
+                    "id": "cc4669cd-975e-41fe-8dcc-95dd2808e1dd",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pinch Start Position",
+                    "type": "Value",
+                    "id": "98374c33-164e-4eb1-b24e-a7c1f4b2473d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pinch Gap",
+                    "type": "Value",
+                    "id": "f6031283-06ae-46b7-a4c0-67d08d1261d6",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pinch Gap Delta",
+                    "type": "Value",
+                    "id": "e067d177-221d-4b01-9144-b50c967312af",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Twist Start Position",
+                    "type": "Value",
+                    "id": "66d10fee-bbc8-448f-9917-b4e29869c948",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Twist Delta Rotation",
+                    "type": "Value",
+                    "id": "5bea3060-fe93-42f8-a62d-7c2310cfc2e0",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Screen Touch Count",
+                    "type": "Value",
+                    "id": "6698245c-d498-47af-a284-12bd125f427c",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fb7368ec-f246-4a99-be19-5963b4122988",
+                    "path": "<TouchscreenGestureInputController>/tapStartPosition",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap Start Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67abb7bd-3d63-41b2-970c-a974e1b00963",
+                    "path": "<TouchscreenGestureInputController>/dragCurrentPosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drag Current Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "7ee826b0-d24d-44a0-93c8-6ab6c25d6761",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drag Current Position",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "5e711d24-23f6-4636-9604-580703a82b9f",
+                    "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drag Current Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "43bd5e8b-d0a1-455a-ba8d-36c0ea36c0c9",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drag Current Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ad3e3603-172c-4dd2-85a6-4ec8d9fc142b",
+                    "path": "<TouchscreenGestureInputController>/twistDeltaRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Twist Delta Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5928940-7ffa-4576-b5b4-b1bac249acdb",
+                    "path": "<TouchscreenGestureInputController>/fingerCount",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Screen Touch Count",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "32b23319-cdbd-4d90-92e1-6bef0677bc83",
+                    "path": "<TouchscreenGestureInputController>/dragDelta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drag Delta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e13f2c2-b5fb-4b96-867e-cdd1865d2414",
+                    "path": "<TouchscreenGestureInputController>/pinchStartPosition1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pinch Start Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e2f32c3-8f39-4e0b-9990-af294c66f82f",
+                    "path": "<TouchscreenGestureInputController>/pinchGapDelta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pinch Gap Delta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fae6a343-6d10-4ce4-9082-1d769901c505",
+                    "path": "<TouchscreenGestureInputController>/twistStartPosition1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Twist Start Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cb71e677-fd3f-47b3-8a23-5add0a259239",
+                    "path": "<TouchscreenGestureInputController>/pinchGap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pinch Gap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

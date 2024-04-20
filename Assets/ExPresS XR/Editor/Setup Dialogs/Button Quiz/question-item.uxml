@@ -5,8 +5,8 @@
             <ui:VisualElement name="question-row">
                 <uie:ObjectField label="Question Object:" name="question-object-field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="margin-right: 75px; display: flex;" />
                 <uie:ObjectField label="Question Video:" name="question-video-field" type="UnityEngine.Video.VideoClip, UnityEngine.VideoModule" style="margin-right: 75px; display: none;" />
-                <ui:TextField picking-mode="Ignore" label="Question Streamed Video:" text="Enter StreamingAsset Question URL..." name="question-video-url-field" tooltip="Should be used to load videos from the &quot;StreamingAssets/&quot;-folder to increase performance with weaker VR headsets like the Quest 2. The Path should be realtive to StreamingAssets." style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
-                <ui:TextField picking-mode="Ignore" label="Question Text:" text="Enter Question..." name="question-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px;" />
+                <ui:TextField picking-mode="Ignore" label="Question Streamed Video:" text="Enter StreamingAsset Question URL..." name="question-video-url-field" tooltip="Should be used to load videos from the &quot;StreamingAssets/&quot;-folder to increase performance with weaker VR headsets like the Quest 2. The Path should be realtive to StreamingAssets." style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px; margin-left: 0;" />
+                <ui:TextField picking-mode="Ignore" label="Question Text:" text="Enter Question..." name="question-text-field" style="display: none; border-right-width: 75px; border-left-width: 3px; border-top-width: 1px; border-bottom-width: 1px; margin-left: 0;" />
             </ui:VisualElement>
             <ui:VisualElement name="answers" style="flex-grow: 1; margin-top: 8px; margin-bottom: 8px;">
                 <ui:VisualElement name="answer-1" style="flex-direction: row;">

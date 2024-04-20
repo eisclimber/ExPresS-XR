@@ -3,7 +3,7 @@ using UnityEditor;
 using ExPresSXR.Presentation;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ExhibitionDisplay))]
@@ -39,7 +39,14 @@ namespace ExPresSXR.Editor
                 targetScript.displayedPrefab = targetScript.displayedPrefab;
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObject"), true);
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
+            if (EditorGUI.EndChangeCheck())
+            {
+                // Update Displayed Prefab so non-interactable may be removed
+                serializedObject.ApplyModifiedProperties();
+                targetScript.displayedPrefab = targetScript.displayedPrefab;
+            }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
             EditorGUI.indentLevel--;
 

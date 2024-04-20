@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using ExPresSXR.UI;
 using ExPresSXR.Rig;
+using UnityEditor;
+using UnityEngine.XR;
+using System.Reflection;
+using UnityEngine.Events;
 
 namespace ExPresSXR.Misc
 {
@@ -38,20 +42,64 @@ namespace ExPresSXR.Misc
             return null;
         }
 
+        /// <summary>
+        /// Finds the first ExPresSXRRig in the scene (if exists).
+        /// Returns true if the rig was found and set to the out parameter and false otherwise.
+        /// 
+        /// 
+        /// Be aware that the rig must be tagged as "Player"!
+        /// !!This operation is expensive, call it sparingly and rather use direct References to the rig whenever possible!!
+        /// </summary>
+        /// <param name="rig">The rig or null.</param>
+        /// <returns>If a rig was found</returns>
+        public static bool TryFindExPresSXRRigReference(out ExPresSXRRig rig)
+        {
+            GameObject[] playerGos = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject go in playerGos)
+            {
+                if (go.TryGetComponent(out rig))
+                {
+                    return true;
+                }
+            }
+            rig = null;
+            return false;
+        }
         
 
+        /// <summary>
+        /// Helper class to calculate the positive modulo for integers.
+        /// It differs from the remainder function (%) as it will return only positive values including zero.
+        /// </summary>
+        /// <param name="a">Dividend of the modulo operation.</param>
+        /// <param name="n">Divider of the modulo operation.</param>
+        /// <returns>The positive modulo of 'a mod n'.</returns>
+        public static int PosMod(int a, int n)
+        {
+            if (n < 0)
+            {
+                n = -n;
+            }
+
+            int r = a % n;
+            return r < 0 ? r + n : r;
+        }
+
+        #region Scene Switching
         /// <summary>
         /// Changes a scene whilst the current rig is faded out. Supports 'DontDestroyOnLoad' if enabled on the rig.
         /// If no rig is provided or it does does not have a fade Rect the Scene will change instant.
         /// </summary>
         /// <param name="rig">The rig that is will be attempted to fade. </param>
         /// <param name="sceneIdx"> The Scene index to change to (from the build settings). </param>
-        /// <param name="keepRig"> </param>
-        public static void ChangeSceneWithFade(ExPresSXRRig rig, int sceneIdx, bool keepRig)
+        /// <param name="keepRig"> Wether or not the rig should be kept after loading the new scene. </param>
+        /// <param name="sceneLoadedCallback"> A callback that will be executed after the new scene loaded. Can be null. </param>
+        public static void ChangeSceneWithFade(ExPresSXRRig rig, int sceneIdx, bool keepRig, Action sceneLoadedCallback)
         {
             if (rig == null || rig.fadeRect == null)
             {
-                SceneManager.LoadScene(sceneIdx, LoadSceneMode.Single);
+                // No Rig => No Fade Out
+                SwitchSceneAsync(sceneIdx, sceneLoadedCallback);
             }
             else
             {
@@ -62,13 +110,40 @@ namespace ExPresSXR.Misc
                     UnityEngine.Object.DontDestroyOnLoad(rig);
                 }
 
-                // Use local functions to automatically remove the listeners on completion
+                /*
+                    Use local functions to remove the listeners on completion.
+                */
                 void SceneSwitcher()
                 {
-                    SceneManager.LoadScene(sceneIdx, LoadSceneMode.Single);
-                    fadeRect.OnFadeToColorCompleted.RemoveListener(SceneSwitcher);
+                    SwitchSceneAsync(sceneIdx, RigSetup);
+                }
+
+                void RigSetup()
+                {
+                    if (!keepRig)
+                    {
+                        if (TryFindExPresSXRRigReference(out ExPresSXRRig newRig))
+                        {
+                            fadeRect = newRig.fadeRect;
+                        }
+                        else
+                        {
+                            Debug.LogError("Could not find the new ExPresSXRRig, make sure it has the tag 'Player' and "
+                                            + "it is the highest in the hierarchy with that tag. "
+                                            + "Be aware this means that the callback will never be invoked!");
+                        }
+                    }
+                    else
+                    {
+                        fadeRect.OnFadeToColorCompleted.RemoveListener(SceneSwitcher);
+                    }
+
                     fadeRect.OnFadeToClearCompleted.AddListener(SwitchCleanup);
+                    fadeRect.FadeToColor(true);
                     fadeRect.FadeToClear(false);
+
+                    // Invoke Callback if provided
+                    sceneLoadedCallback?.Invoke();
                 }
 
                 void SwitchCleanup()
@@ -76,15 +151,28 @@ namespace ExPresSXR.Misc
                     fadeRect.OnFadeToColorCompleted.RemoveListener(SwitchCleanup);
                 }
 
+
+                // Fade out and switch scene
                 fadeRect.FadeToColor(false);
                 fadeRect.OnFadeToColorCompleted.AddListener(SceneSwitcher);
             }
         }
 
-
-
         /// <summary>
-        /// Populates an <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.
+        /// Switches the scene to the given index (if possible) and invokes a callback after completion.
+        /// </summary>
+        /// <param name="sceneIdx">The scene's index. Must be added to the BuildSetting to receive an index.</param>
+        /// <param name="callback">The callback invoked after completing the AsyncLoad. Can be null. </param>
+        public static void SwitchSceneAsync(int sceneIdx, Action callback)
+        {
+            AsyncOperation op = SceneManager.LoadSceneAsync(sceneIdx, LoadSceneMode.Single);
+            op.completed += (_) => { callback?.Invoke(); };
+        }
+        #endregion
+
+        # region Dropdown Helper
+        /// <summary>
+        /// Populates a <see cref="Dropdown"/> with the names of a given <see cref="Enum"/>.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
         /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
@@ -112,7 +200,7 @@ namespace ExPresSXR.Misc
 
 
         /// <summary>
-        /// Populates an <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
+        /// Populates a <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
         /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
@@ -137,7 +225,7 @@ namespace ExPresSXR.Misc
         }
 
         /// <summary>
-        /// Populates an <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
+        /// Populates a <see cref="TMP_Dropdown"/> with the names of a given <see cref="Enum"/>.
         /// Be careful as this will produce an entry for every combination, meaning 2^{Enum.Length} entries.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
@@ -192,7 +280,7 @@ namespace ExPresSXR.Misc
 
 
         /// <summary>
-        /// Populates an <see cref="TMP_Dropdown"/> with the names proved by stringOptions.
+        /// Populates a <see cref="TMP_Dropdown"/> with the names proved by stringOptions.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
         /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
@@ -236,5 +324,6 @@ namespace ExPresSXR.Misc
             int maxEnumValue = (int)Mathf.Pow(2.0f, Enum.GetNames(typeof(T)).Length);
             return intValue >= 0 && intValue < maxEnumValue ? intValue : maxEnumValue;
         }
+        #endregion
     }
 }

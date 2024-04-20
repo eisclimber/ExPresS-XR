@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc
 {
+    [RequireComponent(typeof(MeshFilter))]
     public class MeshInverter : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
             if (TryGetComponent(out MeshFilter meshFilter))
             {

@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Controls;
 using ExPresSXR.UI;
+using ExPresSXR.Rig.HeadGazeInputDevice;
 
 
 namespace ExPresSXR.Rig
@@ -32,7 +32,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("Wether or not multiple interactions can be performed when keeping the focus on an interactable.")]
+        [Tooltip("Whether or not multiple interactions can be performed when keeping the focus on an interactable.")]
         [SerializeField]
         private bool _canReselect = true;
         public bool canReselect
@@ -88,7 +88,7 @@ namespace ExPresSXR.Rig
         public InputActionReference preventInteractionReference;
 
 
-        private Mouse _fakeInputDevice;
+        private HeadGazeDevice _headGazeDevice;
 
         private GameObject _hoverTarget;
         private float _timeLeftTillSelect;
@@ -113,15 +113,24 @@ namespace ExPresSXR.Rig
                 _headGazeReticle.hintDuration = _timeToSelect;
                 TryHideReticle();
             }
-            // Add a fake mouse that will be used to trigger the action (by pressing mouse_forward)
-            _fakeInputDevice = InputSystem.AddDevice<Mouse>();
         }
 
-        private void Update()
+        private void OnEnable()
+        {
+            // Add a fake mouse that will be used to trigger the action (by pressing mouse_forward)
+            _headGazeDevice = InputSystem.AddDevice<HeadGazeDevice>();
+            _headGazeDevice.MakeCurrent();
+        }
+
+        private void OnDisable()
+        {
+            // Add a fake mouse that will be used to trigger the action (by pressing mouse_forward)
+            InputSystem.RemoveDevice(_headGazeDevice);
+        }
+
+        private void FixedUpdate()
         {
             GameObject newTarget = TryGetNewTarget();
-
-            // Debug.Log(" Target: " + newTarget?.name);
 
             if (newTarget != _hoverTarget)
             {
@@ -209,21 +218,18 @@ namespace ExPresSXR.Rig
 
         private void PerformFakeButtonPress()
         {
-            using (StateEvent.From(_fakeInputDevice, out var eventPtr))
-            {
-                _fakeInputDevice.forwardButton.WriteValueIntoEvent(1.0f, eventPtr);
-                InputSystem.QueueEvent(eventPtr);
-                // Release button press after a short while
-                StartCoroutine(ReleaseButtonPress());
-            }
+            _headGazeDevice.SetHeadGazeSelectPressed();
+            // Release button press after a short while
+            StartCoroutine(ReleaseButtonPress());
         }
 
         private IEnumerator ReleaseButtonPress()
         {
             yield return new WaitForSeconds(0.05f);
-            using (StateEvent.From(_fakeInputDevice, out var eventPtr))
+            _headGazeDevice.SetHeadGazeSelectReleased();
+            using (StateEvent.From(_headGazeDevice, out var eventPtr))
             {
-                _fakeInputDevice.forwardButton.WriteValueIntoEvent(0.0f, eventPtr);
+                _headGazeDevice.headGazeSelect.WriteValueIntoEvent(0.0f, eventPtr);
                 InputSystem.QueueEvent(eventPtr);
             }
 
@@ -252,12 +258,5 @@ namespace ExPresSXR.Rig
                 _headGazeReticle.HideHint();
             }
         }
-
-
-        // // Allows in-editor changes
-        // private void OnValidate()
-        // {
-        //     teleportationEnabled = _teleportationEnabled;
-        // }
     }
 }

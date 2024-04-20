@@ -9,19 +9,37 @@ namespace ExPresSXR.UI
     [RequireComponent(typeof(Image))]
     public class FadeRect : MonoBehaviour
     {
+        /// <summary>
+        /// The color to be faded to.
+        /// Default is Transparent Black (`new(0.0f, 0.0f, 0.0f, 0.0f`).
+        /// </summary>
         public Color fadeColor = new(0.0f, 0.0f, 0.0f, 0.0f);
 
+        /// <summary>
+        /// Duration in seconds of a fade to black.
+        /// </summary>
         public float fadeToColorTime = 0.5f;
 
+        /// <summary>
+        /// Duration in seconds of a fade to transparent.
+        /// </summary>
         public float fadeToClearTime = 0.5f;
 
+        /// <summary>
+        /// Reference to the image used for fading.
+        /// </summary>
         [SerializeField]
         private Image _fadeImage;
 
         private FadeDirection _fadeDirection = FadeDirection.None;
 
-
+        /// <summary>
+        /// Emitted when a Fade to Color was completed.
+        /// </summary>
         public UnityEvent OnFadeToColorCompleted;
+        /// <summary>
+        /// Emitted when a Fade to Clear was completed.
+        /// </summary>
         public UnityEvent OnFadeToClearCompleted;
 
 
@@ -45,6 +63,11 @@ namespace ExPresSXR.UI
             UpdateFadeImage();
         }
 
+        /// <summary>
+        /// Starts a fade to color. 
+        /// This will be done over the duration of `fadeToBlackTime` if `instant = false` or instantaneously otherwise.
+        /// </summary>
+        /// <param name="instant">If the fade should use `fadeToColorTime` or be instant.</param>
         public void FadeToColor(bool instant = false)
         {
             _fadeDirection = FadeDirection.ToColor;
@@ -56,6 +79,11 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// Starts a fade to clear.
+        /// This will be done over the duration of `fadeToClearTime` if `instant = false` or instantaneously otherwise.
+        /// </summary>
+        /// <param name="instant">If the fade should use `fadeToClearTime` or be instant.</param>
         public void FadeToClear(bool instant = false)
         {
             _fadeDirection = FadeDirection.ToClear;
@@ -80,8 +108,8 @@ namespace ExPresSXR.UI
                 // => Fade to color completed
                 if (fadeColor.a < 1.0f && newFadeValue == 1.0f)
                 {
-                    OnFadeToColorCompleted.Invoke();
                     _fadeDirection = FadeDirection.None;
+                    OnFadeToColorCompleted.Invoke();
                 }
 
                 fadeColor.a = newFadeValue;
@@ -96,8 +124,8 @@ namespace ExPresSXR.UI
                 // => Fade to color completed
                 if (fadeColor.a > 0.0f && newFadeValue == 0.0f)
                 {
+                    _fadeDirection = FadeDirection.None;                    
                     OnFadeToClearCompleted.Invoke();
-                    _fadeDirection = FadeDirection.None;
                 }
 
                 fadeColor.a = newFadeValue;

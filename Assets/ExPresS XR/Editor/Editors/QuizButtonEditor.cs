@@ -1,8 +1,9 @@
+using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction.ButtonQuiz;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(QuizButton))]
     [CanEditMultipleObjects]
@@ -67,7 +68,7 @@ namespace ExPresSXR.Editor
 
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerText"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerPrefab"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerObject"), true);
             EditorGUI.indentLevel--;
         }
 
@@ -89,8 +90,10 @@ namespace ExPresSXR.Editor
 
             EditorGUI.indentLevel++;
 
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackTextLabel"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackObjectSocket"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_answerFeedbackAudioPlayer"), true);
-            
+
             EditorGUI.indentLevel--;
         }
     }

@@ -10,7 +10,10 @@ namespace ExPresSXR.Rig
     [AddComponentMenu("ExPresS XR/Hand Controller")]
     public class HandControllerManager : ControllerManagerBase
     {
-        // Movement
+        #region Movement Configuration
+        /// <summary>
+        /// Whether or not teleportation is enabled.
+        /// </summary>
         [SerializeField]
         private bool _teleportationEnabled;
         public bool teleportationEnabled
@@ -23,6 +26,9 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).
+        /// </summary>
         [SerializeField]
         private bool _teleportCancelEnabled;
         public bool teleportCancelEnabled
@@ -35,6 +41,10 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Whether or not the forwards direction after teleporting can be chosen when rotating the joystick.
+        /// The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.
+        /// </summary>
         [SerializeField]
         private bool _chooseTeleportForwardEnabled;
         public bool chooseTeleportForwardEnabled
@@ -51,7 +61,10 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        /// <summary>
+        /// Whether or not smooth movement (with the joystick) is enabled.
+        /// Overrides SmoothTurn and Teleportation.
+        /// </summary>
         [SerializeField]
         private bool _smoothMoveEnabled;
         public bool smoothMoveEnabled
@@ -64,7 +77,10 @@ namespace ExPresSXR.Rig
             }
         }
 
-        // Rotation
+        /// <summary>
+        /// Whether or not smooth turn (with the joystick) is enabled.
+        /// Overrides Teleportation.
+        /// </summary>
         [SerializeField]
         private bool _smoothTurnEnabled;
         public bool smoothTurnEnabled
@@ -77,6 +93,10 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Whether or not snap turn (with the joystick) is enabled.
+        /// The turn amount in degrees can be configured in the SnapTurn-Provider of the LocomotionSystem.
+        /// </summary>
         [SerializeField]
         private bool _snapTurnEnabled;
         public bool snapTurnEnabled
@@ -90,7 +110,9 @@ namespace ExPresSXR.Rig
         }
 
 
-        // Grab Move
+        /// <summary>
+        /// Whether or not (single hand) grab movement for this hand. 
+        /// </summary>
         [SerializeField]
         private bool _grabMoveEnabled;
         public bool grabMoveEnabled
@@ -106,10 +128,12 @@ namespace ExPresSXR.Rig
                 }
             }
         }
+        #endregion
 
-
-        ////////
-        // Interaction
+        #region Interaction Config
+        /// <summary>
+        /// Whether or not direct interaction (i.e. grabbing) is enabled.
+        /// </summary>
         [SerializeField]
         private bool _directInteractionEnabled;
         public bool directInteractionEnabled
@@ -126,7 +150,9 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        /// <summary>
+        /// Whether or not poke interaction is enabled.
+        /// </summary>
         [SerializeField]
         private bool _pokeInteractionEnabled;
         public bool pokeInteractionEnabled
@@ -145,6 +171,9 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Whether or not ray interaction is enabled.
+        /// </summary>
         [SerializeField]
         private bool _rayInteractionEnabled;
         public bool rayInteractionEnabled
@@ -163,7 +192,7 @@ namespace ExPresSXR.Rig
 
 
         /// <summary>
-        /// Requires rayInteractionEnabled to be true.
+        /// Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.
         /// </summary>
         [SerializeField]
         private bool _rayAnchorControlEnabled;
@@ -181,6 +210,9 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Whether or not the ray can also interact with UI.
+        /// </summary>
         [SerializeField]
         private bool _uiRayInteractionEnabled;
         public bool uiRayInteractionEnabled
@@ -198,6 +230,9 @@ namespace ExPresSXR.Rig
         }
 
 
+        /// <summary>
+        /// Whether or not poking can be used with UI.
+        /// </summary>
         [SerializeField]
         private bool _uiPokeInteractionEnabled;
         public bool uiPokeInteractionEnabled
@@ -214,6 +249,9 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.
+        /// </summary>
         [Tooltip("Turns all mesh renderers in children of the PokeInteractor on or off.")]
         [SerializeField]
         private bool _showPokeReticle;
@@ -234,10 +272,10 @@ namespace ExPresSXR.Rig
             }
         }
 
-
-        ////////
-        
-
+        /// <summary>
+        /// Enables scaling grabbed objects by pushing the joystick back and forward.
+        /// Requires Scaling[Direct/Ray]Interactors and AnchorControl to be enabled on the Ray.
+        /// </summary>
         [Tooltip("Enables scaling grabbed objects by pushing the joystick back and forward. (Requires Scaling[Direct/Ray]Interactors and AnchorControl to be enabled on the Ray).")]
         [SerializeField]
         private bool _scaleGrabbedObjects;
@@ -270,9 +308,25 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Duration in seconds for which the hand collisions are disabled after grabbing an object to allow it to be thrown.
+        /// If set to `0.0f` hand model collisions will be turned on immediately.
+        /// </summary>
+        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
+        [SerializeField]
+        private float _afterGrabWaitDuration = 0.3f;
+        public float afterGrabWaitDuration
+        {
+            get => _afterGrabWaitDuration;
+            set => _afterGrabWaitDuration = value;
+        }
+        #endregion
 
-        ////////
 
+        #region Hand Models
+        /// <summary>
+        /// How the Hand Model is displayed.
+        /// </summary>
         [SerializeField]
         private HandModelMode _handModelMode;
         public HandModelMode handModelMode
@@ -289,7 +343,11 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        /// <summary>
+        /// Whether or not the hand models have collisions to push objects. They are disabled when hovering an object.
+        /// Does not affect collisions when teleporting, these are always disabled.
+        /// Change the TeleportInteractors AutoHandModel to the one with collision to enable them.
+        /// </summary>
         [SerializeField]
         private bool _handModelCollisions;
         public bool handModelCollisions
@@ -305,20 +363,14 @@ namespace ExPresSXR.Rig
                 }
             }
         }
-
-        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
-        [SerializeField]
-        private float _afterGrabWaitDuration = 0.3f;
-        public float afterGrabWaitDuration
-        {
-            get => _afterGrabWaitDuration;
-            set => _afterGrabWaitDuration = value;
-        }
+        #endregion
 
 
         private Coroutine _afterGrabCoroutine;
 
-
+        /// <summary>
+        /// Connects additional events.
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -334,6 +386,9 @@ namespace ExPresSXR.Rig
         }
 
 
+        /// <summary>
+        /// Removes connected additional events.
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -345,7 +400,10 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        /// <summary>
+        /// Expands the base function by disabling AutoHand-Collisions during teleport.
+        /// </summary>
+        /// <param name="context">Callback Context of the InputAction.</param>
         protected override void OnStartTeleport(InputAction.CallbackContext context)
         {
             base.OnStartTeleport(context);
@@ -353,6 +411,10 @@ namespace ExPresSXR.Rig
             SetAutoHandCollisionsCurrentlyEnabled(false);
         }
 
+        /// <summary>
+        /// Expands the base function by enabling AutoHand-Collisions after teleport.
+        /// </summary>
+        /// <param name="context">Callback Context of the InputAction.</param>
         protected override void OnCancelTeleport(InputAction.CallbackContext context)
         {
             base.OnCancelTeleport(context);
@@ -379,7 +441,10 @@ namespace ExPresSXR.Rig
             }
         }
 
-
+        /// <summary>
+        /// Manages which InputActions are available.
+        /// This is slightly different to how the base function handles it.
+        /// </summary>
         protected override void UpdateLocomotionActions()
         {
             // Disable/enable Teleport and Turn when Move is enabled/disabled.
@@ -408,15 +473,10 @@ namespace ExPresSXR.Rig
             {
                 Debug.LogWarning("SmoothMove and/or SmoothTurn are both enabled with SnapTurn on this hand. SnapTurn is disabled, as it is overwritten by SmoothMove/SmoothTurn.");
             }
-
-            if (!_rayAnchorControlEnabled && scaleGrabbedObjects)
-            {
-                Debug.LogWarning("Scaling objects using the RayInteractor will require 'RayAnchorControl' to be enabled.");
-            }
         }
 
 
-        private void OnDirectInteractorSelectExited(SelectExitEventArgs _)
+        private void OnDirectInteractorSelectExited(SelectExitEventArgs args)
         {
             // Start wait timer 
             if (gameObject.activeInHierarchy && isActiveAndEnabled)
@@ -430,7 +490,7 @@ namespace ExPresSXR.Rig
         }
 
 
-        private void OnDirectInteractorSelectEntered(SelectEnterEventArgs _)
+        private void OnDirectInteractorSelectEntered(SelectEnterEventArgs args)
         {
             // Stop wait timer
             if (_afterGrabCoroutine != null)

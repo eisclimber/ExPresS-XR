@@ -7,6 +7,10 @@ using UnityEditor.UIElements;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 using TMPro;
 using ExPresSXR.Interaction.ButtonQuiz;
+using ExPresSXR.Editor.Utility;
+using ExPresSXR.Misc;
+using ExPresSXR.Experimentation.DataGathering;
+using UnityEditor.Events;
 
 namespace ExPresSXR.Editor.SetupDialogs
 {
@@ -251,7 +255,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
             // Setup step 9
             _createDataGathererButton = _step9Container.Q<Button>("create-data-gatherer-button");
-            _createDataGathererButton.clickable.clicked += () => { MenuCreationUtils.CreateDataGatherer(null); };
+            _createDataGathererButton.clickable.clicked += CreateDataGatherer;
 
             // Bind remaining UI Elements
             base.BindUiElements();
@@ -364,7 +368,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                 _quizModeField.value = _quizConfig.quizMode;
                 _questionOrderField.value = _quizConfig.questionOrdering;
                 _answersAmountsField.value = _quizConfig.answersAmount;
-                _answerOrderField.value = _quizConfig.questionOrdering;
+                _answerOrderField.value = _quizConfig.answerOrdering;
                 _questionTypeField.value = _quizConfig.questionType;
                 _answerTypeField.value = _quizConfig.answerType;
                 _feedbackModeField.value = _quizConfig.feedbackMode;
@@ -556,7 +560,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                                         (QuizButton)_button4Field.value };
 
             if (CreateQuiz(_quizConfig, buttons, (McConfirmButton)_mcConfirmButtonField.value,
-                            (TMP_Text)_textLabelField.value, (GameObject)_gameObjectField.value,
+                            (TMP_Text)_textLabelField.value, ((GameObject)_gameObjectField.value)?.transform,
                             (VideoPlayer)_videoPlayerField.value, (UnityEngine.UI.RawImage)_videoImageField.value,
                             (Canvas)_afterQuizMenuField.value))
             {
@@ -845,7 +849,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
                 ObjectField[] buttonFields = { _button1Field, _button2Field, _button3Field, _button4Field };
 
-                string buttonPrefabPath = CreationUtils.MakeExPresSXRPrefabPath(CreationUtils.QUIZ_BUTTON_SQUARE_PREFAB_NAME);
+                string buttonPrefabPath = RuntimeEditorUtils.MakeExPresSXRPrefabPath(CreationUtils.QUIZ_BUTTON_SQUARE_PREFAB_NAME);
                 QuizButton buttonPrefab = AssetDatabase.LoadAssetAtPath<QuizButton>(buttonPrefabPath);
                 for (int i = 0; i < numButtons; i++)
                 {
@@ -861,7 +865,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                 // Add Multiple Choice Button if necessary
                 if (_quizConfig.quizMode == QuizMode.MultipleChoice)
                 {
-                    string multiChoiceButtonPrefabPath = CreationUtils.MakeExPresSXRPrefabPath(CreationUtils.MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
+                    string multiChoiceButtonPrefabPath = RuntimeEditorUtils.MakeExPresSXRPrefabPath(CreationUtils.MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME);
                     QuizButton multiChoiceButtonPrefab = AssetDatabase.LoadAssetAtPath<QuizButton>(multiChoiceButtonPrefabPath);
 
                     QuizButton button = Instantiate(multiChoiceButtonPrefab, new Vector3(xOffset + QUIZ_BUTTON_SPACING, 0, 0), Quaternion.identity);
@@ -975,7 +979,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
             if (needsAfterQuizMenu)
             {
-                GameObject afterMenuGo = CreationUtils.InstantiateAndPlacePrefab(CreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
+                GameObject afterMenuGo = CreationUtils.InstantiateAndPlaceGameObject(CreationUtils.AFTER_QUIZ_DIALOG_PATH_NAME);
 
                 afterMenuGo.transform.SetParent(_quizGo.transform);
 
@@ -986,12 +990,12 @@ namespace ExPresSXR.Editor.SetupDialogs
         }
 
         public static bool CreateQuiz(ButtonQuizConfig config, QuizButton[] buttons, McConfirmButton mcConfirmButton,
-                                TMP_Text displayText, GameObject displayObject, VideoPlayer displayPlayer,
+                                TMP_Text displayText, Transform displayAnchor, VideoPlayer displayPlayer,
                                 UnityEngine.UI.RawImage displayVideoImage, Canvas afterQuizDialog)
         {
             CreateNewQuizGoIfNull();
 
-            if (!_quizGo.Setup(config, buttons, mcConfirmButton, displayText, displayObject, displayPlayer, displayVideoImage, afterQuizDialog))
+            if (!_quizGo.Setup(config, buttons, mcConfirmButton, displayText, displayAnchor, displayPlayer, displayVideoImage, afterQuizDialog))
             {
                 return false;
             }
@@ -1016,6 +1020,23 @@ namespace ExPresSXR.Editor.SetupDialogs
             {
                 quizField.value = _quizGo;
                 configField.value = _quizConfig;
+            }
+        }
+
+        private void CreateDataGatherer()
+        {
+            DataGatherer dataGatherer = MenuCreationUtils.CreateDataGatherer(null);
+            if (_quizGo != null)
+            {
+                DataGatheringBinding binding = new(_quizGo, "ButtonQuiz/string GetFullQuizCsvExportValues(char? sep)");
+                // Set dataBindings directly as it has been newly created as empty array
+                dataGatherer.dataBindings = new[] { binding };
+                #if UNITY_EDITOR
+                UnityAction exportAction = new(dataGatherer.ExportNewCSVLine);
+                UnityEventTools.AddPersistentListener(_quizGo.OnAnswerGiven, exportAction);
+                #else
+                _quizGo.OnAnswerGiven.AddListener(dataGatherer.ExportNewCSVLine());
+                #endif
             }
         }
 

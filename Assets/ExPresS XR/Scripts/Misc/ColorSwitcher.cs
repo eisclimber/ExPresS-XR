@@ -8,15 +8,27 @@ namespace ExPresSXR.Misc
 {
     public class ColorSwitcher : MonoBehaviour
     {
+        /// <summary>
+        /// The material that is replacing the material applied to the GameObject via Editor.
+        /// </summary>
         [Tooltip("The material that is replacing the material applied to the GameObject via Editor.")]
         public Material alternativeMaterial;
 
+        /// <summary>
+        /// The duration the material is switched when calling the '...ForSwitchDuration' functions.
+        /// </summary>
         [Tooltip("The duration the material is switched when calling the '...ForSwitchDuration' functions.")]
         public float switchDuration = 1.0f;
         
+        /// <summary>
+        /// When changing to the Original Material, the object's material must be the Alternative Material.
+        /// </summary>
         [Tooltip("When changing to the Original Material, the object's material must be the Alternative Material.")]
         public bool requireOriginalMaterialMatch;
         
+        /// <summary>
+        /// When changing to the Alternative Material, the object's material must be the Original Material.
+        /// </summary>
         [Tooltip("When changing to the Alternative Material, the object's material must be the Original Material.")]
         public bool requireAlternativeMaterialMatch;
 

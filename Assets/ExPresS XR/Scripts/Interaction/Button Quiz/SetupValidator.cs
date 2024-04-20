@@ -9,7 +9,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 {
     public class SetupValidator : MonoBehaviour
     {
-
+        /// <summary>
+        /// Determines if the ButtonQuizConfig and ButtonQuiz are valid.
+        /// Validation errors or warnings are printed to the console.
+        /// </summary>
+        /// <param name="config">Button Quiz Config to be evaluated.</param>
+        /// <param name="quiz">Button Quiz to be evaluated.</param>
+        /// <param name="ignoreQuizReferences">If the quiz' references should be checked for validity.</param>
+        /// <returns>Wether or not the configuration is valid.</returns>
         public static bool IsSetupValid(ButtonQuizConfig config, ButtonQuiz quiz, bool ignoreQuizReferences = false)
         {
             // Quiz is invalid without a config

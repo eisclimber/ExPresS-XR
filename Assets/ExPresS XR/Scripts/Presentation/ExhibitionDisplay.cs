@@ -25,10 +25,17 @@ namespace ExPresSXR.Presentation
                 if (_socket != null)
                 {
                     _socket.putBackPrefab = _displayedPrefab;
+
+                    if (_displayedPrefab != null && _socket.putBackPrefab == null)
+                    {
+                        Debug.LogError($"Could not set { _displayedPrefab }. You'll probably want to either add "
+                            + "an Interactable-Component to the prefab or set `_allowNonInteractables` to true.", this);
+                        _displayedPrefab = null;
+                    }
                 }
                 else
                 {
-                    Debug.LogError("Can't attach Prefab. PutBackSocketReference was not set.");
+                    Debug.LogError("Can't attach Prefab. PutBackSocketReference was not set.", this);
                 }
             }
         }
@@ -228,7 +235,19 @@ namespace ExPresSXR.Presentation
             get => _socket;
             set
             {
+                // Free control on current socket
+                if (_socket != null)
+                {
+                    _socket.externallyControlled = false;
+                }
+
                 _socket = value;
+
+                // Free control on current socket
+                if (_socket != null)
+                {
+                    _socket.externallyControlled = true;
+                }
 
                 displayedPrefab = _displayedPrefab;
                 putBackTime = _putBackTime;
@@ -404,7 +423,7 @@ namespace ExPresSXR.Presentation
                 _worldShowInfoButton.OnToggleReleased.AddListener(HideInfo);
             }
 
-            displayedPrefab = _displayedPrefab;
+            // displayedPrefab = _displayedPrefab;
             putBackTime = _putBackTime;
             spinObject = _spinObject;
             infoText = _infoText;
@@ -494,6 +513,12 @@ namespace ExPresSXR.Presentation
         public void HideInfo()
         {
             DisplayInfoContents(false);
+            
+            if (showInfoCoroutine != null)
+            {
+                StopCoroutine(showInfoCoroutine);
+                showInfoCoroutine = null;
+            }
         }
 
         private void OnUiShowInfoButtonPressed()
@@ -606,6 +631,12 @@ namespace ExPresSXR.Presentation
             labelText = _labelText;
             infoText = _infoText;
             allowNonInteractables = _allowNonInteractables;
+            putBackTime = _putBackTime;
+
+            if (_socket != null)
+            {
+                _socket.externallyControlled = true;
+            }
         }
     }
 }

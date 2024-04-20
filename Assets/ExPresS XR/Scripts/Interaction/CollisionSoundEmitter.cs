@@ -25,6 +25,17 @@ namespace ExPresSXR.Interaction
             }
         }
 
+
+        [Tooltip("Sound will only be played if the velocity of the rigidbody is above this threshold. If the threshold is 0, sound will always be played.")]
+        [SerializeField]
+        private float _collisionVelocityThreshold = 0.7f;
+
+
+        [Tooltip("Reference to the rigidbody that is used to determine the impact velocity. If the value is set to null it will be automatically retrieved on start. Can be ignored if the threshold is 0.")]
+        [SerializeField]
+        private Rigidbody _rb;
+
+
         [Tooltip("The AudioSource used to play the provided 'dropSound'. If none is provided the current GameObject is searched for an AudioSource-Component.")]
         [SerializeField]
         private AudioSource _audioSource;
@@ -65,6 +76,11 @@ namespace ExPresSXR.Interaction
                 Debug.LogError("No AudioSource was provided and none was found in the GameObject. No sound will be played when this object is dropped.");
             }
 
+            if (_rb == null && !TryGetComponent(out _rb) && _collisionVelocityThreshold > 0)
+            {
+                Debug.LogWarning("The impact velocity threshold was set above zero but no rigidbody was found or provided. Can't determine it's velocity.");
+            }
+
             StartNoAudioWaitTime();
         }
 
@@ -73,12 +89,24 @@ namespace ExPresSXR.Interaction
         {
             // Play only when the audioSource is set and the initial wait time is over
             // Player Collisions (i.e. Player-Tag) will be ignored
-            if (_audioSource != null && _audioSource.isActiveAndEnabled && !(_audioSource.isPlaying && requireAudioCompletion) 
-                && _silenceCoroutine == null && collision.collider != null && !collision.collider.CompareTag("Player"))
+            if (IsAudioValid() && IsCollisionValid(collision) && HasEnoughVelocity())
             {
                 _audioSource.Play();
             }
         }
+
+
+        private bool IsAudioValid()
+                        => audioSource != null && _audioSource.isActiveAndEnabled && !(_audioSource.isPlaying && requireAudioCompletion);
+        
+
+        private bool IsCollisionValid(Collision collision)
+                        => _silenceCoroutine == null && collision.collider != null && !collision.collider.CompareTag("Player");
+
+
+        private bool HasEnoughVelocity() 
+                        => _collisionVelocityThreshold <= 0.0f || _rb.velocity.magnitude >= _collisionVelocityThreshold;
+
 
         private IEnumerator InitialWaitTime()
         {

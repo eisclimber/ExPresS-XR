@@ -32,10 +32,18 @@ namespace ExPresSXR.Rig
         [SerializeField]
         [Tooltip("The GameObject containing the interactor used for direct manipulation.")]
         protected XRDirectInteractor m_DirectInteractor;
+        public XRDirectInteractor DirectInteractor
+        {
+            get => DirectInteractor;
+        }
 
         [SerializeField]
         [Tooltip("The GameObject containing the interactor used for distant/ray manipulation.")]
         protected XRRayInteractor m_RayInteractor;
+        public XRRayInteractor RayInteractor
+        {
+            get => m_RayInteractor;
+        }
 
         [SerializeField]
         [Tooltip("The GameObject containing the interactor used for teleportation.")]
@@ -76,6 +84,9 @@ namespace ExPresSXR.Rig
         /// Temporary scratch list to populate with the group members of the interaction group.
         /// </summary>
         static readonly List<IXRGroupMember> s_GroupMembers = new();
+
+
+        private Coroutine _afterInteractionsCoroutine;
 
         // For our input mediation, we are enforcing a few rules between direct, ray, and teleportation interaction:
         // 1. If the Teleportation Ray is engaged, the Ray interactor is disabled
@@ -172,13 +183,18 @@ namespace ExPresSXR.Rig
             // the first yield will execute after Update but still on the first frame.
             // If started in Start, Unity would not resume execution until the second frame.
             // See https://docs.unity3d.com/Manual/ExecutionOrder.html
-            StartCoroutine(OnAfterInteractionEvents());
+            _afterInteractionsCoroutine = StartCoroutine(OnAfterInteractionEvents());
         }
 
         protected virtual void OnEnable()
         {
             if (m_TeleportInteractor != null)
                 m_TeleportInteractor.gameObject.SetActive(false);
+            
+            if (_afterInteractionsCoroutine != null)
+            {
+                _afterInteractionsCoroutine = StartCoroutine(OnAfterInteractionEvents());
+            }
 
             SetupInteractorEvents();
         }

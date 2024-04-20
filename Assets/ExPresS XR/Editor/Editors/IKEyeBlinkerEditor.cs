@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.EyeTracking;
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(IKEyeBlinker))]
     [CanEditMultipleObjects]

@@ -5,15 +5,18 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
 using ExPresSXR.Interaction.ButtonQuiz;
+using System.Text.RegularExpressions;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 
-namespace ExPresSXR.Editor
+namespace ExPresSXR.Editor.Editors
 {
     [CustomPropertyDrawer(typeof(DataGatheringBinding))]
     public class DataGatheringBindingDrawer : PropertyDrawer
     {
         private const int PROPERTY_SPACING = 2;
         private const string NO_VALUE_TEXT = "No Value";
+
 
         // Draw the property inside the given rect
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -40,9 +43,9 @@ namespace ExPresSXR.Editor
                 EditorGUI.ObjectField(positionRect, property.FindPropertyRelative("_targetObject"));
                 if (EditorGUI.EndChangeCheck())
                 {
-                    // Update members and reset _memberIdx if _targetObject changed
-                    UpdateMembers(property, property.FindPropertyRelative("_targetObject").objectReferenceValue as GameObject);
+                    // New targetObject = reset memberIndex
                     property.FindPropertyRelative("_memberIdx").intValue = -1;
+                    UpdateMemberList(property);
                 }
 
                 positionRect = new Rect(positionRect.x,
@@ -56,16 +59,9 @@ namespace ExPresSXR.Editor
 
                 string[] popupOptions = GetPopupMemberNames(property.FindPropertyRelative("_prettyMemberNameList"));
                 SerializedProperty memberIdx = property.FindPropertyRelative("_memberIdx");
-                
-                EditorGUI.BeginChangeCheck();
-                    // Popup (Add subtract 1 to account for an invalid member)
-                    memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
-                
-                if (EditorGUI.EndChangeCheck())
-                {
-                    // Change ExportColumnName if special Methods of TutorialQuiz were selected
-                    TryAddingSpecialExportColumnName(property, popupOptions, memberIdx.intValue + 1);
-                }
+
+                // Popup (Add subtract 1 to account for an invalid member)
+                memberIdx.intValue = EditorGUI.Popup(positionRect, "Value To Save", memberIdx.intValue + 1, popupOptions) - 1;
 
                 EditorGUI.EndDisabledGroup();
             }
@@ -96,166 +92,41 @@ namespace ExPresSXR.Editor
             return new string[] { NO_VALUE_TEXT };
         }
 
-
-        private bool IsObjectPropertyNull(SerializedProperty property)
+        private void UpdateMemberList(SerializedProperty property)
         {
-            return property == null || property.objectReferenceValue == null;
-        }
-
-        private void UpdateMembers(SerializedProperty property, GameObject targetObject)
-        {
-            SerializedProperty availableMemberNames = property.FindPropertyRelative("_memberNameList");
-            SerializedProperty prettyMemberNames = property.FindPropertyRelative("_prettyMemberNameList");
-
-            availableMemberNames.ClearArray();
-            prettyMemberNames.ClearArray();
-
-            int i = 0;
-
-            if (targetObject != null)
-            {
-                // Methods from the GameObject itself
-                foreach (MemberInfo info in targetObject.GetType().GetMembers())
-                {
-                    if (DataGatheringBinding.IsExportableMemberInfo(info))
-                    {
-                        availableMemberNames.InsertArrayElementAtIndex(i);
-                        availableMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                        string.Format("{0}/{1}", "Game Object", info.Name);
-
-                        prettyMemberNames.InsertArrayElementAtIndex(i);
-                        prettyMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    string.Format("{0}/{1}", "Game Object", GetPrettifiedMemberName(info));
-
-                        i++;
-                    }
-                }
-
-                Component[] components = targetObject.GetComponents<Component>();
-                Dictionary<string, int> compCounts = new();
-                Dictionary<string, int> compFullNameCounts = new();
-
-                foreach (Component component in components)
-                {
-                    // Found a duplicates of the simple/short names
-                    if (compCounts.TryGetValue(component.GetType().Name, out int duplicatesCount))
-                    {
-                        duplicatesCount++;
-                    }
-                    compCounts[component.GetType().Name] = duplicatesCount;
-                }
-
-                // Methods from all the  other components
-                foreach (Component component in components)
-                {
-                    Type componentType = component.GetType();
-                    int duplicatesCount = 0;
-                    string compName = componentType.Name;
-                    string compFullName = componentType.FullName;
-                    if (compCounts[componentType.Name] > 0)
-                    {
-                        // If "simple" names have duplicates try using the full names or index
-                        if (compFullNameCounts.TryGetValue(componentType.FullName, out duplicatesCount))
-                        {
-                            compName = $"{componentType.FullName} ({duplicatesCount})";
-                            compFullName = compName;
-                        }
-                        else
-                        {
-                            compName = componentType.FullName;
-                        }
-                    }
-
-                    foreach (MemberInfo info in component.GetType().GetMembers())
-                    {
-                        if (DataGatheringBinding.IsExportableMemberInfo(info))
-                        {                           
-                            availableMemberNames.InsertArrayElementAtIndex(i);
-                            availableMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    $"{compFullName}/{info.Name}";
-
-                            prettyMemberNames.InsertArrayElementAtIndex(i);
-                            prettyMemberNames.GetArrayElementAtIndex(i).stringValue =
-                                    $"{compName}/{GetPrettifiedMemberName(info)}";
-
-                            i++;
-                        }
-                    }
-
-                    compFullNameCounts[componentType.FullName] = duplicatesCount + 1;
-                }
-            }
-        }
-
-        private void TryAddingSpecialExportColumnName(SerializedProperty property, string[] prettyMembers, int idx)
-        {
-            if (idx >= 0 && idx < prettyMembers.Length)
-            {
-                string[] splitName = prettyMembers[idx].Split('/');
-                
-                if (splitName.Length == 2 && splitName[0].StartsWith("ButtonQuiz"))
-                {
-                    string memberName = splitName[1];
-
-                    if (memberName == "string GetConfigCsvExportValues()")
-                    {
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizConfig.CONFIG_CSV_HEADER_STRING;
-                    }
-                    else if (memberName == "string GetAllQuestionsCsvExportValues()")
-                    {
-                        Debug.Log("`GetQuestionsCsvExportValues()` will export multiple lines of values which might break the formatting of the csv.");
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
-                    }
-                    else if (memberName == "string GetCurrentQuestionCsvExportValue()")
-                    {
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuizQuestion.QUESTION_CSV_HEADER_STRING;
-                    }
-                    else if (memberName == "string GetFullQuizCsvValues()")
-                    {
-                        property.FindPropertyRelative("exportColumnName").stringValue = ButtonQuiz.FULL_QUIZ_CSV_HEADER;
-                    }
-                }
-            }
+            property.serializedObject.ApplyModifiedProperties();
+            int ownIndex = ParseOwnArrayIndex(property.propertyPath);
+            DataGatherer dataGatherer = (DataGatherer)property.serializedObject.targetObject;
+            dataGatherer.dataBindings[ownIndex].UpdateMemberList();
         }
 
 
-        private string GetPrettifiedMemberName(MemberInfo info)
+        private bool IsObjectPropertyNull(SerializedProperty property) => property == null || property.objectReferenceValue == null;
+
+
+        /// <summary>
+        /// Extract the index of the currently displayed DataGatheringBinding from the propertyPath.
+        /// The propertyPath should look something like this: _dataBindings.Array.data[1].
+        /// Returns -1 if not possible.
+        /// </summary>
+        /// <param name="path">The propertyPath to be parse.</param>
+        /// <returns>The index of the property or -1 if not possible.</returns>
+        private int ParseOwnArrayIndex(string path)
         {
-            Type infoType = DataGatheringBinding.GetMemberValueType(info);
-            string prettyName = info.Name;
+            int startIndex = path.IndexOf("[") + 1;
+            int endIndex = path.IndexOf("]");
 
-            if (primitiveTypeKeywords.ContainsKey(infoType))
+            if (startIndex != -1 && endIndex != -1)
             {
-                prettyName = $"{primitiveTypeKeywords[infoType]} {info.Name}";
+                string indexStr = path.Substring(startIndex, endIndex - startIndex);
+                int index;
+                if (int.TryParse(indexStr, out index))
+                {
+                    return index;
+                }
             }
-            if (info.MemberType == MemberTypes.Method)
-            {
-                // Add brackets to functions
-                prettyName += "()";
-            }
-
-            return prettyName;
+            // Error or not an array element
+            return -1;
         }
-
-        static readonly Dictionary<Type, string> primitiveTypeKeywords = new()
-        {
-            { typeof(bool), "bool" },
-            { typeof(byte), "byte" },
-            { typeof(char), "char" },
-            { typeof(decimal), "decimal" },
-            { typeof(double), "double" },
-            { typeof(float), "float" },
-            { typeof(int), "int" },
-            { typeof(long), "long" },
-            { typeof(sbyte), "sbyte" },
-            { typeof(short), "short" },
-            { typeof(string), "string" },
-            { typeof(uint), "uint" },
-            { typeof(ulong), "ulong" },
-            { typeof(ushort), "ushort" },
-            { typeof(Vector2), "Vector2" },
-            { typeof(Vector3), "Vector3" },
-            { typeof(Quaternion), "Quaternion" }
-        };
     }
 }

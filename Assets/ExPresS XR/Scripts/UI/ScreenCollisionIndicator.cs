@@ -7,7 +7,9 @@ namespace ExPresSXR.UI
 {
     public class ScreenCollisionIndicator : MonoBehaviour
     {
-
+        /// <summary>
+        /// The strength of the indicator. Ranging from 0.0f (=invisible) to 1.0f(=completely visible).
+        /// </summary>
         [Range(0f, 1f)]
         [SerializeField]
         private float _strength;
@@ -22,6 +24,9 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// The color the indicator is tinted.
+        /// </summary>
         [SerializeField]
         private Color _indicatorColor;
         public Color indicatorColor
@@ -40,9 +45,16 @@ namespace ExPresSXR.UI
         private Image _fadeImage;
 
 
+        /// <summary>
+        /// Fades the indicator in (i.e. makes it visible) over time. Values less or equal fade instant.
+        /// </summary>
+        /// <param name="duration">Duration of the fade in seconds.</param>
         public void FadeIn(float duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(1.0f, duration));
 
-
+        /// <summary>
+        /// Fades the indicator in (i.e. makes hides it) over time. Values less or equal fade instant.
+        /// </summary>
+        /// <param name="duration">Duration of the fade in seconds.</param>
         public void FadeOut(float duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(0.0f, duration));
 
 
