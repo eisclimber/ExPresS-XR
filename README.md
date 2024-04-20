@@ -30,42 +30,42 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
 - In-editor setup dialogs and tutorials for a quick start with your project.
 - Detailed documentation of the project components and workflow.
 - A fully configurable XR Rig.
-  - Three input modes: Controller, Head Gaze, and Eye Gaze (untested).
-  - Different movement options: Teleportation, Continuous Move, Climbing, Grab Move, Teleport-Stations, ....
-  - Customizable interaction options: Ray, Grab/Direct, Poke, UI, ....
-  - Head Collision with collision detection, pushback and visual feedback.
-  - Virtual animated hands allowing grabbing and pushing of objects.
-  - Display the controllers used in the game.
-  - A system for hand animations when grabbing.
-  - A basic implementation of Inverse Kinematics (IK). For more elaborate IK use add-ons like FinalIK.
+  - Three input modes: Controller, Head Gaze, and Eye Gaze (untested).
+  - Different movement options: Teleportation, Continuous Move, Climbing, Grab Move, Teleport-Stations, ....
+  - Customizable interaction options: Ray, Grab/Direct, Poke, UI, ....
+  - Head Collision with collision detection, pushback and visual feedback.
+  - Virtual animated hands allowing grabbing and pushing of objects.
+  - Display the controllers used in the game.
+  - A system for hand animations when grabbing.
+  - A basic implementation of Inverse Kinematics (IK). For more elaborate IK use add-ons like FinalIK.
 - A great expansion of Unity's interaction toolkit.
-  - Scaling of grabbed objects.
-  - Sockets that highlight their size and can be setup to accept certain objects.
-  - A socket that will move objects back to the socket's position when no interaction is performed.
-  - Physical Buttons with toggle mode.
-  - Custom teleportation areas and sockets.
-  - UI keyboards usable with XR.
-  - Sound- and rumble-emission upon collision.
-  - Grab and interaction triggers.
-  - Various minigames and much more!
-  - Helpers for localization.
+  - Scaling of grabbed objects.
+  - Sockets that highlight their size and can be setup to accept certain objects.
+  - A socket that will move objects back to the socket's position when no interaction is performed.
+  - Physical Buttons with toggle mode.
+  - Custom teleportation areas and sockets.
+  - UI keyboards usable with XR.
+  - Sound- and rumble-emission upon collision.
+  - Grab and interaction triggers.
+  - Various minigames and much more!
+  - Helpers for localization.
 - A HUD system, allowing full screen fades and other permanent UI elements.
 - Configurable displays to present objects and further information in VR.
-  - The objects can be picked up and inspected.
+  - The objects can be picked up and inspected.
 - Automatic Creation of "neutral"-looking rooms with specified dimensions for quick experiment setups.
 - An easy-to-use system for gathering and exporting data from anywhere in the VR.
-  - Gather any CSV data within seconds!
-  - Supports different separators and multiple columns.
-  - Structured similar to Unity's event system.
-  - Data can be saved locally or sent via HTTP.
-  - Can be controlled through the editor or via code.
+  - Gather any CSV data within seconds!
+  - Supports different separators and multiple columns.
+  - Structured similar to Unity's event system.
+  - Data can be saved locally or sent via HTTP.
+  - Can be controlled through the editor or via code.
 - A fully customizable quizzing system.
-  - Users answer a question by pressing a physical button in the VR.
-  - Can be tailored and edited to one's likings using a setup dialog.
-  - Allows configuring a multitude of parameters, such as: Multiple or single choice, number of answers, question order, etc.
-  - Supports Questions, Answers and Feedback in the form of Text, GameObjects, Images and Videos.
-  - The Feedback can be shown in different ways or omitted.
-  - Everything can be exported via the data gathering system.
+  - Users answer a question by pressing a physical button in the VR.
+  - Can be tailored and edited to one's likings using a setup dialog.
+  - Allows configuring a multitude of parameters, such as: Multiple or single choice, number of answers, question order, etc.
+  - Supports Questions, Answers and Feedback in the form of Text, GameObjects, Images and Videos.
+  - The Feedback can be shown in different ways or omitted.
+  - Everything can be exported via the data gathering system.
 - A VR-ready Main Menu Components and Scene
 - All the little helpers you'll need for making your perfect VR game.
 - A huge wiki and [YouTube Tutorials](https://www.youtube.com/watch?v=-k2wBBZ9a1w&list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_)
