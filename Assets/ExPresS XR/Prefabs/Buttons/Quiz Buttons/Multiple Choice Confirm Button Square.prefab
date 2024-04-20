@@ -173,10 +173,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  pressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
-  releasedSound: {fileID: 8300000, guid: 16e54074595a53243b89758106431e7a, type: 3}
-  toggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
-  toggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
   baseAnchor: {fileID: 320453321735774683}
   pushAnchor: {fileID: 6559422290832575961}
   _yMin: 0.019
@@ -184,13 +180,17 @@ MonoBehaviour:
   _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
   _requireDirectInteraction: 1
   _defaultAudioPlayer: {fileID: 6842511493332019435}
+  pressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
+  releasedSound: {fileID: 8300000, guid: 16e54074595a53243b89758106431e7a, type: 3}
+  toggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
+  toggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
   correctChoice: 0
   feedbackDisabled: 0
   invertedFeedback: 0
   _answerText: 
   _answerObject: {fileID: 0}
-  _feedbackTextLabel: {fileID: 1642844122987566910}
   _feedbackObjectSocket: {fileID: 2531335217909990670}
+  _feedbackTextLabel: {fileID: 1642844122987566910}
   answeredCorrectSound: {fileID: 8300000, guid: c78e51dc01092a344b84fb6de865ac11, type: 3}
   answeredIncorrectSound: {fileID: 8300000, guid: cb0b4b45ea34969418dae32138cc9e37, type: 3}
   _answerFeedbackAudioPlayer: {fileID: 7382420573894735941}
@@ -474,7 +474,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press
+  m_text: 'Confirm
+
+    Choices'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -501,7 +503,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.35
+  m_fontSize: 19.35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

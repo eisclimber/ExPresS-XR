@@ -24,7 +24,7 @@ The project is divided into three categories: General, Experimentation and Prese
 
 Apart from the code itself, the wiki features useful workflow tutorials that aim to help inexperienced developers (e.g. building end systems or scanning real-world objects to be imported into the project)
 
-## Full Feature List
+## Features
 
 - Ready to play example scenes showing the features and applications of `ExPresS XR`.
 - In-editor setup dialogs and tutorials for a quick start with your project.

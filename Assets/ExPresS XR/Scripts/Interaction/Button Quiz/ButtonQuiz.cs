@@ -332,7 +332,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             // Connect Events
             bool isMultipleChoice = config.quizMode == QuizMode.MultipleChoice;
             bool invertedFeedback = config.feedbackMode == FeedbackMode.AlwaysWrong;
-            bool feedbackDisabled = config.feedbackMode == FeedbackMode.None || config.feedbackMode == FeedbackMode.Random;
+            bool feedbackDisabled = config.feedbackMode == FeedbackMode.None;
 
             if (mcConfirmButton != null && isMultipleChoice)
             {
