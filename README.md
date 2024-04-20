@@ -73,7 +73,7 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
 
 ## Made with ExPresS XR
 
-![MadeWithExPresSXR](https://github.com/eisclimber/ExPresS-XR/assets/49446532/b0220144-5b62-4bcd-a0eb-a79c20472d0f)
+![MadeWithExPresSXR](https://github.com/eisclimber/ExPresS-XR/assets/49446532/9a2dab28-50a6-4f29-a882-cb13002a6634)
 
 - The internationally appraised exhibition "Tempelsteuer und Taubenhändler (Doves and Temple Taxes)" is a VR recreation of Herod's Temple with an emphasis on how currency was used and exchanged in temples in ancient times.  
 The exhibition is currently touring various cities in Europe and will be coming to Itch and Sidequest very soon.
