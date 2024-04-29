@@ -36,7 +36,7 @@ namespace ExPresSXR.Editor.Editors
             if (targetScript.exitType == GameExiter.ExitType.ToScene
                 || targetScript.exitType == GameExiter.ExitType.ToSceneNoFade)
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_menuSceneIndex"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_menuSceneIdx"), true);
             }
 
             if (targetScript.exitType == GameExiter.ExitType.QuitGame
