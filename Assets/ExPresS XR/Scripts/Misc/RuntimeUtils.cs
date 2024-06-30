@@ -85,6 +85,25 @@ namespace ExPresSXR.Misc
             return r < 0 ? r + n : r;
         }
 
+        /// <summary>
+        /// Steps a value on a range between [0.0f, 1.0f] to the closest of even <param name="numSteps"> intervals 
+        /// including the borders 0.0f and 1.0f.
+        /// If <param name="numSteps"> is less than 1, the value will only be clamped between 0.0f and 1.0f.
+        /// </summary>
+        /// <param name="value">Value to be stepped.</param>
+        /// <param name="numSteps">Number of intermediate steps.</param>
+        /// <returns>Value in range [0.0f, 1.0f] stepped to the closest value.</returns>
+        public static float GetValue01Stepped(float value, int numSteps)
+        {
+            float valueClamped = Mathf.Clamp01(value);
+            if (numSteps > 0)
+            {
+                return Mathf.Round(valueClamped * numSteps) / numSteps;
+            }
+            return valueClamped;
+        }
+
+
         #region Scene Switching
         /// <summary>
         /// Changes a scene whilst the current rig is faded out. Supports 'DontDestroyOnLoad' if enabled on the rig.

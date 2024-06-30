@@ -34,7 +34,14 @@ namespace ExPresSXR.Misc.Timing
         /// Returns the remaining time of the timer.
         /// If the timer is was not started or timed out, the value will be the value of TIMER_INACTIVE_WAIT_TIME.
         /// </summary>
-        public float remainingTime { get; private set; }
+        [SerializeField]
+        [ReadonlyInInspector]
+        private float _remainingTime;
+        public float remainingTime
+        {
+            get => _remainingTime;
+            private set => _remainingTime = value;
+        }
 
         /// <summary>
         /// If the timer is paused or not.
@@ -44,7 +51,7 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         /// If the timer is actively is counting down, meaning it was started and is not paused.
         /// </summary>
-        public bool running { get => remainingTime >= 0.0f && !timerPaused; }
+        public bool running { get => remainingTime > 0.0f && !timerPaused; }
 
         /// <summary>
         /// If true, will start the timer during OnAwake()...
