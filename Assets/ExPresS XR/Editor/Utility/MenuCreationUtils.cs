@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
+using ExPResSXR.Presentation.Pictures;
 
 
 namespace ExPresSXR.Editor.Utility
@@ -237,80 +238,80 @@ namespace ExPresSXR.Editor.Utility
 
 
         // Buttons
-        [MenuItem("GameObject/ExPresS XR/Buttons/Button Empty Text")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Button Empty Text")]
         public static void CreateBaseButtonEmptyText(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Empty Text");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Base Button Empty")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Base Button Empty")]
         public static void CreateBaseButtonEmpty(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Empty");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Base Button Round Square Text")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Base Button Round Square Text")]
         public static void CreateBaseButtonRoundSquareText(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Round Square Text");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Base Button Round Square")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Base Button Round Square")]
         public static void CreateBaseButtonRoundSquare(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Round Square");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Base Button Round Text")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Base Button Round Text")]
         public static void CreateBaseButtonRoundText(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Round Text");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Base Button Round")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Base Button Round")]
         public static void CreateBaseButtonRound(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Round");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Base Button Square Text")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Base Button Square Text")]
         public static void CreateBaseButtonSquareText(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Square Text");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Base Button Square")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Base Button Square")]
         public static void CreateBaseButtonSquare(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Base Button Square");
         }
 
         // Quiz Buttons
-        [MenuItem("GameObject/ExPresS XR/Buttons/Quiz Buttons/Quiz Button Empty")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Quiz Buttons/Quiz Button Empty")]
         public static void CreateBaseQuizButtonEmpty(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Quiz Buttons/Quiz Button Empty");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Quiz Buttons/Quiz Button Round Square")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Quiz Buttons/Quiz Button Round Square")]
         public static void CreateQuizButtonRoundSquare(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Quiz Buttons/Quiz Button Round Square");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Quiz Buttons/Quiz Button Round")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Quiz Buttons/Quiz Button Round")]
         public static void CreateQuizButtonRound(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Quiz Buttons/Quiz Button Round");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Quiz Buttons/Quiz Button Square")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Quiz Buttons/Quiz Button Square")]
         public static void CreateQuizButtonSquare(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, CreationUtils.QUIZ_BUTTON_SQUARE_PREFAB_NAME);
         }
 
-        [MenuItem("GameObject/ExPresS XR/Buttons/Quiz Buttons/Multiple Choice Confirm Button Square")]
+        [MenuItem("GameObject/ExPresS XR/Interaction/Buttons/Quiz Buttons/Multiple Choice Confirm Button Square")]
         public static void CreateMcConfirmButton(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Buttons/Quiz Buttons/Multiple Choice Confirm Button Square");
@@ -480,33 +481,59 @@ namespace ExPresSXR.Editor.Utility
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Object")]
         static void CreateExhibitionDisplayObject(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Object");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Exhibition Displays/Exhibition Display - Object");
         }
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Object Small")]
         static void CreateExhibitionDisplayObjectSmall(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Object Small");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Exhibition Displays/Exhibition Display - Object Small");
         }
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Image")]
         static void CreateExhibitionDisplayImage(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Image");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Exhibition Displays/Exhibition Display - Image");
         }
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Info Stand")]
         static void CreateExhibitionDisplayInfoStand(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Info Stand");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Exhibition Displays/Exhibition Display - Info Stand");
         }
-
 
         [MenuItem("GameObject/ExPresS XR/Presentation/Exhibition Displays/Empty")]
         static void CreateExhibitionDisplayEmpty(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Exhibition Displays/Exhibition Display - Empty");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Exhibition Displays/Exhibition Display - Empty");
         }
+
+        // Picture Presentation
+        [MenuItem("GameObject/ExPresS XR/Presentation/Pictures/Picture Scroll Viewer")]
+        static void CreatePictureScrollViewer(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Pictures/Picture Scroll Viewer");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Presentation/Pictures/Picture Scroll Viewer Table")]
+        static void CreatePictureScrollViewerTable(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Pictures/Picture Scroll Viewer Table");
+        }
+
+
+        [MenuItem("GameObject/ExPresS XR/Presentation/Pictures/Polaroids Table")]
+        static void CreatePolaroidsTable(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Pictures/Polaroids Table");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Presentation/Pictures/Picture Wall")]
+        static void CreatePictureWall(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Presentation/Pictures/Picture Wall");
+        }
+
 
         // Mirror
         [MenuItem("GameObject/ExPresS XR/Presentation/Mirror")]
@@ -616,7 +643,7 @@ namespace ExPresSXR.Editor.Utility
             InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Coin Scale/Coin Scale Minigame");
         }
 
-        // Data
+        // Data Gathering
         [MenuItem("GameObject/ExPresS XR/Data Gatherer")]
         public static DataGatherer CreateDataGatherer(MenuCommand _)
         {
@@ -627,11 +654,55 @@ namespace ExPresSXR.Editor.Utility
             return dataGatherer;
         }
 
+        // Custom Data Assets
+        [MenuItem("Assets/Create/ExPresS XR/Picture Data")]
+        public static void CreatePictureData() => CreateScriptableObject<PictureData>("Picture Data");
 
+
+        #region utility
+        /// <summary>
+        /// Instantiates a GameObject at the transform of the current context (i.e. under the currently selected GameObject)
+        /// </summary>
+        /// <param name="menuCommand">Command providing the current context.</param>
+        /// <param name="prefabName">ExPresS XR Relative String to the prefab.</param>
+        /// <returns>Reference to the new GameObject.</returns>
         private static GameObject InstantiateGameObjectAtContextTransform(MenuCommand menuCommand, string prefabName)
         {
             Transform parent = CreationUtils.GetContextTransform(menuCommand);
             return CreationUtils.InstantiateAndPlaceGameObject(prefabName, parent);
         }
+
+        /// <summary>
+        /// Returns the current path in the file explorer.
+        /// </summary>
+        /// <returns>Path in the file explorer.</returns>
+        public static string GetClickedDirFullPath()
+        {
+            string clickedAssetGuid = Selection.assetGUIDs[0];
+            string clickedPath = AssetDatabase.GUIDToAssetPath(clickedAssetGuid);
+
+            FileAttributes attr = File.GetAttributes(clickedPath);
+            return attr.HasFlag(FileAttributes.Directory) ? clickedPath : Path.GetDirectoryName(clickedPath);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="defaultName">Default name of the asset created.</param>
+        /// <typeparam name="T"></typeparam>
+        public static void CreateScriptableObject<T>(string defaultName) where T : ScriptableObject
+        {
+            T asset = ScriptableObject.CreateInstance<T>();
+            string basePath = Path.Join(GetClickedDirFullPath(), defaultName + ".asset");
+            string uniqueAssetPath = AssetDatabase.GenerateUniqueAssetPath(basePath);
+
+            AssetDatabase.CreateAsset(asset, uniqueAssetPath);
+            AssetDatabase.SaveAssets();
+
+            EditorUtility.FocusProjectWindow();
+
+            Selection.activeObject = asset;
+        }
+        #endregion
     }
 }

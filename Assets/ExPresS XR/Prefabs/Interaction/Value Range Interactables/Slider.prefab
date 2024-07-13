@@ -48,9 +48,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8658116031535523230, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.015
+      objectReference: {fileID: 0}
     - target: {fileID: -7370156802671013846, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.42
+      objectReference: {fileID: 0}
+    - target: {fileID: -7370156802671013846, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: -2713610342760964062, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: -312358580875611574, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -59,6 +71,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
       propertyPath: m_Name
       value: Slider
+      objectReference: {fileID: 0}
+    - target: {fileID: 1481381395318598694, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752191152753200800, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4049309899678812091, guid: 45806a75d7516094690b2b169d8c0a4a, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -345,6 +365,7 @@ MonoBehaviour:
   _valueVisualizer:
     _minPosition: -0.42
     _maxPosition: 0.42
+    _useHandleGrabOffset: 0
     _handle: {fileID: 7258415349800224178}
   _zeroValueOnRelease: 0
   _requireDirectInteraction: 1
@@ -363,6 +384,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnValueChangedString:
     m_PersistentCalls:
       m_Calls: []
   OnValueSelected:

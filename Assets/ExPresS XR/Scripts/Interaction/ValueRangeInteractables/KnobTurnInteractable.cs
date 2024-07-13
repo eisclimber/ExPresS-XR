@@ -130,7 +130,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 return;
             }
 
-            Vector3 handleRot = _pivot.eulerAngles;
+            Vector3 handleRot = _pivot.localEulerAngles;
             handleRot.y = Mathf.Lerp(_minAngle, _maxAngle, value);
             _pivot.localEulerAngles = handleRot;
         }

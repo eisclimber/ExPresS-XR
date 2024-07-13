@@ -191,7 +191,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.")]
-        protected int _numSteps = 0;
+        private int _numSteps = 0;
+        public int NumSteps
+        {
+            get => _numSteps;
+            set => _numSteps = value;
+        }
 
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
@@ -338,7 +343,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.")]
-        protected int _numSteps = 0;
+        private int _numSteps = 0;
+        public int NumSteps
+        {
+            get => _numSteps;
+            set => _numSteps = value;
+        }
 
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
@@ -396,7 +406,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps along the respective axis to snap the value to. Anything below 1 will deactivate snapping.")]
-        protected Vector3Int _numSteps;
+        private Vector3Int _numSteps;
+        public Vector3Int NumSteps
+        {
+            get => _numSteps;
+            set => _numSteps = value;
+        }
 
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
@@ -448,7 +463,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.")]
-        protected int _numSteps = 0;
+        private int _numSteps = 0;
+        public int NumSteps
+        {
+            get => _numSteps;
+            set => _numSteps = value;
+        }
 
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
@@ -465,7 +485,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <inheritdoc />
         protected override Vector3 ProcessNewValue(Vector3 newValue)
         {
-            Debug.Log(newValue + " x " + newValue.magnitude);
             Vector3 newDir = newValue.normalized;
             float newMagnitude = EnforceSnap && _numSteps > 0
                         ? RuntimeUtils.GetValue01Stepped(newValue.magnitude, _numSteps)
