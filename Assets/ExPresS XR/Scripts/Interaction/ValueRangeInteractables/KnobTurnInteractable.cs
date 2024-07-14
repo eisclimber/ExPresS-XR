@@ -64,6 +64,15 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set => _turnType = value;
         }
 
+        [SerializeField]
+        [Tooltip("If true, inverses the turn direction.")]
+        private bool _flipTurnDirection;
+        public bool FlipTurnDirection
+        {
+            get => _flipTurnDirection;
+            set => _flipTurnDirection = value;
+        }
+
         [Space]
 
         /// <summary>
@@ -96,13 +105,16 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set => _previousTurnForward = value;
         }
 
+
         /// <inheritdoc />
         protected virtual Vector3 GetTurnForward(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
         {
+
             Vector3 interactorForward = _turnType == InteractorTurnType.Forward
                                         ? interactor.GetAttachTransform(interactable).forward
                                         : GetInteractorDirection(interactable, interactor).normalized;
-            return Vector3.ProjectOnPlane(interactorForward, interactable.transform.up);
+
+            return Vector3.ProjectOnPlane(interactable.transform.TransformDirection(interactorForward), interactable.transform.up);
         }
 
         /// <inheritdoc />
@@ -114,7 +126,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             {
                 _previousTurnForward = currentTurnForward;
             }
-            float turnAngleDiff = Vector3.SignedAngle(_previousTurnForward, currentTurnForward, interactable.transform.up);
+            float inverseFactor = _flipTurnDirection ? -1.0f : 1.0f;
+            float turnAngleDiff = inverseFactor * Vector3.SignedAngle(_previousTurnForward, currentTurnForward, interactable.transform.up);
+
             float valueDelta = turnAngleDiff / AngleRange * _turnSpeed;
             _rawValue = Mathf.Clamp01(_rawValue + valueDelta);
             _previousTurnForward = currentTurnForward;
