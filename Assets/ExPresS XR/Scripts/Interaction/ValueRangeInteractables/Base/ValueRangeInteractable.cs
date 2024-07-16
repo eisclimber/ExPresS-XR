@@ -133,6 +133,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public UnityEvent<V> OnSnapped;
 
         /// <summary>
+        /// Emitted if the value changes dynamically (i.e. when the interactor is moved). Passes the new value.
+        /// </summary>
+        public UnityEvent<V> OnValueChangedSingle;
+
+        /// <summary>
         /// Emitted if the value changes dynamically (i.e. when the interactor is moved). The first value is the new, the second the old value.
         /// </summary>
         public UnityEvent<V, V> OnValueChanged;
@@ -291,7 +296,8 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="oldV">Old value to be passed with the event.</param>
         protected virtual void EmitOnValueChanged(V newV, V oldV)
         {
-            OnValueChanged.Invoke(oldV, newV);
+            OnValueChangedSingle.Invoke(newV);
+            OnValueChanged.Invoke(newV, oldV);
             OnValueChangedString.Invoke(newV.ToString());
         }
 

@@ -58,6 +58,9 @@ namespace ExPresSXR.Editor.Editors
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnSnapped"/>.</summary>
         protected SerializedProperty _onSnapped;
 
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnValueChangedSingle"/>.</summary>
+        protected SerializedProperty _onValueChangedSingle;
+        
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnValueChanged"/>.</summary>
         protected SerializedProperty _onValueChanged;
 
@@ -92,6 +95,7 @@ namespace ExPresSXR.Editor.Editors
             _onMinValue = serializedObject.FindProperty("OnMinValue");
             _onMaxValue = serializedObject.FindProperty("OnMaxValue");
             _onSnapped = serializedObject.FindProperty("OnSnapped");
+            _onValueChangedSingle = serializedObject.FindProperty("OnValueChangedSingle");
             _onValueChanged = serializedObject.FindProperty("OnValueChanged");
             _onValueChangedString = serializedObject.FindProperty("OnValueChangedString");
             _onValueSelected = serializedObject.FindProperty("OnValueSelected");
@@ -179,6 +183,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(_onSnapped, true);
             EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_onValueChangedSingle, true);
             EditorGUILayout.PropertyField(_onValueChanged, true);
             EditorGUILayout.PropertyField(_onValueChangedString, true);
             EditorGUILayout.PropertyField(_onValueSelected, true);
