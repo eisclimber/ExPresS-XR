@@ -97,10 +97,10 @@ namespace ExPresSXR.UI
 
         private void Update()
         {
-            float fadeDelta = Time.deltaTime / fadeToColorTime;
-
             if (_fadeDirection == FadeDirection.ToColor)
             {
+                float fadeDelta = Time.deltaTime / fadeToColorTime;
+
                 // Fade to Color
                 float newFadeValue = Mathf.Clamp01(fadeColor.a + fadeDelta);
 
@@ -117,6 +117,7 @@ namespace ExPresSXR.UI
             }
             else if (_fadeDirection == FadeDirection.ToClear)
             {
+                float fadeDelta = Time.deltaTime / fadeToClearTime;
                 // Fade to Clear
                 float newFadeValue = Mathf.Clamp01(fadeColor.a - fadeDelta);
 
