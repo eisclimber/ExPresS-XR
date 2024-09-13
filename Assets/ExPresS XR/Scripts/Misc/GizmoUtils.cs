@@ -92,7 +92,7 @@ namespace ExPresSXR.Misc
         /// <param name="valueColor">Color of the value marker.</param>
         /// <param name="upVector">Determines the direction of the end markers.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
-        public static void DrawMinMaxValueLine(Vector3 minPos, Vector3 maxPos, float value, Color minColor, Color maxColor, 
+        public static void DrawMinMaxValueLine(Vector3 minPos, Vector3 maxPos, float value, Color minColor, Color maxColor,
                                                     Color lineColor, Color valueColor, Vector3 upVector, Transform atTransform = null)
         {
             DrawMinMaxLine(minPos, maxPos, minColor, maxColor, lineColor, upVector, atTransform);
@@ -112,9 +112,10 @@ namespace ExPresSXR.Misc
         /// <param name="localOffset">Pivot offset of the angle.</param>
         /// <param name="localNormal">Normal vector defining the plane of the angles.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
-        public static void DrawMinMaxArc(float minAngle, float maxAngle, Color minColor, Color maxColor, Color arcColor, 
+        public static void DrawMinMaxArc(float minAngle, float maxAngle, Color minColor, Color maxColor, Color arcColor,
                                             Vector3 localOffset, Vector3 localNormal, Transform atTransform = null)
         {
+#if UNITY_EDITOR
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
             Handles.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
 
@@ -126,6 +127,7 @@ namespace ExPresSXR.Misc
 
             Handles.color = arcColor;
             Handles.DrawWireArc(localOffset, Vector3.up, minPos.normalized, maxAngle - minAngle, ARCH_RADIUS);
+#endif
         }
 
         /// <summary>
@@ -141,7 +143,7 @@ namespace ExPresSXR.Misc
         /// <param name="valueColor">Color of the value marker.</param>
         /// <param name="localOffset">Pivot offset of the angle.</param>
         /// <param name="localNormal">Normal vector defining the plane of the angles.</param>
-        public static void DrawMinMaxValueArc(float minAngle, float maxAngle, float value, Color minColor, Color maxColor, 
+        public static void DrawMinMaxValueArc(float minAngle, float maxAngle, float value, Color minColor, Color maxColor,
                                                 Color arcColor, Color valueColor, Vector3 localOffset, Vector3 localNormal, Transform atTransform = null)
         {
             DrawMinMaxArc(minAngle, maxAngle, minColor, maxColor, arcColor, localOffset, localNormal, atTransform);
@@ -166,6 +168,7 @@ namespace ExPresSXR.Misc
         public static void DrawMinMaxRotationSpan(Quaternion minRotation, Quaternion maxRotation, Color minColor, Color maxColor, Color spanColor,
                                                     Vector3 localOffset, Vector3 localNormal, Vector3 localForward, Transform atTransform = null)
         {
+#if UNITY_EDITOR
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
             Handles.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
 
@@ -185,6 +188,7 @@ namespace ExPresSXR.Misc
 
             Handles.color = spanColor;
             Handles.DrawWireArc(localOffset, localForward, angleMinDir, angleRange, ROTATION_SPAN_RADIUS);
+#endif
         }
 
         /// <summary>

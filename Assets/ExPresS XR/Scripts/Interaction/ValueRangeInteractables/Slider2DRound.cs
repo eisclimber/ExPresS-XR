@@ -120,10 +120,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Vector3.up,
                 atTransform
             );
-
+#if UNITY_EDITOR
             Handles.matrix = atTransform.localToWorldMatrix;
             Handles.color = Color.blue;
             Handles.DrawWireDisc(new Vector3(0.0f, handleYOffset, 0.0f), Vector3.up, _radius);
+#endif
         }
     }
 }

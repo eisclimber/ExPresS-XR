@@ -230,10 +230,18 @@ namespace ExPResSXR.Presentation.Pictures
             get => _picturesContainer != null ? _picturesContainer.rect.width : 0.0f;
         }
 
+        // Will be automatically set to true if the slider is being grabbed.
+        private bool _sliderGrabbed;
+
 
         private void Start()
         {
-            _slider?.OnValueChanged.AddListener(ChangeScrollValueFromSlider);
+            if (_slider != null)
+            {
+                _slider.selectEntered.AddListener(SetSliderIsGrabbed);
+                _slider.selectExited.AddListener(SetSliderIsReleased);
+                _slider.OnValueChanged.AddListener(ChangeScrollValueFromSlider);
+            }
 
             if (_pictureDataSocket != null)
             {
@@ -252,7 +260,9 @@ namespace ExPResSXR.Presentation.Pictures
 
             if (scrollDir != 0)
             {
-                AddDeltaScrollRectOffset(scrollDir * GetScrollStepValue());
+
+                float scrollDelta = GetScrollStepValue();
+                AddDeltaScrollRectOffset(scrollDir * scrollDelta);
             }
         }
 
@@ -405,7 +415,18 @@ namespace ExPResSXR.Presentation.Pictures
         }
 
 
-        private void ChangeScrollValueFromSlider(float newValue, float oldValue) => ChangeScrollValue(newValue, false);
+        private void SetSliderIsGrabbed(SelectEnterEventArgs args) => _sliderGrabbed = true;
+
+        private void SetSliderIsReleased(SelectExitEventArgs args) => _sliderGrabbed = false;
+    
+        private void ChangeScrollValueFromSlider(float newValue, float oldValue)
+        {
+            // Prevent setting or overwriting autoscroll
+            if (_sliderGrabbed)
+            {
+                ChangeScrollValue(newValue, false);
+            }
+        }
 
 
         private void ChangeScrollDataOnSelectEnter(SelectEnterEventArgs args)

@@ -3,51 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Timer : MonoBehaviour
+namespace ExPresSXR.Lena
 {
-    
-    [SerializeField, Tooltip("Frequenze")]
-    private float freq;
-    [SerializeField, Tooltip("Delay")]
-    private float delay = 0;
-    private bool first = true;
-    
-
-    [SerializeField, Tooltip("Invoke after timer")]
-    public UnityEvent timerempty;
-
-    private float elapsedTime;
-    
-    
-    private void Start()
+    public class Timer : MonoBehaviour
     {
-        elapsedTime = 0f;
-    }
+
+        [SerializeField, Tooltip("Frequenze")]
+        private float freq;
+        [SerializeField, Tooltip("Delay")]
+        private float delay = 0;
+        private bool first = true;
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (first)
+        [SerializeField, Tooltip("Invoke after timer")]
+        public UnityEvent timerempty;
+
+        private float elapsedTime;
+
+
+        private void Start()
         {
-            elapsedTime += Time.deltaTime;
-            if(elapsedTime > delay)
-            {
-                first = false;
-                elapsedTime = 0f;
-            }
+            elapsedTime = 0f;
         }
-        else
-        {
-            elapsedTime += Time.deltaTime;
 
-            if (elapsedTime > freq)
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (first)
             {
-                timerempty?.Invoke();
-                elapsedTime = 0f;
+                elapsedTime += Time.deltaTime;
+                if (elapsedTime > delay)
+                {
+                    first = false;
+                    elapsedTime = 0f;
+                }
             }
+            else
+            {
+                elapsedTime += Time.deltaTime;
+
+                if (elapsedTime > freq)
+                {
+                    timerempty?.Invoke();
+                    elapsedTime = 0f;
+                }
+            }
+
         }
-        
+
     }
-    
 }

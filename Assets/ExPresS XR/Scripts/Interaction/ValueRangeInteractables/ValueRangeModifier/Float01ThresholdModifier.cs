@@ -6,23 +6,25 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
     /// <summary>
     /// Allows scaling a normalized float value range between a min and max value.
     /// </summary>
-    public class BlendShapeModifier : BaseValueRangeModifier<float, float>
+    public class Float01ThresholdModifier : BaseValueRangeModifier<float, bool>
     {
         [SerializeField]
-        private int _blendShapeIdx = 0;
+        [Range(0.0f, 1.0f)]
+        private float _threshold = 0.95f;
 
+        [SerializeField]
+        [Tooltip("If enabled will inverse the range, meaning '>= 0.95f' will become a '<= 0.05f'.")]
+        private bool _oneMinus = false;
 
-        /// <summary>
-        /// Event emitted with the modified value.
-        /// </summary>
-        public UnityEvent<int, float> OnNewBlendShapeValue;
+        public UnityEvent OnAboveThreshold;
+        public UnityEvent OnBelowThreshold;
+
 
         /// <summary>
         /// Modifies the normalized value from a value range interactable.
         /// </summary>
         /// <param name="value">Normalized value to be modified.</param>
-        protected override float GetModifiedValue(float value) => value * 100.0f;
-
+        protected override bool GetModifiedValue(float value) => _oneMinus ?  value <= 1.0f - _threshold : value >= _threshold;
 
         /// <summary>
         /// Callback for the interactor events like OnValueChanged.
@@ -32,7 +34,8 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
         public override void EmitModifiedValue(float value, float _ = default)
         {
             base.EmitModifiedValue(value);
-            OnNewBlendShapeValue.Invoke(_blendShapeIdx, GetModifiedValue(value));
+            bool modifiedValue = GetModifiedValue(value);
+            (modifiedValue ? OnAboveThreshold : OnBelowThreshold).Invoke();
         }
     }
 }

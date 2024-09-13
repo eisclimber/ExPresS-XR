@@ -103,6 +103,7 @@ If you like the project, you can buy me a coffee (Programmer + Coffee = Code :D)
 Created by Luca "eisclimber" Dreiling
 
 Contributors:
+- Lena Matulla: Archery System and Minigame
 - Kevin Körner: Coin Scale and Coin Throw Minigames
 
 
