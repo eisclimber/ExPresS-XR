@@ -80,7 +80,6 @@ public class StringInteraction : XRBaseInteractable
         ArrowLockedPrefab.SetActive(false);
         pull = 0f;
         Updatestring();
-
     }
 
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)

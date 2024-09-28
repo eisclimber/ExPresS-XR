@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
 {
     /// <summary>
-    /// Allows scaling a normalized float value range between a min and max value.
+    /// Allows scaling a normalized float value between the min (0.0f) and max value (1.0f) to be used by a blendshape.
     /// </summary>
     public class BlendShapeModifier : BaseValueRangeModifier<float, float>
     {

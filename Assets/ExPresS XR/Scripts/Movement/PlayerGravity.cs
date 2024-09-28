@@ -33,7 +33,8 @@ namespace ExPresSXR.Movement
 
         private void Update()
         {
-            if (_characterController != null && _applyGravity && !forceTemporarilyDisabled)
+            if (_characterController != null && _characterController.gameObject.activeInHierarchy && _characterController.enabled 
+                && _applyGravity && !forceTemporarilyDisabled)
             {
                 _currentVelocity += _gravity * Time.deltaTime;
                 if (_characterController.Move(_currentVelocity * Time.deltaTime).HasFlag(CollisionFlags.Below))
