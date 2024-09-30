@@ -85,7 +85,7 @@ namespace ExPresSXR.Interaction
         /// </summary>
         [SerializeField]
         private bool _allowGrab = true;
-        public bool AllowGrab
+        public bool allowGrab
         {
             get => _allowGrab;
             set

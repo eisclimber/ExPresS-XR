@@ -22,7 +22,7 @@ The project is divided into three categories: General, Experimentation and Prese
 - Experimentation: Providing an easy solution to collect and export data, automatic generation of a "clean" test environment, as well as a fully customizable quizzing system
 - Presentation: Options for displaying objects in VR in interesting ways that allow building virtual exhibitions with ease
 
-Apart from the code itself, the wiki features useful workflow tutorials that aim to help inexperienced developers (e.g. building end systems or scanning real-world objects to be imported into the project)
+Apart from the code itself, the wiki features useful workflow tutorials that aim to help inexperienced developers (e.g. building end systems or scanning real-world objects to be imported into the project).
 
 ## Features
 
@@ -103,7 +103,7 @@ If you like the project, you can buy me a coffee (Programmer + Coffee = Code :D)
 Created by Luca "eisclimber" Dreiling
 
 Contributors:
-- Lena Matulla: Archery System and Minigame
+- Lena Matulla: Archery System and Minigame (BAaM)
 - Kevin Körner: Coin Scale and Coin Throw Minigames
 
 
