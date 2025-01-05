@@ -101,6 +101,53 @@ namespace ExPresSXR.Misc
         }
 
         /// <summary>
+        /// Draws a grid with the given up-vector and the specified number of intersecting lines.
+        /// </summary>
+        /// <param name="center">Position of the gird.</param>
+        /// <param name="size">Size of the grid.</param>
+        /// <param name="numTiles">Number of tiles in the grid.</param>
+        /// <param name="outlineColor">Color of the outline.</param>
+        /// <param name="gridColor">Color of the grid lines.</param>
+        /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        public static void DrawGrid(Vector3 center, Vector2 extents, Vector2 numTiles, Color outlineColor, Color gridColor, Transform atTransform = null)
+        {
+#if UNITY_EDITOR
+            Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
+
+            Vector3 blPos = new(center.x - extents.x, center.y, center.z - extents.y);
+            Vector3 brPos = new(center.x + extents.x, center.y, center.z - extents.y);
+            Vector3 tlPos = new(center.x - extents.x, center.y, center.z + extents.y);
+            Vector3 trPos = new(center.x + extents.x, center.y, center.z + extents.y);
+
+            // Draw outline
+            Gizmos.color = outlineColor;
+            Gizmos.DrawLine(blPos, brPos);
+            Gizmos.DrawLine(blPos, tlPos);
+            Gizmos.DrawLine(trPos, tlPos);
+            Gizmos.DrawLine(trPos, brPos);
+
+            // Draw grid
+            Gizmos.color = gridColor;
+            Vector2 gridStepSize = 2.0f * extents / numTiles;
+            // Draw vertical grid
+            for (int i = 1; i < numTiles.x; i++)
+            {
+                float delta = i * gridStepSize.x;
+                Vector3 offset = new(delta, 0.0f, 0.0f);
+                Gizmos.DrawLine(blPos + offset, tlPos + offset);
+            }
+
+            // Draw horizontal lines
+            for (int i = 1; i < numTiles.y; i++)
+            {
+                float delta = i * gridStepSize.y;
+                Vector3 offset = new(0.0f, 0.0f, delta);
+                Gizmos.DrawLine(blPos + offset, brPos + offset);
+            }
+#endif
+        }
+
+        /// <summary>
         /// Draws an arc between two angles (minimum and maximum) relative to the normal plane defined by <see cref="localNormal"/> 
         /// and origin <see cref="localOffset"/>.
         /// </summary>

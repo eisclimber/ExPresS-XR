@@ -16,13 +16,13 @@ The full documentation can be found [here](https://github.com/eisclimber/ExPresS
 Following the aim of the OpenXR standard itself, ExPresS XR allows development for a multitude of devices.
 That is why the project does not only support VR headsets with controllers but also a controller-free mode that can be used with smartphones (+ a VR mount, like the Google Cardboard)
 
-The project is divided into three categories: General, Experimentation and Presentation.
+The project is divided into three main focus groups: General, Experimentation and Presentation.
 
-- General: Implementations of configurable XR Rigs, Movement, XR-based UI and Interaction, as well as in-editor tutorials
-- Experimentation: Providing an easy solution to collect and export data, automatic generation of a "clean" test environment, as well as a fully customizable quizzing system
-- Presentation: Options for displaying objects in VR in interesting ways that allow building virtual exhibitions with ease
+- General: Implementations of configurable XR Rigs, Movement, XR-based UI and Interaction, as well as in-editor tutorials.
+- Experimentation: Providing an easy solution to collect and export data, automatic generation of a "clean" test environment, as well as a fully customizable quizzing system.
+- Presentation: Options for displaying objects in VR in interesting ways that allow building virtual exhibitions with ease.
 
-Apart from the code itself, the wiki features useful workflow tutorials that aim to help inexperienced developers (e.g. building end systems or scanning real-world objects to be imported into the project)
+Apart from the code itself, the wiki features useful workflow tutorials that aim to help inexperienced developers (e.g. building end systems or scanning real-world objects to be imported into the project).
 
 ## Features
 
@@ -47,7 +47,7 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
   - UI keyboards usable with XR.
   - Sound- and rumble-emission upon collision.
   - Grab and interaction triggers.
-  - Various minigames and much more!
+  - Various VR minigames testing your skils in archery (aka "BAaM"), throwing, logic and more!
   - Helpers for localization.
 - A HUD system, allowing full screen fades and other permanent UI elements.
 - Configurable displays to present objects and further information in VR.
@@ -103,7 +103,7 @@ If you like the project, you can buy me a coffee (Programmer + Coffee = Code :D)
 Created by Luca "eisclimber" Dreiling
 
 Contributors:
-- Lena Matulla: Archery System and Minigame
+- Lena Matulla: Archery System and Minigame (BAaM)
 - Kevin Körner: Coin Scale and Coin Throw Minigames
 
 

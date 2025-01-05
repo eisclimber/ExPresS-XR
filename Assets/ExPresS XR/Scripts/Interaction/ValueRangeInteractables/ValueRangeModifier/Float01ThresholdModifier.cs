@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
 {
     /// <summary>
-    /// Allows scaling a normalized float value range between a min and max value.
+    /// Allows checking if a normalized float is above/below a threshold
     /// </summary>
     public class Float01ThresholdModifier : BaseValueRangeModifier<float, bool>
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ExPresSXR.Lena
+namespace ExPresSXR.Minigames.Archery
 {
     public class Timer : MonoBehaviour
     {
@@ -26,9 +26,7 @@ namespace ExPresSXR.Lena
             elapsedTime = 0f;
         }
 
-
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (first)
             {
@@ -49,8 +47,6 @@ namespace ExPresSXR.Lena
                     elapsedTime = 0f;
                 }
             }
-
         }
-
     }
 }

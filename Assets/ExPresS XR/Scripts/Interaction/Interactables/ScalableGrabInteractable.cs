@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Events;
 
 namespace ExPresSXR.Interaction
 {
@@ -80,6 +81,26 @@ namespace ExPresSXR.Interaction
 
 
         /// <summary>
+        /// If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.
+        /// </summary>
+        [SerializeField]
+        private bool _allowGrab = true;
+        public bool allowGrab
+        {
+            get => _allowGrab;
+            set
+            {
+                _allowGrab = value;
+
+                if (!_allowGrab)
+                {
+                    ClearSelectingInteractors();
+                }
+            }
+        }
+
+
+        /// <summary>
         /// The current scale to the children, relative to their initial scale.
         /// </summary>
         private float _scaleFactor = 1.0f;
@@ -114,6 +135,11 @@ namespace ExPresSXR.Interaction
         }
 
 
+        public UnityEvent OnGrabAllowed;
+        public UnityEvent OnGrabDenied;
+        public UnityEvent OnScaleReset;
+
+
         /// <summary>
         /// Performs general setup for the interactable, load the initial scales and connects the scale reset event.
         /// </summary>
@@ -138,10 +164,38 @@ namespace ExPresSXR.Interaction
         }
 
 
+        private void ClearSelectingInteractors()
+        {
+            foreach (IXRSelectInteractor interactor in interactorsSelecting)
+            {
+                if (interactor is XRDirectInteractor || interactor is XRRayInteractor)
+                {
+                    interactionManager.SelectExit(interactor, this);
+                }
+            }
+        }
+
+        public override bool IsSelectableBy(IXRSelectInteractor interactor)
+        {
+            // Allow Direct and ray only if grab allowed and add parent checks
+            bool canGrab = (_allowGrab || (interactor is not XRDirectInteractor && interactor is not XRRayInteractor)) && base.IsSelectableBy(interactor);
+
+            if (interactor is XRDirectInteractor || interactor is XRRayInteractor)
+            {
+                (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();
+            }
+            return canGrab;
+        }
+
+
         /// <summary>
         /// Resets the scale of all (scaled) children to 1.0f
         /// </summary>
-        public void ResetScale() => scaleFactor = 1.0f;
+        public void ResetScale()
+        {
+            scaleFactor = 1.0f;
+            OnScaleReset.Invoke();
+        }
 
 
         private void LoadInitialScales()

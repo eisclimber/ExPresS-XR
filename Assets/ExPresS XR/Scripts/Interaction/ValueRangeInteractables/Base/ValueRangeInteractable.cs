@@ -66,7 +66,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         [SerializeField]
         [Tooltip("If true, the joystick will snap to the upright position on release.")]
-        private bool _zeroValueOnRelease = true;
+        private bool _zeroValueOnRelease = false;
 
         /// <summary>
         /// If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.
@@ -213,12 +213,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         {
             base.ProcessInteractable(updatePhase);
 
-            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
+            // Check if the interaction is valid and in the correct update phase
+            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic
+                && isActiveAndEnabled 
+                && isSelected)
             {
-                if (isSelected)
-                {
-                    UpdateValueWithGrab();
-                }
+                UpdateValueWithGrab();
             }
         }
 

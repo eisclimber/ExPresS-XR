@@ -418,6 +418,11 @@ namespace ExPresSXR.Interaction
                 player = _defaultAudioPlayer;
             }
 
+            if (!player.isActiveAndEnabled)
+            {
+                Debug.LogWarning("Can not play a sound on an AudioSource that is not active and enabled. Maybe add a separate AudioSource.");
+            }
+
             if (clip != null)
             {
                 player.clip = clip;
