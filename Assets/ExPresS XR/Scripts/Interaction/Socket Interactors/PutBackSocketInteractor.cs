@@ -270,7 +270,7 @@ namespace ExPresSXR.Interaction
         {
             if (_putBackPrefab != null)
             {
-                Transform attachParent = attachTransform != null ? attachTransform : transform;
+                Transform attachParent = attachTransform ?? transform;
                 _putBackInstance = Instantiate(_putBackPrefab, attachParent);
 
                 if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
