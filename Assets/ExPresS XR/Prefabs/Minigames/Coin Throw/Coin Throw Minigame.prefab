@@ -17967,7 +17967,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6025070506910690183}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd4e9ff7751e9c4fa0f5a70211bccdf, type: 3}
+  m_Script: {fileID: 11500000, guid: 591d23d5fef91fe42896c80eda572a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
@@ -18116,6 +18116,22 @@ MonoBehaviour:
   _resetScaleInSockets: 1
   _scaleAllChildren: 1
   _scaledChildren: []
+  _allowGrab: 1
+  OnGrabStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGrabReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGrabAllowed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGrabDenied:
+    m_PersistentCalls:
+      m_Calls: []
+  OnScaleReset:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &5715469467504436730
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20263,8 +20279,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 6025070506910690183}
   _putBackInteractable: {fileID: 4316115604827389877}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 2
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8772795276328983211
 GameObject:
   m_ObjectHideFlags: 0

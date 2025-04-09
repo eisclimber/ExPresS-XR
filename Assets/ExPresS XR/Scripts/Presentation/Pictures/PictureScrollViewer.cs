@@ -4,8 +4,9 @@ using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 using ExPresSXR.Misc;
+using System;
 
-namespace ExPResSXR.Presentation.Pictures
+namespace ExPresSXR.Presentation.Pictures
 {
     public class PictureScrollViewer : MonoBehaviour
     {
@@ -44,7 +45,7 @@ namespace ExPResSXR.Presentation.Pictures
                 // Display Info
                 if (_infoTextDisplay != null)
                 {
-                    _infoTextDisplay.text = HasPictureData ? _pictureData.Description : "";
+                    _infoTextDisplay.text = HasPictureData && _pictureData.Descriptions.Length > 0 ? _pictureData.Descriptions[0] : "";
                 }
 
                 OnPictureDataChanged.Invoke();
@@ -162,6 +163,13 @@ namespace ExPResSXR.Presentation.Pictures
         private RectTransform _picturesContainer;
 
         /// <summary>
+        /// Mask to properly display single pictures.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Mask to properly display single pictures.")]
+        private Mask _mask;
+
+        /// <summary>
         /// Slider for manually scrolling through the picture data.
         /// </summary>
         [SerializeField]
@@ -210,6 +218,9 @@ namespace ExPResSXR.Presentation.Pictures
         public UnityEvent OnPicturesEndReached;
 
 
+        public UnityEvent OnPictureSnapped;
+
+
         public bool HasPictureData
         {
             get => _pictureData != null;
@@ -232,6 +243,8 @@ namespace ExPResSXR.Presentation.Pictures
 
         // Will be automatically set to true if the slider is being grabbed.
         private bool _sliderGrabbed;
+
+        private float _currentSnappedValue;
 
 
         private void Start()
@@ -311,14 +324,23 @@ namespace ExPResSXR.Presentation.Pictures
         public void ChangeScrollValue(float value, bool controlSlider = true)
         {
             _scrollValue = Mathf.Clamp01(value);
+            float nextSnappedValue = RuntimeUtils.GetValue01Stepped(_scrollValue, NumPictures - 1);
 
             if (_scrollRect != null)
             {
-                _scrollRect.horizontalNormalizedPosition = _scrollBehavior != ScrollType.PictureSnap ? _scrollValue : RuntimeUtils.GetValue01Stepped(_scrollValue, NumPictures - 1);
+                _scrollRect.horizontalNormalizedPosition = _scrollBehavior != ScrollType.PictureSnap ? _scrollValue : nextSnappedValue;
             }
             else
             {
                 Debug.LogError("Can't set the scroll value as the Scroll Rect was not set.");
+            }
+
+            // set description
+            if (HasPictureData)
+            {
+                int rawDescriptionIdx =  (int) (nextSnappedValue * NumPictures);
+                int descriptionIdx = Math.Clamp(rawDescriptionIdx, 0, NumPictures - 1);
+                _infoTextDisplay.text = _pictureData.Descriptions[descriptionIdx];
             }
 
             // Set slider
@@ -340,6 +362,13 @@ namespace ExPResSXR.Presentation.Pictures
             {
                 OnPicturesMidReached.Invoke();
             }
+
+            // Emt snapped event and update value
+            if (_scrollBehavior == ScrollType.PictureSnap && _currentSnappedValue != nextSnappedValue)
+            {
+                OnPictureSnapped.Invoke();
+            }
+            _currentSnappedValue = nextSnappedValue;
         }
 
         private void SetupScrollSegments()
@@ -353,51 +382,66 @@ namespace ExPResSXR.Presentation.Pictures
             ClearSegments();
 
             // Add remaining scroll items
+            float totalWidth = 0.0f;
             for (int i = 0; i < NumPictures; i++)
             {
-                GameObject segment = new()
-                {
-                    name = "Picture" + (i + 1).ToString("00"),
-                };
+                // Create a new UI GameObject with a RectTransform(!) and an Image
+                GameObject segment = new("Picture" + (i + 1).ToString("00"), typeof(RectTransform), typeof(Image));
 
-                // Get or Add an Image Component
-                if (!segment.TryGetComponent(out Image image))
-                {
-                    image = segment.AddComponent<Image>();
-                }
+                // Get the image Image Component
+                RectTransform rectTransform = segment.GetComponent<RectTransform>();
+                Image image = segment.GetComponent<Image>();
 
                 // Setup image
-                Sprite picture = Pictures[i];
-                image.sprite = NumPictures > 0 ? Pictures[i] : null;
+                Sprite picture = NumPictures > 0 && Pictures[i] != null ? Pictures[i] : _pictureData.FallbackPicture;
+                image.sprite = picture;
 
                 // Add is as child to the _picturesContainer
-                segment.transform.SetParent(_picturesContainer, false);
-                segment.transform.localRotation = Quaternion.identity;
-                segment.transform.localScale = Vector3.one;
+                rectTransform.SetParent(_picturesContainer, false);
+                rectTransform.localRotation = Quaternion.identity;
+                rectTransform.localScale = Vector3.one;
 
                 // Calculate width of the image given the containers height to preserve it's aspect
-                RectTransform rectTransform = segment.GetComponent<RectTransform>();
-                RectTransform parentRectTransform = rectTransform.parent.GetComponent<RectTransform>();
-                float aspectRatio = picture.rect.width / picture.rect.height;
-                float desiredWidth = aspectRatio * parentRectTransform.rect.height;
-                if (parentRectTransform.TryGetComponent(out HorizontalLayoutGroup layoutGroup))
+                if (picture != null)
                 {
-                    desiredWidth -= layoutGroup.padding.top + layoutGroup.padding.bottom;
+                    RectTransform parentRectTransform = rectTransform.parent.GetComponent<RectTransform>();
+                    float aspectRatio = picture.rect.width / picture.rect.height;
+                    float desiredWidth = aspectRatio * parentRectTransform.rect.height;
+                    if (parentRectTransform.TryGetComponent(out HorizontalLayoutGroup layoutGroup))
+                    {
+                        desiredWidth -= layoutGroup.padding.top + layoutGroup.padding.bottom;
+                    }
+                    rectTransform.sizeDelta = new Vector2(desiredWidth, rectTransform.sizeDelta.y);
+                    // First controls mask size
+                    if (i == 0 && _mask != null)
+                    {
+                        _mask.rectTransform.sizeDelta = new Vector2(desiredWidth, rectTransform.sizeDelta.y / 2);
+                    }
+                    // Get total width
+                    totalWidth += desiredWidth;
                 }
-                rectTransform.sizeDelta = new Vector2(desiredWidth, rectTransform.sizeDelta.y); ;
+                else
+                {
+                    Debug.LogWarning($"Picture {i} of the displayed picture data was null, this might mess up the display! Set it's value or add a fallback sprite!", this);
+                }
             }
+            _picturesContainer.sizeDelta = new(totalWidth, _picturesContainer.sizeDelta.y);
         }
 
         private void ClearSegments()
         {
-            while (_picturesContainer.childCount > 0)
+            for (int i = 0; i < _picturesContainer.childCount; i++)
             {
-                // Destroy always the first child as the other move up
-#if UNITY_EDITOR
-                DestroyImmediate(_picturesContainer.GetChild(0).gameObject);
-#else
-                Destroy(_picturesContainer.GetChild(0).gameObject);
-#endif
+                if (Application.isPlaying)
+                {
+                    // Queue(!) children for deletion
+                    Destroy(_picturesContainer.GetChild(i).gameObject);
+                }
+                else
+                {
+                    // If destroying immediately, always destroy the *first* child as the others move forward
+                    DestroyImmediate(_picturesContainer.GetChild(0).gameObject);
+                }
             }
         }
 
@@ -418,7 +462,7 @@ namespace ExPResSXR.Presentation.Pictures
         private void SetSliderIsGrabbed(SelectEnterEventArgs args) => _sliderGrabbed = true;
 
         private void SetSliderIsReleased(SelectExitEventArgs args) => _sliderGrabbed = false;
-    
+
         private void ChangeScrollValueFromSlider(float newValue, float oldValue)
         {
             // Prevent setting or overwriting autoscroll

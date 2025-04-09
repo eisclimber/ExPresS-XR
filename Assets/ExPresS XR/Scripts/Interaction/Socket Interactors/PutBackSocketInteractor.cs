@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEditor;
-using ExPresSXR.Misc;
-using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace ExPresSXR.Interaction
 {
@@ -19,9 +18,7 @@ namespace ExPresSXR.Interaction
             get => _putBackPrefab;
             set
             {
-                bool changed = _putBackPrefab != value;
                 _putBackPrefab = value;
-
                 UpdatePutBackObject();
             }
         }
@@ -60,16 +57,59 @@ namespace ExPresSXR.Interaction
             set => _allowNonInteractables = value;
         }
 
+
+        /// <summary>
+        /// Compensates the attach off set of the putback interactable. Makes placing interactables with an attach easier but requires an attach transform to be set.
+        /// </summary>
+        [SerializeField]
+        private bool _compensateInteractableAttach;
+        public bool CompensateInteractableAttach
+        {
+            get => _compensateInteractableAttach;
+            set
+            {
+                _compensateInteractableAttach = value;
+
+                UpdatePutbackAttachCompensation();
+            }
+        }
+
         /// <summary>
         /// The duration in seconds how long the put back object can be unselected outside the socket until being snapped back to the socket. 
         /// If less or equal to 0, the object will snap back instantaneous.
         /// </summary>
         [SerializeField]
-        private float _putBackTime = 1.0f;
+        private float _putBackTime = 2.0f;
         public float putBackTime
         {
             get => _putBackTime;
             set => _putBackTime = value;
+        }
+
+
+        /// <summary>
+        /// Hidden in the editor!
+        /// Prevents emitting the initial OnSelectEnter event after the socket is activated.
+        /// </summary>
+        [SerializeField]
+        private bool _omitInitialSelectEnterEvent = true;
+        public bool OmitInitialSelectEnterEvent
+        {
+            get => _omitInitialSelectEnterEvent;
+            set => _omitInitialSelectEnterEvent = value;
+        }
+
+
+        /// <summary>
+        /// Hidden in the editor!
+        /// Prevents emitting the initial OnSelectEnter event after the socket is activated.
+        /// </summary>
+        [SerializeField]
+        private bool _omitInitialSelectExitEvent = true;
+        public bool OmitInitialSelectExitEvent
+        {
+            get => _omitInitialSelectExitEvent;
+            set => _omitInitialSelectExitEvent = value;
         }
 
 
@@ -86,7 +126,13 @@ namespace ExPresSXR.Interaction
         }
 
 
+        protected bool _omitSelectEnterEvent;
+        protected bool _omitSelectExitEvent;
+
         private Coroutine putBackCoroutine;
+
+
+        public UnityEvent OnPutBack;
 
 
         /// <summary>
@@ -103,15 +149,28 @@ namespace ExPresSXR.Interaction
             }
 
             SetHighlighterVisible(_putBackInstance == null);
-            
+
             if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
             {
                 _putBackInteractable.selectExited.AddListener(StartPutBackTimer);
                 _putBackInteractable.selectEntered.AddListener(ResetPutBackTimer);
+
+                // Enable putBackInteractable if attached (avoids dropping if attached)
+                _putBackInstance.SetActive(true);
             }
+
+            // Prevent select enter event being emitted (must be done before base.Start() is called)
+            _omitSelectEnterEvent = _omitInitialSelectEnterEvent;
 
             selectEntered.AddListener(HideHighlighter);
             selectExited.AddListener(ShowHighlighter);
+        }
+
+
+        protected override void Start()
+        {
+            base.Start();
+            _omitSelectEnterEvent = false;
         }
 
 
@@ -121,16 +180,40 @@ namespace ExPresSXR.Interaction
         /// </summary>
         protected override void OnDisable()
         {
-            base.OnDisable();
-            
+            // Prevents select enter event being emitted (Must be done before disabling the interactable)
+            _omitSelectExitEvent = _omitInitialSelectExitEvent;
+
+            // Unlink and disable interactable before disabling this socket to avoid dropping
             if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
             {
                 _putBackInteractable.selectExited.RemoveListener(StartPutBackTimer);
                 _putBackInteractable.selectEntered.RemoveListener(ResetPutBackTimer);
+
+                _putBackInstance.SetActive(false);
             }
+
+            base.OnDisable();
 
             selectEntered.RemoveListener(HideHighlighter);
             selectExited.RemoveListener(ShowHighlighter);
+            _omitSelectExitEvent = false;
+        }
+
+        protected override void OnSelectEntered(SelectEnterEventArgs args)
+        {
+            if (!_omitSelectEnterEvent)
+            {
+                base.OnSelectEntered(args);
+            }
+        }
+
+
+        protected override void OnSelectExited(SelectExitEventArgs args)
+        {
+            if (!_omitSelectExitEvent)
+            {
+                base.OnSelectExited(args);
+            }
         }
 
         /// <summary>
@@ -190,6 +273,7 @@ namespace ExPresSXR.Interaction
             {
                 // Put Object back
                 interactionManager.SelectEnter(this, (IXRSelectInteractable)_putBackInteractable);
+                OnPutBack.Invoke();
             }
             putBackCoroutine = null;
             SetHighlighterVisible(false);
@@ -225,7 +309,7 @@ namespace ExPresSXR.Interaction
                 // Destroy Interactable
                 if (Application.isPlaying)
                 {
-                    interactionManager.UnregisterInteractable((IXRInteractable) _putBackInteractable);
+                    interactionManager.UnregisterInteractable((IXRInteractable)_putBackInteractable);
                     // Don't know why we need to wait here
                     Destroy(_putBackInstance, 0.1f);
                 }
@@ -270,13 +354,13 @@ namespace ExPresSXR.Interaction
         {
             if (_putBackPrefab != null)
             {
-                Transform attachParent = attachTransform ?? transform;
+                Transform attachParent = attachTransform != null ? attachTransform : transform;
                 _putBackInstance = Instantiate(_putBackPrefab, attachParent);
 
                 if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
                 {
-                    // Overwrite attach rotation
-                    _putBackInstance.transform.SetPositionAndRotation(attachParent.position, Quaternion.identity);
+                    _putBackInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    UpdatePutbackAttachCompensation();
                 }
                 else if (allowNonInteractables)
                 {
@@ -286,7 +370,7 @@ namespace ExPresSXR.Interaction
                 {
                     Debug.LogError("Can't attach PutBackPrefab, it is not an XRGrabInteractable. "
                                     + "If you want to attach regular GameObjects without being able "
-                                    + "to pick them up enable: 'allowNonInteractables'.");
+                                    + "to pick them up enable: 'allowNonInteractables'.", this);
                     putBackPrefab = null;
                 }
             }
@@ -294,6 +378,28 @@ namespace ExPresSXR.Interaction
             // Hide the highlighter in editor
             SetHighlighterVisible(showHighlighter && _putBackInstance == null);
         }
+
+
+        public void UpdatePutbackAttachCompensation()
+        {
+            if (!_compensateInteractableAttach)
+            {
+                return;
+            }
+
+            if (!attachTransform)
+            {
+                Debug.LogWarning("Can't compensate the attach for the PutBackPrefab because it requires an Attach but none is set.", this);
+                return;
+            }
+
+            if (_putBackInteractable)
+            {
+                Transform otherAttach = _putBackInteractable.GetAttachTransform(this);
+                attachTransform.SetPositionAndRotation(otherAttach.position, otherAttach.rotation);
+            }
+        }
+
 
         /// <summary>
         /// Checks if all references derived from the putBackPrefab are valid.
@@ -333,6 +439,12 @@ namespace ExPresSXR.Interaction
             }
 
             return true;
+        }
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            CompensateInteractableAttach = CompensateInteractableAttach;
         }
     }
 }

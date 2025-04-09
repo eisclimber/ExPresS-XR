@@ -1,56 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
+using ExPresSXR.Misc;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery
 {
-    public class Spawner : MonoBehaviour
+    public class ObjectPoolSpawner : MonoBehaviour
     {
-        [SerializeField, Tooltip("Spawn")]
-        private GameObject spawn;
         [SerializeField]
-        public GameObject[] Objects;
-        [SerializeField, Tooltip("Give probabilities if you want to use the weightedRandom -> Same amount of probabilities as elements, they have to sum up to 1, need to be ordered descending, images have to be ordered regarding their probabilities!")]
-        private float[] probabilities;
-        [SerializeField, Tooltip("check for 'WeightedRandom'")]
-        public bool weightedRandom;
-        [SerializeField, Tooltip("Start directly?")]
-        private bool start = true;
+        [Tooltip("Spawn Location")]
+        private GameObject _spawnLocation;
 
+        [SerializeField]
+        [Tooltip("Initial Force Strength")]
+        private float _forceStrength = 6.0f;
 
+        [SerializeField]
+        private GameObject[] _objects;
 
-        private GameObject spawnedobject;
-        Vector3 spawn_rotation;
-        Vector3 spawn_position;
-        private Quaternion spawn_Quaternion;
+        [SerializeField]
+        [Tooltip("Use weighted random probabilities.")]
+        private bool _weightedRandom;
 
-        public void OnSpawnMoment()
+        [SerializeField]
+        [Tooltip("Give probabilities if you want to use the weightedRandom -> Same amount of probabilities as elements,"
+            + "they have to sum up to 1, need to be ordered descending, images have to be ordered regarding their probabilities!")]
+        private float[] _probabilities;
+
+        [SerializeField]
+        [Tooltip("Start directly?")]
+        private bool _start = true;
+
+        private GameObject _spawnedObject;
+        private Vector3 _spawnRotation;
+        private Vector3 _spawnPosition;
+        private Quaternion _spawnQuaternion;
+
+        public void SpawnObject()
         {
-            if (start)
+            if (_start)
             {
-                spawn_position = spawn.transform.position;
-                spawn_rotation = spawn.transform.eulerAngles;
-                spawn_Quaternion.eulerAngles = spawn_rotation;
-                if (weightedRandom)
-                {
-                    spawnedobject = ObjectPoolManager.Spawn(Objects[gameObject.GetComponent<WeightedRandom>().DirectGetRandomObject(Objects.Length, probabilities)], spawn_position, spawn_Quaternion);
-                }
-                else
-                {
-                    spawnedobject = ObjectPoolManager.Spawn(RandomElement(), spawn_position, spawn_Quaternion);
-                }
-                spawnedobject.GetComponent<Rigidbody>().AddForce(spawn.transform.up * 6, ForceMode.Impulse);
+                _spawnPosition = _spawnLocation.transform.position;
+                _spawnRotation = _spawnLocation.transform.eulerAngles;
+                _spawnQuaternion.eulerAngles = _spawnRotation;
+
+                GameObject element = RuntimeUtils.GetRandomArrayElement(_objects, _weightedRandom, _probabilities);
+                _spawnedObject = ObjectPoolManager.Spawn(element, _spawnPosition, _spawnQuaternion);
+                _spawnedObject.GetComponent<Rigidbody>().AddForce(_spawnLocation.transform.up * _forceStrength, ForceMode.Impulse);
             }
-        }
-
-
-        private GameObject RandomElement()
-        {
-            int num = Objects.Length;
-            int randomNumber = Random.Range(0, num);
-            Debug.Log(randomNumber);
-            GameObject rand = Objects[randomNumber];
-            return rand;
         }
     }
 }

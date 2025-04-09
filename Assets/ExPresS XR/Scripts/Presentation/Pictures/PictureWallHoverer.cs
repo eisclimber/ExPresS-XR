@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace ExPResSXR.Presentation.Pictures
+namespace ExPresSXR.Presentation.Pictures
 {
     public class PictureWallHoverer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

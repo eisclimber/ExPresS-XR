@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Timing
@@ -17,6 +13,17 @@ namespace ExPresSXR.Misc.Timing
         /// Default wait time.
         /// </summary>
         const float DEFAULT_WAIT_TIME = 1.0f;
+
+        [Tooltip("A description of the timer. No further use.")]
+        [SerializeField]
+        private string _description = "";
+        public string Description
+        {
+            get => _description;
+            private set => _description = value;
+        }
+
+
 
         /// <summary>
         /// How long the timer takes to timeout. Must be greater than 0.0f.
@@ -178,13 +185,16 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         private void HandleTimeout()
         {
-            StopTimer();
-            OnTimeout.Invoke();
-
-            if (!oneShot)
+            if (oneShot)
+            {
+                StopTimer();
+            }
+            else
             {
                 StartTimer();
             }
+            // Emit the event *after* stopping/restarting to allow stopping a repeating timer on callback. 
+            OnTimeout.Invoke();
         }
     }
 }

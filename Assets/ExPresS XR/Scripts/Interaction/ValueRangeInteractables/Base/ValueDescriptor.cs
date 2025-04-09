@@ -96,19 +96,19 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
             if (IsValueSnappingEnabled())
             {
-                if (IsMinValue(Value))
-                {
-                    OnMinValue.Invoke(Value);
-                }
-                else if (IsMaxValue(Value))
-                {
-                    OnMaxValue.Invoke(Value);
-                }
-
                 OnSnapped.Invoke(Value);
             }
 
             OnValueChanged.Invoke(Value, oldValue);
+
+            if (IsMinValue(Value))
+            {
+                OnMinValue.Invoke(Value);
+            }
+            else if (IsMaxValue(Value))
+            {
+                OnMaxValue.Invoke(Value);
+            }
         }
 
 

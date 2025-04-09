@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro;
-using ExPresSXR.UI;
+using System.Linq;
 using ExPresSXR.Rig;
-using UnityEditor;
-using UnityEngine.XR;
-using System.Reflection;
-using UnityEngine.Events;
+using ExPresSXR.UI;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace ExPresSXR.Misc
 {
@@ -65,7 +62,7 @@ namespace ExPresSXR.Misc
             rig = null;
             return false;
         }
-        
+
 
         /// <summary>
         /// Helper class to calculate the positive modulo for integers.
@@ -103,6 +100,80 @@ namespace ExPresSXR.Misc
             return valueClamped;
         }
 
+        #region Random
+        /// <summary>
+        /// Returns a random weighted index provided by an array of probabilities that should add up to 1.0f.
+        /// </summary>
+        /// <param name="probabilities">List of probabilities for each index. Should add up to 1.0f.</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>A random index in the range of _probabilities or -1 if empty.</returns>
+        public static int GetWeightedRandomIdx(float[] probabilities)
+        {
+            float sum = probabilities.Sum();
+            if (sum != 1.0f)
+            {
+                Debug.LogWarning($"Probabilities for weighted idx did not add to 1.0f but instead to {sum}.");
+            }
+
+            if (probabilities == null || probabilities.Length <= 0)
+            {
+                Debug.LogWarning($"No probabilities provided. Can't generate random idx.");
+                return -1;
+            }
+
+            int length = probabilities.Length;
+            float random = UnityEngine.Random.Range(0.0f, 1.0f);
+            float acc = 0.0f;
+
+            for (int i = 0; i < length; i++)
+            {
+                acc += probabilities[i];
+                if (random > (1.0 - acc))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public static T GetRandomArrayElement<T>(T[] objects, float[] probabilities = null)
+        {
+            bool useWeighted = probabilities != null && probabilities.Length >= 0;
+            return GetRandomArrayElement(objects, useWeighted, probabilities);
+        }
+
+        public static T GetRandomArrayElement<T>(T[] objects, bool useWeighted, float[] probabilities = null)
+        {
+            return useWeighted ? GetRandomArrayElementWeighted(objects, probabilities) : GetRandomArrayElementUnweighted(objects);
+        }
+
+        public static T GetRandomArrayElementUnweighted<T>(T[] objects)
+        {
+            if (objects.Length <= 0)
+            {
+                Debug.LogError("Can retrieve random element from an empty array.");
+                return default;
+            }
+
+            int randomIdx = UnityEngine.Random.Range(0, objects.Length);
+            return objects[randomIdx];
+        }
+
+        public static T GetRandomArrayElementWeighted<T>(T[] objects, float[] probabilities)
+        {
+            if (objects.Length <= 0 || objects.Length != probabilities.Length)
+            {
+                Debug.LogError("Invalid array size for generating random ");
+                return default;
+            }
+            int randomIdx = GetWeightedRandomIdx(probabilities);
+            return randomIdx >= 0 ? objects[randomIdx] : default;
+        }
+
+
+
+        #endregion
 
         #region Scene Switching
         /// <summary>

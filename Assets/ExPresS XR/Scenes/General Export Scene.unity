@@ -344,7 +344,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14498953}
-  m_LocalRotation: {x: -0.5, y: 0.50000006, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 4.4909997}
   m_LocalScale: {x: 0.020000001, y: 0.02, z: 1}
   m_ConstrainProportionsScale: 0
@@ -352,7 +352,7 @@ RectTransform:
   - {fileID: 1953441722}
   - {fileID: 143538371}
   m_Father: {fileID: 2069692546}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4.999, y: 2.3}
@@ -2768,7 +2768,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <--
+  m_text: "\u2191"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2796,8 +2796,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2832,7 +2832,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 4}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7839,8 +7839,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 198031463}
   _putBackInteractable: {fileID: 198031465}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &172599989
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10278,11 +10284,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!4 &284627140 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
-  m_PrefabInstance: {fileID: 3976107710300266538}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &284693989
 GameObject:
   m_ObjectHideFlags: 0
@@ -10386,8 +10387,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 1531176653}
   _putBackInteractable: {fileID: 1531176655}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &284693992
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10735,6 +10742,10 @@ PrefabInstance:
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 8025614098739774370, guid: da6cd2ec4313da3409901f851004da01, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cac1f7fdbf131f9468ede6a0a0cc20eb, type: 2}
     - target: {fileID: 8385783803006673527, guid: da6cd2ec4313da3409901f851004da01, type: 3}
       propertyPath: m_Name
       value: Arcade Example
@@ -10753,23 +10764,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9163586491524298957, guid: da6cd2ec4313da3409901f851004da01, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.96592623
+      value: 0.6830127
       objectReference: {fileID: 0}
     - target: {fileID: 9163586491524298957, guid: da6cd2ec4313da3409901f851004da01, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.6830127
       objectReference: {fileID: 0}
     - target: {fileID: 9163586491524298957, guid: da6cd2ec4313da3409901f851004da01, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.25881764
+      value: 0.18301274
       objectReference: {fileID: 0}
     - target: {fileID: 9163586491524298957, guid: da6cd2ec4313da3409901f851004da01, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.18301274
       objectReference: {fileID: 0}
     - target: {fileID: 9163586491524298957, guid: da6cd2ec4313da3409901f851004da01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 9163586491524298957, guid: da6cd2ec4313da3409901f851004da01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -10784,7 +10795,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8385783803006673527, guid: da6cd2ec4313da3409901f851004da01, type: 3}
-      insertIndex: 1
+      insertIndex: -1
       addedObject: {fileID: 296659678}
   m_SourcePrefab: {fileID: 100100000, guid: da6cd2ec4313da3409901f851004da01, type: 3}
 --- !u!4 &296659676 stripped
@@ -11438,8 +11449,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 1243772611}
   _putBackInteractable: {fileID: 1243772613}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &317586317
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -20169,8 +20186,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 1452467829}
   _putBackInteractable: {fileID: 1452467831}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &420255879
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -24038,8 +24061,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 1901760574}
   _putBackInteractable: {fileID: 1901760576}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 1
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &504559508
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -38988,8 +39017,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 1842401346}
   _putBackInteractable: {fileID: 1842401348}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &912094485
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -39798,8 +39833,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 266276131}
   _putBackInteractable: {fileID: 266276133}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &951250933
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -46743,7 +46784,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083820860}
-  m_LocalRotation: {x: -0.00000038648724, y: 0.0000003054738, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 9.990999}
   m_LocalScale: {x: 0.02, y: 0.019999998, z: 1}
   m_ConstrainProportionsScale: 0
@@ -46751,7 +46792,7 @@ RectTransform:
   - {fileID: 1298083278}
   - {fileID: 1606834924}
   m_Father: {fileID: 151773236}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 9.363, y: 1.8}
@@ -64124,8 +64165,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 921168586}
   _putBackInteractable: {fileID: 921168588}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &1411246022
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -74522,7 +74569,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <--
+  m_text: "\u2191"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -74550,8 +74597,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -74586,7 +74633,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 4}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -85926,8 +85973,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 813326912}
   _putBackInteractable: {fileID: 813326914}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &1843328548
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -108454,7 +108507,7 @@ Transform:
   - {fileID: 419991385}
   - {fileID: 994954108}
   - {fileID: 1629510857}
-  - {fileID: 284627140}
+  - {fileID: 3976107710300266539}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2071209833
@@ -109810,8 +109863,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 1549857199}
   _putBackInteractable: {fileID: 1549857201}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &2104828414
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -110215,8 +110274,14 @@ MonoBehaviour:
   _putBackInstance: {fileID: 1384521078}
   _putBackInteractable: {fileID: 1384521080}
   _allowNonInteractables: 0
+  _compensateInteractableAttach: 0
   _putBackTime: 4
+  _omitInitialSelectEnterEvent: 1
+  _omitInitialSelectExitEvent: 1
   _externallyControlled: 0
+  OnPutBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!135 &2129854477
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -113803,51 +113868,51 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2069692546}
     m_Modifications:
-    - target: {fileID: 611950539715046138, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
-      propertyPath: _rig
-      value: 
-      objectReference: {fileID: 1713025836}
-    - target: {fileID: 6389207338258647204, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 1244396819114405947, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_Name
       value: Exit Door Interactable
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 4323029684876540774, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+      propertyPath: _rig
+      value: 
+      objectReference: {fileID: 1713025836}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalPosition.z
       value: -5
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6452517755338435421, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+    - target: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
@@ -113856,6 +113921,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+--- !u!4 &3976107710300266539 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5781713625954732246, guid: 9dc519b34833c914ca8818a4e7362e5e, type: 3}
+  m_PrefabInstance: {fileID: 3976107710300266538}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5167656750696303684
 PrefabInstance:
   m_ObjectHideFlags: 0

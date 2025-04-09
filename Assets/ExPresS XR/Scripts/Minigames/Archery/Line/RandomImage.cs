@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,48 +7,36 @@ namespace ExPresSXR.Minigames.Archery
     public class RandomImage : MonoBehaviour
     {
         [SerializeField]
-        public Sprite[] images;
+        private Sprite[] _images;
 
-        [SerializeField, Tooltip("Give probabilities if you want to use the weightedRandom -> Same amount of probabilities as elements, they have to sum up to 1, need to be ordered descending, images have to be ordered regarding their probabilities!")]
-        public float[] probabilites;
+        [SerializeField]
+        [Tooltip("Give probabilities if you want to use the weightedRandom -> Same amount of probabilities as elements, they have to sum up to 1, need to be ordered descending, images have to be ordered regarding their probabilities!")]
+        public float[] _probabilities;
 
-        [SerializeField, Tooltip("Reference to the Image on the Canvas")]
-        private Image image_on_Canvas;
-        [SerializeField, Tooltip("check for 'WeightedRandom'")]
-        public bool weightedRandom;
+        [SerializeField]
+        [Tooltip("Reference to the Image on the Canvas")]
+        private Image _displayedImage;
 
+        [SerializeField]
+        [Tooltip("Select images based on weights ")]
+        private bool _useWeightedRandom;
 
         //Put random image on Canvas at start
         void Start()
         {
-            if (weightedRandom)
+            if (_images == null || _images.Length <= 0)
             {
-                image_on_Canvas.sprite = images[gameObject.GetComponent<WeightedRandom>().DirectGetRandomObject(images.Length, probabilites)];
-                Debug.Log("weightedRandom");
+                Debug.LogError("No images to display provided!", this);
             }
-            else
-            {
-                image_on_Canvas.sprite = RandomElement();
-            }
+
+            _displayedImage.sprite = _useWeightedRandom ? RuntimeUtils.GetRandomArrayElementWeighted(_images, _probabilities) : RuntimeUtils.GetRandomArrayElementUnweighted(_images);
         }
 
-
-
-        //Get a random Image of the Image Array
-        private Sprite RandomElement()
+        // Change images to the one given in the array
+        public void ChangeImages(Sprite[] newImages, float[] newProbabilities)
         {
-            int num = images.Length;
-            int randomNumber = Random.Range(0, num);
-            Debug.Log(randomNumber);
-            Sprite img = images[randomNumber];
-            return img;
-        }
-
-        //change images to the one given in the array
-        public void ChangeImages(Sprite[] newimages, float[] newprobabilities)
-        {
-            images = newimages;
-            probabilites = newprobabilities;
+            _images = newImages;
+            _probabilities = newProbabilities;
         }
     }
 }

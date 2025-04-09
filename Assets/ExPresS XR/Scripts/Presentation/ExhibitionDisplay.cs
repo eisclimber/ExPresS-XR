@@ -93,7 +93,7 @@ namespace ExPresSXR.Presentation
             }
         }
 
-
+        [TextArea(2, 5)]
         [SerializeField]
         private string _labelText;
         public string labelText
@@ -126,6 +126,7 @@ namespace ExPresSXR.Presentation
                 }
             }
         }
+
 
         [SerializeField]
         private Sprite _infoImage;

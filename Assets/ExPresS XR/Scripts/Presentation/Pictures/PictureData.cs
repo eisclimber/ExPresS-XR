@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ExPResSXR.Presentation.Pictures
+namespace ExPresSXR.Presentation.Pictures
 {
     [Serializable]
     public class PictureData : ScriptableObject
@@ -16,14 +16,19 @@ namespace ExPResSXR.Presentation.Pictures
         /// The description of the picture collection. Shown as Info Text.
         /// </summary>
         [Tooltip("The description of the picture collection. Shown as Info Text.")]
-        [TextArea(10, 4)]
-        public string Description = "";
+        public string[] Descriptions;
 
         /// <summary>
         /// List of viewable images in the picture collection, ordered from first to last.
         /// </summary>
         [Tooltip("List of viewable images in the picture collection, ordered from first to last.")]
         public Sprite[] Pictures;
+
+        /// <summary>
+        /// Fall back picture if one is null/missing/invalid...
+        /// </summary>
+        [Tooltip(" Fall back picture if one is null/missing/invalid...")]
+        public Sprite FallbackPicture;
 
         /// <summary>
         /// Number of pictures in this asset.

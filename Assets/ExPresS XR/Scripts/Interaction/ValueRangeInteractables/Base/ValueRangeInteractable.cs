@@ -62,10 +62,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <summary>
-        /// If true, the joystick will snap to the upright position on release.
+        /// If true, the interactable will snap it's neutral position defined by the ValueRange on release.
         /// </summary>
         [SerializeField]
-        [Tooltip("If true, the joystick will snap to the upright position on release.")]
+        [Tooltip("If true, the interactable will snap it's neutral position defined by the ValueRange on release.")]
         private bool _zeroValueOnRelease = false;
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
             // Check if the interaction is valid and in the correct update phase
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic
-                && isActiveAndEnabled 
+                && isActiveAndEnabled
                 && isSelected)
             {
                 UpdateValueWithGrab();
@@ -243,6 +243,13 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <summary>
+        /// Automatically called when an interactor is trying to manipulate the interactor's value.
+        /// Use this function update the interactor's Value based on your representation of the range.
+        /// </summary>
+        protected virtual void UpdateValueWithGrab() => Value = _valueVisualizer.GetVisualizedValue(this, _interactor);
+
+        #region Events
+        /// <summary>
         /// Adds listeners the ValueDescriptor events. Can be overwritten if your value range introduces more events.
         /// Automatically called during OnEnable().
         /// </summary>
@@ -266,7 +273,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             _valueDescriptor.OnValueChanged.RemoveListener(EmitOnValueChanged);
         }
 
-#region Audio
         /// <summary>
         /// Function wrapper to emit the OnMinValue-Event with the given value.
         /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
@@ -300,13 +306,8 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             OnValueChanged.Invoke(newV, oldV);
             OnValueChangedString.Invoke(newV.ToString());
         }
-
-        /// <summary>
-        /// Automatically called when an interactor is trying to manipulate the interactor's value.
-        /// Use this function update the interactor's Value based on your representation of the range.
-        /// </summary>
-        protected virtual void UpdateValueWithGrab() => Value = _valueVisualizer.GetVisualizedValue(this, _interactor);
-
+        #endregion
+        #region Audio
         /// <summary>
         /// Plays the `minValueSound`, if assigned. If omitted, the snapSound is played.
         /// </summary>
@@ -353,9 +354,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 player.Play();
             }
         }
-#endregion
+        #endregion
 
-#region Internal
+        #region Internal
         /// <summary>
         /// Calls the gizmo representation of the selected visualizer.
         /// </summary>
@@ -370,7 +371,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         {
             Value = Value;
         }
-#endregion
+        #endregion
     }
 
     /// <summary>

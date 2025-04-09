@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using ExPResSXR.Presentation.Pictures;
+using ExPresSXR.Presentation.Pictures;
 
 namespace ExPresSXR.Editor.Editors
 {

@@ -1,44 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
 
 namespace ExPresSXR.Minigames.Archery
 {
     public class TimeCounter : MonoBehaviour
     {
-        [SerializeField, Tooltip("Duration")]
-        private float duration;
+        [SerializeField]
+        [Tooltip("Duration")]
+        private float _duration;
 
-        [SerializeField, Tooltip("Reference to the  Text on the Counter Display")]
-        private TMP_Text text;
-        [SerializeField, Tooltip("Invoke after timer")]
-        public UnityEvent timerup;
+        [SerializeField]
+        [Tooltip("Reference to the Text on the Counter Display")]
+        private TMP_Text _text;
 
+        [Tooltip("Invoke after timer")]
+        public UnityEvent _timerUp;
 
-        public bool count = false;
-        private float elapsedTime;
+        private bool _count = false;
+        public bool Counter
+        {
+            get => _count;
+            set => _count = value;
 
+        }
+        private float _elapsedTime;
 
         private void Start()
         {
-            elapsedTime = duration;
+            _elapsedTime = _duration;
         }
 
 
         void Update()
         {
-            if (count)
+            if (_count)
             {
-                elapsedTime -= Time.deltaTime;
-                text.text = elapsedTime.ToString("0.00");
-                if (elapsedTime <= 0)
+                _elapsedTime -= Time.deltaTime;
+                _text.text = _elapsedTime.ToString("0.00");
+                if (_elapsedTime <= 0)
                 {
-                    timerup?.Invoke();
-                    elapsedTime = 0f;
-                    text.text = elapsedTime.ToString("0.00");
-                    count = false;
+                    _timerUp?.Invoke();
+                    _elapsedTime = 0.0f;
+                    _text.text = _elapsedTime.ToString("0.00");
+                    _count = false;
                 }
 
             }
@@ -46,7 +53,7 @@ namespace ExPresSXR.Minigames.Archery
 
         public void Reset()
         {
-            elapsedTime = duration;
+            _elapsedTime = _duration;
         }
     }
 }

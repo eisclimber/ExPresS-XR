@@ -9,6 +9,7 @@ namespace ExPresSXR.UI
 {
     public class WorldSpaceKeyboard : MonoBehaviour
     {
+        [SerializeField]
         private string _inputText = "";
         public string inputText
         {

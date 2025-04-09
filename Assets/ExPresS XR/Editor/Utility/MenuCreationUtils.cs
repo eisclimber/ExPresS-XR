@@ -2,7 +2,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
-using ExPResSXR.Presentation.Pictures;
+using ExPresSXR.Presentation.Pictures;
 
 
 namespace ExPresSXR.Editor.Utility
@@ -98,10 +98,10 @@ namespace ExPresSXR.Editor.Utility
             InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/Dynamic Attach Interactable");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/Scalable")]
-        public static void CreateScalableInteractable(MenuCommand menuCommand)
+        [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/ExPresS")]
+        public static void CreateExPresSGrabInteractable(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/Dynamic Attach Interactable");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Interactables/ExPresS XR Grab Interactable");
         }
 
         [MenuItem("GameObject/ExPresS XR/Interaction/Interactables/Grab Trigger")]
