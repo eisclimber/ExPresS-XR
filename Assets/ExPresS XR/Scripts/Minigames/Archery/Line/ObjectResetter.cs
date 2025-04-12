@@ -14,7 +14,7 @@ namespace ExPresSXR.Minigames.Archery
             startDir = gameObject.transform.eulerAngles;
         }
 
-        public void ResetObj()
+        public void ResetObject()
         {
             gameObject.transform.position = startPos;
             gameObject.transform.eulerAngles = startDir;

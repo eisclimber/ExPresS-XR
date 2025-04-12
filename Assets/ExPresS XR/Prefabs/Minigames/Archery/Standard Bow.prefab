@@ -690,7 +690,7 @@ Transform:
   m_GameObject: {fileID: 3661688189748943578}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -912,12 +912,12 @@ GameObject:
   - component: {fileID: 1772535985686206318}
   - component: {fileID: 504936479293506309}
   m_Layer: 12
-  m_Name: ArrowVisual
+  m_Name: Arrow Sticking
   m_TagString: arrowshot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1772535985686206318
 Transform:
   m_ObjectHideFlags: 0
@@ -2320,7 +2320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7617001757594463975}
   m_Layer: 0
-  m_Name: arrow
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2443,12 +2443,12 @@ GameObject:
   - component: {fileID: 3215187874240356725}
   - component: {fileID: 2718470462991813058}
   m_Layer: 12
-  m_Name: ArrowShot
+  m_Name: Arrow Shot
   m_TagString: arrowshot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3700027756115016824
 Transform:
   m_ObjectHideFlags: 0
@@ -2783,9 +2783,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 20
-  _arrowShotPrefab: {fileID: 0}
-  _arrowStickingPrefab: {fileID: 0}
-  _releaseStringSound: {fileID: 0}
+  _arrowShotPrefab: {fileID: 8130486585732249579}
+  _arrowStickingPrefab: {fileID: 3907000265549356943}
+  _releaseStringSound: {fileID: 8300000, guid: 9eccacfdef094034da6ef52b251288c9, type: 3}
   _releaseSoundVolume: 0.3
   hitSound: {fileID: 8300000, guid: 643159350e015d648a9c258941cbb487, type: 3}
   _hitSoundVolume: 1

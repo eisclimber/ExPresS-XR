@@ -132,6 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5516552020668280594}
   - component: {fileID: 4274410061601162521}
+  - component: {fileID: 7977953565721891996}
   - component: {fileID: 1729758845307250294}
   m_Layer: 0
   m_Name: Archery Game Logic
@@ -171,10 +172,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fef501cc0a014f498fbcec9ede15654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _duration: 30
   _scoreManager: {fileID: 4473245983324353989}
-  _timeCounter: {fileID: 924803429744120280}
+  _timer: {fileID: 7977953565721891996}
   _startSound: {fileID: 8300000, guid: ef4ca956ffab14b4cb9d07830cd69397, type: 3}
   _endSound: {fileID: 0}
+  OnStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFinalScore:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7977953565721891996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802799380948063106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a911722e1bb685448d8e964c9561c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _description: 
+  _waitTime: 30
+  _remainingTime: 0
+  autoStart: 0
+  oneShot: 1
+  OnStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTimeout:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPaused:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &1729758845307250294
 AudioSource:
   m_ObjectHideFlags: 0
@@ -283,7 +320,7 @@ GameObject:
   - component: {fileID: 330873744767179789}
   - component: {fileID: 1122497262587009427}
   - component: {fileID: 9112987244564020864}
-  - component: {fileID: 924803429744120280}
+  - component: {fileID: 804217605901253224}
   m_Layer: 0
   m_Name: TimerDisplay
   m_TagString: Untagged
@@ -300,8 +337,8 @@ Transform:
   m_GameObject: {fileID: 920791818846289286}
   serializedVersion: 2
   m_LocalRotation: {x: -0.24999997, y: -0.24999997, z: -0.06698728, w: 0.9330127}
-  m_LocalPosition: {x: 2.29, y: 0.4, z: -1.88}
-  m_LocalScale: {x: 1, y: 0.8, z: 0.2}
+  m_LocalPosition: {x: 2.369, y: 0.4, z: -1.835}
+  m_LocalScale: {x: 1.2247, y: 0.8, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4292446248726115453}
@@ -378,7 +415,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &924803429744120280
+--- !u!114 &804217605901253224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -387,14 +424,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 920791818846289286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68ed56aa850431643bc6061dfd8f27a0, type: 3}
+  m_Script: {fileID: 11500000, guid: d951e143a2a178245a727c8383bc3572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _duration: 0
-  _text: {fileID: 0}
-  _timerUp:
-    m_PersistentCalls:
-      m_Calls: []
+  _timer: {fileID: 7977953565721891996}
+  _textSettings:
+    TextEnabled: 1
+    TimeDisplayFormatter: '{0}s'
+    ShowMilliseconds: 1
+    TimeoutText: '-'
+    CountType: 1
+    _color: {r: 1, g: 1, b: 1, a: 1}
+    _text: {fileID: 8365658240984988436}
 --- !u!1 &1454935153300940499
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,8 +947,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 4274410061601162521}
-        m_TargetAssemblyTypeName: Game, Assembly-CSharp
-        m_MethodName: gameStart
+        m_TargetAssemblyTypeName: ExPresSXR.Minigames.Archery.ArrowGameLogic, Assembly-CSharp
+        m_MethodName: StartArrowGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1320,8 +1361,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99df5948168984f43a5e41ca3a105ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Score_Text: {fileID: 6631153708454901086}
-  game: 1
+  _stepSize: 1
+  _allowNegative: 0
+  _scoreText: {fileID: 6631153708454901086}
 --- !u!1 &4191660690546953553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,7 +1608,7 @@ RectTransform:
   m_GameObject: {fileID: 4516720833059289079}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4292446248726115453}
@@ -1806,8 +1848,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7327487089706611937}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0.56}
+  m_LocalRotation: {x: 0.0000000037252903, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.56229043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1816,7 +1858,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.005, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.00033065677}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3478737547496895669

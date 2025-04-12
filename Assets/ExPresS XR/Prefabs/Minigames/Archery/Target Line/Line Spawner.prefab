@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 6003830628764409317}
   - component: {fileID: 4586653389472333158}
   m_Layer: 0
-  m_Name: Left_Post
+  m_Name: Left Post
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,12 +225,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea7942312e86a949872de1f91099ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggered:
+  OnTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6322927467394685072}
-        m_TargetAssemblyTypeName: Resetter, Assembly-CSharp
-        m_MethodName: SpawnNewRope
+      - m_Target: {fileID: 1634883486950216427}
+        m_TargetAssemblyTypeName: ExPresSXR.Minigames.Archery.LineSpawner, Assembly-CSharp
+        m_MethodName: SpawnNewTargetFromCollision
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -240,7 +240,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isactive: 1
 --- !u!1 &465789789251878909
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,8 +249,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8975102244256752037}
+  - component: {fileID: 1634883486950216427}
   m_Layer: 0
-  m_Name: Line Model
+  m_Name: Line Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,6 +274,46 @@ Transform:
   - {fileID: 8607626957201395416}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1634883486950216427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465789789251878909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a5e27aba2b4524eb9b83244b3fe727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetPrefab: {fileID: 1649354165524695761, guid: c56e3a981789aa742b4fcac2499ddd86, type: 3}
+  _autoStart: 0
+  _speed: 1.2
+  _leftToRight: 1
+  _alternateDirections: 1
+  _generateBadTargets: 0
+  _weightedImages: 0
+  _goodImages:
+  - {fileID: 21300000, guid: 9e9b8ab781ab69c42b106e3c0b10f2e1, type: 3}
+  _goodImagesProbabilities:
+  - 1
+  _badImages:
+  - {fileID: 21300000, guid: 1b3aa3b58791bad478ef921ab11ed630, type: 3}
+  _badImagesProbabilities:
+  - 1
+  _weightedTargets: 0
+  _weightedBadGood: 0100
+  _weightedBadGoodProbabilities:
+  - 0.51
+  - 0.49
+  _currentTarget: {fileID: 0}
+  _isCurrentlyLeftToRight: 0
+  _currentDirection: {x: 0, y: 0, z: 0}
+  _isCurrentTargetBad: 0
+  _leftPost: {fileID: 4586653389472333158}
+  _leftSpawnAnchor: {fileID: 7167654523945616374}
+  _rightPost: {fileID: 6589913580082926152}
+  _rightSpawnAnchor: {fileID: 2045284851321407397}
 --- !u!1 &2461228307187420461
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +327,7 @@ GameObject:
   - component: {fileID: 8557628695808788199}
   - component: {fileID: 441056255868081911}
   m_Layer: 0
-  m_Name: Sight_protection_left
+  m_Name: Sight Protection Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -389,7 +429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2045284851321407397}
   m_Layer: 0
-  m_Name: Right_Anchor
+  m_Name: Right Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -424,7 +464,7 @@ GameObject:
   - component: {fileID: 5820462956417904855}
   - component: {fileID: 6589913580082926152}
   m_Layer: 0
-  m_Name: Right_Post
+  m_Name: Right Post
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -528,12 +568,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea7942312e86a949872de1f91099ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggered:
+  OnTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6322927467394685072}
-        m_TargetAssemblyTypeName: Resetter, Assembly-CSharp
-        m_MethodName: SpawnNewRope
+      - m_Target: {fileID: 1634883486950216427}
+        m_TargetAssemblyTypeName: ExPresSXR.Minigames.Archery.LineSpawner, Assembly-CSharp
+        m_MethodName: SpawnNewTargetFromCollision
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -543,7 +583,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isactive: 0
 --- !u!1 &3644530187456311053
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,10 +592,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8607626957201395416}
-  - component: {fileID: 6322927467394685072}
-  - component: {fileID: 4006973035110725798}
   m_Layer: 0
-  m_Name: Resetter
+  m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -579,55 +616,6 @@ Transform:
   - {fileID: 7167654523945616374}
   m_Father: {fileID: 8975102244256752037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6322927467394685072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3644530187456311053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16a5e27aba2b4524eb9b83244b3fe727, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 1649354165524695761, guid: c56e3a981789aa742b4fcac2499ddd86, type: 3}
-  alterMovement: 0
-  speed: 1
-  direction: {x: -1, y: 0, z: 0}
-  leftToRight: 0
-  badTarget: 0
-  weightedImages: 0
-  good_images:
-  - {fileID: 21300000, guid: 3713e949ed492144888fe666631384cc, type: 3}
-  - {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  good_images_probabilities:
-  - 0.9
-  - 0.1
-  bad_images:
-  - {fileID: 21300000, guid: 65634c89ce5feb34587280697c3509dc, type: 3}
-  - {fileID: 21300000, guid: 4dc33fd9aa02d7f419d77062a96687e1, type: 3}
-  bad_images_probabilities:
-  - 0.6
-  - 0.4
-  weightedTargets: 0
-  weightedBadGood: 0100
-  weightedBadGoodProb:
-  - 0.51
-  - 0.49
---- !u!114 &4006973035110725798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3644530187456311053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab8e1ee228468b6409e98660ac05355c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  result: 0
 --- !u!1 &3955844672099483685
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +629,7 @@ GameObject:
   - component: {fileID: 3116008446702901680}
   - component: {fileID: 120696270669350294}
   m_Layer: 0
-  m_Name: Sight_protection_right
+  m_Name: Sight Protection Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -743,7 +731,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7167654523945616374}
   m_Layer: 0
-  m_Name: Left_Anchor
+  m_Name: Left Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -774,7 +762,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7640604913449713954}
   m_Layer: 0
-  m_Name: Construct
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -155,7 +155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3776505999180895846}
   m_Layer: 0
-  m_Name: arrow
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,7 +388,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8841582315314776931}
   m_Layer: 0
-  m_Name: arrow
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -708,10 +708,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d992e71a30d694e4f87f65d6a7f43868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 20
-  _arrowShotPrefab: {fileID: 7667593537865981049, guid: 0b0902a4a8fe438469e2165744d639c1, type: 3}
-  _arrowStickingPrefab: {fileID: 0}
-  _releaseStringSound: {fileID: 0}
+  _speed: 30
+  _arrowShotPrefab: {fileID: 3619682986692030315}
+  _arrowStickingPrefab: {fileID: 5699547102648577104}
+  _releaseStringSound: {fileID: 8300000, guid: 9eccacfdef094034da6ef52b251288c9, type: 3}
   _releaseSoundVolume: 0.3
   hitSound: {fileID: 8300000, guid: 643159350e015d648a9c258941cbb487, type: 3}
   _hitSoundVolume: 0.3
@@ -991,7 +991,7 @@ GameObject:
   - component: {fileID: 7211040227825325443}
   - component: {fileID: 1445954384742166892}
   m_Layer: 12
-  m_Name: ArrowShot
+  m_Name: Arrow Shot
   m_TagString: arrowshot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d008bacd3ff7e4c91ce916b53dbd8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _despawnTime: 1
+  _despawnTime: 4
 --- !u!136 &7211040227825325443
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1711,7 +1711,7 @@ GameObject:
   - component: {fileID: 8331833343162750687}
   - component: {fileID: 1794373598283363764}
   m_Layer: 12
-  m_Name: tip
+  m_Name: Tip
   m_TagString: arrowshot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1765,7 +1765,7 @@ GameObject:
   - component: {fileID: 3985605173375567459}
   - component: {fileID: 1655578268938852793}
   m_Layer: 12
-  m_Name: ArrowVisual
+  m_Name: Arrow Sticking
   m_TagString: arrowshot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2904,7 +2904,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8140233566022593081}
   m_Layer: 0
-  m_Name: arrow
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3279,16 +3279,28 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  _pullStrength: 0
   startPosition: {fileID: 3230929177457220665}
   endPosition: {fileID: 8931514060172288760}
   anchor: {fileID: 7487262894753764053}
-  _arrowLockedPrefab: {fileID: 0}
-  _pullStringSound: {fileID: 0}
+  _arrowLockedPrefab: {fileID: 9156419335347616318}
+  _pullStringSound: {fileID: 8300000, guid: ae80d5e3923a9ec40a8f8d880ce17078, type: 3}
   OnStringReleased:
     m_PersistentCalls:
-      m_Calls: []
-  _debug: 0
+      m_Calls:
+      - m_Target: {fileID: 3674081384074332077}
+        m_TargetAssemblyTypeName: ExPresSXR.Minigames.Archery.ArrowShotSpawner, Assembly-CSharp
+        m_MethodName: ReleaseArrow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _autoShot: 0
+  _pullStrength: 0
 --- !u!82 &3739687287378908928
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3478,7 +3490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2504060634789788239}
   m_Layer: 11
-  m_Name: ArrowLocked
+  m_Name: Arrow Locked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

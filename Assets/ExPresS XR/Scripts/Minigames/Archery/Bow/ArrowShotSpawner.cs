@@ -48,7 +48,7 @@ namespace ExPresSXR.Minigames.Archery
         }
 
 
-        public void OnReleaseArrow(float pullStrength)
+        public void ReleaseArrow(float pullStrength)
         {
             _arrowInstance = ObjectPoolManager.Spawn(_arrowShotPrefab, transform.position, transform.rotation);
             _arrowInstance.GetComponent<Rigidbody>().AddForce(_speed * pullStrength * -transform.up, ForceMode.Impulse);

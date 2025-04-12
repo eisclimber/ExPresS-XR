@@ -6,6 +6,7 @@ namespace ExPresSXR.Minigames.Archery
 {
     public class ObjectPoolManager : MonoBehaviour
     {
+        private const int POOL_ID_PREFIX_LENGTH = 7;
         /*
         ------------------------------------------------------------------------------------
          This Script handles the ObjectPool for the spawnable Objects.
@@ -13,7 +14,6 @@ namespace ExPresSXR.Minigames.Archery
          -----------------------------------------------------------------------------------
          */
         public static List<PooledObjectInfo> ObjectPools = new();
-
 
         public static GameObject Spawn(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation)
         {
@@ -39,11 +39,11 @@ namespace ExPresSXR.Minigames.Archery
 
             // Are there inactive objects to use?
             GameObject spawnableObject = null;
-            foreach (GameObject obj in pool.InactiveObjects)
+            foreach (GameObject go in pool.InactiveObjects)
             {
-                if (obj != null)
+                if (go != null)
                 {
-                    spawnableObject = obj;
+                    spawnableObject = go;
                     break;
                 }
             }
@@ -56,22 +56,24 @@ namespace ExPresSXR.Minigames.Archery
                 spawnableObject.SetActive(true);
             }
             else
-            {   //check if it contains a rigidbody and if it is a ArrowShot GameObject (the respawn needs to be handled differently)
-                if (spawnableObject.GetComponent<Rigidbody>() != null)
+            {
+                //check if it contains a rigidbody and if it is a ArrowShot GameObject (the respawn needs to be handled differently)
+                if (spawnableObject.TryGetComponent(out Rigidbody baseRb))
                 {
-                    spawnableObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    spawnableObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                    if (objectToSpawn.name == "ArrowShot")
+                    baseRb.velocity = Vector3.zero;
+                    baseRb.angularVelocity = Vector3.zero;
+                    if (objectToSpawn.name == "Arrow Shot")
                     {
-                        sphere = spawnableObject.GetComponent<Rigidbody>().transform.Find("tip/Sphere").gameObject;
-                        sphere.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                        sphere.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                        sphere.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                        sphere = baseRb.transform.Find("Tip/Sphere").gameObject;
+                        if (sphere.TryGetComponent(out Rigidbody tipRb))
+                        {
+                            tipRb.velocity = Vector3.zero;
+                            tipRb.angularVelocity = Vector3.zero;
+                            sphere.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                        }
                     }
-
-                    spawnableObject.GetComponent<Rigidbody>().transform.position = spawnPosition;
-                    spawnableObject.GetComponent<Rigidbody>().transform.rotation = spawnRotation;
-
+                    spawnableObject.transform.position = spawnPosition;
+                    spawnableObject.transform.rotation = spawnRotation;
                 }
                 else
                 {
@@ -84,15 +86,15 @@ namespace ExPresSXR.Minigames.Archery
             return spawnableObject;
         }
 
-        public static void ReturnToPool(GameObject obj)
+        public static void ReturnToPool(GameObject go)
         {
-
-            string goName = obj.name[..^7];
+            // Truncate name to account for slight variations when creating copies
+            string poolId = GetPoolId(go);
             // Check if there is already a pool of this type
             PooledObjectInfo pool = null;
             foreach (PooledObjectInfo o in ObjectPools)
             {
-                if (o.LookupString == goName)
+                if (o.LookupString == poolId)
                 {
                     pool = o;
                     break;
@@ -101,21 +103,23 @@ namespace ExPresSXR.Minigames.Archery
 
             if (pool == null)
             {
-                Debug.LogWarning("You are trying to release an object without a pool ");
+                Debug.LogWarning($"You are trying to release an object with pool id '{poolId}' but found no pool.");
             }
             else
             {
-                if (obj.GetComponent<Rigidbody>() != null)
+                if (go.TryGetComponent(out Rigidbody rb))
                 {
-                    obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
                 }
 
-                obj.transform.SetParent(GameObject.Find("Container").transform);
-                obj.SetActive(false);
-                pool.InactiveObjects.Add(obj);
+                go.transform.SetParent(GameObject.Find("Container").transform);
+                go.SetActive(false);
+                pool.InactiveObjects.Add(go);
             }
         }
+
+        public static string GetPoolId(GameObject go) => go.name.Length <= POOL_ID_PREFIX_LENGTH ? go.name : go.name[..^POOL_ID_PREFIX_LENGTH];
     }
 
     public class PooledObjectInfo

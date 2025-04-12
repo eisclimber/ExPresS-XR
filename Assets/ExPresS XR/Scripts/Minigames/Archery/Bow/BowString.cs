@@ -1,4 +1,5 @@
 
+using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -12,12 +13,6 @@ namespace ExPresSXR.Minigames.Archery
         The original idea is inspired by https://fistfullofshrimp.com/unity-vr-bow-and-arrow-part-1/
         -----------------------------------------------------------------------------------
         */
-        [SerializeField]
-        private float _pullStrength = 0.0f;
-        public float PullStrength {
-            get => _pullStrength;
-        }
-
         // setting the pull amount for the bow
         [SerializeField]
         [Tooltip("startposition")]
@@ -48,13 +43,21 @@ namespace ExPresSXR.Minigames.Archery
 
         // For debugging
         [SerializeField]
-        [Tooltip("Debugging -> arrows will fly automatically")]
-        private bool _debug;
+        [Tooltip("Will shoot arrows automatically. For debugging.")]
+        private bool _autoShot;
+
+        [ReadonlyInInspector]
+        [SerializeField]
+        private float _pullStrength = 0.0f;
+        public float PullStrength
+        {
+            get => _pullStrength;
+        }
         private int _badTimer = 0;
 
         private void Update()
         {
-            if (_debug && _badTimer > 100)
+            if (_autoShot && _badTimer > 100)
             {
                 OnStringReleased?.Invoke(0.5f);
                 _badTimer = 0;
@@ -88,7 +91,7 @@ namespace ExPresSXR.Minigames.Archery
             _stringInteractor = null;
             OnStringReleased?.Invoke(_pullStrength);
             _arrowLockedPrefab.SetActive(false);
-            _pullStrength = 0f;
+            _pullStrength = 0.0f;
             UpdateVisuals();
         }
 
@@ -118,7 +121,7 @@ namespace ExPresSXR.Minigames.Archery
 
         private void UpdateVisuals()
         {
-            Vector3 line = new Vector3(1, 0, 0) * Mathf.Lerp(startPosition.localPosition.x, endPosition.localPosition.x, _pullStrength);
+            Vector3 line = Vector3.right * Mathf.Lerp(startPosition.localPosition.x, endPosition.localPosition.x, _pullStrength);
 
             LineRenderer _lineRenderer = GetComponent<LineRenderer>();
             line += new Vector3(0, _lineRenderer.GetPosition(1).y, 0);

@@ -152,14 +152,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b91a1c3052bf54e92fc80a28167441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnLocation: {fileID: 0}
+  _autoStart: 0
   _forceStrength: 6
-  _objects: []
-  probabilities:
-  - 0.51
-  - 0.49
-  _weightedRandom: 0
-  _start: 1
+  _spawnLocation: {fileID: 5297540119864503856}
+  _objects:
+  - {fileID: 6800364163278306449, guid: 73720511eb002544f9605c5e319f70fe, type: 3}
+  - {fileID: 6775044999882196957, guid: 9f2c0251949cd9848801b318e3e98bf8, type: 3}
+  _weightedRandom: 1
+  _probabilities:
+  - 0.75
+  - 0.25
+  _timer: {fileID: 4958913067643376344}
 --- !u!114 &4958913067643376344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,14 +172,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3696642720544920855}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a911722e1bb685448d8e964c9561c6a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e7dc89159a51c64dacd9132774726c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _description: 
   _waitTime: 4
   _remainingTime: 0
   autoStart: 0
-  oneShot: 1
+  oneShot: 0
   OnStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -184,8 +187,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2033441823272081259}
-        m_TargetAssemblyTypeName: ExPresSXR.Minigames.Archery.Spawner, Assembly-CSharp
-        m_MethodName: OnSpawnMoment
+        m_TargetAssemblyTypeName: ExPresSXR.Minigames.Archery.ObjectPoolSpawner,
+          Assembly-CSharp
+        m_MethodName: SpawnObject
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -196,6 +200,11 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OnPaused:
+    m_PersistentCalls:
+      m_Calls: []
+  _startDelay: 0
+  _remainingDelay: 0
+  OnDelayTimeout:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6860821256612874986

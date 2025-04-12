@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery
 {
-    public class ObjectContinuousForce : MonoBehaviour
+    public class ObjectContinuousMove : MonoBehaviour
     {
         [SerializeField]
         private float _speed;
@@ -13,10 +13,9 @@ namespace ExPresSXR.Minigames.Archery
         private void FixedUpdate()
         {
             gameObject.transform.position = gameObject.transform.position + _direction * _speed * Time.deltaTime;
-
         }
 
-        //change movement according to given parameters
+        // Change movement according to given parameters
         public void ChangeMovement(float newSpeed, Vector3 newDirection)
         {
             _speed = newSpeed;

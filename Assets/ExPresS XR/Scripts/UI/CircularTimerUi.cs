@@ -10,69 +10,24 @@ namespace ExPresSXR.UI
     /// <summary>
     /// Visualizes an ExPresSXR Timer as a filling circle.
     /// </summary>
-    public class CircularTimerUi : MonoBehaviour
+    public class CircularTimerUi : TimerUi
     {
-        /// <summary>
-        /// Reference to the timer to visualize.
-        /// </summary>
-        [SerializeField]
-        private Timer _timer;
-
         /// <summary>
         /// Object that holds the settings for for visualization.
         /// </summary>
         [SerializeField]
         private FillSettings _fillSettings;
 
-        /// <summary>
-        /// Object that holds the settings for the text.
-        /// </summary>
-        [SerializeField]
-        private TextSettings _textSettings;
-
-
-        private void OnEnable()
+        protected override void UpdateUI(float remainingTime, float waitTime)
         {
-            if (_timer == null && !TryGetComponent(out _timer))
-            {
-                Debug.LogError("No Timer was provided for the CircularTimerUi. Cannot display a non-existent timer.", this);
-            }
-            else
-            {
-                _timer.OnTimeout.AddListener(HandleTimeout);
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (_timer != null)
-            {
-                _timer.OnTimeout.RemoveListener(HandleTimeout);
-            }
-        }
-
-        private void Update()
-        {
-            if (_timer != null && _timer.running)
-            {
-                UpdateUI(_timer.remainingTime, _timer.waitTime);
-            }
-        }
-
-        private void UpdateUI(float remainingTime, float waitTime)
-        {
+            base.UpdateUI(remainingTime, waitTime);
             _fillSettings.UpdateVisualization(remainingTime, waitTime);
-            _textSettings.UpdateVisualization(remainingTime, waitTime);
         }
-
-
-        // Event Listeners
-        private void HandleTimeout() => ResetVisualization();
 
         /// <summary>
         /// Resets the visualization.
         /// </summary>
-        public void ResetVisualization() => _fillSettings.ResetVisualization();
+        public override void ResetVisualization() => _fillSettings.ResetVisualization();
 
         // Helper classes
         [Serializable]
@@ -83,7 +38,7 @@ namespace ExPresSXR.UI
 
             [SerializeField]
             private bool _capsEnabled;
-            public bool capsEnabled
+            public bool CapsEnabled
             {
                 get => _capsEnabled;
                 set
@@ -96,7 +51,7 @@ namespace ExPresSXR.UI
 
             [SerializeField]
             private Color _color = Color.white;
-            public Color color
+            public Color Color
             {
                 get => _color;
                 set
@@ -108,7 +63,7 @@ namespace ExPresSXR.UI
 
             [SerializeField]
             private Image _fillImage;
-            public Image fillImage
+            public Image FillImage
             {
                 get => _fillImage;
                 set
@@ -120,7 +75,7 @@ namespace ExPresSXR.UI
 
             [SerializeField]
             private Image _startCapImage;
-            public Image startCapImage
+            public Image StartCapImage
             {
                 get => _startCapImage;
                 set
@@ -134,7 +89,7 @@ namespace ExPresSXR.UI
 
             [SerializeField]
             private Image _endCapImage;
-            public Image endCapImage
+            public Image EndCapImage
             {
                 get => _endCapImage;
                 set
@@ -148,17 +103,17 @@ namespace ExPresSXR.UI
 
             public void UpdateColors()
             {
-                if (fillImage != null)
+                if (FillImage != null)
                 {
-                    fillImage.color = color;
+                    FillImage.color = Color;
                 }
                 if (_startCapImage != null)
                 {
-                    _startCapImage.color = color;
+                    _startCapImage.color = Color;
                 }
                 if (_endCapImage != null)
                 {
-                    _endCapImage.color = color;
+                    _endCapImage.color = Color;
                 }
             }
 
@@ -166,11 +121,11 @@ namespace ExPresSXR.UI
             {
                 if (_startCapImage != null)
                 {
-                    _startCapImage.enabled = capsEnabled && (_fillImage == null || _fillImage.fillAmount > 0.0f);
+                    _startCapImage.enabled = CapsEnabled && (_fillImage == null || _fillImage.fillAmount > 0.0f);
                 }
                 if (_endCapImage != null)
                 {
-                    _endCapImage.enabled = capsEnabled && (_fillImage == null || _fillImage.fillAmount > 0.0f);
+                    _endCapImage.enabled = CapsEnabled && (_fillImage == null || _fillImage.fillAmount > 0.0f);
                 }
             }
 
@@ -184,10 +139,10 @@ namespace ExPresSXR.UI
                     _fillImage.fillAmount = fillDirection == FillDirection.Down ? progressPct : 1.0f - progressPct;
                 }
 
-                if (capsEnabled)
+                if (CapsEnabled)
                 {
                     Vector3 capRotationValue = Vector3.zero;
-                    capRotationValue.z = 360.0f * (1.0f - fillImage.fillAmount);
+                    capRotationValue.z = 360.0f * (1.0f - FillImage.fillAmount);
                     _endCapImage.rectTransform.localRotation = Quaternion.Euler(capRotationValue);
                 }
             }
@@ -198,81 +153,7 @@ namespace ExPresSXR.UI
             }
         }
 
-        [Serializable]
-        public class TextSettings
-        {
-            public bool textEnabled = true;
-            public bool showMilliseconds;
-            public CountDirection countType = CountDirection.Down;
-
-            [SerializeField]
-            private Color _color = Color.white;
-            public Color color
-            {
-                get => _color;
-                set
-                {
-                    _color = value;
-                    UpdateColors();
-                }
-            }
-
-            private string timeFormatter { get => showMilliseconds ? "F2" : "F0"; }
-
-            [SerializeField]
-            private TMP_Text _text;
-            public TMP_Text text
-            {
-                get => _text;
-                set
-                {
-                    _text = value;
-                    UpdateColors();
-                }
-            }
-
-            public void UpdateColors()
-            {
-                if (_text != null)
-                {
-                    _text.color = color;
-                }
-            }
-
-            public void UpdateVisualization(float remainingTime, float waitTime)
-            {
-                if (text == null)
-                {
-                    // No text -> Nothing to update
-                    return;
-                }
-
-                UpdateColors();
-
-                // Update Text visibility
-                text.gameObject.SetActive(textEnabled);
-
-                if (!textEnabled)
-                {
-                    // Text disabled -> nothing to do
-                    return;
-                }
-
-                float time = countType == CountDirection.Up
-                                ? waitTime - remainingTime
-                                : remainingTime;
-
-                text.text = time.ToString(timeFormatter);
-            }
-        }
-
         // Enums
-        public enum CountDirection
-        {
-            Up,
-            Down
-        }
-
         public enum FillDirection
         {
             Up,

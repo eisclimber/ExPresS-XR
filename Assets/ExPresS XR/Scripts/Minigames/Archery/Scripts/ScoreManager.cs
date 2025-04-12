@@ -1,47 +1,62 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 
 namespace ExPresSXR.Minigames.Archery
 {
     public class ScoreManager : MonoBehaviour
     {
-        [SerializeField, Tooltip("Ref to the textfield containing the score")]
-        public TMP_Text Score_Text;
-        private int Score = 0;
-        [SerializeField, Tooltip("is this Score Game Specific?")]
-        public bool game = false;
+        [SerializeField]
+        [Tooltip("How fast the score in-/decreases per default.")]
+        private int _stepSize = 1;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            Score_Text.text = Score.ToString();
-        }
+        [SerializeField]
+        [Tooltip("If the score can be negative.")]
+        private bool _allowNegative;
 
-        public void AlterPoints(Collision col)
+        [SerializeField]
+        [Tooltip("Reference to the text displaying the score.")]
+        public TMP_Text _scoreText;
+
+        private int _score = 0;
+        public int Score
         {
-            if (!game)
+            get => _score;
+            set
             {
-                if (col.gameObject.CompareTag("Target"))
+                _score = _allowNegative ? value : Mathf.Max(value, 0);
+
+                if (_scoreText != null)
                 {
-                    Score++;
-                    Score_Text.text = Score.ToString();
-                }
-                else
-                {
-                    if (Score > 0)
-                    {
-                        Score--;
-                        Score_Text.text = Score.ToString();
-                    }
+                    _scoreText.text = Score.ToString();
                 }
             }
         }
 
-        public void Reset()
+        public void AlterPointsFromCollision(Collision col)
         {
-            Score = 0;
-            Score_Text.text = Score.ToString();
+            if (isActiveAndEnabled)
+            {
+                if (col.gameObject.CompareTag("Target"))
+                {
+                    IncreaseScore();
+                }
+                else if (col.gameObject.CompareTag("BadTarget"))
+                {
+                    DecreaseScore();
+                }
+            }
         }
+
+        [ContextMenu("Increase Score")]
+        public void IncreaseScore() => Score += _stepSize;
+        public void IncreaseScore(int amount) => Score += amount;
+
+        [ContextMenu("Decrease Score")]
+        public void DecreaseScore() => Score -= _stepSize;
+        public void DecreaseScore(int amount) => Score -= amount;
+
+        [ContextMenu("Reset Score")]
+        public void ResetScore() => Score = 0;
     }
 }
