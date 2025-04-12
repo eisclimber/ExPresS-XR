@@ -8,9 +8,24 @@ namespace ExPresSXR.Minigames.Archery
         [SerializeField]
         private float _despawnTime = 1.0f;
 
+        private Coroutine _destroyCoroutine;
+
         private void OnEnable()
         {
-            StartCoroutine(ReturnPoolTimer());
+            if (_destroyCoroutine != null)
+            {
+                StopCoroutine(_destroyCoroutine);
+            }
+
+            _destroyCoroutine = StartCoroutine(ReturnPoolTimer());
+        }
+
+        private void OnDisable()
+        {
+            if (_destroyCoroutine != null)
+            {
+                StopCoroutine(_destroyCoroutine);
+            }
         }
 
         private IEnumerator ReturnPoolTimer()

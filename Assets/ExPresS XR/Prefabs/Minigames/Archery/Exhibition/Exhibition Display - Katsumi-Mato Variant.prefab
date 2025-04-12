@@ -1,0 +1,277 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2857911930034821277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8215050525411591219}
+  - component: {fileID: 1617104354237988596}
+  - component: {fileID: 6390251818343289297}
+  - component: {fileID: 7463663675101851785}
+  - component: {fileID: 5804037019381595378}
+  - component: {fileID: 5058024825798507632}
+  m_Layer: 0
+  m_Name: Exhibition Target Good(Clone)
+  m_TagString: Target
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8215050525411591219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857911930034821277}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1021109627636393567}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
+--- !u!33 &1617104354237988596
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857911930034821277}
+  m_Mesh: {fileID: 2534964839176971238, guid: d3703de99abd275488e1c2058b7307bf, type: 3}
+--- !u!23 &6390251818343289297
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857911930034821277}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -876546973899608171, guid: d3703de99abd275488e1c2058b7307bf, type: 3}
+  - {fileID: -6478536213147159724, guid: d3703de99abd275488e1c2058b7307bf, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7463663675101851785
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857911930034821277}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.36, y: 0.36, z: 0.050000023}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &5804037019381595378
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857911930034821277}
+  serializedVersion: 4
+  m_Mass: 0.5
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
+--- !u!114 &5058024825798507632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857911930034821277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6d008bacd3ff7e4c91ce916b53dbd8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _despawnTime: 2.3
+--- !u!1001 &7821990039576389500
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7108650211350618874, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_Name
+      value: Exhibition Display - Katsumi-Mato Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618875, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: _infoText
+      value: The Kasumi-mato is also refered to as "Mist Target".The targets are
+        only 36cm in width. This is the standard target in official Kyudo tests.
+        There are no rules regarding the choice of targets outside these tests, but
+        most Kyudojos reserve the Kasumi-mato for daily training sessions. This target
+        is specified as a "Good Target" in this game and will result in point increase
+        if hit.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618875, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: _labelText
+      value: ' Kasumi-Mato (Good Target)'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618875, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: _infoAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 620f98949b721934f8f40f30df9f0e21, type: 3}
+    - target: {fileID: 7108650211350618875, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: _displayedPrefab
+      value: 
+      objectReference: {fileID: 6800364163278306449, guid: ac2ac749182116047ac704028c6abdc0, type: 3}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.113
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211350618876, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211578609281, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211591291170, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: _putBackPrefab
+      value: 
+      objectReference: {fileID: 6800364163278306449, guid: ac2ac749182116047ac704028c6abdc0, type: 3}
+    - target: {fileID: 7108650211591291170, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: _putBackInstance
+      value: 
+      objectReference: {fileID: 2857911930034821277}
+    - target: {fileID: 7108650211591291170, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: _showHighlighter
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211591291171, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211591291171, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211591291171, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650211792463305, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_text
+      value: The Kasumi-mato is also refered to as "Mist Target".The targets are
+        only 36cm in width. This is the standard target in official Kyudo tests.
+        There are no rules regarding the choice of targets outside these tests, but
+        most Kyudojos reserve the Kasumi-mato for daily training sessions. This target
+        is specified as a "Good Target" in this game and will result in point increase
+        if hit.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108650212450641917, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      propertyPath: m_text
+      value: ' Kasumi-Mato (Good Target)'
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7108650211591291171, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8215050525411591219}
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+--- !u!4 &1021109627636393567 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7108650211591291171, guid: 7da70ea5f77ae854daf0c312b3d0e777, type: 3}
+  m_PrefabInstance: {fileID: 7821990039576389500}
+  m_PrefabAsset: {fileID: 0}

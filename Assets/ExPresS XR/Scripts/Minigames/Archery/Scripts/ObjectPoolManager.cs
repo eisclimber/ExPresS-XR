@@ -13,9 +13,9 @@ namespace ExPresSXR.Minigames.Archery
          The original idea is inspired by https://youtu.be/9O7uqbEe-xc?si=fyX1jtYVWKxVNV5q 
          -----------------------------------------------------------------------------------
          */
-        public static List<PooledObjectInfo> ObjectPools = new();
+        public List<PooledObjectInfo> ObjectPools = new();
 
-        public static GameObject Spawn(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation)
+        public GameObject Spawn(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation)
         {
             GameObject sphere;
 
