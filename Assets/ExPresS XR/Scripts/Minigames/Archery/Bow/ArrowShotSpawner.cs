@@ -16,6 +16,10 @@ namespace ExPresSXR.Minigames.Archery
         [Tooltip("Arrow sticking")]
         private GameObject _arrowStickingPrefab;
 
+        [SerializeField]
+        [Tooltip("Reference to the object pool manager")]
+        private ObjectPoolManager _objectPoolManager;
+
         [Space]
 
         [SerializeField]
@@ -47,11 +51,19 @@ namespace ExPresSXR.Minigames.Archery
             _audioSource = GetComponent<AudioSource>();
         }
 
+        private void OnEnable()
+        {
+            if (_objectPoolManager == null)
+            {
+                _objectPoolManager = ObjectPoolManager.DefaultObjectPoolManager;
+            }
+        }
+
 
         public void ReleaseArrow(float pullStrength)
         {
-            _arrowInstance = ObjectPoolManager.Spawn(_arrowShotPrefab, transform.position, transform.rotation);
-            _arrowInstance.GetComponent<Rigidbody>().AddForce(_speed * pullStrength * -transform.up, ForceMode.Impulse);
+            _arrowInstance = _objectPoolManager.Spawn(_arrowShotPrefab, transform.position, transform.rotation);
+            _arrowInstance.GetComponent<Rigidbody>().AddForce(_speed * pullStrength * transform.forward, ForceMode.Impulse);
 
             _audioSource.PlayOneShot(_releaseStringSound, _releaseSoundVolume);
         }
@@ -61,7 +73,7 @@ namespace ExPresSXR.Minigames.Archery
         {
             ContactPoint contact = collision.contacts[0];
             Quaternion arrowRotation = Quaternion.Euler(_arrowInstance.transform.eulerAngles);
-            _arrowStickingInstance = ObjectPoolManager.Spawn(_arrowStickingPrefab, contact.point, arrowRotation);
+            _arrowStickingInstance = _objectPoolManager.Spawn(_arrowStickingPrefab, contact.point, arrowRotation);
             _arrowStickingInstance.transform.SetParent(contact.otherCollider.attachedRigidbody.transform);
 
             _audioSource.PlayOneShot(hitSound, _hitSoundVolume);

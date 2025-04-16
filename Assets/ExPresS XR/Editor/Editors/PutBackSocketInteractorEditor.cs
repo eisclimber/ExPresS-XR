@@ -72,8 +72,22 @@ namespace ExPresSXR.Editor.Editors
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackInteractable"), true);
                 EditorGUI.EndDisabledGroup();
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
+                EditorGUI.BeginChangeCheck();         
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_compensateInteractableAttach"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_disableRetainTransformParent"), true);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_omitInitialSelectEnterEvent"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_omitInitialSelectExitEvent"), true);
+                
+                EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("OnPutBack"), true);
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
         }

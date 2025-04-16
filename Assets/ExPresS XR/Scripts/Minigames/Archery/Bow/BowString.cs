@@ -15,33 +15,36 @@ namespace ExPresSXR.Minigames.Archery
         */
         // setting the pull amount for the bow
         [SerializeField]
-        [Tooltip("startposition")]
-        private Transform startPosition;
+        [Tooltip("Start of the draw.")]
+        private Transform _startPosition;
 
         [SerializeField]
-        [Tooltip("endposition")]
-        private Transform endPosition;
+        [Tooltip("End position of the draw.")]
+        private Transform _endPosition;
 
         [SerializeField]
-        [Tooltip("Anchor on the line")]
-        private Transform anchor;
+        [Tooltip("Anchor on the line.")]
+        private Transform _anchor;
 
         [SerializeField]
-        [Tooltip("Prefab for the locked Arrow (locked in bow)")]
-        private GameObject _arrowLockedPrefab;
+        [Tooltip("LineRender for the bowstring.")]
+        private LineRenderer _lineRenderer;
+
+        [SerializeField]
+        [Tooltip("Reference for the loaded arrow visuals.")]
+        private GameObject _arrowLoaded;
 
         [SerializeField]
         [Tooltip("Pull String Sound")]
         private AudioClip _pullStringSound;
 
         [SerializeField]
-        [Tooltip("Event when String is released")]
-        public UnityEvent<float> OnStringReleased;
-
-        private IXRSelectInteractor _stringInteractor = null;
+        [Tooltip("AudioSource to play the pull sound.")]
         private AudioSource _audioSource;
-
+        
         // For debugging
+        [Space]
+
         [SerializeField]
         [Tooltip("Will shoot arrows automatically. For debugging.")]
         private bool _autoShot;
@@ -53,36 +56,46 @@ namespace ExPresSXR.Minigames.Archery
         {
             get => _pullStrength;
         }
-        private int _badTimer = 0;
 
-        private void Update()
-        {
-            if (_autoShot && _badTimer > 100)
-            {
-                OnStringReleased?.Invoke(0.5f);
-                _badTimer = 0;
-            }
-            else
-            {
-                _badTimer += 1;
-            }
-        }
+        
+        private IXRSelectInteractor _stringInteractor;
+
+        [Tooltip("Event when String is released")]
+        public UnityEvent<float> OnStringReleased;
+
 
         protected override void Awake()
         {
             base.Awake();
+            if (!_lineRenderer && !TryGetComponent(out _lineRenderer))
+            {
+                Debug.LogError("No LineRender provided, bowstring will not be shown nor updated!", this);
+            }
+            else if (_lineRenderer.positionCount != 3)
+            {
+                Debug.LogWarning("The LineRenderer does not have at least the suggested three points to represent the bowstring.", this);
+            }
+
+            if (!TryGetComponent(out _audioSource))
+            {
+                Debug.LogError("No AudioSource to play the pull sound found.");
+            }
+
+            if (_autoShot)
+            {
+                InvokeRepeating(nameof(EmitStringReleasedEvent), 0.0f, 1.0f);
+            }
         }
 
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
             _stringInteractor = args.interactorObject;
-            _audioSource = GetComponent<AudioSource>();
             if (_pullStringSound != null)
             {
-                _audioSource.PlayOneShot(_pullStringSound, 0.5f);
+                _audioSource.PlayOneShot(_pullStringSound, 1.0f);
             }
-            _arrowLockedPrefab.SetActive(true);
+            _arrowLoaded.SetActive(true);
         }
 
         protected override void OnSelectExited(SelectExitEventArgs args)
@@ -90,7 +103,7 @@ namespace ExPresSXR.Minigames.Archery
             base.OnSelectExited(args);
             _stringInteractor = null;
             OnStringReleased?.Invoke(_pullStrength);
-            _arrowLockedPrefab.SetActive(false);
+            _arrowLoaded.SetActive(false);
             _pullStrength = 0.0f;
             UpdateVisuals();
         }
@@ -98,7 +111,6 @@ namespace ExPresSXR.Minigames.Archery
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             base.ProcessInteractable(updatePhase);
-
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic && isSelected)
             {
                 Vector3 pullPosition = _stringInteractor.transform.position;
@@ -109,24 +121,22 @@ namespace ExPresSXR.Minigames.Archery
 
         private float CalculatePull(Vector3 pullPosition)
         {
-            Vector3 pullDir = pullPosition - startPosition.position;
-            Vector3 targetDir = endPosition.position - startPosition.position;
-            float max = targetDir.magnitude;
-
-            targetDir.Normalize();
-
-            float pullValue = Vector3.Dot(pullDir, targetDir) / max;
+            Vector3 pullDir = pullPosition - _startPosition.position;
+            Vector3 targetDir = (_endPosition.position - _startPosition.position).normalized;
+            float pullValue = Vector3.Dot(pullDir, targetDir) / targetDir.magnitude;
             return Mathf.Clamp(pullValue, 0, 1);
         }
 
         private void UpdateVisuals()
         {
-            Vector3 line = Vector3.right * Mathf.Lerp(startPosition.localPosition.x, endPosition.localPosition.x, _pullStrength);
-
-            LineRenderer _lineRenderer = GetComponent<LineRenderer>();
-            line += new Vector3(0, _lineRenderer.GetPosition(1).y, 0);
+            float pullZPos = Mathf.Lerp(_startPosition.localPosition.z, _endPosition.localPosition.z, _pullStrength);
+            float bendYPos = _lineRenderer.GetPosition(1).y;
+            Vector3 line = new(0, bendYPos, pullZPos);
             _lineRenderer.SetPosition(1, line);
-            anchor.localPosition = new Vector3(line.x, anchor.transform.localPosition.y, line.z);
+            _anchor.localPosition = new Vector3(line.x, line.y, pullZPos);
         }
+
+        private void EmitStringReleasedEvent() => OnStringReleased?.Invoke(1.0f);
+        private void EmitStringReleasedEvent(float strength) => OnStringReleased?.Invoke(strength);
     }
 }

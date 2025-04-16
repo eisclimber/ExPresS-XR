@@ -19,6 +19,10 @@ namespace ExPresSXR.Minigames.Archery
         private Transform _spawnLocation;
 
         [SerializeField]
+        [Tooltip("Reference to the object pool manager")]
+        private ObjectPoolManager _objectPoolManager;
+
+        [SerializeField]
         [Tooltip("Objects to be spawned.")]
         private GameObject[] _objects;
 
@@ -37,6 +41,11 @@ namespace ExPresSXR.Minigames.Archery
 
         public void OnEnable()
         {
+            if (_objectPoolManager == null)
+            {
+                _objectPoolManager = ObjectPoolManager.DefaultObjectPoolManager;
+            }
+
             if (_autoStart)
             {
                 StartSpawning();
@@ -77,7 +86,7 @@ namespace ExPresSXR.Minigames.Archery
         public void SpawnObject()
         {
             GameObject element = RuntimeUtils.GetRandomArrayElement(_objects, _weightedRandom, _probabilities);
-            _spawnedObject = ObjectPoolManager.Spawn(element, _spawnLocation.position, _spawnLocation.rotation);
+            _spawnedObject = _objectPoolManager.Spawn(element, _spawnLocation.position, _spawnLocation.rotation);
             _spawnedObject.GetComponent<Rigidbody>().AddForce(_spawnLocation.up * _forceStrength, ForceMode.Impulse);
         }
     }

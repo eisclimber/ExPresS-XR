@@ -1,8 +1,8 @@
-using UnityEngine;
 using System.Collections;
-using UnityEngine.XR.Interaction.Toolkit;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace ExPresSXR.Interaction
 {
@@ -69,8 +69,23 @@ namespace ExPresSXR.Interaction
             set
             {
                 _compensateInteractableAttach = value;
-
                 UpdatePutbackAttachCompensation();
+            }
+        }
+
+        /// <summary>
+        /// Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.
+        /// </summary>
+        [Tooltip("Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.")]
+        [SerializeField]
+        private bool _disableRetainTransformParent = true;
+        public bool DisableRetainTransformParent
+        {
+            get => _disableRetainTransformParent;
+            set
+            {
+                _disableRetainTransformParent = value;
+                TryDisableGrabInteractableRetainTransformParent();
             }
         }
 
@@ -361,8 +376,9 @@ namespace ExPresSXR.Interaction
                 {
                     _putBackInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
                     UpdatePutbackAttachCompensation();
+                    TryDisableGrabInteractableRetainTransformParent();
                 }
-                else if (allowNonInteractables)
+                else if (_putBackInstance != null && allowNonInteractables)
                 {
                     _putBackInstance.transform.SetPositionAndRotation(attachParent.position, attachParent.rotation);
                 }
@@ -371,6 +387,15 @@ namespace ExPresSXR.Interaction
                     Debug.LogError("Can't attach PutBackPrefab, it is not an XRGrabInteractable. "
                                     + "If you want to attach regular GameObjects without being able "
                                     + "to pick them up enable: 'allowNonInteractables'.", this);
+                    // Clean up invalid instance if existing
+                    if (_putBackInstance != null)
+                    {
+#if UNITY_EDITOR
+                        DestroyImmediate(_putBackInstance);
+#else
+                        Destroy(_putBackInstance);
+#endif
+                    }
                     putBackPrefab = null;
                 }
             }
@@ -397,6 +422,19 @@ namespace ExPresSXR.Interaction
             {
                 Transform otherAttach = _putBackInteractable.GetAttachTransform(this);
                 attachTransform.SetPositionAndRotation(otherAttach.position, otherAttach.rotation);
+            }
+        }
+
+
+        private void TryDisableGrabInteractableRetainTransformParent()
+        {
+            if (_disableRetainTransformParent)
+            {
+                XRGrabInteractable grabInteractable = _putBackInteractable as XRGrabInteractable;
+                if (grabInteractable != null)
+                {
+                    grabInteractable.retainTransformParent = false;
+                }
             }
         }
 

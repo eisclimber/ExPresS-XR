@@ -16,7 +16,7 @@ namespace ExPresSXR.Interaction
         /// Minimal scale possible, negative values are considered unbound.
         /// </summary>
         [SerializeField]
-        private float _minScaleFactor = -1.0f;
+        private float _minScaleFactor = 1.0f;
         public float MinScaleFactor
         {
             get => _minScaleFactor;
@@ -27,7 +27,7 @@ namespace ExPresSXR.Interaction
         /// Maximal scale possible, negative values are considered unbound.
         /// </summary>
         [SerializeField]
-        private float _maxScaleFactor = -1.0f;
+        private float _maxScaleFactor = 1.0f;
         public float MaxScaleFactor
         {
             get => _maxScaleFactor;
