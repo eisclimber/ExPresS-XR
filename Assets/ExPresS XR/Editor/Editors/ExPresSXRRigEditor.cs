@@ -1,8 +1,8 @@
 using System.IO;
-using UnityEngine;
-using UnityEditor;
-using ExPresSXR.Rig;
 using ExPresSXR.Editor.Utility;
+using ExPresSXR.Rig;
+using UnityEditor;
+using UnityEngine;
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -113,11 +113,18 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.LabelField("Hand Model", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelMode"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelCollisions"), true);
             EditorGUI.indentLevel--;
+            if (EditorGUI.EndChangeCheck())
+            {
+                // Prevents warnings for enabling GameObjects during OnValidate()
+                serializedObject.ApplyModifiedProperties();
+                targetScript.EditorRevalidate();
+            }
         }
 
 
@@ -158,7 +165,7 @@ namespace ExPresSXR.Editor.Editors
                                         + "You will probably want to add the 'Climb'-Interaction Layer for your ClimbInteractables "
                                         + "and DirectInteractors.", MessageType.Info);
             }
-            
+
             if (hasClimb && !hasClimbGravity)
             {
                 // Better with gravity
