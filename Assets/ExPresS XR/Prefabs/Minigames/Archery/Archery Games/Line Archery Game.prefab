@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 9014186210457849852}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4699993, y: -2.46, z: -5.96}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47,6 +47,22 @@ PrefabInstance:
     - target: {fileID: 465789789251878909, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
       propertyPath: m_Name
       value: Line 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _speed
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _weightedTargets
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _badImagesProbabilities.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _goodImagesProbabilities.Array.data[0]
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8975102244256752037, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -183,6 +199,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Line 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _speed
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _weightedTargets
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8975102244256752037, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -255,6 +279,14 @@ PrefabInstance:
     - target: {fileID: 465789789251878909, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
       propertyPath: m_Name
       value: Line 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634883486950216427, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
+      propertyPath: _weightedTargets
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8975102244256752037, guid: 77e78b1966325444f8b3970249d0f8d0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -406,12 +438,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: e780554a8d958aa4b9b69ad16a7ae1df, type: 3}
     - target: {fileID: 4274410061601162521, guid: d1d83d4316f14e942ba5a0dcbe34c82c, type: 3}
-      propertyPath: OnEnded.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: _spawners.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4274410061601162521, guid: d1d83d4316f14e942ba5a0dcbe34c82c, type: 3}
+      propertyPath: _spawners.Array.data[0]
+      value: 
+      objectReference: {fileID: 1340517017390838078}
+    - target: {fileID: 4274410061601162521, guid: d1d83d4316f14e942ba5a0dcbe34c82c, type: 3}
+      propertyPath: _spawners.Array.data[1]
+      value: 
+      objectReference: {fileID: 2823229400153988980}
+    - target: {fileID: 4274410061601162521, guid: d1d83d4316f14e942ba5a0dcbe34c82c, type: 3}
+      propertyPath: _spawners.Array.data[2]
+      value: 
+      objectReference: {fileID: 4100087509232110588}
+    - target: {fileID: 4274410061601162521, guid: d1d83d4316f14e942ba5a0dcbe34c82c, type: 3}
+      propertyPath: OnEnded.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274410061601162521, guid: d1d83d4316f14e942ba5a0dcbe34c82c, type: 3}
       propertyPath: OnStarted.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4274410061601162521, guid: d1d83d4316f14e942ba5a0dcbe34c82c, type: 3}
       propertyPath: OnEnded.m_PersistentCalls.m_Calls.Array.data[0].m_Mode

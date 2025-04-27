@@ -41,6 +41,10 @@ namespace ExPresSXR.Misc
         /// </summary>
         public const float ROTATION_SPAN_RADIUS = 0.1f;
 
+        /// <summary>
+        /// Default size for labels (=Unity's default).
+        /// </summary>
+        public const int DEFAULT_LABEL_SIZE = 11;
 
         /// <summary>
         /// Draws a marker line with the provided properties.
@@ -239,7 +243,7 @@ namespace ExPresSXR.Misc
         }
 
         /// <summary>
-        /// Draws an span between two rotations (minimum and maximum) with a marker at each end and another one for the current value.
+        /// Draws a span between two rotations (minimum and maximum) with a marker at each end and another one for the current value.
         /// </summary>
         /// <param name="minRotation">Minimum rotation.</param>
         /// <param name="maxRotation">Minimum rotation.</param>
@@ -265,6 +269,58 @@ namespace ExPresSXR.Misc
 
             Gizmos.color = valueColor;
             Gizmos.DrawLine(localOffset, angleValuePoint);
+        }
+        /// <summary>
+        /// Draws a text at a position.
+        /// Defaults to white text with size 11 and text anchor at the top left.
+        /// </summary>
+        /// <param name="text">Text to be displayed.</param>
+        /// <param name="position">Position to draw at.</param>
+        /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        public static void DrawLabel(string text, Vector3 position, Transform atTransform = null)
+        {
+            DrawLabel(text, position, Color.white, FontStyle.Normal, DEFAULT_LABEL_SIZE, TextAnchor.UpperLeft, atTransform);
+        }
+
+
+        /// <summary>
+        /// Draws a text at a position with the given color, fontSize, fontStyle and text anchor.
+        /// </summary>
+        /// <param name="text">Text to be displayed.</param>
+        /// <param name="position">Position to draw at.</param>
+        /// <param name="color">Color of the text.</param>
+        /// <param name="fontSize">Font size of the text.</param>
+        /// <param name="fontStyle">Font style (normal, italic, bold).</param>
+        /// <param name="alignment">Alignment of the text.</param>
+        /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        public static void DrawLabel(string text, Vector3 position, Color color, FontStyle fontStyle = FontStyle.Normal, int fontSize = DEFAULT_LABEL_SIZE,
+                                        TextAnchor alignment = TextAnchor.UpperLeft, Transform atTransform = null)
+        {
+            GUIStyle guiStyle = new()
+            {
+                fontSize = fontSize,
+                fontStyle = fontStyle,
+                alignment = alignment
+            };
+            guiStyle.normal.textColor = color;
+
+            DrawLabel(text, position, guiStyle, atTransform);
+        }
+
+        /// <summary>
+        /// Draws a text at a position with the provided GuiStyle.
+        /// If the guiStyle is null, GuiStyle.none will be used.
+        /// </summary>
+        /// <param name="text">Text to be displayed.</param>
+        /// <param name="position">Position to draw at.</param>
+        /// <param name="guiStyle">GuiStyle for the text.</param>
+        /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        public static void DrawLabel(string text, Vector3 position, GUIStyle guiStyle, Transform atTransform = null)
+        {
+#if UNITY_EDITOR
+            Handles.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
+            Handles.Label(position, text, guiStyle);
+#endif
         }
     }
 }

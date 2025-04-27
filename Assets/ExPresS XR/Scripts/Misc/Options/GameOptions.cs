@@ -1,244 +1,199 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Options
 {
+    /// <summary>
+    /// !ATTENTION! This is just a demo implementation with demo values. You'll need to adjust this class to your needs.
+    /// Also keep in mind that this is not a full save system, rather lets you store some simple values easily.
+    /// </summary>
     public class GameOptions : MonoBehaviour
     {
-        // Requires an instance to modify the values, but the values can be read from a script
-        public const string SELECTED_EXPERIENCE = "ExperienceType";
+        #region Key Names & Constants
+        /// <summary>
+        /// Define the keys for storing the values here, making them public to be used elsewhere if needed. 
+        /// </summary>
+        public const string SELECTED_EXPERIENCE_PLAYER_PREF = "ExperienceType";
+        public const string MADE_WITH_PLAYER_PREF = "MadeWith";
         public const string SUBTITLES_PLAYER_PREF = "Subtitles";
-        public const string RAY_INTERACTIONS_PLAYER_PREF = "RayInteractions";
-        public const string SKIP_LADDER_PLAYER_PREF = "SkipLadder";
-        public const string SKIP_ELEVATOR_PLAYER_PREF = "SkipElevator";
-        public const string NO_HEAT_HAZE_PLAYER_PREFS = "NoHeatHaze";
+
+        /// <summary>
+        /// Constant for checking if a game was made with ExPresS XR.
+        /// </summary>
+        public const string EXPRESSXR_MADE_WITH_NAME = "ExPresS XR";
+        #endregion
+
+        #region Default Values
+        [SerializeField]
+        [Tooltip("Categorizes the experience type.")]
+        protected ExperienceType _defaultExperience = ExperienceType.None;
 
         [SerializeField]
-        private bool _createMissingValuesOnAwake = true;
-
-
-        [SerializeField]
-        private ExperienceType _defaultExperience = ExperienceType.Full;
+        [Tooltip("With what this game was made with.")]
+        protected string _defaultMadeWith = MADE_WITH_PLAYER_PREF;
 
         [SerializeField]
-        private bool _defaultSubtitlesEnabled = true;
+        [Tooltip("If subtitles are enabled or not.")]
+        protected bool _defaultSubtitlesEnabled = true;
+
+        [Space]
 
         [SerializeField]
-        private bool _defaultRayInteractionsEnabled = false;
-
-        [SerializeField]
-        private bool _defaultSkipLadderEnabled = false;
-
-        [SerializeField]
-        private bool _defaultSkipElevatorEnabled = false;
-
-        [SerializeField]
-        private bool _defaultNoHeatHazeEnabled = false;
+        [Tooltip("Create missing values on awake.")]
+        protected bool _createMissingValuesOnAwake = true;
+        # endregion
 
 
+        #region Getters and Setters
+        /// <summary>
+        /// Enum values must be converted to integers.
+        /// </summary>
         public static int SelectedExperience
         {
-            get => PlayerPrefs.HasKey(SELECTED_EXPERIENCE) ? PlayerPrefs.GetInt(SELECTED_EXPERIENCE) : 0;
+            get => PlayerPrefs.HasKey(SELECTED_EXPERIENCE_PLAYER_PREF) ? PlayerPrefs.GetInt(SELECTED_EXPERIENCE_PLAYER_PREF) : 0;
+            set => PlayerPrefs.SetInt(SELECTED_EXPERIENCE_PLAYER_PREF, value);
         }
+
+        /// <summary>
+        /// The actual enums can still be used in code like this.
+        /// </summary>
         public static ExperienceType SelectedExperienceType
         {
             get => (ExperienceType)SelectedExperience;
+            set => SelectedExperience = (int)value;
         }
 
+
+        // ============================================
+
+        /// <summary>
+        /// Stores simple strings (floats and ints are possible too).
+        /// </summary>
+        public static string MadeWith
+        {
+            get => PlayerPrefs.HasKey(MADE_WITH_PLAYER_PREF) ? PlayerPrefs.GetString(MADE_WITH_PLAYER_PREF) : "";
+            set => PlayerPrefs.SetString(MADE_WITH_PLAYER_PREF, value);
+        }
+
+        /// <summary>
+        /// Values can be converted to booleans like this.
+        /// </summary>
+        /// <value></value>
+        public static bool MadeWithExPresSXR
+        {
+            get => MadeWith == EXPRESSXR_MADE_WITH_NAME;
+            set => MadeWith = EXPRESSXR_MADE_WITH_NAME;
+        }
+
+        // ============================================
+
+        /// <summary>
+        /// Storing booleans as 0 and 1 integers.
+        /// </summary>
         public static bool SubtitlesEnabled
         {
             get => PlayerPrefs.HasKey(SUBTITLES_PLAYER_PREF) && PlayerPrefs.GetInt(SUBTITLES_PLAYER_PREF) != 0;
+            set => PlayerPrefs.SetInt(SUBTITLES_PLAYER_PREF, value ? 1 : 0);
         }
+        #endregion
 
-        public static bool RayInteractionsEnabled
-        {
-            get => PlayerPrefs.HasKey(RAY_INTERACTIONS_PLAYER_PREF) && PlayerPrefs.GetInt(RAY_INTERACTIONS_PLAYER_PREF) != 0;
-        }
-
-        public static bool SkipLadderEnabled
-        {
-            get => PlayerPrefs.HasKey(SKIP_LADDER_PLAYER_PREF) && PlayerPrefs.GetInt(SKIP_LADDER_PLAYER_PREF) != 0;
-        }
-
-
-        public static bool SkipElevatorEnabled
-        {
-            get => PlayerPrefs.HasKey(SKIP_ELEVATOR_PLAYER_PREF) && PlayerPrefs.GetInt(SKIP_ELEVATOR_PLAYER_PREF) != 0;
-        }
-
-
-        public static bool NoHeatHazeEnabled
-        {
-            get => PlayerPrefs.HasKey(NO_HEAT_HAZE_PLAYER_PREFS) && PlayerPrefs.GetInt(NO_HEAT_HAZE_PLAYER_PREFS) != 0;
-        }
-
-
-        public static bool DEBUG_AutoSkipNarration
-        {
-            get => false;
-        }
-
-
-        public UnityEvent<int> OnExperienceSelected;
-        public UnityEvent<bool> OnSubtitlesChanged;
-        public UnityEvent<bool> OnRayInteractionsChanged;
-        public UnityEvent<bool> OnSkipLadderChanged;
-        public UnityEvent<bool> OnSkipElevatorChanged;
-        public UnityEvent<bool> OnNoHeatHazeChanged;
-
-
-        private void Awake()
+        #region Basic Functionality
+        /// <summary>
+        /// Make sure to add(copy&paste) new values here to ensure correct functionality.
+        /// </summary>
+        protected virtual void Awake()
         {
             CreateMissingValues();
 
-            if (PlayerPrefs.HasKey(SELECTED_EXPERIENCE))
+            if (PlayerPrefs.HasKey(SELECTED_EXPERIENCE_PLAYER_PREF))
             {
-                Debug.Log($"Loaded value of '{SELECTED_EXPERIENCE}': {SelectedExperience}");
-                OnExperienceSelected.Invoke(SelectedExperience);
+                Debug.Log($"Loaded value of '{SELECTED_EXPERIENCE_PLAYER_PREF}': {SelectedExperience}");
             }
 
             if (PlayerPrefs.HasKey(SUBTITLES_PLAYER_PREF))
             {
                 Debug.Log($"Loaded value of '{SUBTITLES_PLAYER_PREF}': {SubtitlesEnabled}");
-                OnSubtitlesChanged.Invoke(SubtitlesEnabled);
             }
 
-            if (PlayerPrefs.HasKey(RAY_INTERACTIONS_PLAYER_PREF))
+            if (PlayerPrefs.HasKey(SUBTITLES_PLAYER_PREF))
             {
-                Debug.Log($"Loaded value of '{RAY_INTERACTIONS_PLAYER_PREF}': {RayInteractionsEnabled}");
-                OnRayInteractionsChanged.Invoke(RayInteractionsEnabled);
-            }
-
-            if (PlayerPrefs.HasKey(SKIP_LADDER_PLAYER_PREF))
-            {
-                Debug.Log($"Loaded value of '{SKIP_LADDER_PLAYER_PREF}': {SkipLadderEnabled}");
-                OnSkipLadderChanged.Invoke(SkipLadderEnabled);
-            }
-
-            if (PlayerPrefs.HasKey(SKIP_ELEVATOR_PLAYER_PREF))
-            {
-                Debug.Log($"Loaded value of '{SKIP_ELEVATOR_PLAYER_PREF}': {SkipElevatorEnabled}");
-                OnSkipElevatorChanged.Invoke(SkipElevatorEnabled);
-            }
-
-            if (PlayerPrefs.HasKey(NO_HEAT_HAZE_PLAYER_PREFS))
-            {
-                Debug.Log($"Loaded value of '{NO_HEAT_HAZE_PLAYER_PREFS}': {NoHeatHazeEnabled}");
-                OnNoHeatHazeChanged.Invoke(NoHeatHazeEnabled);
+                Debug.Log($"Loaded value of '{SUBTITLES_PLAYER_PREF}': {SubtitlesEnabled}");
             }
         }
 
-        private void CreateMissingValues()
+        protected virtual void CreateMissingValues()
         {
             if (!_createMissingValuesOnAwake)
             {
                 return;
             }
 
-            if (!PlayerPrefs.HasKey(SELECTED_EXPERIENCE))
+            if (!PlayerPrefs.HasKey(SELECTED_EXPERIENCE_PLAYER_PREF))
             {
-                Debug.LogWarning($"Did not find key '{SELECTED_EXPERIENCE}' in PlayerPrefs, creating entry with value '{_defaultExperience}'.");
-                SetSubtitlesEnabled(_defaultSubtitlesEnabled);
+                Debug.LogWarning($"Did not find key '{SELECTED_EXPERIENCE_PLAYER_PREF}' in PlayerPrefs, creating entry with value '{_defaultExperience}'.");
+                SelectedExperienceType = _defaultExperience;
+            }
+
+            if (!PlayerPrefs.HasKey(MADE_WITH_PLAYER_PREF))
+            {
+                Debug.LogWarning($"Did not find key '{MADE_WITH_PLAYER_PREF}' in PlayerPrefs, creating entry with value '{_defaultMadeWith}'.");
             }
 
             if (!PlayerPrefs.HasKey(SUBTITLES_PLAYER_PREF))
             {
                 Debug.LogWarning($"Did not find key '{SUBTITLES_PLAYER_PREF}' in PlayerPrefs, creating entry with value '{_defaultSubtitlesEnabled}'.");
-                SetSubtitlesEnabled(_defaultSubtitlesEnabled);
-            }
-
-            if (!PlayerPrefs.HasKey(RAY_INTERACTIONS_PLAYER_PREF))
-            {
-                Debug.LogWarning($"Did not find key '{RAY_INTERACTIONS_PLAYER_PREF}' in PlayerPrefs, creating entry with value '{_defaultRayInteractionsEnabled}'.");
-                SetRayInteractionsEnabled(_defaultRayInteractionsEnabled);
-            }
-
-            if (!PlayerPrefs.HasKey(SKIP_LADDER_PLAYER_PREF))
-            {
-                Debug.LogWarning($"Did not find key '{SKIP_LADDER_PLAYER_PREF}' in PlayerPrefs, creating entry with value '{_defaultSkipLadderEnabled}'.");
-                SetSkipLadderEnabled(_defaultSkipLadderEnabled);
-            }
-
-            if (!PlayerPrefs.HasKey(SKIP_ELEVATOR_PLAYER_PREF))
-            {
-                Debug.LogWarning($"Did not find key '{SKIP_ELEVATOR_PLAYER_PREF}' in PlayerPrefs, creating entry with value '{_defaultSkipElevatorEnabled}'.");
-                SetSkipElevatorEnabled(_defaultSkipElevatorEnabled);
-            }
-
-            if (!PlayerPrefs.HasKey(NO_HEAT_HAZE_PLAYER_PREFS))
-            {
-                Debug.LogWarning($"Did not find key '{NO_HEAT_HAZE_PLAYER_PREFS}' in PlayerPrefs, creating entry with value '{_defaultNoHeatHazeEnabled}'.");
-                SetNoHeatHazeEnabled(_defaultNoHeatHazeEnabled);
+                SubtitlesEnabled = _defaultSubtitlesEnabled;
             }
         }
 
+        /// <summary>
+        /// Updates the values to default values. Use when changing the default values.
+        /// </summary>
         [ContextMenu("Force Update Default Values")]
-        private void ForceUpdateValues()
+        protected virtual void ForceUpdateValues()
         {
-            Debug.LogWarning($"Forcefully setting key '{SelectedExperience}' in PlayerPrefs to '{_defaultExperience}'.");
-            SetSelectedExperienceType(_defaultExperience);
+            Debug.LogWarning($"Forcefully setting key '{SELECTED_EXPERIENCE_PLAYER_PREF}' in PlayerPrefs to '{_defaultExperience}'.");
+            SelectedExperienceType = _defaultExperience;
+            Debug.LogWarning($"Forcefully setting key '{MADE_WITH_PLAYER_PREF}' in PlayerPrefs to '{_defaultMadeWith}'.");
+            MadeWith = _defaultMadeWith;
             Debug.LogWarning($"Forcefully setting key '{SUBTITLES_PLAYER_PREF}' in PlayerPrefs to '{_defaultSubtitlesEnabled}'.");
-            SetSubtitlesEnabled(_defaultSubtitlesEnabled);
-            Debug.LogWarning($"Forcefully setting key '{RAY_INTERACTIONS_PLAYER_PREF}' in PlayerPrefs to '{_defaultRayInteractionsEnabled}'.");
-            SetRayInteractionsEnabled(_defaultRayInteractionsEnabled);
-            Debug.LogWarning($"Forcefully setting key '{SKIP_LADDER_PLAYER_PREF}' in PlayerPrefs to '{_defaultSkipLadderEnabled}'.");
-            SetSkipLadderEnabled(_defaultSkipLadderEnabled);
-            Debug.LogWarning($"Forcefully setting key '{SKIP_ELEVATOR_PLAYER_PREF}' in PlayerPrefs to '{_defaultSkipElevatorEnabled}'.");
-            SetSkipElevatorEnabled(_defaultSkipElevatorEnabled);
-            Debug.LogWarning($"Forcefully setting key '{NO_HEAT_HAZE_PLAYER_PREFS}' in PlayerPrefs to '{_defaultNoHeatHazeEnabled}'.");
-            SetNoHeatHazeEnabled(_defaultNoHeatHazeEnabled);
+            SubtitlesEnabled = _defaultSubtitlesEnabled;
+        }
+        #endregion
+
+        #region Custom GameOption Values
+        public enum ExperienceType
+        {
+            None = 0,
+            Exhibition = 1,
+            Experience = 2
+        }
+        #endregion
+
+        #region GameOptionConditionals
+        /// <summary>
+        /// Add boolean values here to be used with GameOptionsConditionalElement.
+        /// Make sure to add a return value in GetValueOfConditional() too.
+        /// </summary>
+        public enum GameOptionConditionals
+        {
+            MadeWithExPresSXR,
+            Subtitles
         }
 
-        public void SetSelectedExperience(int selectedExperience) => PlayerPrefs.SetInt(SELECTED_EXPERIENCE, selectedExperience);
-
-        public void SetSelectedExperienceType(ExperienceType experienceType) => SetSelectedExperience((int)experienceType);
-
-        public void SetSubtitlesEnabled(bool enabled) => PlayerPrefs.SetInt(SUBTITLES_PLAYER_PREF, enabled ? 1 : 0);
-
-        public void SetRayInteractionsEnabled(bool enabled) => PlayerPrefs.SetInt(RAY_INTERACTIONS_PLAYER_PREF, enabled ? 1 : 0);
-        public void SetSkipLadderEnabled(bool enabled) => PlayerPrefs.SetInt(SKIP_LADDER_PLAYER_PREF, enabled ? 1 : 0);
-        public void SetSkipElevatorEnabled(bool enabled) => PlayerPrefs.SetInt(SKIP_ELEVATOR_PLAYER_PREF, enabled ? 1 : 0);
-        public void SetNoHeatHazeEnabled(bool enabled) => PlayerPrefs.SetInt(NO_HEAT_HAZE_PLAYER_PREFS, enabled ? 1 : 0);
-
-
+        /// <summary>
+        /// Returns the conditional value saved in the PlayerPrefs.
+        /// </summary>
+        /// <param name="conditional">Conditional value to check.</param>
+        /// <returns>Wether or not the condition is true.</returns>
         public static bool GetValueOfConditional(GameOptionConditionals conditional)
         {
             return conditional switch
             {
+                GameOptionConditionals.MadeWithExPresSXR => MadeWithExPresSXR,
                 GameOptionConditionals.Subtitles => SubtitlesEnabled,
-                GameOptionConditionals.RayInteractions => RayInteractionsEnabled,
-                GameOptionConditionals.SkipLadder => SkipLadderEnabled,
-                GameOptionConditionals.SkipElevator => SkipElevatorEnabled,
-                GameOptionConditionals.NoHeatHaze => NoHeatHazeEnabled,
                 _ => false
             };
         }
-
-
-
-        public enum ExperienceType
-        {
-            Full = 0,
-            Short = 1,
-            Exhibition = 2
-        }
-
-        public enum OptionalExperienceType
-        {
-            None = -1,
-            Full = 0,
-            Short = 1,
-            Exhibition = 2
-        }
-
-
-        public enum GameOptionConditionals
-        {
-            Subtitles,
-            RayInteractions,
-            SkipLadder,
-            SkipElevator,
-            NoHeatHaze
-        }
+        #endregion
     }
 }

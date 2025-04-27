@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-using ExPresSXR.Misc;
 using ExPresSXR.UI;
 
 
@@ -21,9 +17,9 @@ namespace ExPresSXR.Editor.Editors
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("Make sure to adjust the height of the gameobject you set as 'Content' " 
+            EditorGUILayout.HelpBox("Make sure to adjust the height of the GameObject you set as 'Content' " 
                 + "as well as the height of your inner content, i.e. the vertical layout.\n"
-                + "Otherwise the autoscroll rect will not work propertly!", MessageType.Info);
+                + "Otherwise the autoscroll rect will not work properly!", MessageType.Info);
 
             serializedObject.UpdateIfRequiredOrScript();
             DrawDefaultInspector();

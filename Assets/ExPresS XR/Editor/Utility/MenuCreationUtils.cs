@@ -629,7 +629,13 @@ namespace ExPresSXR.Editor.Utility
         [MenuItem("GameObject/ExPresS XR/Minigames/Sword Cleaning")]
         static void CreateSwordCleaningMinigame(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Sword Cleaning/Sword Cleaning Minigame");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Target Area/Sword Cleaning/Sword Cleaning Minigame");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Minigames/Breakable Stones")]
+        static void CreateBreakableStonesMinigame(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Target Area/Breakable Stone/Breakable Stone Minigame");
         }
 
         [MenuItem("GameObject/ExPresS XR/Minigames/Coin Throw")]
@@ -642,6 +648,43 @@ namespace ExPresSXR.Editor.Utility
         static void CreateCoinScaleMinigame(MenuCommand menuCommand)
         {
             InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Coin Scale/Coin Scale Minigame");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Minigames/Excavation")]
+        static void CreateExcavationMinigame(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Excavation/Excavation Game");
+        }
+
+        // BaAM
+        [MenuItem("GameObject/ExPresS XR/Minigames/Archery/Game Logic")]
+        static void CreateArcheryGameLogic(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Archery/Archery Games/Archery Game Logic");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Minigames/Archery/Object Pool Manager")]
+        static void CreateArcheryObjectPoolManager(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Archery/Archery Games/Object Pool Manager");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Minigames/Archery/Classic Archery Game")]
+        static void CreateArcheryClassicMinigame(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Archery/Archery Games/Classic Archery Game");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Minigames/Archery/Throw Archery Game")]
+        static void CreateArcheryThrowerMinigame(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Archery/Archery Games/Throw Archery Game");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Minigames/Archery/Line Archery Game")]
+        static void CreateArcheryLineMinigame(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Minigames/Archery/Archery Games/Line Archery Game");
         }
 
         // Data Gathering

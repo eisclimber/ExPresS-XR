@@ -1,45 +1,70 @@
 using ExPresSXR.Misc.Timing;
 using UnityEngine;
 using UnityEngine.Events;
+using ExPresSXR.Minigames.Archery.TargetSpawner;
 
-namespace ExPresSXR.Minigames.Archery
+namespace ExPresSXR.Minigames.Archery.GameLogic
 {
     [RequireComponent(typeof(AudioSource))]
     public class ArrowGameLogic : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("Duration of the game after started")]
+        [Tooltip("Duration of the game after started.")]
         private float _duration = 30.0f;
 
         [SerializeField]
-        [Tooltip("Ref to the Display of the Score with the ScoreCounter script")]
+        [Tooltip("Ref to the Display of the Score with the ScoreCounter script.")]
         private ScoreManager _scoreManager;
 
         [SerializeField]
-        [Tooltip("Ref to the Display of the Counter with the Counter script")]
+        [Tooltip("Targets that get associated automatically with the score manager.")]
+        private Target[] _targets;
+
+        [SerializeField]
+        [Tooltip("Spawners automatically controlled and associated with the score manager.")]
+        private TargetSpawnerBase[] _spawners;
+
+        [SerializeField]
+        [Tooltip("Ref to the Display of the Counter with the Counter script.")]
         private Timer _timer;
 
         [Space]
 
         [SerializeField]
-        [Tooltip("Start Sound")]
+        [Tooltip("Sound played at the start of the game.")]
         private AudioClip _startSound;
 
         [SerializeField]
-        [Tooltip("End Sound")]
+        [Tooltip("Sound played at the end of the game.")]
         private AudioClip _endSound;
 
+        [SerializeField]
+        [Tooltip("AudioSource used to be played the start and end sound.")]
         private AudioSource _audioSource;
 
         // Events
+        /// <summary>
+        /// Emitted when the game is started.
+        /// </summary>
         public UnityEvent OnStarted;
+
+        /// <summary>
+        /// Emitted when the game finished.
+        /// </summary>
         public UnityEvent OnEnded;
+
+        /// <summary>
+        /// Emitted with the final score when the game finished.
+        /// </summary>
         public UnityEvent<int> OnFinalScore;
 
 
         private void Start()
         {
-            _audioSource = GetComponent<AudioSource>();
+            if (_audioSource == null && !TryGetComponent(out _audioSource))
+            {
+                Debug.LogError("GameLogic does not have a AudioSource configured. Can not play start and end sounds.", this);
+            }
         }
 
         private void OnEnable()
@@ -52,20 +77,39 @@ namespace ExPresSXR.Minigames.Archery
             _timer.OnTimeout.RemoveListener(StopArrowGame);
         }
 
+        /// <summary>
+        /// (Re)-starts the game.
+        /// </summary>
         [ContextMenu("Start Game")]
         public void StartArrowGame()
         {
             _scoreManager.ResetScore();
-            _scoreManager.enabled = false;
+
+            _scoreManager.enabled = true;
             _timer.StartTimer(_duration);
 
             if (_startSound != null)
             {
                 _audioSource.PlayOneShot(_startSound, 2);
             }
+
+            foreach (Target target in _targets)
+            {
+                target.ScoreManagers = ScoreManager.MergeWithGlobalManagers(_scoreManager);
+            }
+
+            foreach (TargetSpawnerBase spawner in _spawners)
+            {
+                spawner.AddScoreManager(_scoreManager);
+                spawner.StartSpawning();
+            }
+
             OnStarted.Invoke();
         }
 
+        /// <summary>
+        /// Stops the game.
+        /// </summary>
         [ContextMenu("Stop Game")]
         public void StopArrowGame()
         {
@@ -73,8 +117,19 @@ namespace ExPresSXR.Minigames.Archery
             {
                 _audioSource.PlayOneShot(_endSound, 1);
             }
-            _scoreManager.enabled = true;
+            _scoreManager.enabled = false;
             _timer.StopTimer();
+
+            foreach (Target target in _targets)
+            {
+                target.ScoreManagers = null;
+            }
+
+            foreach (TargetSpawnerBase spawner in _spawners)
+            {
+                spawner.RemoveScoreManager(_scoreManager);
+                spawner.StopSpawning();
+            }
 
             OnFinalScore.Invoke(_scoreManager.Score);
             OnEnded.Invoke();
