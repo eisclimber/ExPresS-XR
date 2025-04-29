@@ -103,7 +103,6 @@ namespace ExPresSXR.Interaction
 
 
         /// <summary>
-        /// Hidden in the editor!
         /// Prevents emitting the initial OnSelectEnter event after the socket is activated.
         /// </summary>
         [SerializeField]
@@ -116,8 +115,7 @@ namespace ExPresSXR.Interaction
 
 
         /// <summary>
-        /// Hidden in the editor!
-        /// Prevents emitting the initial OnSelectEnter event after the socket is activated.
+        /// Prevents emitting the initial OnSelectExit event after the socket is activated.
         /// </summary>
         [SerializeField]
         private bool _omitInitialSelectExitEvent = true;
@@ -146,7 +144,9 @@ namespace ExPresSXR.Interaction
 
         private Coroutine putBackCoroutine;
 
-
+        /// <summary>
+        /// Emitted once an interactable has been put back automatically, but not by placing it back into the socket manually.
+        /// </summary>
         public UnityEvent OnPutBack;
 
 
@@ -420,6 +420,7 @@ namespace ExPresSXR.Interaction
 
             if (_putBackInteractable)
             {
+                attachTransform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity); // Reset attach to avoid continuous shifting
                 Transform otherAttach = _putBackInteractable.GetAttachTransform(this);
                 attachTransform.SetPositionAndRotation(otherAttach.position, otherAttach.rotation);
             }

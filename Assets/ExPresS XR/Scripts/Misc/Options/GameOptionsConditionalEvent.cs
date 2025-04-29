@@ -42,7 +42,6 @@ namespace ExPresSXR.Misc.Options
         /// <summary>
         /// Returns the used value for the condition.
         /// </summary>
-        /// <value></value>
         public bool Condition
         {
             get

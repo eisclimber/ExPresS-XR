@@ -6,13 +6,25 @@ namespace ExPresSXR.Misc.Animations
     [RequireComponent(typeof(Animator))]
     public class AnimationFinished : MonoBehaviour
     {
+        /// <summary>
+        /// Animator to check if finished.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Animator to check if finished.")]
         private Animator _animator;
 
+        /// <summary>
+        /// Name of the animation to be checked.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Name of the animation to be checked.")]
         private string _animationName;
 
+        // Events
 
+        /// <summary>
+        /// Emitted if the animator completes the animation with the given name.
+        /// </summary>
         public UnityEvent OnAnimationFinished;
 
 

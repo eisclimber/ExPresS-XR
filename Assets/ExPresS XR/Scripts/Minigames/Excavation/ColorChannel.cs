@@ -4,7 +4,7 @@ namespace ExPresSXR.Minigames.Excavation
 {
     /// <summary>
     /// Represents a utility to work with individual RGBA color channels.
-    /// All values work are normalize (i.e. in the range of 0.0f to 1.0f)
+    /// All values work are normalize (i.e. in the range of 0.0f to 1.0f).
     /// </summary>
     public static class ColorChannel
     {

@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using ExPresSXR.Misc.Timing;
 using System;
-using TMPro;
-
 
 namespace ExPresSXR.UI
 {
@@ -18,6 +15,11 @@ namespace ExPresSXR.UI
         [SerializeField]
         private FillSettings _fillSettings;
 
+        /// <summary>
+        /// Updates the visualization of the timer.
+        /// </summary>
+        /// <param name="remainingTime">Remaining time of the timer.</param>
+        /// <param name="waitTime">Overall wait time of the timer.</param>
         protected override void UpdateUI(float remainingTime, float waitTime)
         {
             base.UpdateUI(remainingTime, waitTime);

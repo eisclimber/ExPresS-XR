@@ -25,7 +25,7 @@ namespace ExPresSXR.Minigames.Excavation
         private ColorChannel.Channels _channel;
 
         /// <summary>
-        /// (Average) value of the channel that needs to be reached for completion. 
+        /// (Average) value of the channel that needs to be reached for completion.
         /// </summary>
         [SerializeField]
         [Tooltip("(Average) value of the channel that needs to be reached for completion.")]
@@ -61,7 +61,7 @@ namespace ExPresSXR.Minigames.Excavation
         // Events
 
         /// <summary>
-        /// Emitted if the 
+        /// Emitted when the zone gets completed.
         /// </summary>
         public UnityEvent OnZoneCompleted;
 

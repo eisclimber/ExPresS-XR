@@ -8,32 +8,53 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
     [RequireComponent(typeof(AudioSource))]
     public class ArrowGameLogic : MonoBehaviour
     {
+        /// <summary>
+        /// Duration of the game after started.
+        /// </summary>
         [SerializeField]
         [Tooltip("Duration of the game after started.")]
         private float _duration = 30.0f;
 
+        /// <summary>
+        /// Reference to the Display of the Score with the ScoreCounter script.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Ref to the Display of the Score with the ScoreCounter script.")]
+        [Tooltip("Reference to the Display of the Score with the ScoreCounter script.")]
         private ScoreManager _scoreManager;
 
+        /// <summary>
+        /// Targets that get associated automatically with the score manager.
+        /// </summary>
         [SerializeField]
         [Tooltip("Targets that get associated automatically with the score manager.")]
         private Target[] _targets;
 
+        /// <summary>
+        /// Spawners automatically controlled and associated with the score manager.
+        /// </summary>
         [SerializeField]
         [Tooltip("Spawners automatically controlled and associated with the score manager.")]
         private TargetSpawnerBase[] _spawners;
 
+        /// <summary>
+        /// Reference to the Display of the Counter with the Counter script.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Ref to the Display of the Counter with the Counter script.")]
+        [Tooltip("Reference to the Display of the Counter with the Counter script.")]
         private Timer _timer;
 
         [Space]
 
+        /// <summary>
+        /// Sound played at the start of the game.
+        /// </summary>
         [SerializeField]
         [Tooltip("Sound played at the start of the game.")]
         private AudioClip _startSound;
 
+        /// <summary>
+        /// Sound played at the end of the game.
+        /// </summary>
         [SerializeField]
         [Tooltip("Sound played at the end of the game.")]
         private AudioClip _endSound;

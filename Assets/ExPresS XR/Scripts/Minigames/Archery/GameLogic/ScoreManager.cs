@@ -40,13 +40,13 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         }
 
         /// <summary>
-        /// Combines a singe ScoreManager with the GlobalScoreManagers, returning a list without duplicates. 
+        /// Combines a singe ScoreManager with the GlobalScoreManagers, returning a list without duplicates.
         /// </summary>
         /// <param name="manager">ScoreManager to be combined with the global score managers.</param>
         public static ScoreManager[] MergeWithGlobalManagers(ScoreManager manager) => MergeWithGlobalManagers(new ScoreManager[] { manager });
 
         /// <summary>
-        /// Combines ScoreManagers with the GlobalScoreManagers, returning a list without duplicates. 
+        /// Combines ScoreManagers with the GlobalScoreManagers, returning a list without duplicates.
         /// </summary>
         /// <param name="manager">ScoreManagers to be combined with the global score managers.</param>
         public static ScoreManager[] MergeWithGlobalManagers(IEnumerable<ScoreManager> managers) 

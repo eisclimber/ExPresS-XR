@@ -149,6 +149,18 @@ namespace ExPresSXR.Editor.Utility
             InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Socket Interactors/Object Check Socket Interactor");
         }
 
+        [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Tag Check Submit")]
+        public static void CreateTagCheckSubmitSocketInteractor(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Socket Interactors/Tag Check Submit Socket Interactor");
+        }
+
+        [MenuItem("GameObject/ExPresS XR/Interaction/Socket Interactors/Object Submit")]
+        public static void CreateObjectCheckSubmitSocketInteractor(MenuCommand menuCommand)
+        {
+            InstantiateGameObjectAtContextTransform(menuCommand, "Interaction/Socket Interactors/Object Submit Socket Interactor");
+        }
+
 
         // Value Range Interactables
         [MenuItem("GameObject/ExPresS XR/Interaction/Value Range Interactables/Lever")]

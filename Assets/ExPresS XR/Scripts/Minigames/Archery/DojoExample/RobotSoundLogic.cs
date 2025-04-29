@@ -5,7 +5,7 @@ namespace ExPresSXR.Minigames.Archery.DojoExample
     public class RobotSoundLogic : MonoBehaviour
     {
         /// <summary>
-        /// Welcome message played at the start.")]
+        /// Welcome message played at the start.
         /// </summary>
         [SerializeField]
         [Tooltip("Welcome message played at the start.")]

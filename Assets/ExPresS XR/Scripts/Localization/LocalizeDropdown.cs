@@ -6,15 +6,35 @@ using UnityEngine.Localization.Settings;
 using TMPro;
 
 // Credits: exe2be (https://discussions.unity.com/t/localizing-ui-dropdown-options/792432/14)
-[RequireComponent(typeof(TMP_Dropdown))]
 [AddComponentMenu("Localization/Localize Dropdown")]
 public class LocalizeDropdown : MonoBehaviour
 {
-    public List<LocalizedString> options;
-    public int selectedOptionIndex = 0;
-    private Locale currentLocale = null;
-
+    /// <summary>
+    /// Localizations for the options of the dropdown to be localized.
+    /// </summary>
     [SerializeField]
+    [Tooltip("Localizations for the options of the dropdown to be localized.")]
+    public List<LocalizedString> _options;
+
+    /// <summary>
+    /// Current dropdown option selected.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Current dropdown option selected.")]
+    public int _selectedOptionIndex = 0;
+
+    /// <summary>
+    /// Current locale selected.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Current locale selected.")]
+    private Locale _currentLocale = null;
+
+    /// <summary>
+    /// Dropdown to be localized. If empty, will try to find it in its GameObject.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Dropdown to be localized. If empty, will try to find it in its GameObject.")]
     private TMP_Dropdown _dropdown;
 
 
@@ -25,7 +45,7 @@ public class LocalizeDropdown : MonoBehaviour
             Debug.LogError("No dropdown to localize found.", this);
         }
         GetLocale();
-        UpdateDropdown(currentLocale);
+        UpdateDropdown(_currentLocale);
         LocalizationSettings.SelectedLocaleChanged += UpdateDropdown;
     }
 
@@ -36,24 +56,24 @@ public class LocalizeDropdown : MonoBehaviour
     private void GetLocale()
     {
         var locale = LocalizationSettings.SelectedLocale;
-        if (currentLocale != null && locale != currentLocale)
+        if (_currentLocale != null && locale != _currentLocale)
         {
-            currentLocale = locale;
+            _currentLocale = locale;
         }
     }
 
     private void UpdateDropdown(Locale locale)
     {
-        selectedOptionIndex = _dropdown.value;
+        _selectedOptionIndex = _dropdown.value;
         _dropdown.ClearOptions();
 
-        for (int i = 0; i < options.Count; i++)
+        for (int i = 0; i < _options.Count; i++)
         {
-            string localizedText = options[i].GetLocalizedString();
+            string localizedText = _options[i].GetLocalizedString();
             _dropdown.options.Add(new TMP_Dropdown.OptionData(localizedText, null));
         }
 
-        _dropdown.value = selectedOptionIndex;
+        _dropdown.value = _selectedOptionIndex;
         _dropdown.RefreshShownValue();
     }
 }

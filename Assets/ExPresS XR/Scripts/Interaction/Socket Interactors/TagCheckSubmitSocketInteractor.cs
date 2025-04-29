@@ -6,10 +6,16 @@ namespace ExPresSXR.Interaction
 {
     public class TagCheckSubmitSocketInteractor : TagCheckSocketInteractor
     {
+        /// <summary>
+        /// Disable this socket and the interactable if possible on submission.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Disable this socket and the interactable if possible on submission.")]
         private bool _disableOnSelect = true;
 
-
+        /// <summary>
+        /// Emitted once an object has been submitted.
+        /// </summary>
         public UnityEvent OnSubmitted;
 
         protected override void OnEnable()
@@ -28,6 +34,10 @@ namespace ExPresSXR.Interaction
             selectEntered.RemoveListener(HandleSubmission);
         }
 
+        /// <summary>
+        /// Handles the submission. This function is automatically called if a select is entered.
+        /// </summary>
+        /// <param name="args">Select args of the select enter event.</param>
         protected void HandleSubmission(SelectEnterEventArgs args)
         {
             if (args.interactableObject is ExPresSXRGrabInteractable interactable)
@@ -42,5 +52,11 @@ namespace ExPresSXR.Interaction
             }
             OnSubmitted.Invoke();
         }
+
+        /// <summary>
+        ///  Debug function allow triggering the submit event via the inspector.
+        /// </summary>
+        [ContextMenu("DEBUG Emit Submit Event")]
+        private void Debug_EmitSubmitEvent() => OnSubmitted.Invoke();
     }
 }

@@ -15,6 +15,8 @@ namespace ExPresSXR.Minigames.Archery.Arrow
         [Tooltip("Prefab spawned when the arrow hits a target.")]
         private GameObject _arrowStickingPrefab;
 
+        [Space]
+
         /// <summary>
         /// Sound played when hitting a target.
         /// </summary>
@@ -37,10 +39,10 @@ namespace ExPresSXR.Minigames.Archery.Arrow
         private bool _destroyOnTargetHit = true;
 
         /// <summary>
-        /// Return the arrow to its pool if it hits a target.
+        /// Return the arrow to its pool if it hits a non-target.
         /// </summary>
         [SerializeField]
-        [Tooltip("Return the arrow to its pool if it hits a target.")]
+        [Tooltip("Return the arrow to its pool if it hits a non-target.")]
         private bool _destroyOnNonTargetHit;
 
         /// <summary>

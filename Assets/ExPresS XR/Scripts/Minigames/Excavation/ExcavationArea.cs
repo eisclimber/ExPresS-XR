@@ -24,10 +24,10 @@ namespace ExPresSXR.Minigames.Excavation
         private int _detailLevel = 10;
 
         /// <summary>
-        /// Shader used for drawing.
+        /// Shader used for drawing. You can use the ExcavationDrawShader in the shader folder of ExPresS XR.
         /// </summary>
         [SerializeField]
-        [Tooltip("Shader used for drawing.")]
+        [Tooltip("Shader used for drawing. You can use the ExcavationDrawShader in the shader folder of ExPresS XR.")]
         private Shader _drawShader;
 
         /// <summary>
@@ -96,6 +96,13 @@ namespace ExPresSXR.Minigames.Excavation
 #endif
         }
 
+        /// <summary>
+        /// Excavates at a position by adjusting the parameters of the draw shader
+        /// and drawing it to the texture that is used as depth map of the areas material.
+        /// </summary>
+        /// <param name="pos">Texture position (normalized) to draw at.</param>
+        /// <param name="color">Color to draw with.</param>
+        /// <param name="brushSize">Size of the brush.</param>
         public void ExcavateAt(Vector2 pos, Color color, float brushSize)
         {
             if (pos == Vector2.zero)

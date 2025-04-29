@@ -78,7 +78,7 @@ namespace ExPresSXR.Interaction
         /// <summary>
         /// Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.
         /// </summary>
-        [Tooltip("Setting this value during runtime will use the current scales as initial scale.")]
+        [Tooltip("Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.")]
         [SerializeField]
         private Transform[] _scaledChildren;
         public Transform[] ScaledChildren
@@ -153,10 +153,31 @@ namespace ExPresSXR.Interaction
             get => _scaleSpeedOverride > 0.0f;
         }
 
+        // Events
+
+        /// <summary>
+        /// Emitted when a grab is started.
+        /// </summary>
         public UnityEvent OnGrabStarted;
+
+        /// <summary>
+        /// Emitted when a grab is ended.
+        /// </summary>
         public UnityEvent OnGrabReleased;
+
+        /// <summary>
+        /// Emitted when a grab is allowed.
+        /// </summary>
         public UnityEvent OnGrabAllowed;
+
+        /// <summary>
+        /// Emitted when a grab is denied.
+        /// </summary>
         public UnityEvent OnGrabDenied;
+
+        /// <summary>
+        /// Emitted when the scale of this interactable is reset.
+        /// </summary>
         public UnityEvent OnScaleReset;
 
 
@@ -184,6 +205,10 @@ namespace ExPresSXR.Interaction
             selectEntered.RemoveListener(TryResetScaleInSockets);
         }
 
+        /// <summary>
+        /// Emits the OnGrabStarted-Event alongside performing the rest of the select enter.
+        /// </summary>
+        /// <param name="args">Args of the select enter.</param>
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
@@ -193,6 +218,10 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <summary>
+        /// Emits the OnGrabReleased-Event alongside performing the rest of the select exit.
+        /// </summary>
+        /// <param name="args">Args of the select exit.</param>
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
@@ -202,6 +231,11 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <summary>
+        /// Denies selection of direct and ray interactors if grabbing is not allowed, emitting the respective events.
+        /// </summary>
+        /// <param name="interactor">Interactor trying to select</param>
+        /// <returns>Whether or not selection is allowed.</returns>
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
             // Allow Direct and ray only if grab allowed and add parent checks
@@ -226,7 +260,7 @@ namespace ExPresSXR.Interaction
         private void LoadInitialScales()
         {
             List<Transform> children = new();
-            if (_scaleAllChildren && transform.childCount > 0)
+            if (_scaleAllChildren)
             {
                 foreach (Transform t in transform)
                 {

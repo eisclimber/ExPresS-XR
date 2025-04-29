@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using ExPresSXR.Rig;
 
@@ -8,13 +6,24 @@ namespace ExPresSXR.Movement
 {
     public class ForceTeleport : MonoBehaviour
     {
+        /// <summary>
+        /// Rig to be teleported.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Rig to be teleported.")]
         private ExPresSXRRig _rig;
 
+        /// <summary>
+        /// Position of the camera, to correct the rotation.
+        /// </summary>
         [SerializeField]
         private Transform _cameraTransform;
-
+    	
+        /// <summary>
+        /// Default target for teleporting without having to provide a transform.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Default target for teleporting without having to provide a transform.")]
         private Transform _defaultTarget;
 
         private CharacterController _playerController;
@@ -23,8 +32,16 @@ namespace ExPresSXR.Movement
         private Vector3 _pendingTeleportPosition;
         private Quaternion _pendingTeleportRotation;
 
+        //  Events
 
+        /// <summary>
+        /// Emitted if a teleport is requested. This will also be the moment a teleport without fade is performed.
+        /// </summary>
         public UnityEvent OnForceTeleport;
+
+        /// <summary>
+        /// Emitted once the player's vision is fully faded and the teleport with fade is happening.
+        /// </summary>
         public UnityEvent OnFullyFaded;
 
 
@@ -44,12 +61,33 @@ namespace ExPresSXR.Movement
             _rig.fadeRect.OnFadeToColorCompleted.RemoveListener(OnFadeToColorCompleted);
         }
 
+        /// <summary>
+        /// Teleports the player to the default target without fade.
+        /// </summary>
         public void DefaultTeleportTo() => TeleportTo(_defaultTarget, false);
+
+        /// <summary>
+        /// Teleports the player to the default target with fade.
+        /// </summary>
         public void DefaultTeleportToWithFade() => TeleportTo(_defaultTarget, true);
 
+        /// <summary>
+        /// Teleports the player to the target without fade.
+        /// </summary>
+        /// <param name="target">Teleport position and rotation.</param>
         public void TeleportTo(Transform target) => TeleportTo(target, false);
+
+        /// <summary>
+        /// Teleports the player to the target with fade.
+        /// </summary>
+        /// <param name="target">Teleport position and rotation.</param>
         public void TeleportToWithFade(Transform target) => TeleportTo(target, true);
         
+        /// <summary>
+        /// Teleports the player to the target with optional fade.
+        /// </summary>
+        /// <param name="target">Teleport position and rotation.</param>
+        /// <param name="fade">With or without fade.</param>
         public void TeleportTo(Transform target, bool fade)
         {
             if (target != null)
@@ -61,6 +99,12 @@ namespace ExPresSXR.Movement
             }
         } 
         
+        /// <summary>
+        /// Teleports the player to the given position and rotation with optional fade.
+        /// </summary>
+        /// <param name="targetPosition">Target position.</param>
+        /// <param name="targetRotation">Target rotation.</param>
+        /// <param name="fade">With or without fade.</param>
         public void TeleportTo(Vector3 targetPosition, Quaternion targetRotation, bool fade)
         {
             if (fade)
@@ -77,6 +121,9 @@ namespace ExPresSXR.Movement
             }
         }
 
+        /// <summary>
+        /// Cancels a teleport. Only effective for teleports with fade.
+        /// </summary>
         public void CancelTeleport()
         {
             if (_pendingTeleport)

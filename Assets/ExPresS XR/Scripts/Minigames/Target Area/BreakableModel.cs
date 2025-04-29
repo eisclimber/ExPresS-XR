@@ -12,7 +12,7 @@ namespace ExPresSXR.Minigames.TargetArea
         private const string DEFAULT_SHADER_VARIABLE_NAME = "_DamagePct";
 
         /// <summary>
-        /// Maximum possible damage.
+        /// Maximum possible damage. Make sure that the value can be reached with the your setup of TargetAreas.
         /// </summary>
         [SerializeField]
         [Tooltip("Maximum possible damage.")]
@@ -101,12 +101,12 @@ namespace ExPresSXR.Minigames.TargetArea
         // Events
 
         /// <summary>
-        /// Emitted when damaged the first time. 
+        /// Emitted when damaged the first time.
         /// </summary>
         public UnityEvent OnFirstDamage;
 
         /// <summary>
-        /// Emitted when damaged the last time (i.e. destroyed). 
+        /// Emitted when damaged the last time (i.e. destroyed).
         /// </summary>
         public UnityEvent OnLastDamage;
 

@@ -4,16 +4,22 @@ namespace ExPresSXR.Misc.Audio
 {
     public class AudioSourcePitchRandomizer : MonoBehaviour
     {
+        /// <summary>
+        /// Audio Source affected.
+        /// </summary>
         [SerializeField]
         private AudioSource _audioSource;
 
+        /// <summary>
+        /// Minimum possible pitch (inclusive).
+        /// </summary>&
         [SerializeField]
-        [Tooltip("Min pitch (inclusive)")]
-        private float _minPict = 0.95f;
+        [Tooltip("Minimum possible pitch (inclusive).")]
+        private float _minPitch = 0.95f;
 
         [SerializeField]
-        [Tooltip("Max pitch (exclusive)")]
-        private float _maxPict = 1.05f;
+        [Tooltip("Maximum possible pitch (exclusive).")]
+        private float _maxPitch = 1.05f;
 
 
         private void Start()
@@ -23,18 +29,20 @@ namespace ExPresSXR.Misc.Audio
                 Debug.Log("No AudioSource could be found to randomize the pitch.", this);
             }
 
-            if (_minPict > _maxPict)
+            if (_minPitch > _maxPitch)
             {
                 Debug.LogWarning("Min pitch is greater than max pitch. Setting min to max pitch!");
             }
         }
 
-
+        /// <summary>
+        /// Randomizes the pitch of the audio source.
+        /// </summary>        
         public void RandomizePitch()
         {
             if (_audioSource)
             {
-                _audioSource.pitch = Random.Range(_minPict, _maxPict);
+                _audioSource.pitch = Random.Range(_minPitch, _maxPitch);
             }
             else
             {

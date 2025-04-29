@@ -11,6 +11,7 @@ namespace ExPresSXR.Minigames.TargetArea
     {
         /// <summary>
         /// How many times the triggerer must enter and exit for the target to be completed.
+        /// If less or equal to zero, infinite actions area assumed.
         /// </summary>
         [SerializeField]
         private int _actionsToComplete = 1;
@@ -43,6 +44,7 @@ namespace ExPresSXR.Minigames.TargetArea
             }
             else if (_actionsToComplete < 1)
             {
+                // No actions to complete -> assume infinite actions
                 OnActionPerformed.Invoke();
                 return;
             }

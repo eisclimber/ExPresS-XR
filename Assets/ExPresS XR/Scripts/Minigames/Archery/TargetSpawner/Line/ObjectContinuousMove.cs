@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 {
@@ -10,6 +11,11 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         [SerializeField]
         [Tooltip("Speed to move the GameObjet with.")]
         private float _speed;
+        public float Speed
+        {
+            get => _speed;
+            set => _speed = value;
+        }
 
         /// <summary>
         /// Direction to move the GameObject.
@@ -17,6 +23,11 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         [SerializeField]
         [Tooltip("Direction to move the GameObject.")]
         private Vector3 _direction;
+        public Vector3 Direction
+        {
+            get => _direction;
+            set => _direction = value;
+        }
 
         private void FixedUpdate()
         {
@@ -25,7 +36,7 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 
 
         /// <summary>
-        /// Change movement according to given parameters
+        /// Both speed and direction.
         /// </summary>
         /// <param name="speed">New speed.</param>
         /// <param name="direction">New direction.</param>

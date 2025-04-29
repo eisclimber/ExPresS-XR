@@ -10,12 +10,12 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public const float DEFAULT_DELAY = 0.0f;
 
-        [Space]
+        [Space] // Separate from the rest of the timer
 
         /// <summary>
-        /// How long the timer takes to timeout. Must be greater than 0.0f.
+        /// Delay until the timer stats. Must be greater than 0.0f.
         /// </summary>
-        [Tooltip("How long the timer takes to timeout. Must be greater than 0.0f.")]
+        [Tooltip("Delay until the timer stats. Must be greater than 0.0f.")]
         [SerializeField]
         private float _startDelay = DEFAULT_DELAY;
         public float startDelay
@@ -76,7 +76,9 @@ namespace ExPresSXR.Misc.Timing
             }
         }
 
-
+        /// <summary>
+        /// Updates the timer and delay.
+        /// </summary>
         protected override void FixedUpdate()
         {
             if (!running)

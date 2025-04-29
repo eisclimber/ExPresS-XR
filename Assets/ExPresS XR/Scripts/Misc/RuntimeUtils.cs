@@ -137,17 +137,40 @@ namespace ExPresSXR.Misc
             return -1;
         }
 
+        /// <summary>
+        /// Return a random element from the first array given the probabilities for each object.
+        /// If probabilities is null, a linear distribution is used.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <param name="probabilities">Probabilities for each object.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
         public static T GetRandomArrayElement<T>(T[] objects, float[] probabilities = null)
         {
             bool useWeighted = probabilities != null && probabilities.Length >= 0;
             return GetRandomArrayElement(objects, useWeighted, probabilities);
         }
 
+        /// <summary>
+        /// Return a random element from the first array given the probabilities for each object.
+        /// If a linear or weighted distribution should be used, is decided by the useWeighted value.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <param name="useWeighted">Whether or not weighted random should be used.</param>
+        /// /// <param name="probabilities">Probabilities for each object.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
         public static T GetRandomArrayElement<T>(T[] objects, bool useWeighted, float[] probabilities = null)
         {
             return useWeighted ? GetRandomArrayElementWeighted(objects, probabilities) : GetRandomArrayElementUnweighted(objects);
         }
 
+        /// <summary>
+        /// Returns a random element from an array using linear distribution.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
         public static T GetRandomArrayElementUnweighted<T>(T[] objects)
         {
             if (objects.Length <= 0)
@@ -160,6 +183,13 @@ namespace ExPresSXR.Misc
             return objects[randomIdx];
         }
 
+        /// <summary>
+        /// Returns a random element from an array using weighted distribution.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <param name="probabilities">Probabilities for each object.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
         public static T GetRandomArrayElementWeighted<T>(T[] objects, float[] probabilities)
         {
             if (objects.Length <= 0 || objects.Length != probabilities.Length)
@@ -170,8 +200,6 @@ namespace ExPresSXR.Misc
             int randomIdx = GetWeightedRandomIdx(probabilities);
             return randomIdx >= 0 ? objects[randomIdx] : default;
         }
-
-
 
         #endregion
 

@@ -88,7 +88,7 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 
 
         /// <summary>
-        /// Images for Bad Target.
+        /// Images for bad Target.
         /// </summary>
         [SerializeField]
         [Tooltip("Images for Bad Target.")]
@@ -156,11 +156,11 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         }
 
         /// <summary>
-        /// Direction of the current target
+        /// Direction of the current target.
         /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
-        [Tooltip("Direction of the current target")]
+        [Tooltip("Direction of the current target.")]
         private Vector3 _currentDirection;
         public Vector3 CurrentDirection
         {
@@ -168,11 +168,11 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         }
 
         /// <summary>
-        /// Wether or not the current target is bad or good.
+        /// Whether or not the current target is bad or good.
         /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
-        [Tooltip("Wether or not the current target is bad or good.")]
+        [Tooltip("Whether or not the current target is bad or good.")]
         private bool _isCurrentTargetBad = false;
         public bool IsCurrentTargetBad
         {

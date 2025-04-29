@@ -51,7 +51,7 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner
         public virtual void RemoveScoreManager(ScoreManager scoreManager) => _scoreManagers.Remove(scoreManager);
 
         /// <summary>
-        /// Returns an array of the ScoreManagers of this Spawner combined with the global ScoreManagers. 
+        /// Returns an array of the ScoreManagers of this Spawner combined with the global ScoreManagers.
         /// </summary>
         /// <returns></returns>
         protected virtual ScoreManager[] GetAllScoreManagers() => ScoreManager.MergeWithGlobalManagers(_scoreManagers);

@@ -1,5 +1,4 @@
 using ExPresSXR.Misc;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
@@ -105,6 +104,9 @@ namespace ExPresSXR.Minigames.Excavation
             _area.GetAvgColors(_granularity, CompletionCheck);
         }
 
+        /// <summary>
+        /// Sets the _granularity of every zone. Used internally for the editor.
+        /// </summary>
         public void EnforceZonesGranularity()
         {
             foreach (ExcavationZone zone in _zones)

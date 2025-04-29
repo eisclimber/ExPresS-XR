@@ -186,7 +186,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
         private readonly Queue<GameObject> _inactiveObjects = new();
 
         /// <summary>
-        /// Creates a pool with the pool id for the provided game object.
+        /// Creates a pool with the pool id for the provided game object. No object is created.
         /// </summary>
         /// <param name="go">Object to derive the pool id from.</param>
         public ObjectPool(GameObject go)
@@ -195,7 +195,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
         }
 
         /// <summary>
-        /// Returns an unused instance (if possible) and reactivating it.
+        /// Retrieves an unused instance (if possible) and reactivating it.
         /// </summary>
         /// <returns>An unused pool instance or null if none was found.</returns>
         public GameObject RetrieveUnusedInstance()

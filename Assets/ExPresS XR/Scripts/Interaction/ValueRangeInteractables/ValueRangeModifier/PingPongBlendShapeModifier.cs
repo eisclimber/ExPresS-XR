@@ -7,7 +7,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
     /// </summary>
     public class PingPongBlendShapeModifier : BlendShapeModifier
     {
+        /// <summary>
+        /// How many times the value changes direction.
+        /// </summary>
         [SerializeField]
+        [Tooltip("How many times the value changes direction.")]
         private float _numPings = 2.0f;
 
         /// <summary>

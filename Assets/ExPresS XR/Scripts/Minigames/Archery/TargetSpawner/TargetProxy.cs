@@ -4,7 +4,8 @@ using UnityEngine;
 namespace ExPresSXR.Minigames.Archery.TargetSpawner
 {
     /// <summary>
-    /// A class that can be used to reference a target to avoid searching for it in a GameObject's children.
+    /// A component that can and should be added to the root of a prefab if the target component is not at the root.
+    /// It allows referencing the target from the root, avoiding having to search the prefab for it.
     /// </summary>
     public class TargetProxy : MonoBehaviour
     {

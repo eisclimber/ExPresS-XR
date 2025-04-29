@@ -2,7 +2,6 @@
 using ExPresSXR.Misc.Timing;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 namespace ExPresSXR.UI
@@ -24,7 +23,9 @@ namespace ExPresSXR.UI
         [SerializeField]
         protected TextSettings _textSettings;
 
-
+        /// <summary>
+        /// Tries connecting signals of the timer.
+        /// </summary>
         protected virtual void OnEnable()
         {
             if (_timer == null && !TryGetComponent(out _timer))
@@ -42,6 +43,9 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// Tries disconnecting to signals of the timer.
+        /// </summary>
         protected virtual void OnDisable()
         {
             if (_timer != null)
