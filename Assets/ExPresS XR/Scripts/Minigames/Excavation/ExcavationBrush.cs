@@ -10,7 +10,7 @@ namespace ExPresSXR.Minigames.Excavation
         /// </summary>
         [SerializeField]
         [Tooltip("The size of the brush.")]
-        private float _brushSize = 0.1f;
+        private float _brushSize = 10.0f;
 
         /// <summary>
         /// The color channel to be used to draw with this brush.
