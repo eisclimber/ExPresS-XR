@@ -51,15 +51,52 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         /// <param name="manager">ScoreManagers to be combined with the global score managers.</param>
         public static ScoreManager[] MergeWithGlobalManagers(IEnumerable<ScoreManager> managers) 
                 => (managers != null ? GlobalScoreManagers.Union(managers) : GlobalScoreManagers).ToArray();
+
         
-
-
+        /// <summary>
+        /// Processes a raw value according to the rules of the provided ScoreDeltaHandling.
+        /// </summary>
+        /// <param name="scoreDelta">Raw score delta value.</param>
+        /// <param name="handling">How the value should be processed.</param>
+        /// <returns>Modified value according to ScoreDeltaHandling.</returns>
+        public static int HandleScoreDelta(int scoreDelta, ScoreDeltaHandling handling)
+        {
+            return handling switch
+            {
+                ScoreDeltaHandling.Absolute => Mathf.Abs(scoreDelta),
+                ScoreDeltaHandling.Count => 1,
+                ScoreDeltaHandling.Ignore => 0,
+                _ => scoreDelta,
+            };
+        }
+        
         /// <summary>
         /// How fast the score in-/decreases per default.
         /// </summary>
         [SerializeField]
         [Tooltip("How fast the score in-/decreases per default.")]
         private int _stepSize = 1;
+
+        /// <summary>
+        /// Values are processed when the score is altered via AlterScore().
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Values are processed when the score is altered via AlterScore().")]
+        private ScoreDeltaHandling _alterScoreHandling = ScoreDeltaHandling.Raw;
+
+        /// <summary>
+        /// Values are processed when the score is increased.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Values are processed when the score is increased.")]
+        private ScoreDeltaHandling _increaseHandling = ScoreDeltaHandling.Raw;
+
+        /// <summary>
+        /// Values are processed when the score is decreased.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Values are processed when the score is decreased.")]
+        private ScoreDeltaHandling _decreaseHandling = ScoreDeltaHandling.Raw;
 
         /// <summary>
         /// If the score can be negative.
@@ -89,7 +126,7 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         public int Score
         {
             get => _score;
-            set
+            private set
             {
                 _score = _allowNegative ? value : Mathf.Max(value, 0);
 
@@ -126,35 +163,47 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         /// Increases or decreases the score by the provided step size.
         /// </summary>
         /// <param name="increase">Wether to increase the score or not.</param>
-        public void AlterScore(int points, bool increase) => Score += increase ? points : -points;
+        public void AlterScore(int points, bool increase) => Score += HandleScoreDelta(increase ? points : -points, _alterScoreHandling);
 
         /// <summary>
         /// Increase the score by the default amount.
         /// </summary>
         [ContextMenu("Increase Score")]
-        public void IncreaseScore() => Score += _stepSize;
+        public void IncreaseScore() => IncreaseScore(_stepSize);
 
         /// <summary>
         /// Increase the score by the provided amount.
         /// </summary>
-        public void IncreaseScore(int amount) => Score += amount;
+        public void IncreaseScore(int amount) => Score += HandleScoreDelta(amount, _increaseHandling);
 
 
         /// <summary>
         /// Decrease the score by the default amount.
         /// </summary>
         [ContextMenu("Decrease Score")]
-        public void DecreaseScore() => Score -= _stepSize;
+        public void DecreaseScore() => DecreaseScore(_stepSize);
 
         /// <summary>
         /// Decrease the score by the provided amount.
         /// </summary>
-        public void DecreaseScore(int amount) => Score -= amount;
+        public void DecreaseScore(int amount) => Score -= HandleScoreDelta(amount, _decreaseHandling);
 
         /// <summary>
         /// Resets the score back to zero.
         /// </summary>
         [ContextMenu("Reset Score")]
         public void ResetScore() => Score = 0;
+
+
+        /// <summary>
+        /// Describes how a score delta is handled. If the processed value is added/subtracted depends on the function called (increase vs decrease).
+        /// </summary>
+        public enum ScoreDeltaHandling
+        {
+            Raw, // Use raw value, allowing negative deltas.
+            Absolute, // Use absolute value, will always be positive.
+            Count, // Use 1, disregarding the delta.
+            Ignore // Use 0
+        }
     }
 }

@@ -91,8 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594cbd95b7f645d418e1d3aad1c91ffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxDamage: 3
+  _maxDamage: 4
   _currentDamage: 0
+  _deactivateOnMaxDamage: 1
   _damageModels: []
   _damageRenderer: {fileID: 6277282814400138751}
   _shaderVariableName: _DamagePct
@@ -118,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff6175d3cd487c41b704d59a33f3fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actionsToComplete: 3
+  _actionsToComplete: -1
   OnActionPerformed:
     m_PersistentCalls:
       m_Calls:
