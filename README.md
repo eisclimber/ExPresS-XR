@@ -1,7 +1,7 @@
 # ExPresS XR
 
-<img align="left" width="80" height="80" src="https://github.com/eisclimber/ExPresS-XR/assets/49446532/1935b2c9-000b-4440-8bd6-53c087d49b34">
- ExPresS XR (<b>Ex</b>perimentation and <b>Pres</b>entation for <b>S</b>cience with Open<b>XR</b>) is a toolkit for VR and XR in Unity.
+<img align="left" width="80" height="80" hspace="20" src="https://github.com/eisclimber/ExPresS-XR/assets/49446532/1935b2c9-000b-4440-8bd6-53c087d49b34">
+ExPresS XR (<b>Ex</b>perimentation and <b>Pres</b>entation for <b>S</b>cience with Open<b>XR</b>) is a toolkit for VR and XR in Unity.
 Based on the OpenXR Standard, its aim is to help automate early stages of development by providing configurable base implementations of components that are expected to be useful for scientific XR projects.  
 
 ## Getting Started & Documentation
@@ -18,9 +18,9 @@ That is why the project does not only support VR headsets with controllers but a
 
 The project is divided into three main focus groups: General, Experimentation and Presentation.
 
-- General: Implementations of configurable XR Rigs, Movement, XR-based UI and Interaction, as well as in-editor tutorials.
-- Experimentation: Providing an easy solution to collect and export data, automatic generation of a "clean" test environment, as well as a fully customizable quizzing system.
-- Presentation: Options for displaying objects in VR in interesting ways that allow building virtual exhibitions with ease.
+- **General**: Implementations of configurable XR Rigs, Movement, XR-based UI and Interaction, as well as in-editor tutorials.
+- **Experimentation**: Providing an easy solution to collect and export data, automatic generation of a "clean" test environment, as well as a fully customizable quizzing system.
+- **Presentation**: Options for displaying objects in VR in interesting ways that allow building virtual exhibitions with ease.
 
 Apart from the code itself, the wiki features useful workflow tutorials that aim to help inexperienced developers (e.g. building end systems or scanning real-world objects to be imported into the project).
 
@@ -39,12 +39,13 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
   - A system for hand animations when grabbing.
   - A basic implementation of Inverse Kinematics (IK). For more elaborate IK use add-ons like FinalIK.
 - A great expansion of Unity's interaction toolkit.
-  - Scaling of grabbed objects.
+  - A great variety of custom interactables like levers, joysticks, multi-dimensional sliders, and much more; all based on an expandable, easy-to-use system.
   - Sockets that highlight their size and can be setup to accept certain objects.
   - A socket that will move objects back to the socket's position when no interaction is performed.
   - Physical Buttons with toggle mode.
-  - Custom teleportation areas and sockets.
+  - Scaling of grabbed objects.
   - UI keyboards usable with XR.
+  - Support for hand/wrist menus.
   - Sound- and rumble-emission upon collision.
   - Grab and interaction triggers.
   - Various VR minigames testing your skils in archery (aka "BAaM"), throwing, logic and more!
@@ -66,7 +67,7 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
   - Supports Questions, Answers and Feedback in the form of Text, GameObjects, Images and Videos.
   - The Feedback can be shown in different ways or omitted.
   - Everything can be exported via the data gathering system.
-- A VR-ready Main Menu Components and Scene
+- A VR-ready Main Menu Components and Scene.
 - All the little helpers you'll need for making your perfect VR game.
 - A huge wiki and [YouTube Tutorials](https://www.youtube.com/watch?v=-k2wBBZ9a1w&list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_)
 
@@ -75,9 +76,11 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
 
 ![MadeWithExPresSXR](https://github.com/eisclimber/ExPresS-XR/assets/49446532/9a2dab28-50a6-4f29-a882-cb13002a6634)
 
-- The internationally appraised exhibition "Tempelsteuer und Taubenhändler (Doves and Temple Taxes)" is a VR recreation of Herod's Temple with an emphasis on how currency was used and exchanged in temples in ancient times.  
-The exhibition is currently touring various cities in Europe and will be coming to Itch and Sidequest very soon.
-- Hornmoldhaus VR is an interactive and engaging exhibition about Japanese culture and medicine in ancient Germany. It features §D scans of invaluable artifacts, a partial remodel of the city museum in Bietigheim-Bissingen and fun minigames.  
+- **Hetepheres Tomb** join famous egyptologist Peter Manuelian of the Harvard University at the Giza Necropolis in Egypt. At the foot of the Great Pyramid lies the mysterious tomb of queen Hetepheres, the mother of king Khufu. Help the excavators discover the queens secrets that lie almost 100 feet underground to restore the queens treasures.  
+It is available for free on the [Meta Quest Store](https://www.meta.com/en-gb/experiences/hetepheres-tomb/28627787526867149/) and on [Steam](https://store.steampowered.com/app/3553060/Hetepheres_Tomb__Secrets_of_the_Lost_Queen).
+- The internationally appraised exhibition **Tempelsteuer und Taubenhändler (Doves and Temple Taxes)** is a VR recreation of Herod's Temple with an emphasis on how currency was used and exchanged in temples in ancient times.  
+It is available on [Sidequest](https://sidequestvr.com/app/33452/temple-tax-and-doves) and [Itch.io](https://eisclimber.itch.io/temple-tax-and-doves).
+- **Hornmoldhaus VR** is an interactive and engaging exhibition about Japanese culture and medicine in ancient Germany. It features §D scans of invaluable artifacts, a partial remodel of the city museum in Bietigheim-Bissingen and fun minigames.  
 Released on [Sidequest](https://sidequestvr.com/app/21084/hornmoldhaus-vr) and [Itch.io](https://eisclimber.itch.io/hornmoldhaus-vr)
 - A numismatic/roman-inspired exhibition with awesome minigames
 - [Workshops on using VR for Cultural Heritage Presentation using ExPresS XR for the CIVIS Days 2023 and FORGE 2023](https://github.com/eisclimber/VRMuseumTemplate)
@@ -115,7 +118,7 @@ Supported by the VWStiftung.
 
 ## Contact and Support 
 
-Twitter: [@eisclimber](https://twitter.com/eisclimber)
+Twitter/X: [@eisclimber](https://twitter.com/eisclimber)  
 E-Mail: [luca.dreiling@gmx.de](mailto:luca.dreiling@gmx.de)
 
 ## Version
