@@ -122,26 +122,14 @@ namespace ExPresSXR.Interaction
         {
             if (_highlighterObject != null)
             {
-                _highlighterObject.GetComponent<MeshRenderer>().enabled = visible;
+                _highlighterObject.GetComponent<MeshRenderer>().enabled = showHighlighter && visible;
             }
         }
 
 
-        protected void ShowHighlighter(SelectExitEventArgs args)
-        {
-            if (showHighlighter)
-            {
-                SetHighlighterVisible(true);
-            }
-        }
+        protected void ShowHighlighter(SelectExitEventArgs args) => SetHighlighterVisible(true);
 
-        protected void HideHighlighter(SelectEnterEventArgs args)
-        {
-            if (showHighlighter)
-            {
-                SetHighlighterVisible(false);
-            }
-        }
+        protected void HideHighlighter(SelectEnterEventArgs args) => SetHighlighterVisible(false);
 
 
         protected override void OnValidate()

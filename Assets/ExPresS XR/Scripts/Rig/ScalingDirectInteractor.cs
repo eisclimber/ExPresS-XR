@@ -26,7 +26,7 @@ namespace ExPresSXR.Rig
 
         public bool hasScalingSelection
         {
-            get => _scalingEnabled && TryGetSelectedScaleInteractableWrapper(out ScalableGrabInteractable _);
+            get => _scalingEnabled && TryGetSelectedScaleInteractableWrapper(out ExPresSXRGrabInteractable _);
         }
 
 
@@ -80,16 +80,16 @@ namespace ExPresSXR.Rig
 
         protected virtual void ScaleSelection(float directionAmount)
         {
-            if (_scalingEnabled && TryGetSelectedScaleInteractableWrapper(out ScalableGrabInteractable _scaleInteractable))
+            if (_scalingEnabled && TryGetSelectedScaleInteractableWrapper(out ExPresSXRGrabInteractable _scaleInteractable))
             {
-                float speed = _scaleInteractable.hasScaleSpeedOverride ? _scaleInteractable.scaleSpeedOverride : _scaleSpeed;
-                _scaleInteractable.scaleFactor += directionAmount * speed * Time.deltaTime;
+                float speed = _scaleInteractable.HasScaleSpeedOverride ? _scaleInteractable.ScaleSpeedOverride : _scaleSpeed;
+                _scaleInteractable.ScaleFactor += directionAmount * speed * Time.deltaTime;
             }
         }
 
-        public bool TryGetSelectedScaleInteractableWrapper(out ScalableGrabInteractable _scaleInteractable)
+        public bool TryGetSelectedScaleInteractableWrapper(out ExPresSXRGrabInteractable _scaleInteractable)
         {
-            _scaleInteractable = hasSelection ? firstInteractableSelected as ScalableGrabInteractable : null;
+            _scaleInteractable = hasSelection ? firstInteractableSelected as ExPresSXRGrabInteractable : null;
             return _scaleInteractable != null;
         }
     }

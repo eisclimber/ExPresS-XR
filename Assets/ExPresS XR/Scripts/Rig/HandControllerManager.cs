@@ -339,6 +339,10 @@ namespace ExPresSXR.Rig
                 if (TryGetAutoHand(out AutoHandModel autoHand))
                 {
                     autoHand.handModelMode = _handModelMode;
+                    if (m_DirectInteractor != null)
+                    {
+                        m_DirectInteractor.attachTransform = autoHand.currentAttach;
+                    }
                 }
             }
         }
@@ -381,6 +385,11 @@ namespace ExPresSXR.Rig
                 m_DirectInteractor.selectEntered.AddListener(OnDirectInteractorSelectEntered);
             }
 
+            if (TryGetAutoHand(out AutoHandModel autoHand))
+            {
+                autoHand.OnModelsLoaded.RemoveListener(UpdateAutoHandModelValues);
+            }
+
             // Reticles (AutoHandModels) need to be instantiated so they are available in the next frame
             StartCoroutine(AutoHandReticleCreationTimer());
         }
@@ -397,6 +406,11 @@ namespace ExPresSXR.Rig
             {
                 m_DirectInteractor.selectExited.RemoveListener(OnDirectInteractorSelectExited);
                 m_DirectInteractor.selectEntered.RemoveListener(OnDirectInteractorSelectEntered);
+            }
+
+            if (TryGetAutoHand(out AutoHandModel autoHand))
+            {
+                autoHand.OnModelsLoaded.RemoveListener(UpdateAutoHandModelValues);
             }
         }
 
@@ -524,11 +538,17 @@ namespace ExPresSXR.Rig
 
         private IEnumerator AutoHandReticleCreationTimer()
         {
-            yield return new WaitForEndOfFrame();
+            // Not pretty but we wait a bit after initialization to get the attach
+            yield return new WaitForSeconds(1.0f);
+            UpdateAutoHandModelValues();
+        }
+
+
+        private void UpdateAutoHandModelValues()
+        {
             handModelMode = _handModelMode;
             handModelCollisions = _handModelCollisions;
         }
-
 
         private IEnumerator AfterGrabWaitTimer()
         {

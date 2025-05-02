@@ -1,13 +1,6 @@
-using System;
-using System.Reflection;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
-using ExPresSXR.Interaction.ButtonQuiz;
-using System.Text.RegularExpressions;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
-
 
 namespace ExPresSXR.Editor.Editors
 {

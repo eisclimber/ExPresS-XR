@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro;
-using ExPresSXR.UI;
+using System.Linq;
 using ExPresSXR.Rig;
-using UnityEditor;
-using UnityEngine.XR;
-using System.Reflection;
-using UnityEngine.Events;
+using ExPresSXR.UI;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace ExPresSXR.Misc
 {
@@ -65,7 +62,7 @@ namespace ExPresSXR.Misc
             rig = null;
             return false;
         }
-        
+
 
         /// <summary>
         /// Helper class to calculate the positive modulo for integers.
@@ -84,6 +81,127 @@ namespace ExPresSXR.Misc
             int r = a % n;
             return r < 0 ? r + n : r;
         }
+
+        /// <summary>
+        /// Steps a value on a range between [0.0f, 1.0f] to the closest of even <param name="numSteps"> intervals 
+        /// including the borders 0.0f and 1.0f.
+        /// If <param name="numSteps"> is less than 1, the value will only be clamped between 0.0f and 1.0f.
+        /// </summary>
+        /// <param name="value">Value to be stepped.</param>
+        /// <param name="numSteps">Number of intermediate steps.</param>
+        /// <returns>Value in range [0.0f, 1.0f] stepped to the closest value.</returns>
+        public static float GetValue01Stepped(float value, int numSteps)
+        {
+            float valueClamped = Mathf.Clamp01(value);
+            if (numSteps > 0)
+            {
+                return Mathf.Round(valueClamped * numSteps) / numSteps;
+            }
+            return valueClamped;
+        }
+
+        #region Random
+        /// <summary>
+        /// Returns a random weighted index provided by an array of probabilities that should add up to 1.0f.
+        /// </summary>
+        /// <param name="probabilities">List of probabilities for each index. Should add up to 1.0f.</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>A random index in the range of _probabilities or -1 if empty.</returns>
+        public static int GetWeightedRandomIdx(float[] probabilities)
+        {
+            float sum = probabilities.Sum();
+            if (sum != 1.0f)
+            {
+                Debug.LogWarning($"Probabilities for weighted idx did not add to 1.0f but instead to {sum}.");
+            }
+
+            if (probabilities == null || probabilities.Length <= 0)
+            {
+                Debug.LogWarning($"No probabilities provided. Can't generate random idx.");
+                return -1;
+            }
+
+            int length = probabilities.Length;
+            float random = UnityEngine.Random.Range(0.0f, 1.0f);
+            float acc = 0.0f;
+
+            for (int i = 0; i < length; i++)
+            {
+                acc += probabilities[i];
+                if (random > (1.0 - acc))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Return a random element from the first array given the probabilities for each object.
+        /// If probabilities is null, a linear distribution is used.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <param name="probabilities">Probabilities for each object.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
+        public static T GetRandomArrayElement<T>(T[] objects, float[] probabilities = null)
+        {
+            bool useWeighted = probabilities != null && probabilities.Length >= 0;
+            return GetRandomArrayElement(objects, useWeighted, probabilities);
+        }
+
+        /// <summary>
+        /// Return a random element from the first array given the probabilities for each object.
+        /// If a linear or weighted distribution should be used, is decided by the useWeighted value.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <param name="useWeighted">Whether or not weighted random should be used.</param>
+        /// /// <param name="probabilities">Probabilities for each object.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
+        public static T GetRandomArrayElement<T>(T[] objects, bool useWeighted, float[] probabilities = null)
+        {
+            return useWeighted ? GetRandomArrayElementWeighted(objects, probabilities) : GetRandomArrayElementUnweighted(objects);
+        }
+
+        /// <summary>
+        /// Returns a random element from an array using linear distribution.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
+        public static T GetRandomArrayElementUnweighted<T>(T[] objects)
+        {
+            if (objects.Length <= 0)
+            {
+                Debug.LogError("Can retrieve random element from an empty array.");
+                return default;
+            }
+
+            int randomIdx = UnityEngine.Random.Range(0, objects.Length);
+            return objects[randomIdx];
+        }
+
+        /// <summary>
+        /// Returns a random element from an array using weighted distribution.
+        /// </summary>
+        /// <param name="objects">Objects to draw from.</param>
+        /// <param name="probabilities">Probabilities for each object.</param>
+        /// <typeparam name="T">Type of the object to draw.</typeparam>
+        /// <returns>A random object from the array.</returns>
+        public static T GetRandomArrayElementWeighted<T>(T[] objects, float[] probabilities)
+        {
+            if (objects.Length <= 0 || objects.Length != probabilities.Length)
+            {
+                Debug.LogError("Invalid array size for generating random ");
+                return default;
+            }
+            int randomIdx = GetWeightedRandomIdx(probabilities);
+            return randomIdx >= 0 ? objects[randomIdx] : default;
+        }
+
+        #endregion
 
         #region Scene Switching
         /// <summary>

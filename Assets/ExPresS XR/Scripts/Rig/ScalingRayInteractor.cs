@@ -25,11 +25,13 @@ namespace ExPresSXR.Rig
 
         protected override void TranslateAnchor(Transform rayOrigin, Transform anchor, float directionAmount)
         {
-            bool canScale = TryGetSelectedScaleInteractableWrapper(out ScalableGrabInteractable _scaleInteractable);
-            if (canScale && (anchorControlMode == AnchorControlMode.Scale || anchorControlMode == AnchorControlMode.ScaleWithTranslateFallback))
+            bool canScale = TryGetSelectedScaleInteractableWrapper(out ExPresSXRGrabInteractable scaleInteractable);
+            if (canScale 
+                && (anchorControlMode == AnchorControlMode.Scale || anchorControlMode == AnchorControlMode.ScaleWithTranslateFallback) 
+                && scaleInteractable.ScaleRange > 0.0f)
             {
-                float speed = _scaleInteractable.hasScaleSpeedOverride ? _scaleInteractable.scaleSpeedOverride : _scaleSpeed;
-                _scaleInteractable.scaleFactor += directionAmount * speed * Time.deltaTime;
+                float speed = scaleInteractable.HasScaleSpeedOverride ? scaleInteractable.ScaleSpeedOverride : _scaleSpeed;
+                scaleInteractable.ScaleFactor += directionAmount * speed * Time.deltaTime;
             }
             else if (anchorControlMode == AnchorControlMode.Translate || anchorControlMode == AnchorControlMode.ScaleWithTranslateFallback)
             {
@@ -38,9 +40,9 @@ namespace ExPresSXR.Rig
         }
 
 
-        public bool TryGetSelectedScaleInteractableWrapper(out ScalableGrabInteractable _scaleInteractable)
+        public bool TryGetSelectedScaleInteractableWrapper(out ExPresSXRGrabInteractable _scaleInteractable)
         {
-            _scaleInteractable = hasSelection ? firstInteractableSelected as ScalableGrabInteractable : null;
+            _scaleInteractable = hasSelection ? firstInteractableSelected as ExPresSXRGrabInteractable : null;
             return _scaleInteractable != null;
         }
     }

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Timing
@@ -12,11 +8,22 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         ///  Value of `remainingTime` when the timer is not active.
         /// </summary>
-        const float TIMER_INACTIVE_WAIT_TIME = -1.0f;
+        public const float TIMER_INACTIVE_TIME = -1.0f;
         /// <summary>
         /// Default wait time.
         /// </summary>
-        const float DEFAULT_WAIT_TIME = 1.0f;
+        public const float DEFAULT_WAIT_TIME = 1.0f;
+
+        [Tooltip("A description of the timer. No further use.")]
+        [SerializeField]
+        private string _description = "";
+        public string Description
+        {
+            get => _description;
+            protected set => _description = value;
+        }
+
+
 
         /// <summary>
         /// How long the timer takes to timeout. Must be greater than 0.0f.
@@ -27,24 +34,31 @@ namespace ExPresSXR.Misc.Timing
         public float waitTime
         {
             get => _waitTime;
-            private set => _waitTime = value;
+            protected set => _waitTime = value;
         }
 
         /// <summary>
         /// Returns the remaining time of the timer.
         /// If the timer is was not started or timed out, the value will be the value of TIMER_INACTIVE_WAIT_TIME.
         /// </summary>
-        public float remainingTime { get; private set; }
+        [SerializeField]
+        [ReadonlyInInspector]
+        private float _remainingTime;
+        public float remainingTime
+        {
+            get => _remainingTime;
+            protected set => _remainingTime = value;
+        }
 
         /// <summary>
         /// If the timer is paused or not.
         /// </summary>
-        public bool timerPaused { get; private set; }
+        public bool timerPaused { get; protected set; }
 
         /// <summary>
         /// If the timer is actively is counting down, meaning it was started and is not paused.
         /// </summary>
-        public bool running { get => remainingTime >= 0.0f && !timerPaused; }
+        public virtual bool running { get => remainingTime > 0.0f && !timerPaused; }
 
         /// <summary>
         /// If true, will start the timer during OnAwake()...
@@ -74,7 +88,7 @@ namespace ExPresSXR.Misc.Timing
         public UnityEvent<bool> OnPaused;
 
 
-        private void Awake()
+        protected virtual void Awake()
         {
             if (autoStart)
             {
@@ -82,16 +96,17 @@ namespace ExPresSXR.Misc.Timing
             }
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
-            if (running)
+            if (!running)
             {
-                remainingTime -= Time.fixedDeltaTime;
+                return;
+            }
 
-                if (remainingTime <= 0.0f)
-                {
-                    HandleTimeout();
-                }
+            remainingTime -= Time.fixedDeltaTime;
+            if (remainingTime <= 0.0f)
+            {
+                HandleTimeout();
             }
         }
 
@@ -102,7 +117,7 @@ namespace ExPresSXR.Misc.Timing
         /// <param name="duration">The duration the timer will run. 
         ///     If the value is zero or negative the <see cref="waitTime"/> will be used. Default: -1.0f
         /// </param>
-        public void StartTimer(float duration = -1.0f)
+        public virtual void StartTimer(float duration = -1.0f)
         {
             waitTime = duration > 0.0f ? duration : waitTime;
             remainingTime = waitTime;
@@ -116,18 +131,18 @@ namespace ExPresSXR.Misc.Timing
         /// Prevents the need to provide a value if invoked via UnityEvents.
         /// </summary>
         [ContextMenu("Start Timer Default")]
-        public void StartTimerDefault() => StartTimer(-1.0f);
+        public virtual void StartTimerDefault() => StartTimer(-1.0f);
 
 
         /// <summary>
         /// Continues a paused timer or sStarts the timer using <see cref="waitTime"/>.
         /// </summary>
         [ContextMenu("Resume Timer")]
-        public void ResumeTimer()
+        public virtual void ResumeTimer()
         {
             if (timerPaused)
             {
-                PauseTimer();
+                UnpauseTimer();
             }
             else
             {
@@ -139,7 +154,7 @@ namespace ExPresSXR.Misc.Timing
         /// Pauses or unpauses the timer, maintaining it's current waitTime (and not starting it, if not running)
         /// </summary>
         /// <param name="paused"> If the timer should be paused or not.</param>
-        public void SetTimerPaused(bool paused)
+        public virtual void SetTimerPaused(bool paused)
         {
             timerPaused = paused;
             OnPaused.Invoke(paused);
@@ -149,35 +164,38 @@ namespace ExPresSXR.Misc.Timing
         /// Pauses the timer if possible.
         /// </summary>
         [ContextMenu("Pause Timer")]
-        public void PauseTimer() => SetTimerPaused(true);
+        public virtual void PauseTimer() => SetTimerPaused(true);
 
         /// <summary>
         /// Unpauses the timer if possible.
         /// </summary>
         [ContextMenu("Unpause Timer")]
-        public void UnpauseTimer() => SetTimerPaused(false);
+        public virtual void UnpauseTimer() => SetTimerPaused(false);
 
         /// <summary>
         /// Stops and resets the timer whilst not emitting the timeout event.
         /// </summary>
         [ContextMenu("Stop Timer")]
-        public void StopTimer()
+        public virtual void StopTimer()
         {
-            remainingTime = TIMER_INACTIVE_WAIT_TIME;
+            remainingTime = TIMER_INACTIVE_TIME;
         }
 
         /// <summary>
         /// Handles the timers timeout, invoking the event restarting it if necessary.
         /// </summary>
-        private void HandleTimeout()
+        protected virtual void HandleTimeout()
         {
-            StopTimer();
-            OnTimeout.Invoke();
-
-            if (!oneShot)
+            if (oneShot)
+            {
+                StopTimer();
+            }
+            else
             {
                 StartTimer();
             }
+            // Emit the event *after* stopping/restarting to allow stopping a repeating timer on callback. 
+            OnTimeout.Invoke();
         }
     }
 }

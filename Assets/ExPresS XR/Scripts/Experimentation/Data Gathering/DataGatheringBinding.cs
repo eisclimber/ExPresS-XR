@@ -1,12 +1,7 @@
 using System;
 using System.Reflection;
 using UnityEngine;
-using UnityEditor;
-using System.Text.RegularExpressions;
-using System.Data;
 using System.Collections.Generic;
-using Unity.XR.CoreUtils;
-using System.Linq;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {

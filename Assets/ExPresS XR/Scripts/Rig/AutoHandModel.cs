@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR;
 
 namespace ExPresSXR.Rig
@@ -96,9 +97,9 @@ namespace ExPresSXR.Rig
                 _collisionsCurrentlyEnabled = value;
 
                 // Disable RigidBody
-                if (GetComponent<Rigidbody>() != null)
+                if (TryGetComponent(out Rigidbody rb))
                 {
-                    GetComponent<Rigidbody>().detectCollisions = _collisionsCurrentlyEnabled && _modelCollisionsEnabled;
+                    rb.detectCollisions = _collisionsCurrentlyEnabled && _modelCollisionsEnabled;
                 }
 
                 // Disable Colliders
@@ -113,6 +114,9 @@ namespace ExPresSXR.Rig
         private InputDevice _currentDevice;
         private GameObject _currentControllerModel;
         private GameObject _currentHandModel;
+
+
+        public UnityEvent OnModelsLoaded;
 
         private void Update()
         {
@@ -195,9 +199,11 @@ namespace ExPresSXR.Rig
             }
             else
             {
-                Debug.LogWarning("No Model with name: '" + _currentDevice.name + "' found, using a generic model instead.");
+                Debug.LogWarning($"No Model with name: '{_currentDevice.name}' found, using a generic model instead.");
                 _currentControllerModel = Instantiate(controllerModels[0], transform);
             }
+
+            OnModelsLoaded.Invoke();
         }
     }
 
