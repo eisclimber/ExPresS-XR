@@ -107,7 +107,7 @@ Created by Luca "eisclimber" Dreiling
 
 Contributors:
 - Lena Matulla: Archery System and Minigame (BAaM)
-- Kevin Körner: Coin Scale and Coin Throw Minigames
+- Kevin Körner: Coin Scale and Coin Throw Minigames, and Head of Advertisement
 
 
 Special Thanks to Kevin Körner for the great mentoring during and after the creation of the masters thesis this project is subject of. 
