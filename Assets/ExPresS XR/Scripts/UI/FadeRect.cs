@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
+using System.Collections;
 
 
 namespace ExPresSXR.UI
@@ -13,17 +14,32 @@ namespace ExPresSXR.UI
         /// The color to be faded to.
         /// Default is Transparent Black (`new(0.0f, 0.0f, 0.0f, 0.0f`).
         /// </summary>
-        public Color fadeColor = new(0.0f, 0.0f, 0.0f, 0.0f);
+        private Color _fadeColor = new(0.0f, 0.0f, 0.0f, 0.0f);
+        public Color FadeColor
+        {
+            get => _fadeColor;
+            set => _fadeColor = value;
+        }
 
         /// <summary>
         /// Duration in seconds of a fade to black.
         /// </summary>
-        public float fadeToColorTime = 0.5f;
+        public float _defaultFadeToColorTime = 0.5f;
+        public float DefaultFadeToColorTime
+        {
+            get => _defaultFadeToColorTime;
+            set => _defaultFadeToColorTime = value;
+        }
 
         /// <summary>
         /// Duration in seconds of a fade to transparent.
         /// </summary>
-        public float fadeToClearTime = 0.5f;
+        public float _defaultFadeToClearTime = 0.5f;
+        public float DefaultFadeToClearTime
+        {
+            get => _defaultFadeToClearTime;
+            set => _defaultFadeToClearTime = value;
+        }
 
         /// <summary>
         /// Reference to the image used for fading.
@@ -31,107 +47,111 @@ namespace ExPresSXR.UI
         [SerializeField]
         private Image _fadeImage;
 
-        private FadeDirection _fadeDirection = FadeDirection.None;
+        private Coroutine _fadeCoroutine;
+
 
         /// <summary>
-        /// Emitted when a Fade to Color was completed.
+        /// Emitted when any fade was completed (excluding instant ones).
+        /// </summary>
+        public UnityEvent OnFadeCompleted;
+
+        /// <summary>
+        /// Emitted when a fade to color was completed (excluding instant ones).
         /// </summary>
         public UnityEvent OnFadeToColorCompleted;
+
         /// <summary>
-        /// Emitted when a Fade to Clear was completed.
+        /// Emitted when a fade to clear was completed (excluding instant ones).
         /// </summary>
         public UnityEvent OnFadeToClearCompleted;
 
 
         // Screen visible
-        public bool screenCompletelyVisible
+        public bool ScreenCompletelyVisible
         {
-            get => fadeColor.a == 0.0f;
+            get => FadeColor.a == 0.0f;
         }
 
         // Screen NOT visible
-        public bool screenCompletelyHidden
+        public bool ScreenCompletelyHidden
         {
-            get => fadeColor.a == 1.0f;
+            get => FadeColor.a == 1.0f;
         }
 
-
-        // Start is called before the first frame update
-        private void Awake()
+        private void Start()
         {
-            _fadeImage = GetComponent<Image>();
+            if (_fadeImage == null && !TryGetComponent(out _fadeImage))
+            {
+                Debug.LogWarning("FadeRect has no _fadeImage set to fade.", this);
+            }
             UpdateFadeImage();
         }
 
         /// <summary>
-        /// Starts a fade to color. 
-        /// This will be done over the duration of `fadeToBlackTime` if `instant = false` or instantaneously otherwise.
+        /// Starts a fade to color with the default duration.
         /// </summary>
-        /// <param name="instant">If the fade should use `fadeToColorTime` or be instant.</param>
-        public void FadeToColor(bool instant = false)
-        {
-            _fadeDirection = FadeDirection.ToColor;
-
-            if (instant)
-            {
-                fadeColor.a = 1.0f;
-                UpdateFadeImage();
-            }
-        }
+        [ContextMenu("Fade to Color over default time")]
+        public void FadeToColor() => StartFadeCoroutine(1.0f, _defaultFadeToColorTime);
 
         /// <summary>
-        /// Starts a fade to clear.
-        /// This will be done over the duration of `fadeToClearTime` if `instant = false` or instantaneously otherwise.
+        /// Starts a fade to color with the specified duration.
         /// </summary>
-        /// <param name="instant">If the fade should use `fadeToClearTime` or be instant.</param>
-        public void FadeToClear(bool instant = false)
-        {
-            _fadeDirection = FadeDirection.ToClear;
+        /// <param name="duration">Custom duration of the fade.</param>
+        public void FadeToColorWithDuration(float duration) => StartFadeCoroutine(1.0f, duration);
 
-            if (instant)
+        /// <summary>
+        /// Starts a fade to color instantaneously. Active fades will be canceled.
+        /// </summary>
+        [ContextMenu("Fade to color instant")]
+        public void FadeToColorInstant() => FadeColorInstant(1.0f);
+
+
+        /// <summary>
+        /// Starts a fade to color with the default duration.
+        /// </summary>
+        [ContextMenu("Fade to clear over default time")]
+        public void FadeToClear() => StartFadeCoroutine(0.0f, _defaultFadeToClearTime);
+
+        /// <summary>
+        /// Starts a fade to clear with the specified duration.
+        /// </summary>
+        /// <param name="duration">Custom duration of the fade.</param>
+        public void FadeToClearWithDuration(float duration) => StartFadeCoroutine(0.0f, duration);
+
+        /// <summary>
+        /// Starts a fade to clear instantaneously. Active fades will be canceled.
+        /// </summary>
+        [ContextMenu("Fade to clear instant")]
+        public void FadeToClearInstant() => FadeColorInstant(0.0f);
+
+
+        private void StartFadeCoroutine(float toAlpha, float duration = -1.0f)
+        {
+            StopFadeCoroutine();
+            _fadeCoroutine = StartCoroutine(ChangeAlphaOverTime(toAlpha, duration));
+        }
+
+        private void StopFadeCoroutine()
+        {
+            if (_fadeCoroutine != null)
             {
-                fadeColor.a = 0.0f;
-                UpdateFadeImage();
+                StopCoroutine(_fadeCoroutine);
             }
         }
 
-        private void Update()
+        private void FadeColorInstant(float alpha)
         {
-            if (_fadeDirection == FadeDirection.ToColor)
-            {
-                float fadeDelta = Time.deltaTime / fadeToColorTime;
+            // Stop any previous fade
+            StopFadeCoroutine();
+            // Change fade to fully opaque
+            ChangeFadeRectAlpha(alpha);
+        }
 
-                // Fade to Color
-                float newFadeValue = Mathf.Clamp01(fadeColor.a + fadeDelta);
 
-                // Alpha was below 1 and new value is 1.0f
-                // => Fade to color completed
-                if (fadeColor.a < 1.0f && newFadeValue == 1.0f)
-                {
-                    _fadeDirection = FadeDirection.None;
-                    OnFadeToColorCompleted.Invoke();
-                }
-
-                fadeColor.a = newFadeValue;
-                UpdateFadeImage();
-            }
-            else if (_fadeDirection == FadeDirection.ToClear)
-            {
-                float fadeDelta = Time.deltaTime / fadeToClearTime;
-                // Fade to Clear
-                float newFadeValue = Mathf.Clamp01(fadeColor.a - fadeDelta);
-
-                // Alpha was below 1 and new value is 1.0f
-                // => Fade to color completed
-                if (fadeColor.a > 0.0f && newFadeValue == 0.0f)
-                {
-                    _fadeDirection = FadeDirection.None;                    
-                    OnFadeToClearCompleted.Invoke();
-                }
-
-                fadeColor.a = newFadeValue;
-                UpdateFadeImage();
-            }
+        private void ChangeFadeRectAlpha(float value)
+        {
+            _fadeColor.a = value;
+            UpdateFadeImage();
         }
 
         private void UpdateFadeImage()
@@ -143,20 +163,43 @@ namespace ExPresSXR.UI
 
             if (_fadeImage != null)
             {
-                _fadeImage.color = fadeColor;
+                _fadeImage.color = FadeColor;
 
 #if UNITY_EDITOR
-                // Instantaneously Update Editor Visuals
+                // Instantaneously update editor visuals
                 EditorUtility.SetDirty(this);
 #endif
             }
         }
-    }
 
-    public enum FadeDirection
-    {
-        None,
-        ToColor,
-        ToClear
+        private IEnumerator ChangeAlphaOverTime(float toAlpha, float duration)
+        {
+            float elapsed = 0.0f;
+            float startAlpha = FadeColor.a;
+
+            while (elapsed < duration)
+            {
+                float progress = elapsed / duration;
+                float alpha = Mathf.Lerp(startAlpha, toAlpha, progress);
+                ChangeFadeRectAlpha(alpha);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            // Ensure fully faded
+            ChangeFadeRectAlpha(toAlpha);
+            
+            if (toAlpha == 0.0f)
+            {
+                OnFadeToClearCompleted.Invoke();
+            }
+
+            if (toAlpha == 1.0f)
+            {
+                OnFadeToColorCompleted.Invoke();
+            }
+
+            OnFadeCompleted.Invoke();
+        }
     }
 }

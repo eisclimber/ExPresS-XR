@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
 namespace ExPresSXR.Interaction
@@ -10,8 +11,20 @@ namespace ExPresSXR.Interaction
         [SerializeField]
         private List<string> _targetTags = new();
 
+        [SerializeField]
+        private bool _allowInvalidHover;
+
         public override bool CanHover(IXRHoverInteractable interactable)
-            => base.CanHover(interactable) && IsTagMatch(interactable);
+            => base.CanHover(interactable) && (IsTagMatch(interactable) || _allowInvalidHover);
+
+        protected override Material GetHoveredInteractableMaterial(IXRHoverInteractable interactable)
+        {
+            if (!IsTagMatch(interactable))
+            {
+                return interactableCantHoverMeshMaterial;
+            }
+            return base.GetHoveredInteractableMaterial(interactable);
+        }
 
         public override bool CanSelect(IXRSelectInteractable interactable)
             => base.CanSelect(interactable) && IsTagMatch(interactable);

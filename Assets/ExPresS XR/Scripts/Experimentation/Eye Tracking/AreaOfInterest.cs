@@ -11,7 +11,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
         
         [SerializeField]
         private string _aoiId = GenerateAoiId();
-        public string aoiId
+        public string AoiId
         {
             get => _aoiId;
             private set
@@ -37,7 +37,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
         private void OnValidate()
         {
-            aoiId = _aoiId;
+            AoiId = _aoiId;
         }
 
         // Prefix "AOI_" and 4 random digits

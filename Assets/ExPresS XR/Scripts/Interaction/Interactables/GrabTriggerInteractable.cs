@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace ExPresSXR.Interaction
 {
@@ -11,8 +9,16 @@ namespace ExPresSXR.Interaction
     /// </summary>
     public class GrabTriggerInteractable : XRBaseInteractable
     {
+        /// <summary>
+        /// The material shown when the interactable is being hovered.
+        /// </summary>
         [SerializeField]
         protected Material _hoveredMaterial;
+        public Material HoverMaterial
+        {
+            get => _hoveredMaterial;
+            set => _hoveredMaterial = value;
+        }
 
         protected Material _originalMaterial;
         protected Renderer _renderer;

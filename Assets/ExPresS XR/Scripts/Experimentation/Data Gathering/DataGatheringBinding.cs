@@ -11,13 +11,20 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <summary>
         /// The header value for the column storing values of this binding.
         /// </summary>
-        public string exportColumnName = "";
+        [SerializeField]
+        private string _exportColumnName = "";
+        public string ExportColumnName
+        {
+            get => _exportColumnName;
+            set => _exportColumnName = value;
+        }
 
         /// <summary>
         /// Separator used for the header, will be controlled by the DataGatherer controlling this binding.
         /// </summary>
+        [SerializeField]
         private char _headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
-        public char headerSeparator
+        public char HeaderSeparator
         {
             get => _headerSeparator;
             set
@@ -26,7 +33,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 if (AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo))
                 {
-                    exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
+                    ExportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
                 }
             }
         }
@@ -71,7 +78,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             _targetObject = targetComponent.gameObject;
             _targetComponent = targetComponent;
-            this.exportColumnName = exportColumnName;
+            ExportColumnName = exportColumnName;
             UpdateMemberList();
             _memberIdx = Array.FindIndex(_prettyMemberNameList, s => s.EndsWith(valueName));
             ValidateBinding();
@@ -200,7 +207,7 @@ namespace ExPresSXR.Experimentation.DataGathering
                     case MemberTypes.Method:
                         MethodInfo methodInfo = (MethodInfo)_targetMemberInfo;
                         // Allow passing a separator to other functions
-                        object[] args = DataGatheringHelpers.GetMethodParameterValues(methodInfo, headerSeparator);
+                        object[] args = DataGatheringHelpers.GetMethodParameterValues(methodInfo, HeaderSeparator);
                         result = methodInfo.Invoke(valueProvider, args);
                         break;
                     case MemberTypes.Field:
@@ -229,13 +236,13 @@ namespace ExPresSXR.Experimentation.DataGathering
             // Clear only if there was a replacement or if a replacement should be added/updated
             if (hadHeaderReplacement || hasHeaderReplacement)
             {
-                exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
+                ExportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
             }
 
             // Print Notice (only if changed)
             if (memberChanged && AttributeHelpers.TryGetAttribute(_targetMemberInfo, out HeaderReplacementNoticeAttribute notice))
             {
-                Debug.LogWarning(notice.notice);
+                Debug.LogWarning(notice.Notice);
             }
         }
 
@@ -282,7 +289,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// Returns a description of the binding, listing all important values.
         /// </summary>
         /// <returns>The description as string.</returns>
-        public string GetBindingDescription() => $"{GetBoundObjectDescription()} will be exported to column '{exportColumnName}'.";
+        public string GetBindingDescription() => $"{GetBoundObjectDescription()} will be exported to column '{ExportColumnName}'.";
 
         /// <summary>
         /// Returns a description of the bound object.
@@ -301,7 +308,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             _memberNameList = new string[0];
             _prettyMemberNameList = new string[0];
             _memberIdx = -1;
-            headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
+            HeaderSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         }
 
         /// <summary>

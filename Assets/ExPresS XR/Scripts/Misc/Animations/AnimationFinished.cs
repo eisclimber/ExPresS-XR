@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Animations
 {
-    [RequireComponent(typeof(Animator))]
     public class AnimationFinished : MonoBehaviour
     {
         /// <summary>

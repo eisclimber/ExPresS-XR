@@ -13,40 +13,40 @@ namespace ExPresSXR.Experimentation.DataGathering
         public static string quizRoundCsvHeader { get => GetQuizRoundCsvHeader(); }
 
 
-        public ButtonQuizQuestion question { get; private set; }
+        public ButtonQuizQuestion Question { get; private set; }
 
-        public bool answerCorrect { get; private set; }
+        public bool AnswerCorrect { get; private set; }
 
-        public bool[] answerChosen { get; private set; }
+        public bool[] AnswerChosen { get; private set; }
 
-        public string answerChosenString { get => CsvUtility.ArrayToString(answerChosen ?? new bool[0]); }
+        public string AnswerChosenString { get => CsvUtility.ArrayToString(AnswerChosen ?? new bool[0]); }
 
-        public int firstPressedButtonIdx { get; private set; }
+        public int FirstPressedButtonIdx { get; private set; }
 
-        public int[] answerPermutation { get; private set; }
+        public int[] AnswerPermutation { get; private set; }
 
-        public string answerPermutationString { get => CsvUtility.ArrayToString(answerPermutation ?? new int[0]); }
+        public string AnswerPermutationString { get => CsvUtility.ArrayToString(AnswerPermutation ?? new int[0]); }
 
-        public int askOrderIdx { get; private set; }
+        public int AskOrderIdx { get; private set; }
 
-        public int questionIdx { get => question.itemIdx; }
+        public int QuestionIdx { get => Question.ItemIdx; }
 
-        public float answerPressTime { get; private set; }
+        public float AnswerPressTime { get; private set; }
 
-        public string feedbackText { get; private set; }
+        public string FeedbackText { get; private set; }
 
-        public GameObject[] feedbackObjects { get; private set; }
-        public string feedbackObjectsString { get => QuizUtility.GameObjectArrayToNameString(feedbackObjects); }
+        public GameObject[] FeedbackObjects { get; private set; }
+        public string FeedbackObjectsString { get => QuizUtility.GameObjectArrayToNameString(FeedbackObjects); }
 
-        public VideoClip feedbackVideo { get; private set; }
+        public VideoClip FeedbackVideo { get; private set; }
 
-        public string feedbackVideoUrl { get; private set; }
+        public string FeedbackVideoUrl { get; private set; }
 
-        public string feedbackVideoString
+        public string FeedbackVideoString
         {
-            get => feedbackVideo != null
-                    ? feedbackVideo.name
-                    : Path.GetFileName(feedbackVideoUrl);
+            get => FeedbackVideo != null
+                    ? FeedbackVideo.name
+                    : Path.GetFileName(FeedbackVideoUrl);
         }
 
 
@@ -54,11 +54,11 @@ namespace ExPresSXR.Experimentation.DataGathering
                                             ButtonQuizConfig config, int[] answerPermutation, int askOrderIdx,
                                             string feedbackText, GameObject[] feedbackObjects, VideoClip feedbackVideo, string feedbackVideoUrl)
         {
-            bool isMC = config.quizMode == QuizMode.MultipleChoice;
+            bool isMC = config.QuizMode == QuizMode.MultipleChoice;
             bool[] permutedAnswerChosen = QuizUtility.ExtractButtonPressStates(buttons);
             bool[] answerChosen = QuizUtility.PermuteArray(permutedAnswerChosen, answerPermutation);
             int firstPressed = QuizUtility.FirstIndexTrue(permutedAnswerChosen);
-            bool answerCorrect = QuizUtility.ArrayMatch(answerChosen, question.correctAnswers);
+            bool answerCorrect = QuizUtility.ArrayMatch(answerChosen, question.CorrectAnswers);
             float pressTime = isMC
                             ? mcConfirmButton.GetTriggerTimerValue()
                             : QuizUtility.SelectedButtonMaxTriggerTime(buttons);
@@ -72,17 +72,17 @@ namespace ExPresSXR.Experimentation.DataGathering
                                 int[] answerPermutation, int askOrderIdx, float answerPressTime,
                                 string feedbackText, GameObject[] feedbackObjects, VideoClip feedbackVideo, string feedbackVideoUrl)
         {
-            this.question = question;
-            this.answerCorrect = answerCorrect;
-            this.answerChosen = answerChosen;
-            this.firstPressedButtonIdx = firstPressedButtonIdx;
-            this.answerPermutation = answerPermutation;
-            this.askOrderIdx = askOrderIdx;
-            this.answerPressTime = answerPressTime;
-            this.feedbackText = feedbackText;
-            this.feedbackObjects = feedbackObjects;
-            this.feedbackVideo = feedbackVideo;
-            this.feedbackVideoUrl = feedbackVideoUrl;
+            Question = question;
+            AnswerCorrect = answerCorrect;
+            AnswerChosen = answerChosen;
+            FirstPressedButtonIdx = firstPressedButtonIdx;
+            AnswerPermutation = answerPermutation;
+            AskOrderIdx = askOrderIdx;
+            AnswerPressTime = answerPressTime;
+            FeedbackText = feedbackText;
+            FeedbackObjects = feedbackObjects;
+            FeedbackVideo = feedbackVideo;
+            FeedbackVideoUrl = feedbackVideoUrl;
         }
 
         public string GetCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
@@ -97,18 +97,18 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             List<object> values =  new ()
             {
-                answerCorrect,
-                answerChosenString,
-                firstPressedButtonIdx,
-                answerPressTime,
-                askOrderIdx,
-                answerPermutationString,
+                AnswerCorrect,
+                AnswerChosenString,
+                FirstPressedButtonIdx,
+                AnswerPressTime,
+                AskOrderIdx,
+                AnswerPermutationString,
                 // Feedback
-                feedbackText.Replace("\n", "\\n"), // Escape new lines for csv serialization
-                feedbackObjectsString,
-                feedbackVideoString
+                FeedbackText.Replace("\n", "\\n"), // Escape new lines for csv serialization
+                FeedbackObjectsString,
+                FeedbackVideoString
             };
-            values.AddRange(question.GetQuestionCsvExportValuesList());
+            values.AddRange(Question.GetQuestionCsvExportValuesList());
             return values;
         }
             

@@ -2,6 +2,7 @@ using System;
 using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
@@ -57,7 +58,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.blue,
                 Color.yellow,
                 Vector3.right,
-                atTransform
+                atTransform,
+                "0.0",
+                "1.0",
+                "{0:F1}"
             );
         }
     }

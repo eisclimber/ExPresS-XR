@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction
 {
@@ -8,20 +9,20 @@ namespace ExPresSXR.Interaction
 
         [SerializeField]
         protected bool _showHighlighter;
-        public bool showHighlighter
+        public bool ShowHighlighter
         {
             get => _showHighlighter;
             set
             {
                 _showHighlighter = value;
 
-                SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
+                SetHighlighterVisible(ShowHighlighter && startingSelectedInteractable == null);
             }
         }
 
         [SerializeField]
         protected GameObject _highlighterObject;
-        public GameObject highlighterObject
+        public GameObject HighlighterObject
         {
             get => _highlighterObject;
             set
@@ -38,7 +39,7 @@ namespace ExPresSXR.Interaction
 
         [SerializeField]
         protected bool _useColliderSizeAsScale;
-        public bool useColliderSizeAsScale
+        public bool UseColliderSizeAsScale
         {
             get => _useColliderSizeAsScale;
             set
@@ -52,7 +53,7 @@ namespace ExPresSXR.Interaction
         [Tooltip("The scale of the highlighterObject. Be sure to make it a little bit smaller (0.01f) to prevent z-fighting due to material overlapping.")]
         [SerializeField]
         protected Vector3 _highlighterScale = Vector3.one * 0.1f;
-        public Vector3 highlighterScale
+        public Vector3 HighlighterScale
         {
             get => _highlighterScale;
             set
@@ -70,18 +71,18 @@ namespace ExPresSXR.Interaction
         {
             base.OnEnable();
 
-            SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
+            SetHighlighterVisible(ShowHighlighter && startingSelectedInteractable == null);
 
-            selectEntered.AddListener(HideHighlighter);
-            selectExited.AddListener(ShowHighlighter);
+            selectEntered.AddListener(HideHighlighterFromSelect);
+            selectExited.AddListener(ShowHighlighterFromSelect);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
 
-            selectEntered.RemoveListener(HideHighlighter);
-            selectExited.RemoveListener(ShowHighlighter);
+            selectEntered.RemoveListener(HideHighlighterFromSelect);
+            selectExited.RemoveListener(ShowHighlighterFromSelect);
         }
 
 
@@ -92,44 +93,44 @@ namespace ExPresSXR.Interaction
                 return;
             }
 
-            if (GetComponent<SphereCollider>())
+            if (TryGetComponent(out SphereCollider sphereCollider))
             {
-                SphereCollider collider = GetComponent<SphereCollider>();
-
-                highlighterScale = Vector3.one * (2 * collider.radius);
+                HighlighterScale = Vector3.one * (2 * sphereCollider.radius);
             }
-            else if (GetComponent<BoxCollider>())
+            else if (TryGetComponent(out BoxCollider boxCollider))
             {
-                BoxCollider collider = GetComponent<BoxCollider>();
-
-                highlighterScale = collider.size;
+                HighlighterScale = boxCollider.size;
+            }
+            else if (TryGetComponent(out CapsuleCollider capsuleCollider))
+            {
+                HighlighterScale = new(capsuleCollider.radius, capsuleCollider.height, capsuleCollider.radius);
             }
             else
             {
                 Debug.LogWarning("Did not find a SphereCollider nor a BoxCollider. Setting scale to (1, 1, 1).");
-                highlighterScale = Vector3.one;
+                HighlighterScale = Vector3.one;
             }
         }
 
 
         public bool CanSetHighlighterScaleWithCollider()
         {
-            return GetComponent<SphereCollider>() != null || GetComponent<BoxCollider>() != null;
+            return TryGetComponent(out SphereCollider _) || TryGetComponent(out BoxCollider _) || TryGetComponent(out CapsuleCollider _);
         }
 
 
         public virtual void SetHighlighterVisible(bool visible)
         {
-            if (_highlighterObject != null)
+            if (_highlighterObject != null && _highlighterObject.TryGetComponent(out MeshRenderer renderer))
             {
-                _highlighterObject.GetComponent<MeshRenderer>().enabled = showHighlighter && visible;
+                renderer.enabled = ShowHighlighter && visible;
             }
         }
 
 
-        protected void ShowHighlighter(SelectExitEventArgs args) => SetHighlighterVisible(true);
+        protected void ShowHighlighterFromSelect(SelectExitEventArgs args) => SetHighlighterVisible(true);
 
-        protected void HideHighlighter(SelectEnterEventArgs args) => SetHighlighterVisible(false);
+        protected void HideHighlighterFromSelect(SelectEnterEventArgs args) => SetHighlighterVisible(false);
 
 
         protected override void OnValidate()

@@ -1,7 +1,13 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Gravity;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Jump;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 namespace ExPresSXR.Rig
 {
@@ -13,8 +19,9 @@ namespace ExPresSXR.Rig
         /// <param name="configData">Data providing all necessary references and the required data how the rig should be configured.</param>
         public static void ApplyConfigData(ConfigData configData)
         {
-            ApplyMovementPreset(configData);
             ApplyInteractionsOptions(configData);
+            ApplyMovementPreset(configData);
+            ApplyMovementOptions(configData);
         }
 
         #region Interaction Options
@@ -24,63 +31,32 @@ namespace ExPresSXR.Rig
         /// <param name="configData"></param>
         public static void ApplyInteractionsOptions(ConfigData configData)
         {
-            ExPresSXRRig rig = configData.rig;
+            EnsureRigConfigConsistency(configData);
 
-            InteractionOptions interactionOptions = configData.interactionOptions;
+            InteractionOptions interactionOptions = configData.InteractionOptions;
 
-            LocomotionSystem locomotionSystem = configData.locomotionSystem;
-            HandControllerManager leftHandController = configData.leftHandController;
-            HandControllerManager rightHandController = configData.rightHandController;
-
-            ClimbingGravityManager climbingGravityManager = configData.climbingGravityManager;
-
-            if (rig != null)
-            {
-                rig.interactionOptions = interactionOptions;
-            }
+            HandControllerManager leftHandController = configData.LeftHandController;
+            HandControllerManager rightHandController = configData.RightHandController;
 
             ApplyHandInteractionOptions(leftHandController, interactionOptions);
             ApplyHandInteractionOptions(rightHandController, interactionOptions);
-
-            ApplyLocomotionInteractionOptions(locomotionSystem, climbingGravityManager, interactionOptions);
         }
 
         private static void ApplyHandInteractionOptions(HandControllerManager handController, InteractionOptions interactionOptions)
         {
             if (handController != null)
             {
-                handController.directInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Direct);
-                handController.pokeInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Poke);
-                handController.uiPokeInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.UiPoke);
-                // Do not Update showPokeReticle => Updated in EditorRevalidate()
-                // leftHandController.showPokeReticle = interactionOptions.HasFlag(InteractionOptions.ShowPokeReticle);
-                handController.rayInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Ray);
-                handController.rayAnchorControlEnabled = interactionOptions.HasFlag(InteractionOptions.RayAnchorControl);
-                handController.uiRayInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.UiRay);
+                handController.NearInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Near);
 
-                handController.chooseTeleportForwardEnabled = interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward);
-                handController.teleportCancelEnabled = interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible);
+                handController.FarInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Far);
+                handController.FarAnchorControlEnabled = interactionOptions.HasFlag(InteractionOptions.FarAnchorControl);
+                handController.FarUiInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.FarUi);
 
-                handController.scaleGrabbedObjects = interactionOptions.HasFlag(InteractionOptions.ScaleGrabbedObjects);
-            }
-        }
+                handController.PokeInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Poke);
+                handController.PokePointOnHover = interactionOptions.HasFlag(InteractionOptions.PokePointOnHover);
+                handController.PokeUiInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.PokeUi);
 
-        private static void ApplyLocomotionInteractionOptions(LocomotionSystem locomotionSystem, ClimbingGravityManager climbingManager, 
-                                                                InteractionOptions interactionOptions)
-        {
-            
-            // Enable locomotion Provider
-            bool climbEnabled = interactionOptions.HasFlag(InteractionOptions.Climb);
-            bool climbGravityEnabled = interactionOptions.HasFlag(InteractionOptions.ClimbControlGravity);
-            if (locomotionSystem != null && locomotionSystem.TryGetComponent(out ClimbProvider climbProvider))
-            {
-                climbProvider.enabled = climbEnabled;
-            }
-
-            if (climbingManager != null)
-            {
-                // Only enabled when both climbing and controlGravity is enabled
-                climbingManager.enabled = climbEnabled && climbGravityEnabled;
+                handController.UiScrollingEnabled = interactionOptions.HasFlag(InteractionOptions.UiScrolling);
             }
         }
         #endregion
@@ -92,72 +68,22 @@ namespace ExPresSXR.Rig
         /// <param name="configData">Data providing all necessary references and the required data how the rig should be configured.</param>
         public static void ApplyMovementPreset(ConfigData configData)
         {
-            if (!ShouldApplyMovementPreset(configData.inputMethod, configData.movementPreset))
+            MovementPreset movementPreset = configData.MovementPreset;
+            
+            if (!ShouldApplyMovementPreset(movementPreset, configData.InputMethod))
             {
                 return;
             }
+            
+            EnsureRigConfigConsistency(configData);
 
-            ExPresSXRRig rig = configData.rig;
-            InputMethod inputMethod = configData.inputMethod;
-            MovementPreset movementPreset = configData.movementPreset;
-
-            if (rig != null)
-            {
-                rig.inputMethod = inputMethod;
-                rig.movementPreset = movementPreset;
-            }
-
-            ApplyPresetLeftHand(configData.leftHandController, movementPreset);
-            ApplyPresetRightHand(configData.rightHandController, movementPreset);
-            ApplyPresetEyeGaze(configData.eyeGazeController, movementPreset);
-            ApplyPresetHeadGaze(configData.headGazeController, movementPreset);
-            ApplyPresetLocomotionSystem(configData.locomotionSystem, movementPreset);
+            ApplyPresetHeadGaze(movementPreset, configData.HeadGazeController);
+            ApplyPresetHands(movementPreset, configData.LeftHandController);
+            ApplyPresetHands(movementPreset, configData.RightHandController);
+            ApplyPresetLocomotionMediator(movementPreset, configData.LocomotionMediator);
         }
 
-        private static void ApplyPresetLeftHand(HandControllerManager leftHandController, MovementPreset movementPreset)
-        {
-            if (leftHandController != null)
-            {
-                leftHandController.teleportationEnabled = movementPreset == MovementPreset.Teleport;
-                leftHandController.snapTurnEnabled = movementPreset == MovementPreset.Teleport;
-                leftHandController.smoothMoveEnabled = movementPreset == MovementPreset.Joystick
-                                                        || movementPreset == MovementPreset.JoystickNoTurn;
-                leftHandController.smoothTurnEnabled = movementPreset == MovementPreset.JoystickInverse;
-                leftHandController.grabMoveEnabled = movementPreset == MovementPreset.GrabWorldMotion
-                                                    || movementPreset == MovementPreset.GrabWorldManipulation;
-            }
-        }
-
-        private static void ApplyPresetRightHand(HandControllerManager rightHandController, MovementPreset movementPreset)
-        {
-            if (rightHandController != null)
-            {
-                rightHandController.teleportationEnabled = movementPreset == MovementPreset.Teleport;
-                rightHandController.snapTurnEnabled = movementPreset == MovementPreset.Teleport;
-                rightHandController.smoothMoveEnabled = movementPreset == MovementPreset.JoystickInverse
-                                                        || movementPreset == MovementPreset.JoystickNoTurn;
-                rightHandController.smoothTurnEnabled = movementPreset == MovementPreset.Joystick;
-                rightHandController.grabMoveEnabled = movementPreset == MovementPreset.GrabWorldMotion
-                                                        || movementPreset == MovementPreset.GrabWorldManipulation;
-            }
-        }
-
-        private static void ApplyPresetEyeGaze(XRGazeInteractor eyeGazeController, MovementPreset movementPreset)
-        {
-            if (eyeGazeController != null)
-            {
-                if (movementPreset == MovementPreset.Teleport)
-                {
-                    eyeGazeController.interactionLayers |= 1 << InteractionLayerMask.NameToLayer("Teleport");
-                }
-                else
-                {
-                    eyeGazeController.interactionLayers &= ~(1 << InteractionLayerMask.NameToLayer("Teleport"));
-                }
-            }
-        }
-
-        private static void ApplyPresetHeadGaze(HeadGazeController headGazeController, MovementPreset movementPreset)
+        private static void ApplyPresetHeadGaze(MovementPreset movementPreset, HeadGazeController headGazeController)
         {
             if (headGazeController != null)
             {
@@ -165,18 +91,43 @@ namespace ExPresSXR.Rig
             }
         }
 
-        private static void ApplyPresetLocomotionSystem(LocomotionSystem locomotionSystem, MovementPreset movementPreset)
+        public static void ApplyPresetHands(MovementPreset movementPreset, HandControllerManager handController)
         {
-            if (locomotionSystem != null)
+            if (handController == null)
             {
-                if (locomotionSystem.TryGetComponent(out TwoHandedGrabMoveProvider grabProvider))
-                {
-                    grabProvider.enabled = movementPreset == MovementPreset.GrabWorldManipulation;
-                }
+                Debug.LogWarning("Can not apply movement preset on hands, no HandControllerManager provided.");
+                return;
             }
+            handController.SmoothMotionEnabled = movementPreset == MovementPreset.Joystick || movementPreset == MovementPreset.JoystickNoTurn;
+            handController.SmoothTurnEnabled = movementPreset == MovementPreset.Joystick;
         }
 
-        public static bool ShouldApplyMovementPreset(InputMethod inputMethod, MovementPreset movementPreset)
+        private static void ApplyPresetLocomotionMediator(MovementPreset movementPreset, LocomotionMediator mediator)
+        {
+            if (mediator == null)
+            {
+                Debug.LogWarning("Can not apply movement preset, no LocomotionMediator provided!");
+                return;
+            }
+
+            // Turn
+            SetChildComponentEnabled<SnapTurnProvider>(mediator, movementPreset == MovementPreset.Teleport);
+            SetChildComponentEnabled<ContinuousTurnProvider>(mediator, movementPreset == MovementPreset.Joystick);
+
+            // Move
+            bool enableMove = movementPreset == MovementPreset.Joystick || movementPreset == MovementPreset.JoystickNoTurn;
+            SetChildComponentEnabled<DynamicMoveProvider>(mediator, enableMove);
+
+            // Grab Move
+            bool enableGrabMove = movementPreset == MovementPreset.GrabWorldMotion || movementPreset == MovementPreset.GrabWorldManipulation;
+            SetChildComponentsEnabled<GrabMoveProvider>(mediator, enableGrabMove);
+            SetChildComponentEnabled<TwoHandedGrabMoveProvider>(mediator, movementPreset == MovementPreset.GrabWorldManipulation);
+
+            // Teleportation
+            SetChildComponentEnabled<TeleportationProvider>(mediator, movementPreset == MovementPreset.Teleport);
+        }
+
+        public static bool ShouldApplyMovementPreset(MovementPreset movementPreset, InputMethod inputMethod)
         {
             if (inputMethod != InputMethod.Controller
                 && movementPreset != MovementPreset.Teleport
@@ -194,6 +145,92 @@ namespace ExPresSXR.Rig
             return true;
         }
         #endregion
+        #region Movement Options
+        public static void ApplyMovementOptions(ConfigData configData)
+        {
+            EnsureRigConfigConsistency(configData);
+            MovementOptions movementOptions = configData.MovementOptions;
+            ApplyMovementOptionsHands(movementOptions, configData.LeftHandController);
+            ApplyMovementOptionsHands(movementOptions, configData.RightHandController);
+            ApplyMovementOptionsLocomotionMediator(movementOptions, configData.LocomotionMediator);
+        }
+
+        public static void ApplyMovementOptionsHands(MovementOptions movementOptions, HandControllerManager handController)
+        {
+            if (handController == null)
+            {
+                Debug.LogWarning("Can not apply movement options on hands, no HandControllerManager provided.");
+                return;
+            }
+            handController.ChooseTeleportForwardEnabled = movementOptions.HasFlag(MovementOptions.TeleportChooseForward);
+            handController.TeleportCancelEnabled = movementOptions.HasFlag(MovementOptions.TeleportCancelPossible);
+            handController.NearFarEnableTeleportDuringNearInteraction = movementOptions.HasFlag(MovementOptions.TeleportDuringNearInteraction);
+        }
+
+        public static void ApplyMovementOptionsLocomotionMediator(MovementOptions movementOptions, LocomotionMediator mediator)
+        {
+            if (mediator == null)
+            {
+                Debug.LogWarning("Can not apply movement options on hands, no LocomotionMediator provided.");
+                return;
+            }
+
+            // Gravity
+            bool enableGravity = movementOptions.HasFlag(MovementOptions.Gravity);
+            SetChildComponentEnabled<GravityProvider>(mediator, enableGravity);
+
+            // Jump
+            bool enableJump = movementOptions.HasFlag(MovementOptions.Jump);
+            SetChildComponentEnabled<JumpProvider>(mediator, enableJump);
+
+            // Climb
+            bool enableClimb = movementOptions.HasFlag(MovementOptions.Climb);
+            SetChildComponentEnabled<ClimbProvider>(mediator, enableClimb);
+
+            // Climb Teleport
+            bool enableClimbTp = movementOptions.HasFlag(MovementOptions.ClimbTeleport);
+            SetChildComponentEnabled<ClimbTeleportInteractor>(mediator, enableClimbTp);
+        }
+        #endregion
+
+        private static void SetChildComponentEnabled<T>(MonoBehaviour parent, bool enabled) where T : MonoBehaviour
+        {
+            if (parent == null)
+            {
+                Debug.LogError("Can not set child enabled if the parent is null.");
+                return;
+            }
+
+            T child = parent.GetComponentInChildren<T>();
+            if (child != null)
+            {
+                child.enabled = enabled;
+            }
+        }
+
+        private static void SetChildComponentsEnabled<T>(MonoBehaviour parent, bool enabled) where T : MonoBehaviour
+        {
+            if (parent == null)
+            {
+                Debug.LogError("Can not set children enabled if the parent is null.");
+                return;
+            }
+
+            T[] children = parent.GetComponentsInChildren<T>();
+            foreach (T child in children)
+            {
+                child.enabled = enabled;
+            }
+        }
+
+        private static void EnsureRigConfigConsistency(ConfigData configData)
+        {
+            ExPresSXRRig rig = configData.Rig;
+            if (rig != null)
+            {
+                rig.ApplyConfigValues(configData.InputMethod, configData.MovementPreset, configData.MovementOptions, configData.InteractionOptions);
+            }
+        }
     }
 
     #region Enums & Structs
@@ -201,8 +238,7 @@ namespace ExPresSXR.Rig
     {
         None,
         Controller,
-        HeadGaze,
-        EyeGaze
+        HeadGaze
     }
 
     public enum MovementPreset
@@ -210,7 +246,6 @@ namespace ExPresSXR.Rig
         None,
         Teleport,
         Joystick,
-        JoystickInverse,
         JoystickNoTurn,
         GrabWorldMotion,
         GrabWorldManipulation,
@@ -222,18 +257,27 @@ namespace ExPresSXR.Rig
     public enum InteractionOptions
     {
         Nothing = 0,
-        Direct = 1,
-        Poke = 2,
-        UiPoke = 4,
-        ShowPokeReticle = 8,
-        Ray = 16,
-        RayAnchorControl = 32,
-        UiRay = 64,
-        ChooseTeleportForward = 128,
-        CancelTeleportPossible = 256,
-        ScaleGrabbedObjects = 512,
-        Climb = 1024,
-        ClimbControlGravity = 2048
+        Near = 1 << 0,
+        Far = 1 << 1,
+        FarAnchorControl = 1 << 2,
+        FarUi = 1 << 3,
+        Poke = 1 << 4,
+        PokePointOnHover = 1 << 5,
+        PokeUi = 1 << 6,
+        UiScrolling = 1 << 7
+    }
+
+    [Flags]
+    public enum MovementOptions
+    {
+        Nothing = 0,
+        TeleportChooseForward = 1 << 0,
+        TeleportCancelPossible = 1 << 1,
+        TeleportDuringNearInteraction = 1 << 2,
+        Gravity = 1 << 3,
+        Jump = 1 << 4,
+        Climb = 1 << 5,
+        ClimbTeleport = 1 << 6
     }
 
 
@@ -243,69 +287,63 @@ namespace ExPresSXR.Rig
     public class ConfigData
     {
         // Rig Optional
-        public ExPresSXRRig rig;
+        public ExPresSXRRig Rig;
 
         // Config
-        public InputMethod inputMethod;
-        public MovementPreset movementPreset;
-        public InteractionOptions interactionOptions;
-
+        public InputMethod InputMethod;
+        public MovementPreset MovementPreset;
+        public MovementOptions MovementOptions;
+        public InteractionOptions InteractionOptions;
 
         // Controller References
-        public HandControllerManager leftHandController;
-        public HandControllerManager rightHandController;
-        public XRGazeInteractor eyeGazeController;
-        public HeadGazeController headGazeController;
-
+        public HandControllerManager LeftHandController;
+        public HandControllerManager RightHandController;
+        public HeadGazeController HeadGazeController;
 
         // Locomotion
-        public LocomotionSystem locomotionSystem;
-        public ClimbingGravityManager climbingGravityManager;
-
+        public LocomotionMediator LocomotionMediator;
 
         public ConfigData(InputMethod inputMethod,
                             MovementPreset movementPreset,
+                            MovementOptions movementOptions,
                             InteractionOptions interactionOptions,
                             HandControllerManager leftHandController,
                             HandControllerManager rightHandController,
-                            XRGazeInteractor eyeGazeController,
                             HeadGazeController headGazeController,
-                            LocomotionSystem locomotionSystem,
-                            ClimbingGravityManager climbingGravityManager)
+                            LocomotionMediator locomotionMediator)
         {
-            rig = null;
+            Rig = null;
 
-            this.inputMethod = inputMethod;
-            this.movementPreset = movementPreset;
-            this.interactionOptions = interactionOptions;
+            InputMethod = inputMethod;
+            MovementPreset = movementPreset;
+            MovementOptions = movementOptions;
+            InteractionOptions = interactionOptions;
 
-            this.leftHandController = leftHandController;
-            this.rightHandController = rightHandController;
-            this.eyeGazeController = eyeGazeController;
-            this.headGazeController = headGazeController;
+            LeftHandController = leftHandController;
+            RightHandController = rightHandController;
+            HeadGazeController = headGazeController;
 
-            this.locomotionSystem = locomotionSystem;
-            this.climbingGravityManager = climbingGravityManager;
+            LocomotionMediator = locomotionMediator;
         }
 
         public ConfigData(ExPresSXRRig rig,
                             InputMethod inputMethod,
                             MovementPreset movementPreset,
+                            MovementOptions movementOptions,
                             InteractionOptions interactionOptions)
         {
-            this.rig = rig;
+            Rig = rig;
 
-            this.inputMethod = inputMethod;
-            this.movementPreset = movementPreset;
-            this.interactionOptions = interactionOptions;
+            InputMethod = inputMethod;
+            MovementPreset = movementPreset;
+            MovementOptions = movementOptions;
+            InteractionOptions = interactionOptions;
 
-            leftHandController = rig.leftHandController;
-            rightHandController = rig.rightHandController;
-            eyeGazeController = rig.eyeGazeController;
-            headGazeController = rig.headGazeController;
+            LeftHandController = rig.LeftHandController;
+            RightHandController = rig.RightHandController;
+            HeadGazeController = rig.HeadGazeController;
 
-            locomotionSystem = rig.locomotionSystem;
-            climbingGravityManager = rig.climbingGravityManager;
+            LocomotionMediator = rig.LocomotionMediator;
         }
     }
     #endregion

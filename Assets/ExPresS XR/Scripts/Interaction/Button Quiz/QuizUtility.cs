@@ -52,17 +52,17 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <returns>Number of answers for the question.</returns>
         public static int GetNumAnswersForQuestion(ButtonQuizConfig config, ButtonQuizQuestion question)
         {
-            if (config.answersAmount != AnswersAmount.DifferingAmounts)
+            if (config.AnswersAmount != AnswersAmount.DifferingAmounts)
             {
-                return (int)config.answersAmount + 1;
+                return (int)config.AnswersAmount + 1;
             }
 
             int numAnswers = 0;
             for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
             {
                 // First empty question should be last as non-empty questions are prohibited
-                if (question.answerObjects.Length >= i && question.answerObjects[i] == null
-                        && question.answerTexts.Length >= i && string.IsNullOrEmpty(question.answerTexts[i]))
+                if (question.AnswerObjects.Length >= i && question.AnswerObjects[i] == null
+                        && question.AnswerTexts.Length >= i && string.IsNullOrEmpty(question.AnswerTexts[i]))
                 {
                     return numAnswers;
                 }
@@ -83,7 +83,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             int length = GetNumAnswersForQuestion(config, question);
             int[] array = GenerateIdentityArray(length);
 
-            if (config.answerOrdering == AnswerOrdering.Randomize)
+            if (config.AnswerOrdering == AnswerOrdering.Randomize)
             {
                 array = Shuffle(array);
             }
@@ -164,7 +164,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <param name="buttons">Quiz Buttons to be converted</param>
         /// <returns>Boolean array</returns>
-        public static bool[] ExtractButtonPressStates(QuizButton[] buttons) => buttons.Select(b => b != null && b.pressed).ToArray();
+        public static bool[] ExtractButtonPressStates(QuizButton[] buttons) => buttons.Select(b => b != null && b.Pressed).ToArray();
 
 
         /// <summary>
@@ -198,6 +198,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <param name="buttons">Buttons for which the trigger time should be extracted.</param>
         /// <returns>Longest Trigger time of the pressed buttons</returns>
-        public static float SelectedButtonMaxTriggerTime(QuizButton[] buttons) => buttons.Max(b => b != null && b.pressed ? b.GetTriggerTimerValue() : -1.0f);
+        public static float SelectedButtonMaxTriggerTime(QuizButton[] buttons) => buttons.Max(b => b != null && b.Pressed ? b.GetTriggerTimerValue() : -1.0f);
     }
 }

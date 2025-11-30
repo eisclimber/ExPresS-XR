@@ -15,7 +15,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private GameObject _displayedPrefab;
-        public GameObject displayedPrefab
+        public GameObject DisplayedPrefab
         {
             get => _displayedPrefab;
             set
@@ -24,9 +24,9 @@ namespace ExPresSXR.Presentation
 
                 if (_socket != null)
                 {
-                    _socket.putBackPrefab = _displayedPrefab;
+                    _socket.PutBackPrefab = _displayedPrefab;
 
-                    if (_displayedPrefab != null && _socket.putBackPrefab == null)
+                    if (_displayedPrefab != null && _socket.PutBackPrefab == null)
                     {
                         Debug.LogError($"Could not set { _displayedPrefab }. You'll probably want to either add "
                             + "an Interactable-Component to the prefab or set `_allowNonInteractables` to true.", this);
@@ -42,28 +42,56 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private bool _spinObject;
-        public bool spinObject
+        public bool SpinObject
         {
             get => _spinObject;
             set
             {
                 _spinObject = value;
+                UpdateObjectSpinner();
+            }
+        }
 
-                if (!_socket.TryGetComponent(out ObjectSpinner spinner))
-                {
-                    spinner = _socket.gameObject.AddComponent<ObjectSpinner>();
-                    spinner.rotationAxis = Vector3.up;
-                    spinner.speed = 30;
-                }
+        [SerializeField]
+        private float _spinObjectSpeed = 30.0f;
+        public float SpinObjectSpeed
+        {
+            get => _spinObjectSpeed;
+            set
+            {
+                _spinObjectSpeed = value;
+                UpdateObjectSpinner();
+            }
+        }
 
-                spinner.enabled = _spinObject;
+        [SerializeField]
+        private Vector3 _spinObjectAxis = Vector3.up;
+        public Vector3 SpinObjectAxis
+        {
+            get => _spinObjectAxis;
+            set
+            {
+                _spinObjectAxis = value;
+                UpdateObjectSpinner();
+            }
+        }
+
+        [SerializeField]
+        private bool _spinObjectRandomizeRotation;
+        public bool SpinObjectRandomizeRotation
+        {
+            get => _spinObjectRandomizeRotation;
+            set
+            {
+                _spinObjectRandomizeRotation = value;
+                UpdateObjectSpinner();
             }
         }
 
         [Tooltip("If true GameObjects will be added to the socket but won't be able to be picked up")]
         [SerializeField]
         private bool _allowNonInteractables;
-        public bool allowNonInteractables
+        public bool AllowNonInteractables
         {
             get => _allowNonInteractables;
             set
@@ -72,14 +100,14 @@ namespace ExPresSXR.Presentation
 
                 if (_socket != null)
                 {
-                    _socket.allowNonInteractables = _allowNonInteractables;
+                    _socket.AllowNonInteractables = _allowNonInteractables;
                 }
             }
         }
 
         [SerializeField]
         private float _putBackTime = 30.0f;
-        public float putBackTime
+        public float PutBackTime
         {
             get => _putBackTime;
             set
@@ -88,7 +116,7 @@ namespace ExPresSXR.Presentation
 
                 if (_socket != null)
                 {
-                    _socket.putBackTime = putBackTime;
+                    _socket.PutBackTime = PutBackTime;
                 }
             }
         }
@@ -96,7 +124,7 @@ namespace ExPresSXR.Presentation
         [TextArea(2, 5)]
         [SerializeField]
         private string _labelText;
-        public string labelText
+        public string LabelText
         {
             get => _labelText;
             set
@@ -113,7 +141,7 @@ namespace ExPresSXR.Presentation
         [TextArea(3, 5)]
         [SerializeField]
         private string _infoText;
-        public string infoText
+        public string InfoText
         {
             get => _infoText;
             set
@@ -130,7 +158,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private Sprite _infoImage;
-        public Sprite infoImage
+        public Sprite InfoImage
         {
             get => _infoImage;
             set
@@ -148,7 +176,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private AudioClip _infoAudioClip;
-        public AudioClip infoAudioClip
+        public AudioClip InfoAudioClip
         {
             get => _infoAudioClip;
             set
@@ -165,7 +193,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private VideoClip _infoVideoClip;
-        public VideoClip infoVideoClip
+        public VideoClip InfoVideoClip
         {
             get => _infoVideoClip;
             set
@@ -182,7 +210,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private bool _usePhysicalInfoButton;
-        public bool usePhysicalInfoButton
+        public bool UsePhysicalInfoButton
         {
             get => _usePhysicalInfoButton;
             set
@@ -204,7 +232,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("Wether or not the info automatically closes. When closing automatically Videos and Audio will be played until finished ignoring '_showInfoDuration'.")]
         [SerializeField]
         private bool _toggleInfo;
-        public bool toggleInfo
+        public bool ToggleInfo
         {
             get => _toggleInfo;
             set
@@ -213,7 +241,7 @@ namespace ExPresSXR.Presentation
 
                 if (_worldShowInfoButton != null)
                 {
-                    _worldShowInfoButton.toggleMode = toggleInfo;
+                    _worldShowInfoButton.ToggleMode = ToggleInfo;
                 }
             }
         }
@@ -222,7 +250,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("Duration of how long the info is shown. Audio and Videos will be played until finished even if it is longer than the duration.")]
         [SerializeField]
         private float _showInfoDuration;
-        public float showInfoDuration
+        public float ShowInfoDuration
         {
             get => _showInfoDuration;
             set => _showInfoDuration = value;
@@ -231,7 +259,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private PutBackSocketInteractor _socket;
-        public PutBackSocketInteractor socket
+        public PutBackSocketInteractor Socket
         {
             get => _socket;
             set
@@ -239,7 +267,7 @@ namespace ExPresSXR.Presentation
                 // Free control on current socket
                 if (_socket != null)
                 {
-                    _socket.externallyControlled = false;
+                    _socket.ExternallyControlled = false;
                 }
 
                 _socket = value;
@@ -247,19 +275,19 @@ namespace ExPresSXR.Presentation
                 // Free control on current socket
                 if (_socket != null)
                 {
-                    _socket.externallyControlled = true;
+                    _socket.ExternallyControlled = true;
                 }
 
-                displayedPrefab = _displayedPrefab;
-                putBackTime = _putBackTime;
-                allowNonInteractables = _allowNonInteractables;
+                DisplayedPrefab = _displayedPrefab;
+                PutBackTime = _putBackTime;
+                AllowNonInteractables = _allowNonInteractables;
             }
         }
 
 
         [SerializeField]
         private TMP_Text _labelTextGo;
-        public TMP_Text labelTextGo
+        public TMP_Text LabelTextGo
         {
             get => _labelTextGo;
             set
@@ -276,7 +304,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private Canvas _infoCanvas;
-        public Canvas infoCanvas
+        public Canvas InfoCanvas
         {
             get => _infoCanvas;
             set
@@ -287,7 +315,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private TMP_Text _infoTextGo;
-        public TMP_Text infoTextGo
+        public TMP_Text InfoTextGo
         {
             get => _infoTextGo;
             set
@@ -303,7 +331,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private Image _infoImageGo;
-        public Image infoImageGo
+        public Image InfoImageGo
         {
             get => _infoImageGo;
             set
@@ -319,7 +347,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private AudioSource _infoAudioSource;
-        public AudioSource infoAudioSource
+        public AudioSource InfoAudioSource
         {
             get => _infoAudioSource;
             set
@@ -336,7 +364,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private VideoPlayer _infoVideoPlayer;
-        public VideoPlayer infoVideoPlayer
+        public VideoPlayer InfoVideoPlayer
         {
             get => _infoVideoPlayer;
             set
@@ -365,7 +393,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private Button _uiShowInfoButton;
-        public Button uiShowInfoButton
+        public Button UiShowInfoButton
         {
             get => _uiShowInfoButton;
             set
@@ -376,7 +404,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private Canvas _uiShowInfoButtonCanvas;
-        public Canvas uiShowInfoButtonCanvas
+        public Canvas UiShowInfoButtonCanvas
         {
             get => _uiShowInfoButtonCanvas;
             set
@@ -388,7 +416,7 @@ namespace ExPresSXR.Presentation
 
         [SerializeField]
         private BaseButton _worldShowInfoButton;
-        public BaseButton worldShowInfoButton
+        public BaseButton WorldShowInfoButton
         {
             get => _worldShowInfoButton;
             set
@@ -397,7 +425,7 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        public bool infoActive
+        public bool InfoActive
         {
             get => showInfoCoroutine != null
                     || (_infoCanvas != null && _infoCanvas.gameObject.activeSelf)
@@ -416,7 +444,7 @@ namespace ExPresSXR.Presentation
             }
             if (_worldShowInfoButton != null)
             {
-                toggleInfo = _toggleInfo;
+                ToggleInfo = _toggleInfo;
 
                 _worldShowInfoButton.OnPressed.AddListener(OnWorldShowInfoButtonPressed);
 
@@ -425,12 +453,12 @@ namespace ExPresSXR.Presentation
             }
 
             // displayedPrefab = _displayedPrefab;
-            putBackTime = _putBackTime;
-            spinObject = _spinObject;
-            infoText = _infoText;
-            infoImageGo = _infoImageGo;
-            infoAudioClip = _infoAudioClip;
-            infoVideoClip = _infoVideoClip;
+            PutBackTime = _putBackTime;
+            SpinObject = _spinObject;
+            InfoText = _infoText;
+            InfoImageGo = _infoImageGo;
+            InfoAudioClip = _infoAudioClip;
+            InfoVideoClip = _infoVideoClip;
 
             GenerateRenderTexture();
         }
@@ -451,11 +479,10 @@ namespace ExPresSXR.Presentation
             }
         }
 
-
         private void DisplayInfoContents(bool display)
         {
-            bool showText = display && (_infoText != null && _infoText != "");
-            bool showVideo = display && (_infoVideoClip != null && _infoVideoPlayer != null);
+            bool showText = display && _infoText != null && _infoText != "";
+            bool showVideo = display && _infoVideoClip != null && _infoVideoPlayer != null;
             bool showImage = display && (_infoImage != null);
             bool playAudio = display && (_infoAudioClip != null);
             // Don't show Canvas if only audio should be played
@@ -467,7 +494,7 @@ namespace ExPresSXR.Presentation
             }
 
             // Text
-            if (infoTextGo != null)
+            if (InfoTextGo != null)
             {
                 _infoTextGo.gameObject.SetActive(showText);
             }
@@ -484,11 +511,11 @@ namespace ExPresSXR.Presentation
                 _infoVideoDisplayGo.gameObject.SetActive(showVideo);
                 if (showVideo)
                 {
-                    infoVideoPlayer.Play();
+                    InfoVideoPlayer.Play();
                 }
                 else
                 {
-                    infoVideoPlayer.Stop();
+                    InfoVideoPlayer.Stop();
                 }
             }
 
@@ -524,15 +551,15 @@ namespace ExPresSXR.Presentation
 
         private void OnUiShowInfoButtonPressed()
         {
-            if (toggleInfo)
+            if (ToggleInfo)
             {
-                DisplayInfoContents(!infoActive);
+                DisplayInfoContents(!InfoActive);
             }
             else
             {
                 // Debug.Log((showInfoCoroutine == null) + " x " + _infoCanvas.gameObject.activeSelf + " x " + _infoAudioSource.isPlaying);
 
-                if (!infoActive)
+                if (!InfoActive)
                 {
                     showInfoCoroutine = StartCoroutine(ShowInfoCoroutine());
                 }
@@ -545,7 +572,7 @@ namespace ExPresSXR.Presentation
 
         private void OnWorldShowInfoButtonPressed()
         {
-            if (!infoActive)
+            if (!InfoActive)
             {
                 // Show Button
                 showInfoCoroutine = StartCoroutine(ShowInfoCoroutine());
@@ -582,7 +609,7 @@ namespace ExPresSXR.Presentation
         // - If in 'toggleInfo' is true -1
         public float GetInfoActivationDuration()
         {
-            if (toggleInfo)
+            if (ToggleInfo)
             {
                 return -1.0f;
             }
@@ -615,11 +642,23 @@ namespace ExPresSXR.Presentation
         }
 
 
+        private void UpdateObjectSpinner()
+        {
+            if (!_socket.TryGetComponent(out ObjectSpinner spinner))
+            {
+                spinner = _socket.gameObject.AddComponent<ObjectSpinner>();
+                spinner.Configure(_spinObjectSpeed, _spinObjectAxis, _spinObjectRandomizeRotation);
+            }
+
+            spinner.enabled = _spinObject;
+        }
+
+
         public void SetObjectSpinnerPaused(bool paused)
         {
             if (_socket.TryGetComponent(out ObjectSpinner spinner))
             {
-                spinner.paused = paused;
+                spinner.Paused = paused;
             }
         }
 
@@ -629,14 +668,14 @@ namespace ExPresSXR.Presentation
 
         private void OnValidate()
         {
-            labelText = _labelText;
-            infoText = _infoText;
-            allowNonInteractables = _allowNonInteractables;
-            putBackTime = _putBackTime;
+            LabelText = _labelText;
+            InfoText = _infoText;
+            AllowNonInteractables = _allowNonInteractables;
+            PutBackTime = _putBackTime;
 
             if (_socket != null)
             {
-                _socket.externallyControlled = true;
+                _socket.ExternallyControlled = true;
             }
         }
     }

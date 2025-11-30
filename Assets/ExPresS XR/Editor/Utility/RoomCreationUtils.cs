@@ -6,8 +6,7 @@ using UnityEngine.ProBuilder;
 using UnityEditor.ProBuilder;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.ProBuilder.Shapes;
-using ExPresSXR.Experimentation.DataGathering;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 
 namespace ExPresSXR.Editor.Utility
 {

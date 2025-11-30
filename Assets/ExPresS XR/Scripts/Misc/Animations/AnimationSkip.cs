@@ -43,16 +43,15 @@ namespace ExPresSXR.Misc.Animations
         {
             if (_rig)
             {
-                _rig.fadeRect.OnFadeToColorCompleted.RemoveListener(SkipAndStartFadeIn);
+                _rig.FadeRect.OnFadeToColorCompleted.RemoveListener(SkipAndStartFadeIn);
             }
         }
 
 
         public void StartAnimationSkip()
         {
-            _rig.fadeRect.fadeToColorTime = _fadeDuration;
-            _rig.FadeToColor();
-            _rig.fadeRect.OnFadeToColorCompleted.AddListener(SkipAndStartFadeIn);
+            _rig.FadeRect.FadeToColorWithDuration(_fadeDuration);
+            _rig.FadeRect.OnFadeToColorCompleted.AddListener(SkipAndStartFadeIn);
         }
 
 
@@ -60,7 +59,7 @@ namespace ExPresSXR.Misc.Animations
         {
             OnFullyFaded.Invoke();
             _animator.Play(_animationName, 0, 1.0f);
-            _rig.fadeRect.OnFadeToColorCompleted.RemoveListener(SkipAndStartFadeIn);
+            _rig.FadeRect.OnFadeToColorCompleted.RemoveListener(SkipAndStartFadeIn);
             _rig.FadeToClear();
         }
 

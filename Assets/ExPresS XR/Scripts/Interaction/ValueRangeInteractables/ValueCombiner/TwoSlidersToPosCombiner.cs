@@ -132,8 +132,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueCombiner
                 transform
             );
 
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireCube(new Vector3(0.0f, 0.0f, 0.0f), boxSize);
+            GizmoUtils.DrawWireCube(new Vector3(0.0f, 0.0f, 0.0f), boxSize, transform, "(0,0)", "(1,1)");
         }
     }
 }

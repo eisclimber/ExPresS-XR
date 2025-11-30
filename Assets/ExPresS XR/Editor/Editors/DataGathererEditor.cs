@@ -31,14 +31,14 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            if (targetScript.dataExportType == DataGatherer.ExportType.Http
-                || targetScript.dataExportType == DataGatherer.ExportType.Both)
+            if (targetScript.DataExportType == DataGatherer.ExportType.Http
+                || targetScript.DataExportType == DataGatherer.ExportType.Both)
             {
                 // Either Only http or both
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
             }
-            if (targetScript.dataExportType == DataGatherer.ExportType.Local
-                || targetScript.dataExportType == DataGatherer.ExportType.Both)
+            if (targetScript.DataExportType == DataGatherer.ExportType.Local
+                || targetScript.DataExportType == DataGatherer.ExportType.Both)
             {
                 // Either Only local or both
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
@@ -47,15 +47,15 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_separatorType"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_separator"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_escapeColumns"), true);
 
-            if (targetScript.separatorType == DataGatherer.SeparatorType.Custom)
+            if (targetScript.Separator == DataGatherer.SeparatorType.Custom)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_columnSeparator"), true);
             }
 
-            if (targetScript.separatorType != DataGatherer.SeparatorType.Semicolon && !targetScript.escapeColumns)
+            if (targetScript.Separator != DataGatherer.SeparatorType.Semicolon && !targetScript.EscapeColumns)
             {
                 EditorGUILayout.HelpBox("Using separators different to ';' (especially ',' or '.') will interfere "
                     + "with the printing of Vectors or float values. You can prevent this by enabling checking 'Escape Columns'."
@@ -111,7 +111,7 @@ namespace ExPresSXR.Editor.Editors
             if (GUILayout.Button("Print Full Export Paths"))
             {
                 Debug.Log("The Local Export Path is: " + Path.GetFullPath(targetScript.GetLocalSavePath()) + "\n"
-                        + "The Http Export Path is: " + targetScript.httpExportPath);
+                        + "The Http Export Path is: " + targetScript.HttpExportPath);
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -135,7 +135,7 @@ namespace ExPresSXR.Editor.Editors
                 if (_prevArraySize < arrayProp.arraySize)
                 {
                     // Entry added -> Enforce defaults and update
-                    targetScript.dataBindings[arrayProp.arraySize - 1].ResetToDefaults();
+                    targetScript.DataBindings[arrayProp.arraySize - 1].ResetToDefaults();
                 }
                 serializedObject.Update();
             }

@@ -3,6 +3,8 @@ using ExPresSXR.Misc;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
@@ -114,7 +116,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             );
 
             Gizmos.matrix = atTransform.localToWorldMatrix;
-            Gizmos.DrawWireCube(new Vector3(0.0f, handleYOffset, 0.0f), boxSize);
+            GizmoUtils.DrawWireCube(new Vector3(0.0f, handleYOffset, 0.0f), boxSize, atTransform, "(0,0)", "(1,1)");
         }
     }
 }

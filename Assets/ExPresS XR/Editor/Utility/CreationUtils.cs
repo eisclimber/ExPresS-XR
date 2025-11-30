@@ -38,7 +38,7 @@ namespace ExPresSXR.Editor.Utility
         }
 
 
-        public static GameObject InstantiateAndConfigureExPresSXRRig(InputMethod inputMethod, MovementPreset movementPreset, 
+        public static GameObject InstantiateAndConfigureExPresSXRRig(InputMethod inputMethod, MovementPreset movementPreset, MovementOptions movementOptions,
                                                                         InteractionOptions interactionOptions, string rigGoName = "ExPresS XR Rig")
         {
             // Use Teleport Rig Prefab as base go 
@@ -49,7 +49,7 @@ namespace ExPresSXR.Editor.Utility
 
             if (rigGo.TryGetComponent(out ExPresSXRRig rig))
             {
-                ConfigData configData = new(rig, inputMethod, movementPreset, interactionOptions);
+                ConfigData configData = new(rig, inputMethod, movementPreset, movementOptions, interactionOptions);
                 RigConfigurator.ApplyConfigData(configData);
             }
             else

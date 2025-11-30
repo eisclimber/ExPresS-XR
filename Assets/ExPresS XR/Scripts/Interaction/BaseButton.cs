@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.Events;
-using System.Linq;
 using System.Collections.Generic;
 
 
@@ -20,7 +21,7 @@ namespace ExPresSXR.Interaction
         /// </summary>
         [SerializeField]
         private bool _inputDisabled;
-        public bool inputDisabled
+        public bool InputDisabled
         {
             get => _inputDisabled;
             set
@@ -36,7 +37,7 @@ namespace ExPresSXR.Interaction
         /// </summary>
         [SerializeField]
         private bool _toggleMode;
-        public bool toggleMode
+        public bool ToggleMode
         {
             get => _toggleMode;
             set
@@ -64,12 +65,12 @@ namespace ExPresSXR.Interaction
         /// <summary>
         /// The GameObject that acts as a parent for all static non-moving parts of the button (e.g. the base).
         /// </summary>
-        public Transform baseAnchor;
+        public Transform BaseAnchor;
 
         /// <summary>
         /// The GameObject that acts as a parent for all moving parts of the button (e.g. the button cap).
         /// </summary>
-        public Transform pushAnchor;
+        public Transform PushAnchor;
 
         /// <summary>
         /// The maximum y-coordinate (local transform) for the button's press anchor (= button's "up"-position)
@@ -89,19 +90,26 @@ namespace ExPresSXR.Interaction
         /// </summary>
         [SerializeField]
         private Vector3 _colliderSize;
-        public Vector3 colliderSize
+        public Vector3 ColliderSize
         {
             get => _colliderSize;
             set
             {
                 _colliderSize = value;
 
-                if (pushAnchor != null && pushAnchor.GetComponent<BoxCollider>() != null)
+                if (PushAnchor != null && PushAnchor.TryGetComponent(out BoxCollider collider))
                 {
-                    pushAnchor.GetComponent<BoxCollider>().size = _colliderSize;
+                    collider.size = _colliderSize;
                 }
             }
         }
+        
+        /// <summary>
+        /// Duration for which a repress is prevented. Set to zero to ignore.
+        /// </summary>
+        [Tooltip("Duration for which a repress is prevented. Set to zero to ignore.")]
+        [SerializeField]
+        private float _repressTimeout = 0.3f;
 
         /// <summary>
         /// If enabled requires interactions through an XRDirectInteractor.
@@ -116,7 +124,7 @@ namespace ExPresSXR.Interaction
         /// If the button is currently considered pressed (or toggled down).
         /// </summary>
         private bool _pressed = false;
-        public bool pressed
+        public bool Pressed
         {
             get => _pressed;
             private set => _pressed = value;
@@ -130,6 +138,8 @@ namespace ExPresSXR.Interaction
 
 
         private float _previousHandHeight = 0.0f;
+        private float _lastTimePressed;
+        private float _lastTimeReleased;
         private XRBaseInteractor _hoverInteractor = null;
 
         // Is true when the button is in toggle mode is being toggled up
@@ -140,25 +150,25 @@ namespace ExPresSXR.Interaction
         /// Sound played when the button is NOT in toggle mode and pressed down.
         /// </summary>
         [Tooltip("Sound played when the button is NOT in toggle mode and pressed down.")]
-        public AudioClip pressedSound;
+        public AudioClip PressedSound;
 
         /// <summary>
         /// Sound played when the button is NOT in toggle mode and is released.
         /// </summary>
         [Tooltip("Sound played when the button is NOT in toggle mode and is released.")]
-        public AudioClip releasedSound;
+        public AudioClip ReleasedSound;
 
         /// <summary>
         /// Sound played when the button is in toggle mode and is toggled from the up to the down position.
         /// </summary>
         [Tooltip("Sound played when the button is in toggle mode and is toggled from the up to the down position.")]
-        public AudioClip toggledDownSound;
+        public AudioClip ToggledDownSound;
 
         /// <summary>
         /// Sound played when the button is in toggle mode and is toggled from the down to the up position.
         /// </summary>
         [Tooltip("Sound played when the button is in toggle mode and is toggled from the down to the up position.")]
-        public AudioClip toggledUpSound;
+        public AudioClip ToggledUpSound;
 
 
         /// <summary>
@@ -175,7 +185,7 @@ namespace ExPresSXR.Interaction
             base.Awake();
 
             // Check ColliderSize
-            if (colliderSize == Vector3.zero)
+            if (ColliderSize == Vector3.zero)
             {
                 Debug.LogWarning("Button has no ColliderSize, pressing it won't work.");
             }
@@ -186,7 +196,7 @@ namespace ExPresSXR.Interaction
 
             // Connect Audio
             if (_defaultAudioPlayer == null && !TryGetComponent(out _defaultAudioPlayer)
-                    && (releasedSound != null || pressedSound != null || toggledDownSound != null || toggledUpSound != null))
+                    && (ReleasedSound != null || PressedSound != null || ToggledDownSound != null || ToggledUpSound != null))
             {
                 Debug.LogWarning("No AudioPlayer found to play sounds.");
             }
@@ -238,7 +248,7 @@ namespace ExPresSXR.Interaction
         /// <returns>Wether or not the interactor can hover (i.e. press) the button</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
-            return !inputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor);
+            return !InputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor);
         }
 
 
@@ -247,7 +257,7 @@ namespace ExPresSXR.Interaction
             _hoverInteractor = (XRBaseInteractor)args.interactorObject;
             _previousHandHeight = GetLocalYPosition(args.interactableObject.transform.position);
 
-            _toBeToggledDown = !pressed;
+            _toBeToggledDown = !Pressed;
         }
 
         private void EndPress(HoverExitEventArgs args)
@@ -255,13 +265,13 @@ namespace ExPresSXR.Interaction
             _hoverInteractor = null;
             _previousHandHeight = 0.0f;
 
-            if (toggleMode)
+            if (ToggleMode)
             {
-                SetYPosition(pressed ? _yMin : _yMax);
+                SetYPosition(Pressed ? _yMin : _yMax);
             }
             else
             {
-                if (pressed)
+                if (Pressed)
                 {
                     // Emit Release if was previously pressed
                     OnReleased.Invoke();
@@ -298,9 +308,9 @@ namespace ExPresSXR.Interaction
         {
             base.ProcessInteractable(updatePhase);
 
-            bool toggledAlready = toggleMode && (_toBeToggledDown == pressed);
+            bool toggledAlready = ToggleMode && (_toBeToggledDown == Pressed);
 
-            if (_hoverInteractor != null && !inputDisabled && !toggledAlready)
+            if (_hoverInteractor != null && !InputDisabled && !toggledAlready)
             {
                 float newHandHeight = GetLocalYPosition(_hoverInteractor.transform.position);
 
@@ -308,7 +318,7 @@ namespace ExPresSXR.Interaction
 
                 _previousHandHeight = newHandHeight;
 
-                float newPosition = pushAnchor.transform.localPosition.y - handDifference;
+                float newPosition = PushAnchor.transform.localPosition.y - handDifference;
                 SetYPosition(newPosition);
 
                 CheckPress();
@@ -323,19 +333,19 @@ namespace ExPresSXR.Interaction
 
         private void SetYPosition(float position)
         {
-            Vector3 newPosition = pushAnchor.localPosition;
+            Vector3 newPosition = PushAnchor.localPosition;
             newPosition.y = Mathf.Clamp(position, _yMin, _yMax);
-            pushAnchor.localPosition = newPosition;
+            PushAnchor.localPosition = newPosition;
         }
 
         private void CheckPress()
         {
-            if (inputDisabled)
+            if (InputDisabled)
             {
                 return;
             }
 
-            if (!toggleMode)
+            if (!ToggleMode)
             {
                 CheckRegularPress();
             }
@@ -349,15 +359,19 @@ namespace ExPresSXR.Interaction
         private void CheckRegularPress()
         {
             bool isDown = IsInDownPosition();
+            float timeSinceLastPress = Time.time - _lastTimePressed;
+            float timeSinceLastRelease = Time.time - _lastTimePressed;
 
-            if (isDown && !pressed)
+            if (isDown && !Pressed && timeSinceLastPress >= _repressTimeout)
             {
                 _pressed = true;
+                _lastTimePressed = Time.time;
                 OnPressed.Invoke();
             }
-            else if (!isDown && pressed)
+            else if (!isDown && Pressed && timeSinceLastRelease >= _repressTimeout)
             {
                 _pressed = false;
+                _lastTimeReleased = Time.time;
                 OnReleased.Invoke();
             }
         }
@@ -370,16 +384,24 @@ namespace ExPresSXR.Interaction
                 return;
             }
 
-            if (!pressed)
+            float timeSinceLastPress = Time.time - _lastTimePressed;
+            if (timeSinceLastPress < _repressTimeout)
+            {
+                return;
+            }
+
+            if (!Pressed)
             {
                 _pressed = true;
                 SetYPosition(_yMin);
+                _lastTimePressed = Time.time;
                 OnTogglePressed.Invoke();
                 PlayToggledDownSound();
             }
-            else if (pressed)
+            else if (Pressed)
             {
                 _pressed = false;
+                _lastTimeReleased = Time.time;
                 OnToggleReleased.Invoke();
                 PlayToggledUpSound();
             }
@@ -388,22 +410,22 @@ namespace ExPresSXR.Interaction
         /// <summary>
         /// Plays the `pressedSound`, if assigned.
         /// </summary>
-        public void PlayPressedSound() => PlaySound(pressedSound);
+        public void PlayPressedSound() => PlaySound(PressedSound);
 
         /// <summary>
         /// Plays the `releasedSound`, if assigned.
         /// </summary>
-        public void PlayReleasedSound() => PlaySound(releasedSound);
+        public void PlayReleasedSound() => PlaySound(ReleasedSound);
 
         /// <summary>
         /// Plays the `toggledDownSound`, if assigned.
         /// </summary>
-        public void PlayToggledDownSound() => PlaySound(toggledDownSound);
+        public void PlayToggledDownSound() => PlaySound(ToggledDownSound);
 
         /// <summary>
         /// Plays the `toggledUpSound`, if assigned.
         /// </summary>
-        public void PlayToggledUpSound() => PlaySound(toggledUpSound);
+        public void PlayToggledUpSound() => PlaySound(ToggledUpSound);
 
         /// <summary>
         /// Plays the provided clip with the provided AudioPlayer.
@@ -432,7 +454,7 @@ namespace ExPresSXR.Interaction
 
         private bool IsInDownPosition()
         {
-            float downPct = (pushAnchor.transform.localPosition.y - _yMin) / (_yMax - _yMin);
+            float downPct = (PushAnchor.transform.localPosition.y - _yMin) / (_yMax - _yMin);
             downPct = Mathf.Clamp(downPct, 0.0f, 1.0f);
 
             return downPct <= PRESS_PCT;
@@ -462,7 +484,7 @@ namespace ExPresSXR.Interaction
 
         private void OnValidate()
         {
-            colliderSize = _colliderSize;
+            ColliderSize = _colliderSize;
         }
 
         /// <summary>

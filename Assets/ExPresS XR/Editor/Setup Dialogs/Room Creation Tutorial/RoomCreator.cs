@@ -37,14 +37,14 @@ namespace ExPresSXR.Editor.SetupDialogs
         private EditorCoroutine _errorCoroutine;
 
 
-        public virtual string uxmlName
+        public virtual string UxmlName
         {
             get => "Assets/ExPresS XR/Editor/Setup Dialogs/Room Creation Tutorial/room-creation-form.uxml";
         }
 
         public void OnEnable()
         {
-            VisualTreeAsset original = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlName);
+            VisualTreeAsset original = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UxmlName);
             original.CloneTree(rootVisualElement);
 
             _contentRootForm = rootVisualElement.Q<VisualElement>("room-creation-form");

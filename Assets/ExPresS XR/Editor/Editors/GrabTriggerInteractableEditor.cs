@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.XR.Interaction.Toolkit;
+
 using ExPresSXR.Interaction;
 
 
@@ -12,7 +12,7 @@ using ExPresSXR.Interaction;
 //     /// Custom editor for an <see cref="GrabTriggerInteractable"/>.
 //     /// </summary>
     [CustomEditor(typeof(GrabTriggerInteractable), true), CanEditMultipleObjects]
-    public class GrabTriggerInteractableEditor : XRBaseInteractableEditor
+    public class GrabTriggerInteractableEditor : UnityEditor.XR.Interaction.Toolkit.Interactables.XRBaseInteractableEditor
     {
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="GrabTriggerInteractable.hoveredMaterial"/>.</summary>
         protected SerializedProperty _hoveredMaterial;

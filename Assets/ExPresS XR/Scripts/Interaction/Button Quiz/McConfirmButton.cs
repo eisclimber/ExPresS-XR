@@ -10,7 +10,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         [SerializeField]
         private QuizButton[] _answerButtons;
-        public QuizButton[] answerButtons
+        public QuizButton[] AnswerButtons
         {
             get => _answerButtons;
             set => _answerButtons = value;
@@ -30,7 +30,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 }
             }
 
-            if (allCorrect != invertedFeedback)
+            if (allCorrect != InvertedFeedback)
             {
                 OnAnsweredCorrect.Invoke();
             }

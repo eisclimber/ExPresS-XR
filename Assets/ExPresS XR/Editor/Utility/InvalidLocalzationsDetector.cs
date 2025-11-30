@@ -1,15 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Video;
-using UnityEngine.Events;
-using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
 using ExPresSXR.Localization;
-using System.Reflection;
-using ExPresSXR.Experimentation.DataGathering;
-using System.Collections;
-using Codice.CM.SEIDInfo;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using ExPresSXR.Presentation;
@@ -20,7 +13,7 @@ namespace ExPresSXR.Editor.Utility
         [MenuItem("ExPresS XR/Tools.../Localization/Find Invalid Localization Events", false, 6)]
         private static void FindInvalidLocalizations()
         {
-            GameObject[] gameObjects = Object.FindObjectsOfType<GameObject>();
+            GameObject[] gameObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
             int missingLocalizations = 0;
 
             foreach (GameObject go in gameObjects)
@@ -95,7 +88,7 @@ namespace ExPresSXR.Editor.Utility
         public static void FindNotLocalizedExhibitionDisplays()
         {
             Debug.Log("Checking ExhibitionDisplays for missing localizers.");
-            Component[] components = Object.FindObjectsOfType<Component>();
+            Component[] components = Object.FindObjectsByType<Component>(FindObjectsSortMode.None);
             int numNotLocalized = 0;
 
             foreach (Component component in components)
@@ -103,8 +96,8 @@ namespace ExPresSXR.Editor.Utility
                 if (component is ExhibitionDisplay @display)
                 {
                     // Check texts (if exists)
-                    int requiredTextLocalizers = (@display.infoText != "" ? 1 : 0)
-                                                    + (@display.labelText != "" ? 1 : 0);
+                    int requiredTextLocalizers = (@display.InfoText != "" ? 1 : 0)
+                                                    + (@display.LabelText != "" ? 1 : 0);
 
                     int stringLocalizations = component.GetComponents<LocalizeStringEvent>().Length;
                     if (stringLocalizations < requiredTextLocalizers)
@@ -114,7 +107,7 @@ namespace ExPresSXR.Editor.Utility
                     }
 
                     // Check video
-                    if (@display.infoVideoClip != null && !component.TryGetComponent<LocalizeVideoClipEvent>(out _))
+                    if (@display.InfoVideoClip != null && !component.TryGetComponent<LocalizeVideoClipEvent>(out _))
                     {
                         Debug.LogWarning($"Found not localized ExhibitionDisplay {component}. You might want to add a LocalizeVideoClipEvent to localize its audio clip.");
                     }
@@ -140,7 +133,7 @@ namespace ExPresSXR.Editor.Utility
         public static void FindNotLocalizedComponents<TComponent, TLocalizer>() where TComponent : Component where TLocalizer : Object
         {
             Debug.Log($"Checking {typeof(TComponent).Name}s for missing {typeof(TLocalizer).Name}-localizers.");
-            Component[] components = Object.FindObjectsOfType<Component>();
+            Component[] components = Object.FindObjectsByType<Component>(FindObjectsSortMode.None);
             int numNotLocalized = 0;
 
             foreach (Component component in components)

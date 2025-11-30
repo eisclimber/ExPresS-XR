@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction.ButtonQuiz;
 
@@ -38,18 +37,18 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.LabelField("Sounds", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("answeredCorrectSound"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("answeredIncorrectSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("AnsweredCorrectSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("AnsweredIncorrectSound"), true);
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("pressedSound"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("releasedSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("PressedSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("ReleasedSound"), true);
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledDownSound"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledUpSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("ToggledDownSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("ToggledUpSound"), true);
             EditorGUI.indentLevel--;
         }
 
@@ -57,10 +56,10 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.LabelField("Feedback", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("correctChoice"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("feedbackDisabled"), true);
-            EditorGUI.BeginDisabledGroup(quizButton.feedbackDisabled);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("invertedFeedback"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("CorrectChoice"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("FeedbackDisabled"), true);
+            EditorGUI.BeginDisabledGroup(quizButton.FeedbackDisabled);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("InvertedFeedback"), true);
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
 

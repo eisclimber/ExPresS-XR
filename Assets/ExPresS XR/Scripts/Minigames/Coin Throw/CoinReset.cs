@@ -4,8 +4,6 @@
     Refactoring & Integration: Luca Dreiling
     Purpose: Resets an object to a position upon entering the trigger.
 */
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinThrow

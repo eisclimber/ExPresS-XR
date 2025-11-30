@@ -15,11 +15,14 @@ public class IKLegs : MonoBehaviour
     [SerializeField]
     private LayerMask _layerMask = FLOOR_LAYER_MASK;
 
-    private Animator animator;
+    private Animator _animator;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        if (!TryGetComponent( out _animator))
+        {
+            Debug.Log("Did not find an animator for the IK Legs to animate.", this);
+        }
     }
 
     private void OnAnimatorIK(int layerIdx)
@@ -31,12 +34,12 @@ public class IKLegs : MonoBehaviour
 
         foreach(AvatarIKGoal foot in feet)
         {
-            Vector3 footPosition = animator.GetIKPosition(foot);
+            Vector3 footPosition = _animator.GetIKPosition(foot);
             Physics.Raycast(footPosition + Vector3.up, Vector3.down, out RaycastHit hit, MAX_RAYCAST_DISTANCE, _layerMask);
             if (hit.collider != null)
             {
-                animator.SetIKPositionWeight(foot, 1);
-                animator.SetIKPosition(foot, hit.point + (Vector3.up * _feetOffset));
+                _animator.SetIKPositionWeight(foot, 1);
+                _animator.SetIKPosition(foot, hit.point + (Vector3.up * _feetOffset));
             }
         }
     }

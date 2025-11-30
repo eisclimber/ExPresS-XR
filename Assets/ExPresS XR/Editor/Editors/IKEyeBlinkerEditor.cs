@@ -58,7 +58,7 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawBlinkRangeProperties()
         {
-            if (blinker.blinkBehavior == IKEyeBlinker.BlinkBehavior.RandomInterval)
+            if (blinker.BlinkBehavior == IKEyeBlinker.BlinkBehaviorType.RandomInterval)
             {
                 EditorGUILayout.LabelField("Random Blink", EditorStyles.boldLabel);
 

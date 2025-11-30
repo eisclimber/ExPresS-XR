@@ -36,16 +36,27 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Update Displayed Prefab only when necessary
                 serializedObject.ApplyModifiedProperties();
-                targetScript.displayedPrefab = targetScript.displayedPrefab;
+                targetScript.DisplayedPrefab = targetScript.DisplayedPrefab;
             }
+
+            EditorGUILayout.Space();
+            
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObject"), true);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectSpeed"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectAxis"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectRandomizeRotation"), true);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
+
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
             if (EditorGUI.EndChangeCheck())
             {
                 // Update Displayed Prefab so non-interactable may be removed
                 serializedObject.ApplyModifiedProperties();
-                targetScript.displayedPrefab = targetScript.displayedPrefab;
+                targetScript.DisplayedPrefab = targetScript.DisplayedPrefab;
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
             EditorGUI.indentLevel--;
@@ -66,13 +77,13 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            targetScript.usePhysicalInfoButton = EditorGUILayout.Toggle("Use Physical Info Button", targetScript.usePhysicalInfoButton);
+            targetScript.UsePhysicalInfoButton = EditorGUILayout.Toggle("Use Physical Info Button", targetScript.UsePhysicalInfoButton);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_toggleInfo"), true);
-            if (!targetScript.toggleInfo)
+            if (!targetScript.ToggleInfo)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_showInfoDuration"), true);
 
-                if (targetScript.showInfoDuration < targetScript.GetInfoActivationDuration())
+                if (targetScript.ShowInfoDuration < targetScript.GetInfoActivationDuration())
                 {
                     EditorGUILayout.HelpBox("The value of 'showInfoDuration' is less than the length of your Video/Audio Clip."
                         + "The Info will be shown until the Clip is completed.", MessageType.Info);

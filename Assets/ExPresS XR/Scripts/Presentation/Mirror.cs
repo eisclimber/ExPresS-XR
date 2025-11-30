@@ -9,7 +9,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("Aspect ratio of the mirror plane in px.")]
         [SerializeField]
         private Vector2 _pixelRatio = new(1080, 1080);
-        public Vector2 pixelRatio
+        public Vector2 PixelRatio
         {
             get => _pixelRatio;
             set
@@ -23,7 +23,7 @@ namespace ExPresSXR.Presentation
         [Range(0.0f, 1.0f)]
         [SerializeField]
         private float _resolutionPct = 1.0f;
-        public float resolutionPct
+        public float ResolutionPct
         {
             get => _resolutionPct;
             set
@@ -36,7 +36,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("If enabled require providing a custom RenderTexture. Else it will be generated automatically.")]
         [SerializeField]
         private bool _provideCustomRenderTexture;
-        public bool provideCustomRenderTexture
+        public bool ProvideCustomRenderTexture
         {
             get => _provideCustomRenderTexture;
             set
@@ -49,7 +49,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("The RenderTexture that is used when 'provideCustomRenderTexture' is enabled.")]
         [SerializeField]
         private RenderTexture _customRenderTexture;
-        public RenderTexture customRenderTexture
+        public RenderTexture CustomRenderTexture
         {
             get => _customRenderTexture;
             set
@@ -64,7 +64,7 @@ namespace ExPresSXR.Presentation
                 + "Some example textures can be found at 'ExPresS XR/Sprites/Mirror/'.")]
         [SerializeField]
         private Texture _overlayTexture;
-        public Texture overlayTexture
+        public Texture OverlayTexture
         {
             get => _overlayTexture;
             set
@@ -78,7 +78,7 @@ namespace ExPresSXR.Presentation
         [Range(0.0f, 1.0f)]
         [SerializeField]
         private float _overlayStrength = 0.5f;
-        public float overlayStrength
+        public float OverlayStrength
         {
             get => _overlayStrength;
             set
@@ -91,7 +91,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("Color that is mixed with the displayed image to change it's color. Use white for no tinting.")]
         [SerializeField]
         private Color _tintColor = Color.white;
-        public Color tintColor
+        public Color TintColor
         {
             get => _tintColor;
             set
@@ -105,7 +105,7 @@ namespace ExPresSXR.Presentation
         [Range(0.0f, 1.0f)]
         [SerializeField]
         private float _brighteningFactor = 0.0f;
-        public float brighteningFactor
+        public float BrighteningFactor
         {
             get => _brighteningFactor;
             set
@@ -128,7 +128,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("Reference to the Mirror's Plane.")]
         [SerializeField]
         private Transform _mirrorPlane;
-        public Transform mirrorPlane
+        public Transform MirrorPlane
         {
             get => _mirrorPlane;
             set
@@ -139,9 +139,9 @@ namespace ExPresSXR.Presentation
         }
 
         [Tooltip("The RenderTexture currently used for the mirror.")]
-        public RenderTexture activeRenderTexture
+        public RenderTexture ActiveRenderTexture
         {
-            get => provideCustomRenderTexture ? _customRenderTexture : _generatedRenderTexture;
+            get => ProvideCustomRenderTexture ? _customRenderTexture : _generatedRenderTexture;
         }
 
         [Tooltip("The pixel size of the currently used RenderTexture. Returns (0,0) if no texture is set.")]
@@ -149,7 +149,7 @@ namespace ExPresSXR.Presentation
         {
             get
             {
-                Texture renderTexture = activeRenderTexture;
+                Texture renderTexture = ActiveRenderTexture;
                 return renderTexture != null ? 
                         new Vector2(renderTexture.width, renderTexture.height) : 
                         Vector2.zero;
@@ -159,7 +159,7 @@ namespace ExPresSXR.Presentation
         [Tooltip("The material used to display the RenderTexture.")]
         [SerializeField]
         private Material _mirrorMaterial;
-        public Material mirrorMaterial
+        public Material MirrorMaterial
         {
             get => _mirrorMaterial;
             set
@@ -209,7 +209,7 @@ namespace ExPresSXR.Presentation
 
         private void UpdateRenderTextures()
         {
-            if (!provideCustomRenderTexture)
+            if (!ProvideCustomRenderTexture)
             {
                 Vector3 texturePixels = _pixelRatio * _resolutionPct;
 
@@ -227,11 +227,11 @@ namespace ExPresSXR.Presentation
 
         private void DisplayActiveRenderTexture()
         {
-            if (activeRenderTexture != null)
+            if (ActiveRenderTexture != null)
             {
                 if (_mirrorCamera != null)
                 {
-                    _mirrorCamera.targetTexture = activeRenderTexture;
+                    _mirrorCamera.targetTexture = ActiveRenderTexture;
                 }
                 else
                 {
@@ -240,7 +240,7 @@ namespace ExPresSXR.Presentation
 
                 if (_mirrorMaterial != null)
                 {
-                    _mirrorMaterial.mainTexture = activeRenderTexture;
+                    _mirrorMaterial.mainTexture = ActiveRenderTexture;
                 }
                 else
                 {
@@ -250,7 +250,7 @@ namespace ExPresSXR.Presentation
             else
             {
                 Debug.LogWarning("Active RenderTexture is null. The mirror won't display anything."
-                        + (provideCustomRenderTexture ?
+                        + (ProvideCustomRenderTexture ?
                             "Be sure to provide your own renderTexture or disable the provideCustomRenderTexture." : 
                             "")
                 );
@@ -267,7 +267,7 @@ namespace ExPresSXR.Presentation
                 if (_mirrorMaterial != null)
                 {
                     // Change displayed mirror texture
-                    _mirrorMaterial.mainTexture = activeRenderTexture;
+                    _mirrorMaterial.mainTexture = ActiveRenderTexture;
                     _mirrorMaterial.color = _tintColor;
 
                     // Add/Enable overlay as metallic
@@ -284,10 +284,10 @@ namespace ExPresSXR.Presentation
                     }
 
                     // Brighten up image using emission
-                    if (brighteningFactor > 0)
+                    if (BrighteningFactor > 0)
                     {
                         _mirrorMaterial.EnableKeyword("_EMISSION");
-                        _mirrorMaterial.SetTexture("_EmissionMap", activeRenderTexture);
+                        _mirrorMaterial.SetTexture("_EmissionMap", ActiveRenderTexture);
                         _mirrorMaterial.SetColor("_EmissionColor", Color.white * _brighteningFactor);
                     }
                     else

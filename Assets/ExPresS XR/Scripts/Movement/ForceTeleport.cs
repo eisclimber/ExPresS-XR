@@ -21,9 +21,10 @@ namespace ExPresSXR.Movement
     	
         /// <summary>
         /// Default target for teleporting without having to provide a transform.
+        /// If none provided, uses it's own transform.
         /// </summary>
         [SerializeField]
-        [Tooltip("Default target for teleporting without having to provide a transform.")]
+        [Tooltip("Default target for teleporting without having to provide a transform. If none provided, uses it's own transform.")]
         private Transform _defaultTarget;
 
         private CharacterController _playerController;
@@ -48,27 +49,34 @@ namespace ExPresSXR.Movement
         private void Start()
         {
             _playerController = _rig.GetComponent<CharacterController>();
+
+            if (_defaultTarget == null)
+            {
+                _defaultTarget = transform;
+            }
         }
 
         private void OnEnable()
         {
-            _rig.fadeRect.OnFadeToColorCompleted.AddListener(OnFadeToColorCompleted);
+            _rig.FadeRect.OnFadeToColorCompleted.AddListener(OnFadeToColorCompleted);
         }
 
 
         private void OnDisable()
         {
-            _rig.fadeRect.OnFadeToColorCompleted.RemoveListener(OnFadeToColorCompleted);
+            _rig.FadeRect.OnFadeToColorCompleted.RemoveListener(OnFadeToColorCompleted);
         }
 
         /// <summary>
         /// Teleports the player to the default target without fade.
         /// </summary>
+        [ContextMenu("Perform default Teleport without fade")]
         public void DefaultTeleportTo() => TeleportTo(_defaultTarget, false);
 
         /// <summary>
         /// Teleports the player to the default target with fade.
         /// </summary>
+        [ContextMenu("Perform default Teleport with fade")]
         public void DefaultTeleportToWithFade() => TeleportTo(_defaultTarget, true);
 
         /// <summary>
@@ -94,7 +102,7 @@ namespace ExPresSXR.Movement
             {
                 TeleportTo(target.position, target.rotation, fade);
             }
-            {
+            else {
                 TeleportTo(Vector3.zero, Quaternion.identity, fade);
             }
         } 
@@ -129,7 +137,7 @@ namespace ExPresSXR.Movement
             if (_pendingTeleport)
             {
                 _pendingTeleport = false;
-                _rig.FadeToClear(true);
+                _rig.FadeToClearInstant();
             }
         }
 

@@ -23,7 +23,7 @@ namespace ExPresSXR.Interaction
         {
             base.OnEnable();
 
-            SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
+            SetHighlighterVisible(ShowHighlighter && startingSelectedInteractable == null);
 
             selectEntered.AddListener(HandleSubmission);
         }

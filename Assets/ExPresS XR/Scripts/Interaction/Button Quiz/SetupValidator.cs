@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.Video;
-using UnityEngine.UI;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
@@ -45,26 +40,26 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 return false;
             }
 
-            bool needsAllDisplays = config.questionType == QuestionType.DifferingTypes || config.feedbackType == FeedbackType.DifferingTypes;
+            bool needsAllDisplays = config.QuestionType == QuestionType.DifferingTypes || config.FeedbackType == FeedbackType.DifferingTypes;
             string errorMessageAppendix = needsAllDisplays ? " QuestionType or FeedbackType is set to DifferingTypes so all Displays must be provided." : "";
 
-            if (quiz.displayText == null
+            if (quiz.DisplayText == null
                         && (needsAllDisplays
-                                || config.questionType == QuestionType.Text
-                                || config.feedbackType == FeedbackType.Text
-                                || config.feedbackPrefixEnabled))
+                                || config.QuestionType == QuestionType.Text
+                                || config.FeedbackType == FeedbackType.Text
+                                || config.FeedbackPrefixEnabled))
             {
                 Debug.LogError("Config requires Label-Reference but was null." + errorMessageAppendix);
                 return false;
             }
-            else if (quiz.displayAnchor == null
-                        && (needsAllDisplays || config.questionType == QuestionType.Object || config.feedbackType == FeedbackType.Object))
+            else if (quiz.DisplayAnchor == null
+                        && (needsAllDisplays || config.QuestionType == QuestionType.Object || config.FeedbackType == FeedbackType.Object))
             {
                 Debug.LogError("Config requires GameObject-Reference but was null." + errorMessageAppendix);
                 return false;
             }
-            else if (quiz.displayPlayer == null
-                        && (needsAllDisplays || config.questionType == QuestionType.Video || config.feedbackType == FeedbackType.Video))
+            else if (quiz.DisplayPlayer == null
+                        && (needsAllDisplays || config.QuestionType == QuestionType.Video || config.FeedbackType == FeedbackType.Video))
             {
                 Debug.LogError("Config requires VideoPlayer-Reference but was null." + errorMessageAppendix);
                 return false;
@@ -80,15 +75,15 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 return false;
             }
 
-            int numRequiredButtons = Mathf.Min((int)config.answersAmount, ButtonQuiz.NUM_ANSWERS);
+            int numRequiredButtons = Mathf.Min((int)config.AnswersAmount, ButtonQuiz.NUM_ANSWERS);
 
-            if (quiz.buttons.Length < numRequiredButtons)
+            if (quiz.Buttons.Length < numRequiredButtons)
             {
                 Debug.LogError("Not enough button references found. The 'buttons'-Array is not long enough.");
                 return false;
             }
 
-            if (config.quizMode == QuizMode.MultipleChoice && quiz.mcConfirmButton == null)
+            if (config.QuizMode == QuizMode.MultipleChoice && quiz.McConfirmButton == null)
             {
                 Debug.LogError("QuizMode is 'MultipleChoice' but no 'MultipleChoiceConfirmButton' was provided.");
                 return false;
@@ -96,15 +91,15 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
             for (int i = 0; i < numRequiredButtons; i++)
             {
-                if (quiz.buttons[i] == null)
+                if (quiz.Buttons[i] == null)
                 {
                     Debug.LogError($"The required QuizButton-Reference with index {i} was null.");
                     return false;
                 }
 
-                for (int j = i + 1; j < quiz.buttons.Length; j++)
+                for (int j = i + 1; j < quiz.Buttons.Length; j++)
                 {
-                    if (quiz.buttons[i] == quiz.buttons[j])
+                    if (quiz.Buttons[i] == quiz.Buttons[j])
                     {
                         Debug.LogError($"The QuizButtons with indices {i} and {j} should not be equal.");
                         return false;
@@ -116,7 +111,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         private static bool AreQuestionsValid(ButtonQuizConfig config)
         {
-            if (config.questions != null && config.questions.Length < ButtonQuiz.MIN_QUESTIONS)
+            if (config.Questions != null && config.Questions.Length < ButtonQuiz.MIN_QUESTIONS)
             {
                 Debug.LogError("Config has not enough questions or is null.");
                 return false;
@@ -125,11 +120,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
             bool validationOk = true;
 
-            for (int i = 0; i < config.questions.Length; i++)
+            for (int i = 0; i < config.Questions.Length; i++)
             {
-                ButtonQuizQuestion question = config.questions[i];
+                ButtonQuizQuestion question = config.Questions[i];
                 // Ensure the correct idx for each question
-                question.itemIdx = i;
+                question.ItemIdx = i;
 
                 // Check question (Do NOT use lazy evaluation to check even if validationOk is already false => Check everything)
                 validationOk &= CheckQuestionQuestions(config, question, i + 1);
@@ -143,19 +138,19 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         private static bool CheckQuestionQuestions(ButtonQuizConfig config, ButtonQuizQuestion question, int questionIdx)
         {
             bool questionOk = true;
-            if (config.questionType == QuestionType.Object && question.questionObject == null)
+            if (config.QuestionType == QuestionType.Object && question.QuestionObject == null)
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has QuestionType 'Object' but the object was null.");
                 questionOk = false;
             }
 
-            if (config.questionType == QuestionType.Text && string.IsNullOrEmpty(question.questionText))
+            if (config.QuestionType == QuestionType.Text && string.IsNullOrEmpty(question.QuestionText))
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has QuestionType 'Text' but it was null or empty.");
                 questionOk = false;
             }
 
-            if (config.questionType == QuestionType.Video && question.questionVideo == null && string.IsNullOrEmpty(question.questionVideoUrl))
+            if (config.QuestionType == QuestionType.Video && question.QuestionVideo == null && string.IsNullOrEmpty(question.QuestionVideoUrl))
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has QuestionType 'Video' but the clip was null.");
                 questionOk = false;
@@ -167,13 +162,13 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         private static bool CheckQuestionAnswers(ButtonQuizConfig config, ButtonQuizQuestion question, int questionIdx)
         {
             bool answersOk = true;
-            int requiredAnswers = Mathf.Min((int)config.answersAmount + 1, ButtonQuiz.NUM_ANSWERS);
+            int requiredAnswers = Mathf.Min((int)config.AnswersAmount + 1, ButtonQuiz.NUM_ANSWERS);
             bool foundEmptyAnswer = false;
             int correctAnswerCount = 0;
             for (int j = 0; j < requiredAnswers; j++)
             {
-                bool invalidObjectAnswer = question.answerObjects.Length <= j || question.answerObjects[j] == null;
-                bool invalidTextAnswer = question.answerTexts == null || question.answerTexts.Length <= j || string.IsNullOrEmpty(question.answerTexts[j]);
+                bool invalidObjectAnswer = question.AnswerObjects.Length <= j || question.AnswerObjects[j] == null;
+                bool invalidTextAnswer = question.AnswerTexts == null || question.AnswerTexts.Length <= j || string.IsNullOrEmpty(question.AnswerTexts[j]);
 
                 // In case of differing answer amounts skip empty questions
                 if (foundEmptyAnswer && (!invalidObjectAnswer || !invalidTextAnswer))
@@ -189,28 +184,28 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 }
                 
 
-                if (config.answersAmount != AnswersAmount.DifferingAmounts && config.answerType == AnswerType.Object && invalidObjectAnswer)
+                if (config.AnswersAmount != AnswersAmount.DifferingAmounts && config.AnswerType == AnswerType.Object && invalidObjectAnswer)
                 {
                     Debug.LogError($"Question {questionIdx}'s answer {j + 1} was invalid, Answer type is 'Object' but answerObject is null.");
                     answersOk = false;
                 }
 
-                if (config.answersAmount != AnswersAmount.DifferingAmounts && config.answerType == AnswerType.Text && invalidTextAnswer)
+                if (config.AnswersAmount != AnswersAmount.DifferingAmounts && config.AnswerType == AnswerType.Text && invalidTextAnswer)
                 {
                     Debug.LogError($"Question {questionIdx}'s answer {j + 1} was invalid, Answer type is 'Text' but answerText is null or empty.");
                     answersOk = false;
                 }
 
                 // Count correct answers
-                correctAnswerCount += question.correctAnswers[j] ? 1 : 0;
+                correctAnswerCount += question.CorrectAnswers[j] ? 1 : 0;
             }
 
-            if (config.quizMode == QuizMode.SingleChoice && correctAnswerCount != 1)
+            if (config.QuizMode == QuizMode.SingleChoice && correctAnswerCount != 1)
             {
                 Debug.LogError($"The Quiz is Single Choice but Question {questionIdx} did not have exactly one answer but had {correctAnswerCount}.");
                 answersOk = false;
             }
-            else if (config.quizMode == QuizMode.MultipleChoice && correctAnswerCount < 1)
+            else if (config.QuizMode == QuizMode.MultipleChoice && correctAnswerCount < 1)
             {
                 Debug.LogWarning($"The Quiz is Multiple Choice but Question {questionIdx} did not have at least one answer.");
                 answersOk = false;
@@ -223,19 +218,19 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         private static bool CheckQuestionFeedback(ButtonQuizConfig config, ButtonQuizQuestion question, int questionIdx)
         {
             bool feedbackOk = true;
-            if (config.feedbackType == FeedbackType.Object && question.feedbackObject == null)
+            if (config.FeedbackType == FeedbackType.Object && question.FeedbackObject == null)
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has FeedbackType 'Object' but the object was null.");
                 feedbackOk = false;
             }
 
-            if (config.feedbackType == FeedbackType.Text && string.IsNullOrEmpty(question.feedbackText))
+            if (config.FeedbackType == FeedbackType.Text && string.IsNullOrEmpty(question.FeedbackText))
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has FeedbackType 'Text' but it was null or empty.");
                 feedbackOk = false;
             }
 
-            if (config.feedbackType == FeedbackType.Video && question.feedbackVideo == null && string.IsNullOrEmpty(question.feedbackVideoUrl))
+            if (config.FeedbackType == FeedbackType.Video && question.FeedbackVideo == null && string.IsNullOrEmpty(question.FeedbackVideoUrl))
             {
                 Debug.LogErrorFormat($"Question {questionIdx}'s has FeedbackType 'Video' but the clip was null.");
                 feedbackOk = false;

@@ -10,10 +10,10 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             // Get existing open window or if none, make a new one:
             EditorWindow window = GetWindow<InverseKinematicsTutorial>("Inverse Kinematics Tutorial");
-            window.minSize = defaultWindowSize;
+            window.minSize = DefaultWindowSize;
         }
 
-        public override string uxmlName
+        public override string UxmlName
         {
             get => "Assets/ExPresS XR/Editor/Setup Dialogs/Inverse Kinematics Tutorial/inverse-kinematics-tutorial.uxml";
         }

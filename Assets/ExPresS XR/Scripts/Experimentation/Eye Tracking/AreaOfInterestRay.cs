@@ -36,25 +36,25 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
         // The raycast on the focussed AOI or the last hit after bouncing
         private RaycastHit _currentRaycastHit;
-        public RaycastHit currentRaycastHit
+        public RaycastHit CurrentRaycastHit
         {
             get => _currentRaycastHit;
         }
 
         private Vector3 _currentEyePos;
-        public Vector3 currentEyePos
+        public Vector3 CurrentEyePos
         {
             get => _currentEyePos;
         }
 
         private Vector3 _currentEyeDir;
-        public Vector3 currentEyeDir
+        public Vector3 CurrentEyeDir
         {
             get => _currentEyeDir;
         }
 
         private List<Vector3> _bounceTracePath;
-        public List<Vector3> bounceTracePath
+        public List<Vector3> BounceTracePath
         {
             get => _bounceTracePath;
         }
@@ -65,25 +65,25 @@ namespace ExPresSXR.Experimentation.EyeTracking
         // AOI ID
 
         private string _focusedAoiId = NO_AOI_DETECTED_ID;
-        public string focusedAoiId
+        public string FocusedAoiId
         {
             get => _focusedAoiId;
             private set => _focusedAoiId = value;
         }
 
-        public bool hasAOIFocussed
+        public bool HasAOIFocussed
         { 
             get => IsColliderAoi(_currentRaycastHit.collider);
         }
 
         // Time the current aoi (or none) was focussed
-        public float aoiFocusDuration
+        public float AoiFocusDuration
         {
             get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
         }
 
         // (UNIX) Start Time of the focus on an aoi
-        public float aoiFocusStart
+        public float AoiFocusStart
         {
             get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
         }
@@ -194,7 +194,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
             Collider collider = _currentRaycastHit.collider;
             if (collider != null && collider.TryGetComponent(out AreaOfInterest aoi))
             {
-                ChangeFocussedAoiId(aoi.aoiId);
+                ChangeFocussedAoiId(aoi.AoiId);
             }
             else
             {
@@ -207,7 +207,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
             // Only emit the event when ids change
             if (_focusedAoiId != newAoiId)
             {
-                float finalFocusDuration = aoiFocusDuration;
+                float finalFocusDuration = AoiFocusDuration;
                 _aoiStopwatch.StartTimeMeasurement();
 
                 float newStartTime = _aoiStopwatch.startTime;
@@ -223,12 +223,12 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
         private void OnDrawGizmosSelected() {
             // Vector3 eyeEnd = _currentEyeDir * GIZMOS_RAY_MAX_LENGTH;
-            if (bounceTracePath == null || bounceTracePath.Count == 0)
+            if (BounceTracePath == null || BounceTracePath.Count == 0)
             {
                 // Something went wrong... Should not happen
                 return;
             }
-            else if (bounceTracePath.Count == 1)
+            else if (BounceTracePath.Count == 1)
             {
                 // No hits, draw ray
                 Gizmos.color = Color.red;
@@ -245,7 +245,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
                     if (i == _bounceTracePath.Count - 1)
                     {
                         // Draw last cube differently (AOI hit = green, no AOI hit = red)
-                        Gizmos.color = hasAOIFocussed ? Color.green : Color.red;
+                        Gizmos.color = HasAOIFocussed ? Color.green : Color.red;
                     }
                     Gizmos.DrawCube(_bounceTracePath[i], Vector3.one * GIZMOS_CUBE_SIZE);
                 }

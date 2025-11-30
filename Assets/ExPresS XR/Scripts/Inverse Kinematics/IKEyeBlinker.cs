@@ -11,8 +11,8 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
         [Tooltip("Determines the provider used for triggering blinking.")]
         [SerializeField]
-        private BlinkBehavior _blinkBehavior;
-        public BlinkBehavior blinkBehavior
+        private BlinkBehaviorType _blinkBehavior;
+        public BlinkBehaviorType BlinkBehavior
         {
             get => _blinkBehavior;
         }
@@ -65,7 +65,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
                 Debug.LogError("IKEyeBlinker requires a SkinnedMeshRenderer to work.");
             }
 
-            if (_blinkBehavior == BlinkBehavior.RandomInterval)
+            if (_blinkBehavior == BlinkBehaviorType.RandomInterval)
             {
                 StartCoroutine(EyeBlinkingLoop());
             }
@@ -77,7 +77,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
         private void UpdateEyeBlink()
         {
-            if (_blinkBehavior == BlinkBehavior.EyeTracking)
+            if (_blinkBehavior == BlinkBehaviorType.EyeTracking)
             {
                 _meshRenderer.SetBlendShapeWeight(_leftBlinkIdx, (1.0f - _leftEyeOpennessRef.action.ReadValue<float>()) * MAX_BLEND_VALUE);
                 _meshRenderer.SetBlendShapeWeight(_rightBlinkIdx, (1.0f - _rightEyeOpennessRef.action.ReadValue<float>()) * MAX_BLEND_VALUE);
@@ -116,7 +116,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
             }
         }
 
-        public enum BlinkBehavior
+        public enum BlinkBehaviorType
         {
             EyeTracking,
             RandomInterval

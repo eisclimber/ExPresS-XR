@@ -5,12 +5,11 @@
     Purpose: (Re-)Sets the positions of coins and optionally randomizes the fake coin.
 */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ExPresSXR.Interaction;
 using System.Linq;
 using System;
+using ExPresSXR.Interaction.Feedback;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
@@ -71,7 +70,7 @@ namespace ExPresSXR.Minigames.CoinScale
                 // Reset Rigidbodys velocity
                 if (coin.TryGetComponent(out Rigidbody rb))
                 {
-                    rb.velocity = Vector3.zero;
+                    rb.linearVelocity = Vector3.zero;
                 }
 
                 // Prevent Sound emitters to play a sound if reset

@@ -194,13 +194,13 @@ namespace ExPresSXR.Minigames.Archery.Arrow
         {
             if (_baseRb != null)
             {
-                _baseRb.velocity = Vector3.zero;
+                _baseRb.linearVelocity = Vector3.zero;
                 _baseRb.angularVelocity = Vector3.zero;
             }
 
             if (_tipRb != null)
             {
-                _tipRb.velocity = Vector3.zero;
+                _tipRb.linearVelocity = Vector3.zero;
                 _tipRb.angularVelocity = Vector3.zero;
                 _tipRb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }

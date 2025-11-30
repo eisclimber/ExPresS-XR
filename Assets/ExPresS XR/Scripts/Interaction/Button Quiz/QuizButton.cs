@@ -10,24 +10,24 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <summary>
         /// If the question currently displayed is correct.
         /// </summary>
-        public bool correctChoice;
+        public bool CorrectChoice;
 
         /// <summary>
         /// If feedback should be given when pressing the button.
         /// </summary>
-        public bool feedbackDisabled;
+        public bool FeedbackDisabled;
 
         /// <summary>
         /// If the feedback should be inverted (if feedback is given).
         /// </summary>
-        public bool invertedFeedback;
+        public bool InvertedFeedback;
 
         /// <summary>
         /// The string displayed as the answer.
         /// </summary>
         [SerializeField]
         private string _answerText;
-        public string answerText
+        public string AnswerText
         {
             get => _answerText;
             set
@@ -41,7 +41,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 else if (!string.IsNullOrEmpty(_answerText))
                 {
                     Debug.LogWarning("An AnswerText was provided for a QuizButton but it does not have a "
-                                        + "`_feedbackTextLabel` configured. Please check your setup!", this);
+                                        + "`_feedbackTextLabel` configured. Please check your setup!");
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         [SerializeField]
         private GameObject _answerObject;
-        public GameObject answerObject
+        public GameObject AnswerObject
         {
             get => _answerObject;
             set
@@ -60,7 +60,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
                 if (_feedbackObjectSocket != null)
                 {
-                    _feedbackObjectSocket.putBackPrefab = _answerObject;
+                    _feedbackObjectSocket.PutBackPrefab = _answerObject;
                 }
                 else if (_answerObject != null)
                 {
@@ -89,7 +89,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// Used to not emit inputDisabled Events after an answer was given.
         /// </summary>
         private bool _overrideInputDisabledEvents;
-        public bool overrideInputDisabledEvents
+        public bool OverrideInputDisabledEvents
         {
             get => _overrideInputDisabledEvents;
             set => _overrideInputDisabledEvents = value;
@@ -100,13 +100,13 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// Sound played when the button pressed with a correct answer.
         /// </summary>
         [Tooltip("Sound played when the button pressed with a correct answer.")]
-        public AudioClip answeredCorrectSound;
+        public AudioClip AnsweredCorrectSound;
 
         /// <summary>
         /// Sound played when the button pressed with an incorrect answer.
         /// </summary>
         [Tooltip("Sound played when the button pressed with an incorrect answer.")]
-        public AudioClip answeredIncorrectSound;
+        public AudioClip AnsweredIncorrectSound;
 
 
         /// <summary>
@@ -153,14 +153,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         {
             base.Start();
 
-            if (answerText != null && answerText != "")
+            if (AnswerText != null && AnswerText != "")
             {
-                answerText = _answerText;
+                AnswerText = _answerText;
             }
 
-            if (answerObject != null)
+            if (AnswerObject != null)
             {
-                answerObject = _answerObject;
+                AnswerObject = _answerObject;
             }
 
             if (_answerFeedbackAudioPlayer == null)
@@ -192,12 +192,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             {
                 // May occur only during differing-answers-multiple-choice-quizzes
                 // Disable Button as it is not used or part of the answer (=> answerCorrect)
-                inputDisabled = true;
+                InputDisabled = true;
             }
 
-            this.answerText = answerText;
-            this.answerObject = answerObject;
-            this.correctChoice = correctChoice;
+            AnswerText = answerText;
+            AnswerObject = answerObject;
+            CorrectChoice = correctChoice;
 
             RestartTriggerTimer();
         }
@@ -207,11 +207,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         public void ClearAnswer()
         {
-            answerText = "";
-            correctChoice = false;
-            if (answerObject != null)
+            AnswerText = "";
+            CorrectChoice = false;
+            if (AnswerObject != null)
             {
-                answerObject = null;
+                AnswerObject = null;
             }
 
             if (_answerFeedbackAudioPlayer != null)
@@ -227,10 +227,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         protected virtual void NotifyChoice()
         {
-            if (!feedbackDisabled && !toggleMode)
+            if (!FeedbackDisabled && !ToggleMode)
             {
                 // (not invertedFeedback and correct) or (inverted and not correct)
-                if (correctChoice != invertedFeedback)
+                if (CorrectChoice != InvertedFeedback)
                 {
                     OnAnsweredCorrect.Invoke();
                 }
@@ -248,12 +248,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public bool GiveMultipleChoiceFeedback()
         {
             // Buttons must be in toggle mode for MC
-            if (!toggleMode)
+            if (!ToggleMode)
             {
                 return false;
             }
 
-            bool correctlyToggled = pressed == correctChoice;
+            bool correctlyToggled = Pressed == CorrectChoice;
 
             return correctlyToggled;
         }
@@ -261,12 +261,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <summary>
         /// Plays the `answeredCorrectSound`, if assigned.
         /// </summary>
-        public void PlayAnsweredCorrectSound() => PlaySound(answeredCorrectSound, _answerFeedbackAudioPlayer);
+        public void PlayAnsweredCorrectSound() => PlaySound(AnsweredCorrectSound, _answerFeedbackAudioPlayer);
 
         /// <summary>
         /// Plays the `answeredIncorrectSound`, if assigned.
         /// </summary>
-        public void PlayAnsweredIncorrectSound() => PlaySound(answeredIncorrectSound, _answerFeedbackAudioPlayer);
+        public void PlayAnsweredIncorrectSound() => PlaySound(AnsweredIncorrectSound, _answerFeedbackAudioPlayer);
 
         /// <summary>
         /// Calls the base function only if not disabled via `_overrideInputDisabledEvents`.

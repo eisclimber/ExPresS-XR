@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEditor.XR.Interaction.Toolkit;
+
 using ExPresSXR.Interaction;
 
 namespace ExPresSXR.Editor.Editors
@@ -12,7 +12,7 @@ namespace ExPresSXR.Editor.Editors
     /// Custom editor for an <see cref="ExPresSXRGrabInteractable"/>.
     /// </summary>
     [CustomEditor(typeof(ExPresSXRGrabInteractable), true), CanEditMultipleObjects]
-    public class ExPresSXRGrabInteractableEditor : XRGrabInteractableEditor
+    public class ExPresSXRGrabInteractableEditor : UnityEditor.XR.Interaction.Toolkit.Interactables.XRGrabInteractableEditor
     {
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.AllowGrab"/>.</summary>
         protected SerializedProperty _allowGrab;

@@ -34,18 +34,18 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.LabelField("Buttons", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("buttons"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("mcConfirmButton"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("Buttons"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("McConfirmButton"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("Display Objects", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayText"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayAnchor"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayPlayer"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayVideoImage"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("DisplayText"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("DisplayAnchor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("DisplayPlayer"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("DisplayVideoImage"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
@@ -53,7 +53,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.LabelField("Feedback Options", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_canRestartFromAfterQuizDialog"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("afterQuizMenu"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("AfterQuizMenu"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_showQuizCompletedText"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_feedbackDuration"), true);
             EditorGUI.indentLevel--;
@@ -69,7 +69,7 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            string startButtonLabel = targetScript.quizUndergoing ? "Restart Quiz" : "Start Quiz";
+            string startButtonLabel = targetScript.QuizUndergoing ? "Restart Quiz" : "Start Quiz";
             if (Application.isPlaying && GUILayout.Button(startButtonLabel))
             {
                 targetScript.StartQuiz();
@@ -77,7 +77,7 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            if (Application.isPlaying && targetScript.quizUndergoing && GUILayout.Button("Stop Quiz"))
+            if (Application.isPlaying && targetScript.QuizUndergoing && GUILayout.Button("Stop Quiz"))
             {
                 targetScript.StopQuiz();
             }

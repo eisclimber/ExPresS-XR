@@ -9,7 +9,7 @@ namespace ExPresSXR.Misc
     {
         [SerializeField]
         private bool _pressed = false;
-        public bool pressed
+        public bool Pressed
         {
             get => _pressed;
             set
@@ -19,8 +19,8 @@ namespace ExPresSXR.Misc
                 if (btn != null)
                 {
                     ColorBlock colors = btn.colors;
-                    colors.normalColor = pressed ? pressedColor : normalColor;
-                    colors.selectedColor = pressed ? pressedColor : normalColor;
+                    colors.normalColor = Pressed ? pressedColor : normalColor;
+                    colors.selectedColor = Pressed ? pressedColor : normalColor;
                     btn.colors = colors;
                 }
             }
@@ -51,14 +51,14 @@ namespace ExPresSXR.Misc
 
         private void ToggleButton()
         {
-            pressed = !pressed;
+            Pressed = !_pressed;
 
-            OnToggleChanged.Invoke(pressed);
+            OnToggleChanged.Invoke(_pressed);
         }
 
         private void OnValidate()
         {
-            pressed = _pressed;
+            Pressed = _pressed;
         }
     }
 

@@ -70,7 +70,7 @@ public class LocalizeDropdown : MonoBehaviour
         for (int i = 0; i < _options.Count; i++)
         {
             string localizedText = _options[i].GetLocalizedString();
-            _dropdown.options.Add(new TMP_Dropdown.OptionData(localizedText, null));
+            _dropdown.options.Add(new TMP_Dropdown.OptionData(localizedText));
         }
 
         _dropdown.value = _selectedOptionIndex;

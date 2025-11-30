@@ -24,59 +24,59 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <summary>
         /// The mode of the quiz. Either SingleChoice or MultipleChoice.
         /// </summary>
-        public QuizMode quizMode = QuizMode.SingleChoice;
+        public QuizMode QuizMode = QuizMode.SingleChoice;
         /// <summary>
         /// The ordering of the questions. Either Ordered (order of in `questions`) or Randomize.
         /// </summary>
-        public QuestionOrdering questionOrdering = QuestionOrdering.Randomize;
+        public QuestionOrdering QuestionOrdering = QuestionOrdering.Randomize;
         /// <summary>
         /// Number of answer (and required buttons). Either One, Two, Three, Four or Differing.
         /// </summary>
-        public AnswersAmount answersAmount = AnswersAmount.Two;
+        public AnswersAmount AnswersAmount = AnswersAmount.Two;
         /// <summary>
         /// The type of questions (what is displayed). Either Object, Text, Video or DifferingTypes (any of the first three).
         /// </summary>
-        public AnswerOrdering answerOrdering = AnswerOrdering.Randomize;
+        public AnswerOrdering AnswerOrdering = AnswerOrdering.Randomize;
         /// <summary>
         /// The type of questions (what is displayed). Either Object, Text, Video or DifferingTypes (any of the first three).
         /// </summary>
-        public QuestionType questionType = QuestionType.Text;
+        public QuestionType QuestionType = QuestionType.Text;
         /// <summary>
         ///  The type of answers (what is displayed *on* the buttons). Either Object, Text or DifferingTypes (any of the first two).
         /// </summary>
-        public AnswerType answerType = AnswerType.Text;
+        public AnswerType AnswerType = AnswerType.Text;
         /// <summary>
         /// The type of feedback (what is displayed). Either ShowAnswers, Object, Text, Video or DifferingTypes (any of the first three).
         /// </summary>
-        public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
+        public FeedbackMode FeedbackMode = FeedbackMode.AlwaysCorrect;
         /// <summary>
         /// What feedback (correct or incorrect) is shown. Either None, Always Right, Always Wrong or Random.
         /// </summary>
-        public FeedbackType feedbackType = FeedbackType.ShowAnswers;
+        public FeedbackType FeedbackType = FeedbackType.ShowAnswers;
 
        /// <summary>
        /// If enabled, will add the `feedbackPrefixText` (plus a '\n') to every feedback.
        /// </summary>
-        public bool feedbackPrefixEnabled = false;
+        public bool FeedbackPrefixEnabled = false;
         /// <summary>
         /// The prefix added to every feedback if `feedbackPrefixEnabled` is enabled.
         /// </summary>
-        public string feedbackPrefixText = DEFAULT_FEEDBACK_PREFIX;
+        public string FeedbackPrefixText = DEFAULT_FEEDBACK_PREFIX;
 
         /// <summary>
         /// The exact prefix added to every question (including a new line).
         /// Returns an empty string if no prefix should be added.
         /// </summary>
-        public string usedFeedbackPrefix
+        public string UsedFeedbackPrefix
         {
-            get => feedbackPrefixEnabled ? feedbackPrefixText + "\n" : "";
+            get => FeedbackPrefixEnabled ? FeedbackPrefixText + "\n" : "";
         }
 
         /// <summary>
         /// The questions that need to be answered to complete the quiz.  
         /// If `questionOrdering` is set to `Ordered`, the questions are displayed in the order of the array.
         /// </summary>
-        public ButtonQuizQuestion[] questions = new ButtonQuizQuestion[0];
+        public ButtonQuizQuestion[] Questions = new ButtonQuizQuestion[0];
 
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                             "feedbackObject", "feedbackText")]
         public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
-            string[] questionExports = questions.Select(q => q.GetQuestionCsvExportValues(sep)).ToArray();
+            string[] questionExports = Questions.Select(q => q.GetQuestionCsvExportValues(sep)).ToArray();
             return string.Join("\n", questionExports);
         }
 
@@ -113,14 +113,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public List<object> GetConfigCsvExportValuesList()
             => new()
                 {
-                    quizMode,
-                    questionOrdering,
-                    answersAmount,
-                    answerOrdering,
-                    questionType,
-                    answerType,
-                    feedbackMode,
-                    feedbackType
+                    QuizMode,
+                    QuestionOrdering,
+                    AnswersAmount,
+                    AnswerOrdering,
+                    QuestionType,
+                    AnswerType,
+                    FeedbackMode,
+                    FeedbackType
                 };
 
 

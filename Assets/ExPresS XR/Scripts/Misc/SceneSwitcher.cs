@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.Events;
 using ExPresSXR.Rig;
 
 namespace ExPresSXR.Misc
@@ -15,7 +10,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         [SerializeField]
         private bool _useFade = true;
-        public bool useFade
+        public bool UseFade
         {
             get => _useFade;
         }
@@ -58,7 +53,7 @@ namespace ExPresSXR.Misc
             // Disable interactions while exiting
             if (_rig != null)
             {
-                _rig.interactionOptions = InteractionOptions.Nothing;
+                _rig.InteractionOptions = InteractionOptions.Nothing;
             }
 
             if (_useFade)

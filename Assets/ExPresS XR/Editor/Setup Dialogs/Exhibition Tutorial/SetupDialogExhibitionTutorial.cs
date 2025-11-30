@@ -9,10 +9,10 @@ public class SetupDialogExhibitionTutorial : SetupDialogBase
     {
         // Get existing open window or if none, make a new one:
         EditorWindow window = GetWindow<SetupDialogExhibitionTutorial>("Create Exhibitions");
-        window.minSize = defaultWindowSize;
+        window.minSize = DefaultWindowSize;
     }
 
-    public override string uxmlName
+    public override string UxmlName
     {
         get => "Assets/ExPresS XR/Editor/Setup Dialogs/Exhibition Tutorial/exhibition-tutorial.uxml";
     }

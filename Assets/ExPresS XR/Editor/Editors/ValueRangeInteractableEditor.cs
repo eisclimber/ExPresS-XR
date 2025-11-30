@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction.ValueRangeInteractable;
-using UnityEditor.XR.Interaction.Toolkit;
+
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -14,7 +14,7 @@ namespace ExPresSXR.Editor.Editors
     /// </summary>
     [CustomEditor(typeof(ValueRangeInteractable<,,>), true)]
     [CanEditMultipleObjects]
-    public class ValueRangeInteractableEditor : XRBaseInteractableEditor
+    public class ValueRangeInteractableEditor : UnityEditor.XR.Interaction.Toolkit.Interactables.XRBaseInteractableEditor
     {
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._ValueDescriptor"/>.</summary>
         protected SerializedProperty _valueDescriptor;

@@ -16,7 +16,7 @@ namespace ExPresSXR.Localization
         /// Returns the index of the current selected locale or -1 if not initialized.
         /// </summary>
         private int _currentLocaleIdx;
-        public int currentLocaleIdx
+        public int CurrentLocaleIdx
         {
             get => _initialized ? _currentLocaleIdx : -1;
         }
@@ -25,7 +25,7 @@ namespace ExPresSXR.Localization
         /// Returns the number of available locale or -1 if not initialized.
         /// </summary>
         private int _numLocales = 1;
-        public int numLocales
+        public int NumLocales
         {
             get => _initialized ? _numLocales : -1;
         }
@@ -34,7 +34,7 @@ namespace ExPresSXR.Localization
         /// If the language server was initialized, meaning locales are replaced and can be switched.
         /// </summary>
         private bool _initialized;
-        public bool initialized
+        public bool Initialized
         {
             get => _initialized;
         }
@@ -69,10 +69,7 @@ namespace ExPresSXR.Localization
             _numLocales = LocalizationSettings.AvailableLocales.Locales.Count;
 
             // Update displayed locale if ready
-            if (!_initialized)
-            {
-                SetLocale(_currentLocaleIdx);
-            }
+            SetLocale(_currentLocaleIdx);
         }
 
         /// <summary>

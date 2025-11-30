@@ -13,49 +13,49 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         public const float ERROR_MESSAGE_DURATION = 3.0f;
 
-        public static Vector2 defaultWindowSize
+        public static Vector2 DefaultWindowSize
         {
             get => new(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         }
 
-        protected VisualElement contentContainer;
-        protected VisualElement stepsContainer;
+        protected VisualElement ContentContainer;
+        protected VisualElement StepsContainer;
 
         [SerializeField]
         protected int _currentStep = 0;
-        public int currentStep
+        public int CurrentStep
         {
             get => _currentStep;
             set
             {
-                contentContainer.ElementAt((int)_currentStep).style.display = DisplayStyle.None;
-                contentContainer.ElementAt((int)value).style.display = DisplayStyle.Flex;
+                ContentContainer.ElementAt(_currentStep).style.display = DisplayStyle.None;
+                ContentContainer.ElementAt(value).style.display = DisplayStyle.Flex;
 
                 // Unselect the previous step
-                SetStepButtonToggled(false, (int)_currentStep + 1);
+                SetStepButtonToggled(false, _currentStep + 1);
                 // Select the next step
-                SetStepButtonToggled(true, (int)value + 1);
+                SetStepButtonToggled(true, value + 1);
 
                 _currentStep = value;
             }
         }
 
 
-        public virtual string uxmlName
+        public virtual string UxmlName
         {
             get => "uxmlNameNotSpecified";
         }
 
         public virtual void OnEnable()
         {
-            VisualTreeAsset original = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlName);
+            VisualTreeAsset original = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UxmlName);
             original.CloneTree(rootVisualElement);
-            contentContainer = rootVisualElement.Q<VisualElement>("content-container");
-            stepsContainer = rootVisualElement.Q<VisualElement>("steps-container");
+            ContentContainer = rootVisualElement.Q<VisualElement>("content-container");
+            StepsContainer = rootVisualElement.Q<VisualElement>("steps-container");
 
             // Ensure the correct step is shown after loading
-            contentContainer.ElementAt(0).style.display = DisplayStyle.None;
-            currentStep = _currentStep;
+            ContentContainer.ElementAt(0).style.display = DisplayStyle.None;
+            CurrentStep = _currentStep;
 
             AssignStepContainersRefs();
 
@@ -65,11 +65,11 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         protected void SwitchStepValue(VisualElement stepContainer, int oldValue, int newValue)
         {
-            stepContainer.Q<Button>("choice-" + (oldValue + 1) + "-button").style.backgroundColor = Color.black;
-            stepContainer.Q<Button>("choice-" + (newValue + 1) + "-button").style.backgroundColor = Color.gray;
+            stepContainer.Q<Button>($"choice-{oldValue + 1}-button").style.backgroundColor = Color.black;
+            stepContainer.Q<Button>($"choice-{oldValue + 1}-button").style.backgroundColor = Color.gray;
 
-            stepContainer.Q<Label>("choice-" + (oldValue + 1) + "-description").style.display = DisplayStyle.None;
-            stepContainer.Q<Label>("choice-" + (newValue + 1) + "-description").style.display = DisplayStyle.Flex;
+            stepContainer.Q<Label>($"choice-{oldValue + 1}-description").style.display = DisplayStyle.None;
+            stepContainer.Q<Label>($"choice-{oldValue + 1}-description").style.display = DisplayStyle.Flex;
         }
 
 
@@ -100,39 +100,39 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private void BindSteps()
         {
-            for (int i = 0; i < stepsContainer.childCount; i++)
+            for (int i = 0; i < StepsContainer.childCount; i++)
             {
-                Button stepButton = stepsContainer.Q<Button>("step-" + (i + 1));
+                Button stepButton = StepsContainer.Q<Button>("step-" + (i + 1));
                 if (stepButton != null)
                 {
                     // Create a copy of i here to make the value persistent 
                     int j = i;
-                    stepButton.clickable.clicked += () => { currentStep = j; };
+                    stepButton.clickable.clicked += () => { CurrentStep = j; };
 
                     // Set the button's toggle
-                    stepButton.style.backgroundColor = i == currentStep ? Color.gray : Color.black;
+                    stepButton.style.backgroundColor = i == _currentStep ? Color.gray : Color.black;
                 }
             }
         }
 
         private void BindControlButtons()
         {
-            contentContainer.Query<Button>("back-button").ForEach((button) =>
+            ContentContainer.Query<Button>("back-button").ForEach((button) =>
             {
-                button.clickable.clicked += () => { currentStep--; };
+                button.clickable.clicked += () => { CurrentStep--; };
             });
 
-            contentContainer.Query<Button>("next-button").ForEach((nextButton) =>
+            ContentContainer.Query<Button>("next-button").ForEach((nextButton) =>
             {
-                nextButton.clickable.clicked += () => { currentStep++; };
+                nextButton.clickable.clicked += () => { CurrentStep++; };
             });
 
-            contentContainer.Query<Button>("finish-button").ForEach((nextButton) =>
+            ContentContainer.Query<Button>("finish-button").ForEach((nextButton) =>
             {
                 nextButton.clickable.clicked += FinalizeSetup;
             });
 
-            contentContainer.Query<Button>("close-button").ForEach((nextButton) =>
+            ContentContainer.Query<Button>("close-button").ForEach((nextButton) =>
             {
                 nextButton.clickable.clicked += Close;
             });
@@ -158,7 +158,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             for (int i = minStep; i < maxStep + 1; i++)
             {
-                Button stepButton = stepsContainer.Q<Button>("step-" + i);
+                Button stepButton = StepsContainer.Q<Button>("step-" + i);
                 if (stepButton != null)
                 {
                     stepButton.SetEnabled(enabled);
@@ -172,7 +172,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             for (int i = minStep; i < maxStep + 1; i++)
             {
-                Button stepButton = stepsContainer.Q<Button>("step-" + i);
+                Button stepButton = StepsContainer.Q<Button>($"step-{i}");
                 if (stepButton != null)
                 {
                     stepButton.style.backgroundColor = toggled ? Color.gray : Color.black;

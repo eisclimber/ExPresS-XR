@@ -1,22 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 using ExPresSXR.Rig;
+using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(HandControllerManager))]
 [CanEditMultipleObjects]
 public class HandControllerManagerEditor : Editor
 {
-    HandControllerManager targetScript;
+    protected HandControllerManager handController;
 
-    private static bool _showMovementOptions = false;
 
     private static bool _showObjectRefs = false;
 
-    void OnEnable()
+    protected void OnEnable()
     {
-        targetScript = (HandControllerManager)target;
+        handController = (HandControllerManager)target;
     }
 
     public override void OnInspectorGUI()
@@ -25,14 +22,14 @@ public class HandControllerManagerEditor : Editor
 
         DrawScript();
         EditorGUILayout.Space();
-        DrawMovement();
-        EditorGUILayout.Space();
-        DrawInteraction();
-        EditorGUILayout.Space();
-        DrawAutoHand();
-        EditorGUILayout.Space();
+        DrawExternallyControlledInfo();
+        EditorGUI.BeginDisabledGroup(handController.ExternallyControlled);
+        DrawMovementOptions();
+        DrawInteractionOptions();
         DrawControllerActions();
-        EditorGUILayout.Space();
+        EditorGUI.EndDisabledGroup();
+        DrawEvents();
+            
         DrawObjectRefs();
 
         serializedObject.ApplyModifiedProperties();
@@ -48,92 +45,64 @@ public class HandControllerManagerEditor : Editor
         EditorGUI.EndDisabledGroup();
     }
 
-    protected virtual void DrawMovement()
+    protected virtual void DrawExternallyControlledInfo()
     {
-        _showMovementOptions = EditorGUILayout.BeginFoldoutHeaderGroup(_showMovementOptions, "Movement Options");
-
-        if (_showMovementOptions)
+        if (handController.ExternallyControlled)
         {
-            EditorGUI.indentLevel++;
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportationEnabled"), true);
-                EditorGUI.indentLevel++;
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportCancelEnabled"), true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_chooseTeleportForwardEnabled"), true);
-                EditorGUI.indentLevel--;
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_smoothTurnEnabled"), true);
-
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_smoothMoveEnabled"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_smoothTurnEnabled"), true);
-
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_grabMoveEnabled"), true);
-            EditorGUI.indentLevel--;
+            EditorGUILayout.HelpBox("This component is controlled externally by an xr rig. "
+            + "Please change the config via the rig or unlink its reference to this component.", MessageType.Info);
         }
-        EditorGUILayout.EndFoldoutHeaderGroup();
+    }
 
-        EditorGUILayout.Space();
-
+    protected virtual void DrawMovementOptions()
+    {
+        EditorGUILayout.LabelField("Movement Options", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-            EditorGUILayout.HelpBox("Be Careful! These might be controlled by it's parent XR Rig.", MessageType.Info);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_smoothMotionEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_smoothTurnEnabled"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_chooseTeleportForwardEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportCancelEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_nearFarEnableTeleportDuringNearInteraction"), true);
         EditorGUI.indentLevel--;
     }
 
-    protected virtual void DrawInteraction()
+    protected virtual void DrawInteractionOptions()
     {
         EditorGUILayout.LabelField("Interaction Options", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_directInteractionEnabled"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeInteractionEnabled"), true);
-            EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiPokeInteractionEnabled"), true);
-
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_showPokeReticle"), true);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    // Prevents warnings for enabling GameObjects during OnValidate()
-                    serializedObject.ApplyModifiedProperties();
-                    targetScript.EditorRevalidate();
-                }
-
-            EditorGUI.indentLevel--;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractionEnabled"), true);
-            EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiRayInteractionEnabled"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayAnchorControlEnabled"), true);
-            EditorGUI.indentLevel--;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_nearInteractionEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_farInteractionEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_farAnchorControlEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_farUiInteractionEnabled"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeInteractionEnabled"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokePointOnHover"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeUiInteractionEnabled"), true);
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_uiScrollingEnabled"), true);
         EditorGUI.indentLevel--;
     }
 
-    protected virtual void DrawAutoHand()
-    {
-        EditorGUILayout.LabelField("Auto Hand Configuration", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelMode"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModelCollisions"), true);
-        if (targetScript.handModelCollisions)
-        {
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_afterGrabWaitDuration"), true);
-            EditorGUI.indentLevel--;
-        }
-        EditorGUI.indentLevel--;
-    }
 
     protected virtual void DrawControllerActions()
     {
         EditorGUILayout.LabelField("Controller Actions", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_TeleportModeActivate"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_TeleportModeCancel"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Turn"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_SnapTurn"), true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Move"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportMode"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportModeCancel"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_turn"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_snapTurn"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_move"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_uIScroll"), true);
+        EditorGUI.indentLevel--;
+    }
+
+    protected virtual void DrawEvents()
+    {
+        EditorGUILayout.LabelField("Events", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractorChanged"), true);
         EditorGUI.indentLevel--;
     }
 
@@ -145,18 +114,16 @@ public class HandControllerManagerEditor : Editor
         {
             EditorGUI.indentLevel++;
             EditorGUILayout.LabelField("Handle these with care! Thank you:)");
-
             EditorGUILayout.Space();
-
-            EditorGUILayout.LabelField("Interactors", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_ManipulationInteractionGroup"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_nearFarInteractor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeInteractor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportInteractor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractor"), true);
             EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DirectInteractor"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_RayInteractor"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_TeleportInteractor"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_PokeInteractor"), true);
-            EditorGUI.indentLevel--;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_attachController"), true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportValidReticle"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportInvalidReticle"), true);
             EditorGUI.indentLevel--;
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

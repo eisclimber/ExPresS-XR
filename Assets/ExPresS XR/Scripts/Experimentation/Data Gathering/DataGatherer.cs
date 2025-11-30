@@ -27,7 +27,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private ExportType _dataExportType;
-        public ExportType dataExportType
+        public ExportType DataExportType
         {
             get => _dataExportType;
             set => _dataExportType = value;
@@ -35,28 +35,28 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
-        private SeparatorType _separatorType;
-        public SeparatorType separatorType
+        private SeparatorType _separator;
+        public SeparatorType Separator
         {
-            get => _separatorType;
+            get => _separator;
             set
             {
-                _separatorType = value;
+                _separator = value;
 
-                if (_separatorType == SeparatorType.Comma)
+                if (_separator == SeparatorType.Comma)
                 {
-                    columnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
+                    ColumnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
                 }
-                else if (_separatorType == SeparatorType.Semicolon)
+                else if (_separator == SeparatorType.Semicolon)
                 {
-                    columnSeparator = CsvUtility.SEMICOLON_COLUMN_SEPARATOR;
+                    ColumnSeparator = CsvUtility.SEMICOLON_COLUMN_SEPARATOR;
                 }
             }
         }
 
         [SerializeField]
         private bool _escapeColumns = true;
-        public bool escapeColumns
+        public bool EscapeColumns
         {
             get => _escapeColumns;
             set => _escapeColumns = value;
@@ -65,16 +65,16 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private char _columnSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
-        public char columnSeparator
+        public char ColumnSeparator
         {
             get => _columnSeparator;
             set
             {
                 _columnSeparator = value;
 
-                foreach (DataGatheringBinding binding in dataBindings)
+                foreach (DataGatheringBinding binding in DataBindings)
                 {
-                    binding.headerSeparator = _columnSeparator;
+                    binding.HeaderSeparator = _columnSeparator;
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private string _localExportPath = DEFAULT_EXPORT_FILE_NAME;
-        public string localExportPath
+        public string LocalExportPath
         {
             get => _localExportPath;
             set
@@ -100,7 +100,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private bool _newExportFilePerPlaythrough = true;
-        public bool newExportFilePerPlaythrough
+        public bool NewExportFilePerPlaythrough
         {
             get => _newExportFilePerPlaythrough;
             set => _newExportFilePerPlaythrough = value;
@@ -109,7 +109,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private string _httpExportPath;
-        public string httpExportPath
+        public string HttpExportPath
         {
             get => _httpExportPath;
             set => _httpExportPath = value;
@@ -119,7 +119,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         // Triggers
         [SerializeField]
         private bool _exportDuringUpdateEnabled;
-        public bool exportDuringUpdateEnabled
+        public bool ExportDuringUpdateEnabled
         {
             get => _exportDuringUpdateEnabled;
             set => _exportDuringUpdateEnabled = value;
@@ -128,7 +128,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private InputActionReference[] _inputActionTrigger;
-        public InputActionReference[] inputActionTrigger
+        public InputActionReference[] InputActionTrigger
         {
             get => _inputActionTrigger;
             set => _inputActionTrigger = value;
@@ -137,7 +137,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private bool _periodicExportEnabled = false;
-        public bool periodicExportEnabled
+        public bool PeriodicExportEnabled
         {
             get => _periodicExportEnabled;
             set
@@ -158,7 +158,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private float _periodicExportTime = 1.0f;
-        public float periodicExportTime
+        public float PeriodicExportTime
         {
             get => _periodicExportTime;
             set => _periodicExportTime = value;
@@ -170,7 +170,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         [Tooltip("Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). "
                     + "Its value is relative to the computers local timezone.")]
         private bool _includeHumanReadableTimestamp = true;
-        public bool includeHumanReadableTimestamp
+        public bool IncludeHumanReadableTimestamp
         {
             get => _includeHumanReadableTimestamp;
             set => _includeHumanReadableTimestamp = value;
@@ -178,7 +178,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private bool _includeUnixTimestamp = true;
-        public bool includeUnixTimestamp
+        public bool IncludeUnixTimestamp
         {
             get => _includeUnixTimestamp;
             set => _includeUnixTimestamp = value;
@@ -187,7 +187,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private bool _includeUnityTime = true;
-        public bool includeUnityTime
+        public bool IncludeUnityTime
         {
             get => _includeUnityTime;
             set => _includeUnityTime = value;
@@ -195,7 +195,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private bool _includeDeltaTime = true;
-        public bool includeDeltaTime
+        public bool IncludeDeltaTime
         {
             get => _includeDeltaTime;
             set => _includeDeltaTime = value;
@@ -204,7 +204,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private DataGatheringBinding[] _dataBindings = new DataGatheringBinding[0];
-        public DataGatheringBinding[] dataBindings
+        public DataGatheringBinding[] DataBindings
         {
             get => _dataBindings;
             set => _dataBindings = value;
@@ -213,7 +213,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         [SerializeField]
         private InputActionReference[] _inputActionDataBindings = new InputActionReference[0];
-        public InputActionReference[] inputActionDataBindings
+        public InputActionReference[] InputActionDataBindings
         {
             get => _inputActionDataBindings;
             set => _inputActionDataBindings = value;
@@ -241,7 +241,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void FixedUpdate()
         {
-            if (exportDuringUpdateEnabled)
+            if (ExportDuringUpdateEnabled)
             {
                 ExportNewCSVLine();
             }
@@ -257,13 +257,13 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
 
             string data = GetExportCSVLine();
-            if (dataExportType == ExportType.Http || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Http || DataExportType == ExportType.Both)
             {
                 // Debug.Log($"Posting '{httpExportPath}' to '{data}'.");
-                StartCoroutine(PostHttpData(httpExportPath, data));
+                StartCoroutine(PostHttpData(HttpExportPath, data));
             }
 
-            if (dataExportType == ExportType.Local || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Local || DataExportType == ExportType.Both)
             {
                 // Debug.Log($"Saving '{data}' at '{GetLocalSavePath()}'.");
                 _outputWriter.WriteLine(data);
@@ -283,18 +283,18 @@ namespace ExPresSXR.Experimentation.DataGathering
             List<string> bindingHeaders = new(prependedHeaders.Where(s => !string.IsNullOrEmpty(s)));
             List<bool> escapeIndividual = new(Enumerable.Repeat(_escapeColumns, bindingHeaders.Count));
             // Add data bindings
-            bindingHeaders.AddRange(_dataBindings.Select(v => v != null ? v.exportColumnName : ""));
+            bindingHeaders.AddRange(_dataBindings.Select(v => v != null ? v.ExportColumnName : ""));
             escapeIndividual.AddRange(_dataBindings.Select(v => !(v?.IsBoundToMultiColumnValue() ?? false) && _escapeColumns));
             // Add InputAction bindings
             bindingHeaders.AddRange(_inputActionDataBindings.Select(v => v != null ? v.name : ""));
             escapeIndividual.AddRange(Enumerable.Repeat(_escapeColumns, bindingHeaders.Count - escapeIndividual.Count));
             
             // Convert to string
-            if (escapeColumns)
+            if (EscapeColumns)
             {
-                return CsvUtility.JoinAsCsv(bindingHeaders, escapeIndividual, columnSeparator);
+                return CsvUtility.JoinAsCsv(bindingHeaders, escapeIndividual, ColumnSeparator);
             }
-            return CsvUtility.JoinAsCsv(bindingHeaders.ToArray(), columnSeparator, false);
+            return CsvUtility.JoinAsCsv(bindingHeaders.ToArray(), ColumnSeparator, false);
         }
 
 
@@ -317,11 +317,11 @@ namespace ExPresSXR.Experimentation.DataGathering
             escapeIndividual.AddRange(Enumerable.Repeat(false, bindingValues.Count - escapeIndividual.Count));
 
             // Convert to string
-            if (escapeColumns)
+            if (EscapeColumns)
             {
-                return CsvUtility.JoinAsCsv(bindingValues, escapeIndividual, columnSeparator);
+                return CsvUtility.JoinAsCsv(bindingValues, escapeIndividual, ColumnSeparator);
             }
-            return CsvUtility.JoinAsCsv(bindingValues.ToArray(), columnSeparator, false);
+            return CsvUtility.JoinAsCsv(bindingValues.ToArray(), ColumnSeparator, false);
         }
 
         private IEnumerator PostHttpData(string url, string data)
@@ -358,18 +358,18 @@ namespace ExPresSXR.Experimentation.DataGathering
                 _outputWriter.Close();
             }
 
-            if (dataExportType == ExportType.Http || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Http || DataExportType == ExportType.Both)
             {
-                StartCoroutine(PostHttpData(httpExportPath, GetExportCSVHeader()));
+                StartCoroutine(PostHttpData(HttpExportPath, GetExportCSVHeader()));
             }
 
-            if (dataExportType == ExportType.Local || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Local || DataExportType == ExportType.Both)
             {
-                if (!HasExportableFileEnding(localExportPath))
+                if (!HasExportableFileEnding(LocalExportPath))
                 {
                     Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
                             + "Appending '.csv' and creating a new file if necessary. "
-                            + $"New path is: '{localExportPath}.csv'.");
+                            + $"New path is: '{LocalExportPath}.csv'.");
                     _localExportPath += ".csv";
                 }
 
@@ -438,7 +438,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void ConnectInputActions()
         {
-            foreach (InputActionReference actionRef in inputActionTrigger)
+            foreach (InputActionReference actionRef in InputActionTrigger)
             {
                 if (actionRef != null)
                 {
@@ -449,7 +449,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void DisconnectInputActions()
         {
-            foreach (InputActionReference actionRef in inputActionTrigger)
+            foreach (InputActionReference actionRef in InputActionTrigger)
             {
                 if (actionRef != null)
                 {
@@ -462,7 +462,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         #region Coroutines & Callback
         private void TryStartPeriodicCoroutine()
         {
-            if (periodicExportEnabled && Application.isPlaying)
+            if (PeriodicExportEnabled && Application.isPlaying)
             {
                 if (_periodicExportTime > 0)
                 {
@@ -494,7 +494,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         #region Utility
         public string GetLocalSavePath()
         {
-            string path = _newExportFilePerPlaythrough ? InsertBeforeExportPostfixes(localExportPath, $"_{timestampSafe}") : localExportPath;
+            string path = _newExportFilePerPlaythrough ? InsertBeforeExportPostfixes(LocalExportPath, $"_{timestampSafe}") : LocalExportPath;
 
 #if UNITY_EDITOR
             return Path.Combine(Application.dataPath, path);
@@ -536,8 +536,8 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void OnValidate()
         {
-            separatorType = _separatorType;
-            columnSeparator = _columnSeparator;
+            Separator = _separator;
+            ColumnSeparator = _columnSeparator;
             ValidateBindings(false);
         }
         #endregion

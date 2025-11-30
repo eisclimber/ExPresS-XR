@@ -3,6 +3,8 @@ using ExPresSXR.Misc;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
 {
@@ -87,7 +89,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 localPivotPos,
                 Vector3.up,
                 Vector3.right,
-                atTransform
+                atTransform,
+                "0.0",
+                "1.0",
+                "{0:F1}"
             );
         }
 

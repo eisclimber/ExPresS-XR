@@ -88,13 +88,13 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.LabelField("Sounds", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("pressedSound"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("releasedSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("PressedSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("ReleasedSound"), true);
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledDownSound"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toggledUpSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("ToggledDownSound"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("ToggledUpSound"), true);
             EditorGUI.indentLevel--;
         }
 
@@ -140,8 +140,8 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUILayout.LabelField("Do not change these! Thank you:)");
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("baseAnchor"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("pushAnchor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("BaseAnchor"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("PushAnchor"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_defaultAudioPlayer"), true);
             
             EditorGUI.indentLevel--;

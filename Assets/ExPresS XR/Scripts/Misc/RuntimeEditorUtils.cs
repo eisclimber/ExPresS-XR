@@ -29,7 +29,7 @@ namespace ExPresSXR.Misc
         {
 #if UNITY_EDITOR
             List<XRDisplaySubsystem> displaySubsystems = new();
-            SubsystemManager.GetInstances(displaySubsystems);
+            SubsystemManager.GetSubsystems(displaySubsystems);
 
             // Update in-editor display mode
             if (displaySubsystems.Count > 0)

@@ -214,14 +214,14 @@ namespace ExPresSXR.Misc
         /// <param name="sceneLoadedCallback"> A callback that will be executed after the new scene loaded. Can be null. </param>
         public static void ChangeSceneWithFade(ExPresSXRRig rig, int sceneIdx, bool keepRig, Action sceneLoadedCallback)
         {
-            if (rig == null || rig.fadeRect == null)
+            if (rig == null || rig.FadeRect == null)
             {
                 // No Rig => No Fade Out
                 SwitchSceneAsync(sceneIdx, sceneLoadedCallback);
             }
             else
             {
-                FadeRect fadeRect = rig.fadeRect;
+                FadeRect fadeRect = rig.FadeRect;
 
                 if (keepRig)
                 {
@@ -242,7 +242,7 @@ namespace ExPresSXR.Misc
                     {
                         if (TryFindExPresSXRRigReference(out ExPresSXRRig newRig))
                         {
-                            fadeRect = newRig.fadeRect;
+                            fadeRect = newRig.FadeRect;
                         }
                         else
                         {
@@ -257,8 +257,8 @@ namespace ExPresSXR.Misc
                     }
 
                     fadeRect.OnFadeToClearCompleted.AddListener(SwitchCleanup);
-                    fadeRect.FadeToColor(true);
-                    fadeRect.FadeToClear(false);
+                    fadeRect.FadeToColorInstant();
+                    fadeRect.FadeToClear();
 
                     // Invoke Callback if provided
                     sceneLoadedCallback?.Invoke();
@@ -271,7 +271,7 @@ namespace ExPresSXR.Misc
 
 
                 // Fade out and switch scene
-                fadeRect.FadeToColor(false);
+                fadeRect.FadeToColor();
                 fadeRect.OnFadeToColorCompleted.AddListener(SceneSwitcher);
             }
         }

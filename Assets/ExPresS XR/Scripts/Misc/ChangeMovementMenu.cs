@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ExPresSXR.Rig;
@@ -44,21 +43,31 @@ namespace ExPresSXR.Misc
         [Serializable]
         public class MovementMenuData
         {
-            public TMP_Dropdown inputMethodDropdown;
-            public TMP_Dropdown movementPresetDropdown;
-            public Toggle directInteractionToggle;
-            public Toggle pokeInteractionToggle;
-            public Toggle pokeUiToggle;
-            public Toggle rayInteractionToggle;
-            public Toggle rayAnchorControlToggle;
-            public Toggle rayUiInteractionToggle;
-            public Toggle chooseTpForwardToggle;
-            public Toggle cancelTeleportToggle;
-            public Toggle climbToggle;
-            public Toggle climbControlGravityToggle;
-            public TMP_Dropdown handModelDropdown;
-            public Toggle headCollisionPushbackToggle;
-            public Toggle headCollisionIndicatorToggle;
+            public TMP_Dropdown InputMethodDropdown;
+            public TMP_Dropdown MovementPresetDropdown;
+            public TMP_Dropdown HandModelDropdown;
+
+
+            public Toggle NearInteractionToggle;
+            public Toggle FarInteractionToggle;
+            public Toggle FarAnchorControlToggle;
+            public Toggle FarUiToggle;
+            public Toggle PokeInteractionToggle;
+            public Toggle PokePointOnHoverToggle;
+            public Toggle PokeUiToggle;
+            public Toggle UiScrollingToggle;
+
+            public Toggle ChooseTeleportForwardToggle;
+            public Toggle CancelTeleportToggle;
+            public Toggle TeleportWhileGrabbingToggle;
+            public Toggle JumpToggle;
+            public Toggle GravityToggle;
+            public Toggle ClimbToggle;
+            public Toggle ClimbTeleportToggle;
+
+            
+            public Toggle HeadCollisionIndicatorToggle;
+            public Toggle HeadCollisionPushbackToggle;
 
 
             /// <summary>
@@ -85,24 +94,28 @@ namespace ExPresSXR.Misc
             /// <param name="searchTransform">Transform to search from.</param>
             public void FindMissing(Transform searchTransform)
             {
-                FindComponentIfMissing(ref inputMethodDropdown, searchTransform, "Input Method Dropdown");
-                FindComponentIfMissing(ref movementPresetDropdown, searchTransform, "Movement Method Dropdown");
+                FindComponentIfMissing(ref InputMethodDropdown, searchTransform, "Input Method Dropdown");
+                FindComponentIfMissing(ref MovementPresetDropdown, searchTransform, "Movement Preset Dropdown");
+                FindComponentIfMissing(ref HandModelDropdown, searchTransform, "Hand Model Dropdown");
 
-                FindComponentIfMissing(ref directInteractionToggle, searchTransform, "Direct Interaction Toggle");
-                FindComponentIfMissing(ref pokeInteractionToggle, searchTransform, "Poke Interaction Toggle");
-                FindComponentIfMissing(ref pokeUiToggle, searchTransform, "Poke UI Enabled Toggle");
-                FindComponentIfMissing(ref rayInteractionToggle, searchTransform, "Ray Interaction Toggle");
-                FindComponentIfMissing(ref rayAnchorControlToggle, searchTransform, "Ray Anchor Control Toggle");
-                FindComponentIfMissing(ref rayUiInteractionToggle, searchTransform, "Ray UI Interaction Toggle");
-                FindComponentIfMissing(ref chooseTpForwardToggle, searchTransform, "Choose TP Forward Toggle");
-                FindComponentIfMissing(ref cancelTeleportToggle, searchTransform, "Cancel Teleport Toggle");
-                FindComponentIfMissing(ref climbToggle, searchTransform, "Climb Toggle");
-                FindComponentIfMissing(ref climbControlGravityToggle, searchTransform, "Climb Control Gravity Toggle");
+                FindComponentIfMissing(ref NearInteractionToggle, searchTransform, "Near Interaction Toggle");
+                FindComponentIfMissing(ref FarInteractionToggle, searchTransform, "Far Interaction Toggle");
+                FindComponentIfMissing(ref FarAnchorControlToggle, searchTransform, "Far Anchor Control Toggle");
+                FindComponentIfMissing(ref FarUiToggle, searchTransform, "Far UI Toggle");
+                FindComponentIfMissing(ref PokeInteractionToggle, searchTransform, "Poke Interaction Toggle");
+                FindComponentIfMissing(ref PokePointOnHoverToggle, searchTransform, "Poke Point On Hover Toggle");
+                FindComponentIfMissing(ref PokeUiToggle, searchTransform, "Poke UI Toggle");
 
-                FindComponentIfMissing(ref handModelDropdown, searchTransform, "Hand Model Dropdown");
+                FindComponentIfMissing(ref ChooseTeleportForwardToggle, searchTransform, "Choose TP Forward Toggle");
+                FindComponentIfMissing(ref CancelTeleportToggle, searchTransform, "Cancel Teleport Toggle");
+                FindComponentIfMissing(ref TeleportWhileGrabbingToggle, searchTransform, "Teleport While Grabbing Toggle");
+                FindComponentIfMissing(ref JumpToggle, searchTransform, "Jump Toggle");
+                FindComponentIfMissing(ref GravityToggle, searchTransform, "Gravity Toggle");
+                FindComponentIfMissing(ref ClimbToggle, searchTransform, "Climb Toggle");
+                FindComponentIfMissing(ref ClimbTeleportToggle, searchTransform, "Climb Teleport Toggle");
 
-                FindComponentIfMissing(ref headCollisionPushbackToggle, searchTransform, "Head Collision Pushback");
-                FindComponentIfMissing(ref headCollisionIndicatorToggle, searchTransform, "Collision Indicator Toggle");
+                FindComponentIfMissing(ref HeadCollisionPushbackToggle, searchTransform, "Head Collision Pushback");
+                FindComponentIfMissing(ref HeadCollisionIndicatorToggle, searchTransform, "Collision Indicator Toggle");
             }
 
 
@@ -112,40 +125,45 @@ namespace ExPresSXR.Misc
             /// <param name="rig">Rig t connect to</param>
             public void AddRigListeners(ExPresSXRRig rig)
             {
-                if (inputMethodDropdown != null)
+                if (InputMethodDropdown != null)
                 {
-                    inputMethodDropdown.onValueChanged.AddListener((value) => { rig.inputMethod = (InputMethod)value; });
+                    InputMethodDropdown.onValueChanged.AddListener((value) => { rig.InputMethod = (InputMethod)value; });
                 }
 
-                if (movementPresetDropdown != null)
+                if (MovementPresetDropdown != null)
                 {
-                    movementPresetDropdown.onValueChanged.AddListener((value) => { rig.movementPreset = (MovementPreset)value; });
+                    MovementPresetDropdown.onValueChanged.AddListener((value) => { rig.MovementPreset = (MovementPreset)value; });
                 }
 
-                AddInteractionOptionsListenerToToggle(directInteractionToggle, rig, InteractionOptions.Direct);
-                AddInteractionOptionsListenerToToggle(pokeInteractionToggle, rig, InteractionOptions.Poke);
-                AddInteractionOptionsListenerToToggle(pokeUiToggle, rig, InteractionOptions.UiPoke);
-                AddInteractionOptionsListenerToToggle(rayInteractionToggle, rig, InteractionOptions.Ray);
-                AddInteractionOptionsListenerToToggle(rayAnchorControlToggle, rig, InteractionOptions.RayAnchorControl);
-                AddInteractionOptionsListenerToToggle(rayUiInteractionToggle, rig, InteractionOptions.UiRay);
-                AddInteractionOptionsListenerToToggle(chooseTpForwardToggle, rig, InteractionOptions.ChooseTeleportForward);
-                AddInteractionOptionsListenerToToggle(cancelTeleportToggle, rig, InteractionOptions.CancelTeleportPossible);
-                AddInteractionOptionsListenerToToggle(climbToggle, rig, InteractionOptions.Climb);
-                AddInteractionOptionsListenerToToggle(climbControlGravityToggle, rig, InteractionOptions.ClimbControlGravity);
-
-                if (handModelDropdown != null)
+                if (HandModelDropdown != null)
                 {
-                    handModelDropdown.onValueChanged.AddListener((value) => { rig.handModelMode = (HandModelMode)value; });
+                    HandModelDropdown.onValueChanged.AddListener((value) => { rig.HandModelMode = (HandModelMode)value; });
                 }
 
-                if (headCollisionPushbackToggle != null)
+                AddInteractionOptionsListenerToToggle(NearInteractionToggle, rig, InteractionOptions.Near);
+                AddInteractionOptionsListenerToToggle(FarInteractionToggle, rig, InteractionOptions.Far);
+                AddInteractionOptionsListenerToToggle(FarAnchorControlToggle, rig, InteractionOptions.FarAnchorControl);
+                AddInteractionOptionsListenerToToggle(FarUiToggle, rig, InteractionOptions.FarUi);
+                AddInteractionOptionsListenerToToggle(PokeInteractionToggle, rig, InteractionOptions.Poke);
+                AddInteractionOptionsListenerToToggle(PokePointOnHoverToggle, rig, InteractionOptions.PokePointOnHover);
+                AddInteractionOptionsListenerToToggle(PokeUiToggle, rig, InteractionOptions.PokeUi);
+
+                AddMovementOptionsListenerToToggle(ChooseTeleportForwardToggle, rig, MovementOptions.TeleportChooseForward);
+                AddMovementOptionsListenerToToggle(CancelTeleportToggle, rig, MovementOptions.TeleportCancelPossible);
+                AddMovementOptionsListenerToToggle(TeleportWhileGrabbingToggle, rig, MovementOptions.TeleportDuringNearInteraction);
+                AddMovementOptionsListenerToToggle(JumpToggle, rig, MovementOptions.Jump);
+                AddMovementOptionsListenerToToggle(GravityToggle, rig, MovementOptions.Gravity);
+                AddMovementOptionsListenerToToggle(ClimbToggle, rig, MovementOptions.Climb);
+                AddMovementOptionsListenerToToggle(ClimbTeleportToggle, rig, MovementOptions.ClimbTeleport);
+
+                if (HeadCollisionPushbackToggle != null)
                 {
-                    headCollisionPushbackToggle.onValueChanged.AddListener((value) => { rig.headCollisionPushback = value; });
+                    HeadCollisionPushbackToggle.onValueChanged.AddListener((value) => { rig.HeadCollisionPushback = value; });
                 }
 
-                if (headCollisionIndicatorToggle != null)
+                if (HeadCollisionIndicatorToggle != null)
                 {
-                    headCollisionIndicatorToggle.onValueChanged.AddListener((value) => { rig.showCollisionVignetteEffect = value; });
+                    HeadCollisionIndicatorToggle.onValueChanged.AddListener((value) => { rig.ShowCollisionVignetteEffect = value; });
                 }
             }
 
@@ -155,19 +173,19 @@ namespace ExPresSXR.Misc
             /// </summary>
             public void PopulateDropdowns()
             {
-                if (inputMethodDropdown != null)
+                if (InputMethodDropdown != null)
                 {
-                    RuntimeUtils.PopulateTMPDropDownWithEnum(inputMethodDropdown, typeof(InputMethod));
+                    RuntimeUtils.PopulateTMPDropDownWithEnum(InputMethodDropdown, typeof(InputMethod));
                 }
 
-                if (movementPresetDropdown != null)
+                if (MovementPresetDropdown != null)
                 {
-                    RuntimeUtils.PopulateTMPDropDownWithEnum(movementPresetDropdown, typeof(MovementPreset));
+                    RuntimeUtils.PopulateTMPDropDownWithEnum(MovementPresetDropdown, typeof(MovementPreset));
                 }
 
-                if (handModelDropdown != null)
+                if (HandModelDropdown != null)
                 {
-                    RuntimeUtils.PopulateTMPDropDownWithEnum(handModelDropdown, typeof(HandModelMode));
+                    RuntimeUtils.PopulateTMPDropDownWithEnum(HandModelDropdown, typeof(HandModelMode));
                 }
             }
 
@@ -182,26 +200,29 @@ namespace ExPresSXR.Misc
                     return;
                 }
 
-                TrySetDropdownValue(inputMethodDropdown, (int)rig.inputMethod);
-                TrySetDropdownValue(movementPresetDropdown, (int)rig.movementPreset);
+                TrySetDropdownValue(InputMethodDropdown, (int)rig.InputMethod);
+                TrySetDropdownValue(MovementPresetDropdown, (int)rig.MovementPreset);
+                TrySetDropdownValue(HandModelDropdown, (int)rig.HandModelMode);
 
-                TrySetToggleValue(directInteractionToggle, rig.interactionOptions.HasFlag(InteractionOptions.Direct));
-                TrySetToggleValue(pokeInteractionToggle, rig.interactionOptions.HasFlag(InteractionOptions.Poke));
-                TrySetToggleValue(pokeUiToggle, rig.interactionOptions.HasFlag(InteractionOptions.UiPoke));
-                TrySetToggleValue(rayInteractionToggle, rig.interactionOptions.HasFlag(InteractionOptions.Ray));
-                TrySetToggleValue(rayAnchorControlToggle, rig.interactionOptions.HasFlag(InteractionOptions.RayAnchorControl));
-                TrySetToggleValue(rayUiInteractionToggle, rig.interactionOptions.HasFlag(InteractionOptions.UiRay));
-                TrySetToggleValue(chooseTpForwardToggle, rig.interactionOptions.HasFlag(InteractionOptions.ChooseTeleportForward));
-                TrySetToggleValue(cancelTeleportToggle, rig.interactionOptions.HasFlag(InteractionOptions.CancelTeleportPossible));
-                TrySetToggleValue(climbToggle, rig.interactionOptions.HasFlag(InteractionOptions.Climb));
-                TrySetToggleValue(climbControlGravityToggle, rig.interactionOptions.HasFlag(InteractionOptions.ClimbControlGravity));
+                TrySetToggleValue(NearInteractionToggle, rig.InteractionOptions.HasFlag(InteractionOptions.Near));
+                TrySetToggleValue(FarInteractionToggle, rig.InteractionOptions.HasFlag(InteractionOptions.Far));
+                TrySetToggleValue(FarAnchorControlToggle, rig.InteractionOptions.HasFlag(InteractionOptions.FarAnchorControl));
+                TrySetToggleValue(FarUiToggle, rig.InteractionOptions.HasFlag(InteractionOptions.FarUi));
+                TrySetToggleValue(PokeInteractionToggle, rig.InteractionOptions.HasFlag(InteractionOptions.Poke));
+                TrySetToggleValue(PokePointOnHoverToggle, rig.InteractionOptions.HasFlag(InteractionOptions.PokePointOnHover));
+                TrySetToggleValue(PokeUiToggle, rig.InteractionOptions.HasFlag(InteractionOptions.PokeUi));
+                TrySetToggleValue(UiScrollingToggle, rig.InteractionOptions.HasFlag(InteractionOptions.UiScrolling));
+                
+                TrySetToggleValue(ChooseTeleportForwardToggle, rig.MovementOptions.HasFlag(MovementOptions.TeleportChooseForward));
+                TrySetToggleValue(CancelTeleportToggle, rig.MovementOptions.HasFlag(MovementOptions.TeleportCancelPossible));
+                TrySetToggleValue(TeleportWhileGrabbingToggle, rig.MovementOptions.HasFlag(MovementOptions.TeleportDuringNearInteraction));
+                TrySetToggleValue(JumpToggle, rig.MovementOptions.HasFlag(MovementOptions.Jump));
+                TrySetToggleValue(GravityToggle, rig.MovementOptions.HasFlag(MovementOptions.Gravity));
+                TrySetToggleValue(ClimbToggle, rig.MovementOptions.HasFlag(MovementOptions.Climb));
+                TrySetToggleValue(ClimbTeleportToggle, rig.MovementOptions.HasFlag(MovementOptions.ClimbTeleport));
 
-                TrySetDropdownValue(handModelDropdown, (int)rig.handModelMode);
-
-                TrySetToggleValue(directInteractionToggle, rig.interactionOptions.HasFlag(InteractionOptions.Direct));
-
-                TrySetToggleValue(headCollisionPushbackToggle, rig.headCollisionPushback);
-                TrySetToggleValue(headCollisionIndicatorToggle, rig.showCollisionVignetteEffect);
+                TrySetToggleValue(HeadCollisionPushbackToggle, rig.HeadCollisionPushback);
+                TrySetToggleValue(HeadCollisionIndicatorToggle, rig.ShowCollisionVignetteEffect);
             }
 
             // Find Missing Helpers
@@ -227,16 +248,35 @@ namespace ExPresSXR.Misc
                 }
             }
 
+            private void AddMovementOptionsListenerToToggle(Toggle toggle, ExPresSXRRig rig, MovementOptions option)
+            {
+                if (toggle != null)
+                {
+                    toggle.onValueChanged.AddListener((value) => EnableMovementOption(rig, option, value));
+                }
+            }
 
             private void EnableInteractionOption(ExPresSXRRig rig, InteractionOptions option, bool enable)
             {
                 if (enable)
                 {
-                    rig.interactionOptions |= option;
+                    rig.InteractionOptions |= option;
                 }
                 else
                 {
-                    rig.interactionOptions &= ~option;
+                    rig.InteractionOptions &= ~option;
+                }
+            }
+
+            private void EnableMovementOption(ExPresSXRRig rig, MovementOptions option, bool enable)
+            {
+                if (enable)
+                {
+                    rig.MovementOptions |= option;
+                }
+                else
+                {
+                    rig.MovementOptions &= ~option;
                 }
             }
 

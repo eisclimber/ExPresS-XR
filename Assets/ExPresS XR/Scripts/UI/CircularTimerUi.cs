@@ -29,7 +29,11 @@ namespace ExPresSXR.UI
         /// <summary>
         /// Resets the visualization.
         /// </summary>
-        public override void ResetVisualization() => _fillSettings.ResetVisualization();
+        public override void ResetVisualization()
+        {
+            base.ResetVisualization();
+            _fillSettings.ResetVisualization();
+        }
 
         // Helper classes
         [Serializable]
@@ -102,6 +106,18 @@ namespace ExPresSXR.UI
                 }
             }
 
+            [SerializeField]
+            private bool _hideCapsIfNotRunning = true;
+            public bool HideCapsIfNotRunning
+            {
+                get => _hideCapsIfNotRunning;
+                set
+                {
+                    _hideCapsIfNotRunning = value;
+                    UpdateCaps();
+                }
+            }
+
 
             public void UpdateColors()
             {
@@ -152,6 +168,12 @@ namespace ExPresSXR.UI
             public void ResetVisualization()
             {
                 _fillImage.fillAmount = fillDirection == FillDirection.Down ? 0 : 1;
+                
+                if (_hideCapsIfNotRunning)
+                {
+                    _startCapImage.enabled = false;
+                    _endCapImage.enabled = false;
+                }
             }
         }
 

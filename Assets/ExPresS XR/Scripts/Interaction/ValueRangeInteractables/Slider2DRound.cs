@@ -3,6 +3,8 @@ using ExPresSXR.Misc;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
@@ -108,7 +110,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.green,
                 Color.blue,
                 Vector3.up,
-                atTransform
+                atTransform,
+                "(-1,0)",
+                "(1,0)"
             );
 
             GizmoUtils.DrawMinMaxLine(
@@ -118,7 +122,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.cyan,
                 Color.blue,
                 Vector3.up,
-                atTransform
+                atTransform,
+                "(0,-1)",
+                "(0,1)"
             );
 #if UNITY_EDITOR
             Handles.matrix = atTransform.localToWorldMatrix;

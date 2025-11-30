@@ -61,7 +61,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_provideCustomRenderTexture"), true);
 
-                if (!mirror.provideCustomRenderTexture)
+                if (!mirror.ProvideCustomRenderTexture)
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_pixelRatio"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_resolutionPct"), true);
@@ -83,7 +83,7 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_overlayTexture"), true);
-                if (mirror.overlayTexture)
+                if (mirror.OverlayTexture)
                 {
                     EditorGUI.indentLevel++;
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("_overlayStrength"), true);

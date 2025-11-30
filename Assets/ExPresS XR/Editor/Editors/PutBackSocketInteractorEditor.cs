@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.XR.Interaction.Toolkit;
 using ExPresSXR.Interaction;
-using UnityEditor.VersionControl;
 
 
 namespace ExPresSXR.Editor.Editors
@@ -37,7 +35,7 @@ namespace ExPresSXR.Editor.Editors
 
         protected void DrawPutBackProperties()
         {
-            bool locked = putBackSocket.externallyControlled;
+            bool locked = putBackSocket.ExternallyControlled;
             EditorGUILayout.LabelField("Put Back Object", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             

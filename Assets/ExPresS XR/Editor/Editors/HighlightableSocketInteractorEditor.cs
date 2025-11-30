@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit;
+
+
 using ExPresSXR.Interaction;
 
 namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(HighlightableSocketInteractor))]
     [CanEditMultipleObjects]
-    public class HighlightableSocketInteractorEditor : XRSocketInteractorEditor
+    public class HighlightableSocketInteractorEditor : UnityEditor.XR.Interaction.Toolkit.Interactors.XRSocketInteractorEditor
     {
         protected HighlightableSocketInteractor highlightableSocket;
 
@@ -42,14 +42,14 @@ namespace ExPresSXR.Editor.Editors
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                highlightableSocket.SetHighlighterVisible(highlightableSocket.showHighlighter);
+                highlightableSocket.SetHighlighterVisible(highlightableSocket.ShowHighlighter);
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_highlighterObject"), true);
             if (highlightableSocket.CanSetHighlighterScaleWithCollider())
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_useColliderSizeAsScale"), true);
             }
-            EditorGUI.BeginDisabledGroup(highlightableSocket.useColliderSizeAsScale);
+            EditorGUI.BeginDisabledGroup(highlightableSocket.UseColliderSizeAsScale);
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_highlighterScale"), true);
             }
@@ -71,6 +71,6 @@ namespace ExPresSXR.Editor.Editors
         }
 
         private bool IsObjectInNeedOfInteractable(GameObject go)
-            => go != null && go.GetComponent<IXRSelectInteractable>() == null;
+            => go != null && go.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable>() == null;
     }
 }

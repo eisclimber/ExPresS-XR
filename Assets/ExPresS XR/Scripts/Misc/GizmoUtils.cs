@@ -54,11 +54,12 @@ namespace ExPresSXR.Misc
         /// <param name="color">Color of the marker.</param>
         /// <param name="upVector">Determines the direction of the end markers.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
-        public static void DrawMarkerLineAt(Vector3 pos, float length, Color color, Vector3 upVector, Transform atTransform = null)
+        public static void DrawMarkerLineAt(Vector3 pos, float length, Color color, Vector3 upVector, Transform atTransform = null, string label = "")
         {
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
             Gizmos.color = color;
             Gizmos.DrawLine(pos + upVector * length, pos - upVector * length);
+            DrawLabel(label, pos + upVector * length / 2.0f, atTransform);
         }
 
         /// <summary>
@@ -71,7 +72,8 @@ namespace ExPresSXR.Misc
         /// <param name="lineColor">Color of the line between the points.</param>
         /// <param name="upVector">Determines the direction of the end markers.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
-        public static void DrawMinMaxLine(Vector3 minPos, Vector3 maxPos, Color minColor, Color maxColor, Color lineColor, Vector3 upVector, Transform atTransform = null)
+        public static void DrawMinMaxLine(Vector3 minPos, Vector3 maxPos, Color minColor, Color maxColor, Color lineColor, Vector3 upVector,
+                                            Transform atTransform = null, string minLabel = "", string maxLabel = "")
         {
             // Apply transform if provided
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
@@ -82,6 +84,10 @@ namespace ExPresSXR.Misc
             // Draw Middle Lines
             Gizmos.color = lineColor;
             Gizmos.DrawLine(minPos, maxPos);
+
+            // Draw Label
+            DrawLabel(minLabel, minPos, atTransform);
+            DrawLabel(maxLabel, maxPos, atTransform);
         }
 
         /// <summary>
@@ -97,11 +103,13 @@ namespace ExPresSXR.Misc
         /// <param name="upVector">Determines the direction of the end markers.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
         public static void DrawMinMaxValueLine(Vector3 minPos, Vector3 maxPos, float value, Color minColor, Color maxColor,
-                                                    Color lineColor, Color valueColor, Vector3 upVector, Transform atTransform = null)
+                                                    Color lineColor, Color valueColor, Vector3 upVector, Transform atTransform = null,
+                                                    string minLabel = "", string maxLabel = "", string valueFormat = "")
         {
-            DrawMinMaxLine(minPos, maxPos, minColor, maxColor, lineColor, upVector, atTransform);
+            DrawMinMaxLine(minPos, maxPos, minColor, maxColor, lineColor, upVector, atTransform, minLabel, maxLabel);
             Vector3 valuePos = Vector3.Lerp(minPos, maxPos, value);
-            DrawMarkerLineAt(valuePos, VALUE_LINE_LENGTH, valueColor, upVector, atTransform);
+            string valueLabel = !string.IsNullOrWhiteSpace(valueFormat) ? string.Format(valueFormat, value) : "";
+            DrawMarkerLineAt(valuePos, VALUE_LINE_LENGTH, valueColor, upVector, atTransform, valueLabel);
         }
 
         /// <summary>
@@ -113,7 +121,8 @@ namespace ExPresSXR.Misc
         /// <param name="outlineColor">Color of the outline.</param>
         /// <param name="gridColor">Color of the grid lines.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
-        public static void DrawGrid(Vector3 center, Vector2 extents, Vector2 numTiles, Color outlineColor, Color gridColor, Transform atTransform = null)
+        public static void DrawGrid(Vector3 center, Vector2 extents, Vector2 numTiles, Color outlineColor, Color gridColor,
+                                    Transform atTransform = null, string blLabel = "", string brLabel = "", string tlLabel = "", string trLabel = "")
         {
 #if UNITY_EDITOR
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
@@ -148,6 +157,12 @@ namespace ExPresSXR.Misc
                 Vector3 offset = new(0.0f, 0.0f, delta);
                 Gizmos.DrawLine(blPos + offset, brPos + offset);
             }
+            
+            // Draw labels
+            DrawLabel(blLabel, blPos, atTransform);
+            DrawLabel(brLabel, brPos, atTransform);
+            DrawLabel(trLabel, tlPos, atTransform);
+            DrawLabel(tlLabel, trPos, atTransform);
 #endif
         }
 
@@ -164,7 +179,8 @@ namespace ExPresSXR.Misc
         /// <param name="localNormal">Normal vector defining the plane of the angles.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
         public static void DrawMinMaxArc(float minAngle, float maxAngle, Color minColor, Color maxColor, Color arcColor,
-                                            Vector3 localOffset, Vector3 localNormal, Transform atTransform = null)
+                                            Vector3 localOffset, Vector3 localNormal, Transform atTransform = null,
+                                            string minLabel = "", string maxLabel = "", string valueFormat = "")
         {
 #if UNITY_EDITOR
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
@@ -173,8 +189,8 @@ namespace ExPresSXR.Misc
             Vector3 minPos = localOffset + Quaternion.AngleAxis(minAngle, localNormal) * Vector3.forward * ARCH_RADIUS;
             Vector3 maxPos = localOffset + Quaternion.AngleAxis(maxAngle, localNormal) * Vector3.forward * ARCH_RADIUS;
 
-            DrawMarkerLineAt(minPos, END_LINE_LENGTH, minColor, localNormal, atTransform);
-            DrawMarkerLineAt(maxPos, END_LINE_LENGTH, maxColor, localNormal, atTransform);
+            DrawMarkerLineAt(minPos, END_LINE_LENGTH, minColor, localNormal, atTransform, minLabel);
+            DrawMarkerLineAt(maxPos, END_LINE_LENGTH, maxColor, localNormal, atTransform, maxLabel);
 
             Handles.color = arcColor;
             Handles.DrawWireArc(localOffset, Vector3.up, minPos.normalized, maxAngle - minAngle, ARCH_RADIUS);
@@ -195,13 +211,15 @@ namespace ExPresSXR.Misc
         /// <param name="localOffset">Pivot offset of the angle.</param>
         /// <param name="localNormal">Normal vector defining the plane of the angles.</param>
         public static void DrawMinMaxValueArc(float minAngle, float maxAngle, float value, Color minColor, Color maxColor,
-                                                Color arcColor, Color valueColor, Vector3 localOffset, Vector3 localNormal, Transform atTransform = null)
+                                                Color arcColor, Color valueColor, Vector3 localOffset, Vector3 localNormal,
+                                                Transform atTransform = null, string minLabel = "", string maxLabel = "", string valueFormat = "")
         {
-            DrawMinMaxArc(minAngle, maxAngle, minColor, maxColor, arcColor, localOffset, localNormal, atTransform);
+            DrawMinMaxArc(minAngle, maxAngle, minColor, maxColor, arcColor, localOffset, localNormal, atTransform, minLabel, maxLabel);
 
             float valueAngle = Mathf.Lerp(minAngle, maxAngle, value);
             Vector3 maxPos = localOffset + Quaternion.AngleAxis(valueAngle, localNormal) * Vector3.forward * ARCH_RADIUS;
-            DrawMarkerLineAt(maxPos, VALUE_LINE_LENGTH, valueColor, localNormal, atTransform);
+            string valueLabel = !string.IsNullOrWhiteSpace(valueFormat) ? string.Format(valueFormat, value) : "";
+            DrawMarkerLineAt(maxPos, VALUE_LINE_LENGTH, valueColor, localNormal, atTransform, valueLabel);
         }
 
         /// <summary>
@@ -217,7 +235,8 @@ namespace ExPresSXR.Misc
         /// <param name="localForward">Direction in the which the angle arc is oriented.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
         public static void DrawMinMaxRotationSpan(Quaternion minRotation, Quaternion maxRotation, Color minColor, Color maxColor, Color spanColor,
-                                                    Vector3 localOffset, Vector3 localNormal, Vector3 localForward, Transform atTransform = null)
+                                                    Vector3 localOffset, Vector3 localNormal, Vector3 localForward, Transform atTransform = null,
+                                                    string minLabel = "", string maxLabel = "")
         {
 #if UNITY_EDITOR
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
@@ -233,9 +252,12 @@ namespace ExPresSXR.Misc
 
             Gizmos.color = minColor;
             Gizmos.DrawLine(localOffset, angleMinPoint);
+            DrawLabel(minLabel, angleMinPoint, atTransform);
 
             Gizmos.color = maxColor;
             Gizmos.DrawLine(localOffset, angleMaxPoint);
+            DrawLabel(maxLabel, angleMaxPoint, atTransform);
+
 
             Handles.color = spanColor;
             Handles.DrawWireArc(localOffset, localForward, angleMinDir, angleRange, ROTATION_SPAN_RADIUS);
@@ -257,9 +279,10 @@ namespace ExPresSXR.Misc
         /// <param name="localForward">Direction in the which the angle arc is oriented.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
         public static void DrawMinMaxValueRotationSpan(Quaternion minRotation, Quaternion maxRotation, float value, Color minColor, Color maxColor, Color spanColor,
-                                                        Color valueColor, Vector3 localOffset, Vector3 localNormal, Vector3 localForward, Transform atTransform = null)
+                                                        Color valueColor, Vector3 localOffset, Vector3 localNormal, Vector3 localForward, Transform atTransform = null,
+                                                        string minLabel = "", string maxLabel = "", string valueFormat = "")
         {
-            DrawMinMaxRotationSpan(minRotation, maxRotation, minColor, maxColor, spanColor, localOffset, localNormal, localForward, atTransform);
+            DrawMinMaxRotationSpan(minRotation, maxRotation, minColor, maxColor, spanColor, localOffset, localNormal, localForward, atTransform, minLabel, maxLabel);
 
             Quaternion valueRotation = Quaternion.Lerp(minRotation, maxRotation, value);
 
@@ -269,9 +292,32 @@ namespace ExPresSXR.Misc
 
             Gizmos.color = valueColor;
             Gizmos.DrawLine(localOffset, angleValuePoint);
+
+            string valueLabel = !string.IsNullOrWhiteSpace(valueFormat) ? string.Format(valueFormat, value) : "";
+            DrawLabel(valueLabel, angleValuePoint, atTransform);
         }
+
         /// <summary>
-        /// Draws a text at a position.
+        /// Draws a wire cube with the given size.
+        /// </summary>
+        /// <param name="centerPos">Center position of the cube.</param>
+        /// <param name="size">Size of the cube.</param>
+        /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="minLabel">Optional label displayed at the min position.</param>
+        /// <param name="maxLabel">Optional label displayed at the max position.</param>
+        public static void DrawWireCube(Vector3 centerPos, Vector3 size, Transform atTransform = null, string minLabel = "", string maxLabel = "")
+        {
+            Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
+
+            Vector3 extents = size / 2.0f;
+            Gizmos.DrawWireCube(centerPos, size);
+
+            DrawLabel(minLabel, centerPos - extents, atTransform);
+            DrawLabel(maxLabel, centerPos + extents, atTransform);
+        }
+
+        /// <summary>
+        /// Draws a text at a position if it is not empty.
         /// Defaults to white text with size 11 and text anchor at the top left.
         /// </summary>
         /// <param name="text">Text to be displayed.</param>
@@ -284,7 +330,7 @@ namespace ExPresSXR.Misc
 
 
         /// <summary>
-        /// Draws a text at a position with the given color, fontSize, fontStyle and text anchor.
+        /// Draws a text at a position if it is not empty with the given color, fontSize, fontStyle and text anchor.
         /// </summary>
         /// <param name="text">Text to be displayed.</param>
         /// <param name="position">Position to draw at.</param>
@@ -310,6 +356,7 @@ namespace ExPresSXR.Misc
         /// <summary>
         /// Draws a text at a position with the provided GuiStyle.
         /// If the guiStyle is null, GuiStyle.none will be used.
+        /// An empty (or whitespace) text will be ignored.
         /// </summary>
         /// <param name="text">Text to be displayed.</param>
         /// <param name="position">Position to draw at.</param>
@@ -318,6 +365,10 @@ namespace ExPresSXR.Misc
         public static void DrawLabel(string text, Vector3 position, GUIStyle guiStyle, Transform atTransform = null)
         {
 #if UNITY_EDITOR
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return;
+            }
             Handles.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
             Handles.Label(position, text, guiStyle);
 #endif

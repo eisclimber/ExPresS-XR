@@ -4,18 +4,14 @@ using UnityEngine.Events;
 namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
 {
     /// <summary>
-    /// Scales a normalized value on the range [0.0f - 100.0f] to be used as a blend shape.
+    /// Allows scaling a normalized float value between the min (0.0f) and max value (1.0f) to be used by a BlendShape.
     /// </summary>
     public class BlendShapeModifier : BaseValueRangeModifier<float, float>
     {
-        protected const float BLEND_SHAPE_MIN_VALUE = 0.0f;
         protected const float BLEND_SHAPE_MAX_VALUE = 100.0f;
 
         [SerializeField]
         private int _blendShapeIdx = 0;
-
-        [SerializeField]
-        private bool _oneMinus = false;
 
 
         /// <summary>
@@ -27,7 +23,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
         /// Modifies the normalized value from a value range interactable.
         /// </summary>
         /// <param name="value">Normalized value to be modified.</param>
-        protected override float GetModifiedValue(float value) => (_oneMinus ? 1 - value : value) * BLEND_SHAPE_MAX_VALUE;
+        protected override float GetModifiedValue(float value) => value * 100.0f;
 
 
         /// <summary>
