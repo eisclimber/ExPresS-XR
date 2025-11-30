@@ -277,18 +277,6 @@ namespace ExPresSXR.Rig
             }
         }
 
-        [Tooltip("Reference to the ClimbingManager of the ExPresS XR Rig.")]
-        [SerializeField]
-        private ClimbingGravityManager _climbingGravityManager;
-        public ClimbingGravityManager ClimbingGravityManager
-        {
-            get => _climbingGravityManager;
-            set
-            {
-                _climbingGravityManager = value;
-            }
-        }
-
         [Tooltip("Reference to the fadeRect of the ExPresS XR Rig.")]
         [SerializeField]
         private FadeRect _fadeRect;
