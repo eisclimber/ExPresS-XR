@@ -157,7 +157,7 @@ namespace ExPresSXR.Rig
 
                 if (_leftHandController != null)
                 {
-                    _rightHandController.ExternallyControlled = true;
+                    _leftHandController.ExternallyControlled = true;
                 }
 
                 RigConfigurator.ApplyConfigData(CurrentConfigData);
@@ -459,7 +459,7 @@ namespace ExPresSXR.Rig
         // Object containing all necessary references for configuration
         public ConfigData CurrentConfigData
         {
-            get => new(_inputMethod, _movementPreset, _movementOptions, _interactionOptions,
+            get => new(this, _inputMethod, _movementPreset, _movementOptions, _interactionOptions,
                         _leftHandController, _rightHandController, _headGazeController,
                         _locomotionMediator);
         }

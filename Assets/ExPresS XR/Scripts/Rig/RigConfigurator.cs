@@ -31,6 +31,12 @@ namespace ExPresSXR.Rig
         /// <param name="configData"></param>
         public static void ApplyInteractionsOptions(ConfigData configData)
         {
+            if (configData == null || !configData.IsValid())
+            {
+                // The config data gets called during awake, which can cause issues and warning spam. This is a dirty hack to prevent this....
+                return;
+            }
+
             EnsureRigConfigConsistency(configData);
 
             InteractionOptions interactionOptions = configData.InteractionOptions;
@@ -95,7 +101,7 @@ namespace ExPresSXR.Rig
         {
             if (handController == null)
             {
-                Debug.LogWarning("Can not apply movement preset on hands, no HandControllerManager provided.");
+                // Debug.LogWarning("Can not apply movement preset on hands, no HandControllerManager provided.");
                 return;
             }
             handController.SmoothMotionEnabled = movementPreset == MovementPreset.Joystick || movementPreset == MovementPreset.JoystickNoTurn;
@@ -106,7 +112,7 @@ namespace ExPresSXR.Rig
         {
             if (mediator == null)
             {
-                Debug.LogWarning("Can not apply movement preset, no LocomotionMediator provided!");
+                // Debug.LogWarning("Can not apply movement preset, no LocomotionMediator provided!");
                 return;
             }
 
@@ -148,6 +154,12 @@ namespace ExPresSXR.Rig
         #region Movement Options
         public static void ApplyMovementOptions(ConfigData configData)
         {
+            if (configData == null || !configData.IsValid())
+            {
+                // The config data gets called during awake, which can cause issues and warning spam. This is a dirty hack to prevent this....
+                return;
+            }
+
             EnsureRigConfigConsistency(configData);
             MovementOptions movementOptions = configData.MovementOptions;
             ApplyMovementOptionsHands(movementOptions, configData.LeftHandController);
@@ -159,7 +171,7 @@ namespace ExPresSXR.Rig
         {
             if (handController == null)
             {
-                Debug.LogWarning("Can not apply movement options on hands, no HandControllerManager provided.");
+                // Debug.LogWarning("Can not apply movement options on hands, no HandControllerManager provided.");
                 return;
             }
             handController.ChooseTeleportForwardEnabled = movementOptions.HasFlag(MovementOptions.TeleportChooseForward);
@@ -171,7 +183,7 @@ namespace ExPresSXR.Rig
         {
             if (mediator == null)
             {
-                Debug.LogWarning("Can not apply movement options on hands, no LocomotionMediator provided.");
+                // Debug.LogWarning("Can not apply movement options on hands, no LocomotionMediator provided.");
                 return;
             }
 
@@ -225,6 +237,12 @@ namespace ExPresSXR.Rig
 
         private static void EnsureRigConfigConsistency(ConfigData configData)
         {
+            if (configData == null || !configData.IsValid())
+            {
+                // The config data gets called during awake, which can cause issues and warning spam. This is a dirty hack to prevent this....
+                return;
+            }
+
             ExPresSXRRig rig = configData.Rig;
             if (rig != null)
             {
@@ -303,7 +321,8 @@ namespace ExPresSXR.Rig
         // Locomotion
         public LocomotionMediator LocomotionMediator;
 
-        public ConfigData(InputMethod inputMethod,
+        public ConfigData(ExPresSXRRig rig,
+                            InputMethod inputMethod,
                             MovementPreset movementPreset,
                             MovementOptions movementOptions,
                             InteractionOptions interactionOptions,
@@ -312,7 +331,7 @@ namespace ExPresSXR.Rig
                             HeadGazeController headGazeController,
                             LocomotionMediator locomotionMediator)
         {
-            Rig = null;
+            Rig = rig;
 
             InputMethod = inputMethod;
             MovementPreset = movementPreset;
@@ -345,6 +364,8 @@ namespace ExPresSXR.Rig
 
             LocomotionMediator = rig.LocomotionMediator;
         }
+
+        public bool IsValid() => Rig != null;
     }
     #endregion
 }

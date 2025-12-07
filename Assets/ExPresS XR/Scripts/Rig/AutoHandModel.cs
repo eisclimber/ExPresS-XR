@@ -170,7 +170,7 @@ namespace ExPresSXR.Rig
 
         private void LoadModels()
         {
-            if (_currentDevice == null || !_currentDevice.isValid)
+            if (_currentDevice == null || !_currentDevice.isValid || !isActiveAndEnabled)
             {
                 return;
             }

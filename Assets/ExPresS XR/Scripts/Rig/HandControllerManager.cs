@@ -185,7 +185,19 @@ namespace ExPresSXR.Rig
             get => _pokePointOnHover;
             set
             {
+                if (_pokeInteractor != null)
+                {
+                    _pokeInteractor.HoverEntered.RemoveListener(SetHandPointPose(true));
+                    _pokeInteractor.HoverExited.RemoveListener(SetHandPointPose(false));
+                }
+
                 _pokePointOnHover = value;
+
+                if (_pokeInteractor != null)
+                {
+                    _pokeInteractor.HoverEntered.AddListener(SetHandPointPose(true));
+                    _pokeInteractor.HoverExited.AddListener(SetHandPointPose(false));
+                }
             }
         }
 
@@ -283,6 +295,25 @@ namespace ExPresSXR.Rig
             get => _externallyControlled;
             set => _externallyControlled = value;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // /// <summary>
         // /// Connects additional events.
