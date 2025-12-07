@@ -478,33 +478,33 @@ namespace ExPresSXR.Rig
         // Fade
         public void FadeToColor()
         {
-            if (FadeRect != null)
+            if (_fadeRect != null)
             {
-                FadeRect.FadeToColor();
+                _fadeRect.FadeToColor();
             }
         }
 
         public void FadeToColorInstant()
         {
-            if (FadeRect != null)
+            if (_fadeRect != null)
             {
-                FadeRect.FadeToColorInstant();
+                _fadeRect.FadeToColorInstant();
             }
         }
 
         public void FadeToClear()
         {
-            if (FadeRect != null)
+            if (_fadeRect != null)
             {
-                FadeRect.FadeToClear();
+                _fadeRect.FadeToClear();
             }
         }
 
         public void FadeToClearInstant()
         {
-            if (FadeRect != null)
+            if (_fadeRect != null)
             {
-                FadeRect.FadeToClearInstant();
+                _fadeRect.FadeToClearInstant();
             }
         }
 
@@ -546,6 +546,7 @@ namespace ExPresSXR.Rig
                 _rightAutoHand.modelCollisionsEnabled = _handModelCollisions;
             }
         }
+
 
         private void OnValidate()
         {

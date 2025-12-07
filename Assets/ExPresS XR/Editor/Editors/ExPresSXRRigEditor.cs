@@ -318,9 +318,16 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawFadeButtons()
         {
-            if (rig.FadeRect != null && rig.FadeRect.ScreenCompletelyVisible
-                && GUILayout.Button("Fade Screen To Black"))
+            // Fade to color button
+            bool canFadeToColor = rig.FadeRect != null && rig.FadeRect.ScreenCompletelyHidden;
+            EditorGUI.BeginDisabledGroup(canFadeToColor);
+            if (GUILayout.Button("Fade Screen To Color"))
             {
+                if (rig.FadeRect != null)
+                {
+                    rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
+                }
+
                 if (Application.isPlaying)
                 {
                     rig.FadeToColor();
@@ -329,11 +336,24 @@ namespace ExPresSXR.Editor.Editors
                 {
                     rig.FadeToColorInstant();
                 }
-            }
 
-            if (rig.FadeRect != null && rig.FadeRect.ScreenCompletelyHidden
-                && GUILayout.Button("Fade Screen To Clear"))
+                if (rig.FadeRect != null)
+                {
+                    rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
+                }
+            }
+            EditorGUI.EndDisabledGroup();
+
+            // Fade to clear button
+            bool canFadeToClear = rig.FadeRect != null && rig.FadeRect.ScreenCompletelyVisible;
+            EditorGUI.BeginDisabledGroup(canFadeToClear);
+            if (GUILayout.Button("Fade Screen To Clear"))
             {
+                if (rig.FadeRect != null)
+                {
+                    rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
+                }
+
                 if (Application.isPlaying)
                 {
                     rig.FadeToClear();
@@ -342,7 +362,13 @@ namespace ExPresSXR.Editor.Editors
                 {
                     rig.FadeToClearInstant();
                 }
+
+                if (rig.FadeRect != null)
+                {
+                    rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
+                }
             }
+            EditorGUI.EndDisabledGroup();
         }
 
         protected virtual void DrawCustomRigButtons()
@@ -420,8 +446,7 @@ namespace ExPresSXR.Editor.Editors
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
-
-
+        
         private void SaveAsCustomXRRig()
         {
             GameObject go = rig.gameObject;

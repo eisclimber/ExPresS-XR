@@ -7,7 +7,6 @@ using ExPresSXR.Misc.Timing;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
-    [RequireComponent(typeof(Stopwatch))]
     public class AreaOfInterestRay : MonoBehaviour
     {
         private const int DEFAULT_AOI_LAYER_MASK = 1536;
@@ -31,6 +30,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
         [Tooltip("LayerMask for detecting AOIs and AOIBouncers.")]
         [SerializeField]
         private LayerMask _layerMask = DEFAULT_AOI_LAYER_MASK;
+
+        [Tooltip("Stopwatch to time aoi focus. Will retrieve the component on Awake if missing and create a new one if missing.")]
+        [SerializeField]
+        private Stopwatch _aoiStopwatch;
 
         // Data Retrieval
 
@@ -58,8 +61,6 @@ namespace ExPresSXR.Experimentation.EyeTracking
         {
             get => _bounceTracePath;
         }
-
-        private Stopwatch _aoiStopwatch;
 
 
         // AOI ID
@@ -101,9 +102,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
         private void Awake() {
             _bounceTracePath = new();
 
-            if (!TryGetComponent(out _aoiStopwatch))
+            if (_aoiStopwatch == null && !TryGetComponent(out _aoiStopwatch))
             {
-                Debug.LogError("Did not found a 'Stopwatch'-Component.");
+                Debug.LogError("Did not found a 'Stopwatch'-Component, creating a new one.");
+                _aoiStopwatch = gameObject.AddComponent<Stopwatch>();
             }
             // Start to get a valid first measurement (AOI = 'None')
             _aoiStopwatch.StartTimeMeasurement();

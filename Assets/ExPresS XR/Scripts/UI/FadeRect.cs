@@ -198,7 +198,7 @@ namespace ExPresSXR.UI
             {
                 OnFadeToColorCompleted.Invoke();
             }
-
+            
             OnFadeCompleted.Invoke();
         }
     }
