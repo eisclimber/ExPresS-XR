@@ -108,6 +108,7 @@ namespace ExPresSXR.Editor.Editors
         {
             DrawRangeProperties();
             DrawSoundsFoldout();
+            DrawButtons();
             base.DrawProperties();
         }
 
@@ -188,6 +189,34 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.PropertyField(_onValueChangedString, true);
             EditorGUILayout.PropertyField(_onValueSelected, true);
             EditorGUI.indentLevel--;
+        }
+
+        protected virtual void DrawButtons()
+        {
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Snap to Min"))
+            {
+                _rangeInteractableInternal.SetValueToMinValue();
+            }
+
+            if (GUILayout.Button("Snap to Max"))
+            {
+                _rangeInteractableInternal.SetValueToMaxValue();
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Print Value"))
+            {
+                Debug.Log(_rangeInteractableInternal.ToString());
+            }
+
+            if (GUILayout.Button("Reset"))
+            {
+                _rangeInteractableInternal.ResetValue();
+            }
+            GUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
         }
     }
 }

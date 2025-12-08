@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -226,8 +227,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             // Reset after emitting the event to allow passing the selected value
             if (_zeroValueOnRelease)
             {
-                _valueDescriptor.ResetValue();
-                _valueVisualizer.UpdateVisualization(Value, this);
+                ResetValue();
             }
         }
 
@@ -400,6 +400,43 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             ValueVisualizer.DrawGizmos(transform, Value);
         }
 
+        /// <summary>
+        /// Sets the value to the minimum value of the range.
+        /// </summary>
+        public void SetValueToMinValue()
+        {
+            Assert.IsTrue(_valueDescriptor.IsMinValue(_valueDescriptor.DefaultMinValue), "ValueDescriptor does not accept the DefaultMinValue as minimum value.");
+            _valueDescriptor.Value = _valueDescriptor.DefaultMinValue;
+            _valueVisualizer.UpdateVisualization(Value, this);
+        }
+
+        /// <summary>
+        /// Sets the value to the maximum value of the range.
+        /// </summary>
+        public void SetValueToMaxValue()
+        {
+            Assert.IsTrue(_valueDescriptor.IsMaxValue(_valueDescriptor.DefaultMaxValue), "ValueDescriptor does not accept the DefaultMinValue as maximum value.");
+            _valueDescriptor.Value = _valueDescriptor.DefaultMaxValue;
+            _valueVisualizer.UpdateVisualization(Value, this);
+        }
+
+
+        /// <summary>
+        /// Snaps to the default value of the range.
+        /// </summary>
+        public void ResetValue()
+        {
+            _valueDescriptor.ResetValue();
+            _valueVisualizer.UpdateVisualization(Value, this);
+        }
+
+        /// <summary>
+        /// Returns the current value as string.
+        /// </summary>
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
 
         /// <inheritdoc />
         public virtual void InternalUpdateValue()
@@ -417,6 +454,21 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// Update value to allow editing from the editor.
         /// </summary>
         public void InternalUpdateValue();
+
+        /// <summary>
+        /// Sets the value to the minimum value of the range.
+        /// </summary>
+        public void SetValueToMinValue();
+
+        /// <summary>
+        /// Sets the value to the maximum value of the range.
+        /// </summary>
+        public void SetValueToMaxValue();
+
+        /// <summary>
+        /// Prints the current value to the console.
+        /// </summary>
+        public void ResetValue();
     }
 }
 #endregion

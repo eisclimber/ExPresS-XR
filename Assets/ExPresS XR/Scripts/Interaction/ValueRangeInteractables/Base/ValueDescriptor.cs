@@ -34,6 +34,20 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public abstract V Value { get; set; }
 
         /// <summary>
+        /// Accessor defining the default min value.
+        /// There can be multiple min values, but this is the one used in the editor for setting the value.
+        /// Make sure it evaluates to a valid min value according to <see cref="IsMinValue(V)"/>.
+        /// </summary>
+        public abstract V DefaultMinValue { get; }
+
+        /// <summary>
+        /// Accessor defining the default max value.
+        /// There can be multiple max values, but this is the one used in the editor for setting the value.
+        /// Make sure it evaluates to a valid max value according to <see cref="IsMaxValue(V)"/>.
+        /// </summary>
+        public abstract V DefaultMaxValue { get; }
+
+        /// <summary>
         /// Use this function to handle new value (e.g. clamping or snapping) your value and setting it to the value property: 'Value = ...'
         /// </summary>
         /// <param name="newValue">new value trying to be set to the </param>
@@ -186,6 +200,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
+        /// <inheritdoc />
+        public override float DefaultMinValue => 0.0f;
+
+        /// <inheritdoc />
+        public override float DefaultMaxValue => 1.0f;
+
         /// <summary>
         /// Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.
         /// </summary>
@@ -255,6 +275,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             get => _enforceSnap;
             set => _enforceSnap = value;
         }
+
+        /// <inheritdoc />
+        public override Vector2 DefaultMinValue => new();
+
+        /// <inheritdoc />
+        public override Vector2 DefaultMaxValue => new(1.0f, 1.0f);
 
         /// <inheritdoc />
         protected override Vector2 ProcessNewValue(Vector2 newValue)
@@ -338,6 +364,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
+        /// <inheritdoc />
+        public override Vector2 DefaultMinValue => new();
+
+        /// <inheritdoc />
+        public override Vector2 DefaultMaxValue => new(1.0f, 0.0f);
+
         /// <summary>
         /// Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.
         /// </summary>
@@ -401,6 +433,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class Vector3Descriptor : BaseValueDescriptor<Vector3>
     {
+        /// <inheritdoc />
+        public override Vector3 DefaultMinValue => new();
+
+        /// <inheritdoc />
+        public override Vector3 DefaultMaxValue => new(1.0f, 1.0f, 1.0f);
+
         /// <summary>
         /// Number of evenly spaced steps along the respective axis to snap the value to. Anything below 1 will deactivate snapping.
         /// </summary>
@@ -458,6 +496,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class SphereDescriptor : BaseValueDescriptor<Vector3>
     {
+        /// <inheritdoc />
+        public override Vector3 DefaultMinValue => new();
+
+        /// <inheritdoc />
+        public override Vector3 DefaultMaxValue => new(1.0f, 0.0f, 0.0f);
+
         /// <summary>
         /// Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.
         /// </summary>
@@ -493,7 +537,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override bool IsMinValue(Vector3 value) => value.magnitude <= -1.0f;
+        public override bool IsMinValue(Vector3 value) => value.magnitude <= 0.0f;
 
         /// <inheritdoc />
         public override bool IsMaxValue(Vector3 value) => value.magnitude >= 1.0f;
@@ -508,6 +552,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class DirectionDescriptor : BaseValueDescriptor<Vector3>
     {
+        /// <inheritdoc />
+        public override Vector3 DefaultMinValue => new(-1.0f, 0.0f, 0.0f);
+
+        /// <inheritdoc />
+        public override Vector3 DefaultMaxValue => new(1.0f, 0.0f, 0.0f);
+
         /// <inheritdoc />
         protected override Vector3 ProcessNewValue(Vector3 newValue) => newValue.normalized;
 

@@ -108,9 +108,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.green,
                 Color.blue,
                 Vector3.up,
-                atTransform,
-                "(-1,0,0)",
-                "(1,0,0)"
+                atTransform
             );
 
             GizmoUtils.DrawMinMaxLine(
@@ -120,9 +118,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.white,
                 Color.blue,
                 Vector3.up,
-                atTransform,
-                "(0,-1,0)",
-                "(0,1,0)"
+                atTransform
             );
 
             GizmoUtils.DrawMinMaxLine(
@@ -132,13 +128,14 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.cyan,
                 Color.blue,
                 Vector3.up,
-                atTransform,
-                "(0,0,-1)",
-                "(0,0,1)"
+                atTransform
             );
 
             Gizmos.matrix = atTransform.localToWorldMatrix;
             Gizmos.DrawWireCube(Vector3.zero, _maxPosition - _minPosition);
+
+            GizmoUtils.DrawLabel("(0,0,0)", _minPosition, atTransform);
+            GizmoUtils.DrawLabel("(1,1,1)", _maxPosition, atTransform);
         }
     }
 }
