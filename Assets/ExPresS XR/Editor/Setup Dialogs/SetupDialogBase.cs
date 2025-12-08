@@ -66,10 +66,10 @@ namespace ExPresSXR.Editor.SetupDialogs
         protected void SwitchStepValue(VisualElement stepContainer, int oldValue, int newValue)
         {
             stepContainer.Q<Button>($"choice-{oldValue + 1}-button").style.backgroundColor = Color.black;
-            stepContainer.Q<Button>($"choice-{oldValue + 1}-button").style.backgroundColor = Color.gray;
+            stepContainer.Q<Button>($"choice-{newValue + 1}-button").style.backgroundColor = Color.gray;
 
             stepContainer.Q<Label>($"choice-{oldValue + 1}-description").style.display = DisplayStyle.None;
-            stepContainer.Q<Label>($"choice-{oldValue + 1}-description").style.display = DisplayStyle.Flex;
+            stepContainer.Q<Label>($"choice-{newValue + 1}-description").style.display = DisplayStyle.Flex;
         }
 
 

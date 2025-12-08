@@ -25,7 +25,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             // Get existing open window or if none, make a new one:
             EditorWindow window = GetWindow<SetupDialogInitial>("Initial Setup");
-            window.minSize = DefaultWindowSize;
+            window.minSize = new(1060.0f, 560.0f);
         }
 
         public override string UxmlName
@@ -37,6 +37,7 @@ namespace ExPresSXR.Editor.SetupDialogs
         private VisualElement _step3Container;
         private VisualElement _step4Container;
         private VisualElement _step5Container;
+        private VisualElement _step6Container;
 
 
         [SerializeField]
@@ -106,7 +107,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             get => _launchOption;
             set
             {
-                SwitchStepValue(_step5Container, (int)_launchOption, (int)value);
+                SwitchStepValue(_step6Container, (int)_launchOption, (int)value);
 
                 _launchOption = value;
             }
@@ -116,8 +117,9 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             _step2Container = ContentContainer.Q<VisualElement>("step-2-input-method");
             _step3Container = ContentContainer.Q<VisualElement>("step-3-controls-presets");
-            _step4Container = ContentContainer.Q<VisualElement>("step-4-input-options");
-            _step5Container = ContentContainer.Q<VisualElement>("step-5-further-steps");
+            _step4Container = ContentContainer.Q<VisualElement>("step-4-movement-options");
+            _step5Container = ContentContainer.Q<VisualElement>("step-5-input-options");
+            _step6Container = ContentContainer.Q<VisualElement>("step-6-further-steps");
         }
 
         // Expand this method and add bindings for each step
@@ -128,6 +130,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             BindStep3();
             BindStep4();
             BindStep5();
+            BindStep6();
 
             // Bind remaining UI Elements
             base.BindUiElements();
@@ -174,9 +177,24 @@ namespace ExPresSXR.Editor.SetupDialogs
         private void BindStep4()
         {
             // Start at i=1 to ignore 'None'
-            for (int i = 1; i < Enum.GetNames(typeof(InteractionOptions)).Length; i++)
+            for (int i = 1; i < Enum.GetNames(typeof(MovementOptions)).Length; i++)
             {
                 Toggle toggle = _step4Container.Q<Toggle>($"option-toggle-{i}");
+                if (toggle != null)
+                {
+                    MovementOptions j = (MovementOptions)(1 << (i - 1));
+                    toggle.value = _movementOptions.HasFlag(j);
+                    toggle.RegisterValueChangedCallback(evt => { EnableMovementOptionsFlag(j, evt.newValue); });
+                }
+            }
+        }
+
+        private void BindStep5()
+        {
+            // Start at i=1 to ignore 'None'
+            for (int i = 1; i < Enum.GetNames(typeof(InteractionOptions)).Length; i++)
+            {
+                Toggle toggle = _step5Container.Q<Toggle>($"option-toggle-{i}");
                 if (toggle != null)
                 {
                     InteractionOptions j = (InteractionOptions)(1 << (i - 1));
@@ -186,11 +204,11 @@ namespace ExPresSXR.Editor.SetupDialogs
             }
         }
 
-        private void BindStep5()
+        private void BindStep6()
         {
             for (int i = 0; i < Enum.GetNames(typeof(LaunchOption)).Length; i++)
             {
-                Button button = _step5Container.Q<Button>($"choice-{i + 1}-button");
+                Button button = _step6Container.Q<Button>($"choice-{i + 1}-button");
                 if (button != null)
                 {
                     LaunchOption j = (LaunchOption)i;
@@ -220,9 +238,6 @@ namespace ExPresSXR.Editor.SetupDialogs
             // Show Tutorials
             ShowTutorialsSetupDialogs();
 
-            // Open ProBuilder-Window
-            EditorApplication.ExecuteMenuItem("Tools/ProBuilder/ProBuilder Window");
-
             // Close the editor window
             Close();
         }
@@ -240,7 +255,6 @@ namespace ExPresSXR.Editor.SetupDialogs
                 SetupDialogExperimentationTutorial.ShowWindow();
             }
         }
-
 
         private void EnableMovementOptionsFlag(MovementOptions flagToChange, bool enableFlag)
         {

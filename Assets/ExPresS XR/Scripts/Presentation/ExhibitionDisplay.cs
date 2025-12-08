@@ -77,13 +77,13 @@ namespace ExPresSXR.Presentation
         }
 
         [SerializeField]
-        private bool _spinObjectRandomizeRotation;
-        public bool SpinObjectRandomizeRotation
+        private bool _spinObjectRandomizeRotationOffset;
+        public bool SpinObjectRandomizeRotationOffset
         {
-            get => _spinObjectRandomizeRotation;
+            get => _spinObjectRandomizeRotationOffset;
             set
             {
-                _spinObjectRandomizeRotation = value;
+                _spinObjectRandomizeRotationOffset = value;
                 UpdateObjectSpinner();
             }
         }
@@ -647,7 +647,7 @@ namespace ExPresSXR.Presentation
             if (!_socket.TryGetComponent(out ObjectSpinner spinner))
             {
                 spinner = _socket.gameObject.AddComponent<ObjectSpinner>();
-                spinner.Configure(_spinObjectSpeed, _spinObjectAxis, _spinObjectRandomizeRotation);
+                spinner.Configure(_spinObjectSpeed, _spinObjectAxis, _spinObjectRandomizeRotationOffset);
             }
 
             spinner.enabled = _spinObject;

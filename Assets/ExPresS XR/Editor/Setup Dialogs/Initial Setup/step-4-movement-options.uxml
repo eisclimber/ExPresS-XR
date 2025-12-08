@@ -1,0 +1,69 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Label text="Choose Movement Options..." display-tooltip-when-elided="true" name="step-4-header" style="font-size: 20px; -unity-text-align: upper-center; -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-bottom: 4px;"/>
+    <ui:VisualElement name="step-4-controller" style="flex-grow: 1;">
+        <ui:VisualElement name="options-description" style="margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px;">
+            <ui:Label text="Select additional options for players to move around the world. Enable the checkboxes to activate the options." display-tooltip-when-elided="true" name="description" style="flex-wrap: wrap-reverse; flex-grow: 0; white-space: normal;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="separator" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px;"/>
+        <ui:VisualElement name="options-segment" style="flex-direction: row; flex-grow: 1; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px;">
+            <ui:VisualElement name="options-choices" style="flex-grow: 0; flex-shrink: 1; width: 240px;">
+                <ui:VisualElement name="choice-1-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px;">
+                    <ui:Button text="Teleport Choose Forward" display-tooltip-when-elided="true" name="show-option-button-1" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-1" style="display: flex; flex-grow: 0; flex-shrink: 0;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-2-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-left: 0; margin-bottom: 4px;">
+                    <ui:Button text="Teleport Cancel " display-tooltip-when-elided="true" name="show-option-button-2" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 132px; -unity-text-align: middle-left; width: 191px; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-2" style="display: flex; flex-grow: 0; flex-shrink: 0;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-3-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Teleport During Near" display-tooltip-when-elided="true" name="show-option-button-3" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 132px; -unity-text-align: middle-left; width: 189px; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-3" style="display: flex; flex-grow: 0; flex-shrink: 0;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="separator-1" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px; margin-right: 4px;"/>
+                <ui:VisualElement name="choice-4-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Gravity" display-tooltip-when-elided="true" name="show-option-button-4" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left; width: 188px; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-4" style="display: flex; flex-grow: 0;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-5-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Jump" display-tooltip-when-elided="true" name="show-option-button-5" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left; margin-left: 0; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-5" style="display: flex; flex-grow: 0;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="separator-2" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px; margin-right: 4px;"/>
+                <ui:VisualElement name="choice-6-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Climbing" display-tooltip-when-elided="true" name="show-option-button-6" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-6" style="display: flex; flex-grow: 0; flex-shrink: 1;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-7-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Climb Teleport" display-tooltip-when-elided="true" name="show-option-button-7" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-7" style="display: flex; flex-grow: 0; flex-shrink: 1;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="separator-3" style="flex-shrink: 0; background-color: rgb(100, 100, 100); min-height: 1px; margin-top: 4px; margin-bottom: 4px; margin-right: 4px;"/>
+                <ui:VisualElement name="choice-8-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Head Collision Pushback" display-tooltip-when-elided="true" name="show-option-button-8" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-8" style="display: flex; flex-grow: 0; flex-shrink: 1;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="choice-9-option" style="flex-direction: row; flex-grow: 0; margin-top: 4px; margin-bottom: 4px; margin-left: 0;">
+                    <ui:Button text="Collision Indicator" display-tooltip-when-elided="true" name="show-option-button-9" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); min-width: 140px; -unity-text-align: middle-left; flex-grow: 1;"/>
+                    <ui:Toggle name="option-toggle-9" style="display: flex; flex-grow: 0; flex-shrink: 1;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="separator" style="margin-left: 8px; margin-right: 8px; margin-top: 0; margin-bottom: 0; background-color: rgb(100, 100, 100); min-width: 1px;"/>
+            <ui:VisualElement name="options-descriptions" style="flex-grow: 1;">
+                <ui:Label text="Rotating the Joystick in TeleportMode lets you choose the looking direction after teleporting." display-tooltip-when-elided="true" name="option-1-description" style="white-space: normal; margin-top: 8px; margin-bottom: 4px; height: initial;"/>
+                <ui:Label text="If enabled, will cancel the Teleport Mode when pressing the &#39;Grab&#39;-Button." display-tooltip-when-elided="true" name="option-2-description" style="white-space: normal; margin-top: 6px; margin-bottom: 8px;"/>
+                <ui:Label text="When enabled, teleports can be performed while an object is held in the same hand." display-tooltip-when-elided="true" name="option-3-description" style="white-space: normal; margin-top: 6px; margin-bottom: 8px;"/>
+                <ui:Label text="If the player is affected by gravity while moving." display-tooltip-when-elided="true" name="option-4-description" style="white-space: normal; margin-top: 16px; margin-bottom: 8px;"/>
+                <ui:Label text="If the player is able to jump using a the primary button of the controller. Recommended to use with gravity." display-tooltip-when-elided="true" name="option-5-description" style="white-space: normal; margin-top: 6px; margin-bottom: 12px; flex-wrap: nowrap;"/>
+                <ui:Label text="Allows the interaction with ClimbInteractables, that can be used to simulate climbing. Recommended to use with gravity." display-tooltip-when-elided="true" name="option-6-description" style="white-space: normal; margin-bottom: 8px; margin-top: 12px; width: initial; flex-wrap: wrap;"/>
+                <ui:Label text="Allows Teleports during climbing, i.e. to make it easier to reach the top of a ladder." display-tooltip-when-elided="true" name="option-7-description" style="white-space: normal; margin-bottom: 16px; margin-top: 6px;"/>
+                <ui:Label text="Pushes the Player back when the camera/head would collide with an object." display-tooltip-when-elided="true" name="option-8-description" style="white-space: normal; margin-bottom: 8px; margin-top: 8px;"/>
+                <ui:Label text="Indicates a collision with the head by tinting the edges of the view." display-tooltip-when-elided="true" name="option-9-description" style="white-space: normal; margin-bottom: 8px; margin-top: 6px;"/>
+                <ui:VisualElement name="spacer" style="flex-grow: 1;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="controls-view" style="flex-direction: row; justify-content: flex-end; align-self: flex-end; align-content: flex-end;">
+            <ui:Button text="Back" display-tooltip-when-elided="true" name="movement-back-button"/>
+            <ui:Button text="Next" display-tooltip-when-elided="true" name="next-button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

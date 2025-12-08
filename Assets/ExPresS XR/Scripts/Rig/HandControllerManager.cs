@@ -1,7 +1,10 @@
+using System.Configuration;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals;
+using UnityEngine.XR.Interaction.Toolkit.UI;
 
 namespace ExPresSXR.Rig
 {
@@ -165,11 +168,24 @@ namespace ExPresSXR.Rig
             get => _pokeInteractionEnabled;
             set
             {
+                if (_pokeInteractor != null)
+                {
+                    _pokeInteractor.hoverEntered.RemoveListener(OnPokeHoverEntered);
+                    _pokeInteractor.uiHoverEntered.RemoveListener(OnPokeUiHoverEntered);
+                    _pokeInteractor.hoverExited.RemoveListener(OnPokeHoverExited);
+                    _pokeInteractor.uiHoverExited.RemoveListener(OnPokeUiHoverExited);
+                }
+                
                 _pokeInteractionEnabled = value;
 
                 if (_pokeInteractor != null)
                 {
                     _pokeInteractor.enabled = value;
+
+                    _pokeInteractor.hoverEntered.AddListener(OnPokeHoverEntered);
+                    _pokeInteractor.uiHoverEntered.AddListener(OnPokeUiHoverEntered);
+                    _pokeInteractor.hoverExited.AddListener(OnPokeHoverExited);
+                    _pokeInteractor.uiHoverExited.AddListener(OnPokeUiHoverExited);
                 }
             }
         }
@@ -185,19 +201,7 @@ namespace ExPresSXR.Rig
             get => _pokePointOnHover;
             set
             {
-                if (_pokeInteractor != null)
-                {
-                    _pokeInteractor.HoverEntered.RemoveListener(SetHandPointPose(true));
-                    _pokeInteractor.HoverExited.RemoveListener(SetHandPointPose(false));
-                }
-
                 _pokePointOnHover = value;
-
-                if (_pokeInteractor != null)
-                {
-                    _pokeInteractor.HoverEntered.AddListener(SetHandPointPose(true));
-                    _pokeInteractor.HoverExited.AddListener(SetHandPointPose(false));
-                }
             }
         }
 
@@ -297,235 +301,21 @@ namespace ExPresSXR.Rig
         }
 
 
+        private void SetHandPointing(bool pointing)
+        {
+            if (PokePointOnHover && _handModel != null)
+            {
+                _handModel.SetHandPointing(pointing);
+            }
+        }
 
 
+        private void OnPokeHoverEntered(HoverEnterEventArgs args) => SetHandPointing(true);
 
+        private void OnPokeHoverExited(HoverExitEventArgs args) => SetHandPointing(false);
 
+        private void OnPokeUiHoverEntered(UIHoverEventArgs args) => SetHandPointing(true);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // /// <summary>
-        // /// Connects additional events.
-        // /// </summary>
-        // protected override void OnEnable()
-        // {
-        //     base.OnEnable();
-
-        //     if (_directInteractor != null)
-        //     {
-        //         _directInteractor.selectExited.AddListener(OnDirectInteractorSelectExited);
-        //         _directInteractor.selectEntered.AddListener(OnDirectInteractorSelectEntered);
-        //     }
-
-        //     if (TryGetAutoHand(out AutoHandModel autoHand))
-        //     {
-        //         autoHand.OnModelsLoaded.RemoveListener(UpdateAutoHandModelValues);
-        //     }
-
-        //     // Reticles (AutoHandModels) need to be instantiated so they are available in the next frame
-        //     StartCoroutine(AutoHandReticleCreationTimer());
-        // }
-
-
-        // /// <summary>
-        // /// Removes connected additional events.
-        // /// </summary>
-        // protected override void OnDisable()
-        // {
-        //     base.OnDisable();
-
-        //     if (_directInteractor != null)
-        //     {
-        //         _directInteractor.selectExited.RemoveListener(OnDirectInteractorSelectExited);
-        //         _directInteractor.selectEntered.RemoveListener(OnDirectInteractorSelectEntered);
-        //     }
-
-        //     if (TryGetAutoHand(out AutoHandModel autoHand))
-        //     {
-        //         autoHand.OnModelsLoaded.RemoveListener(UpdateAutoHandModelValues);
-        //     }
-        // }
-
-        // /// <summary>
-        // /// Expands the base function by disabling AutoHand-Collisions during teleport.
-        // /// </summary>
-        // /// <param name="context">Callback Context of the InputAction.</param>
-        // protected override void OnStartTeleport(InputAction.CallbackContext context)
-        // {
-        //     base.OnStartTeleport(context);
-
-        //     SetAutoHandCollisionsCurrentlyEnabled(false);
-        // }
-
-        // /// <summary>
-        // /// Expands the base function by enabling AutoHand-Collisions after teleport.
-        // /// </summary>
-        // /// <param name="context">Callback Context of the InputAction.</param>
-        // protected override void OnCancelTeleport(InputAction.CallbackContext context)
-        // {
-        //     base.OnCancelTeleport(context);
-
-        //     SetAutoHandCollisionsCurrentlyEnabled(true);
-        // }
-
-
-        // private bool TryGetAutoHand(out AutoHandModel autoHand)
-        // {
-        //     autoHand = null;
-        //     if (TryGetComponent(out XRBaseController controller) && controller.model != null)
-        //     {
-        //         return controller.model.TryGetComponent(out autoHand);
-        //     }
-        //     return false;
-        // }
-
-        // private void SetAutoHandCollisionsCurrentlyEnabled(bool enabled)
-        // {
-        //     if (TryGetAutoHand(out AutoHandModel autoHand))
-        //     {
-        //         autoHand.collisionsCurrentlyEnabled = enabled;
-        //     }
-        // }
-
-        // /// <summary>
-        // /// Manages which InputActions are available.
-        // /// This is slightly different to how the base function handles it.
-        // /// </summary>
-        // protected override void UpdateLocomotionActions()
-        // {
-        //     // Disable/enable Teleport and Turn when Move is enabled/disabled.
-        //     SetEnabled(m_Move, smoothMoveEnabled);
-        //     SetEnabled(m_TeleportModeActivate, !smoothMoveEnabled && teleportationEnabled);
-        //     SetEnabled(m_TeleportModeCancel, !smoothMoveEnabled && teleportationEnabled && teleportCancelEnabled);
-
-        //     // Disable ability to turn when using continuous movement
-        //     SetEnabled(m_Turn, !smoothMoveEnabled && smoothTurnEnabled);
-        //     SetEnabled(m_SnapTurn, !smoothMoveEnabled && !smoothTurnEnabled && snapTurnEnabled);
-        // }
-
-        // private void NotifyOverwrittenBehavior()
-        // {
-        //     if (smoothMoveEnabled && teleportationEnabled)
-        //     {
-        //         Debug.LogWarning("SmoothMove and Teleportation are both enabled on this hand. Teleportation is disabled, as it is overwritten by SmoothMove.");
-        //     }
-
-        //     if (smoothMoveEnabled && smoothTurnEnabled)
-        //     {
-        //         Debug.LogWarning("SmoothMove and SmoothTurn are both enabled on this hand. SmoothTurn is disabled, as it is overwritten by SmoothMove.");
-        //     }
-
-        //     if ((smoothMoveEnabled || smoothTurnEnabled) && snapTurnEnabled)
-        //     {
-        //         Debug.LogWarning("SmoothMove and/or SmoothTurn are both enabled with SnapTurn on this hand. SnapTurn is disabled, as it is overwritten by SmoothMove/SmoothTurn.");
-        //     }
-        // }
-
-
-        // private void OnDirectInteractorSelectExited(SelectExitEventArgs args)
-        // {
-        //     // Start wait timer 
-        //     if (gameObject.activeInHierarchy && isActiveAndEnabled)
-        //     {
-        //         _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
-        //     }
-
-        //     // Enable the snap turn InputAction if it was previously enabled
-        //     SetEnabled(m_SnapTurn, !smoothMoveEnabled && !smoothTurnEnabled && snapTurnEnabled);
-        //     SetEnabled(m_TeleportModeActivate, !smoothMoveEnabled && teleportationEnabled);
-        // }
-
-
-        // private void OnDirectInteractorSelectEntered(SelectEnterEventArgs args)
-        // {
-        //     // Stop wait timer
-        //     if (_afterGrabCoroutine != null)
-        //     {
-        //         StopCoroutine(_afterGrabCoroutine);
-        //     }
-        //     _afterGrabCoroutine = null;
-
-        //     // Disable the snap turn InputAction turn while grabbing when the interactor has anchor control enabled
-        //     if (hasDirectInteractorScalingSelection)
-        //     {
-        //         SetEnabled(m_SnapTurn, false);
-        //         SetEnabled(m_TeleportModeActivate, false);
-        //     }
-        // }
-
-
-        // private bool hasDirectInteractorScalingSelection
-        // {
-        //     get
-        //     {
-        //         ScalingDirectInteractor scalableInteractor = _directInteractor as ScalingDirectInteractor;
-        //         if (scalableInteractor != null)
-        //         {
-        //             return scalableInteractor.hasScalingSelection;
-        //         }
-        //         return false;
-        //     }
-        // }
-
-
-        // private IEnumerator AutoHandReticleCreationTimer()
-        // {
-        //     // Not pretty but we wait a bit after initialization to get the attach
-        //     yield return new WaitForSeconds(1.0f);
-        //     UpdateAutoHandModelValues();
-        // }
-
-
-        // private void UpdateAutoHandModelValues()
-        // {
-        //     handModelMode = _handModelMode;
-        //     handModelCollisions = _handModelCollisions;
-        // }
-
-        // private IEnumerator AfterGrabWaitTimer()
-        // {
-        //     // Disable Collisions
-        //     SetAutoHandCollisionsCurrentlyEnabled(false);
-
-        //     yield return new WaitForSeconds(_afterGrabWaitDuration);
-
-        //     // Enable auto hand Collisions
-        //     SetAutoHandCollisionsCurrentlyEnabled(handModelCollisions);
-
-        //     _afterGrabCoroutine = null;
-        // }
-
-
-        // private void OnValidate()
-        // {
-        //     teleportationEnabled = _teleportationEnabled;
-        //     teleportCancelEnabled = _teleportCancelEnabled;
-        //     chooseTeleportForwardEnabled = _chooseTeleportForwardEnabled;
-        //     smoothMoveEnabled = _smoothMoveEnabled;
-        //     smoothTurnEnabled = _smoothTurnEnabled;
-        //     grabMoveEnabled = _grabMoveEnabled;
-        //     directInteractionEnabled = _directInteractionEnabled;
-        //     pokeInteractionEnabled = _pokeInteractionEnabled;
-        //     rayInteractionEnabled = _rayInteractionEnabled;
-        //     rayAnchorControlEnabled = _farAnchorControlEnabled;
-        //     uiRayInteractionEnabled = _uiRayInteractionEnabled;
-        //     uiPokeInteractionEnabled = _uiPokeInteractionEnabled;
-        //     handModelMode = _handModelMode;
-        //     handModelCollisions = _handModelCollisions;
-        //     scaleGrabbedObjects = _scaleGrabbedObjects;
-
-        //     NotifyOverwrittenBehavior();
-        // }
+        private void OnPokeUiHoverExited(UIHoverEventArgs args) => SetHandPointing(false);
     }
 }

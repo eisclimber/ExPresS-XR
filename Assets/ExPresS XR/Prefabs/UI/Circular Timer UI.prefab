@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 424542755128569239}
   - component: {fileID: 5049151912174597156}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: Timer UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +142,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4489cba80c88044b81d9ebf6799f3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timer: {fileID: 0}
+  _timer: {fileID: 5049151912174597156}
+  _textSettings:
+    TextEnabled: 1
+    TimeDisplayFormatter: '{0}'
+    ShowMilliseconds: 0
+    TimeoutText: '-'
+    CountType: 1
+    _color: {r: 1, g: 1, b: 1, a: 1}
+    _text: {fileID: 564150081298260022}
   _fillSettings:
     fillDirection: 1
     fillType: 1
@@ -151,12 +159,7 @@ MonoBehaviour:
     _fillImage: {fileID: 1838735325897250294}
     _startCapImage: {fileID: 6138255093296918187}
     _endCapImage: {fileID: 2966099193710364233}
-  _textSettings:
-    textEnabled: 1
-    showMilliseconds: 0
-    countType: 1
-    _color: {r: 1, g: 1, b: 1, a: 1}
-    _text: {fileID: 564150081298260022}
+    _hideCapsIfNotRunning: 1
 --- !u!114 &5049151912174597156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a911722e1bb685448d8e964c9561c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _description: 
   _waitTime: 20
+  _remainingTime: 0
   autoStart: 1
   oneShot: 1
   OnStarted:
@@ -284,20 +289,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -525,7 +533,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!1 &9014332303041247942
 GameObject:
   m_ObjectHideFlags: 0

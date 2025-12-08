@@ -536,14 +536,14 @@ namespace ExPresSXR.Rig
         {
             if (_leftAutoHand != null)
             {
-                _leftAutoHand.handModelMode = _handModelMode;
-                _leftAutoHand.modelCollisionsEnabled = _handModelCollisions;
+                _leftAutoHand.HandModelMode = _handModelMode;
+                _leftAutoHand.ModelCollisionsEnabled = _handModelCollisions;
             }
 
             if (_rightAutoHand != null)
             {
-                _rightAutoHand.handModelMode = _handModelMode;
-                _rightAutoHand.modelCollisionsEnabled = _handModelCollisions;
+                _rightAutoHand.HandModelMode = _handModelMode;
+                _rightAutoHand.ModelCollisionsEnabled = _handModelCollisions;
             }
         }
 

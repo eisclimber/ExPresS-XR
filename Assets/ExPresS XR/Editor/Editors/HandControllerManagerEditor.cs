@@ -118,9 +118,12 @@ public class HandControllerManagerEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_nearFarInteractor"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_pokeInteractor"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportInteractor"), true);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractor"), true);
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_attachController"), true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModel"), true);
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportValidReticle"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_teleportInvalidReticle"), true);

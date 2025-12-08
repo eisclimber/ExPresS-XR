@@ -87,7 +87,7 @@ namespace ExPresSXR.Rig
 
         public void ResetPointing() => PointAreaCollisions = 0; // It can happen that a hand does unregister completely on teleport so we call it manually.
         
-        private void SetPointing(bool point) => SetAnimatorBool(_pointAnimatorName, point);
+        public void SetPointing(bool point) => SetAnimatorBool(_pointAnimatorName, point);
         
 
         // Grab and pinch

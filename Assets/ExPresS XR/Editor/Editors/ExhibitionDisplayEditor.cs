@@ -45,7 +45,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectSpeed"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectAxis"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectRandomizeRotation"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectRandomizeRotationOffset"), true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();

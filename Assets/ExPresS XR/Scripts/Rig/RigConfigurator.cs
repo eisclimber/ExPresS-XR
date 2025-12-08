@@ -193,7 +193,7 @@ namespace ExPresSXR.Rig
 
             // Jump
             bool enableJump = movementOptions.HasFlag(MovementOptions.Jump);
-            SetChildComponentEnabled<JumpProvider>(mediator, enableJump);
+            SetChildComponentsEnabled<JumpProvider>(mediator, enableJump);
 
             // Climb
             bool enableClimb = movementOptions.HasFlag(MovementOptions.Climb);

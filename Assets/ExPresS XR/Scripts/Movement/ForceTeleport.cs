@@ -98,13 +98,9 @@ namespace ExPresSXR.Movement
         /// <param name="fade">With or without fade.</param>
         public void TeleportTo(Transform target, bool fade)
         {
-            if (target != null)
-            {
-                TeleportTo(target.position, target.rotation, fade);
-            }
-            else {
-                TeleportTo(Vector3.zero, Quaternion.identity, fade);
-            }
+            Vector3 targetPosition = target != null ? target.position : Vector3.zero;
+            Quaternion targetRotation = target != null ? target.rotation : Quaternion.identity;
+            TeleportTo(targetPosition, targetRotation, fade);
         } 
         
         /// <summary>
