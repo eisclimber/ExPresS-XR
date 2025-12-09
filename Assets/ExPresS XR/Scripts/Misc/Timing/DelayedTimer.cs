@@ -18,7 +18,7 @@ namespace ExPresSXR.Misc.Timing
         [Tooltip("Delay until the timer stats. Must be greater than 0.0f.")]
         [SerializeField]
         private float _startDelay = DEFAULT_DELAY;
-        public float startDelay
+        public float StartDelay
         {
             get => _startDelay;
             protected set => _startDelay = value;
@@ -31,7 +31,7 @@ namespace ExPresSXR.Misc.Timing
         [SerializeField]
         [ReadonlyInInspector]
         private float _remainingDelay;
-        public float remainingDelay
+        public float RemainingDelay
         {
             get => _remainingDelay;
             protected set
@@ -43,9 +43,9 @@ namespace ExPresSXR.Misc.Timing
                 if (wasDelaying && _remainingDelay <= 0)
                 {
                     HandleDelayTimeout();
-                    // Add (!) the negative remaining delay the remainingTime to be more precise 
-                    remainingTime += rawValue;
-                    if (remainingTime <= 0.0f)
+                    // Add (!) the negative remaining delay the RemainingTime to be more precise 
+                    RemainingTime += rawValue;
+                    if (RemainingTime <= 0.0f)
                     {
                         HandleTimeout();
                     }
@@ -56,9 +56,9 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         /// If the timer is actively is counting down, meaning it was started and is not paused.
         /// </summary>
-        public override bool running
+        public override bool Running
         {
-            get => (remainingDelay > 0.0f || remainingTime > 0.0f) && !timerPaused;
+            get => (_remainingDelay > 0.0f || RemainingTime > 0.0f) && !TimerPaused;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace ExPresSXR.Misc.Timing
 
         protected override void Awake()
         {
-            if (autoStart)
+            if (AutoStart)
             {
                 StartTimer();
             }
@@ -81,12 +81,12 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         protected override void FixedUpdate()
         {
-            if (!running)
+            if (!Running)
             {
                 return;
             }
 
-            bool needsDelay = remainingDelay > 0;
+            bool needsDelay = _remainingDelay > 0;
             if (needsDelay)
             {
                 float rawDelay = _remainingDelay - Time.fixedDeltaTime;
@@ -122,8 +122,8 @@ namespace ExPresSXR.Misc.Timing
         /// </param>
         public virtual void StartTimer(float duration = -1.0f, float delay = -1.0f)
         {
-            startDelay = delay > 0.0f ? delay : startDelay;
-            remainingDelay = startDelay;
+            StartDelay = delay > 0.0f ? delay : _startDelay;
+            RemainingDelay = _startDelay;
             base.StartTimer(duration);
         }
 
@@ -134,7 +134,7 @@ namespace ExPresSXR.Misc.Timing
         public override void StopTimer()
         {
             base.StopTimer();
-            remainingTime = TIMER_INACTIVE_TIME;
+            RemainingTime = TIMER_INACTIVE_TIME;
         }
 
         /// <summary>

@@ -53,7 +53,10 @@ namespace ExPresSXR.Minigames.Archery.Bow
 
         private void Start()
         {
-            _audioSource = GetComponent<AudioSource>();
+            if (_audioSource == null && !TryGetComponent(out _audioSource))
+            {
+                Debug.LogWarning("No AudioSource found on ArrowShotSpawner. Please assign one to play the release sound.", this);
+            }
         }
 
         private void OnEnable()
@@ -77,7 +80,7 @@ namespace ExPresSXR.Minigames.Archery.Bow
             }
             else
             {
-                Debug.LogWarning("No instance of IShootable found. Can't apply any force to your projectile.");
+                Debug.LogWarning("No instance of IShootable found. Can't apply any force to your projectile.", this);
             }
 
             _audioSource.PlayOneShot(_releaseStringSound, _releaseSoundVolume);

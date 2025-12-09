@@ -17,12 +17,12 @@ namespace ExPresSXR.Rig
 
 
         [Tooltip("If true the players camera will be pushed back.")]
-        public bool collisionPushbackEnabled;
+        public bool CollisionPushbackEnabled;
 
         [Tooltip("If true the players cameras corner will be faded.")]
         [SerializeField]
         private bool _showCollisionVignetteEffect;
-        public bool showCollisionVignetteEffect
+        public bool ShowCollisionVignetteEffect
         {
             get => _showCollisionVignetteEffect;
             set => _showCollisionVignetteEffect = value;
@@ -33,7 +33,7 @@ namespace ExPresSXR.Rig
         [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
         [SerializeField]
         private Transform _pushbackAnchor;
-        public Transform pushbackAnchor {
+        public Transform PushbackAnchor {
             get => _pushbackAnchor; 
             set => _pushbackAnchor = value;
         }
@@ -45,7 +45,7 @@ namespace ExPresSXR.Rig
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
         private float _maxFadeDuration = 0.5f;
-        public float maxFadeDuration { 
+        public float MaxFadeDuration { 
             get => _maxFadeDuration; 
             set => _maxFadeDuration = value;
         }
@@ -69,7 +69,7 @@ namespace ExPresSXR.Rig
         private Coroutine _cooldownCoroutine;
         private CharacterController _playerController;
 
-        private Vector3 momentaryGravity 
+        private Vector3 MomentaryGravity 
         {
             get => new(0.0f, -GRAVITY_STRENGTH * Time.deltaTime, 0.0f);
         }
@@ -122,7 +122,7 @@ namespace ExPresSXR.Rig
             {
                 OnCollisionStarted.AddListener(() =>
                 {
-                    if (showCollisionVignetteEffect)
+                    if (ShowCollisionVignetteEffect)
                     {
                         screenCollisionIndicator.FadeIn(_maxFadeDuration);
                     }
@@ -130,7 +130,7 @@ namespace ExPresSXR.Rig
 
                 OnCollisionEnded.AddListener(() =>
                 {
-                    if (showCollisionVignetteEffect)
+                    if (ShowCollisionVignetteEffect)
                     {
                         screenCollisionIndicator.FadeOut(_maxFadeDuration);
                     }
@@ -165,12 +165,6 @@ namespace ExPresSXR.Rig
                 _colliding = false;
                 OnCollisionEnded.Invoke();
             }
-
-            // if (_playerController != null && collisionPushbackEnabled)
-            // {
-            //     // Apply gravity nonetheless
-            //     _playerController.Move(momentaryGravity);
-            // }
         }
 
 
@@ -191,10 +185,10 @@ namespace ExPresSXR.Rig
                 headDiff.y = headDiff.y > 0 ? _colliderSize : -_colliderSize;
             }
 
-            if (_playerController != null && collisionPushbackEnabled)
+            if (_playerController != null && CollisionPushbackEnabled)
             {
                 // Apply head difference and momentary gravity
-                _playerController.Move(-headDiff + momentaryGravity);
+                _playerController.Move(MomentaryGravity - headDiff);
             }
 
             // Collision Started

@@ -18,7 +18,7 @@ namespace ExPresSXR.Minigames.CoinScale
         [SerializeField]
         [Tooltip("Defines whether the coin is fake or real.")]
         private bool _isFake;
-        public bool isFake
+        public bool IsFake
         {
             get => _isFake;
             set => _isFake = value;

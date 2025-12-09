@@ -16,15 +16,15 @@ namespace ExPresSXR.Rig
     {
         [Tooltip("Wether or not the head gaze can be used to teleport.")]
         [SerializeField]
-        private bool _teleportationEnabled = true;
-        public bool teleportationEnabled
+        private bool _TeleportationEnabled = true;
+        public bool TeleportationEnabled
         {
-            get => _teleportationEnabled;
+            get => _TeleportationEnabled;
             set
             {
-                _teleportationEnabled = value;
+                _TeleportationEnabled = value;
 
-                if (_teleportationEnabled)
+                if (_TeleportationEnabled)
                 {
                     _rayInteractor.interactionLayers |= 1 << InteractionLayerMask.NameToLayer("Teleport");
                 }
@@ -38,7 +38,7 @@ namespace ExPresSXR.Rig
         [Tooltip("Whether or not multiple interactions can be performed when keeping the focus on an interactable.")]
         [SerializeField]
         private bool _canReselect = true;
-        public bool canReselect
+        public bool CanReselect
         {
             get => _canReselect;
             set => _canReselect = value;
@@ -47,7 +47,7 @@ namespace ExPresSXR.Rig
         [Tooltip("The time in seconds needed to focus the head gaze to interact.")]
         [SerializeField]
         private float _timeToSelect = 1.0f;
-        public float timeToSelect
+        public float TimeToSelect
         {
             get => _timeToSelect;
             set
@@ -56,7 +56,7 @@ namespace ExPresSXR.Rig
 
                 if (_headGazeReticle != null)
                 {
-                    _headGazeReticle.hintDuration = _timeToSelect;
+                    _headGazeReticle.HintDuration = _timeToSelect;
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace ExPresSXR.Rig
 
         [SerializeField]
         private HeadGazeReticle _headGazeReticle;
-        public HeadGazeReticle headGazeReticle
+        public HeadGazeReticle HeadGazeReticle
         {
             get => _headGazeReticle;
             set => _headGazeReticle = value;
@@ -83,12 +83,12 @@ namespace ExPresSXR.Rig
 
 
         // Should be an input interaction that is used for performing any interaction
-        public InputActionReference performInteractionReference;
+        public InputActionReference PerformInteractionReference;
 
 
         // Should be an input action that is used for canceling
 
-        public InputActionReference preventInteractionReference;
+        public InputActionReference PreventInteractionReference;
 
 
         private HeadGazeDevice _headGazeDevice;
@@ -103,8 +103,8 @@ namespace ExPresSXR.Rig
 
         private void Awake()
         {
-            teleportationEnabled = _teleportationEnabled;
-            preventInteractionReference.action.performed += TeleportModeReset;
+            TeleportationEnabled = _TeleportationEnabled;
+            PreventInteractionReference.action.performed += TeleportModeReset;
 
             if (_rayInteractor == null && !TryGetComponent(out _rayInteractor))
                 {
@@ -113,7 +113,7 @@ namespace ExPresSXR.Rig
 
             if (_headGazeReticle != null)
             {
-                _headGazeReticle.hintDuration = _timeToSelect;
+                _headGazeReticle.HintDuration = _timeToSelect;
                 TryHideReticle();
             }
         }
@@ -139,7 +139,7 @@ namespace ExPresSXR.Rig
             {
                 // New Target Found
                 _hoverTarget = newTarget;
-                _timeLeftTillSelect = timeToSelect;
+                _timeLeftTillSelect = _timeToSelect;
                 _hoverTimePassed = false;
 
                 if (_hoverTarget != null)
@@ -192,7 +192,7 @@ namespace ExPresSXR.Rig
                 else if (raycastHit != null && raycastHit.HasValue)
                 {
                     bool hasInteractor = raycastHit.Value.transform.GetComponent<IXRInteractable>() != null;
-                    bool ignoreTeleportation = !teleportationEnabled 
+                    bool ignoreTeleportation = !TeleportationEnabled 
                         && (raycastHit.Value.transform.GetComponent<TeleportationAnchor>()
                             || raycastHit.Value.transform.GetComponent<TeleportationArea>());
                     // Any Hit (might be not an XRInteractor though)
@@ -213,7 +213,7 @@ namespace ExPresSXR.Rig
             {
                 // Reset hover timer and set cooldown
                 _timeLeftTillHoverBlocked = _timeInteractionPrevented;
-                _timeLeftTillSelect = timeToSelect;
+                _timeLeftTillSelect = _timeToSelect;
 
                 TryHideReticle();
             }
@@ -232,7 +232,7 @@ namespace ExPresSXR.Rig
             _headGazeDevice.SetHeadGazeSelectReleased();
             using (StateEvent.From(_headGazeDevice, out var eventPtr))
             {
-                _headGazeDevice.headGazeSelect.WriteValueIntoEvent(0.0f, eventPtr);
+                _headGazeDevice.HeadGazeSelect.WriteValueIntoEvent(0.0f, eventPtr);
                 InputSystem.QueueEvent(eventPtr);
             }
 
@@ -241,7 +241,7 @@ namespace ExPresSXR.Rig
             if (_canReselect)
             {
                 _timeLeftTillHoverBlocked = _postInteractionCooldown;
-                _timeLeftTillSelect = timeToSelect;
+                _timeLeftTillSelect = _timeToSelect;
                 _hoverTimePassed = false;
             }
         }

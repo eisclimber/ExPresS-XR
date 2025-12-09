@@ -36,7 +36,7 @@ namespace ExPresSXR.UI
             {
                 _timer.OnTimeout.AddListener(HandleTimeout);
 
-                if (!_timer.running)
+                if (!_timer.Running)
                 {
                     ResetVisualization();
                 }
@@ -56,9 +56,9 @@ namespace ExPresSXR.UI
 
         protected virtual void Update()
         {
-            if (_timer != null && _timer.running)
+            if (_timer != null && _timer.Running)
             {
-                UpdateUI(_timer.remainingTime, _timer.waitTime);
+                UpdateUI(_timer.RemainingTime, _timer.WaitTime);
             }
         }
 

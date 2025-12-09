@@ -36,7 +36,7 @@ namespace ExPresSXR.Movement
         /// The current velocity applied.
         /// </summary>
         protected Vector3 _currentVelocity;
-        public Vector3 currentVelocity
+        public Vector3 CurrentVelocity
         {
             get => _currentVelocity;
             protected set => _currentVelocity = value;
@@ -47,7 +47,7 @@ namespace ExPresSXR.Movement
         /// Do not apply the force in these cases to allow teleport movement.
         /// </summary>
         private bool _forceTemporarilyDisabled;
-        protected bool forceTemporarilyDisabled
+        protected bool ForceTemporarilyDisabled
         {
             get => _forceTemporarilyDisabled;
         }

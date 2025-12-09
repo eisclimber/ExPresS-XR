@@ -33,7 +33,7 @@ namespace ExPresSXR.Movement
         private void Update()
         {
             if (_characterController != null && _characterController.gameObject.activeInHierarchy && _characterController.enabled 
-                && _applyForce && !forceTemporarilyDisabled)
+                && _applyForce && !ForceTemporarilyDisabled)
             {
                 float lerpFactor = _characterController.isGrounded ? _floorLerpFactor : _airLerpFactor;
                 _currentVelocity = Vector3.Lerp(_currentVelocity, Vector3.zero, lerpFactor);

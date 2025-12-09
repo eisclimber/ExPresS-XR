@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ExPresSXR.Misc
+namespace ExPresSXR.Misc.ColorSwitching
 {
     public class ConditionalColorSwitcher : ColorSwitcher
     {

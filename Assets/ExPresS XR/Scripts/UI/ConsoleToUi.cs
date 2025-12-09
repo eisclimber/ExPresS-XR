@@ -37,7 +37,7 @@ namespace ExPresSXR.UI
         [SerializeField]
         private TMP_Text _textDisplay;
 
-        public string currentLog { get; private set; }
+        public string CurrentLog { get; private set; }
 
 
         private void Start()
@@ -77,15 +77,15 @@ namespace ExPresSXR.UI
             string stackBeginning = stackLines.Length > 0 ? "\t" + stackLines[0] : "";
             string logColor = ColorForLogType(type);
 
-            currentLog += $"<color={logColor}>{ logString }</color>\n<color={ logColor }> - { stackBeginning }</color>\n";
+            CurrentLog += $"<color={logColor}>{ logString }</color>\n<color={ logColor }> - { stackBeginning }</color>\n";
 
             // Truncate text
-            string[] logLines = currentLog.Split("\n");
+            string[] logLines = CurrentLog.Split("\n");
             
             if (_maxLines > 0 && logLines.Length > _maxLines)
             {
                 // Remove lines that are not fitting anymore
-                currentLog = string.Join("\n", logLines[^(_maxLines + 1)..]);
+                CurrentLog = string.Join("\n", logLines[^(_maxLines + 1)..]);
             }
         }
 
@@ -110,7 +110,7 @@ namespace ExPresSXR.UI
         {
             if (_textDisplay != null)
             {
-                _textDisplay.text = currentLog;
+                _textDisplay.text = CurrentLog;
             }
         }
 

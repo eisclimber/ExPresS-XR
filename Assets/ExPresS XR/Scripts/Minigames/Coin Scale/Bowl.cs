@@ -27,7 +27,7 @@ namespace ExPresSXR.Minigames.CoinScale
         [Tooltip("Which Side of the scale this bowl is located.")]
         [SerializeField]
         private ScaleSide _side;
-        public ScaleSide side
+        public ScaleSide Side
         {
             get => _side;
         }
@@ -65,7 +65,7 @@ namespace ExPresSXR.Minigames.CoinScale
         /// The sum of the weights of all coins in this bowl.
         /// </summary>
         /// <returns>An int representing the total weight in this bowl.</returns>
-        public int GetWeight() => _containedCoins.Sum(cw => cw.isFake ? 0 : 1);
+        public int GetWeight() => _containedCoins.Sum(cw => cw.IsFake ? 0 : 1);
 
         /// <summary>
         /// Resets the bowls position and clears the registered coins. Doe not take care of resetting the coins positions. 

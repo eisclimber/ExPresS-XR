@@ -4,8 +4,6 @@
     Refactoring & Integration: Luca Dreiling
     Purpose: Detects hits of Rigidbodys with a CoinReset-Component
 */
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 

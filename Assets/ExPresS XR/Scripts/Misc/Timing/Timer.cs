@@ -31,7 +31,7 @@ namespace ExPresSXR.Misc.Timing
         [Tooltip("How long the timer takes to timeout. Must be greater than 0.0f.")]
         [SerializeField]
         private float _waitTime = DEFAULT_WAIT_TIME;
-        public float waitTime
+        public float WaitTime
         {
             get => _waitTime;
             protected set => _waitTime = value;
@@ -44,7 +44,7 @@ namespace ExPresSXR.Misc.Timing
         [SerializeField]
         [ReadonlyInInspector]
         private float _remainingTime;
-        public float remainingTime
+        public float RemainingTime
         {
             get => _remainingTime;
             protected set => _remainingTime = value;
@@ -53,24 +53,34 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         /// If the timer is paused or not.
         /// </summary>
-        public bool timerPaused { get; protected set; }
+        public bool TimerPaused { get; protected set; }
 
         /// <summary>
         /// If the timer is actively is counting down, meaning it was started and is not paused.
         /// </summary>
-        public virtual bool running { get => remainingTime > 0.0f && !timerPaused; }
+        public virtual bool Running { get => _remainingTime > 0.0f && !TimerPaused; }
 
         /// <summary>
         /// If true, will start the timer during OnAwake()...
         /// </summary>
         [Tooltip("If true, will start the timer during OnAwake()...")]
-        public bool autoStart = false;
+        private bool _autoStart = false;
+        public bool AutoStart
+        {
+            get => _autoStart;
+            set => _autoStart = value;
+        }
 
         /// <summary>
         /// If false, the timer will restart after timeout.
         /// </summary>
         [Tooltip("If false, the timer will restart after timeout.")]
-        public bool oneShot = true;
+        public bool _oneShot = true;
+        private bool OneShot
+        {
+            get => _autoStart;
+            set => _autoStart = value;
+        }
 
 
         /// <summary>
@@ -90,7 +100,7 @@ namespace ExPresSXR.Misc.Timing
 
         protected virtual void Awake()
         {
-            if (autoStart)
+            if (_autoStart)
             {
                 StartTimer();
             }
@@ -98,13 +108,13 @@ namespace ExPresSXR.Misc.Timing
 
         protected virtual void FixedUpdate()
         {
-            if (!running)
+            if (!Running)
             {
                 return;
             }
 
-            remainingTime -= Time.fixedDeltaTime;
-            if (remainingTime <= 0.0f)
+            _remainingTime -= Time.fixedDeltaTime;
+            if (_remainingTime <= 0.0f)
             {
                 HandleTimeout();
             }
@@ -119,9 +129,9 @@ namespace ExPresSXR.Misc.Timing
         /// </param>
         public virtual void StartTimer(float duration = -1.0f)
         {
-            waitTime = duration > 0.0f ? duration : waitTime;
-            remainingTime = waitTime;
-            timerPaused = false;
+            _waitTime = duration > 0.0f ? duration : _waitTime;
+            _remainingTime = _waitTime;
+            TimerPaused = false;
             OnStarted.Invoke();
         }
 
@@ -140,7 +150,7 @@ namespace ExPresSXR.Misc.Timing
         [ContextMenu("Resume Timer")]
         public virtual void ResumeTimer()
         {
-            if (timerPaused)
+            if (TimerPaused)
             {
                 UnpauseTimer();
             }
@@ -156,7 +166,7 @@ namespace ExPresSXR.Misc.Timing
         /// <param name="paused"> If the timer should be paused or not.</param>
         public virtual void SetTimerPaused(bool paused)
         {
-            timerPaused = paused;
+            TimerPaused = paused;
             OnPaused.Invoke(paused);
         }
 
@@ -178,7 +188,7 @@ namespace ExPresSXR.Misc.Timing
         [ContextMenu("Stop Timer")]
         public virtual void StopTimer()
         {
-            remainingTime = TIMER_INACTIVE_TIME;
+            _remainingTime = TIMER_INACTIVE_TIME;
         }
 
         /// <summary>
@@ -186,7 +196,7 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         protected virtual void HandleTimeout()
         {
-            if (oneShot)
+            if (OneShot)
             {
                 StopTimer();
             }

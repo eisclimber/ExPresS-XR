@@ -17,7 +17,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// </summary>
         [SerializeField]
         private TargetArea[] _targets;
-        public TargetArea[] targets
+        public TargetArea[] Targets
         {
             get => _targets;
             set => _targets = value;
@@ -54,7 +54,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// <summary>
         /// How many targets are available/required for this TargetAreaTriggerer.
         /// </summary>
-        public int numTargets
+        public int NumTargets
         {
             get => _targets != null ? _targets.Length : 0;
         }
@@ -114,7 +114,7 @@ namespace ExPresSXR.Minigames.TargetArea
             {
                 target.QueueAction();
 
-                if (!_emitEventsExclusively || !target.completed)
+                if (!_emitEventsExclusively || !target.Completed)
                 {
                     OnTargetAreaActionPerformed.Invoke();
                 }
@@ -125,12 +125,12 @@ namespace ExPresSXR.Minigames.TargetArea
         {
             _numCompleted++;
 
-            if (_numCompleted == numTargets)
+            if (_numCompleted == NumTargets)
             {
                 OnAllTargetsCompleted.Invoke();
             }
             
-            if (!_emitEventsExclusively || _numCompleted != numTargets)
+            if (!_emitEventsExclusively || _numCompleted != NumTargets)
             {
                 OnSingleTargetCompleted.Invoke();
             }
@@ -143,7 +143,7 @@ namespace ExPresSXR.Minigames.TargetArea
                 // Found target => Return if it was not already completed
                 if (t == target)
                 {
-                    return !target.completed;
+                    return !target.Completed;
                 }
             }
             return false;

@@ -459,7 +459,6 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
-
         private void SetSliderIsGrabbed(SelectEnterEventArgs args) => _sliderGrabbed = true;
 
         private void SetSliderIsReleased(SelectExitEventArgs args) => _sliderGrabbed = false;
@@ -478,7 +477,7 @@ namespace ExPresSXR.Presentation.Pictures
         {
             if (args.interactableObject.transform.TryGetComponent(out PictureDataProvider dataProvider))
             {
-                PictureData = dataProvider.data;
+                PictureData = dataProvider.Data;
             }
             else
             {

@@ -80,13 +80,13 @@ namespace ExPresSXR.Minigames.CoinScale
         /// <param name="state">Desired state.</param>
         public void Activate(ScaleState state)
         {
-            if (_bowl.side == Bowl.ScaleSide.Left)
+            if (_bowl.Side == Bowl.ScaleSide.Left)
             {
-                StartTransition(state.leftBowlPosition);
+                StartTransition(state.LeftBowlPosition);
             }
             else
             {
-                StartTransition(state.rightBowlPosition);
+                StartTransition(state.RightBowlPosition);
             }
             
         }

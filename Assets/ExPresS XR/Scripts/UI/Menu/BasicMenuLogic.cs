@@ -10,7 +10,7 @@ namespace ExPresSXR.UI.Menu
         /// Menu to switch to when `GoBack` is called.
         /// </summary>
         [SerializeField]
-        protected BasicMenuLogic backMenu;
+        protected BasicMenuLogic _backMenu;
         
         /// <summary>
         /// Disables the gameObject this component is attached to and activates the provided menu.
@@ -29,9 +29,9 @@ namespace ExPresSXR.UI.Menu
         /// </summary>
         public void GoBack()
         {
-            if (backMenu != null)
+            if (_backMenu != null)
             {
-                GoToMenu(backMenu);
+                GoToMenu(_backMenu);
             }
             else
             {

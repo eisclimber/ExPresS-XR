@@ -7,10 +7,10 @@ namespace ExPresSXR.Misc
     public class InputActionDebugFunctions : MonoBehaviour
     {
 
-        public InputActionReference testInputAction1;
-        public InputActionReference testInputAction2;
-        public InputActionReference testInputAction3;
-        public InputActionReference testInputAction4;
+        public InputActionReference TestInputAction1;
+        public InputActionReference TestInputAction2;
+        public InputActionReference TestInputAction3;
+        public InputActionReference TestInputAction4;
 
         public UnityEvent OnTestInput1;
         public UnityEvent OnTestInput2;
@@ -19,24 +19,24 @@ namespace ExPresSXR.Misc
 
 
         private void Awake() {
-            if (testInputAction1 != null)
+            if (TestInputAction1 != null)
             {
-                testInputAction1.action.performed += TestInput1Callback;
+                TestInputAction1.action.performed += TestInput1Callback;
             }
 
-            if (testInputAction2 != null)
+            if (TestInputAction2 != null)
             {
-                testInputAction2.action.performed += TestInput2Callback;
+                TestInputAction2.action.performed += TestInput2Callback;
             }
 
-            if (testInputAction3 != null)
+            if (TestInputAction3 != null)
             {
-                testInputAction3.action.performed += TestInput3Callback;
+                TestInputAction3.action.performed += TestInput3Callback;
             }
 
-            if (testInputAction4 != null)
+            if (TestInputAction4 != null)
             {
-                testInputAction4.action.performed += TestInput4Callback;
+                TestInputAction4.action.performed += TestInput4Callback;
             }
         }
 

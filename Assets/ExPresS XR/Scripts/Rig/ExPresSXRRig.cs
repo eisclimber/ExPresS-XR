@@ -96,7 +96,7 @@ namespace ExPresSXR.Rig
 
                 if (_headGazeController != null)
                 {
-                    _headGazeController.canReselect = _headGazeCanReselect;
+                    _headGazeController.CanReselect = _headGazeCanReselect;
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace ExPresSXR.Rig
 
                 if (_headGazeController != null)
                 {
-                    _headGazeController.timeToSelect = _headGazeTimeToSelect;
+                    _headGazeController.TimeToSelect = _headGazeTimeToSelect;
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace ExPresSXR.Rig
                 // Must be already in the inspector!!!
                 if (_headGazeController != null)
                 {
-                    _headGazeController.headGazeReticle = _headGazeReticle;
+                    _headGazeController.HeadGazeReticle = _headGazeReticle;
                 }
             }
         }
@@ -240,7 +240,7 @@ namespace ExPresSXR.Rig
 
                 if (_playerHeadCollider != null)
                 {
-                    _playerHeadCollider.collisionPushbackEnabled = _headCollisionPushback;
+                    _playerHeadCollider.CollisionPushbackEnabled = _headCollisionPushback;
                 }
             }
         }
@@ -258,7 +258,7 @@ namespace ExPresSXR.Rig
 
                 if (_playerHeadCollider != null)
                 {
-                    _playerHeadCollider.showCollisionVignetteEffect = _showCollisionVignetteEffect;
+                    _playerHeadCollider.ShowCollisionVignetteEffect = _showCollisionVignetteEffect;
                 }
             }
         }
@@ -303,7 +303,7 @@ namespace ExPresSXR.Rig
                 if (_playerHeadCollider != null)
                 {
                     _playerHeadCollider.screenCollisionIndicator = ScreenCollisionIndicator;
-                    _playerHeadCollider.pushbackAnchor = transform;
+                    _playerHeadCollider.PushbackAnchor = transform;
                 }
             }
         }

@@ -21,7 +21,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// If the number of actions were performed and the target is completed, not registering any more actions.
         /// </summary>
         private bool _completed;
-        public bool completed
+        public bool Completed
         {
             get => _completed;
         }
@@ -37,7 +37,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// </summary>
         public void QueueAction()
         {
-            if (completed)
+            if (_completed)
             {
                 // Do not progress if completed or infinite
                 return;

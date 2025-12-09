@@ -13,7 +13,7 @@ namespace ExPresSXR.UI
         [SerializeField]
         private float _showHintAnimationDuration = 1.0f;
         private float _hintDuration = 0.5f;
-        public float hintDuration
+        public float HintDuration
         {
             get => _hintDuration;
             set
@@ -30,11 +30,12 @@ namespace ExPresSXR.UI
 
         private void Start()
         {
-            if (_animator == null)
+            if (_animator == null && !TryGetComponent(out _animator))
             {
-                _animator = GetComponent<Animator>();
-                hintDuration = _hintDuration;
+                Debug.LogError("HeadGazeReticle: No Animator component found on the GameObject.", this);
+                return;
             }
+            HintDuration = _hintDuration;
             
             // Hide Reticle initially
             if (_animator != null && _animator.isActiveAndEnabled)

@@ -23,15 +23,15 @@ namespace ExPresSXR.Rig.HeadGazeInputDevice
         /// <summary>
         /// The input action used for selecting via head gaze.
         /// </summary>
-        public ButtonControl headGazeSelect { get; private set; }
+        public ButtonControl HeadGazeSelect { get; private set; }
 
         /// <summary>
         /// Current HeadGazeDevices and a list of HeadGazeDevices
         /// </summary>
         /// <value></value>
-        public static HeadGazeDevice current { get; private set; }
-        public new static IReadOnlyList<HeadGazeDevice> all => allHeadGazeDevice;
-        private static List<HeadGazeDevice> allHeadGazeDevice = new();
+        public static HeadGazeDevice Current { get; private set; }
+        public static IReadOnlyList<HeadGazeDevice> All => AllHeadGazeDevice;
+        private static readonly List<HeadGazeDevice> AllHeadGazeDevice = new();
 
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace ExPresSXR.Rig.HeadGazeInputDevice
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            headGazeSelect = GetChildControl<ButtonControl>("headGazeSelect");
+            HeadGazeSelect = GetChildControl<ButtonControl>("headGazeSelect");
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace ExPresSXR.Rig.HeadGazeInputDevice
         {
             using (StateEvent.From(this, out var eventPtr))
             {
-                headGazeSelect.WriteValueIntoEvent(_pressed ? 1.0f : 0.0f, eventPtr);
+                HeadGazeSelect.WriteValueIntoEvent(_pressed ? 1.0f : 0.0f, eventPtr);
                 InputSystem.QueueEvent(eventPtr);
             }
         }
@@ -79,7 +79,7 @@ namespace ExPresSXR.Rig.HeadGazeInputDevice
         public override void MakeCurrent()
         {
             base.MakeCurrent();
-            current = this;
+            Current = this;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace ExPresSXR.Rig.HeadGazeInputDevice
         protected override void OnAdded()
         {
             base.OnAdded();
-            allHeadGazeDevice.Add(this);
+            AllHeadGazeDevice.Add(this);
         }
 
         /// <summary>
@@ -97,11 +97,11 @@ namespace ExPresSXR.Rig.HeadGazeInputDevice
         protected override void OnRemoved()
         {
             base.OnRemoved();
-            allHeadGazeDevice.Remove(this);
+            AllHeadGazeDevice.Remove(this);
 
-            if (this == current)
+            if (this == Current)
             {
-                current = null;
+                Current = null;
             }
         }
 

@@ -13,7 +13,7 @@ namespace ExPresSXR.UI
         [Range(0f, 1f)]
         [SerializeField]
         private float _strength;
-        public float strength
+        public float Strength
         {
             get => _strength;
             set
@@ -29,7 +29,7 @@ namespace ExPresSXR.UI
         /// </summary>
         [SerializeField]
         private Color _indicatorColor;
-        public Color indicatorColor
+        public Color IndicatorColor
         {
             get => _indicatorColor;
             set
@@ -40,7 +40,7 @@ namespace ExPresSXR.UI
             }
         }
 
-        private Coroutine fadeCoroutine;
+        private Coroutine _fadeCoroutine;
 
         private Image _fadeImage;
 
@@ -49,25 +49,25 @@ namespace ExPresSXR.UI
         /// Fades the indicator in (i.e. makes it visible) over time. Values less or equal fade instant.
         /// </summary>
         /// <param name="duration">Duration of the fade in seconds.</param>
-        public void FadeIn(float duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(1.0f, duration));
+        public void FadeIn(float duration) => _fadeCoroutine = StartCoroutine(FadeCoroutine(1.0f, duration));
 
         /// <summary>
         /// Fades the indicator in (i.e. makes hides it) over time. Values less or equal fade instant.
         /// </summary>
         /// <param name="duration">Duration of the fade in seconds.</param>
-        public void FadeOut(float duration) => fadeCoroutine = StartCoroutine(FadeCoroutine(0.0f, duration));
+        public void FadeOut(float duration) => _fadeCoroutine = StartCoroutine(FadeCoroutine(0.0f, duration));
 
 
         private IEnumerator FadeCoroutine(float toAlpha, float fadeDuration)
         {
-            if (fadeCoroutine != null)
+            if (_fadeCoroutine != null)
             {
-                StopCoroutine(fadeCoroutine);
+                StopCoroutine(_fadeCoroutine);
             }
 
             if (fadeDuration <= 0.0f)
             {
-                strength = toAlpha;
+                Strength = toAlpha;
             }
             else
             {
@@ -76,7 +76,7 @@ namespace ExPresSXR.UI
                 while (elapsedTime < fadeDuration)
                 {
                     elapsedTime += Time.deltaTime;
-                    strength = Mathf.Lerp(fromAlpha, toAlpha, elapsedTime / fadeDuration);
+                    Strength = Mathf.Lerp(fromAlpha, toAlpha, elapsedTime / fadeDuration);
                     yield return null;
                 }
             }
@@ -100,8 +100,8 @@ namespace ExPresSXR.UI
 
         private void OnValidate()
         {
-            strength = _strength;
-            indicatorColor = _indicatorColor;
+            Strength = _strength;
+            IndicatorColor = _indicatorColor;
         }
     }
 }

@@ -19,7 +19,7 @@ public class IKLegs : MonoBehaviour
 
     private void Start()
     {
-        if (!TryGetComponent( out _animator))
+        if (!TryGetComponent(out _animator))
         {
             Debug.Log("Did not find an animator for the IK Legs to animate.", this);
         }

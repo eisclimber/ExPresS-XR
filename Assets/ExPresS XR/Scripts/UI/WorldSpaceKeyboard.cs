@@ -35,9 +35,19 @@ namespace ExPresSXR.UI
 
         [SerializeField]
         private string _textPrefix = "";
+        public string TextPrefix
+        {
+            get => _textPrefix;
+            set => _textPrefix = value;
+        }
 
         [SerializeField]
         private string _textSuffix = "​";
+        public string TextSuffix
+        {
+            get => _textSuffix;
+            set => _textSuffix = value;
+        }
 
         [SerializeField]
         private CapsMode _capsMode = CapsMode.Toggle;

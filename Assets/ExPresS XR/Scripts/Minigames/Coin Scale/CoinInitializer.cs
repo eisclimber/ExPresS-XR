@@ -87,7 +87,7 @@ namespace ExPresSXR.Minigames.CoinScale
                 // Randomize fake status if required
                 if (randomizeFakes)
                 {
-                    coin.isFake = i == fakeIdx;
+                    coin.IsFake = i == fakeIdx;
                 }
             }
         }

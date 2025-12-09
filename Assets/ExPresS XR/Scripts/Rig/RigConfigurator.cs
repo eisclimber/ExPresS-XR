@@ -93,7 +93,7 @@ namespace ExPresSXR.Rig
         {
             if (headGazeController != null)
             {
-                headGazeController.teleportationEnabled = movementPreset == MovementPreset.Teleport;
+                headGazeController.TeleportationEnabled = movementPreset == MovementPreset.Teleport;
             }
         }
 

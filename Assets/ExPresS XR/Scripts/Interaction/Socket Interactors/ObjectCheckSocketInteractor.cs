@@ -5,7 +5,12 @@ namespace ExPresSXR.Interaction
 {
     public class ObjectCheckSocketInteractor : HighlightableSocketInteractor
     {
-        public XRGrabInteractable targetObject;
+        private XRGrabInteractable _targetObject;
+        public XRGrabInteractable TargetObject
+        {
+            get => _targetObject;
+            set => _targetObject = value;
+        }
 
         [SerializeField]
         private bool _allowInvalidHover;
@@ -28,7 +33,7 @@ namespace ExPresSXR.Interaction
         private bool IsObjectMatch(IXRInteractable interactable)
         {
             XRGrabInteractable grabInteractable = interactable.transform.GetComponent<XRGrabInteractable>();
-            return targetObject != null && grabInteractable != null && grabInteractable.gameObject == targetObject.gameObject;
+            return _targetObject != null && grabInteractable != null && grabInteractable.gameObject == _targetObject.gameObject;
         }
     }
 }

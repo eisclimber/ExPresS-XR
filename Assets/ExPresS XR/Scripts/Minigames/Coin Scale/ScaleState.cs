@@ -4,10 +4,6 @@
     Refactoring & Integration: Luca Dreiling
     Purpose: Represents the state of a scale (one side heavier or both equal).
 */
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace ExPresSXR.Minigames.CoinScale
 {
     public class ScaleState
@@ -22,12 +18,12 @@ namespace ExPresSXR.Minigames.CoinScale
         /// <summary>
         /// The elevation state of the left bowl.
         /// </summary>
-        public BowlPosition leftBowlPosition { get; }
+        public BowlPosition LeftBowlPosition { get; }
 
         /// <summary>
         /// The elevation state of the right bowl.
         /// </summary>
-        public BowlPosition rightBowlPosition { get; }
+        public BowlPosition RightBowlPosition { get; }
 
         /// <summary>
         /// Creates a new `ScaleState`-Instance using the weights of two bowls.
@@ -50,8 +46,8 @@ namespace ExPresSXR.Minigames.CoinScale
 
         private ScaleState(BowlPosition left, BowlPosition right)
         {
-            leftBowlPosition = left;
-            rightBowlPosition = right;
+            LeftBowlPosition = left;
+            RightBowlPosition = right;
         }
     }
 }

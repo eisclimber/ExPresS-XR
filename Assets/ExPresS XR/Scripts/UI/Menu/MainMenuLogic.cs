@@ -33,7 +33,8 @@ namespace ExPresSXR.UI.Menu
         private ExPresSXRRig _rig;
 
 
-        private void Start() {
+        private void Start()
+        {
             if (_changeWithFade && _rig == null)
             {
                 Debug.LogError("Change to game was configured to be with fade but no rig to fade was provided.", this);

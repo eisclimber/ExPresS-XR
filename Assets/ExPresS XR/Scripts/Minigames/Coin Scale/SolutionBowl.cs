@@ -5,8 +5,6 @@
     Purpose: Represents the solution bowl which checks if the coin is fake. 
                 Prevents multiple coins from being submitted.
 */
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -29,7 +27,7 @@ namespace ExPresSXR.Minigames.CoinScale
         {
 
             // Correct is finding the fake coin
-            if (_currentSelection != null && _currentSelection.isFake)
+            if (_currentSelection != null && _currentSelection.IsFake)
             {
                 OnCorrectSolving?.Invoke();
             }

@@ -5,6 +5,9 @@ namespace ExPresSXR.Presentation.Pictures
 {
     public class PictureDataProvider : MonoBehaviour
     {
+        /// <summary>
+        /// Separator used when joining/splitting multiple descriptions into/from a single string.
+        /// </summary>
         const string DESCRIPTION_SEPARATOR = "----";
 
 
@@ -12,7 +15,13 @@ namespace ExPresSXR.Presentation.Pictures
         /// Picture data to be provided.
         /// </summary>
         [Tooltip("Picture data to be provided.")]
-        public PictureData data;
+        [SerializeField]
+        private PictureData _data;
+        public PictureData Data
+        {
+            get => _data;
+            set => _data = value;
+        }
 
         /// <summary>
         /// Allows to set the PictureData's title to be localized.
@@ -20,9 +29,9 @@ namespace ExPresSXR.Presentation.Pictures
         /// <param name="title">Title to be set.</param>
         public void SetDataTitle(string title)
         {
-            if (data != null)
+            if (_data != null)
             {
-                data.Title = title;
+                _data.Title = title;
             }
         }
 
@@ -32,9 +41,9 @@ namespace ExPresSXR.Presentation.Pictures
         /// <param name="description">Description to be set.</param>
         public void SetDataDescription(string description, int idx)
         {
-            if (data != null && idx >= 0 && idx < data.Descriptions.Length)
+            if (_data != null && idx >= 0 && idx < _data.Descriptions.Length)
             {
-                data.Descriptions[idx] = description;
+                _data.Descriptions[idx] = description;
             }
         }
 
@@ -42,19 +51,19 @@ namespace ExPresSXR.Presentation.Pictures
         {
             string[] descriptions = description.Split(DESCRIPTION_SEPARATOR);
 
-            if (descriptions.Length < data.Descriptions.Length)
+            if (descriptions.Length < _data.Descriptions.Length)
             {
                 Debug.LogWarning("Localizing picture data descriptions but too few were provided. Padding missing ones with an empty string.", this);
             }
-            else if (descriptions.Length > data.Descriptions.Length)
+            else if (descriptions.Length > _data.Descriptions.Length)
             {
                 Debug.LogWarning("Localizing picture data descriptions but too may were provided. Ignoring them.", this);
             }
 
-            for (int i = 0; i < data.Descriptions.Length; i++)
+            for (int i = 0; i < _data.Descriptions.Length; i++)
             {
                 // Make sure to remove surrounding whitespace/Linebreaks from the formatting
-                data.Descriptions[i] = (i < descriptions.Length ? descriptions[i] : "").Trim();
+                _data.Descriptions[i] = (i < descriptions.Length ? descriptions[i] : "").Trim();
             }
         }
 

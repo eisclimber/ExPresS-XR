@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace ExPresSXR.Misc
+namespace ExPresSXR.Misc.ColorSwitching
 {
     public class ColorSwitcher : MonoBehaviour
     {
@@ -32,15 +30,24 @@ namespace ExPresSXR.Misc
         [Tooltip("When changing to the Alternative Material, the object's material must be the Original Material.")]
         public bool requireAlternativeMaterialMatch;
 
-
+        /// <summary>
+        /// The MeshRenderer whose material will be manipulated.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The MeshRenderer whose material will be manipulated.")]
+        private MeshRenderer _meshRenderer;
 
         private Material _originalMaterial;
-        private MeshRenderer _meshRenderer;
 
 
         private void Awake()
         {
-            _meshRenderer = GetComponent<MeshRenderer>();
+            if (_meshRenderer == null && !TryGetComponent(out _meshRenderer))
+            {
+                Debug.LogError("ColorSwitcher requires a MeshRenderer component to function properly.");
+                return;
+            }
+            
             _originalMaterial = _meshRenderer.material;
 
             if (alternativeMaterial == null)
