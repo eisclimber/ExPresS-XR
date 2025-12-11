@@ -16,7 +16,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="interactable">Interactable grabbed.</param>
         /// <param name="interactor">Interactor grabbing.</param>
         /// <returns>The new value.</returns>
-        public abstract V GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor);
+        public abstract V GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor);
 
         /// <summary>
         /// Updates the visualization based on the provided value.
@@ -24,7 +24,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         /// <param name="value">Value to be displayed.</param>
         /// <param name="interactable">Interactable to be manipulated.</param>
-        public abstract void UpdateVisualization(V value, IXRSelectInteractable interactable);
+        public abstract void UpdateVisualization(V value, IXRInteractable interactable);
 
         /// <summary>
         /// Reflects the state of the interactor with Gizmos.
@@ -40,7 +40,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="interactable">Interactable selected.</param>
         /// <param name="interactor">Interactor selecting.</param>
         /// <returns>Position from the interactor.</returns>
-        protected virtual Vector3 GetInteractorPosition(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        protected virtual Vector3 GetInteractorPosition(IXRInteractable interactable, IXRInteractor interactor)
         {
             return interactor.GetAttachTransform(interactable).position;
         }
@@ -51,7 +51,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="interactable">Interactable selected.</param>
         /// <param name="interactor">Interactor selecting.</param>
         /// <returns>Position from the interactor.</returns>
-        protected virtual Vector3 GetInteractorLocalPosition(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        protected virtual Vector3 GetInteractorLocalPosition(IXRInteractable interactable, IXRInteractor interactor)
         {
             return interactable.transform.InverseTransformPoint(GetInteractorPosition(interactable, interactor));
         }
@@ -62,7 +62,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="interactable">Interactable selected.</param>
         /// <param name="interactor">Interactor selecting.</param>
         /// <returns>Forward direction of the interactor.</returns>
-        protected virtual Vector3 GetInteractorForward(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        protected virtual Vector3 GetInteractorForward(IXRInteractable interactable, IXRInteractor interactor)
         {
             return interactor.GetAttachTransform(interactable).forward;
         }
@@ -73,7 +73,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="interactable">Interactable selected.</param>
         /// <param name="interactor">Interactor selecting.</param>
         /// <returns>Direction from the interactor.</returns>
-        protected virtual Vector3 GetInteractorDirection(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        protected virtual Vector3 GetInteractorDirection(IXRInteractable interactable, IXRInteractor interactor)
         {
             if (interactor == null)
             {
@@ -91,6 +91,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// Returns the offset of the interactable's pivot for calculating the direction between interactor and interactable.
         /// </summary>
         /// <returns>Offset of the pivot.</returns>
-        protected virtual Vector3 GetPivotOffset(IXRSelectInteractable interactable) => interactable.transform.position;
+        protected virtual Vector3 GetPivotOffset(IXRInteractable interactable) => interactable.transform.position;
     }
 }

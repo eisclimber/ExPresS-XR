@@ -31,7 +31,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
 
         /// <inheritdoc />
-        public override void UpdateVisualization(float value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(float value, IXRInteractable interactable)
         {
             base.UpdateVisualization(value, interactable);
 

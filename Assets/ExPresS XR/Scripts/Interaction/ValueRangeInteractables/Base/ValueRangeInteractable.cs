@@ -120,14 +120,19 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         protected IXRSelectInteractor _selectInteractor;
 
-
         /// <summary>
-        /// Emitted when the current value is a minimal value of the range.
+        /// Emitted when the current value is changed to a minimal value of the range.
+        /// 
+        /// Be careful when using this event without snapping enabled as can get called multiple times while grabbing.
+        /// A threshold value modified (i.e. <see cref="Float01ThresholdModifier"/>) might be more appropriate in these cases.
         /// </summary>
         public UnityEvent<V> OnMinValue;
 
         /// <summary>
-        /// Emitted when the current value is a maximal value of for the range.
+        /// Emitted when the current value is changed to a maximal value of the range.
+        /// 
+        /// Be careful when using this event without snapping enabled as can get called multiple times while grabbing.
+        /// A threshold value modified (i.e. <see cref="Float01ThresholdModifier"/>) might be more appropriate in these cases.
         /// </summary>
         public UnityEvent<V> OnMaxValue;
 
@@ -166,6 +171,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             selectEntered.AddListener(StartGrab);
             selectExited.AddListener(EndGrab);
 
+            hoverEntered.AddListener(StartHover);
+            hoverExited.AddListener(EndHover);
+
             AddValueDescriptorListeners();
         }
 
@@ -178,6 +186,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
             selectEntered.RemoveListener(StartGrab);
             selectExited.RemoveListener(EndGrab);
+
+            hoverEntered.RemoveListener(StartHover);
+            hoverExited.RemoveListener(EndHover);
 
             RemoveValueDescriptorListeners();
         }
@@ -202,6 +213,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             if (args.interactorObject == _hoverInteractor)
             {
                 _selectInteractor = null;
+            }
+
+            // Reset after emitting the event to allow passing the selected value
+            if (_zeroValueOnRelease)
+            {
+                ResetValue();
             }
         }
 
@@ -241,14 +258,16 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
             // Check if the interaction is valid and in the correct update phase
             if (isActiveAndEnabled && updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
+            {
                 if (isHovered)
                 {
                     UpdateValueWithHover();
                 }
 
-            if (isSelected)
-            {
-                UpdateValueWithGrab();
+                if (isSelected)
+                {
+                    UpdateValueWithGrab();
+                }
             }
         }
 
@@ -259,18 +278,30 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor can hover.</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
-            return base.IsHoverableBy(interactor) && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor);
+            return base.IsHoverableBy(interactor) && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
         }
 
         /// <summary>
-        /// Determines if the interactable can be selected by an IXRHoverInteractor.
+        /// Determines if the interactable can be selected by an IXRSelectInteractor.
         /// </summary>
         /// <param name="interactor">Interactor hovering the button.</param>
         /// <returns>If the interactor can hover.</returns>
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
-            return base.IsSelectableBy(interactor) && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor);
+            return base.IsSelectableBy(interactor) && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
         }
+
+        /// <summary>
+        /// Automatically called when a hovering interactor is trying to manipulate the interactor's value.
+        /// Use this function update the interactor's Value based on your representation of the range.
+        /// </summary>
+        protected virtual void UpdateValueWithHover() { }
+
+        /// <summary>
+        /// Automatically called when a selecting interactor is trying to manipulate the interactor's value.
+        /// Use this function update the interactor's Value based on your representation of the range.
+        /// </summary>
+        protected virtual void UpdateValueWithGrab() => Value = _valueVisualizer.GetVisualizedValue(this, _selectInteractor);
 
         /// <summary>
         /// Adds listeners the ValueDescriptor events. Can be overwritten if your value range introduces more events.
@@ -296,27 +327,39 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             _valueDescriptor.OnValueChanged.RemoveListener(EmitOnValueChanged);
         }
 
-        #region Audio
+        #region Value Events
         /// <summary>
         /// Function wrapper to emit the OnMinValue-Event with the given value.
         /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
         /// </summary>
         /// <param name="v">Value to be passed with the event.</param>
-        protected virtual void EmitOnMinValue(V v) => OnMinValue.Invoke(v);
+        protected virtual void EmitOnMinValue(V v)
+        {
+            PlayMinValueSound();
+            OnMinValue.Invoke(v);
+        }
 
         /// <summary>
         /// Function wrapper to emit the OnMaxValue-Event with the given value.
         /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
         /// </summary>
         /// <param name="v">Value to be passed with the event.</param>
-        protected virtual void EmitOnMaxValue(V v) => OnMaxValue.Invoke(v);
+        protected virtual void EmitOnMaxValue(V v)
+        {
+            PlayMaxValueSound();
+            OnMaxValue.Invoke(v);
+        }
 
         /// <summary>
         /// Function wrapper to emit the OnSnapped-Event with the given value.
         /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
         /// </summary>
         /// <param name="v">Value to be passed with the event.</param>
-        protected virtual void EmitOnSnapped(V v) => OnSnapped.Invoke(v);
+        protected virtual void EmitOnSnapped(V v)
+        {
+            PlaySnapSound();
+            OnSnapped.Invoke(v);
+        }
 
         /// <summary>
         /// Function wrapper to emit the OnValueChanged-Events with the given values.
@@ -326,40 +369,37 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="oldV">Old value to be passed with the event.</param>
         protected virtual void EmitOnValueChanged(V newV, V oldV)
         {
+            PlayMoveSound();
             OnValueChangedSingle.Invoke(newV);
             OnValueChanged.Invoke(newV, oldV);
             OnValueChangedString.Invoke(newV.ToString());
         }
 
+        #endregion
+        #region Audio
         /// <summary>
-        /// Automatically called when a hovering interactor is trying to manipulate the interactor's value.
-        /// Use this function update the interactor's Value based on your representation of the range.
+        /// Plays the `minValueSound` sound, if assigned. If omitted, the snapSound is played.
         /// </summary>
-        protected virtual void UpdateValueWithHover() { }
+        protected virtual void PlayMinValueSound()
+        {
+            PlaySound(_minValueSound != null ? _minValueSound : _snapSound);
+        }
 
         /// <summary>
-        /// Automatically called when a selecting interactor is trying to manipulate the interactor's value.
-        /// Use this function update the interactor's Value based on your representation of the range.
+        /// Plays the `maxValueSound` sound, if assigned. If omitted, the snapSound is played.
         /// </summary>
-        protected virtual void UpdateValueWithGrab() => Value = _valueVisualizer.GetVisualizedValue(this, _selectInteractor);
+        protected virtual void PlayMaxValueSound()
+        {
+            PlaySound(_maxValueSound != null ? _maxValueSound : _snapSound);
+        }
 
         /// <summary>
-        /// Plays the `minValueSound`, if assigned. If omitted, the snapSound is played.
-        /// </summary>
-        protected virtual void PlayMinValueSound() => PlaySound(_minValueSound != null ? _minValueSound : _snapSound);
-
-        /// <summary>
-        /// Plays the `maxValueSound`, if assigned. If omitted, the snapSound is played.
-        /// </summary>
-        protected virtual void PlayMaxValueSound() => PlaySound(_maxValueSound != null ? _maxValueSound : _snapSound);
-
-        /// <summary>
-        /// Plays the `snapSound`, if assigned.
+        /// Plays the `snapSound` sound, if assigned.
         /// </summary>
         protected virtual void PlaySnapSound() => PlaySound(_snapSound);
 
         /// <summary>
-        /// Plays the `moveSound`, if assigned.
+        /// Plays the `moveSound` sound, if assigned.
         /// </summary>
         protected virtual void PlayMoveSound()
         {

@@ -47,13 +47,13 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         private Transform _pivot;
 
         /// <inheritdoc />
-        public override Vector2 GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public override Vector2 GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             return GetJoystickAngleNormalized(interactable, interactor);
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(Vector2 value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(Vector2 value, IXRInteractable interactable)
         {
             if (_pivot == null)
             {
@@ -71,7 +71,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// The valid values for each coordinate are in the range of [0.0f, 1.0f], but the returned value is not clamped. 
         /// </summary>
         /// <returns>Lever angle normalized.</returns>
-        protected Vector2 GetJoystickAngleNormalized(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        protected Vector2 GetJoystickAngleNormalized(IXRInteractable interactable, IXRInteractor interactor)
         {
             Vector3 interactorDirection = GetInteractorDirection(interactable, interactor);
             float leverXAngle = Mathf.Atan2(interactorDirection.z, interactorDirection.y) * Mathf.Rad2Deg;
@@ -126,6 +126,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        protected override Vector3 GetPivotOffset(IXRSelectInteractable interactable) => _pivot != null ? _pivot.position : base.GetPivotOffset(interactable);
+        protected override Vector3 GetPivotOffset(IXRInteractable interactable) => _pivot != null ? _pivot.position : base.GetPivotOffset(interactable);
     }
 }

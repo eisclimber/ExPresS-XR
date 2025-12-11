@@ -52,7 +52,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         private Vector3 _grabOffset;
 
         /// <inheritdoc />
-        public override Vector2 GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public override Vector2 GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             // Put anchor position into slider space
             Vector3 localPosition = GetInteractorLocalPosition(interactable, interactor) - _grabOffset;
@@ -64,7 +64,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(Vector2 value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(Vector2 value, IXRInteractable interactable)
         {
             if (_handle == null)
             {
@@ -83,7 +83,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         /// <param name="interactable">Interactable selected.</param>
         /// <param name="interactor">Interactor selecting.</param>
-        public void SetHandleGrabOffsetWithInteraction(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public void SetHandleGrabOffsetWithInteraction(IXRInteractable interactable, IXRInteractor interactor)
         {
             _grabOffset = _useHandleGrabOffset ? GetInteractorLocalPosition(interactable, interactor) - _handle.localPosition : Vector3.zero;
         }

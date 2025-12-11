@@ -193,24 +193,25 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawButtons()
         {
+            float buttonWidth = (EditorGUIUtility.currentViewWidth - 24.0f) / 2.0f;
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Snap to Min"))
+            if (GUILayout.Button("Snap to Min", GUILayout.Width(buttonWidth)))
             {
                 _rangeInteractableInternal.SetValueToMinValue();
             }
 
-            if (GUILayout.Button("Snap to Max"))
+            if (GUILayout.Button("Snap to Max", GUILayout.Width(buttonWidth)))
             {
                 _rangeInteractableInternal.SetValueToMaxValue();
             }
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Print Value"))
+            if (GUILayout.Button("Print Value", GUILayout.Width(buttonWidth)))
             {
                 Debug.Log(_rangeInteractableInternal.ToString());
             }
 
-            if (GUILayout.Button("Reset"))
+            if (GUILayout.Button("Reset", GUILayout.Width(buttonWidth)))
             {
                 _rangeInteractableInternal.ResetValue();
             }

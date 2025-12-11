@@ -214,7 +214,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
-            if (args.interactorObject is XRDirectInteractor or XRRayInteractor)
+            if (args.interactorObject is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
             {
                 OnGrabStarted.Invoke();
             }
@@ -227,7 +227,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
-            if (args.interactorObject is XRDirectInteractor or XRRayInteractor)
+            if (args.interactorObject is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
             {
                 OnGrabReleased.Invoke();
             }
@@ -295,7 +295,7 @@ namespace ExPresSXR.Interaction
             for (int i = 0; i < interactorsSelecting.Count; i++)
             {
                 IXRSelectInteractor interactor = interactorsSelecting[i];
-                if (interactor is XRDirectInteractor || interactor is XRRayInteractor)
+                if (interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
                 {
                     interactionManager.SelectExit(interactor, this);
                     i--; // Decrement as the next element will take the removed interactors place

@@ -248,7 +248,7 @@ namespace ExPresSXR.Interaction
         /// <returns>Wether or not the interactor can hover (i.e. press) the button</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
-            return !InputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor);
+            return !InputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
         }
 
 
@@ -360,7 +360,7 @@ namespace ExPresSXR.Interaction
         {
             bool isDown = IsInDownPosition();
             float timeSinceLastPress = Time.time - _lastTimePressed;
-            float timeSinceLastRelease = Time.time - _lastTimePressed;
+            float timeSinceLastRelease = Time.time - _lastTimeReleased;
 
             if (isDown && !Pressed && timeSinceLastPress >= _repressTimeout)
             {
@@ -385,12 +385,9 @@ namespace ExPresSXR.Interaction
             }
 
             float timeSinceLastPress = Time.time - _lastTimePressed;
-            if (timeSinceLastPress < _repressTimeout)
-            {
-                return;
-            }
+            float timeSinceLastRelease = Time.time - _lastTimeReleased;
 
-            if (!Pressed)
+            if (!Pressed && timeSinceLastPress >= _repressTimeout)
             {
                 _pressed = true;
                 SetYPosition(_yMin);
@@ -398,7 +395,7 @@ namespace ExPresSXR.Interaction
                 OnTogglePressed.Invoke();
                 PlayToggledDownSound();
             }
-            else if (Pressed)
+            else if (Pressed && timeSinceLastRelease >= _repressTimeout)
             {
                 _pressed = false;
                 _lastTimeReleased = Time.time;

@@ -1,30 +1,25 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace ExPresSXR.Misc.ColorSwitching
 {
+    [RequireComponent(typeof(Animator))]
     public class ColorAnimatorSwitcher : MonoBehaviour
     {
-        const string TRIGGER_PREFIX = "TrColor";
+        public const string TRIGGER_PREFIX = "TrColor";
 
         [SerializeField]
         [Tooltip("The animator with the Animation Controller implementing the logic for switching materials.")]
-        private Animator _animator;
+        protected Animator _animator;
 
         /// <summary>
         /// The MeshRenderer whose material will be manipulated.
         /// </summary>
         [SerializeField]
         [Tooltip("The MeshRenderer whose material will be manipulated.")]
-        private MeshRenderer _meshRenderer;
+        protected MeshRenderer _meshRenderer;
 
-        /// <summary>
-        /// List of materials associated with the animation states in the Animator Controller.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("List of materials associated with the animation states in the Animator Controller.")]
-        private MaterialStateMapping[] _colorStateMappings;
-
-        private void Awake()
+        protected virtual void Awake()
         {
             if (_animator == null && !TryGetComponent(out _animator))
             {
@@ -35,21 +30,19 @@ namespace ExPresSXR.Misc.ColorSwitching
             {
                 Debug.LogError("ColorAnimationSwitcher requires a MeshRenderer component to function properly.");
             }
-
-            EvalaluateBindings();
         }
 
-        private void ChangeMaterial()
+        public virtual void ChangeToMaterial(Material switchMaterial)
         {
-            if (_meshRenderer != null)
+            if (_meshRenderer != null && switchMaterial != null)
             {
-                _meshRenderer.material = _colorStateMappings[_animator.GetCurrentAnimatorStateInfo(0).shortNameHash].Color;
+                _meshRenderer.material = switchMaterial;
             }
         }
 
-        public void ChangeColorWithTrigger(int triggerIdx) => ChangeColorWithTrigger(TRIGGER_PREFIX + triggerIdx);
+        public virtual void ChangeColorWithTrigger(int triggerIdx) => ChangeColorWithTrigger(TRIGGER_PREFIX + triggerIdx);
 
-        public void ChangeColorWithTrigger(string triggerName)
+        public virtual void ChangeColorWithTrigger(string triggerName)
         {
             if (_animator != null)
             {
@@ -57,7 +50,7 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
-        public void ChangeColorWithBool(string boolName, bool boolValue)
+        public virtual void ChangeColorWithBool(string boolName, bool boolValue)
         {
             if (_animator != null)
             {
@@ -65,7 +58,7 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
-        public void ChangeColorWithFloat(string floatName, float floatValue)
+        public virtual void ChangeColorWithFloat(string floatName, float floatValue)
         {
             if (_animator != null)
             {
@@ -73,41 +66,84 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
-        private void EvalaluateBindings()
+        protected virtual void CheckAnimatorStates()
         {
-            for (int i = 0; i < _colorStateMappings.Length; i++)
+            if (_animator == null)
             {
-                if (string.IsNullOrEmpty(_colorStateMappings[i].StateName))
+                return;
+            }
+            
+            AnimatorController controller = _animator.runtimeAnimatorController as AnimatorController;
+            AnimatorControllerLayer layer = controller.layers[0]; // Only checking the first layer for simplicity
+            AnimatorStateMachine  stateMachine = layer.stateMachine;
+
+            foreach (ChildAnimatorState child in stateMachine.states)
+            {
+                AnimatorState state = child.state;
+
+                EvaluateStateBehaviours(state);
+                EvaluateStateTransitions(state);
+            }
+        }
+
+        protected virtual void EvaluateStateBehaviours(AnimatorState state)
+        {
+            foreach (StateMachineBehaviour behaviour in state.behaviours)
+            {
+                if (behaviour is MaterialSwitchingStateBehaviour materialSwitcher)
                 {
-                    Debug.LogWarning($"ColorAnimatorSwitcher: State name for MaterialStateMapping at index {i} is null or empty.");
+                    if (materialSwitcher.SwitchMaterial == null)
+                    {
+                        Debug.LogWarning(
+                            $"State '{state.name}' has a MaterialSwitchingStateBehaviour with no assigned material. " +
+                            "This will result in no material being applied when entering this state.", this
+                        );
+                    }
+                    return; // Found behavior successfully -> Early exit
+                }
+            }
+            Debug.LogWarning(
+                $"State '{state.name}' does not have a MaterialSwitchingStateBehaviour. "
+                + "No material switch will be performed when entering the state.", this
+            );
+        }
+
+        protected virtual void EvaluateStateTransitions(AnimatorState state)
+        {
+            foreach (AnimatorStateTransition transition in state.transitions)
+            {
+                if (transition.hasExitTime)
+                {
+                    Debug.LogWarning(
+                        $"Transition from '{state.name}' to '{transition.destinationState.name}' has a transition with Exit Time. " +
+                        "This can cause delays while switching. Disabling it.", this
+                    );
+                    transition.hasExitTime = false;
                 }
 
-                if (_colorStateMappings[i].Color == null)
+                if (transition.duration > 0.0f)
                 {
-                    Debug.LogWarning($"ColorAnimatorSwitcher: No material set for MaterialStateMapping at index {i}.");
+                    Debug.LogWarning(
+                        $"Transition from '{state.name}' to '{transition.destinationState.name}' has a transition with non-zero duration. " +
+                        "This can cause delays while switching. Setting transition duration to 0.", this
+                    );
+                    transition.duration = 0.0f;
+                }
+
+                if (transition.interruptionSource != TransitionInterruptionSource.Destination)
+                {
+                    Debug.LogWarning(
+                        $"State from '{state.name}' to '{transition.destinationState.name}' is not interuptable. " +
+                        "This can cause issues when switching states. Setting it to 'Destination'.", this
+                    );
+                    transition.interruptionSource = TransitionInterruptionSource.Destination;
                 }
             }
         }
 
-        // A helper class for mapping animation states to colors.
-        [System.Serializable]
-        public class MaterialStateMapping
+        protected virtual void OnValidate()
         {
-            public string StateName;
-            public Material Color;
-            public int MaterialIdx;
-
-            public MaterialStateMapping(string stateName, Material material)
-            {
-                StateName = stateName;
-                Color = material;
-            }
-            public MaterialStateMapping(string stateName, Material material, int materialIdx)
-            {
-                StateName = stateName;
-                Color = material;
-                MaterialIdx = materialIdx;
-            }
+            CheckAnimatorStates();
         }
     }
 }

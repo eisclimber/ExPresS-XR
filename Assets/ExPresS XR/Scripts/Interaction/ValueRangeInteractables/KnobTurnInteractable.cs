@@ -109,7 +109,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
 
         /// <inheritdoc />
-        protected virtual Vector3 GetTurnForward(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        protected virtual Vector3 GetTurnForward(IXRInteractable interactable, IXRInteractor interactor)
         {
 
             Vector3 interactorForward = _turnType == InteractorTurnType.Forward
@@ -120,7 +120,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override float GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public override float GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             Vector3 currentTurnForward = GetTurnForward(interactable, interactor);
             // Prevent initial grab -> previous turn forward is Vector3.zero
@@ -138,7 +138,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(float value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(float value, IXRInteractable interactable)
         {
             if (_pivot == null)
             {

@@ -52,14 +52,14 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
 
         /// <inheritdoc />
-        public override float GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public override float GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             Vector3 localPosition = GetInteractorLocalPosition(interactable, interactor) - _grabOffset;
             return Mathf.Clamp01((localPosition.x - _minPosition) / (_maxPosition - _minPosition));
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(float value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(float value, IXRInteractable interactable)
         {
             if (_handle == null)
             {
@@ -77,7 +77,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         /// <param name="interactable">Interactable selected.</param>
         /// <param name="interactor">Interactor selecting.</param>
-        public void SetHandleGrabOffsetWithInteraction(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public void SetHandleGrabOffsetWithInteraction(IXRInteractable interactable, IXRInteractor interactor)
         {
             _grabOffset = _useHandleGrabOffset ? GetInteractorLocalPosition(interactable, interactor) - _handle.localPosition : Vector3.zero;
         }

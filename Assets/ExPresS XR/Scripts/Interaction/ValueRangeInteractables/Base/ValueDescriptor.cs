@@ -108,17 +108,17 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 return;
             }
 
+            if (IsMinValue(Value))
+            {
+                OnMinValue.Invoke(Value);
+            }
+            else if (IsMaxValue(Value))
+            {
+                OnMaxValue.Invoke(Value);
+            }
+
             if (IsValueSnappingEnabled())
             {
-                if (IsMinValue(Value))
-                {
-                    OnMinValue.Invoke(Value);
-                }
-                else if (IsMaxValue(Value))
-                {
-                    OnMaxValue.Invoke(Value);
-                }
-
                 OnSnapped.Invoke(Value);
             }
 
@@ -131,13 +131,19 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
          */
 
         /// <summary>
-        /// Emitted when a min value is set.
+        /// Emitted when the value is changed to a min value.
+        /// 
+        /// Be careful when using this event without snapping enabled as can get called multiple times while grabbing.
+        /// A threshold value modified (i.e. <see cref="Float01ThresholdModifier"/>) might be more appropriate in these cases.
         /// </summary>
         [HideInInspector]
         public UnityEvent<V> OnMinValue;
 
         /// <summary>
-        /// Emitted when a max value is set.
+        /// Emitted when the value is changed to a max value.
+        /// 
+        /// Be careful when using this event without snapping enabled as can get called multiple times while grabbing.
+        /// A threshold value modified (i.e. <see cref="Float01ThresholdModifier"/>) might be more appropriate in these cases.
         /// </summary>
         [HideInInspector]
         public UnityEvent<V> OnMaxValue;
@@ -231,6 +237,17 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set => _enforceSnap = value;
         }
 
+        [SerializeField]
+        private bool _pressed;
+        public bool Pressed
+        {
+            get => _pressed;
+            set
+            {
+                _pressed = value;   
+            }
+        }
+
         /// <inheritdoc />
         protected override float ProcessNewValue(float newValue)
         {
@@ -248,6 +265,209 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
         /// <inheritdoc />
         public override bool IsValueSnappingEnabled() => _numSteps > 0;
+    }
+
+    /// <summary>
+    /// Represents the internal press value of a button represented by a value between 0.0f (up-position) and 1.0f (down-position).
+    /// Sllows customizing the press threshold and deadzone and repress timeouts, whilst also supporting an optional toggle mode.
+    /// </summary>
+    [Serializable]
+    public class ButtonDescriptor : ValueDescriptor<float>
+    {
+        /// <summary>
+        /// Used 
+        /// </summary>
+        private bool _pressed;
+        public bool Pressed
+        {
+            get => _pressed;
+            set
+            {
+                _pressed = value;
+                Value = _pressed ? 1.0f : 0.0f;
+            } 
+        }
+
+        /// <summary>
+        /// Inheriting directly from <see cref="ValueDescriptor"/> and redefining value here to add the Range-attribute.
+        /// This property is readonly in the inspector as the value is managed via the "pressed" function.
+        /// </summary>
+        [SerializeField]
+        [ReadonlyInInspector]
+        [Range(0.0f, 1.0f)]
+        private float _value;
+        public override float Value
+        {
+            get => _value;
+            set
+            {
+                float oldValue = _value;
+                _value = ProcessNewValue(value);
+                HandleValueChange(oldValue);
+            }
+        }
+
+        /// <summary>
+        /// The threshold beyond which the button is considered pressed.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The threshold beyond which the button is considered pressed.")]
+        private float _pressThreshold = 0.65f;
+        public float PressThreshold
+        {
+            get => _pressThreshold;
+            set => _pressThreshold = value;
+        }
+
+        /// <summary>
+        /// Deadzone around the press threshold in BOTH directions to avoid rapid pressing/releasing.
+        /// If the deadzone expands beyond 0.0f or 1.0f, it will be clamped and the press/release events will be fired at exactly 0.0f or 1.0f.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Deadzone around the press threshold in BOTH directions to avoid rapid pressing/releasing.\n"
+            + "If the deadzone expands beyond 0.0f or 1.0f, it will be clamped and the press/release events will be fired at exactly 0.0f or 1.0f.")]
+        private float _pressDeadzone = 0.2f;
+        public float PressDeadzone
+        {
+            get => _pressDeadzone;
+            set => _pressDeadzone = value;
+        }
+
+        /// <summary>
+        /// Time after which the button can be re-pressed after being pressed.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Time after which the button can be re-pressed after being pressed.")]
+        private float _repressTimeout = 0.5f;
+        public float RepressTimeout
+        {
+            get => _repressTimeout;
+            set => _repressTimeout = value;
+        }
+
+        [SerializeField]
+        [ReadonlyInInspector ]
+        [Tooltip("Internal time of the last press to handle the repress timeout.")]
+        private float _lastPressTime = 0.0f;
+
+        /// <inheritdoc />
+        public override float DefaultMinValue => 0.0f;
+
+        /// <inheritdoc />
+        public override float DefaultMaxValue => 1.0f;
+
+        /// <summary>
+        /// Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.")]
+        private bool _toggleMode = false;
+        public bool ToggleMode
+        {
+            get => _toggleMode;
+            set
+            {
+                _toggleMode = value;
+                OnToggleModeChanged.Invoke(_toggleMode);
+            }
+        }
+
+        /// <summary>
+        /// Emitted if the button is in the pressed position and the action is considered a press.
+        /// </summary>
+        public UnityEvent OnPressed;
+
+        /// <summary>
+        /// Emitted if the button is in the pressed position and the action is considered a release.
+        /// </summary>
+        public UnityEvent OnReleased;
+
+        /// <summary>
+        /// Emitted if the button is in the pressed position and the action is considered a press.
+        /// </summary>
+        public UnityEvent OnToggledDown;
+
+        /// <summary>
+        /// Emitted if the button is in the pressed position and the action is considered a release.
+        /// </summary>
+        public UnityEvent OnToggledUp;
+
+        /// <summary>
+        /// Emitted if the button is in the pressed position and the action is considered a release.
+        /// </summary>
+        public UnityEvent<bool> OnToggleModeChanged;
+
+        /// <inheritdoc />
+        protected override float ProcessNewValue(float newValue)
+        {
+            return _toggleMode ? RuntimeUtils.GetValue01Stepped(newValue, 1) : Mathf.Clamp01(newValue);
+        }
+
+        /// <summary>
+        /// Emits value change events based on the current <see cref="Value"/> and <see cref="oldValue"/>.
+        /// Used internally to emit the respective events.
+        /// </summary>
+        /// <param name="oldValue">Previous value.</param>
+        protected override void HandleValueChange(float oldValue)
+        {
+            base.HandleValueChange(oldValue);
+
+            if (oldValue.Equals(Value))
+            {
+                // Nothing changed or no press allowed, so there is nothing to do...
+                return;
+            }
+
+            // If we can repress the button (or if it hasn't been pressed yet)
+            bool canRepress = (Time.time >= _lastPressTime + _repressTimeout) || _lastPressTime <= 0.0f;
+            // Check if we are outside of the deadzone still allow pressing if the the deadzone extends outside the range [0.0f, 1.0f] via the OR-condition
+            bool wantsPress = _value > _pressThreshold + _pressDeadzone || _value >= 1.0f;
+            bool wantsRelease = _value < _pressThreshold - _pressDeadzone || _value <= 0.0f;
+
+            if (!_toggleMode)
+            {
+                HandleRegularButtonPress(canRepress, wantsPress, wantsRelease);
+            }
+            else
+            {
+                HandleToggleButtonPress(canRepress, wantsPress);
+            }
+        }
+
+        private void HandleRegularButtonPress(bool canRepress, bool wantsPress, bool wantsRelease)
+        {
+            if (!_pressed && canRepress && wantsPress)
+            {
+                _pressed = true;
+                _lastPressTime = Time.time;
+                OnPressed.Invoke();
+            }
+            else if (_pressed && wantsRelease)
+            {
+                _pressed = false;
+                OnReleased.Invoke();
+            }
+        }
+
+        private void HandleToggleButtonPress(bool canRepress, bool wantsPress)
+        {
+            if (canRepress && wantsPress)
+            {
+                _pressed = !_pressed;
+                _lastPressTime = Time.time;
+                (_pressed ? OnToggledDown : OnToggledUp).Invoke();   
+            }
+        }
+
+
+        /// <inheritdoc />
+        public override bool IsMinValue(float value) => value <= 0.0f;
+
+        /// <inheritdoc />
+        public override bool IsMaxValue(float value) => value >= 1.0f;
+
+        /// <inheritdoc />
+        public override bool IsValueSnappingEnabled() => _toggleMode;
     }
 
 
