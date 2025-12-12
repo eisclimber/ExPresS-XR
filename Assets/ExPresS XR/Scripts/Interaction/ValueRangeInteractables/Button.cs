@@ -13,7 +13,40 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     public class Button : ValueRangeInteractable<ButtonDescriptor, ButtonVisualizer, float>
     {
         /// <summary>
+        /// If the button press is pressed normally or should toggle.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("If the button press is pressed normally or should toggle.")]
+        private bool _toggleMode = false;
+        public bool ToggleMode
+        {
+            get => _toggleMode;
+            set
+            {
+                _toggleMode = value;
+                OnToggleModeChanged.Invoke(_toggleMode);
+            }
+        }
+
+        /// <summary>
+        /// Current pressed state.
+        /// </summary>
+        [SerializeField]
+        private bool _pressed;
+        public bool Pressed
+        {
+            get => _pressed;
+            set
+            {
+                _pressed = value;
+                // Update the value in the descriptor to keep them in sync -> Value gets updated automatically
+                ValueDescriptor.Pressed = _pressed;
+            }
+        }
+
+        /// <summary>
         /// Accessor for the current value of the ValueDescriptor.
+        /// Overwritten whether 
         /// </summary>
         /// <value>Value of the range.</value>
         [Tooltip("Accessor for the current value of the ValueDescriptor.")]
@@ -23,32 +56,15 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set
             {
                 ValueDescriptor.Value = value;
-                // Override value visualization with 
-                if (_valueDescriptor.ToggleMode)
+                if (_toggleMode)
                 {
-                    _valueVisualizer.UpdateVisualizationWithToggle(Value, _valueDescriptor.Pressed, this);
+                    _valueVisualizer.UpdateVisualizationWithToggle(Value, _pressed, this);
                 }
                 else
                 {
                     _valueVisualizer.UpdateVisualization(Value, this);
                 }
                 EmitOnValueChanged(Value, value);
-            }
-        }
-
-
-        /// <summary>
-        /// If enabled, the button will refuse input and will stay in the up-position.
-        /// </summary>
-        [SerializeField]
-        private bool _inputDisabled;
-        public bool InputDisabled
-        {
-            get => _inputDisabled;
-            set
-            {
-                _inputDisabled = value;
-                (_inputDisabled ? OnInputDisabled : OnInputEnabled).Invoke();
             }
         }
 
@@ -67,7 +83,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         protected AudioClip _releasedSound;
 
         /// <summary>
-        /// Sound played when the button is pressed.
+        /// Sound played when the button is toggled down.
         /// </summary>
         [SerializeField]
         [Tooltip("Sound played when the button is toggled down.")]
@@ -81,14 +97,25 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         protected AudioClip _toggledUpSound;
 
         /// <summary>
-        /// Emitted when the button is pressed.
+        /// Emitted when the button is pressed not in toggle mode.
         /// </summary>
         public UnityEvent OnPressed;
 
         /// <summary>
-        /// Emitted when the button is released.
+        /// Emitted when the button is released not in toggle mode.
         /// </summary>
         public UnityEvent OnReleased;
+
+
+        /// <summary>
+        /// Emitted when the button is pressed and toggled to the down position.
+        /// </summary>
+        public UnityEvent OnTogglePressed;
+
+        /// <summary>
+        /// Emitted when the button is released and toggled to the up position.
+        /// </summary>
+        public UnityEvent OnToggleReleased;
 
 
         /// <summary>
@@ -96,63 +123,35 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public UnityEvent<bool> OnToggleModeChanged;
 
-        /// <summary>
-        /// Emitted when the button has been toggled up.
-        /// </summary>
-        public UnityEvent OnToggledUp;
+        // Helper value to allow repressing 
+        private bool _canRepressToggle = true;
 
-        /// <summary>
-        /// Emitted when the button has been toggled down.
-        /// </summary>
-        public UnityEvent OnToggledDown;
-
-
-        /// <summary>
-        /// Emitted when input gets disabled.
-        /// </summary>
-        public UnityEvent OnInputDisabled;
-
-        /// <summary>
-        /// Emitted when input gets enabled.
-        /// </summary>
-        public UnityEvent OnInputEnabled;
-
-
-        protected virtual void Start()
+        protected override void OnEnable()
         {
-            InputDisabled = _inputDisabled;
+            base.OnEnable();
+            _canRepressToggle = true;
         }
+
 
         protected override void UpdateValueWithHover() => Value = _valueVisualizer.GetVisualizedValue(this, _hoverInteractor);
 
         /// <summary>
         /// Disable grabbing the button (Don't update value when grabbed)
         /// </summary>
-        protected override void UpdateValueWithGrab() {}
+        protected override void UpdateValueWithGrab() { }
 
         protected override void AddValueDescriptorListeners()
         {
             base.AddValueDescriptorListeners();
-
-            _valueDescriptor.OnPressed.AddListener(EmitPressed);
-            _valueDescriptor.OnReleased.AddListener(EmitReleased);
-
-            _valueDescriptor.OnToggledUp.AddListener(EmitToggledDown);
-            _valueDescriptor.OnToggledDown.AddListener(EmitToggledUp);
-
-            _valueDescriptor.OnToggleModeChanged.AddListener(HandleToggleModeChanged);
+            _valueDescriptor.OnPressed.AddListener(HandleButtonPressed);
+            _valueDescriptor.OnReleased.AddListener(HandleButtonReleased);
         }
 
         protected override void RemoveValueDescriptorListeners()
         {
             base.RemoveValueDescriptorListeners();
-            _valueDescriptor.OnPressed.RemoveListener(EmitPressed);
-            _valueDescriptor.OnReleased.RemoveListener(EmitReleased);
-
-            _valueDescriptor.OnToggledUp.RemoveListener(EmitToggledDown);
-            _valueDescriptor.OnToggledDown.RemoveListener(EmitToggledUp);
-
-            _valueDescriptor.OnToggleModeChanged.RemoveListener(HandleToggleModeChanged);
+            _valueDescriptor.OnPressed.RemoveListener(HandleButtonPressed);
+            _valueDescriptor.OnReleased.RemoveListener(HandleButtonReleased);
         }
 
         /// <summary>
@@ -170,10 +169,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         /// <param name="interactor">Interactor hovering the button.</param>
         /// <returns>If the interactor can hover.</returns>
-        public override bool IsSelectableBy(IXRSelectInteractor interactor)
-        {
-            return false; // Grab is not allowed
-        }
+        public override bool IsSelectableBy(IXRSelectInteractor interactor) => false; // Grab is not allowed
 
         /// <summary>
         /// Plays the `pressed` sound, if assigned.
@@ -186,76 +182,60 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         protected virtual void PlayReleasedSound() => PlaySound(_pressedSound);
 
         /// <summary>
-        /// Plays the `toggledDown` sound, if assigned.
-        /// </summary>
-        protected virtual void PlayToggledDownSound() => PlaySound(_toggledDownSound);
-
-        /// <summary>
-        /// Plays the `toggledDown` sound, if assigned.
-        /// </summary>
-        protected virtual void PlayToggledUpSound() => PlaySound(_toggledUpSound);
-
-        /// <summary>
         /// Function wrapper to emit the OnPressed-Event with the given value.
         /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
         /// </summary>
-        /// <param name="v">Value to be passed with the event.</param>
-        protected virtual void EmitPressed()
+        protected virtual void HandleButtonPressed()
         {
-            Debug.Log("Pressed");
             PlayPressedSound();
-            OnPressed.Invoke();
+
+            // Change value without setter as we assume the value is coming from the ValueDescriptor
+            if (_toggleMode && _canRepressToggle)
+            {
+                _pressed = !_pressed;
+                (_pressed ? OnTogglePressed : OnToggleReleased).Invoke();
+            }
+            else if (!_toggleMode)
+            {
+                _pressed = true;
+                OnPressed.Invoke();
+            }
         }
 
         /// <summary>
         /// Function wrapper to emit the OnReleased-Event with the given value.
         /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
         /// </summary>
-        /// <param name="v">Value to be passed with the event.</param>
-        protected virtual void EmitReleased()
+        protected virtual void HandleButtonReleased()
         {
-            Debug.Log("Released");
             PlayReleasedSound();
-            OnReleased.Invoke();
+
+            // Change value without setter as we assume the value is coming from the ValueDescriptor
+            if (_toggleMode)
+            {
+                _canRepressToggle = true;
+            }
+            else
+            {
+                _pressed = true;
+                OnReleased.Invoke();
+            }
         }
 
-        /// <summary>
-        /// Function wrapper to emit the OnToggledDown-Event with the given value.
-        /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
-        /// </summary>
-        protected virtual void EmitToggledUp()
+        /// <inheritdoc />
+         public override void ResetValue()
         {
-            Debug.Log("ToggledDown");
-            PlayPressedSound();
-            OnPressed.Invoke();
-        }
+            _valueDescriptor.ResetValue();
 
-        /// <summary>
-        /// Function wrapper to emit the OnToggledUp-Event with the given value.
-        /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
-        /// </summary>
-        protected virtual void EmitToggledDown()
-        {
-            Debug.Log("ToggledUp");
-            PlayReleasedSound();
-            OnReleased.Invoke();
-        }
-
-        /// <summary>
-        /// Function wrapper to emit the OnToggledUp-Event with the given value.
-        /// Internally used to (dis-)connect the same events from the ValueDescriptor to make them more accessible.
-        /// </summary>
-        protected virtual void HandleToggleModeChanged(bool toggleMode)
-        {
-            OnToggleModeChanged.Invoke(toggleMode);
-        }
- 
-        /// <summary>
-        /// Executed automatically when the input is disabled. Allows changing values in the inspector during runtime.
-        /// </summary>
-        protected virtual void OnValidate()
-        {
-            InputDisabled = _inputDisabled;
+            // We need to update visualization accordingly
+            if (_toggleMode)
+            {
+                _valueVisualizer.UpdateVisualizationWithToggle(Value, _pressed, this);
+            }
+            else
+            {
+                _valueVisualizer.UpdateVisualization(Value, this);
+            }
         }
     }
 
@@ -289,25 +269,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(float value, IXRInteractable interactable)
-        {
-            ChangeButtonCapPosition(value, _upPosition, _downPosition);
-        }
-
-        /// <summary>
-        /// Handles 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="toggledDown"></param>
-        /// <param name="interactable"></param>
-        public void UpdateVisualizationWithToggle(float value, bool toggledDown, IXRInteractable interactable)
-        {
-            float toggledPos = toggledDown ? _toggledDownPosition : _upPosition;
-            Debug.Log($"Toggled pos: {toggledPos}");
-            ChangeButtonCapPosition(value, toggledPos, _downPosition);
-        }
-
-        private void ChangeButtonCapPosition(float value, float upPos, float downPos)
+        public override void UpdateVisualization(float value, IXRInteractable _)
         {
             if (_buttonCap == null)
             {
@@ -316,7 +278,28 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
 
             Vector3 capPos = _buttonCap.localPosition;
-            capPos.y = Mathf.Lerp(upPos, downPos, value);
+            capPos.y = Mathf.Lerp(_upPosition, _downPosition, value);
+            _buttonCap.localPosition = capPos;
+        }
+
+        /// <summary>
+        /// Displays the pressed state of a button if in toggle mode.
+        /// </summary>
+        /// <param name="value">Value to be displayed.</param>
+        /// <param name="toggledDown">Toggle state of the button.</param>
+        /// <param name="interactable">Interactable to be manipulated.</param>
+        public void UpdateVisualizationWithToggle(float value, bool toggledDown, IXRInteractable _)
+        {
+
+            if (_buttonCap == null)
+            {
+                Debug.LogWarning($"No reference to a button cap provided. Can not visualize the toggled value '{value}' anything without it.");
+                return;
+            }
+
+            float upClampPos = toggledDown ? _toggledDownPosition : _upPosition;
+            Vector3 capPos = _buttonCap.localPosition;
+            capPos.y = Mathf.Lerp(upClampPos, _downPosition, value);
             _buttonCap.localPosition = capPos;
         }
 

@@ -62,11 +62,26 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <summary>
+        /// If enabled, the button will refuse input and will stay in the up-position.
+        /// </summary>
+        [SerializeField]
+        private bool _inputDisabled;
+        public bool InputDisabled
+        {
+            get => _inputDisabled;
+            set
+            {
+                _inputDisabled = value;
+                (_inputDisabled ? OnInputDisabled : OnInputEnabled).Invoke();
+            }
+        }
+
+        /// <summary>
         /// If true, the joystick will snap to the upright position on release.
         /// </summary>
         [SerializeField]
         [Tooltip("If true, the joystick will snap to the upright position on release.")]
-        private bool _zeroValueOnRelease = false;
+        protected bool _zeroValueOnRelease = false;
 
         /// <summary>
         /// If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.
@@ -162,6 +177,17 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public UnityEvent<V> OnValueSelected;
 
         /// <summary>
+        /// Emitted when input gets disabled.
+        /// </summary>
+        public UnityEvent OnInputDisabled;
+
+
+        /// <summary>
+        /// Emitted when input gets enabled.
+        /// </summary>
+        public UnityEvent OnInputEnabled;
+
+        /// <summary>
         /// Called when this component is enabled.
         /// </summary>
         protected override void OnEnable()
@@ -191,6 +217,14 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             hoverExited.RemoveListener(EndHover);
 
             RemoveValueDescriptorListeners();
+        }
+
+        /// <summary>
+        /// Update input disabled initially.
+        /// </summary>
+        protected virtual void Start()
+        {
+            InputDisabled = _inputDisabled;
         }
 
         /// <summary>
@@ -257,7 +291,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             base.ProcessInteractable(updatePhase);
 
             // Check if the interaction is valid and in the correct update phase
-            if (isActiveAndEnabled && updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
+            if (isActiveAndEnabled && !_inputDisabled && updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
                 if (isHovered)
                 {
@@ -278,7 +312,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor can hover.</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
-            return base.IsHoverableBy(interactor) && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
+            return base.IsHoverableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
         }
 
         /// <summary>
@@ -288,7 +322,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor can hover.</returns>
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
-            return base.IsSelectableBy(interactor) && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
+            return base.IsSelectableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
         }
 
         /// <summary>
@@ -464,7 +498,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <summary>
         /// Snaps to the default value of the range.
         /// </summary>
-        public void ResetValue()
+        public virtual void ResetValue()
         {
             _valueDescriptor.ResetValue();
             _valueVisualizer.UpdateVisualization(Value, this);
@@ -482,6 +516,14 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public virtual void InternalUpdateValue()
         {
             Value = Value;
+        }
+
+        /// <summary>
+        /// Executed automatically when the input is disabled. Allows changing values in the inspector during runtime.
+        /// </summary>
+        protected virtual void OnValidate()
+        {
+            InputDisabled = _inputDisabled;
         }
     }
 

@@ -275,7 +275,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     public class ButtonDescriptor : ValueDescriptor<float>
     {
         /// <summary>
-        /// Used 
+        /// Bool wrapper for checking if the button is pressed (i.e. value = 1.0f) or not.
         /// </summary>
         private bool _pressed;
         public bool Pressed
@@ -356,21 +356,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <inheritdoc />
         public override float DefaultMaxValue => 1.0f;
 
-        /// <summary>
-        /// Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.")]
-        private bool _toggleMode = false;
-        public bool ToggleMode
-        {
-            get => _toggleMode;
-            set
-            {
-                _toggleMode = value;
-                OnToggleModeChanged.Invoke(_toggleMode);
-            }
-        }
+
 
         /// <summary>
         /// Emitted if the button is in the pressed position and the action is considered a press.
@@ -400,7 +386,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <inheritdoc />
         protected override float ProcessNewValue(float newValue)
         {
-            return _toggleMode ? RuntimeUtils.GetValue01Stepped(newValue, 1) : Mathf.Clamp01(newValue);
+            return Mathf.Clamp01(newValue);
         }
 
         /// <summary>
@@ -424,18 +410,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             bool wantsPress = _value > _pressThreshold + _pressDeadzone || _value >= 1.0f;
             bool wantsRelease = _value < _pressThreshold - _pressDeadzone || _value <= 0.0f;
 
-            if (!_toggleMode)
-            {
-                HandleRegularButtonPress(canRepress, wantsPress, wantsRelease);
-            }
-            else
-            {
-                HandleToggleButtonPress(canRepress, wantsPress);
-            }
-        }
-
-        private void HandleRegularButtonPress(bool canRepress, bool wantsPress, bool wantsRelease)
-        {
             if (!_pressed && canRepress && wantsPress)
             {
                 _pressed = true;
@@ -449,17 +423,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
-        private void HandleToggleButtonPress(bool canRepress, bool wantsPress)
-        {
-            if (canRepress && wantsPress)
-            {
-                _pressed = !_pressed;
-                _lastPressTime = Time.time;
-                (_pressed ? OnToggledDown : OnToggledUp).Invoke();   
-            }
-        }
-
-
         /// <inheritdoc />
         public override bool IsMinValue(float value) => value <= 0.0f;
 
@@ -467,7 +430,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public override bool IsMaxValue(float value) => value >= 1.0f;
 
         /// <inheritdoc />
-        public override bool IsValueSnappingEnabled() => _toggleMode;
+        public override bool IsValueSnappingEnabled() => false; // No snapping for buttons... Toggling is handled elsewhere.
     }
 
 

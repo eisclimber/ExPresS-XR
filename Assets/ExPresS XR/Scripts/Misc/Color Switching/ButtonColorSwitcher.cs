@@ -32,6 +32,9 @@ namespace ExPresSXR.Misc.ColorSwitching
                 _button.OnPressed.AddListener(HandleButtonPressed);
                 _button.OnReleased.AddListener(HandleButtonReleased);
 
+                _button.OnTogglePressed.AddListener(HandleButtonPressed);
+                _button.OnToggleReleased.AddListener(HandleButtonReleased);
+
                 _button.OnInputEnabled.AddListener(HandleButtonEnabled);
                 _button.OnInputDisabled.AddListener(HandleButtonDisabled);
             }
