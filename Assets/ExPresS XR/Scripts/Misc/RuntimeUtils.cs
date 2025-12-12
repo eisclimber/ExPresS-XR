@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using ExPresSXR.Rig;
 using ExPresSXR.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Misc
 {
@@ -98,6 +101,22 @@ namespace ExPresSXR.Misc
                 return Mathf.Round(valueClamped * numSteps) / numSteps;
             }
             return valueClamped;
+        }
+
+        /// <summary>
+        /// Checks if an interactor is capable of close-up interactions usually done with a hand like grabbing or poking.
+        /// Has an optional option for NearFarInteractors, checking if it is currently selecting 'near'. This does not work for hovering.
+        /// </summary>
+        /// <param name="interactor">Interactor in question.</param>
+        /// <param name="checkNearSelection"> Checks if an NearFarSelectoris selection too. Default: false</param>
+        /// <returns>If the interactor considered a close up hand interactor.</returns>
+        public static bool IsCloseUpHandInteractor(IXRInteractor interactor, bool checkNearSelection = false)
+        {
+            if (checkNearSelection && interactor is NearFarInteractor nearFarInteractor)
+            {
+                return nearFarInteractor.selectionRegion.Value == NearFarInteractor.Region.Near;
+            }
+            return interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor;
         }
 
         #region Random
@@ -194,7 +213,7 @@ namespace ExPresSXR.Misc
         {
             if (objects.Length <= 0 || objects.Length != probabilities.Length)
             {
-                Debug.LogError("Invalid array size for generating random ");
+                Debug.LogError("Invalid array size for generating a random weighted array.");
                 return default;
             }
             int randomIdx = GetWeightedRandomIdx(probabilities);

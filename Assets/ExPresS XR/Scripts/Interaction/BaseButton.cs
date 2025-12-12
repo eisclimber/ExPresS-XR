@@ -4,6 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using ExPresSXR.Misc;
 
 
 namespace ExPresSXR.Interaction
@@ -248,7 +249,7 @@ namespace ExPresSXR.Interaction
         /// <returns>Wether or not the interactor can hover (i.e. press) the button</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
-            return !InputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
+            return !InputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor));
         }
 
 

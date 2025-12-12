@@ -56,16 +56,22 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set
             {
                 ValueDescriptor.Value = value;
-                if (_toggleMode)
-                {
-                    _valueVisualizer.UpdateVisualizationWithToggle(Value, _pressed, this);
-                }
-                else
-                {
-                    _valueVisualizer.UpdateVisualization(Value, this);
-                }
+                UpdateValueVisualization();
                 EmitOnValueChanged(Value, value);
             }
+        }
+
+        /// <summary>
+        /// Max distance to to an interactor to be able to interact with the button.
+        /// This is a hack for being able to determine if the button is hovered near or far.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Max distance to to an interactor to be able to interact with the button. This is a hack for being able to determine if the button is hovered near or far.")]
+        private float _maxInteractionDistance = 0.2f;
+        public float MaxInteractionDistance
+        {
+            get => _maxInteractionDistance;
+            set => _maxInteractionDistance = value;
         }
 
         /// <summary>
@@ -132,6 +138,21 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             _canRepressToggle = true;
         }
 
+        /// <summary>
+        /// Function wrapper that wraps the function calls for the different toggle modes.
+        /// </summary>
+        protected virtual void UpdateValueVisualization()
+        {
+            if (_toggleMode)
+            {
+                _valueVisualizer.UpdateVisualizationWithToggle(Value, _pressed, this);
+            }
+            else
+            {
+                _valueVisualizer.UpdateVisualization(Value, this);
+            }
+        }
+
 
         protected override void UpdateValueWithHover() => Value = _valueVisualizer.GetVisualizedValue(this, _hoverInteractor);
 
@@ -152,16 +173,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             base.RemoveValueDescriptorListeners();
             _valueDescriptor.OnPressed.RemoveListener(HandleButtonPressed);
             _valueDescriptor.OnReleased.RemoveListener(HandleButtonReleased);
-        }
-
-        /// <summary>
-        /// Determines if the Button can be hovered or in this case pressed by an IXRHoverInteractor.
-        /// </summary>
-        /// <param name="interactor">Interactor hovering the button.</param>
-        /// <returns>Wether or not the interactor can hover (i.e. press) the button</returns>
-        public override bool IsHoverableBy(IXRHoverInteractor interactor)
-        {
-            return !InputDisabled && base.IsHoverableBy(interactor);
         }
 
         /// <summary>
@@ -223,19 +234,44 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
+        public override bool IsHoverableBy(IXRHoverInteractor interactor)
+        {
+            return base.IsHoverableBy(interactor) && IsInteractorInRange(interactor);
+        }
+
+        /// <summary>
+        /// Helper function to determine if a n interactor is in range.
+        /// This is used as a hack since we can not properly determine if a hover is from the near or far part of a NearFarInteractor.
+        /// </summary>
+        /// <param name="interactor">Interactor in question.</param>
+        /// <returns>If the interactor is in range or not.</returns>
+        protected virtual bool IsInteractorInRange(IXRHoverInteractor interactor)
+        {
+            return _maxInteractionDistance <= 0.0f || GetDistanceSqrToInteractor(interactor) <= Math.Pow(_maxInteractionDistance, 2.0f);   
+        }
+
+        /// <inheritdoc />
          public override void ResetValue()
         {
             _valueDescriptor.ResetValue();
-
             // We need to update visualization accordingly
-            if (_toggleMode)
-            {
-                _valueVisualizer.UpdateVisualizationWithToggle(Value, _pressed, this);
-            }
-            else
-            {
-                _valueVisualizer.UpdateVisualization(Value, this);
-            }
+            UpdateValueVisualization();
+        }
+
+        /// <inheritdoc />
+        public override void SetValueToMinValue()
+        {
+            Pressed = false;
+            // We need to update visualization accordingly
+            UpdateValueVisualization();
+        }
+
+        /// <inheritdoc />
+        public override void SetValueToMaxValue()
+        {
+            Pressed = true;
+            // We need to update visualization accordingly
+            UpdateValueVisualization();
         }
     }
 

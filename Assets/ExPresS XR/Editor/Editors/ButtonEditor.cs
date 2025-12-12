@@ -16,150 +16,134 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class ButtonEditor : ValueRangeInteractableEditor
     {
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._pressed"/>.</summary>
+        protected SerializedProperty _pressed;
 
-        // protected override void OnEnable()
-        // {
-        //     base.OnEnable();
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._toggleMode"/>.</summary>
+        protected SerializedProperty _toggleMode;
 
-        //     _valueDescriptor = serializedObject.FindProperty("_valueDescriptor");
-        //     _valueVisualizer = serializedObject.FindProperty("_valueVisualizer");
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._pressedSound"/>.</summary>
+        protected SerializedProperty _pressedSound;
 
-        //     _zeroValueOnRelease = serializedObject.FindProperty("_zeroValueOnRelease");
-        //     _requireDirectInteraction = serializedObject.FindProperty("_requireDirectInteraction");
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._releasedSound"/>.</summary>
+        protected SerializedProperty _releasedSound;
 
-        //     _snapSound = serializedObject.FindProperty("_snapSound");
-        //     _minValueSound = serializedObject.FindProperty("_minValueSound");
-        //     _maxValueSound = serializedObject.FindProperty("_maxValueSound");
-        //     _moveSound = serializedObject.FindProperty("_moveSound");
-        //     _moveDeltaSoundThreshold = serializedObject.FindProperty("_moveDeltaSoundThreshold");
-        //     _defaultAudioPlayer = serializedObject.FindProperty("_defaultAudioPlayer");
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._toggledDownSound"/>.</summary>
+        protected SerializedProperty _toggledDownSound;
 
-        //     _onMinValue = serializedObject.FindProperty("OnMinValue");
-        //     _onMaxValue = serializedObject.FindProperty("OnMaxValue");
-        //     _onSnapped = serializedObject.FindProperty("OnSnapped");
-        //     _onValueChangedSingle = serializedObject.FindProperty("OnValueChangedSingle");
-        //     _onValueChanged = serializedObject.FindProperty("OnValueChanged");
-        //     _onValueChangedString = serializedObject.FindProperty("OnValueChangedString");
-        //     _onValueSelected = serializedObject.FindProperty("OnValueSelected");
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._toggledUpSound"/>.</summary>
+        protected SerializedProperty _toggledUpSound;
 
-        //     _rangeInteractableInternal = (IRangeInteractorInternal)target;
-        // }
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnPressed"/>.</summary>
+        protected SerializedProperty _onPressed;
 
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnReleased"/>.</summary>
+        protected SerializedProperty _onReleased;
 
-        // protected override void DrawProperties()
-        // {
-        //     DrawRangeProperties();
-        //     DrawSoundsFoldout();
-        //     DrawButtons();
-        //     base.DrawProperties();
-        // }
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnTogglePressed"/>.</summary>
+        protected SerializedProperty _onTogglePressed;
 
-        // protected virtual void DrawRangeProperties()
-        // {
-        //     EditorGUI.BeginChangeCheck();
-        //     EditorGUILayout.PropertyField(_valueDescriptor);
-        //     EditorGUILayout.PropertyField(_valueVisualizer);
-        //     if (EditorGUI.EndChangeCheck())
-        //     {
-        //         serializedObject.ApplyModifiedProperties();
-        //         _rangeInteractableInternal.InternalUpdateValue();
-        //     }
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnToggleReleased"/>.</summary>
+        protected SerializedProperty _onToggleReleased;
 
-        //     EditorGUILayout.Space();
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnToggleModeChanged"/>.</summary>
+        protected SerializedProperty _onToggleModeChanged;
 
-        //     EditorGUILayout.PropertyField(_zeroValueOnRelease);
-        //     EditorGUILayout.PropertyField(_requireDirectInteraction);
+        protected override string SnapToMinButtonLabel
+        {
+            get => "Set Released";
+        }
 
-        //     EditorGUILayout.Space();
-        // }
+        protected override string SnapToMaxButtonLabel
+        {
+            get => "Set Pressed";
+        }
 
-        // protected virtual void DrawSoundsFoldout()
-        // {
-        //     _showSounds = EditorGUILayout.BeginFoldoutHeaderGroup(_showSounds, "Sounds");
-        //     if (_showSounds)
-        //     {
-        //         DrawSoundsProperties();
-        //     }
-        //     EditorGUILayout.EndFoldoutHeaderGroup();
-        // }
+        /// <inheritdoc />
+        protected override void OnEnable()
+        {
+            base.OnEnable();
 
+            _pressed = serializedObject.FindProperty("_pressed");
+            _toggleMode = serializedObject.FindProperty("_toggleMode");
 
-        // protected virtual void DrawSoundsProperties()
-        // {
-        //     EditorGUI.indentLevel++;
-        //     EditorGUILayout.PropertyField(serializedObject.FindProperty("_snapSound"), true);
-        //     EditorGUILayout.PropertyField(serializedObject.FindProperty("_minValueSound"), true);
-        //     EditorGUILayout.PropertyField(serializedObject.FindProperty("_maxValueSound"), true);
-        //     EditorGUILayout.Space();
-        //     EditorGUILayout.PropertyField(serializedObject.FindProperty("_moveSound"), true);
-        //     EditorGUILayout.Space();
-        //     EditorGUILayout.PropertyField(serializedObject.FindProperty("_defaultAudioPlayer"), true);
-        //     EditorGUI.indentLevel--;
-        //     EditorGUILayout.Space();
-        // }
+            _pressedSound = serializedObject.FindProperty("_pressedSound");
+            _releasedSound = serializedObject.FindProperty("_releasedSound");
+            _toggledDownSound = serializedObject.FindProperty("_toggledDownSound");
+            _toggledUpSound = serializedObject.FindProperty("_toggledUpSound");
 
-        // protected override void DrawEvents()
-        // {
-        //     base.DrawEvents();
+            _onPressed = serializedObject.FindProperty("OnPressed");
+            _onReleased = serializedObject.FindProperty("OnReleased");
 
-        //     EditorGUILayout.Space();
+            _onTogglePressed = serializedObject.FindProperty("OnTogglePressed");
+            _onToggleReleased = serializedObject.FindProperty("OnToggleReleased");
 
-        //     DrawValueEventsFoldout();
-        // }
+            _onToggleModeChanged = serializedObject.FindProperty("OnToggleModeChanged");
+        }
 
+        /// <inheritdoc />
+        protected override void DrawRangeProperties()
+        {
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(_pressed);
+            EditorGUILayout.PropertyField(_toggleMode);
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                _rangeInteractableInternal.InternalUpdateValue();
+            }
+            base.DrawRangeProperties();
+        }
 
-        // protected virtual void DrawValueEventsFoldout()
-        // {
-        //     _showValueEvents = EditorGUILayout.BeginFoldoutHeaderGroup(_showValueEvents, "Value Events");
-        //     if (_showValueEvents)
-        //     {
-        //         DrawValueEvents();
-        //     }
-        //     EditorGUILayout.EndFoldoutHeaderGroup();
-        // }
+        /// <inheritdoc />
+        protected override void DrawPostRangeProperties()
+        {
+            EditorGUILayout.PropertyField(_zeroValueOnRelease);
+            if (!_zeroValueOnRelease.boolValue)
+            {
+                EditorGUILayout.HelpBox("It is recommended to keep 'ZeroValueOnRelease' set to 'true' to ensure proper snap-back when moving the hand of the button.", MessageType.Warning);
+            }
+            EditorGUILayout.PropertyField(_requireDirectInteraction);
+            EditorGUILayout.Space();
+        }
 
-        // protected virtual void DrawValueEvents()
-        // {
-        //     EditorGUI.indentLevel++;
-        //     EditorGUILayout.PropertyField(_onMinValue, true);
-        //     EditorGUILayout.PropertyField(_onMaxValue, true);
-        //     EditorGUILayout.Space();
-        //     EditorGUILayout.PropertyField(_onSnapped, true);
-        //     EditorGUILayout.Space();
-        //     EditorGUILayout.PropertyField(_onValueChangedSingle, true);
-        //     EditorGUILayout.PropertyField(_onValueChanged, true);
-        //     EditorGUILayout.PropertyField(_onValueChangedString, true);
-        //     EditorGUILayout.PropertyField(_onValueSelected, true);
-        //     EditorGUI.indentLevel--;
-        // }
+        /// <inheritdoc />
+        protected override void DrawSoundsProperties()
+        {
+            EditorGUI.indentLevel++;
+            // We don't care for the other sounds... the naming here is just simpler to understand
+            EditorGUILayout.PropertyField(_pressedSound, true);
+            EditorGUILayout.PropertyField(_releasedSound, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_toggledDownSound, true);
+            EditorGUILayout.PropertyField(_toggledUpSound, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_defaultAudioPlayer, true);
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Space();
+        }
 
-        // protected override void DrawButtons()
-        // {
-        //     float buttonWidth = (EditorGUIUtility.currentViewWidth - 24.0f) / 2.0f;
-        //     GUILayout.BeginHorizontal();
-        //     if (GUILayout.Button("Snap to Min", GUILayout.Width(buttonWidth)))
-        //     {
-        //         _rangeInteractableInternal.SetValueToMinValue();
-        //     }
-
-        //     if (GUILayout.Button("Snap to Max", GUILayout.Width(buttonWidth)))
-        //     {
-        //         _rangeInteractableInternal.SetValueToMaxValue();
-        //     }
-        //     GUILayout.EndHorizontal();
-        //     GUILayout.BeginHorizontal();
-        //     if (GUILayout.Button("Print Value", GUILayout.Width(buttonWidth)))
-        //     {
-        //         Debug.Log(_rangeInteractableInternal.ToString());
-        //     }
-
-        //     if (GUILayout.Button("Reset", GUILayout.Width(buttonWidth)))
-        //     {
-        //         _rangeInteractableInternal.ResetValue();
-        //     }
-        //     GUILayout.EndHorizontal();
-
-        //     EditorGUILayout.Space();
-        // }
+        /// <inheritdoc />
+        protected override void DrawValueEvents()
+        {
+            EditorGUI.indentLevel++;
+            // Same thing here -> Use pressed events 
+            EditorGUILayout.PropertyField(_onPressed, true);
+            EditorGUILayout.PropertyField(_onReleased, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_onTogglePressed, true);
+            EditorGUILayout.PropertyField(_onToggleReleased, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_onToggleModeChanged, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_onValueChangedSingle, true);
+            EditorGUILayout.PropertyField(_onValueChanged, true);
+            EditorGUILayout.PropertyField(_onValueSelected, true);
+            EditorGUILayout.PropertyField(_onValueReset, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_onInputDisabled, true);
+            EditorGUILayout.PropertyField(_onInputEnabled, true);
+            EditorGUI.indentLevel--;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using ExPresSXR.Misc;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
@@ -167,9 +168,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public UnityEvent<V, V> OnValueChanged;
 
         /// <summary>
-        /// Emitted if the value changes dynamically (i.e. when the interactor is moved). Returns a string for easier use with labels.
+        /// Emitted when the value gets reset.
         /// </summary>
-        public UnityEvent<string> OnValueChangedString;
+        public UnityEvent OnValueReset;
 
         /// <summary>
         /// Emitted when the interactable is released, returning the currently selected value.
@@ -180,7 +181,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// Emitted when input gets disabled.
         /// </summary>
         public UnityEvent OnInputDisabled;
-
 
         /// <summary>
         /// Emitted when input gets enabled.
@@ -312,7 +312,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor can hover.</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
-            return base.IsHoverableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
+            return base.IsHoverableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor));
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor can hover.</returns>
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
-            return base.IsSelectableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || interactor is XRDirectInteractor or XRPokeInteractor or NearFarInteractor);
+            return base.IsSelectableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor, true));
         }
 
         /// <summary>
@@ -406,7 +406,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             PlayMoveSound();
             OnValueChangedSingle.Invoke(newV);
             OnValueChanged.Invoke(newV, oldV);
-            OnValueChangedString.Invoke(newV.ToString());
         }
 
         #endregion
@@ -477,21 +476,23 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <summary>
         /// Sets the value to the minimum value of the range.
         /// </summary>
-        public void SetValueToMinValue()
+        public virtual void SetValueToMinValue()
         {
             Assert.IsTrue(_valueDescriptor.IsMinValue(_valueDescriptor.DefaultMinValue), "ValueDescriptor does not accept the DefaultMinValue as minimum value.");
             _valueDescriptor.Value = _valueDescriptor.DefaultMinValue;
             _valueVisualizer.UpdateVisualization(Value, this);
+            EmitOnMinValue(_valueDescriptor.Value);
         }
 
         /// <summary>
         /// Sets the value to the maximum value of the range.
         /// </summary>
-        public void SetValueToMaxValue()
+        public virtual void SetValueToMaxValue()
         {
             Assert.IsTrue(_valueDescriptor.IsMaxValue(_valueDescriptor.DefaultMaxValue), "ValueDescriptor does not accept the DefaultMinValue as maximum value.");
             _valueDescriptor.Value = _valueDescriptor.DefaultMaxValue;
             _valueVisualizer.UpdateVisualization(Value, this);
+            EmitOnMaxValue(_valueDescriptor.Value);
         }
 
 
@@ -502,6 +503,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         {
             _valueDescriptor.ResetValue();
             _valueVisualizer.UpdateVisualization(Value, this);
+            OnValueReset.Invoke();
         }
 
         /// <summary>

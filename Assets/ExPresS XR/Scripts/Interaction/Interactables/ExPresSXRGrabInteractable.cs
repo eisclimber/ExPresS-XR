@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -214,7 +215,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
-            if (args.interactorObject is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, true))
             {
                 OnGrabStarted.Invoke();
             }
@@ -227,7 +228,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
-            if (args.interactorObject is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, true))
             {
                 OnGrabReleased.Invoke();
             }
@@ -241,9 +242,9 @@ namespace ExPresSXR.Interaction
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
             // Allow Direct and ray only if grab allowed and add parent checks
-            bool canGrab = (_allowGrab || interactor is not (XRDirectInteractor or XRRayInteractor)) && base.IsSelectableBy(interactor);
+            bool canGrab = (_allowGrab || !RuntimeUtils.IsCloseUpHandInteractor(interactor, true)) && base.IsSelectableBy(interactor);
 
-            if (interactor is XRDirectInteractor || interactor is XRRayInteractor)
+            if (interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
             {
                 (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();
             }
@@ -295,7 +296,7 @@ namespace ExPresSXR.Interaction
             for (int i = 0; i < interactorsSelecting.Count; i++)
             {
                 IXRSelectInteractor interactor = interactorsSelecting[i];
-                if (interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
+                if (RuntimeUtils.IsCloseUpHandInteractor(interactor))
                 {
                     interactionManager.SelectExit(interactor, this);
                     i--; // Decrement as the next element will take the removed interactors place

@@ -326,7 +326,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [SerializeField]
         [Tooltip("Deadzone around the press threshold in BOTH directions to avoid rapid pressing/releasing.\n"
             + "If the deadzone expands beyond 0.0f or 1.0f, it will be clamped and the press/release events will be fired at exactly 0.0f or 1.0f.")]
-        private float _pressDeadzone = 0.2f;
+        private float _pressDeadzone = 0.1f;
         public float PressDeadzone
         {
             get => _pressDeadzone;
@@ -361,27 +361,14 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <summary>
         /// Emitted if the button is in the pressed position and the action is considered a press.
         /// </summary>
+        [HideInInspector]
         public UnityEvent OnPressed;
 
         /// <summary>
         /// Emitted if the button is in the pressed position and the action is considered a release.
         /// </summary>
+        [HideInInspector]
         public UnityEvent OnReleased;
-
-        /// <summary>
-        /// Emitted if the button is in the pressed position and the action is considered a press.
-        /// </summary>
-        public UnityEvent OnToggledDown;
-
-        /// <summary>
-        /// Emitted if the button is in the pressed position and the action is considered a release.
-        /// </summary>
-        public UnityEvent OnToggledUp;
-
-        /// <summary>
-        /// Emitted if the button is in the pressed position and the action is considered a release.
-        /// </summary>
-        public UnityEvent<bool> OnToggleModeChanged;
 
         /// <inheritdoc />
         protected override float ProcessNewValue(float newValue)
