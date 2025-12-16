@@ -10,13 +10,13 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class HighlightableSocketInteractorEditor : UnityEditor.XR.Interaction.Toolkit.Interactors.XRSocketInteractorEditor
     {
-        protected HighlightableSocketInteractor highlightableSocket;
+        protected HighlightableSocketInteractor _highlightableSocket;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            highlightableSocket = (HighlightableSocketInteractor)target;
+            _highlightableSocket = (HighlightableSocketInteractor)target;
         }
 
         public override void OnInspectorGUI()
@@ -42,14 +42,14 @@ namespace ExPresSXR.Editor.Editors
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                highlightableSocket.SetHighlighterVisible(highlightableSocket.ShowHighlighter);
+                _highlightableSocket.SetHighlighterVisible(_highlightableSocket.ShowHighlighter);
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_highlighterObject"), true);
-            if (highlightableSocket.CanSetHighlighterScaleWithCollider())
+            if (_highlightableSocket.CanSetHighlighterScaleWithCollider())
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_useColliderSizeAsScale"), true);
             }
-            EditorGUI.BeginDisabledGroup(highlightableSocket.UseColliderSizeAsScale);
+            EditorGUI.BeginDisabledGroup(_highlightableSocket.UseColliderSizeAsScale);
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_highlighterScale"), true);
             }
@@ -69,8 +69,5 @@ namespace ExPresSXR.Editor.Editors
             DrawEvents();
             EditorGUI.indentLevel--;
         }
-
-        private bool IsObjectInNeedOfInteractable(GameObject go)
-            => go != null && go.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable>() == null;
     }
 }

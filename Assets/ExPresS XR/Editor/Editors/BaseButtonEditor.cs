@@ -70,6 +70,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_requireDirectInteraction"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_maxInteractionDistance"), true);
 
             EditorGUI.indentLevel--;
         }

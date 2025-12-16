@@ -121,7 +121,6 @@ namespace ExPresSXR.Interaction
             }
         }
 
-
         /// <summary>
         /// The current scale to the children, relative to their initial scale.
         /// </summary>
@@ -215,7 +214,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
-            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, true))
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject))
             {
                 OnGrabStarted.Invoke();
             }
@@ -228,7 +227,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
-            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, true))
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject))
             {
                 OnGrabReleased.Invoke();
             }
@@ -242,9 +241,8 @@ namespace ExPresSXR.Interaction
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
             // Allow Direct and ray only if grab allowed and add parent checks
-            bool canGrab = (_allowGrab || !RuntimeUtils.IsCloseUpHandInteractor(interactor, true)) && base.IsSelectableBy(interactor);
-
-            if (interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
+            bool canGrab = (_allowGrab || !RuntimeUtils.IsCloseUpHandInteractor(interactor)) && base.IsSelectableBy(interactor);
+            if (RuntimeUtils.IsCloseUpHandInteractor(interactor))
             {
                 (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();
             }

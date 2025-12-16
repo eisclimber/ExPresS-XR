@@ -108,15 +108,11 @@ namespace ExPresSXR.Misc
         /// Has an optional option for NearFarInteractors, checking if it is currently selecting 'near'. This does not work for hovering.
         /// </summary>
         /// <param name="interactor">Interactor in question.</param>
-        /// <param name="checkNearSelection"> Checks if an NearFarSelectoris selection too. Default: false</param>
+        /// <param name="includeNearFar">Allows if an NearFarSelectors too. Default: false</param>
         /// <returns>If the interactor considered a close up hand interactor.</returns>
-        public static bool IsCloseUpHandInteractor(IXRInteractor interactor, bool checkNearSelection = false)
+        public static bool IsCloseUpHandInteractor(IXRInteractor interactor, bool includeNearFar = false)
         {
-            if (checkNearSelection && interactor is NearFarInteractor nearFarInteractor)
-            {
-                return nearFarInteractor.selectionRegion.Value == NearFarInteractor.Region.Near;
-            }
-            return interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor;
+            return interactor is XRDirectInteractor or XRRayInteractor || (includeNearFar && interactor is NearFarInteractor);
         }
 
         #region Random

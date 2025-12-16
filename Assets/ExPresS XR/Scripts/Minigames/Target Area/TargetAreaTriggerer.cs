@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExPresSXR.Interaction.Feedback;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 
 
 namespace ExPresSXR.Minigames.TargetArea
@@ -35,6 +37,19 @@ namespace ExPresSXR.Minigames.TargetArea
         [SerializeField]
         [Tooltip("If enabled all events each of the three events below will be called mutually exclusive. This prevents errors when using these for different haptic feedbacks.")]
         private bool _emitEventsExclusively = true;
+
+        [Space]
+
+        [SerializeField]
+        [Tooltip("If haptics should be performed when hitting a target.")]
+        private bool _doHaptics;
+
+        [SerializeField]
+        private HapticImpulsePlayer _hapticsPlayer;
+
+        [Tooltip("The default rumble that is performed when calling 'PerformDefaultRumble()'.")]
+        [SerializeField]
+        private RumbleDescription _rumble = new(0.5f, 0.5f);
 
         [Space]
 
@@ -113,6 +128,11 @@ namespace ExPresSXR.Minigames.TargetArea
                 && IsUncompletedTarget(target))
             {
                 target.QueueAction();
+
+                if (_hapticsPlayer != null && _doHaptics)
+                {
+                    RumbleUtility.PerformConstantRumble(_rumble.Strength, _rumble.Duration, _hapticsPlayer);
+                }
 
                 if (!_emitEventsExclusively || !target.Completed)
                 {

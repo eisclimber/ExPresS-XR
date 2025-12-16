@@ -39,13 +39,12 @@ namespace ExPresSXR.Interaction.Feedback
                 Debug.LogError("No target was provided to play a constant rumble on.");
                 return;
             }
+            // The function seems to always return false in my case even if the rumble is performed, 
+            // so we're ignoring the check below...
             // else if (!haptics.SendHapticImpulse(Mathf.Clamp01(strength), duration, 0.0f))
             // {
             //     Debug.LogError($"The given target '{haptics}' was not able to perform a haptic impulse.");
             // }
-
-            // The function seems to always return false in my case even if the rumble is performed, 
-            // so we're ignoring the check above...
             haptics.SendHapticImpulse(Mathf.Clamp01(strength), duration, 0.0f);
         }
     }

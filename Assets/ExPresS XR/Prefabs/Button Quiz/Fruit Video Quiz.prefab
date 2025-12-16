@@ -59,6 +59,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,9 +85,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &289160691772373028
 BoxCollider:
@@ -447,14 +454,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Shape:
     rid: 9004764004241899945
-  m_Size: {x: 0.8, y: 0.2, z: 0.2}
-  m_Rotation: {x: 0, y: 0, z: 0, w: 1}
-  m_PivotLocation: 0
-  m_PivotPosition: {x: 0, y: 0, z: 0}
+  m_ShapeRotation: {x: 0, y: 0, z: 0, w: 1}
   m_UnmodifiedMeshVersion: 50
-  m_ShapeBox:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.4, y: 0.1, z: 0.1}
+  m_Size: {x: 0.8, y: 0.2, z: 0.2}
+  m_LocalCenter: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds:
@@ -478,6 +481,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -499,9 +507,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &8330371315788572289
 MeshFilter:
@@ -884,27 +894,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 613846c8a8c3ef04f92f544d8ee163fc, type: 2}
   _quizUndergoing: 0
-  _feedbackDuration: 3
   _startOnAwake: 0
   _showQuizCompletedText: 0
   _canRestartFromAfterQuizDialog: 1
-  buttons:
+  _feedbackDuration: 3
+  Buttons:
   - {fileID: 3536927521971128648}
   - {fileID: 3895682136373826852}
   - {fileID: 8030174155560415606}
   - {fileID: 4618256071557393468}
-  mcConfirmButton: {fileID: 0}
-  displayText: {fileID: 0}
-  displayAnchor: {fileID: 0}
-  displayPlayer: {fileID: 6913536953869299026}
-  displayVideoImage: {fileID: 6913536952678540253}
-  afterQuizMenu: {fileID: 1872700991743909687}
+  McConfirmButton: {fileID: 0}
+  DisplayText: {fileID: 0}
+  DisplayAnchor: {fileID: 0}
+  DisplayPlayer: {fileID: 6913536953869299026}
+  DisplayVideoImage: {fileID: 6913536952678540253}
+  AfterQuizMenu: {fileID: 1872700991743909687}
   OnQuizStarted:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5786497688764341268}
         m_TargetAssemblyTypeName: ExPresSXR.Interaction.BaseButton, Assembly-CSharp
-        m_MethodName: set_inputDisabled
+        m_MethodName: set_InputDisabled
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -922,7 +932,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5786497688764341268}
         m_TargetAssemblyTypeName: ExPresSXR.Interaction.BaseButton, Assembly-CSharp
-        m_MethodName: set_inputDisabled
+        m_MethodName: set_InputDisabled
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1060,6 +1070,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1609898589151168884, guid: 4e7436a3de2377d4cb40dc514b252d96, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 1609898589803545843, guid: 4e7436a3de2377d4cb40dc514b252d96, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1091,6 +1105,14 @@ PrefabInstance:
     - target: {fileID: 1609898589972097569, guid: 4e7436a3de2377d4cb40dc514b252d96, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609898590149346109, guid: 4e7436a3de2377d4cb40dc514b252d96, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609898590284092020, guid: 4e7436a3de2377d4cb40dc514b252d96, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 1609898590284092021, guid: 4e7436a3de2377d4cb40dc514b252d96, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1187,6 +1209,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1264,6 +1290,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1300,6 +1330,10 @@ PrefabInstance:
     - target: {fileID: 1734563134699316586, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
       propertyPath: m_fontSize
       value: 33.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1734563134699316586, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 7572910124195641420, guid: 70cc62f2523c42c4db2266740928371e, type: 3}
       propertyPath: m_Text
@@ -1486,6 +1520,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1562,6 +1600,10 @@ PrefabInstance:
     - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

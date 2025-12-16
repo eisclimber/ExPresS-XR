@@ -2,6 +2,7 @@ using System;
 using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -67,7 +68,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         [SerializeField]
         [Tooltip("Max distance to to an interactor to be able to interact with the button. This is a hack for being able to determine if the button is hovered near or far.")]
-        private float _maxInteractionDistance = 0.2f;
+        private float _maxInteractionDistance = 0.1f;
         public float MaxInteractionDistance
         {
             get => _maxInteractionDistance;
@@ -132,10 +133,17 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         // Helper value to allow repressing 
         private bool _canRepressToggle = true;
 
+
         protected override void OnEnable()
         {
             base.OnEnable();
             _canRepressToggle = true;
+        }
+
+        protected override void StartHover(HoverEnterEventArgs args)
+        {
+            base.StartHover(args);
+            _valueVisualizer.RecordHoverStartHeight(args.interactableObject, args.interactorObject);
         }
 
         /// <summary>
@@ -247,15 +255,16 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor is in range or not.</returns>
         protected virtual bool IsInteractorInRange(IXRHoverInteractor interactor)
         {
-            return _maxInteractionDistance <= 0.0f || GetDistanceSqrToInteractor(interactor) <= Math.Pow(_maxInteractionDistance, 2.0f);   
+            return _maxInteractionDistance <= 0.0f || GetDistanceSqrToInteractor(interactor) <= Mathf.Pow(_maxInteractionDistance, 2.0f);   
         }
 
         /// <inheritdoc />
          public override void ResetValue()
         {
             _valueDescriptor.ResetValue();
-            // We need to update visualization accordingly
+            // We need to update the visualization with our custom logic
             UpdateValueVisualization();
+            OnValueReset.Invoke();
         }
 
         /// <inheritdoc />
@@ -294,13 +303,19 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         protected float _toggledDownPosition = 0.032f;
 
         [SerializeField]
+        [Tooltip("How the press distance is calculated, either from the hover start or the interactors transform position.")]
+        protected PositionReference _positionReference = PositionReference.HoverStart;
+
+        [SerializeField]
         [Tooltip("The object that is visually grabbed and manipulated.")]
         protected Transform _buttonCap = null;
+
+        private float _hoverStartHeight;
 
         /// <inheritdoc />
         public override float GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
-            Vector3 localPosition = GetInteractorLocalPosition(interactable, interactor);
+            Vector3 localPosition = GetInteractorLocalPosition(interactable, interactor) - GetHoverOffset();
             return Mathf.Clamp01((localPosition.y - _upPosition) / (_downPosition - _upPosition));
         }
 
@@ -326,7 +341,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="interactable">Interactable to be manipulated.</param>
         public void UpdateVisualizationWithToggle(float value, bool toggledDown, IXRInteractable _)
         {
-
             if (_buttonCap == null)
             {
                 Debug.LogWarning($"No reference to a button cap provided. Can not visualize the toggled value '{value}' anything without it.");
@@ -337,6 +351,13 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             Vector3 capPos = _buttonCap.localPosition;
             capPos.y = Mathf.Lerp(upClampPos, _downPosition, value);
             _buttonCap.localPosition = capPos;
+        }
+
+        protected virtual Vector3 GetHoverOffset() => _positionReference == PositionReference.HoverStart ? new(0.0f, _hoverStartHeight, 0.0f) : Vector3.zero;
+
+        public void RecordHoverStartHeight(IXRInteractable interactable, IXRInteractor interactor)
+        {
+            _hoverStartHeight = GetInteractorLocalPosition(interactable, interactor).y - _upPosition;
         }
 
         /// <inheritdoc />
@@ -358,6 +379,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 "Up",
                 "Down"
             );
+        }
+
+        protected enum PositionReference
+        {
+            InteractorTransform,
+            HoverStart
         }
     }
 }

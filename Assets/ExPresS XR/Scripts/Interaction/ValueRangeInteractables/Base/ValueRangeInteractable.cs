@@ -91,6 +91,22 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [Tooltip("If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.")]
         protected bool _requireDirectInteraction;
 
+        /// <summary>
+        /// If enabled allows NearFarInteractors to be treates as valid Direct Interactor.
+        // It is recommended to set the max interaction distance to the size of near interaction volume,
+        // as we can not differentiate hovers from it and the ray.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("If enabled allows NearFarInteractors to be treates as valid Direct Interactor. "
+            + "It is recommended to set the max interaction distance to the size of near interaction volume, "
+            + "as we can not differentiate hovers from it and the ray.")]
+        private bool _allowNearFarInteraction = true;
+        public bool AllowNearFarInteraction
+        {
+            get => _allowNearFarInteraction;
+            set => _allowNearFarInteraction = value;
+        }
+
 
         /// <summary>
         /// Sound played when the interactable snaps to a position. Also acts as a default for minValueSound and maxValueSound if they are omitted.
@@ -312,7 +328,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor can hover.</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
-            return base.IsHoverableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor));
+            return base.IsHoverableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor, _allowNearFarInteraction));
         }
 
         /// <summary>
@@ -322,7 +338,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor can hover.</returns>
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
-            return base.IsSelectableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor, true));
+            return base.IsSelectableBy(interactor) && !_inputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor, _allowNearFarInteraction));
         }
 
         /// <summary>

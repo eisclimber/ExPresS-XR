@@ -22,6 +22,9 @@ namespace ExPresSXR.Editor.Editors
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._toggleMode"/>.</summary>
         protected SerializedProperty _toggleMode;
 
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._maxInteractionDistance"/>.</summary>
+        protected SerializedProperty _maxInteractionDistance;
+
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._pressedSound"/>.</summary>
         protected SerializedProperty _pressedSound;
 
@@ -66,6 +69,8 @@ namespace ExPresSXR.Editor.Editors
 
             _pressed = serializedObject.FindProperty("_pressed");
             _toggleMode = serializedObject.FindProperty("_toggleMode");
+            
+            _maxInteractionDistance = serializedObject.FindProperty("_maxInteractionDistance");
 
             _pressedSound = serializedObject.FindProperty("_pressedSound");
             _releasedSound = serializedObject.FindProperty("_releasedSound");

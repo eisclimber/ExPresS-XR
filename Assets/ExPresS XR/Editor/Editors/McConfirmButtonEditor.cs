@@ -8,12 +8,12 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class McConfirmButtonEditor : QuizButtonEditor
     {
-        protected McConfirmButton mcConfirmButton;
+        protected McConfirmButton _mcConfirmButton;
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            mcConfirmButton = (McConfirmButton)target;
+            _mcConfirmButton = (McConfirmButton)target;
         }
 
         protected override void DrawBaseProperties()

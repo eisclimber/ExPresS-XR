@@ -60,6 +60,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
                 if (_feedbackObjectSocket != null)
                 {
+                    // The buttons should allow holding non-interactables so we need to be able to destroy non-selecting (i.e. no interactables)
+                    _feedbackObjectSocket.DestroyIfNotSelecting = true;
+                    _feedbackObjectSocket.AllowNonInteractables = true;
                     _feedbackObjectSocket.PutBackPrefab = _answerObject;
                 }
                 else if (_answerObject != null)
@@ -131,7 +134,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         ///////////
         private long triggerStartTime = -1;
-
         
         /// <summary>
         /// Resets the timer measuring the time until the button was pressed to give an answer.
@@ -230,14 +232,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             if (!FeedbackDisabled && !ToggleMode)
             {
                 // (not invertedFeedback and correct) or (inverted and not correct)
-                if (CorrectChoice != InvertedFeedback)
-                {
-                    OnAnsweredCorrect.Invoke();
-                }
-                else
-                {
-                    OnAnsweredIncorrect.Invoke();
-                }
+                (CorrectChoice != InvertedFeedback ? OnAnsweredCorrect : OnAnsweredIncorrect).Invoke();
             }
         }
 

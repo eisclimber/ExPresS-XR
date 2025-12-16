@@ -7,11 +7,11 @@ namespace ExPresSXR.Editor.Editors
     [CustomEditor(typeof(ButtonQuiz))]
     public class ButtonQuizEditor : UnityEditor.Editor
     {
-        ButtonQuiz targetScript;
+        protected ButtonQuiz _buttonQuiz;
 
         void OnEnable()
         {
-            targetScript = (ButtonQuiz)target;
+            _buttonQuiz = (ButtonQuiz)target;
         }
 
         public override void OnInspectorGUI()
@@ -69,17 +69,17 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            string startButtonLabel = targetScript.QuizUndergoing ? "Restart Quiz" : "Start Quiz";
+            string startButtonLabel = _buttonQuiz.QuizUndergoing ? "Restart Quiz" : "Start Quiz";
             if (Application.isPlaying && GUILayout.Button(startButtonLabel))
             {
-                targetScript.StartQuiz();
+                _buttonQuiz.StartQuiz();
             }
 
             EditorGUILayout.Space();
 
-            if (Application.isPlaying && targetScript.QuizUndergoing && GUILayout.Button("Stop Quiz"))
+            if (Application.isPlaying && _buttonQuiz.QuizUndergoing && GUILayout.Button("Stop Quiz"))
             {
-                targetScript.StopQuiz();
+                _buttonQuiz.StopQuiz();
             }
 
             serializedObject.ApplyModifiedProperties();

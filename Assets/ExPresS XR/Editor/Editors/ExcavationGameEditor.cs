@@ -7,11 +7,11 @@ namespace ExPresSXR.Editor.Editors
     [CustomEditor(typeof(ExcavationGame))]
     public class ExcavationGameEditor : UnityEditor.Editor
     {
-        ExcavationGame targetScript;
+        protected ExcavationGame _excavationGame;
 
         void OnEnable()
         {
-            targetScript = (ExcavationGame)target;
+            _excavationGame = (ExcavationGame)target;
         }
 
         public override void OnInspectorGUI()
@@ -30,7 +30,7 @@ namespace ExPresSXR.Editor.Editors
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                targetScript.EnforceZonesGranularity();
+                _excavationGame.EnforceZonesGranularity();
             }
 
             EditorGUILayout.Space();

@@ -6,14 +6,14 @@ using UnityEngine;
 [CanEditMultipleObjects]
 public class HandControllerManagerEditor : Editor
 {
-    protected HandControllerManager handController;
+    protected HandControllerManager _handControllerManager;
 
 
-    private static bool _showObjectRefs = false;
+    protected static bool _showObjectRefs = false;
 
     protected void OnEnable()
     {
-        handController = (HandControllerManager)target;
+        _handControllerManager = (HandControllerManager)target;
     }
 
     public override void OnInspectorGUI()
@@ -23,7 +23,7 @@ public class HandControllerManagerEditor : Editor
         DrawScript();
         EditorGUILayout.Space();
         DrawExternallyControlledInfo();
-        EditorGUI.BeginDisabledGroup(handController.ExternallyControlled);
+        EditorGUI.BeginDisabledGroup(_handControllerManager.ExternallyControlled);
         DrawMovementOptions();
         DrawInteractionOptions();
         DrawControllerActions();
@@ -47,7 +47,7 @@ public class HandControllerManagerEditor : Editor
 
     protected virtual void DrawExternallyControlledInfo()
     {
-        if (handController.ExternallyControlled)
+        if (_handControllerManager.ExternallyControlled)
         {
             EditorGUILayout.HelpBox("This component is controlled externally by an xr rig. "
             + "Please change the config via the rig or unlink its reference to this component.", MessageType.Info);

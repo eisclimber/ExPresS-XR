@@ -8,13 +8,13 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class QuizButtonEditor : BaseButtonEditor
     {
-        QuizButton quizButton;
+        protected QuizButton _quizButton;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            quizButton = (QuizButton)target;
+            _quizButton = (QuizButton)target;
         }
 
         public override void OnInspectorGUI()
@@ -58,7 +58,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CorrectChoice"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("FeedbackDisabled"), true);
-            EditorGUI.BeginDisabledGroup(quizButton.FeedbackDisabled);
+            EditorGUI.BeginDisabledGroup(_quizButton.FeedbackDisabled);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("InvertedFeedback"), true);
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;

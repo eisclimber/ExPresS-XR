@@ -8,13 +8,6 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class AutoScrollRectEditor : UnityEditor.Editor
     {
-        AutoScrollRect targetScript;
-
-        protected virtual void OnEnable()
-        {
-            targetScript = (AutoScrollRect)target;
-        }
-
         public override void OnInspectorGUI()
         {
             EditorGUILayout.HelpBox("Make sure to adjust the height of the GameObject you set as 'Content' " 

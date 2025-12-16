@@ -14,7 +14,7 @@ namespace ExPresSXR.Interaction
         /// The prefab that is displayed at the socket. Will automatically create an instance of the prefab and update the references.
         /// </summary>
         [SerializeField]
-        private GameObject _putBackPrefab;
+        protected GameObject _putBackPrefab;
         public GameObject PutBackPrefab
         {
             get => _putBackPrefab;
@@ -29,10 +29,10 @@ namespace ExPresSXR.Interaction
         /// The current instance of the putBackPrefab. Can not be changed via the editor.
         /// </summary>
         [SerializeField]
-        private GameObject _putBackInstance;
+        protected GameObject _putBackObjectInstance;
         public GameObject PutBackObjectInstance
         {
-            get => _putBackInstance;
+            get => _putBackObjectInstance;
         }
 
         /// <summary>
@@ -140,6 +140,18 @@ namespace ExPresSXR.Interaction
             set => _externallyControlled = value;
         }
 
+        /// <summary>
+        /// Destroys the putbackObject if it gets removed even if the socket is currently not selecting it.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Destroys the putbackObject if it gets removed even if the socket is currently not selecting it.")]
+        private bool _destroyIfNotSelecting;
+        public bool DestroyIfNotSelecting
+        {
+            get => _destroyIfNotSelecting;
+            set => _destroyIfNotSelecting = value;
+        }
+
 
         protected bool _omitSelectEnterEvent;
         protected bool _omitSelectExitEvent;
@@ -165,15 +177,15 @@ namespace ExPresSXR.Interaction
                 PutBackPrefab = _putBackPrefab;
             }
 
-            SetHighlighterVisible(_putBackInstance == null);
+            SetHighlighterVisible(_putBackObjectInstance == null);
 
-            if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
+            if (_putBackObjectInstance != null && _putBackObjectInstance.TryGetComponent(out _putBackInteractable))
             {
                 _putBackInteractable.selectExited.AddListener(StartPutBackTimer);
                 _putBackInteractable.selectEntered.AddListener(ResetPutBackTimer);
 
                 // Enable putBackInteractable if attached (avoids dropping if attached)
-                _putBackInstance.SetActive(true);
+                _putBackObjectInstance.SetActive(true);
             }
 
             // Prevent select enter event being emitted (must be done before base.Start() is called)
@@ -201,12 +213,12 @@ namespace ExPresSXR.Interaction
             _omitSelectExitEvent = _omitInitialSelectExitEvent;
 
             // Unlink and disable interactable before disabling this socket to avoid dropping
-            if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
+            if (_putBackObjectInstance != null && _putBackObjectInstance.TryGetComponent(out _putBackInteractable))
             {
                 _putBackInteractable.selectExited.RemoveListener(StartPutBackTimer);
                 _putBackInteractable.selectEntered.RemoveListener(ResetPutBackTimer);
 
-                _putBackInstance.SetActive(false);
+                _putBackObjectInstance.SetActive(false);
             }
 
             base.OnDisable();
@@ -249,7 +261,7 @@ namespace ExPresSXR.Interaction
         /// <returns>If the interactable can select.</returns>
         public override bool CanSelect(IXRSelectInteractable interactable) => IsObjectMatch(interactable) && base.CanSelect(interactable);
 
-        private void StartPutBackTimer(SelectExitEventArgs args)
+        protected virtual void StartPutBackTimer(SelectExitEventArgs args)
         {
             if (_putBackPrefab == null || _putBackInteractable == null || args.interactorObject == (IXRSelectInteractor)this)
             {
@@ -274,7 +286,7 @@ namespace ExPresSXR.Interaction
             }
         }
 
-        private void ResetPutBackTimer(SelectEnterEventArgs args)
+        protected virtual void ResetPutBackTimer(SelectEnterEventArgs _ = null)
         {
             if (_putBackCoroutine != null)
             {
@@ -304,40 +316,62 @@ namespace ExPresSXR.Interaction
         /// Updates the `putBackPrefab` by destroying and creating instances, adding/removing listeners and de-/selecting the interactable. 
         /// Will be automatically called when setting `putBackPrefab`.
         /// </summary>
-        public void UpdatePutBackObject()
+        public void UpdatePutBackObject(bool force = false)
         {
             if (!ValidatePutBackPrefab())
             {
                 PutBackPrefab = null;
-                return;
+                return; // Update already performed by setting the putback prefab...
             }
 
-            UnregisterPutBackInteractable();
-            DeleteOldPutBackInstance();
+            UnregisterPutBackInteractable(force);
+            DeleteOldPutBackInstance(force);
             InstantiatePutBackPrefab();
             RegisterPutBackInteractable();
         }
 
-
-        private void DeleteOldPutBackInstance()
+        public void ForceClearPutBackInteractable()
         {
-            if (_putBackInstance != null)
+            UnregisterPutBackInteractable(true);
+            DeleteOldPutBackInstance(true);
+        }
+
+        
+        protected void UnregisterPutBackInteractable(bool force = false)
+        {
+            if (_putBackInteractable != null && (IsSelecting(_putBackInteractable) || _destroyIfNotSelecting || force))
+            {
+                ResetPutBackTimer();
+
+                _putBackInteractable.selectExited.RemoveListener(StartPutBackTimer);
+                _putBackInteractable.selectEntered.RemoveListener(ResetPutBackTimer);
+
+                startingSelectedInteractable = null;
+                _putBackInteractable = null;
+            }
+        }
+
+        private void DeleteOldPutBackInstance(bool force = false)
+        {
+            if (_putBackObjectInstance != null && (IsSelecting(_putBackInteractable) || _destroyIfNotSelecting || force))
             {
                 // Destroy Interactable
                 if (Application.isPlaying)
                 {
                     interactionManager.UnregisterInteractable((IXRInteractable)_putBackInteractable);
                     // Don't know why we need to wait here
-                    Destroy(_putBackInstance, 0.1f);
+                    Destroy(_putBackObjectInstance, 0.1f);
                 }
                 else
                 {
-                    DestroyImmediate(_putBackInstance);
+                    DestroyImmediate(_putBackObjectInstance);
                 }
             }
+            _putBackObjectInstance = null;
+            _putBackInteractable = null;
         }
 
-        private void UnregisterPutBackInteractable()
+        protected virtual void UnregisterPutBackInteractable()
         {
             if (_putBackInteractable != null)
             {
@@ -350,11 +384,12 @@ namespace ExPresSXR.Interaction
         }
 
 
-        private void RegisterPutBackInteractable()
+        protected virtual void RegisterPutBackInteractable()
         {
-            if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
+            if (_putBackObjectInstance != null && _putBackObjectInstance.TryGetComponent(out _putBackInteractable))
             {
                 startingSelectedInteractable = _putBackInteractable;
+                _putBackInteractable.parentInteractable = parentInteractable; // Make sure the parent interactable is set
 
                 if (interactionManager != null && ((IXRSelectInteractable)_putBackInteractable) != null && Application.isPlaying)
                 {
@@ -367,22 +402,22 @@ namespace ExPresSXR.Interaction
         }
 
 
-        private void InstantiatePutBackPrefab()
+        protected virtual void InstantiatePutBackPrefab()
         {
             if (_putBackPrefab != null)
             {
                 Transform attachParent = attachTransform != null ? attachTransform : transform;
-                _putBackInstance = Instantiate(_putBackPrefab, attachParent);
+                _putBackObjectInstance = Instantiate(_putBackPrefab, attachParent);
 
-                if (_putBackInstance != null && _putBackInstance.TryGetComponent(out _putBackInteractable))
+                if (_putBackObjectInstance != null && _putBackObjectInstance.TryGetComponent(out _putBackInteractable))
                 {
-                    _putBackInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    _putBackObjectInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
                     UpdatePutbackAttachCompensation();
                     TryDisableGrabInteractableRetainTransformParent();
                 }
-                else if (_putBackInstance != null && AllowNonInteractables)
+                else if (_putBackObjectInstance != null && AllowNonInteractables)
                 {
-                    _putBackInstance.transform.SetPositionAndRotation(attachParent.position, attachParent.rotation);
+                    _putBackObjectInstance.transform.SetPositionAndRotation(attachParent.position, attachParent.rotation);
                 }
                 else
                 {
@@ -390,12 +425,12 @@ namespace ExPresSXR.Interaction
                                     + "If you want to attach regular GameObjects without being able "
                                     + "to pick them up enable: 'allowNonInteractables'.", this);
                     // Clean up invalid instance if existing
-                    if (_putBackInstance != null)
+                    if (_putBackObjectInstance != null)
                     {
 #if UNITY_EDITOR
-                        DestroyImmediate(_putBackInstance);
+                        DestroyImmediate(_putBackObjectInstance);
 #else
-                        Destroy(_putBackInstance);
+                        Destroy(_putBackObjectInstance);
 #endif
                     }
                     PutBackPrefab = null;
@@ -403,7 +438,7 @@ namespace ExPresSXR.Interaction
             }
 
             // Hide the highlighter in editor
-            SetHighlighterVisible(ShowHighlighter && _putBackInstance == null);
+            SetHighlighterVisible(ShowHighlighter && _putBackObjectInstance == null);
         }
 
 
@@ -449,7 +484,7 @@ namespace ExPresSXR.Interaction
         public bool ArePutBackReferencesValid()
         {
             bool hasPrefab = _putBackPrefab != null;
-            bool hasInstance = _putBackInstance != null;
+            bool hasInstance = _putBackObjectInstance != null;
             bool hasInteractable = _putBackInteractable != null;
             bool interactableMatchesPrefab = hasPrefab && _putBackPrefab.TryGetComponent(out XRBaseInteractable _) == (_putBackInteractable != null);
             bool hasInteractableWhenRequired = AllowNonInteractables || interactableMatchesPrefab;

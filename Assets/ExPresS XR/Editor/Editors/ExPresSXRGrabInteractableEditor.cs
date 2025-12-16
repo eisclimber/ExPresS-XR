@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.XR.Interaction.Toolkit;
 
 using ExPresSXR.Interaction;
 
@@ -36,13 +33,14 @@ namespace ExPresSXR.Editor.Editors
         protected SerializedProperty _scaledChildren;
 
 
-        private ExPresSXRGrabInteractable scaleInteractable;
+        protected ExPresSXRGrabInteractable _scaleInteractable;
+        
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            scaleInteractable = (ExPresSXRGrabInteractable)target;
+            _scaleInteractable = (ExPresSXRGrabInteractable)target;
 
             _allowGrab = serializedObject.FindProperty("_allowGrab");
 
@@ -91,7 +89,7 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUI.BeginDisabledGroup(true);
             EditorGUI.indentLevel++;
-            float _ = EditorGUILayout.FloatField("(Readonly) Current Scale Factor", scaleInteractable.ScaleFactor);
+            float _ = EditorGUILayout.FloatField("(Readonly) Current Scale Factor", _scaleInteractable.ScaleFactor);
             EditorGUI.indentLevel--;
             EditorGUI.EndDisabledGroup();
 
@@ -99,12 +97,12 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.PropertyField(_scaleAllChildren, true);
 
-            if (!scaleInteractable.ScaleAllChildren)
+            if (!_scaleInteractable.ScaleAllChildren)
             {
                 EditorGUILayout.PropertyField(_scaledChildren, true);
             }
 
-            if (scaleInteractable.transform.childCount < 1)
+            if (_scaleInteractable.transform.childCount < 1)
             {
                 EditorGUILayout.HelpBox("This ExPresSXRGrabInteractable has no children. Only the children of this interactable can be scaled.", MessageType.Warning);
             }

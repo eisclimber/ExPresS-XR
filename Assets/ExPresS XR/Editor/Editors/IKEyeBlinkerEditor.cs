@@ -8,14 +8,14 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class IKEyeBlinkerEditor : UnityEditor.Editor
     {
-        protected IKEyeBlinker blinker;
+        protected IKEyeBlinker _iKEyBlinker;
 
         protected static bool _showEvents = false;
         protected static bool _showObjectRefs = false;
 
         protected virtual void OnEnable()
         {
-            blinker = (IKEyeBlinker)target;
+            _iKEyBlinker = (IKEyeBlinker)target;
         }
 
         public override void OnInspectorGUI()
@@ -58,7 +58,7 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawBlinkRangeProperties()
         {
-            if (blinker.BlinkBehavior == IKEyeBlinker.BlinkBehaviorType.RandomInterval)
+            if (_iKEyBlinker.BlinkBehavior == IKEyeBlinker.BlinkBehaviorType.RandomInterval)
             {
                 EditorGUILayout.LabelField("Random Blink", EditorStyles.boldLabel);
 

@@ -10,13 +10,13 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class ExPresSXRRigEditor : UnityEditor.Editor
     {
-        ExPresSXRRig rig;
+        protected ExPresSXRRig _rig;
 
         private static bool _showObjectRefs = false;
 
         void OnEnable()
         {
-            rig = (ExPresSXRRig)target;
+            _rig = (ExPresSXRRig)target;
         }
 
         public override void OnInspectorGUI()
@@ -61,18 +61,18 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Prevents warnings for enabling GameObjects during OnValidate()
                 serializedObject.ApplyModifiedProperties();
-                rig.EditorRevalidate();
+                _rig.EditorRevalidate();
             }
             EditorGUI.indentLevel--;
         }
 
         protected virtual void DrawInputConfigOptions()
         {
-            if (rig.InputMethod == InputMethod.Controller)
+            if (_rig.InputMethod == InputMethod.Controller)
             {
                 DrawControllerOptions();
             }
-            else if (rig.InputMethod == InputMethod.HeadGaze)
+            else if (_rig.InputMethod == InputMethod.HeadGaze)
             {
                 DrawHeadGazeOptions();
             }
@@ -102,7 +102,7 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Prevents warnings for enabling GameObjects during OnValidate()
                 serializedObject.ApplyModifiedProperties();
-                rig.EditorRevalidate();
+                _rig.EditorRevalidate();
             }
 
             DrawInfoBoxes();
@@ -120,15 +120,15 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Prevents warnings for enabling GameObjects during OnValidate()
                 serializedObject.ApplyModifiedProperties();
-                rig.EditorRevalidate();
+                _rig.EditorRevalidate();
             }
         }
 
 
         protected virtual void DrawInfoBoxes()
         {
-            InteractionOptions interactions = rig.InteractionOptions;
-            MovementOptions movements = rig.MovementOptions;
+            InteractionOptions interactions = _rig.InteractionOptions;
+            MovementOptions movements = _rig.MovementOptions;
 
             bool hasNear = interactions.HasFlag(InteractionOptions.Near);
             bool hasFar = interactions.HasFlag(InteractionOptions.Far);
@@ -230,9 +230,9 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUI.BeginChangeCheck();
 
-            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", rig.MovementPreset == MovementPreset.Teleport);
+            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", _rig.MovementPreset == MovementPreset.Teleport);
 
-            if (useTeleport && rig.MovementPreset == MovementPreset.Teleport)
+            if (useTeleport && _rig.MovementPreset == MovementPreset.Teleport)
             {
                 EditorGUILayout.HelpBox("If you want to add reticles for Head Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
             }
@@ -241,7 +241,7 @@ namespace ExPresSXR.Editor.Editors
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                rig.MovementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
+                _rig.MovementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
                 serializedObject.Update();
             }
 
@@ -258,9 +258,9 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUI.BeginChangeCheck();
 
-            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", rig.MovementPreset == MovementPreset.Teleport);
+            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", _rig.MovementPreset == MovementPreset.Teleport);
 
-            if (useTeleport && rig.MovementPreset == MovementPreset.Teleport)
+            if (useTeleport && _rig.MovementPreset == MovementPreset.Teleport)
             {
                 EditorGUILayout.HelpBox("If you want to add reticles for Eye Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
             }
@@ -269,7 +269,7 @@ namespace ExPresSXR.Editor.Editors
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                rig.MovementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
+                _rig.MovementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
                 serializedObject.Update();
             }
 
@@ -283,7 +283,7 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawOptionalTeleportReticles()
         {
-            if (rig.MovementPreset == MovementPreset.Teleport)
+            if (_rig.MovementPreset == MovementPreset.Teleport)
             {
                 EditorGUI.BeginChangeCheck();
 
@@ -294,7 +294,7 @@ namespace ExPresSXR.Editor.Editors
                 {
                     // Prevents warnings for enabling GameObjects during OnValidate()
                     serializedObject.ApplyModifiedProperties();
-                    rig.EditorRevalidate();
+                    _rig.EditorRevalidate();
                 }
             }
         }
@@ -319,53 +319,53 @@ namespace ExPresSXR.Editor.Editors
         protected virtual void DrawFadeButtons()
         {
             // Fade to color button
-            bool canFadeToColor = rig.FadeRect != null && rig.FadeRect.ScreenCompletelyHidden;
+            bool canFadeToColor = _rig.FadeRect != null && _rig.FadeRect.ScreenCompletelyHidden;
             EditorGUI.BeginDisabledGroup(canFadeToColor);
             if (GUILayout.Button("Fade Screen To Color"))
             {
-                if (rig.FadeRect != null)
+                if (_rig.FadeRect != null)
                 {
-                    rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
+                    _rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
                 }
 
                 if (Application.isPlaying)
                 {
-                    rig.FadeToColor();
+                    _rig.FadeToColor();
                 }
                 else
                 {
-                    rig.FadeToColorInstant();
+                    _rig.FadeToColorInstant();
                 }
 
-                if (rig.FadeRect != null)
+                if (_rig.FadeRect != null)
                 {
-                    rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
+                    _rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
                 }
             }
             EditorGUI.EndDisabledGroup();
 
             // Fade to clear button
-            bool canFadeToClear = rig.FadeRect != null && rig.FadeRect.ScreenCompletelyVisible;
+            bool canFadeToClear = _rig.FadeRect != null && _rig.FadeRect.ScreenCompletelyVisible;
             EditorGUI.BeginDisabledGroup(canFadeToClear);
             if (GUILayout.Button("Fade Screen To Clear"))
             {
-                if (rig.FadeRect != null)
+                if (_rig.FadeRect != null)
                 {
-                    rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
+                    _rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
                 }
 
                 if (Application.isPlaying)
                 {
-                    rig.FadeToClear();
+                    _rig.FadeToClear();
                 }
                 else
                 {
-                    rig.FadeToClearInstant();
+                    _rig.FadeToClearInstant();
                 }
 
-                if (rig.FadeRect != null)
+                if (_rig.FadeRect != null)
                 {
-                    rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
+                    _rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
                 }
             }
             EditorGUI.EndDisabledGroup();
@@ -400,7 +400,7 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.LabelField("Interactors", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftHandController"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightHandController"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("__rightHandController"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeController"), true);
                 EditorGUI.indentLevel--;
 
@@ -409,7 +409,7 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftAutoHand"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightAutoHand"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("__rightAutoHand"), true);
                 EditorGUI.indentLevel--;
 
                 EditorGUILayout.Space();
@@ -429,7 +429,7 @@ namespace ExPresSXR.Editor.Editors
                 {
                     // Prevents warnings for enabling GameObjects during OnValidate()
                     serializedObject.ApplyModifiedProperties();
-                    rig.EditorRevalidate();
+                    _rig.EditorRevalidate();
                 }
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_playerHeadCollider"), true);
                 EditorGUI.indentLevel--;
@@ -449,7 +449,7 @@ namespace ExPresSXR.Editor.Editors
         
         private void SaveAsCustomXRRig()
         {
-            GameObject go = rig.gameObject;
+            GameObject go = _rig.gameObject;
             if (PrefabUtility.IsAnyPrefabInstanceRoot(go))
             {
                 GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(go);
@@ -457,7 +457,7 @@ namespace ExPresSXR.Editor.Editors
             }
             else
             {
-                PrefabUtility.SaveAsPrefabAsset(rig.gameObject, CreationUtils.savedXRRigPath);
+                PrefabUtility.SaveAsPrefabAsset(_rig.gameObject, CreationUtils.savedXRRigPath);
             }
         }
 

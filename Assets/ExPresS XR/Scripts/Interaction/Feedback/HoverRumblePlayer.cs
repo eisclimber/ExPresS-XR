@@ -34,7 +34,6 @@ namespace ExPresSXR.Interaction.Feedback
         }
 
         private XRBaseInteractable hoverProvider;
-        private Coroutine _currentDynamicRumble;
 
 
         private void Start()

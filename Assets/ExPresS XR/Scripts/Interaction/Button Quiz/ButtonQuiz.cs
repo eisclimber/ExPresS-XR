@@ -235,6 +235,15 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 Debug.LogWarning("Quiz Config not set or is invalid.");
             }
 
+            // Always disable AfterQuizMenu
+            if (AfterQuizMenu != null)
+            {
+                AfterQuizMenu.enabled = false;
+            }
+        }
+
+        private void Start()
+        {
             if (_startOnAwake)
             {
                 StartQuiz();
@@ -244,12 +253,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 SetButtonsDisabled(true);
                 ClearAnswers();
                 ClearVideoDisplay();
-            }
-
-            // Always disable AfterQuizMenu
-            if (AfterQuizMenu != null)
-            {
-                AfterQuizMenu.enabled = false;
             }
         }
 

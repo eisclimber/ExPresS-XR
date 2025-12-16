@@ -49,6 +49,8 @@ namespace ExPresSXR.Misc.ColorSwitching
 
                 _legacyButton.OnInputEnabled.AddListener(HandleLegacyButtonEnabled);
                 _legacyButton.OnInputDisabled.AddListener(HandleLegacyButtonDisabled);
+
+                _legacyButton.OnButtonPressReset.AddListener(HandleLegacyButtonPressReset);
             }
         }
 
@@ -58,6 +60,9 @@ namespace ExPresSXR.Misc.ColorSwitching
             {
                 _button.OnPressed.RemoveListener(HandleButtonPressed);
                 _button.OnReleased.RemoveListener(HandleButtonReleased);
+
+                _button.OnTogglePressed.AddListener(HandleButtonPressed);
+                _button.OnToggleReleased.AddListener(HandleButtonReleased);
 
                 _button.OnInputEnabled.RemoveListener(HandleButtonEnabled);
                 _button.OnInputDisabled.RemoveListener(HandleButtonDisabled);
@@ -73,6 +78,8 @@ namespace ExPresSXR.Misc.ColorSwitching
 
                 _legacyButton.OnInputEnabled.RemoveListener(HandleLegacyButtonEnabled);
                 _legacyButton.OnInputDisabled.RemoveListener(HandleLegacyButtonDisabled);
+
+                _legacyButton.OnButtonPressReset.RemoveListener(HandleLegacyButtonPressReset);
             }
         }
 
@@ -116,6 +123,12 @@ namespace ExPresSXR.Misc.ColorSwitching
         private void HandleLegacyButtonDisabled()
         {
             ChangeColorWithBool("IsDisabled", true);
+        }
+
+        private void HandleLegacyButtonPressReset()
+        {
+            // We need to update the pressed state, as it won't get set automatically
+            ChangeColorWithBool("IsPressed", false);
         }
     }
 }

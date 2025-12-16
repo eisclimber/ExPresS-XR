@@ -34,7 +34,7 @@ namespace ExPresSXR.Misc.ColorSwitching
 
         public virtual void ChangeToMaterial(Material switchMaterial)
         {
-            if (_meshRenderer != null && switchMaterial != null)
+            if (_meshRenderer != null && switchMaterial != null && _meshRenderer.material != switchMaterial)
             {
                 _meshRenderer.material = switchMaterial;
             }
@@ -72,10 +72,16 @@ namespace ExPresSXR.Misc.ColorSwitching
             {
                 return;
             }
-            
+
             AnimatorController controller = _animator.runtimeAnimatorController as AnimatorController;
+
+            if (controller == null) // Probably not set up yet -> do noting..
+            {
+                return;
+            }
+
             AnimatorControllerLayer layer = controller.layers[0]; // Only checking the first layer for simplicity
-            AnimatorStateMachine  stateMachine = layer.stateMachine;
+            AnimatorStateMachine stateMachine = layer.stateMachine;
 
             foreach (ChildAnimatorState child in stateMachine.states)
             {
@@ -86,7 +92,7 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
-        protected virtual void EvaluateStateBehaviours(AnimatorState state)
+        protected virtual void EvaluateStateBehaviours(AnimatorState state, AnimatorState defaultState = null)
         {
             foreach (StateMachineBehaviour behaviour in state.behaviours)
             {
@@ -112,22 +118,13 @@ namespace ExPresSXR.Misc.ColorSwitching
         {
             foreach (AnimatorStateTransition transition in state.transitions)
             {
-                if (transition.hasExitTime)
+                if (transition.conditions.Length > 0 && transition.hasExitTime)
                 {
                     Debug.LogWarning(
-                        $"Transition from '{state.name}' to '{transition.destinationState.name}' has a transition with Exit Time. " +
+                        $"Transition from '{state.name}' to '{transition.destinationState.name}' has a transition with conditions and Exit Time. " +
                         "This can cause delays while switching. Disabling it.", this
                     );
                     transition.hasExitTime = false;
-                }
-
-                if (transition.duration > 0.0f)
-                {
-                    Debug.LogWarning(
-                        $"Transition from '{state.name}' to '{transition.destinationState.name}' has a transition with non-zero duration. " +
-                        "This can cause delays while switching. Setting transition duration to 0.", this
-                    );
-                    transition.duration = 0.0f;
                 }
 
                 if (transition.interruptionSource != TransitionInterruptionSource.Destination)

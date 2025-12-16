@@ -9,11 +9,11 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class HoverRumblePlayerEditor : UnityEditor.Editor
     {
-        HoverRumblePlayer targetScript;
+        protected HoverRumblePlayer _hoverRumbleManager;
 
         protected virtual void OnEnable()
         {
-            targetScript = (HoverRumblePlayer)target;
+            _hoverRumbleManager = (HoverRumblePlayer)target;
         }
 
         public override void OnInspectorGUI()
@@ -22,7 +22,7 @@ namespace ExPresSXR.Editor.Editors
 
             if (GUILayout.Button("Perform Default Haptics") && Application.isPlaying)
             {
-                targetScript.PerformDefaultHapticEventOnCurrentTarget();
+                _hoverRumbleManager.PerformDefaultHapticEventOnCurrentTarget();
             }
         }
     }

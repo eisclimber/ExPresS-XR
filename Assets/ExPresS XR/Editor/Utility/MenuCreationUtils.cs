@@ -41,13 +41,6 @@ namespace ExPresSXR.Editor.Utility
             InstantiateGameObjectAtContextTransform(menuCommand, CreationUtils.HEAD_GAZE_RIG_PREFAB_NAME);
         }
 
-        [MenuItem("GameObject/ExPresS XR/XR Rig/Eye Gaze")]
-        static void CreateXRRigEyeGaze(MenuCommand menuCommand)
-        {
-            InstantiateGameObjectAtContextTransform(menuCommand, CreationUtils.EYE_GAZE_RIG_PREFAB_NAME);
-        }
-
-
         [MenuItem("GameObject/ExPresS XR/XR Rig/None")]
         static void CreateXRRigNone(MenuCommand menuCommand)
         {
@@ -556,22 +549,22 @@ namespace ExPresSXR.Editor.Utility
         }
 
         // Epi Sphere
-        [MenuItem("GameObject/ExPresS XR/Presentation/EpiSphere/EpiSphere")]
+        [MenuItem("GameObject/ExPresS XR/Presentation/Epi Sphere/Epi Sphere")]
         static void CreateEpiSphere(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "EpiSphere/EpiSphere");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Epi Sphere/Epi Sphere");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Presentation/EpiSphere/EpiDome")]
+        [MenuItem("GameObject/ExPresS XR/Presentation/Epi Sphere/Epi Dome")]
         static void CreateEpiDome(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "EpiSphere/EpiDome");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Epi Sphere/Epi Dome");
         }
 
-        [MenuItem("GameObject/ExPresS XR/Presentation/EpiSphere/EpiSphereVideo")]
+        [MenuItem("GameObject/ExPresS XR/Presentation/Epi Sphere/Epi Sphere Video")]
         static void CreateEpiSphereVideo(MenuCommand menuCommand)
         {
-            InstantiateGameObjectAtContextTransform(menuCommand, "EpiSphere/EpiSphereVideo");
+            InstantiateGameObjectAtContextTransform(menuCommand, "Epi Sphere/Epi Sphere Video");
         }
 
 

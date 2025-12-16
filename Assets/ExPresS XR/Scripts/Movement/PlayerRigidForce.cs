@@ -58,5 +58,12 @@ namespace ExPresSXR.Movement
         /// </summary>
         /// <param name="impulse">Impulse to be applied.</param>
         public void ApplyImpulseUpperHalfSphere(Vector3 impulse) => ApplyImpulse(new Vector3(impulse.x, Mathf.Max(impulse.y, 0.0f), impulse.z));
+
+        /// <summary>
+        /// Applies a test horizontal impulse.
+        /// </summary>
+        /// <param name="impulse">Impulse to be applied.</param>
+        [ContextMenu("Apply Test Impulse")]
+        public void ApplyTestImpulse() => _currentVelocity += Vector3.forward * 10.0f;
     }
 }

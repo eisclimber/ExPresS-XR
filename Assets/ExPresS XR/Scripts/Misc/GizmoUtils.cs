@@ -328,6 +328,19 @@ namespace ExPresSXR.Misc
             DrawLabel(text, position, Color.white, FontStyle.Normal, DEFAULT_LABEL_SIZE, TextAnchor.UpperLeft, atTransform);
         }
 
+        /// <summary>
+        /// Draws a text at a position if it is not empty.
+        /// Defaults to white text with size 11 and text anchor at the top left.
+        /// </summary>
+        /// <param name="text">Text to be displayed.</param>
+        /// <param name="position">Position to draw at.</param>
+        /// <param name="color">Color of the text.</param>
+        /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        public static void DrawLabel(string text, Vector3 position, Color color, Transform atTransform = null)
+        {
+            DrawLabel(text, position, color, FontStyle.Normal, DEFAULT_LABEL_SIZE, TextAnchor.UpperLeft, atTransform);
+        }
+
 
         /// <summary>
         /// Draws a text at a position if it is not empty with the given color, fontSize, fontStyle and text anchor.
