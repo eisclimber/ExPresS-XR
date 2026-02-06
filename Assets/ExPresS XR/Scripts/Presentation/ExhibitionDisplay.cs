@@ -6,6 +6,7 @@ using UnityEngine.Video;
 using ExPresSXR.Interaction;
 using ExPresSXR.Misc;
 using UnityEngine.XR.Interaction.Toolkit;
+using ExPresSXR.Interaction.Interactors;
 
 namespace ExPresSXR.Presentation
 {

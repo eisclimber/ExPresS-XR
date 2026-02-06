@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Presentation;
 
-
 namespace ExPresSXR.Editor.Editors
 {
     [CanEditMultipleObjects]

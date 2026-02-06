@@ -27,12 +27,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4461784613816818042}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.36144, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5572530414955252546}
+  m_Father: {fileID: 4128321043633414725}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &254116572698494382
 MonoBehaviour:
@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TargetArea.TargetAreaTriggerer
   _targets: []
-  _setupOnAwake: 1
+  _autoStart: 1
   _emitEventsExclusively: 1
   _doHaptics: 0
-  _hapticsPlayer: {fileID: 2180053937087027248}
+  _hapticsPlayer: {fileID: 0}
   _rumble:
     Strength: 0.5
     Duration: 0.5
@@ -138,12 +138,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9038631126144115243}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.36144, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4838351636613979850}
+  m_Father: {fileID: 2874101079164224509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5828932719247666657
 MonoBehaviour:
@@ -158,10 +158,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TargetArea.TargetAreaTriggerer
   _targets: []
-  _setupOnAwake: 1
+  _autoStart: 1
   _emitEventsExclusively: 1
   _doHaptics: 0
-  _hapticsPlayer: {fileID: 5977857353236724319}
+  _hapticsPlayer: {fileID: 0}
   _rumble:
     Strength: 0.5
     Duration: 0.5
@@ -230,6 +230,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1586974131608226743, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+      propertyPath: m_Name
+      value: ExPresS XR Rig - Boxing
+      objectReference: {fileID: 0}
     - target: {fileID: 5187246888638810865, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
       propertyPath: m_Name
       value: ExPresS XR Rig - Boxing Variant
@@ -277,43 +281,21 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7672487126513851130, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1062210686701357005, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2345271521164128563}
-    - targetCorrespondingSourceObject: {fileID: 7208850863708966770, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1159078031488837237, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 713511380157757603}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
---- !u!114 &2180053937087027248 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3971746923182840832, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-  m_PrefabInstance: {fileID: 2981208448014992432}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b734f2bd29eeddd4d85afb0c266228c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticImpulsePlayer
---- !u!4 &4838351636613979850 stripped
+--- !u!4 &2874101079164224509 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7672487126513851130, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1062210686701357005, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
   m_PrefabInstance: {fileID: 2981208448014992432}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5572530414955252546 stripped
+--- !u!4 &4128321043633414725 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7208850863708966770, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1159078031488837237, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
   m_PrefabInstance: {fileID: 2981208448014992432}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5977857353236724319 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8911212847027093103, guid: 052378721f9585a48af0170eb5295b7a, type: 3}
-  m_PrefabInstance: {fileID: 2981208448014992432}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b734f2bd29eeddd4d85afb0c266228c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticImpulsePlayer

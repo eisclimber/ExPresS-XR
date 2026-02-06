@@ -9,6 +9,7 @@ namespace ExPresSXR.Misc.Timing
         ///  Value of `remainingTime` when the timer is not active.
         /// </summary>
         public const float TIMER_INACTIVE_TIME = -1.0f;
+
         /// <summary>
         /// Default wait time.
         /// </summary>
@@ -53,17 +54,27 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         /// If the timer is paused or not.
         /// </summary>
-        public bool TimerPaused { get; protected set; }
+        [SerializeField]
+        private bool _timerPaused;
+        public bool TimerPaused
+        {
+            get => _timerPaused;
+            protected set => _timerPaused = value;
+        }
 
         /// <summary>
         /// If the timer is actively is counting down, meaning it was started and is not paused.
         /// </summary>
-        public virtual bool Running { get => _remainingTime > 0.0f && !TimerPaused; }
+        public virtual bool Running
+        {
+            get => _remainingTime > 0.0f && !TimerPaused;
+        }
 
         /// <summary>
         /// If true, will start the timer during OnAwake()...
         /// </summary>
         [Tooltip("If true, will start the timer during OnAwake()...")]
+        [SerializeField]
         private bool _autoStart = false;
         public bool AutoStart
         {
@@ -75,11 +86,12 @@ namespace ExPresSXR.Misc.Timing
         /// If false, the timer will restart after timeout.
         /// </summary>
         [Tooltip("If false, the timer will restart after timeout.")]
-        public bool _oneShot = true;
-        private bool OneShot
+        [SerializeField]
+        private bool _oneShot = true;
+        public bool OneShot
         {
-            get => _autoStart;
-            set => _autoStart = value;
+            get => _oneShot;
+            set => _oneShot = value;
         }
 
 
@@ -88,12 +100,16 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         [Tooltip("Event that is triggered when the timer was started. A started timer automatically be unpaused.")]
         public UnityEvent OnStarted;
+
         /// <summary>
         /// Event that is triggered when the timer times out.
         /// </summary>
         [Tooltip("Event that is triggered when the timer times out.")]
         public UnityEvent OnTimeout;
 
+        /// <summary>
+        /// Event that is triggered when the timer is paused. The parameter is it is paused or not.
+        /// </summary>
         [Tooltip("Event that is triggered when the timer is paused. The parameter is it is paused or not.")]
         public UnityEvent<bool> OnPaused;
 

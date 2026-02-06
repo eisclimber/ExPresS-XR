@@ -1,8 +1,8 @@
 using System.IO;
-using ExPresSXR.Editor.Utility;
-using ExPresSXR.Rig;
 using UnityEditor;
 using UnityEngine;
+using ExPresSXR.Rig;
+using ExPresSXR.Editor.Utility;
 
 namespace ExPresSXR.Editor.Editors
 {

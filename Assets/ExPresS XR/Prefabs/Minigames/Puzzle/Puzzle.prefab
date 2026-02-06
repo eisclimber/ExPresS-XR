@@ -131,7 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3668041750881960252}
   - component: {fileID: 1199617253216581444}
-  - component: {fileID: 4218283545647000069}
   m_Layer: 0
   m_Name: Puzzle
   m_TagString: Untagged
@@ -189,16 +188,16 @@ MonoBehaviour:
   - {fileID: 98854424620447036}
   _piecePrefabs:
   - {fileID: 3548335968464964330, guid: c356e8e621b5f7f428ce9e57bb640c63, type: 3}
-  - {fileID: 8223700985143212379, guid: f0181f6f8060087498024e18159b580f, type: 3}
-  - {fileID: 3719389773106727099, guid: 7039cefbced404a488d8734dc3902c90, type: 3}
   - {fileID: 2401391432814870513, guid: 13b58ddc1ab3d2a4591141408e0c53fd, type: 3}
-  - {fileID: 2684872437453709409, guid: cc646ff6ffd66444baa6b554c623c225, type: 3}
-  - {fileID: 8384328552360150539, guid: fa63089fe464f1f4899e6c7c40eb4c75, type: 3}
   - {fileID: 4859708603478824533, guid: 00da4241a73df7c4d81cb7e44a40d86f, type: 3}
-  - {fileID: 5530859071845639238, guid: cf687d2ff79ff6540a45b0bb4d678571, type: 3}
-  - {fileID: 5008055816944709201, guid: 479d833cd737c2c40a32cc9ebb5c015f, type: 3}
   - {fileID: 2960599455489376658, guid: 34511abb3c3db7b4aad1c7ca6c836751, type: 3}
+  - {fileID: 8223700985143212379, guid: f0181f6f8060087498024e18159b580f, type: 3}
+  - {fileID: 2684872437453709409, guid: cc646ff6ffd66444baa6b554c623c225, type: 3}
+  - {fileID: 5530859071845639238, guid: cf687d2ff79ff6540a45b0bb4d678571, type: 3}
   - {fileID: 4158970714246211598, guid: 4c73188822b490e4ea5cbfc9c85f754f, type: 3}
+  - {fileID: 3719389773106727099, guid: 7039cefbced404a488d8734dc3902c90, type: 3}
+  - {fileID: 8384328552360150539, guid: fa63089fe464f1f4899e6c7c40eb4c75, type: 3}
+  - {fileID: 5008055816944709201, guid: 479d833cd737c2c40a32cc9ebb5c015f, type: 3}
   - {fileID: 3115568670067777295, guid: 26e09aa2899adb54badda0d1288ca0b1, type: 3}
   _defaultPiece: {fileID: 0}
   _scoreDisplayPrefab: {fileID: 3528977270142281369, guid: 82cf501b4a0c10b4487fb570a84c9f50, type: 3}
@@ -210,88 +209,10 @@ MonoBehaviour:
   _pieceSubmitted: 
   OnPieceSubmitted:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3982289267458785412}
-        m_TargetAssemblyTypeName: TotalScoreText, Assembly-CSharp
-        m_MethodName: set_DisplayedScore
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnCompleted:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4218283545647000069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 390513541021900351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78467e2896e6c24d8375dde9e9aae2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseTilePoints: 100
-  _tileTimeBonusDistribution:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -1
-      outSlope: -1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -1
-      outSlope: -1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _maxTileTimeBonusCutoff: 10
-  _maxTileTimeBonusPoints: 250
-  _puzzleCompletionPoints: 250
-  _gameCompletionPoints: 500
-  _timeBonusDistribution:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -1
-      outSlope: -1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -1
-      outSlope: -1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _maxTimeBonusPoints: 2500
 --- !u!1 &681354088703908897
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,7 +223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1641263389458479219}
   - component: {fileID: 8349998837411440698}
-  - component: {fileID: 8300167180618528038}
+  - component: {fileID: 1948552361535374999}
   m_Layer: 0
   m_Name: Board Socket (1, 0)
   m_TagString: Untagged
@@ -318,8 +239,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681354088703908897}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.125, y: 0.21000005, z: -0.040000048}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.125, y: 0.1909859, z: -0.037085563}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -375,7 +296,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 7185797809286952444}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -384,8 +305,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &8300167180618528038
-SphereCollider:
+--- !u!65 &1948552361535374999
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -403,7 +324,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &692519913960995452
 GameObject:
@@ -658,7 +579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6010733808932338130}
   - component: {fileID: 7778047053572714051}
-  - component: {fileID: 6505319386645242416}
+  - component: {fileID: 7171229160521625031}
   m_Layer: 0
   m_Name: Board Socket (0, 1)
   m_TagString: Untagged
@@ -674,8 +595,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1210731661248513566}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.375, y: 0, z: -0.04}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.375, y: -0.042347427, z: -0.037085958}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -731,7 +652,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 1514526479308296858}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -740,8 +661,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &6505319386645242416
-SphereCollider:
+--- !u!65 &7171229160521625031
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -759,7 +680,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1453063424262538345
 GameObject:
@@ -1177,7 +1098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5658941888172681911}
   - component: {fileID: 1687580950615740917}
-  - component: {fileID: 8747472562796545978}
+  - component: {fileID: 8320280853741109626}
   m_Layer: 0
   m_Name: Board Socket (2, 2)
   m_TagString: Untagged
@@ -1193,8 +1114,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2941080574514357245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.125, y: -0.218, z: -0.03999995}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.125, y: -0.27568075, z: -0.037086353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1250,7 +1171,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 8015925921523342156}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -1259,8 +1180,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &8747472562796545978
-SphereCollider:
+--- !u!65 &8320280853741109626
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1278,7 +1199,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3126395409455374375
 GameObject:
@@ -1290,7 +1211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 28993314085812264}
   - component: {fileID: 5198152538211070922}
-  - component: {fileID: 8072929497635130314}
+  - component: {fileID: 4485882080017347642}
   m_Layer: 0
   m_Name: Board Socket (1, 2)
   m_TagString: Untagged
@@ -1306,8 +1227,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3126395409455374375}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.125, y: -0.218, z: -0.03999995}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.12499997, y: -0.27568075, z: -0.037086353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1363,7 +1284,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 5748509115519399748}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -1372,8 +1293,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &8072929497635130314
-SphereCollider:
+--- !u!65 &4485882080017347642
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1391,7 +1312,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3314631425837574761
 GameObject:
@@ -1583,7 +1504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5254790272583857436}
   - component: {fileID: 98854424620447036}
-  - component: {fileID: 7000639605127478412}
+  - component: {fileID: 4044746748939823142}
   m_Layer: 0
   m_Name: Board Socket (3, 2)
   m_TagString: Untagged
@@ -1599,8 +1520,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3397985900309816681}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.375, y: -0.218, z: -0.03999995}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.375, y: -0.27568075, z: -0.037086353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1656,7 +1577,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 4043138108362952026}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -1665,8 +1586,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &7000639605127478412
-SphereCollider:
+--- !u!65 &4044746748939823142
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1684,7 +1605,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3483385129915725284
 GameObject:
@@ -2519,7 +2440,7 @@ GameObject:
   m_Component:
   - component: {fileID: 816478780155563504}
   - component: {fileID: 8346689643679850649}
-  - component: {fileID: 3727432889426879868}
+  - component: {fileID: 4576555659997875956}
   m_Layer: 0
   m_Name: Board Socket (2, 0)
   m_TagString: Untagged
@@ -2535,8 +2456,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4709472872498219898}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.125, y: 0.21000005, z: -0.040000048}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.12499997, y: 0.1909859, z: -0.037085563}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2592,7 +2513,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 781423207377283438}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -2601,8 +2522,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &3727432889426879868
-SphereCollider:
+--- !u!65 &4576555659997875956
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2620,7 +2541,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4923610961683339967
 GameObject:
@@ -2632,7 +2553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 660635170493536068}
   - component: {fileID: 1343246123610047730}
-  - component: {fileID: 6532941708771842169}
+  - component: {fileID: 5439682930967595821}
   m_Layer: 0
   m_Name: Board Socket (3, 1)
   m_TagString: Untagged
@@ -2648,8 +2569,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4923610961683339967}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.375, y: 0, z: -0.04}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.375, y: -0.042347427, z: -0.037085958}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2705,7 +2626,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 3630981587785044270}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -2714,8 +2635,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &6532941708771842169
-SphereCollider:
+--- !u!65 &5439682930967595821
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2733,7 +2654,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5506074845681292487
 GameObject:
@@ -2776,7 +2697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6716602160269988565}
   - component: {fileID: 7182742201528459991}
-  - component: {fileID: 1676835637089037351}
+  - component: {fileID: 5084268353567678809}
   m_Layer: 0
   m_Name: Board Socket (3, 0)
   m_TagString: Untagged
@@ -2792,8 +2713,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5692846221514524341}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.375, y: 0.21000005, z: -0.040000048}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.375, y: 0.1909859, z: -0.037085563}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2849,7 +2770,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 4403370081120468396}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -2858,8 +2779,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &1676835637089037351
-SphereCollider:
+--- !u!65 &5084268353567678809
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2877,7 +2798,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5748509115519399748
 GameObject:
@@ -3194,7 +3115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7565215845799193898}
   - component: {fileID: 1656280991002517042}
-  - component: {fileID: 3805440316740461888}
+  - component: {fileID: 6200828631413487298}
   m_Layer: 0
   m_Name: Board Socket (0, 0)
   m_TagString: Untagged
@@ -3210,8 +3131,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6391051731677855619}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.375, y: 0.21, z: -0.04}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.375, y: 0.1909859, z: -0.037085563}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3267,7 +3188,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 2386141597173089148}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -3276,8 +3197,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &3805440316740461888
-SphereCollider:
+--- !u!65 &6200828631413487298
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3295,7 +3216,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6604923632435989982
 GameObject:
@@ -3307,7 +3228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5112280073323596131}
   - component: {fileID: 1316000180132913243}
-  - component: {fileID: 2897546350212901561}
+  - component: {fileID: 5548475996044711863}
   m_Layer: 0
   m_Name: Board Socket (2, 1)
   m_TagString: Untagged
@@ -3323,8 +3244,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6604923632435989982}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.125, y: 0, z: -0.04}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.125, y: -0.042347427, z: -0.037085958}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3380,7 +3301,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 3754058990870059235}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -3389,8 +3310,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &2897546350212901561
-SphereCollider:
+--- !u!65 &5548475996044711863
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3408,7 +3329,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7185797809286952444
 GameObject:
@@ -3541,7 +3462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7189244992563274503}
   - component: {fileID: 27149217150714271}
-  - component: {fileID: 9015994995946135121}
+  - component: {fileID: 6626035608471775201}
   m_Layer: 0
   m_Name: Board Socket (0, 2)
   m_TagString: Untagged
@@ -3557,8 +3478,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7533697559282109249}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.375, y: -0.218, z: -0.04}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.375, y: -0.27568075, z: -0.037086353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3614,7 +3535,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 1536466888988472690}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -3623,8 +3544,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &9015994995946135121
-SphereCollider:
+--- !u!65 &6626035608471775201
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3642,7 +3563,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7582041970886953541
 GameObject:
@@ -3896,7 +3817,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1317939818733446832}
   - component: {fileID: 4943953017208507498}
-  - component: {fileID: 8106295969117251365}
+  - component: {fileID: 789966561671318985}
   m_Layer: 0
   m_Name: Board Socket (1, 1)
   m_TagString: Untagged
@@ -3912,8 +3833,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8615172508787908762}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.125, y: 0, z: -0.04}
+  m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.125, y: -0.042347427, z: -0.037085958}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3969,7 +3890,7 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
+  _showHighlighter: 1
   _highlighterObject: {fileID: 345031906180271135}
   _useColliderSizeAsScale: 0
   _highlighterScale: {x: 0.19, y: 0.19, z: 0.02}
@@ -3978,8 +3899,8 @@ MonoBehaviour:
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!135 &8106295969117251365
-SphereCollider:
+--- !u!65 &789966561671318985
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3997,7 +3918,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.07
+  m_Size: {x: 0.19, y: 0.19, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8694573771803182594
 GameObject:
@@ -4127,17 +4048,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
---- !u!114 &3982289267458785412 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2045260425577249657, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
-  m_PrefabInstance: {fileID: 3108002128393239549}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cac7b5441dca42b4e87ed996f7eaf07f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8095751990807483158 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
@@ -4221,6 +4131,18 @@ PrefabInstance:
     - {fileID: -8282439042230153317, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
     - {fileID: -8330709969819678010, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
     - {fileID: -1262290118968653073, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 4415871160266172467, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 2709722966905426425, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 4615184005156875628, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: -1258529394272434170, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 1278803183328703689, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: -4976075449296615420, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 5284174147807707255, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: -7288601031045822234, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 1537600724727180084, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 1856063243062562771, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: -5651997339795572696, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
+    - {fileID: 1337063029282544610, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bd8042311e11e84ca1f0876dd0e64a4, type: 3}

@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 996182328971917384}
   - component: {fileID: 1931922502952412808}
-  - component: {fileID: 3004991098754215069}
+  - component: {fileID: 8458069526041974374}
   m_Layer: 0
   m_Name: Tile Game Board Socket
   m_TagString: Untagged
@@ -59,7 +59,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.4, y: 0.2, z: -0.03}
-  m_LocalScale: {x: 0.18, y: 0.18, z: 0.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 16698665411348810}
@@ -82,7 +82,7 @@ MonoBehaviour:
   m_InteractionLayers:
     m_Bits: 4294967295
   m_Handedness: 0
-  m_AttachTransform: {fileID: 0}
+  m_AttachTransform: {fileID: 4880752157022457633}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
   m_StartingSelectedInteractable: {fileID: 0}
@@ -114,20 +114,20 @@ MonoBehaviour:
   m_SocketScaleMode: 0
   m_FixedScale: {x: 1, y: 1, z: 1}
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
-  _showHighlighter: 0
-  _highlighterObject: {fileID: 0}
+  _showHighlighter: 1
+  _highlighterObject: {fileID: 9066350115431458472}
   _useColliderSizeAsScale: 0
-  _highlighterScale: {x: 0.1, y: 0.1, z: 0.1}
+  _highlighterScale: {x: 0.18, y: 0.18, z: 0.02}
   _boardPos: {x: 0, y: 0}
-  _disableOnSelect: 1
+  _disableOnSelect: 0
   OnSubmitted:
     m_PersistentCalls:
       m_Calls: []
-  OnClothTileSubmitted:
+  OnTileSubmitted:
     m_PersistentCalls:
       m_Calls: []
---- !u!65 &3004991098754215069
-BoxCollider:
+--- !u!135 &8458069526041974374
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -141,11 +141,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.07
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9066350115431458472
 GameObject:
@@ -175,7 +175,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.02}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 996182328971917384}

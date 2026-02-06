@@ -121,6 +121,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 895473995495050367}
+  - component: {fileID: 1981871600894229264}
+  - component: {fileID: 1014715443571641408}
   m_Layer: 0
   m_Name: Tile Game
   m_TagString: Untagged
@@ -141,11 +143,102 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4652081329782786504}
+  - {fileID: 1482403433388819041}
+  - {fileID: 5356711590003736207}
+  - {fileID: 5252903158545089781}
   - {fileID: 957630535501218533}
   - {fileID: 4028032928928946562}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1981871600894229264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373230641770126529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 020b79dc748d0724f85f4255ec34632e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boardSize: {x: 5, y: 3}
+  _boardSocketsParent: {fileID: 1482403433388819041}
+  _tileRespawnSockets:
+  - {fileID: 262738969029350955}
+  - {fileID: 8424004414641716350}
+  - {fileID: 5777612296762963825}
+  _areas:
+  - Id: 0
+    Name: Water
+    Color: {r: 0.097232126, g: 0.44294488, b: 0.8962264, a: 1}
+    Material: {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
+  - Id: 1
+    Name: Meadow
+    Color: {r: 0.06897471, g: 0.5849056, b: 0.10147244, a: 1}
+    Material: {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
+  - Id: 2
+    Name: Forest
+    Color: {r: 0.033641864, g: 0.26415092, b: 0.064596206, a: 1}
+    Material: {fileID: 2100000, guid: dcb6eef10f2ddab47b7b8b860e33acea, type: 2}
+  - Id: 3
+    Name: Field
+    Color: {r: 0.8584906, g: 0.72539765, b: 0.1822268, a: 1}
+    Material: {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
+  - Id: 4
+    Name: Mountain
+    Color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    Material: {fileID: 2100000, guid: 88bfa3a11baef7a4cb3249277bdf5de1, type: 2}
+  - Id: 5
+    Name: Clay
+    Color: {r: 0.5943396, g: 0.32847795, b: 0.12615702, a: 1}
+    Material: {fileID: 2100000, guid: 861aff4cbbd7a9c4aa8411fab35b8083, type: 2}
+  _totalScore: 0
+  _placedTiles: 0
+  OnStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTileAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnScoreChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 958371412759112989}
+        m_TargetAssemblyTypeName: TotalScoreText, Assembly-CSharp
+        m_MethodName: set_DisplayedScore
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1014715443571641408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373230641770126529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0a16112692f5f47b01c370841968e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _centerAreaId: 0
+  _topAreaId: 0
+  _bottomAreaId: 0
+  _leftAreaId: 0
+  _rightAreaId: 0
+  _insertPos: {x: 0, y: 0}
+  _game: {fileID: 1981871600894229264}
+  visuals: {fileID: 4232990991200293584, guid: 7a219888e495e0b46b0efdbdd0a00ec9, type: 3}
 --- !u!1 &1940609817251229641
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,11 +306,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  - {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  - {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
-  - {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  - {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
+  - {fileID: 2100000, guid: 2a5f757c2acb047409e80126aadbc3e1, type: 2}
+  - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
+  - {fileID: 2100000, guid: 88bfa3a11baef7a4cb3249277bdf5de1, type: 2}
+  - {fileID: 2100000, guid: dcb6eef10f2ddab47b7b8b860e33acea, type: 2}
+  - {fileID: 2100000, guid: 861aff4cbbd7a9c4aa8411fab35b8083, type: 2}
+  - {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -310,21 +404,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.ClothTileDisplay
   _displayedTile:
-    CenterCloth: 0
-    TopCloth: 0
-    BottomCloth: 1
-    LeftCloth: 0
-    RightCloth: 1
+    CenterAreaId: 5
+    TopAreaId: 1
+    BottomAreaId: 2
+    LeftAreaId: 3
+    RightAreaId: 4
   _renderer: {fileID: 5882283381555054805}
-  _pointsDisplayPrefab: {fileID: 3528977270142281369, guid: 82cf501b4a0c10b4487fb570a84c9f50, type: 3}
+  _areas:
+  - Id: 0
+    Name: Water
+    Color: {r: 0.097232126, g: 0.44294488, b: 0.8962264, a: 1}
+    Material: {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
+  - Id: 1
+    Name: Meadow
+    Color: {r: 0.06897471, g: 0.5849056, b: 0.10147244, a: 1}
+    Material: {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
+  - Id: 2
+    Name: Forest
+    Color: {r: 0.033641864, g: 0.26415092, b: 0.064596206, a: 1}
+    Material: {fileID: 2100000, guid: dcb6eef10f2ddab47b7b8b860e33acea, type: 2}
+  - Id: 3
+    Name: Field
+    Color: {r: 0.8584906, g: 0.72539765, b: 0.1822268, a: 1}
+    Material: {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
+  - Id: 4
+    Name: Mountain
+    Color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    Material: {fileID: 2100000, guid: 88bfa3a11baef7a4cb3249277bdf5de1, type: 2}
+  - Id: 5
+    Name: Clay
+    Color: {r: 0.5943396, g: 0.32847795, b: 0.12615702, a: 1}
+    Material: {fileID: 2100000, guid: 861aff4cbbd7a9c4aa8411fab35b8083, type: 2}
+  _pointsDisplayPrefab: {fileID: 3528977270142281369, guid: 1a1f4120541b6ef4990b079d292b3b7b, type: 3}
   _subScoreShowDelay: 0.3
   _pointsDisplayScale: 0.25
   _pointsDisplayRadius: 0.09
   _displayOffsetReference: {fileID: 0}
   _pointsDisplayOffset: {x: 0, y: 0, z: -0.09}
-  _lightBurlapMaterial: {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  _darkBurlapMaterial: {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  _leatherMaterial: {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
+  _materialIdxs:
+    Center: 5
+    Top: 3
+    Bottom: 1
+    Left: 2
+    Right: 4
 --- !u!114 &1511532998268086205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +530,7 @@ MonoBehaviour:
   m_ReinitializeDynamicAttachEverySingleGrab: 1
   m_AttachEaseInTime: 0.15
   m_MovementType: 2
-  m_PredictedVisualsTransform: {fileID: 8977152956691686516}
+  m_PredictedVisualsTransform: {fileID: 0}
   m_VelocityDamping: 1
   m_VelocityScale: 1
   m_AngularVelocityDamping: 1
@@ -530,15 +652,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3699148809007095246}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.1305263, y: -0, z: -0, w: 0.9914449}
-  m_LocalPosition: {x: 0, y: -1.0012331, z: -0.12408984}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.473, z: 0.744}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2774925955331760510}
   - {fileID: 5895203824823470891}
   - {fileID: 8433509283925458980}
-  m_Father: {fileID: 4652081329782786504}
+  m_Father: {fileID: 895473995495050367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4750369954314866630
 GameObject:
@@ -588,21 +710,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.ClothTileDisplay
   _displayedTile:
-    CenterCloth: 0
-    TopCloth: 0
-    BottomCloth: 1
-    LeftCloth: 1
-    RightCloth: 2
+    CenterAreaId: 1
+    TopAreaId: 2
+    BottomAreaId: 3
+    LeftAreaId: 4
+    RightAreaId: 5
   _renderer: {fileID: 1027030103819672075}
+  _areas:
+  - Id: 0
+    Name: Water
+    Color: {r: 0.097232126, g: 0.44294488, b: 0.8962264, a: 1}
+    Material: {fileID: 2100000, guid: 6cb653294ac05bd4ca0dcea47cca702e, type: 2}
+  - Id: 1
+    Name: Meadow
+    Color: {r: 0.06897471, g: 0.5849056, b: 0.10147244, a: 1}
+    Material: {fileID: 2100000, guid: 4eed6215911bff14d93c40c2bbc74469, type: 2}
+  - Id: 2
+    Name: Forest
+    Color: {r: 0.033641864, g: 0.26415092, b: 0.064596206, a: 1}
+    Material: {fileID: 2100000, guid: 42931dab37746944cba526153dcdd6b0, type: 2}
+  - Id: 3
+    Name: Field
+    Color: {r: 0.8584906, g: 0.72539765, b: 0.1822268, a: 1}
+    Material: {fileID: 2100000, guid: 534fc21ac83ccfd499054817db261802, type: 2}
+  - Id: 4
+    Name: Mountain
+    Color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    Material: {fileID: 2100000, guid: 444a0523841b6c14d9c56223f0eb53d7, type: 2}
+  - Id: 5
+    Name: Clay
+    Color: {r: 0.5943396, g: 0.32847795, b: 0.12615702, a: 1}
+    Material: {fileID: 2100000, guid: d3d3358fc5b70d24ea53095d13323650, type: 2}
   _pointsDisplayPrefab: {fileID: 3528977270142281369, guid: 82cf501b4a0c10b4487fb570a84c9f50, type: 3}
   _subScoreShowDelay: 0.3
   _pointsDisplayScale: 0.25
   _pointsDisplayRadius: 0.09
   _displayOffsetReference: {fileID: 0}
   _pointsDisplayOffset: {x: 0, y: 0, z: -0.09}
-  _lightBurlapMaterial: {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  _darkBurlapMaterial: {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  _leatherMaterial: {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
+  _materialIdxs:
+    Center: 5
+    Top: 3
+    Bottom: 1
+    Left: 2
+    Right: 4
 --- !u!114 &3629969148068486987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -851,11 +1001,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  - {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  - {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  - {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  - {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
+  - {fileID: 2100000, guid: 2a5f757c2acb047409e80126aadbc3e1, type: 2}
+  - {fileID: 2100000, guid: dcb6eef10f2ddab47b7b8b860e33acea, type: 2}
+  - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
+  - {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
+  - {fileID: 2100000, guid: 88bfa3a11baef7a4cb3249277bdf5de1, type: 2}
+  - {fileID: 2100000, guid: 861aff4cbbd7a9c4aa8411fab35b8083, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -900,138 +1051,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18750006, y: 0.012500002, z: 0.18750006}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &6127225891583066312
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4652081329782786504}
-  - component: {fileID: 4668711014103792639}
-  - component: {fileID: 5635608340985959338}
-  m_Layer: 0
-  m_Name: Game Logic
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4652081329782786504
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6127225891583066312}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.1305263, y: -0, z: -0, w: 0.9914449}
-  m_LocalPosition: {x: 0, y: 1.408, z: 1.123}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1482403433388819041}
-  - {fileID: 5356711590003736207}
-  - {fileID: 5252903158545089781}
-  m_Father: {fileID: 895473995495050367}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4668711014103792639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6127225891583066312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 020b79dc748d0724f85f4255ec34632e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _totalScore: 0
-  _placedTiles: 0
-  _completionDelay: 1
-  _clothTypeScoreColors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  OnTileAdded:
-    m_PersistentCalls:
-      m_Calls: []
-  OnScoreChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 958371412759112989}
-        m_TargetAssemblyTypeName: TotalScoreText, Assembly-CSharp
-        m_MethodName: set_DisplayedScore
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnGameCompleted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7871970774677101088}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3699148809007095246}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2921171700800486390}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
---- !u!114 &5635608340985959338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6127225891583066312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da0a16112692f5f47b01c370841968e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _centerCloth: 0
-  _topCloth: 0
-  _bottomCloth: 0
-  _leftCloth: 0
-  _rightCloth: 0
-  pos: {x: 0, y: 0}
-  display: {fileID: 0}
-  game: {fileID: 4668711014103792639}
 --- !u!1 &6841438848805578805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,21 +1099,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.ClothTileDisplay
   _displayedTile:
-    CenterCloth: 2
-    TopCloth: 1
-    BottomCloth: 2
-    LeftCloth: 2
-    RightCloth: 0
+    CenterAreaId: 0
+    TopAreaId: 0
+    BottomAreaId: 0
+    LeftAreaId: 0
+    RightAreaId: 0
   _renderer: {fileID: 4611022605079315383}
+  _areas:
+  - Id: 0
+    Name: Water
+    Color: {r: 0.097232126, g: 0.44294488, b: 0.8962264, a: 1}
+    Material: {fileID: 2100000, guid: 6cb653294ac05bd4ca0dcea47cca702e, type: 2}
+  - Id: 1
+    Name: Meadow
+    Color: {r: 0.06897471, g: 0.5849056, b: 0.10147244, a: 1}
+    Material: {fileID: 2100000, guid: 4eed6215911bff14d93c40c2bbc74469, type: 2}
+  - Id: 2
+    Name: Forest
+    Color: {r: 0.033641864, g: 0.26415092, b: 0.064596206, a: 1}
+    Material: {fileID: 2100000, guid: 42931dab37746944cba526153dcdd6b0, type: 2}
+  - Id: 3
+    Name: Field
+    Color: {r: 0.8584906, g: 0.72539765, b: 0.1822268, a: 1}
+    Material: {fileID: 2100000, guid: 534fc21ac83ccfd499054817db261802, type: 2}
+  - Id: 4
+    Name: Mountain
+    Color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    Material: {fileID: 2100000, guid: 444a0523841b6c14d9c56223f0eb53d7, type: 2}
+  - Id: 5
+    Name: Clay
+    Color: {r: 0.5943396, g: 0.32847795, b: 0.12615702, a: 1}
+    Material: {fileID: 2100000, guid: d3d3358fc5b70d24ea53095d13323650, type: 2}
   _pointsDisplayPrefab: {fileID: 3528977270142281369, guid: 82cf501b4a0c10b4487fb570a84c9f50, type: 3}
   _subScoreShowDelay: 0.3
   _pointsDisplayScale: 0.25
   _pointsDisplayRadius: 0.09
   _displayOffsetReference: {fileID: 0}
   _pointsDisplayOffset: {x: 0, y: 0, z: -0.09}
-  _lightBurlapMaterial: {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  _darkBurlapMaterial: {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  _leatherMaterial: {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
+  _materialIdxs:
+    Center: 5
+    Top: 3
+    Bottom: 1
+    Left: 2
+    Right: 4
 --- !u!114 &3952900548623635663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1301,8 +1348,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7871970774677101088}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.1305263, y: -0, z: -0, w: 0.9914449}
+  m_LocalPosition: {x: 0, y: 1.408, z: 1.123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1321,7 +1368,7 @@ Transform:
   - {fileID: 1597511184565868088}
   - {fileID: 2755909201828169126}
   - {fileID: 7957451727501941739}
-  m_Father: {fileID: 4652081329782786504}
+  m_Father: {fileID: 895473995495050367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1661084042535166073
 MonoBehaviour:
@@ -1338,7 +1385,7 @@ MonoBehaviour:
   _spacing: 0.2
   _zOffset: -0.03
   _socketPrefab: {fileID: 4088768615697970924, guid: 085a24fccbb397a48a3bb5a2ba9cb6b8, type: 3}
-  game: {fileID: 4668711014103792639}
+  _game: {fileID: 0}
 --- !u!1 &8637096084811701752
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,11 +1453,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
-  - {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  - {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  - {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
-  - {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
+  - {fileID: 2100000, guid: 2a5f757c2acb047409e80126aadbc3e1, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1473,7 +1521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &957630535501218533
 Transform:
   m_ObjectHideFlags: 0
@@ -1584,6 +1632,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2456998229206866062, guid: 7a219888e495e0b46b0efdbdd0a00ec9, type: 3}
     - target: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+      propertyPath: _currentVisuals
+      value: 
+      objectReference: {fileID: 2238085608802420820}
+    - target: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
       propertyPath: _putBackInteractable
       value: 
       objectReference: {fileID: 3952900548623635663}
@@ -1644,6 +1696,17 @@ PrefabInstance:
       addedObject: {fileID: 5820898987054362695}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+--- !u!114 &5777612296762963825 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+  m_PrefabInstance: {fileID: 770420732093876487}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631e374dbc1686c4ab022c92c67c960e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8433509283925458980 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9203331857534109987, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
@@ -1655,7 +1718,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4652081329782786504}
+    m_TransformParent: {fileID: 895473995495050367}
     m_Modifications:
     - target: {fileID: 1131228541657249027, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -1714,6 +1777,10 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.010000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1723,23 +1790,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.046
+      value: 1.0785674
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9914449
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.1305263
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1747,7 +1814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 1.4199057
       objectReference: {fileID: 0}
     - target: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1781,11 +1848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cac7b5441dca42b4e87ed996f7eaf07f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2921171700800486390 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4153724113463389586, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
-  m_PrefabInstance: {fileID: 1238182299348457060}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5356711590003736207 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6591076272564381931, guid: 57bb91b249d800c40a6ec5924e811776, type: 3}
@@ -1850,33 +1912,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
+    - target: {fileID: 4880752157022457633, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
+      propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+    - target: {fileID: 4880752157022457633, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
+      propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
+    - target: {fileID: 4880752157022457633, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
+    - target: {fileID: 4880752157022457633, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+    - target: {fileID: 4880752157022457633, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
@@ -1940,34 +1994,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
       value: Tile Game Board Socket (1, 2)
@@ -2029,34 +2055,6 @@ PrefabInstance:
     - target: {fileID: 996182328971917384, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
@@ -2120,34 +2118,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
       value: Tile Game Board Socket (3, 2)
@@ -2178,6 +2148,10 @@ PrefabInstance:
       propertyPath: _putBackPrefab
       value: 
       objectReference: {fileID: 2456998229206866062, guid: 7a219888e495e0b46b0efdbdd0a00ec9, type: 3}
+    - target: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+      propertyPath: _currentVisuals
+      value: 
+      objectReference: {fileID: 3007132122552585781}
     - target: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
       propertyPath: _putBackInteractable
       value: 
@@ -2244,6 +2218,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9203331857534109987, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
   m_PrefabInstance: {fileID: 3348203350385213960}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8424004414641716350 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+  m_PrefabInstance: {fileID: 3348203350385213960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631e374dbc1686c4ab022c92c67c960e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4150111553367539422
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2291,34 +2276,6 @@ PrefabInstance:
     - target: {fileID: 996182328971917384, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
@@ -2382,34 +2339,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
       value: Tile Game Board Socket (1, 1)
@@ -2471,34 +2400,6 @@ PrefabInstance:
     - target: {fileID: 996182328971917384, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
@@ -2562,34 +2463,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
       value: Tile Game Board Socket (0, 2)
@@ -2620,6 +2493,10 @@ PrefabInstance:
       propertyPath: _putBackPrefab
       value: 
       objectReference: {fileID: 2456998229206866062, guid: 7a219888e495e0b46b0efdbdd0a00ec9, type: 3}
+    - target: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+      propertyPath: _currentVisuals
+      value: 
+      objectReference: {fileID: 660241845971536695}
     - target: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
       propertyPath: _showHighlighter
       value: 0
@@ -2685,6 +2562,17 @@ PrefabInstance:
       addedObject: {fileID: 4200474261246359690}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+--- !u!114 &262738969029350955 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6529980140459490934, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
+  m_PrefabInstance: {fileID: 6429532663301072989}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631e374dbc1686c4ab022c92c67c960e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2774925955331760510 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9203331857534109987, guid: 57c3ed8602d4a13478dd75f245e43c60, type: 3}
@@ -2737,34 +2625,6 @@ PrefabInstance:
     - target: {fileID: 996182328971917384, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
@@ -2828,34 +2688,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
       value: Tile Game Board Socket (3, 1)
@@ -2917,34 +2749,6 @@ PrefabInstance:
     - target: {fileID: 996182328971917384, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
@@ -3008,34 +2812,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
       value: Tile Game Board Socket (4, 0)
@@ -3097,34 +2873,6 @@ PrefabInstance:
     - target: {fileID: 996182328971917384, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
@@ -3188,34 +2936,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name
       value: Tile Game Board Socket (1, 0)
@@ -3277,34 +2997,6 @@ PrefabInstance:
     - target: {fileID: 996182328971917384, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4668711014103792639}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddClothTileFromDisplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ExPresSXR.Minigames.TileGame.ClothGame, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931922502952412808, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
-      propertyPath: OnClothTileSubmitted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5926333687273665493, guid: ac5dcffe4780bd9478a3956b28899892, type: 3}
       propertyPath: m_Name

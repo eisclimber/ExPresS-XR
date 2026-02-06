@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using ExPresSXR.Interaction.Feedback;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,10 +24,10 @@ namespace ExPresSXR.Minigames.TargetArea
         }
 
         /// <summary>
-        /// The number of targets to be completed.
+        /// If enabled, the target areas will be automatically set up on Start().
         /// </summary>
         [SerializeField]
-        private bool _setupOnAwake = true;
+        private bool _autoStart = true;
 
         /// <summary>
         /// If enabled all events each of the three events below will be called mutually exclusive. This prevents errors when using these for different haptic feedbacks.
@@ -90,8 +88,11 @@ namespace ExPresSXR.Minigames.TargetArea
                 Debug.LogWarning("Setting the Collider as trigger to not collide with objects. Please make the Collider a trigger via the inspector. ");
                 col.isTrigger = true;
             }
+        }
 
-            if (_setupOnAwake)
+        private void Start()
+        {
+            if (_autoStart)
             {
                 SetupTargets();
             }

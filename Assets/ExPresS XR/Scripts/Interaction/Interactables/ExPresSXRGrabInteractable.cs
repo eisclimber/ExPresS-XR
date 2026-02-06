@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactables
 {
     /// <summary>
     /// Acts as a wrapper for allowing XRGrabInteractables to be scaled while being held. 
@@ -241,7 +241,7 @@ namespace ExPresSXR.Interaction
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
             // Allow Direct and ray only if grab allowed and add parent checks
-            bool canGrab = (_allowGrab || !RuntimeUtils.IsCloseUpHandInteractor(interactor)) && base.IsSelectableBy(interactor);
+            bool canGrab = (_allowGrab || !RuntimeUtils.IsCloseUpHandInteractor(interactor, true)) && base.IsSelectableBy(interactor);
             if (RuntimeUtils.IsCloseUpHandInteractor(interactor))
             {
                 (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();

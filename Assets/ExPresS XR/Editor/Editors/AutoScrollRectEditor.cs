@@ -1,7 +1,6 @@
 using UnityEditor;
 using ExPresSXR.UI;
 
-
 namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(AutoScrollRect))]

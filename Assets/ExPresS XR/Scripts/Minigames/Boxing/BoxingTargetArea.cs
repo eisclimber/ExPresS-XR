@@ -8,6 +8,34 @@ namespace ExPresSXR.Minigames.Boxing
     public class BoxingTargetArea : TargetArea.TargetArea
     {
         [SerializeField]
+        private bool _targetActive;
+        public bool TargetActive
+        {
+            get => _targetActive;
+            set
+            {
+                _targetActive = value;
+
+                if (_timer != null)
+                {
+                    if (_targetActive)
+                    {
+                        _timer.StartTimerDefault();
+                    }
+                    else
+                    {
+                        _timer.StopTimer();
+                    }
+                }
+
+                if (_animator != null)
+                {
+                    _animator.SetTrigger(_targetActive ? "TrStart" : "TrStop");
+                }
+            }
+        }
+
+        [SerializeField]
         private GameObject _damageDisplayPrefab;
 
         [SerializeField]
@@ -28,23 +56,17 @@ namespace ExPresSXR.Minigames.Boxing
         [SerializeField]
         private Animator _animator;
 
-
         public UnityEvent OnFailed;
         public UnityEvent<int> OnPointsScored;
+
 
         private void OnEnable()
         {
             OnActionPerformed.AddListener(HitTarget);
 
-            if (_timer)
+            if (_timer != null)
             {
-                _timer.StartTimerDefault();
                 _timer.OnTimeout.AddListener(FailTarget);
-            }
-
-            if (_animator)
-            {
-                _animator.SetTrigger("TrPlay");
             }
         }
 
@@ -59,11 +81,21 @@ namespace ExPresSXR.Minigames.Boxing
             }
         }
 
+        public override void QueueAction()
+        {
+            if (_targetActive)
+            {
+                return;
+            }
+
+            base.QueueAction();
+        }
+
         [ContextMenu("Fail Target")]
         private void FailTarget()
         {
             OnFailed.Invoke();
-            enabled = false;
+            TargetActive = false;
         }
 
         [ContextMenu("Hit Target")]
@@ -72,7 +104,7 @@ namespace ExPresSXR.Minigames.Boxing
             int points = GetCurrentPoints();
             ShowDamageDisplay(points);
             OnPointsScored.Invoke(points);
-            enabled = false;
+            TargetActive = false;
         }
 
         private void ShowDamageDisplay(int points)

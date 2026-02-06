@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using ExPresSXR.Minigames.Archery.TargetSpawner.Line;
 using UnityEditor;
 using UnityEngine;
-
+using ExPresSXR.Minigames.Archery.TargetSpawner.Line;
 
 namespace ExPresSXR.Editor.Editors
 {

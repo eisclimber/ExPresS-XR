@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction.ValueRangeInteractable;
 
-
 namespace ExPresSXR.Editor.Editors
 {
     /// <summary>

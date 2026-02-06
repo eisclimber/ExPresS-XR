@@ -1,7 +1,7 @@
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
-using System.IO;
 
 namespace ExPresSXR.Editor.Editors
 {

@@ -4,7 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactors
 {
     public class TagCheckSocketInteractor : HighlightableSocketInteractor
     {

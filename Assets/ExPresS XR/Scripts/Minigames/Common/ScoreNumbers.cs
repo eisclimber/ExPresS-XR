@@ -22,10 +22,10 @@ namespace ExPresSXR.Minigames.Common
         [Space]
 
         [SerializeField]
-        private bool showSigns;
+        private bool _showSigns;
 
         [SerializeField]
-        private bool hideIfZero;
+        private bool _hideIfZero;
 
         [SerializeField]
         private string _scorePrefix = "";
@@ -52,13 +52,13 @@ namespace ExPresSXR.Minigames.Common
             {
                 if (_text != null)
                 {
-                    if (hideIfZero && value == 0)
+                    if (_hideIfZero && value == 0)
                     {
                         _text.text = "";
                     }
                     else
                     {
-                        _text.text = showSigns ? _scorePrefix + value.ToString("+#;-#;0") : value.ToString();
+                        _text.text = _showSigns ? _scorePrefix + value.ToString("+#;-#;0") : value.ToString();
                     }
                 }
                 else
@@ -96,7 +96,7 @@ namespace ExPresSXR.Minigames.Common
         }
 
 
-        public void SetupScore(int score, int bonus, string scorePrefix = "", string bonusPrefix = "", string noBonusText = "")
+        public void SetupScore(int score, int bonus = 0, string scorePrefix = "", string bonusPrefix = "", string noBonusText = "")
         {
             _scorePrefix = scorePrefix;
             _bonusPrefix = bonusPrefix;

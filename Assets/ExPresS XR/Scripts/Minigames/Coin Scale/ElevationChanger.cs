@@ -4,8 +4,6 @@
     Refactoring & Integration: Luca Dreiling
     Purpose: This script represents one side of a scale, changing it's position as a delegate of a scale.
 */
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinScale

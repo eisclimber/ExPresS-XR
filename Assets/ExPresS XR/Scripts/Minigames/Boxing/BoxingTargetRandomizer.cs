@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,16 +7,31 @@ namespace ExPresSXR.Minigames.Boxing
     public class BoxingTargetRandomizer : MonoBehaviour
     {
         [SerializeField]
-        private bool _randomizeOnAwake = true;
+        private BoxingTargetArea[] _targets;
+        public BoxingTargetArea[] Targets
+        {
+            get => _targets;
+            set => _targets = value;
+        }
+
+        [Space]
 
         [SerializeField]
-        private bool _disableAllInitially = true;
+        private bool _autoStart;
+        public bool AutoStart
+        {
+            get => _autoStart;
+            set => _autoStart = value;
+        }
 
         [SerializeField]
-        private bool _disableTargetsOnDisabled = true;
+        private bool _cancelActiveTargets = true;
 
         [SerializeField]
-        private BoxingTargetArea[] _targetAreas;
+        private bool _hideTargetsInitially = true;
+
+        [SerializeField]
+        private bool _hideTargetsOnDisabled = true;
 
         [SerializeField]
         private float _minDelay = 1.0f;
@@ -23,73 +39,115 @@ namespace ExPresSXR.Minigames.Boxing
         [SerializeField]
         private float _maxDelay = 3.0f;
 
+        private Coroutine _waitForSpawnCoroutine;
 
         public UnityEvent<int> OnTargetActivate;
 
-        private void Start()
+
+        private void Awake()
         {
-            if (_randomizeOnAwake)
+            if (_hideTargetsInitially)
             {
-                RandomizeActiveTarget();
+                if (!_autoStart)
+                {
+                    SetTargetsVisible(true);
+                }
+                else
+                {
+                    Debug.LogWarning("Ignoring 'Hide Targets Initially' since auto start is enabled.");
+                }
             }
 
-            if (_disableAllInitially)
+            if (_autoStart)
             {
-                DisableAllTargets();
+                StartTargetRandomization();
             }
         }
-
+        
         private void OnEnable()
         {
-            foreach (BoxingTargetArea targetArea in _targetAreas)
+            foreach (BoxingTargetArea targetArea in _targets)
             {
-                targetArea.OnActionPerformed.AddListener(RandomizeActiveTargetDelayed);
-                targetArea.OnFailed.AddListener(RandomizeActiveTargetDelayed);
+                targetArea.OnActionPerformed.AddListener(StartTargetRandomization);
+                targetArea.OnFailed.AddListener(StartTargetRandomization);
             }
         }
 
         private void OnDisable()
         {
-            foreach (BoxingTargetArea targetArea in _targetAreas)
+            foreach (BoxingTargetArea targetArea in _targets)
             {
-                targetArea.OnActionPerformed.RemoveListener(RandomizeActiveTargetDelayed);
-                targetArea.OnFailed.RemoveListener(RandomizeActiveTargetDelayed);
+                targetArea.OnActionPerformed.RemoveListener(StartTargetRandomization);
+                targetArea.OnFailed.RemoveListener(StartTargetRandomization);
             }
 
-            if (_disableTargetsOnDisabled)
+            StopTargetRandomization();
+
+            if (_hideTargetsOnDisabled)
             {
-                DisableAllTargets();
+                SetTargetsVisible(true);
             }
         }
 
-        // Use this because somehow the triggering is buggy when retriggering the same target immediately
-        public void RandomizeActiveTargetDelayed() => Invoke(nameof(RandomizeActiveTarget), Random.Range(_minDelay, _maxDelay));
+        [ContextMenu("Start Target Randomization")]
+        public void StartTargetRandomization()
+        {
+            float delay = Random.Range(_minDelay, _maxDelay);
+            SetTargetsVisible(true);
+            StopTargetRandomization();
+            _waitForSpawnCoroutine = StartCoroutine(RandomizeNextActivatedTargetDelayed(delay));
+        }
 
+        [ContextMenu("Stop Target Randomization")]
+        public void StopTargetRandomization()
+        {
+            if (_waitForSpawnCoroutine != null)
+            {
+                StopCoroutine(_waitForSpawnCoroutine);
+            }
+        }
 
-        [ContextMenu("Randomize Active Target")]
-        private void RandomizeActiveTarget()
+        private void RandomizeActivatedTarget()
         {
             if (!isActiveAndEnabled)
             {
                 return;
             }
 
-            int nextIdx = Random.Range(0, _targetAreas.Length);
-            // Debug.Log($"Next target is: {_targetAreas[nextIdx]}");
-            for (int i = 0; i < _targetAreas.Length; i++)
+            int nextIdx = Random.Range(0, _targets.Length);
+            for (int i = 0; i < _targets.Length; i++)
             {
-                _targetAreas[i].enabled = i == nextIdx;
-                // _targetAreas[i].gameObject.SetActive(i == nextIdx);
+                bool isNewActivation = i == nextIdx;
+                // Change only to activate or if they should be canceled
+                if (isNewActivation || _cancelActiveTargets)
+                {
+                    _targets[i].TargetActive = isNewActivation;
+                }
             }
             OnTargetActivate.Invoke(nextIdx);
         }
 
-        public void DisableAllTargets()
+        public void DeactivateAllTargets()
         {
-            for (int i = 0; i < _targetAreas.Length; i++)
+            for (int i = 0; i < _targets.Length; i++)
             {
-                _targetAreas[i].enabled = false;
+                _targets[i].TargetActive = false;
             }
+        }
+
+        public void SetTargetsVisible(bool visible)
+        {
+            for (int i = 0; i < _targets.Length; i++)
+            {
+                _targets[i].gameObject.SetActive(visible);
+            }
+        }
+
+        public IEnumerator RandomizeNextActivatedTargetDelayed(float delay)
+        {
+            RandomizeActivatedTarget();
+            yield return new WaitForSeconds(delay);
+            StartTargetRandomization();
         }
     }
 }

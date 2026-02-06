@@ -51,7 +51,6 @@ namespace ExPresSXR.Editor.Editors
             DrawSoundsProperties();
         }
 
-
         protected virtual void DrawInputProperties()
         {
             EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-using ExPresSXR.Interaction;
+using ExPresSXR.Interaction.Interactables;
 
 namespace ExPresSXR.Editor.Editors
 {

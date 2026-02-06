@@ -2,7 +2,6 @@ using UnityEditor;
 using UnityEngine;
 using ExPresSXR.Interaction.Feedback;
 
-
 namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(HoverRumblePlayer))]

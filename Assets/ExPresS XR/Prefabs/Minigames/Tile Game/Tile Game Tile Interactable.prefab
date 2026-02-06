@@ -48,21 +48,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.ClothTileDisplay
   _displayedTile:
-    CenterCloth: 1
-    TopCloth: 0
-    BottomCloth: 0
-    LeftCloth: 2
-    RightCloth: 0
+    CenterAreaId: 0
+    TopAreaId: 0
+    BottomAreaId: 0
+    LeftAreaId: 0
+    RightAreaId: 0
   _renderer: {fileID: 4863720550617366131}
-  _pointsDisplayPrefab: {fileID: 3528977270142281369, guid: 82cf501b4a0c10b4487fb570a84c9f50, type: 3}
+  _areas: []
+  _pointsDisplayPrefab: {fileID: 3528977270142281369, guid: 1a1f4120541b6ef4990b079d292b3b7b, type: 3}
   _subScoreShowDelay: 0.3
   _pointsDisplayScale: 0.25
   _pointsDisplayRadius: 0.09
   _displayOffsetReference: {fileID: 0}
   _pointsDisplayOffset: {x: 0, y: 0, z: -0.09}
-  _lightBurlapMaterial: {fileID: 2100000, guid: 42226e9c46f15754291d7a23d6ebcd2d, type: 2}
-  _darkBurlapMaterial: {fileID: 2100000, guid: 78f246d944abd1a42beb53a96f819add, type: 2}
-  _leatherMaterial: {fileID: 2100000, guid: eba270ef5be43c747aafc0ca81ac03e6, type: 2}
+  _materialIdxs:
+    Center: 1
+    Top: 4
+    Bottom: 2
+    Left: 3
+    Right: 5
 --- !u!114 &1904494385317344258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,7 +150,7 @@ MonoBehaviour:
   m_ReinitializeDynamicAttachEverySingleGrab: 1
   m_AttachEaseInTime: 0.15
   m_MovementType: 2
-  m_PredictedVisualsTransform: {fileID: 5995492659623314716}
+  m_PredictedVisualsTransform: {fileID: 0}
   m_VelocityDamping: 1
   m_VelocityScale: 1
   m_AngularVelocityDamping: 1
@@ -292,6 +296,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b4d1a628fd396fa47b932ac1bb6ba01b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a5f757c2acb047409e80126aadbc3e1, type: 2}
     - target: {fileID: 919132149155446097, guid: b4d1a628fd396fa47b932ac1bb6ba01b, type: 3}
       propertyPath: m_Name
       value: Model

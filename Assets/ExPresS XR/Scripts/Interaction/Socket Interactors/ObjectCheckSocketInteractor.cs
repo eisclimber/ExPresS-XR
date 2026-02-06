@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactors
 {
     public class ObjectCheckSocketInteractor : HighlightableSocketInteractor
     {

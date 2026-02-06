@@ -1,14 +1,12 @@
 using UnityEngine;
 using UnityEditor;
+using ExPresSXR.Interaction.Interactables;
 
-using ExPresSXR.Interaction;
-
-
-// namespace ExPresSXR.Editor.Editors
-// {
-//     /// <summary>
-//     /// Custom editor for an <see cref="GrabTriggerInteractable"/>.
-//     /// </summary>
+namespace ExPresSXR.Editor.Editors
+{
+    /// <summary>
+    /// Custom editor for an <see cref="GrabTriggerInteractable"/>.
+    /// </summary>
     [CustomEditor(typeof(GrabTriggerInteractable), true), CanEditMultipleObjects]
     public class GrabTriggerInteractableEditor : UnityEditor.XR.Interaction.Toolkit.Interactables.XRBaseInteractableEditor
     {
@@ -43,4 +41,4 @@ using ExPresSXR.Interaction;
             EditorGUI.indentLevel--;
         }
     }
-// }
+}

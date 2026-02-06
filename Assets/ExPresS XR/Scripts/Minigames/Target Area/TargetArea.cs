@@ -35,7 +35,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// <summary>
         /// Adds another action to be performed and handle completion.
         /// </summary>
-        public void QueueAction()
+        public virtual void QueueAction()
         {
             if (_completed)
             {

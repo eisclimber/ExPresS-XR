@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using ExPresSXR.Interaction.Interactables;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactors
 {
     public class ObjectSubmitSocketInteractor : ObjectCheckSocketInteractor
     {

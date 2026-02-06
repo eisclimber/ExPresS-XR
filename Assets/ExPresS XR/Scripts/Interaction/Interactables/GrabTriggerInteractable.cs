@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactables
 {
     /// <summary>
     /// Base for simple Interactables that can be activated via grab and optionally indicate a hover by changing their color.

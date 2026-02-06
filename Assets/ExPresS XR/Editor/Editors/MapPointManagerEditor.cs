@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Movement;
 
-
 namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(MapPointManager))]
