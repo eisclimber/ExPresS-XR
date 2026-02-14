@@ -12,10 +12,10 @@ namespace ExPresSXR.Minigames.TileGame
         private float _zOffset = -0.03f;
 
         [SerializeField]
-        private GameObject _socketPrefab;
+        private TileGame _game;
 
         [SerializeField]
-        private TileGame _game;
+        private GameObject _boardSocketPrefab;
 
 
         [ContextMenu("Setup Board")]
@@ -107,7 +107,7 @@ namespace ExPresSXR.Minigames.TileGame
 
         private void SetupNewBoardTile(Vector3 localGridPos, Vector2Int boardPos, Transform parent)
         {
-            GameObject childGo = Instantiate(_socketPrefab, parent);
+            GameObject childGo = Instantiate(_boardSocketPrefab, parent);
             childGo.transform.SetLocalPositionAndRotation(localGridPos, Quaternion.identity);
             if (childGo.TryGetComponent(out TileSubmitSocket socket))
             {

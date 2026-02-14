@@ -23,6 +23,7 @@ public class TileGameEditor : Editor
         }
         EditorGUI.EndDisabledGroup();
 
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_autoStart"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_boardSize"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_boardSocketsParent"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_tileRespawnSockets"), true);
@@ -36,6 +37,7 @@ public class TileGameEditor : Editor
             id.intValue = i;
         }
         serializedObject.ApplyModifiedProperties();
+
 
         if (EditorGUI.EndChangeCheck())
         {

@@ -10,6 +10,8 @@ namespace ExPresSXR.Minigames.TileGame
 {
     public class TileSubmitSocket : HighlightableSocketInteractor
     {
+        private const float STEP_LABEL_RADIUS = 0.06f;
+
         [Space]
         [SerializeField]
         private Vector2Int _boardPos;
@@ -25,6 +27,11 @@ namespace ExPresSXR.Minigames.TileGame
         [SerializeField]
         [Tooltip("Disable this socket and the interactable if possible on submission.")]
         private bool _disableOnSelect = true;
+
+        [SerializeField]
+        private bool _allowInvalidHover;
+
+        [Space]
 
         [SerializeField]
         private int _snapAngle = 90;
@@ -158,19 +165,18 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
-        
-
-        
-
         public override bool CanHover(IXRHoverInteractable interactable)
-            => base.CanHover(interactable) && IsTileVisualsMatch(interactable) && (!_requireFrontSideUp || IsFrontSideUp(interactable));
+            => base.CanHover(interactable) && IsInteractableAllowed(interactable) || _allowInvalidHover;
 
         public override bool CanSelect(IXRSelectInteractable interactable)
-            => base.CanSelect(interactable) && IsTileVisualsMatch(interactable) && (!_requireFrontSideUp || IsFrontSideUp(interactable));
+            => base.CanSelect(interactable) && IsInteractableAllowed(interactable);
 
-        private bool IsTileVisualsMatch(IXRInteractable interactable) => interactable.transform.TryGetComponent(out TileVisuals _);
 
-        private bool IsFrontSideUp(IXRInteractable interactable)
+        private bool IsInteractableAllowed(IXRInteractable interactable) => HasTileVisuals(interactable) && (!_requireFrontSideUp || IsInteractableOrientedCorrectly(interactable));
+    
+        private bool HasTileVisuals(IXRInteractable interactable) => interactable.transform.TryGetComponent(out TileVisuals _);
+
+        private bool IsInteractableOrientedCorrectly(IXRInteractable interactable)
         {
             // Check if the up vector align
             Transform ownAttach = GetAttachTransform(interactable);
@@ -179,22 +185,17 @@ namespace ExPresSXR.Minigames.TileGame
             return dot > 0.0f; // Adjust the threshold as needed
         }
 
-        protected virtual void OnDrawGizmos()
+        protected virtual void OnDrawGizmosSelected()
         {
             // Change to local space
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(Vector3.zero, Vector3.up * 0.05f);
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(Vector3.zero, Vector3.forward * 0.05f);
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(Vector3.zero, Vector3.right * 0.05f);
             // Draw snap points
-            Gizmos.color = Color.pink;
-            GizmoUtils.DrawLabel("0", Vector3.forward * 0.08f, transform);
-            GizmoUtils.DrawLabel("1", Vector3.right * 0.08f, transform);
-            GizmoUtils.DrawLabel("2", -Vector3.forward * 0.08f, transform);
-            GizmoUtils.DrawLabel("3", -Vector3.right * 0.08f, transform);
+            for (int i = 0; i < NumSteps; i++)
+            {
+                float rotation = i * _snapAngle;
+                Vector3 labelPos = Quaternion.AngleAxis(rotation, Vector3.up) * Vector3.forward * STEP_LABEL_RADIUS;
+                GizmoUtils.DrawLabel(i.ToString(), labelPos, Color.yellow, transform);
+            }
         }
 
         public class BoardSubmitContext

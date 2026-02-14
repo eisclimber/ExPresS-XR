@@ -41,7 +41,7 @@ namespace ExPresSXR.Minigames.TileGame
 
         protected override void ResetPutBackTimer(SelectEnterEventArgs args)
         {
-            if (args.interactorObject is TileSubmitSocket)
+            if (args != null && args.interactorObject is TileSubmitSocket)
             {
                 // Instantly spawn a new Putback Instance
                 UnregisterPutBackInteractable();
@@ -62,7 +62,11 @@ namespace ExPresSXR.Minigames.TileGame
 
             base.InstantiatePutBackPrefab();
 
-            if (_putBackObjectInstance.TryGetComponent(out _currentVisuals))
+            if (_putBackObjectInstance == null)
+            {
+                return;
+            }
+            else if (_putBackObjectInstance.TryGetComponent(out _currentVisuals))
             {
                 _currentVisuals.Areas = _areas;
                 _currentVisuals.DisplayOffsetReference = _scoreReferenceTransform;

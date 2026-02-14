@@ -11,6 +11,11 @@ namespace ExPresSXR.Minigames.TileGame
         public const int DEFAULT_BOARD_WIDTH = 5;
         public const int DEFAULT_BOARD_HEIGHT = 3;
 
+        
+        [SerializeField]
+        private bool _autoStart;
+        
+
         [SerializeField]
         private Vector2Int _boardSize = new(DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT);
         public Vector2Int BoardSize
@@ -93,13 +98,17 @@ namespace ExPresSXR.Minigames.TileGame
         private void OnEnable()
         {
             UpdateAreasVisuals();
+            
+            if (_autoStart)
+            {
+                StartGame();
+            }
         }
 
 
         [ContextMenu("Start Game")]
         private void StartGame()
         {
-            Debug.Log($"TODO: Start Game", this);
             _board = new Tile[_boardSize.x, _boardSize.y];
         }
 

@@ -2,12 +2,12 @@ using System.Collections;
 using UnityEngine;
 using ExPresSXR.Minigames.Common;
 using ExPresSXR.Misc;
+using UnityEditor;
 
 namespace ExPresSXR.Minigames.TileGame
 {
     public class TileVisuals : MonoBehaviour
     {
-        private const int NUM_AREAS = 5;
         private const float GIZMO_LABEL_OFFSET = 0.075f;
 
         [SerializeField]
@@ -82,6 +82,10 @@ namespace ExPresSXR.Minigames.TileGame
                 return;
             }
 
+#if UNITY_EDITOR
+            // Record the change
+            Undo.RecordObject(this, "Update visuals");
+#endif
             Material[] newMats = Application.isPlaying ? _renderer.materials : _renderer.sharedMaterials;
             // Materials are messed up when exported for some reason...
             // Left, Top, Right, Bottom, Center
@@ -91,6 +95,11 @@ namespace ExPresSXR.Minigames.TileGame
             newMats[_materialIdxs.Left] = _areas[_displayedTile.LeftAreaId].Material;
             newMats[_materialIdxs.Right] = _areas[_displayedTile.RightAreaId].Material;
             _renderer.materials = newMats;
+
+#if UNITY_EDITOR
+            // Mark the object as dirty to trigger save
+            EditorUtility.SetDirty(this);
+#endif
         }
 
         public void DisplayScore(ScoreResults score)
@@ -105,7 +114,6 @@ namespace ExPresSXR.Minigames.TileGame
 
         private IEnumerator ShowScoresSequential(ScoreResults score)
         {
-            // score.PrintScore();
             if (score.CenterScore > 0)
             {
                 SpawnPointsDisplay(score.CenterScore, score.CenterAreaId, Vector3.zero);
@@ -165,7 +173,14 @@ namespace ExPresSXR.Minigames.TileGame
 
 
         [ContextMenu("Randomize Area Types")]
-        public void RandomizeAreaTypes() =>  DisplayedTile = new(_areas.Length);
+        public void RandomizeAreaTypes()
+        {
+#if UNITY_EDITOR
+            // Record the change (no need to set it dirty as it will be by chaning the DisplayedTile()
+            Undo.RecordObject(this, "Update visuals");
+#endif
+            DisplayedTile = new(_areas.Length);
+        }
 
         private void OnDrawGizmosSelected()
         {
@@ -180,12 +195,6 @@ namespace ExPresSXR.Minigames.TileGame
             {
                 GizmoUtils.DrawLabel("No _areas set, can't display tile colors.", Vector3.up * GIZMO_LABEL_OFFSET / 4.0f, transform);
             }
-
-            // Color centerColor = _areasValid ? _areas[DisplayedTile.CenterAreaId].Color : Color.black;
-            // Color topColor = _areasValid ? _areas[DisplayedTile.TopAreaId].Color : Color.black;
-            // Color bottomColor = _areasValid ? _areas[DisplayedTile.BottomAreaId].Color : Color.black;
-            // Color leftColor = _areasValid ? _areas[DisplayedTile.LeftAreaId].Color : Color.black;
-            // Color rightColor = _areasValid ? _areas[DisplayedTile.RightAreaId].Color : Color.black;
 
             GizmoUtils.DrawLabel($"{DisplayedTile.CenterAreaId}", new Vector3(1.0f, 0.0f, 1.0f) * GIZMO_LABEL_OFFSET / 4.0f, transform);
             GizmoUtils.DrawLabel($"{DisplayedTile.TopAreaId}", Vector3.forward * GIZMO_LABEL_OFFSET, transform);
