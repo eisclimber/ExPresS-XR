@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 
 namespace ExPresSXR.Minigames.Common
@@ -96,7 +97,7 @@ namespace ExPresSXR.Minigames.Common
         }
 
 
-        public void SetupScore(int score, int bonus = 0, string scorePrefix = "", string bonusPrefix = "", string noBonusText = "")
+        public void SetupScoreData(int score, int bonus = 0, string scorePrefix = "", string bonusPrefix = "", string noBonusText = "")
         {
             _scorePrefix = scorePrefix;
             _bonusPrefix = bonusPrefix;
@@ -106,35 +107,35 @@ namespace ExPresSXR.Minigames.Common
             BonusScore = bonus;
         }
 
-        public void ShowRandomHueScore(int score)
+        public void RandomizeColorHue(bool bonusSameColor = false)
         {
-            _text.color = GetRandomHueColor();
+            Color textColor = GetRandomHueColor();
+            _text.color = textColor;
             if (_bonusText != null)
             {
-                _bonusText.color = GetRandomHueColor();
+                _bonusText.color = bonusSameColor ? textColor : GetRandomHueColor();
             }
-
-            ShowScore(score);
         }
 
 
-        public void ShowScore(int score, Color fontColor)
+        public void SetScoreColor(Color fontColor)
         {
-            ShowScore(score);
+            _text.color = fontColor;
+        }
+
+        public void SetBonusColor(Color fontColor)
+        {
             _text.color = fontColor;
         }
 
 
-        public void ShowScore(int score, Color fontColor, Color outlineColor)
+        public void SetOutlineColor(Color outlineColor)
         {
-            ShowScore(score);
-            _text.color = fontColor;
             _text.outlineColor = outlineColor;
-        }
-
-        public void ShowScore(int score)
-        {
-            _text.text = score.ToString();
+            if (_bonusText != null)
+            {
+                _bonusText.outlineColor = outlineColor;
+            }
         }
 
         public void DestroySelf() => Destroy(gameObject);

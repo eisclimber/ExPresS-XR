@@ -2,6 +2,7 @@ using System;
 using ExPresSXR.Misc;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.TileGame
@@ -90,7 +91,7 @@ namespace ExPresSXR.Minigames.TileGame
 
         private Tile[,] _board = new Tile[DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT];
 
-        public UnityEvent<int> OnStarted;
+        public UnityEvent OnStarted;
         public UnityEvent<Vector2Int> OnTileAdded;
         public UnityEvent<int> OnScoreChanged;
         public UnityEvent<int> OnCompleted;
@@ -109,7 +110,8 @@ namespace ExPresSXR.Minigames.TileGame
         [ContextMenu("Start Game")]
         private void StartGame()
         {
-            _board = new Tile[_boardSize.x, _boardSize.y];
+            ResetGame();
+            OnStarted.Invoke();
         }
 
         [ContextMenu("End Game")]
@@ -117,6 +119,22 @@ namespace ExPresSXR.Minigames.TileGame
         {
             Debug.Log($"Completed with a score of: {_totalScore}.", this);
             OnCompleted.Invoke(_totalScore);
+        }
+
+        [ContextMenu("Reset Game")]
+        private void ResetGame()
+        {
+            _board = new Tile[_boardSize.x, _boardSize.y];
+            _totalScore = 0;
+            _placedTiles = 0;
+
+            foreach (Transform child in _boardSocketsParent)
+            {
+                if (child.TryGetComponent(out TileSubmitSocket socket))
+                {
+                    socket.ClearSelection();
+                }
+            }
         }
 
         public void AddTileFromBoardSubmission(TileSubmitSocket.BoardSubmitContext ctx)
@@ -142,8 +160,8 @@ namespace ExPresSXR.Minigames.TileGame
             }
 
             _board[pos.x, pos.y] = tile;
-            PlacedTiles++;
             OnTileAdded.Invoke(pos);
+            PlacedTiles++;
 
             // Dirty but we want fresh copies for each direction to avoid one side not awarding any points
             bool[,] visitedTop = new bool[_boardSize.x, _boardSize.y];
@@ -170,23 +188,6 @@ namespace ExPresSXR.Minigames.TileGame
             return score;
         }
 
-        public int EvaluatePointsFrom(Vector2Int pos, int score, bool[,] visited)
-        {
-            if (!IsPosInBounds(pos) && !IsTileOccupied(pos) && visited[pos.x, pos.y])
-            {
-                return score;
-            }
-
-            visited[pos.x, pos.y] = true;
-            score++;
-
-            score += CheckNeighbor(pos, Vector2Int.down, visited); // Invert neighbor up/down dir since were using different axis
-            score += CheckNeighbor(pos, Vector2Int.up, visited); // Invert neighbor up/down dir since were using different axis
-            score += CheckNeighbor(pos, Vector2Int.left, visited);
-            score += CheckNeighbor(pos, Vector2Int.right, visited);
-            return score;
-        }
-
         public int CheckNeighbor(Vector2Int pos, Vector2Int checkDir, bool[,] visited)
         {
             Vector2Int nextPos = pos + checkDir;
@@ -200,9 +201,27 @@ namespace ExPresSXR.Minigames.TileGame
 
             if (currentTile.IsAdjacentConnected(nextTile, checkDir))
             {
-                return EvaluatePointsFrom(nextPos, 0, visited);
+                return EvaluatePointsFrom(nextPos, 0, visited) + 1;
             }
             return 0;
+        }
+
+        public int EvaluatePointsFrom(Vector2Int pos, int score, bool[,] visited)
+        {
+            if (!IsPosInBounds(pos) || !IsTileOccupied(pos) || visited[pos.x, pos.y])
+            {
+                return score;
+            }
+            // Mark tile visited and add increase score
+            visited[pos.x, pos.y] = true;
+            score++;
+
+            // Add Scores from neighbors
+            score += CheckNeighbor(pos, Vector2Int.down, visited); // Invert neighbor up/down dir since were using different axis
+            score += CheckNeighbor(pos, Vector2Int.up, visited); // Invert neighbor up/down dir since were using different axis
+            score += CheckNeighbor(pos, Vector2Int.left, visited);
+            score += CheckNeighbor(pos, Vector2Int.right, visited);
+            return score;
         }
 
         public bool IsTileOccupied(Vector2Int pos) => IsPosInBounds(pos) && _board[pos.x, pos.y] != null;

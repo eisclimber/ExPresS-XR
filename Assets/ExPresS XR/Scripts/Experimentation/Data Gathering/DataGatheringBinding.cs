@@ -49,16 +49,22 @@ namespace ExPresSXR.Experimentation.DataGathering
         private MemberInfo _targetMemberInfo = null;
 
 
-        // List of all members
+        /// <summary>
+        /// List of all members
+        /// </summary>
         [SerializeField]
         private string[] _memberNameList = new string[0];
 
-        // Prettified List of all members
+        /// <summary>
+        /// Prettified List of all members
+        /// </summary>
         [SerializeField]
         private string[] _prettyMemberNameList = new string[0];
 
 
-        // Index of components in the list
+        /// <summary>
+        /// Index of components in the list
+        /// </summary>
         [SerializeField]
         private int _memberIdx = -1;
 
@@ -305,8 +311,8 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             UpdateInvocationInfo(null);
             _targetObject = null;
-            _memberNameList = new string[0];
-            _prettyMemberNameList = new string[0];
+            _memberNameList = new string[0];;
+            _prettyMemberNameList = new string[0];;
             _memberIdx = -1;
             HeaderSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         }

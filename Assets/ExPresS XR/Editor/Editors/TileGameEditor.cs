@@ -44,10 +44,19 @@ public class TileGameEditor : Editor
             _tileGame.UpdateAreasVisuals();
         }
 
+        EditorGUILayout.LabelField("Events", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnStarted"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnTileAdded"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnScoreChanged"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnCompleted"), true);
+        EditorGUI.indentLevel--;
+
         EditorGUILayout.LabelField("Debug Information", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_totalScore"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_placedTiles"), true);
         EditorGUI.indentLevel--;
+        serializedObject.ApplyModifiedProperties();
     }
 }

@@ -14,13 +14,40 @@ namespace ExPresSXR.Experimentation.DataGathering
 {
     public class DataGatherer : MonoBehaviour
     {
+        /// <summary>
+        /// Default file ending used if a path does not provide a file extension considered valid.
+        /// </summary>
+        public static readonly string DEFAULT_EXPORT_FILE_ENDING = ".csv";
+
+        /// <summary>
+        /// Default path to the export file created to safe the data.
+        /// </summary>
         public const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
+
+        /// <summary>
+        /// Name of the automatically generated timestamp (number) column.
+        /// </summary>
         public const string HUMAN_READABLE_TIME_COLUMN_NAME = "time";
+
+        /// <summary>
+        /// Name of the automatically generated unix timestamp (date + time in UTC) column.
+        /// </summary>
         public const string UNIX_TIME_COLUMN_NAME = "unix_time";
+
+        /// <summary>
+        /// Name of the automatically generated unitx time (seconds since app start) column.
+        /// </summary>
         public const string UNITY_TIME_COLUMN_NAME = "unity_time";
+
+        /// <summary>
+        /// Name of the automatically generated delta time (duration of current frame) column.
+        /// </summary>
         public const string DELTA_TIME_COLUMN_NAME = "delta_time";
 
-        public static readonly string[] EXPORT_FILE_ENDINGS = { "csv", "log", "txt" };
+        /// <summary>
+        /// File endings considered valid log file paths. If the files do not match one of these endings, s
+        /// </summary>
+        public static readonly string[] EXPORT_FILE_ENDINGS = new string[] { DEFAULT_EXPORT_FILE_ENDING, ".log", ".txt" };
 
         public static readonly string timestampPretty = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss");
         public static readonly string timestampSafe = DateTimeOffset.Now.ToString("yyyy-MM-dd_HH-mm-ss");
@@ -248,6 +275,9 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
         #region Export
+        /// <summary>
+        /// Exports a new line with the current values.
+        /// </summary>
         public void ExportNewCSVLine()
         {
             if (!isActiveAndEnabled)
@@ -259,18 +289,19 @@ namespace ExPresSXR.Experimentation.DataGathering
             string data = GetExportCSVLine();
             if (DataExportType == ExportType.Http || DataExportType == ExportType.Both)
             {
-                // Debug.Log($"Posting '{httpExportPath}' to '{data}'.");
                 StartCoroutine(PostHttpData(HttpExportPath, data));
             }
 
             if (DataExportType == ExportType.Local || DataExportType == ExportType.Both)
             {
-                // Debug.Log($"Saving '{data}' at '{GetLocalSavePath()}'.");
                 _outputWriter.WriteLine(data);
             }
         }
 
-
+        /// <summary>
+        /// Calculates the CSV header for the current configuration and bindings. 
+        /// </summary>
+        /// <returns>CSV header string.</returns>
         public string GetExportCSVHeader()
         {
             string[] prependedHeaders = {
@@ -298,6 +329,10 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
+        /// <summary>
+        /// Reads the current values, exporting them as CSV string.
+        /// </summary>
+        /// <returns>CSV value (escaped) string</returns>
         public string GetExportCSVLine()
         {
             string[] prependedValues = {
@@ -367,10 +402,11 @@ namespace ExPresSXR.Experimentation.DataGathering
             {
                 if (!HasExportableFileEnding(LocalExportPath))
                 {
-                    Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
-                            + "Appending '.csv' and creating a new file if necessary. "
-                            + $"New path is: '{LocalExportPath}.csv'.");
-                    _localExportPath += ".csv";
+                    string availableEndings = CsvUtility.ArrayToString(EXPORT_FILE_ENDINGS);
+                    _localExportPath += DEFAULT_EXPORT_FILE_ENDING;
+                    Debug.LogWarning($"File did not end on one of ${availableEndings}."
+                            + $"Appending '${DEFAULT_EXPORT_FILE_ENDING}' and creating a new file if necessary. "
+                            + $"New path is: '{LocalExportPath}'.");
                 }
 
                 string path = GetLocalSavePath();
@@ -399,6 +435,10 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
+        /// <summary>
+        /// Utility function called by the editor internally to validate the bindings. 
+        /// </summary>
+        /// <param name="warnInvalid">Prints a wraning message per invalid binding.</param>
         public void ValidateBindings(bool warnInvalid = true)
         {
             foreach (DataGatheringBinding binding in _dataBindings)
@@ -517,11 +557,11 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        private static bool HasExportableFileEnding(string path) => EXPORT_FILE_ENDINGS.Any(ending => path.EndsWith($".{ending}"));
+        private static bool HasExportableFileEnding(string path) => EXPORT_FILE_ENDINGS.Any(ending => path.EndsWith(ending));
 
         private static string InsertBeforeExportPostfixes(string path, string toInsert)
         {
-            string pattern = $"(\\.{string.Join("|\\.", EXPORT_FILE_ENDINGS)})$";
+            string pattern = $"(\\.{string.Join("|", EXPORT_FILE_ENDINGS)})$";
 
             if (Regex.IsMatch(path, pattern))
             {

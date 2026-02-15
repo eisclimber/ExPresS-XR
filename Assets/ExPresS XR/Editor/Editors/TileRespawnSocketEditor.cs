@@ -16,7 +16,6 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.LabelField("Respawn Variants", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_respawnVariants"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_scoreReferenceTransform"), true);
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_areas"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_currentVisuals"), true);

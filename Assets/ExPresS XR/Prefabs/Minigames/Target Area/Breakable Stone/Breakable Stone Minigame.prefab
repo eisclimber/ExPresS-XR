@@ -192,20 +192,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -357,6 +360,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -378,9 +386,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5427742298324373239
 BoxCollider:
@@ -542,20 +552,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -582,11 +595,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 1056383581704882414}
     m_Modifications:
     - target: {fileID: 3076472265661685832, guid: 215104e130ad93342b749c7bf83e656c, type: 3}
-      propertyPath: _targets.Array.data[0]
+      propertyPath: '_targets.Array.data[0]'
       value: 
       objectReference: {fileID: 7318852480573099682}
     - target: {fileID: 3076472265661685832, guid: 215104e130ad93342b749c7bf83e656c, type: 3}
-      propertyPath: _targets.Array.data[1]
+      propertyPath: '_targets.Array.data[1]'
       value: 
       objectReference: {fileID: 8631501489642936022}
     - target: {fileID: 3076472265661685832, guid: 215104e130ad93342b749c7bf83e656c, type: 3}
@@ -662,11 +675,11 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8914949190251183519, guid: 215104e130ad93342b749c7bf83e656c, type: 3}
-      propertyPath: _targets.Array.data[0]
+      propertyPath: '_targets.Array.data[0]'
       value: 
       objectReference: {fileID: 7318852480573099682}
     - target: {fileID: 8914949190251183519, guid: 215104e130ad93342b749c7bf83e656c, type: 3}
-      propertyPath: _targets.Array.data[1]
+      propertyPath: '_targets.Array.data[1]'
       value: 
       objectReference: {fileID: 8631501489642936022}
     - target: {fileID: 8914949190251183519, guid: 215104e130ad93342b749c7bf83e656c, type: 3}
@@ -725,7 +738,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 842d1c8406ff5a24888a6dacaba7dc51, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 842d1c8406ff5a24888a6dacaba7dc51, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -819,9 +833,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1056383581704882414}
     m_Modifications:
+    - target: {fileID: 546455797264439947, guid: 9c36778728240b2439c5febca3899170, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1012866599373952007, guid: 9c36778728240b2439c5febca3899170, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6921794746178194678, guid: 9c36778728240b2439c5febca3899170, type: 3}
       propertyPath: m_Name
       value: Breakable Stone Models
+      objectReference: {fileID: 0}
+    - target: {fileID: 7345602783004654768, guid: 9c36778728240b2439c5febca3899170, type: 3}
+      propertyPath: _currentDamage
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7345602783004654768, guid: 9c36778728240b2439c5febca3899170, type: 3}
+      propertyPath: _damageModels.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7729574480190477900, guid: 9c36778728240b2439c5febca3899170, type: 3}
       propertyPath: m_LocalPosition.x

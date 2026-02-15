@@ -128,6 +128,12 @@ namespace ExPresSXR.Minigames.TargetArea
         public void DecreaseDamage() => CurrentDamage--;
 
         /// <summary>
+        /// Resets the damage.
+        /// </summary>
+        [ContextMenu("Reset Damage")]
+        public void ResetDamage() => CurrentDamage = 0;
+
+        /// <summary>
         /// Disables the visuals of all models after a given period of time.
         /// </summary>
         public void DisableModelVisualsDelayed(float delay) => Invoke(nameof(DisableVisuals), delay);

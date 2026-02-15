@@ -53,14 +53,14 @@ namespace ExPresSXR.Minigames.TileGame
         private TileGame _game;
 
         [SerializeField]
-        private TileVisuals visuals;
+        private TileVisuals _targetVisualsInstance;
 
 
         [ContextMenu("Add Tile From Board Submission")]
         public void AddTileFromBoardSubmission()
         {
-            visuals.DisplayedTile = new(_game.NumAreas, _centerAreaId, _topAreaId, _bottomAreaId, _leftAreaId, _rightAreaId);
-            _game.AddTileFromBoardSubmission(new(visuals, _insertPos));
+            _targetVisualsInstance.DisplayedTile = new(_game.NumAreas, _centerAreaId, _topAreaId, _bottomAreaId, _leftAreaId, _rightAreaId);
+            _game.AddTileFromBoardSubmission(new(_targetVisualsInstance, _insertPos));
         }
 
         [ContextMenu("Add Tile Manually")]

@@ -1,4 +1,6 @@
 using ExPresSXR.Misc;
+using UnityEditor;
+using UnityEditor.Events;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.TileGame
@@ -9,7 +11,7 @@ namespace ExPresSXR.Minigames.TileGame
         private float _spacing = 0.2f;
 
         [SerializeField]
-        private float _zOffset = -0.03f;
+        private float _heightOffset = 0.03f;
 
         [SerializeField]
         private TileGame _game;
@@ -77,8 +79,8 @@ namespace ExPresSXR.Minigames.TileGame
             int childIdx = y * size.x + x;
             Vector3 localGridPos = new(
                 (x - (size.x - 1) / 2.0f) * _spacing,
-                (((size.y - 1) / 2.0f) - y) * _spacing,
-                _zOffset
+                _heightOffset,
+                (((size.y - 1) / 2.0f) - y) * _spacing
             );
 
             if (childIdx < initialChildCount)
@@ -123,6 +125,23 @@ namespace ExPresSXR.Minigames.TileGame
         {
             socket.BoardPos = boardPos;
             socket.gameObject.name = $"Board Socket {boardPos}";
+
+#if UNITY_EDITOR
+            int numEvents = socket.OnTileSubmitted.GetPersistentEventCount();
+            if (numEvents < 1)
+            {
+                UnityEventTools.AddPersistentListener(socket.OnTileSubmitted, _game.AddTileFromBoardSubmission);
+                // Force the editor to update
+                EditorUtility.SetDirty(socket);
+            }
+            else
+            {
+                Debug.LogWarning($"Socket {socket.gameObject.name} already has persistent event listeners, "
+                    + "not adding one for `AddTileFromBoardSubmission` to avoid duplication. "
+                    + "Please ensure that the sockets `OnTileSubmitted` is connected to "
+                    + "`AddTileFromBoardSubmission` of the TileGame.", socket);
+            }
+#endif
         }
     }
 }

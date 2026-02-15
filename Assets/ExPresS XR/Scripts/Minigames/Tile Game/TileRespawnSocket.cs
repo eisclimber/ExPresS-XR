@@ -32,9 +32,6 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
-        [SerializeField]
-        private Transform _scoreReferenceTransform;
-
         public bool HasRespawnVariants { get => _respawnVariants.Length > 0; }
 
         public UnityEvent OnRespawned;
@@ -69,7 +66,6 @@ namespace ExPresSXR.Minigames.TileGame
             else if (_putBackObjectInstance.TryGetComponent(out _currentVisuals))
             {
                 _currentVisuals.Areas = _areas;
-                _currentVisuals.DisplayOffsetReference = _scoreReferenceTransform;
                 if (!HasRespawnVariants)
                 {
                     // Only randomize prefab if there were no variants

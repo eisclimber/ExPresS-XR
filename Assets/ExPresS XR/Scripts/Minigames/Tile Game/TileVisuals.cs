@@ -48,31 +48,35 @@ namespace ExPresSXR.Minigames.TileGame
         private GameObject _pointsDisplayPrefab;
 
         [SerializeField]
-        private float _subScoreShowDelay = 0.3f;
+        private float _subScoreShowDelay = 0.5f;
 
         [SerializeField]
-        private float _pointsDisplayScale = 0.25f;
+        private float _pointsDisplayScale = 0.1f;
 
         [SerializeField]
-        private float _pointsDisplayRadius = 0.09f;
+        private float _pointsDisplayRadius = 0.08f;
 
         [Space]
 
         [SerializeField]
-        private Transform _displayOffsetReference;
-        public Transform DisplayOffsetReference
-        {
-            get => _displayOffsetReference;
-            set => _displayOffsetReference = value;
-        }
+        private Vector3 _pointsDisplayOffset = new(0.0f, 0.02f, 0.0f);
 
-        [SerializeField]
-        private Vector3 _pointsDisplayOffset = new(0.0f, 0.0f, -0.09f);
 
         [SerializeField]
         private MaterialMapping _materialIdxs;
 
         private Coroutine _displayScoreCoroutine;
+
+
+        /// <summary>
+        /// Utility accessors
+        /// </summary>
+        public int CenterAreaId => _displayedTile != null ? _displayedTile.CenterAreaId : -1;
+        public int TopAreaId => _displayedTile != null ? _displayedTile.TopAreaId : -1;
+        public int BottomAreaId => _displayedTile != null ? _displayedTile.BottomAreaId : -1;
+        public int LeftAreaId => _displayedTile != null ? _displayedTile.LeftAreaId : -1;
+        public int RightAreaId => _displayedTile != null ? _displayedTile.RightAreaId : -1;
+
 
         [ContextMenu("Update Visuals")]
         private void UpdateVisuals()
@@ -89,11 +93,11 @@ namespace ExPresSXR.Minigames.TileGame
             Material[] newMats = Application.isPlaying ? _renderer.materials : _renderer.sharedMaterials;
             // Materials are messed up when exported for some reason...
             // Left, Top, Right, Bottom, Center
-            newMats[_materialIdxs.Center] = _areas[_displayedTile.CenterAreaId].Material;
-            newMats[_materialIdxs.Top] = _areas[_displayedTile.TopAreaId].Material;
-            newMats[_materialIdxs.Bottom] = _areas[_displayedTile.BottomAreaId].Material;
-            newMats[_materialIdxs.Left] = _areas[_displayedTile.LeftAreaId].Material;
-            newMats[_materialIdxs.Right] = _areas[_displayedTile.RightAreaId].Material;
+            newMats[_materialIdxs.Center] = _areas[CenterAreaId].Material;
+            newMats[_materialIdxs.Top] = _areas[TopAreaId].Material;
+            newMats[_materialIdxs.Bottom] = _areas[BottomAreaId].Material;
+            newMats[_materialIdxs.Left] = _areas[LeftAreaId].Material;
+            newMats[_materialIdxs.Right] = _areas[RightAreaId].Material;
             _renderer.materials = newMats;
 
 #if UNITY_EDITOR
@@ -149,14 +153,21 @@ namespace ExPresSXR.Minigames.TileGame
         {
             GameObject scoreNumbersGo = Instantiate(_pointsDisplayPrefab);
             // Use offset of the reference or global offset
-            Vector3 displayOffset = _displayOffsetReference != null ? _displayOffsetReference.rotation * _pointsDisplayOffset : _pointsDisplayOffset;
-            scoreNumbersGo.transform.SetPositionAndRotation(transform.position + direction * _pointsDisplayRadius + displayOffset, Quaternion.identity);
+            scoreNumbersGo.transform.SetPositionAndRotation(transform.position + direction * _pointsDisplayRadius + _pointsDisplayOffset, Quaternion.identity);
             scoreNumbersGo.transform.localScale = Vector3.one * _pointsDisplayScale;
-            Color textColor = areaId >= 0 && areaId < _areas.Length ? _areas[areaId].Color : Color.white;
 
             if (scoreNumbersGo.TryGetComponent(out ScoreNumbers scoreNumbers))
             {
-                scoreNumbers.ShowScore(points, textColor);
+                scoreNumbers.SetupScoreData(points);
+                if (areaId >= 0)
+                {
+                    Color areaColor = GetAreaIdColor(areaId);
+                    scoreNumbers.SetScoreColor(areaColor);
+                }
+                else
+                {
+                    scoreNumbers.RandomizeColorHue();
+                }
             }
         }
 
@@ -169,8 +180,18 @@ namespace ExPresSXR.Minigames.TileGame
 
 
         [ContextMenu("Display Test Score")]
-        public void DisplayTestScore() => DisplayScore(new(1, 2, 10, 0, 4));
+        public void DisplayTestScore()
+        {
+            if (Application.isPlaying)
+            {
+                DisplayScore(new(1, CenterAreaId, 2, TopAreaId, 10, BottomAreaId, 1, LeftAreaId, 4, RightAreaId));
+            }
+            else
+            {
+                Debug.LogWarning("Not spawning scores, while the application is not running.", this);
+            }
 
+        }
 
         [ContextMenu("Randomize Area Types")]
         public void RandomizeAreaTypes()
@@ -203,15 +224,17 @@ namespace ExPresSXR.Minigames.TileGame
             GizmoUtils.DrawLabel($"{DisplayedTile.RightAreaId}", Vector3.right * GIZMO_LABEL_OFFSET, transform);
         }
 
-        [System.Serializable]
-        public class MaterialMapping
-        {
-            public int Center = 1;
+        private Color GetAreaIdColor(int areaId) => areaId >= 0 && areaId < _areas.Length ? _areas[areaId].Color : Color.white;
+    }
 
-            public int Top = 4;
-            public int Bottom = 2;
-            public int Left = 3;
-            public int Right = 5;
-        }
+    [System.Serializable]
+    public class MaterialMapping
+    {
+        public int Center = 1;
+
+        public int Top = 4;
+        public int Bottom = 2;
+        public int Left = 3;
+        public int Right = 5;
     }
 }

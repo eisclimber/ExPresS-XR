@@ -9,53 +9,95 @@ namespace ExPresSXR.Experimentation.EyeTracking
 {
     public class AreaOfInterestRay : MonoBehaviour
     {
+        /// <summary>
+        /// Default mask used to calculate hits with. Should be both the "AOI" and "AOI Bounce" layer.
+        /// </summary>
         private const int DEFAULT_AOI_LAYER_MASK = 1536;
+
+        /// <summary>
+        /// May length of the ray drawn in the editor to indicate the looking direction. 
+        /// </summary>
         private const float GIZMOS_RAY_MAX_LENGTH = 5.0f;
+
+        /// <summary>
+        /// Size of the cube drawn at the AOI hit point.
+        /// </summary>
         private const float GIZMOS_CUBE_SIZE = 0.05f;
+
+        /// <summary>
+        /// AOI Id used when no hit is detected.
+        /// </summary>
         public const string NO_AOI_DETECTED_ID = "None";
 
-
+        /// <summary>
+        /// The InputActionRef that provides the value of the eye's position.
+        /// </summary>
         [Tooltip("The InputActionRef that provides the value of the eye's position.")]
         [SerializeField]
         private InputActionReference _eyePositionRef;
         
+        /// <summary>
+        /// The InputActionRef that provides the value of the eye's rotation.
+        /// </summary>
         [Tooltip("The InputActionRef that provides the value of the eye's rotation.")]
         [SerializeField]
         private InputActionReference _eyeRotationRef;
 
+        /// <summary>
+        /// If set to a value greater than 0 will allow _numAOIBounces until hitting an AOIArea.
+        /// For a GameObject to bounce the 'AreaOfInterestRayBouncer'-Component must be added and it's layer be set to 'AreaOfInterestBouncer'.
+        /// </summary>
         [Tooltip("If set to a value greater than 0 will allow _numAOIBounces until hitting an AOIArea. For a GameObject to bounce the 'AreaOfInterestRayBouncer'-Component must be added and it's layer be set to 'AreaOfInterestBouncer'.")]
         [SerializeField]
         private int _numAOIBounces = 1;
 
+        /// <summary>
+        /// LayerMask for detecting AOIs and AOIBouncers.
+        /// </summary>
         [Tooltip("LayerMask for detecting AOIs and AOIBouncers.")]
         [SerializeField]
         private LayerMask _layerMask = DEFAULT_AOI_LAYER_MASK;
 
+        /// <summary>
+        /// Stopwatch to time aoi focus. Will retrieve the component on Awake if missing and create a new one if missing.
+        /// </summary>
         [Tooltip("Stopwatch to time aoi focus. Will retrieve the component on Awake if missing and create a new one if missing.")]
         [SerializeField]
         private Stopwatch _aoiStopwatch;
 
         // Data Retrieval
 
-        // The raycast on the focussed AOI or the last hit after bouncing
+        /// <summary>
+        /// The raycast on the focussed AOI or the last hit after bouncing
+        /// </summary>
         private RaycastHit _currentRaycastHit;
         public RaycastHit CurrentRaycastHit
         {
             get => _currentRaycastHit;
         }
 
+        /// <summary>
+        /// Accessor for the current eye position.
+        /// </summary>
         private Vector3 _currentEyePos;
         public Vector3 CurrentEyePos
         {
             get => _currentEyePos;
         }
 
+        /// <summary>
+        /// Accessor for the current eye looking direction.
+        /// </summary>
         private Vector3 _currentEyeDir;
         public Vector3 CurrentEyeDir
         {
             get => _currentEyeDir;
         }
 
+        /// <summary>
+        /// List of detected AOI positions including bounces on configured reflective surfaces.
+        /// Begins with the eye position and ends on a AOI hit, if any.
+        /// </summary>
         private List<Vector3> _bounceTracePath;
         public List<Vector3> BounceTracePath
         {
@@ -63,7 +105,9 @@ namespace ExPresSXR.Experimentation.EyeTracking
         }
 
 
-        // AOI ID
+        /// <summary>
+        /// Currently focussed AOI id.
+        /// </summary>
 
         private string _focusedAoiId = NO_AOI_DETECTED_ID;
         public string FocusedAoiId
@@ -72,18 +116,25 @@ namespace ExPresSXR.Experimentation.EyeTracking
             private set => _focusedAoiId = value;
         }
 
+        /// <summary>
+        /// If an AOI is currently focussed.
+        /// </summary>
         public bool HasAOIFocussed
         { 
             get => IsColliderAoi(_currentRaycastHit.collider);
         }
 
-        // Time the current aoi (or none) was focussed
+        /// <summary>
+        /// Time the current aoi (or none) was focussed.
+        /// </summary>
         public float AoiFocusDuration
         {
             get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
         }
 
-        // (UNIX) Start Time of the focus on an aoi
+        /// <summary>
+        /// (UNIX) Start Time of the focus on an aoi.
+        /// </summary>
         public float AoiFocusStart
         {
             get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;

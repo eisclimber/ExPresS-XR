@@ -2,12 +2,18 @@ using UnityEngine;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
+    /// <summary>
+    /// This component acts as an indicator if an AOI ray should bounce 
+    /// from this component instead and ensures the correct configuration for AOI
+    /// </summary>
     [RequireComponent(typeof(Collider))]
-    // This component acts as an indicator if an AOI ray should bounce 
-    // from this component instead and ensures the correct configuration for AOI
     public class AreaOfInterestBouncer : MonoBehaviour
     {
+        /// <summary>
+        /// Collision layer used to detect aoi bounces.
+        /// </summary>
         public const int AOI_BOUNCER_LAYER = 10;
+
         private void Awake() {
             if (!TryGetComponent(out Collider collider))
             {

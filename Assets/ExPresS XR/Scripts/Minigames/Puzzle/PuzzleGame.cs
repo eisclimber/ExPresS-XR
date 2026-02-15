@@ -207,7 +207,7 @@ namespace ExPresSXR.Minigames.Puzzle
             scoreDisplayInstance.transform.localScale = Vector3.one * _scoreNumbersScale;
             if (scoreDisplayInstance.TryGetComponent(out ScoreNumbers scoreNumbers))
             {
-                scoreNumbers.SetupScore(score, bonus, "", bonus > 0 ? _speedBonusPrefix : "");
+                scoreNumbers.SetupScoreData(score, bonus, "", bonus > 0 ? _speedBonusPrefix : "");
             }
         }
 

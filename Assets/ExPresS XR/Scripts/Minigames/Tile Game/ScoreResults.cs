@@ -7,7 +7,14 @@ namespace ExPresSXR.Minigames.TileGame
     {
         public int TotalScore;
 
+        /// <summary>
+        /// Score of the center area.
+        /// </summary>
         public int CenterScore;
+
+        /// <summary>
+        /// Type of the center area.
+        /// </summary>
         public int CenterAreaId;
 
         public int TopScore;

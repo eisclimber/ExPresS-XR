@@ -34,33 +34,22 @@ namespace ExPresSXR.Minigames.TileGame
         [Space]
 
         [SerializeField]
-        private int _snapAngle = 90;
+        private int _numSteps = 4;
+
+        public float SnapAngle => 360f / _numSteps;
 
         [SerializeField]
         private bool _requireFrontSideUp = true;
 
         private XRBaseInteractable _interactable;
 
-        private int NumSteps
-        {
-            get => Mathf.RoundToInt(360f / _snapAngle);
-        }
-
-        /// <summary>
-        /// Emitted once an object has been submitted.
-        /// </summary>
-        public UnityEvent OnSubmitted;
         public UnityEvent<int> OnRotationSnapped;
+        public UnityEvent OnSubmitted;
         public UnityEvent<BoardSubmitContext> OnTileSubmitted;
 
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (360 % _snapAngle != 0)
-            {
-                Debug.LogWarning("Snap angle should be a divisor of 360 to work properly.", this);
-            }
 
             if (attachTransform == null)
             {
@@ -120,11 +109,11 @@ namespace ExPresSXR.Minigames.TileGame
             // Get angle around socket up axis
             Vector3 forward = local * Vector3.forward;
             float rawAngle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
-            int roundedAngle = (int)Mathf.Round(rawAngle / _snapAngle);
-            int step = RuntimeUtils.PosMod(roundedAngle, NumSteps);
+            int roundedAngle = (int)Mathf.Round(rawAngle / SnapAngle);
+            int step = RuntimeUtils.PosMod(roundedAngle, _numSteps);
 
             // Snap to increments
-            float steppedAngle = step * _snapAngle;
+            float steppedAngle = step * SnapAngle;
 
             // Build snapped local rotation
             Quaternion snappedLocal = Quaternion.AngleAxis(steppedAngle, Vector3.up);
@@ -165,11 +154,19 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        public void ClearSelection()
+        {
+            if (hasSelection)
+            {
+                Destroy(firstInteractableSelected.transform.gameObject);
+            }
+        }
+
         public override bool CanHover(IXRHoverInteractable interactable)
-            => base.CanHover(interactable) && IsInteractableAllowed(interactable) || _allowInvalidHover;
+            => base.CanHover(interactable) && !hasSelection&& IsInteractableAllowed(interactable) || _allowInvalidHover;
 
         public override bool CanSelect(IXRSelectInteractable interactable)
-            => base.CanSelect(interactable) && IsInteractableAllowed(interactable);
+            => base.CanSelect(interactable)  && IsInteractableAllowed(interactable);
 
 
         private bool IsInteractableAllowed(IXRInteractable interactable) => HasTileVisuals(interactable) && (!_requireFrontSideUp || IsInteractableOrientedCorrectly(interactable));
@@ -190,9 +187,9 @@ namespace ExPresSXR.Minigames.TileGame
             // Change to local space
             Gizmos.matrix = transform.localToWorldMatrix;
             // Draw snap points
-            for (int i = 0; i < NumSteps; i++)
+            for (int i = 0; i < _numSteps; i++)
             {
-                float rotation = i * _snapAngle;
+                float rotation = i * SnapAngle;
                 Vector3 labelPos = Quaternion.AngleAxis(rotation, Vector3.up) * Vector3.forward * STEP_LABEL_RADIUS;
                 GizmoUtils.DrawLabel(i.ToString(), labelPos, Color.yellow, transform);
             }
