@@ -51,6 +51,7 @@ namespace ExPresSXR.Misc
             public Toggle NearInteractionToggle;
             public Toggle FarInteractionToggle;
             public Toggle FarAnchorControlToggle;
+            public Toggle FarPullCloserToggle;
             public Toggle FarUiToggle;
             public Toggle PokeInteractionToggle;
             public Toggle PokePointOnHoverToggle;
@@ -101,6 +102,7 @@ namespace ExPresSXR.Misc
                 FindComponentIfMissing(ref NearInteractionToggle, searchTransform, "Near Interaction Toggle");
                 FindComponentIfMissing(ref FarInteractionToggle, searchTransform, "Far Interaction Toggle");
                 FindComponentIfMissing(ref FarAnchorControlToggle, searchTransform, "Far Anchor Control Toggle");
+                FindComponentIfMissing(ref FarPullCloserToggle, searchTransform, "Far Pull Closer Toggle");
                 FindComponentIfMissing(ref FarUiToggle, searchTransform, "Far UI Toggle");
                 FindComponentIfMissing(ref PokeInteractionToggle, searchTransform, "Poke Interaction Toggle");
                 FindComponentIfMissing(ref PokePointOnHoverToggle, searchTransform, "Poke Point On Hover Toggle");
@@ -143,6 +145,7 @@ namespace ExPresSXR.Misc
                 AddInteractionOptionsListenerToToggle(NearInteractionToggle, rig, InteractionOptions.Near);
                 AddInteractionOptionsListenerToToggle(FarInteractionToggle, rig, InteractionOptions.Far);
                 AddInteractionOptionsListenerToToggle(FarAnchorControlToggle, rig, InteractionOptions.FarAnchorControl);
+                AddInteractionOptionsListenerToToggle(FarPullCloserToggle, rig, InteractionOptions.FarPullCloser);
                 AddInteractionOptionsListenerToToggle(FarUiToggle, rig, InteractionOptions.FarUi);
                 AddInteractionOptionsListenerToToggle(PokeInteractionToggle, rig, InteractionOptions.Poke);
                 AddInteractionOptionsListenerToToggle(PokePointOnHoverToggle, rig, InteractionOptions.PokePointOnHover);
@@ -207,6 +210,7 @@ namespace ExPresSXR.Misc
                 TrySetToggleValue(NearInteractionToggle, rig.InteractionOptions.HasFlag(InteractionOptions.Near));
                 TrySetToggleValue(FarInteractionToggle, rig.InteractionOptions.HasFlag(InteractionOptions.Far));
                 TrySetToggleValue(FarAnchorControlToggle, rig.InteractionOptions.HasFlag(InteractionOptions.FarAnchorControl));
+                TrySetToggleValue(FarPullCloserToggle, rig.InteractionOptions.HasFlag(InteractionOptions.FarPullCloser));
                 TrySetToggleValue(FarUiToggle, rig.InteractionOptions.HasFlag(InteractionOptions.FarUi));
                 TrySetToggleValue(PokeInteractionToggle, rig.InteractionOptions.HasFlag(InteractionOptions.Poke));
                 TrySetToggleValue(PokePointOnHoverToggle, rig.InteractionOptions.HasFlag(InteractionOptions.PokePointOnHover));

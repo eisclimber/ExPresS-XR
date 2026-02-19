@@ -10,47 +10,38 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public const float DEFAULT_DELAY = 0.0f;
 
-        [Space] // Separate from the rest of the timer
+        /// <summary>
+        /// The actual heart of the timing logic.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The timing logic for the delay.")]
+        private TimingUnit _delayTimingUnit = new();
 
         /// <summary>
         /// Delay until the timer stats. Must be greater than 0.0f.
         /// </summary>
         [Tooltip("Delay until the timer stats. Must be greater than 0.0f.")]
-        [SerializeField]
-        private float _startDelay = DEFAULT_DELAY;
         public float StartDelay
         {
-            get => _startDelay;
-            protected set => _startDelay = value;
+            get => _delayTimingUnit.WaitTime;
+            set => _delayTimingUnit.WaitTime = value;
         }
 
         /// <summary>
         /// Returns the remaining time of the timer.
         /// If the timer is was not started or timed out, the value will be the value of TIMER_INACTIVE_WAIT_TIME.
         /// </summary>
-        [SerializeField]
-        [ReadonlyInInspector]
-        private float _remainingDelay;
         public float RemainingDelay
         {
-            get => _remainingDelay;
-            protected set
-            {
-                bool wasDelaying = _remainingDelay > 0;
-                float rawValue = value;
-                _remainingDelay = value > 0.0f ? value : TIMER_INACTIVE_TIME;
-                // Changed from delaying to not delaying -> timeout
-                if (wasDelaying && _remainingDelay <= 0)
-                {
-                    HandleDelayTimeout();
-                    // Add (!) the negative remaining delay the RemainingTime to be more precise 
-                    RemainingTime += rawValue;
-                    if (RemainingTime <= 0.0f)
-                    {
-                        HandleTimeout();
-                    }
-                }
-            }
+            get => _delayTimingUnit.RemainingTime;
+        }
+
+        /// <summary>
+        /// Returns if the timer is currently delaying.
+        /// </summary>
+        public bool Delayed
+        {
+            get => RemainingDelay > 0.0f;
         }
 
         /// <summary>
@@ -58,11 +49,20 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public override bool Running
         {
-            get => (_remainingDelay > 0.0f || RemainingTime > 0.0f) && !TimerPaused;
+            get => base.Running || _delayTimingUnit.Running && !TimerPaused;
         }
 
+        
+        [Space]
+        
         /// <summary>
-        /// Event that is triggered when the timer times out.
+        /// Event that is triggered when the delay timer starts (i.e. the timer is started).
+        /// </summary>
+        [Tooltip("Event that is triggered when the timer times out.")]
+        public UnityEvent OnDelayStarted;
+        
+        /// <summary>
+        /// Event that is triggered when the delay timer times out (i.e. the actual timer starts).
         /// </summary>
         [Tooltip("Event that is triggered when the timer times out.")]
         public UnityEvent OnDelayTimeout;
@@ -70,6 +70,9 @@ namespace ExPresSXR.Misc.Timing
 
         protected override void Awake()
         {
+            _delayTimingUnit.OnStarted.AddListener(HandleDelayTimingUnitStarted);
+            _delayTimingUnit.OnStarted.AddListener(HandleDelayTimingUnitTimeout);
+
             if (AutoStart)
             {
                 StartTimer();
@@ -85,16 +88,9 @@ namespace ExPresSXR.Misc.Timing
             {
                 return;
             }
-
-            bool needsDelay = _remainingDelay > 0;
-            if (needsDelay)
+            else if (_delayTimingUnit.Running)
             {
-                float rawDelay = _remainingDelay - Time.fixedDeltaTime;
-                _remainingDelay = rawDelay > 0.0f ? rawDelay : TIMER_INACTIVE_TIME;
-                if (needsDelay && _remainingDelay <= 0)
-                {
-                    HandleDelayTimeout();
-                }
+                _delayTimingUnit.UpdateTimer(Time.fixedDeltaTime);
             }
             else
             {
@@ -122,8 +118,7 @@ namespace ExPresSXR.Misc.Timing
         /// </param>
         public virtual void StartTimer(float duration = -1.0f, float delay = -1.0f)
         {
-            StartDelay = delay > 0.0f ? delay : _startDelay;
-            RemainingDelay = _startDelay;
+            _delayTimingUnit.StartTimer(duration);
             base.StartTimer(duration);
         }
 
@@ -133,16 +128,18 @@ namespace ExPresSXR.Misc.Timing
         [ContextMenu("Stop Timer")]
         public override void StopTimer()
         {
+            _delayTimingUnit.StopTimer();
             base.StopTimer();
-            RemainingTime = TIMER_INACTIVE_TIME;
         }
+
+        /// <summary>
+        /// Handles the timers delay started, invoking the event.
+        /// </summary>
+        protected virtual void HandleDelayTimingUnitStarted() => OnDelayStarted.Invoke();
 
         /// <summary>
         /// Handles the timers delay timeout, invoking the event.
         /// </summary>
-        protected virtual void HandleDelayTimeout()
-        {
-            OnDelayTimeout.Invoke();
-        }
+        protected virtual void HandleDelayTimingUnitTimeout() => OnDelayTimeout.Invoke();
     }
 }

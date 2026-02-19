@@ -173,10 +173,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _description: 
-  _waitTime: 20
-  _remainingTime: 0
-  autoStart: 1
-  oneShot: 1
+  _timingUnit:
+    _waitTime: 20
+    _remainingTime: 0
+    OnStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  _timerPaused: 0
+  _autoStart: 0
+  _oneShot: 1
   OnStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -533,7 +541,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!1 &9014332303041247942
 GameObject:
   m_ObjectHideFlags: 0

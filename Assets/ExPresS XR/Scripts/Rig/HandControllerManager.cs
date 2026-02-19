@@ -132,6 +132,26 @@ namespace ExPresSXR.Rig
             }
         }
 
+        
+        /// <summary>
+        /// Whether pulling (and pushing) an object closer during far interaction is enabled.
+        /// </summary>
+        [SerializeField]
+        private bool _farPullCloserEnabled;
+        public bool FarPullCloserEnabled
+        {
+            get => _farPullCloserEnabled;
+            set
+            {
+                _farPullCloserEnabled = value;
+
+                if (_attachController != null)
+                {
+                    _attachController.useDistanceBasedVelocityScaling = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Whether or not the ray can also interact with UI.
         /// </summary>

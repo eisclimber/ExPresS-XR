@@ -105,8 +105,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Misc.Timing.Timer
   _description: Game Duration
-  _waitTime: 60
-  _remainingTime: 0
+  _timingUnit:
+    _waitTime: 60
+    _remainingTime: 0
+    OnStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTimeout:
+      m_PersistentCalls:
+        m_Calls: []
   _timerPaused: 0
   _autoStart: 0
   _oneShot: 1

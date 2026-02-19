@@ -6,15 +6,8 @@ namespace ExPresSXR.Misc.Timing
     public class Timer : MonoBehaviour
     {
         /// <summary>
-        ///  Value of `remainingTime` when the timer is not active.
+        /// A description of the timer. No further use.
         /// </summary>
-        public const float TIMER_INACTIVE_TIME = -1.0f;
-
-        /// <summary>
-        /// Default wait time.
-        /// </summary>
-        public const float DEFAULT_WAIT_TIME = 1.0f;
-
         [Tooltip("A description of the timer. No further use.")]
         [SerializeField]
         private string _description = "";
@@ -24,32 +17,35 @@ namespace ExPresSXR.Misc.Timing
             protected set => _description = value;
         }
 
+        /// <summary>
+        /// The actual heart of the timing logic.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The actual heart of the timing logic.")]
+        private TimingUnit _timingUnit = new();
 
 
         /// <summary>
         /// How long the timer takes to timeout. Must be greater than 0.0f.
         /// </summary>
         [Tooltip("How long the timer takes to timeout. Must be greater than 0.0f.")]
-        [SerializeField]
-        private float _waitTime = DEFAULT_WAIT_TIME;
         public float WaitTime
         {
-            get => _waitTime;
-            protected set => _waitTime = value;
+            get => _timingUnit.WaitTime;
+            set => _timingUnit.WaitTime = value;
         }
 
         /// <summary>
         /// Returns the remaining time of the timer.
         /// If the timer is was not started or timed out, the value will be the value of TIMER_INACTIVE_WAIT_TIME.
         /// </summary>
-        [SerializeField]
         [ReadonlyInInspector]
-        private float _remainingTime;
         public float RemainingTime
         {
-            get => _remainingTime;
-            protected set => _remainingTime = value;
+            get => _timingUnit.RemainingTime;
         }
+
+        [Space]
 
         /// <summary>
         /// If the timer is paused or not.
@@ -67,7 +63,7 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public virtual bool Running
         {
-            get => _remainingTime > 0.0f && !TimerPaused;
+            get => _timingUnit.Running && !TimerPaused;
         }
 
         /// <summary>
@@ -116,6 +112,9 @@ namespace ExPresSXR.Misc.Timing
 
         protected virtual void Awake()
         {
+            _timingUnit.OnStarted.AddListener(HandleTimingUnitStarted);
+            _timingUnit.OnTimeout.AddListener(HandleTimingUnitTimeout);
+            
             if (_autoStart)
             {
                 StartTimer();
@@ -129,11 +128,7 @@ namespace ExPresSXR.Misc.Timing
                 return;
             }
 
-            _remainingTime -= Time.fixedDeltaTime;
-            if (_remainingTime <= 0.0f)
-            {
-                HandleTimeout();
-            }
+            _timingUnit.UpdateTimer(Time.fixedDeltaTime);
         }
 
         /// <summary>
@@ -145,10 +140,8 @@ namespace ExPresSXR.Misc.Timing
         /// </param>
         public virtual void StartTimer(float duration = -1.0f)
         {
-            _waitTime = duration > 0.0f ? duration : _waitTime;
-            _remainingTime = _waitTime;
+            _timingUnit.StartTimer(duration);
             TimerPaused = false;
-            OnStarted.Invoke();
         }
 
 
@@ -202,15 +195,17 @@ namespace ExPresSXR.Misc.Timing
         /// Stops and resets the timer whilst not emitting the timeout event.
         /// </summary>
         [ContextMenu("Stop Timer")]
-        public virtual void StopTimer()
-        {
-            _remainingTime = TIMER_INACTIVE_TIME;
-        }
+        public virtual void StopTimer() =>  _timingUnit.StopTimer();
 
         /// <summary>
-        /// Handles the timers timeout, invoking the event restarting it if necessary.
+        /// Handles the TimingUnits start, invoking the started event.
         /// </summary>
-        protected virtual void HandleTimeout()
+        protected virtual void HandleTimingUnitStarted() => OnStarted.Invoke();
+
+        /// <summary>
+        /// Handles the timingUnits timeout, invoking the event restarting it if necessary.
+        /// </summary>
+        protected virtual void HandleTimingUnitTimeout()
         {
             if (OneShot)
             {

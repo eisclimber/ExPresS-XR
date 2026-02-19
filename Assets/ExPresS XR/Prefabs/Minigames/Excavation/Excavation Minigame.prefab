@@ -11863,8 +11863,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _description: Completion check every 1 second.
-  _waitTime: 1
-  _remainingTime: 0
+  _timingUnit:
+    _waitTime: 1
+    _remainingTime: 0
+    OnStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTimeout:
+      m_PersistentCalls:
+        m_Calls: []
   _timerPaused: 0
   _autoStart: 1
   _oneShot: 0

@@ -378,7 +378,7 @@ namespace ExPresSXR.Editor.Editors
                 SaveAsCustomXRRig();
             }
 
-            if (File.Exists(CreationUtils.savedXRRigPath))
+            if (File.Exists(CreationUtils.SavedXRRigPath))
             {
                 EditorGUILayout.HelpBox("Custom ExPresS XR Rig already exists. Setting a new one will"
                     + " override the old one.", MessageType.Warning);
@@ -453,11 +453,11 @@ namespace ExPresSXR.Editor.Editors
             if (PrefabUtility.IsAnyPrefabInstanceRoot(go))
             {
                 GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(go);
-                PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.savedXRRigPath);
+                PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.SavedXRRigPath);
             }
             else
             {
-                PrefabUtility.SaveAsPrefabAsset(_rig.gameObject, CreationUtils.savedXRRigPath);
+                PrefabUtility.SaveAsPrefabAsset(_rig.gameObject, CreationUtils.SavedXRRigPath);
             }
         }
 

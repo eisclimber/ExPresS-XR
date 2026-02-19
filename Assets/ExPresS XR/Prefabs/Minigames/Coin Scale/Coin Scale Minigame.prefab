@@ -60,6 +60,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -81,9 +86,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &7409017079388321081
 BoxCollider:
@@ -314,20 +321,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -513,20 +523,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -653,20 +666,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -743,6 +759,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -764,9 +785,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &2229270044082140634
 BoxCollider:
@@ -1872,14 +1895,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Shape:
     rid: 7097769162205036558
-  m_Size: {x: 0.25, y: 0.03, z: 0.25}
-  m_Rotation: {x: 0, y: 0, z: 0, w: 1}
-  m_PivotLocation: 0
-  m_PivotPosition: {x: 0, y: 0, z: 0}
+  m_ShapeRotation: {x: 0, y: 0, z: 0, w: 1}
   m_UnmodifiedMeshVersion: 115
-  m_ShapeBox:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.125, y: 0.015, z: 0.125}
+  m_Size: {x: 0.25, y: 0.03, z: 0.25}
+  m_LocalCenter: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds:
@@ -1906,6 +1925,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1927,9 +1951,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2229270044214986825
 MeshFilter:
@@ -2182,9 +2208,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a911722e1bb685448d8e964c9561c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waitTime: 2
-  autoStart: 0
-  oneShot: 1
+  _description: Show solution  delayed
+  _timingUnit:
+    _waitTime: 2
+    _remainingTime: 0
+    OnStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  _timerPaused: 0
+  _autoStart: 0
+  _oneShot: 1
   OnStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -2230,7 +2266,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2822073585098462493}
         m_TargetAssemblyTypeName: ExPresSXR.Interaction.BaseButton, Assembly-CSharp
-        m_MethodName: set_inputDisabled
+        m_MethodName: set_InputDisabled
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2325,6 +2361,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2831,6 +2868,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2852,9 +2894,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &2862036651709297139
 BoxCollider:
@@ -2936,6 +2980,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2957,9 +3006,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &9215014239839973850
 BoxCollider:
@@ -3162,6 +3213,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_FontSize
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 4438950360149028911, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332068, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: m_Name
       value: Reset Button
@@ -3220,27 +3275,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5037538043460985740}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 5037538043460985740}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetCoinPositions
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ResetCoinPositions
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ExPresSXR.Minigames.CoinScale.CoinInitializer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: ExPresSXR.Minigames.CoinScale.CoinInitializer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -4098,6 +4177,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_FontSize
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 4438950360149028911, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332068, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: m_Name
       value: Check Button
@@ -4156,58 +4239,110 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 956946666952434636}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 956946666952434636}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2822073585098462493}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 2822073585098462493}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CheckSolution
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: CheckSolution
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_InputDisabled
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: set_inputDisabled
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ExPresSXR.Minigames.CoinScale.SolutionBowl, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: ExPresSXR.Minigames.CoinScale.SolutionBowl, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ExPresSXR.Interaction.BaseButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: ExPresSXR.Interaction.BaseButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
+      propertyPath: OnReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9196364997008332090, guid: 108e4ccf99ed93340908f2da01cac10a, type: 3}
@@ -4243,6 +4378,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5037538043915877479}
     m_Modifications:
+    - target: {fileID: 1011988821021503148, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2762214930122205022, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
       propertyPath: _minHeight
       value: -0.1
@@ -4303,9 +4442,41 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 804
       objectReference: {fileID: 0}
+    - target: {fileID: 5490189832949189561, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490189832949189561, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490189832949189561, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5037538045161187400}
+    - target: {fileID: 5490189832949189561, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490189832949189561, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CheckBowls
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490189832949189561, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ExPresSXR.Minigames.CoinScale.Scale, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490189832949189561, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8670050215184477464, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
       propertyPath: m_VersionIndex
       value: 804
+      objectReference: {fileID: 0}
+    - target: {fileID: 9030351370469194673, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 9030351371472495325, guid: 8eaf7494acaf98941a9f5d1043455688, type: 3}
       propertyPath: m_VersionIndex

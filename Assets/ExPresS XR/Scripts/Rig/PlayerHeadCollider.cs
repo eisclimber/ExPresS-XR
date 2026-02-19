@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using ExPresSXR.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
 // Thanks to metaanomie for basic code (https://metaanomie.blogspot.com/2020/04/unity-vr-head-blocking-steam-vr-v2.html)
@@ -15,10 +16,15 @@ namespace ExPresSXR.Rig
     {
         private const float GRAVITY_STRENGTH = 9.81f;
 
-
+        /// <summary>
+        /// If true the players camera will be pushed back.
+        /// </summary>
         [Tooltip("If true the players camera will be pushed back.")]
         public bool CollisionPushbackEnabled;
 
+        /// <summary>
+        /// If true the players cameras corner will be faded.
+        /// </summary>
         [Tooltip("If true the players cameras corner will be faded.")]
         [SerializeField]
         private bool _showCollisionVignetteEffect;
@@ -30,6 +36,10 @@ namespace ExPresSXR.Rig
 
         public ScreenCollisionIndicator screenCollisionIndicator;
 
+        /// <summary>
+        /// The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height.
+        /// Usually should be set to the ExPresSXRRig or XROrigin.
+        /// </summary>
         [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
         [SerializeField]
         private Transform _pushbackAnchor;
@@ -38,10 +48,16 @@ namespace ExPresSXR.Rig
             set => _pushbackAnchor = value;
         }
 
+        /// <summary>
+        /// Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.
+        /// </summary>
         [Tooltip("Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.")]
         [SerializeField]
         private float _colliderSize = 0.25f;
 
+        /// <summary>
+        /// The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s
+        /// </summary>
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
         private float _maxFadeDuration = 0.5f;
@@ -50,16 +66,24 @@ namespace ExPresSXR.Rig
             set => _maxFadeDuration = value;
         }
 
+        /// <summary>
+        /// Physics Layers used to detect collisions.
+        /// </summary>
         [Tooltip("Physics Layers used to detect collisions.")]
         [SerializeField]
         private LayerMask _layerMask = 1; // Layer: Default
 
         [Space]
 
-
+        /// <summary>
+        /// Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.
+        /// </summary>
         [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
         public UnityEvent OnCollisionStarted;
 
+        /// <summary>
+        /// Will be invoked once when a collision with wall ends.
+        /// </summary>
         [Tooltip("Will be invoked once when a collision with wall ends.")]
         public UnityEvent OnCollisionEnded;
 
@@ -79,13 +103,13 @@ namespace ExPresSXR.Rig
         {
             if (_pushbackAnchor == null)
             {
-                Debug.LogError("No GameObject was set as pushback anchor!");
+                Debug.LogError("No GameObject was set as pushback anchor!", this);
             }
             else
             {
                 if (!_pushbackAnchor.TryGetComponent(out _playerController))
                 {
-                    Debug.LogWarning("The _pushbackAnchor has no CharacterController-Component. Collision pushback won't work!");
+                    Debug.LogWarning("The _pushbackAnchor has no CharacterController-Component. Collision pushback won't work!", this);
                 }
             }
             
@@ -204,12 +228,14 @@ namespace ExPresSXR.Rig
         private bool IsColliderHeldByPlayer(Collider collider)
         {
             // The collider must exist and be part of a Rigidbody attached (required by interactable)
-            // The interactable must exist, be selected and held primarily be the player
-            return collider != null 
+            // The interactable must exist, selected and by the player by checking the tag or if it is a NearFarInteractor.
+            // The latter is needed as there seems to be a bug that the tag is incorrect, despite setting it to "Player".
+            return collider != null
                 && collider.attachedRigidbody != null
                 && collider.attachedRigidbody.TryGetComponent(out XRGrabInteractable interactable)
                 && interactable.isSelected
-                && interactable.firstInteractorSelecting.transform.CompareTag("Player");
+                && (interactable.firstInteractorSelecting is NearFarInteractor
+                    || interactable.firstInteractorSelecting.transform.CompareTag("Player"));
         }
 
         private IEnumerator CollisionCooldown()

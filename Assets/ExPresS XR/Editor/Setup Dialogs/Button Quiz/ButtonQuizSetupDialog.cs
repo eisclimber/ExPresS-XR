@@ -11,6 +11,7 @@ using ExPresSXR.Editor.Utility;
 using ExPresSXR.Misc;
 using ExPresSXR.Experimentation.DataGathering;
 using UnityEditor.Events;
+using ExPresSXR.Editor.UtilityMenuCreation;
 
 namespace ExPresSXR.Editor.SetupDialogs
 {
@@ -1025,7 +1026,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private void CreateDataGatherer()
         {
-            DataGatherer dataGatherer = MenuCreationUtils.CreateDataGatherer(null);
+            DataGatherer dataGatherer = DataGatheringMenuCreations.CreateDataGatherer(null);
             if (_quizGo != null)
             {
                 DataGatheringBinding binding = new(_quizGo, "ButtonQuiz/string GetFullQuizCsvExportValues(char? sep)");

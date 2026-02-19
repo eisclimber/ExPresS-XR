@@ -28,6 +28,16 @@ namespace ExPresSXR.Rig
         [SerializeField]
         private string _pointAnimatorName = "Point";
 
+        [Space]
+
+        [SerializeField]
+        [Tooltip("Input action references canceling the point mode.")]
+        private UnityEngine.InputSystem.InputActionReference[] _pointCancelActions;
+
+        [SerializeField]
+        [Tooltip("")]
+        private float _postCancelDowntime = 0.2f;
+
 
         private int _pointAreaCollisions;
         public int PointAreaCollisions
@@ -40,9 +50,31 @@ namespace ExPresSXR.Rig
             }
         }
 
+        public bool PointActive
+        {
+            get => _pointAreaCollisions > 0 && Time.time - _lastPointCancelTime > _postCancelDowntime;
+        }
 
+        private float _lastPointCancelTime;
         private InputDevice _currentDevice;
         private Animator _animator;
+
+
+        private void OnEnable()
+        {
+            foreach (UnityEngine.InputSystem.InputActionReference actionRef in _pointCancelActions)
+            {
+                actionRef.action.performed += ResetPointAreaCollisions;
+            }
+        }
+
+        private void OnDisable()
+        {
+            foreach (UnityEngine.InputSystem.InputActionReference actionRef in _pointCancelActions)
+            {
+                actionRef.action.performed -= ResetPointAreaCollisions;
+            }
+        }
 
 
         private void Update()
@@ -173,6 +205,12 @@ namespace ExPresSXR.Rig
             {
                 Debug.LogError($"No float value was found in the animator with name '{_gripAnimatorName}' in GameObject '{gameObject.name}'.");
             }
+        }
+        
+        private void ResetPointAreaCollisions(UnityEngine.InputSystem.InputAction.CallbackContext _)
+        {
+            _lastPointCancelTime = Time.time;
+            PointAreaCollisions = 0;
         }
     }
 }

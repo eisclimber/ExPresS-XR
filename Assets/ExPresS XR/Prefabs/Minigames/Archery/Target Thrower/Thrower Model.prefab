@@ -59,6 +59,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,9 +85,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5268978147700706666
 BoxCollider:
@@ -177,10 +184,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _description: 
-  _waitTime: 4
-  _remainingTime: 0
-  autoStart: 0
-  oneShot: 0
+  _timingUnit:
+    _waitTime: 4
+    _remainingTime: 0
+    OnStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  _timerPaused: 0
+  _autoStart: 0
+  _oneShot: 1
   OnStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -203,8 +218,18 @@ MonoBehaviour:
   OnPaused:
     m_PersistentCalls:
       m_Calls: []
-  _startDelay: 0
-  _remainingDelay: 0
+  _delayTimingUnit:
+    _waitTime: 1
+    _remainingTime: 0
+    OnStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  OnDelayStarted:
+    m_PersistentCalls:
+      m_Calls: []
   OnDelayTimeout:
     m_PersistentCalls:
       m_Calls: []

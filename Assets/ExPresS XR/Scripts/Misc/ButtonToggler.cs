@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace ExPresSXR.Misc
 {
@@ -26,6 +27,19 @@ namespace ExPresSXR.Misc
             }
         }
 
+        /// <summary>
+        /// If enabled, will attempt to connect to the 'onClick' event of the button. Do not call ToggleButton in this case!
+        /// </summary>
+        [SerializeField]
+        [Tooltip("If enabled, will attempt to connect to the 'onClick' event of the button. Do not call ToggleButton in this case!")]
+        private bool _connectToClick = false;
+        public bool ConnectToClick
+        {
+            get => _connectToClick;
+            set => _connectToClick = value;
+        }
+
+
         [Space]
 
         public ToggledChangedEvent OnToggleChanged;
@@ -41,16 +55,32 @@ namespace ExPresSXR.Misc
             btn = gameObject.GetComponent<Button>();
             normalColor = btn.colors.normalColor;
             pressedColor = btn.colors.pressedColor;
-            btn.onClick.AddListener(ToggleButton);
+
+            if (_connectToClick)
+            {
+                btn.onClick.AddListener(ToggleButton);
+            }
         }
 
         private void OnDisable()
         {
-            btn.onClick.RemoveListener(ToggleButton);
+            if (_connectToClick)
+            {
+                btn.onClick.RemoveListener(ToggleButton);
+            }
         }
 
-        private void ToggleButton()
+        /// <summary>
+        /// Toggles the buttons pressed state. Fails if `_connectToClick` is disabled, to prevent multiple toggles.
+        /// </summary>
+        public void ToggleButton()
         {
+            if (_connectToClick)
+            {
+                Debug.LogWarning("Calling Toggle Button if `_connectToClick` is true, is not allowed!");
+                return;
+            }
+
             Pressed = !_pressed;
 
             OnToggleChanged.Invoke(_pressed);

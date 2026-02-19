@@ -1,9 +1,8 @@
-using ExPresSXR.Misc;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using ExPresSXR.Misc;
 
 
 namespace ExPresSXR.UI
@@ -141,14 +140,6 @@ namespace ExPresSXR.UI
             {
                 _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
             }
-
-            if (_capsButton != null)
-            {
-                if (_capsButton != null && _capsButton.gameObject.TryGetComponent(out ButtonToggler toggler))
-                {
-                    toggler.OnToggleChanged.AddListener(ChangeCapsActive);
-                }
-            }
         }
 
         /// <summary>
@@ -235,12 +226,20 @@ namespace ExPresSXR.UI
 
 
         /// <summary>
-        /// 
+        /// Explicit setter function for setting caps active so we can connect use a named reference. 
         /// </summary>
         /// <param name="newCaps"></param>
         public void ChangeCapsActive(bool newCaps)
         {
             CapsActive = newCaps;
+        }
+
+        /// <summary>
+        /// Toggles the caps active state.
+        /// </summary>
+        public void ToggleCapsActive()
+        {
+            CapsActive = !CapsActive;
         }
 
 

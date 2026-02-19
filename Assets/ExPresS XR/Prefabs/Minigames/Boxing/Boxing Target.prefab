@@ -83,6 +83,7 @@ MonoBehaviour:
   OnCompleted:
     m_PersistentCalls:
       m_Calls: []
+  _targetActive: 0
   _damageDisplayPrefab: {fileID: 3528977270142281369, guid: 1a1f4120541b6ef4990b079d292b3b7b, type: 3}
   _damageMultiplier: 100
   _pointsDistribution:
@@ -132,8 +133,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _description: Boxing Area Max Time
-  _waitTime: 3
-  _remainingTime: 0
+  _timingUnit:
+    _waitTime: 3
+    _remainingTime: 0
+    OnStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  _timerPaused: 0
+  _autoStart: 0
   _oneShot: 1
   OnStarted:
     m_PersistentCalls:

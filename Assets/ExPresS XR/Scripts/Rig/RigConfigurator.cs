@@ -56,6 +56,7 @@ namespace ExPresSXR.Rig
 
                 handController.FarInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Far);
                 handController.FarAnchorControlEnabled = interactionOptions.HasFlag(InteractionOptions.FarAnchorControl);
+                handController.FarPullCloserEnabled = interactionOptions.HasFlag(InteractionOptions.FarPullCloser);
                 handController.FarUiInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.FarUi);
 
                 handController.PokeInteractionEnabled = interactionOptions.HasFlag(InteractionOptions.Poke);
@@ -278,11 +279,12 @@ namespace ExPresSXR.Rig
         Near = 1 << 0,
         Far = 1 << 1,
         FarAnchorControl = 1 << 2,
-        FarUi = 1 << 3,
-        Poke = 1 << 4,
-        PokePointOnHover = 1 << 5,
-        PokeUi = 1 << 6,
-        UiScrolling = 1 << 7
+        FarPullCloser = 1 << 3,
+        FarUi = 1 << 4,
+        Poke = 1 << 5,
+        PokePointOnHover = 1 << 6,
+        PokeUi = 1 << 7,
+        UiScrolling = 1 << 8
     }
 
     [Flags]
