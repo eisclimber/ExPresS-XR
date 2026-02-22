@@ -1,7 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
-using ExPresSXR.Interaction.Interactables;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEditor.XR.Interaction.Toolkit;
+using ExPresSXR.Interaction;
+using UnityEditor.XR.Interaction.Toolkit.Interactables;
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -9,7 +13,7 @@ namespace ExPresSXR.Editor.Editors
     /// Custom editor for an <see cref="ExPresSXRGrabInteractable"/>.
     /// </summary>
     [CustomEditor(typeof(ExPresSXRGrabInteractable), true), CanEditMultipleObjects]
-    public class ExPresSXRGrabInteractableEditor : UnityEditor.XR.Interaction.Toolkit.Interactables.XRGrabInteractableEditor
+    public class ExPresSXRGrabInteractableEditor : XRGrabInteractableEditor
     {
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.AllowGrab"/>.</summary>
         protected SerializedProperty _allowGrab;
@@ -33,14 +37,13 @@ namespace ExPresSXR.Editor.Editors
         protected SerializedProperty _scaledChildren;
 
 
-        protected ExPresSXRGrabInteractable _scaleInteractable;
-        
+        private ExPresSXRGrabInteractable scaleInteractable;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            _scaleInteractable = (ExPresSXRGrabInteractable)target;
+            scaleInteractable = (ExPresSXRGrabInteractable)target;
 
             _allowGrab = serializedObject.FindProperty("_allowGrab");
 
@@ -89,7 +92,7 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUI.BeginDisabledGroup(true);
             EditorGUI.indentLevel++;
-            float _ = EditorGUILayout.FloatField("(Readonly) Current Scale Factor", _scaleInteractable.ScaleFactor);
+            float _ = EditorGUILayout.FloatField("(Readonly) Current Scale Factor", scaleInteractable.ScaleFactor);
             EditorGUI.indentLevel--;
             EditorGUI.EndDisabledGroup();
 
@@ -97,12 +100,12 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.PropertyField(_scaleAllChildren, true);
 
-            if (!_scaleInteractable.ScaleAllChildren)
+            if (!scaleInteractable.ScaleAllChildren)
             {
                 EditorGUILayout.PropertyField(_scaledChildren, true);
             }
 
-            if (_scaleInteractable.transform.childCount < 1)
+            if (scaleInteractable.transform.childCount < 1)
             {
                 EditorGUILayout.HelpBox("This ExPresSXRGrabInteractable has no children. Only the children of this interactable can be scaled.", MessageType.Warning);
             }

@@ -1,19 +1,17 @@
+using System.Collections;
 using System.Collections.Generic;
-using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
-using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-namespace ExPresSXR.Interaction.Interactables
+namespace ExPresSXR.Interaction
 {
     /// <summary>
     /// Acts as a wrapper for allowing XRGrabInteractables to be scaled while being held. 
     /// This will **not** scale the GameObject itself but all of it's children. Scaling will be applied to the children using their initial scale.
     /// </summary>
     [AddComponentMenu("ExPresS XR/ExPresS XR Grab Interactable")]
-    public class ExPresSXRGrabInteractable : XRGrabInteractable
+    public class ExPresSXRGrabInteractable : UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable
     {
         /// <summary>
         /// Minimal scale possible, negative values are considered unbound.
@@ -121,6 +119,7 @@ namespace ExPresSXR.Interaction.Interactables
             }
         }
 
+
         /// <summary>
         /// The current scale to the children, relative to their initial scale.
         /// </summary>
@@ -154,6 +153,8 @@ namespace ExPresSXR.Interaction.Interactables
         {
             get => _scaleSpeedOverride > 0.0f;
         }
+        
+        private Coroutine _hiddenFromPlayerCoroutine;
 
         // Events
 
@@ -214,7 +215,7 @@ namespace ExPresSXR.Interaction.Interactables
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
-            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject))
+            if (args.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor or UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
             {
                 OnGrabStarted.Invoke();
             }
@@ -227,7 +228,7 @@ namespace ExPresSXR.Interaction.Interactables
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
-            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject))
+            if (args.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor or UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
             {
                 OnGrabReleased.Invoke();
             }
@@ -238,11 +239,12 @@ namespace ExPresSXR.Interaction.Interactables
         /// </summary>
         /// <param name="interactor">Interactor trying to select</param>
         /// <returns>Whether or not selection is allowed.</returns>
-        public override bool IsSelectableBy(IXRSelectInteractor interactor)
+        public override bool IsSelectableBy(UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor)
         {
             // Allow Direct and ray only if grab allowed and add parent checks
-            bool canGrab = (_allowGrab || !RuntimeUtils.IsCloseUpHandInteractor(interactor, true)) && base.IsSelectableBy(interactor);
-            if (RuntimeUtils.IsCloseUpHandInteractor(interactor))
+            bool canGrab = (_allowGrab || interactor is not (UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor or UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)) && base.IsSelectableBy(interactor);
+
+            if (interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor || interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
             {
                 (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();
             }
@@ -293,8 +295,8 @@ namespace ExPresSXR.Interaction.Interactables
             // Don't use a for each here, because the list will shrink
             for (int i = 0; i < interactorsSelecting.Count; i++)
             {
-                IXRSelectInteractor interactor = interactorsSelecting[i];
-                if (RuntimeUtils.IsCloseUpHandInteractor(interactor))
+                UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor = interactorsSelecting[i];
+                if (interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor || interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
                 {
                     interactionManager.SelectExit(interactor, this);
                     i--; // Decrement as the next element will take the removed interactors place
@@ -304,7 +306,7 @@ namespace ExPresSXR.Interaction.Interactables
 
         private void TryResetScaleInSockets(SelectEnterEventArgs args)
         {
-            if (_resetScaleInSockets && args.interactorObject is XRSocketInteractor)
+            if (_resetScaleInSockets && args.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor)
             {
                 ResetScale();
             }
@@ -316,6 +318,38 @@ namespace ExPresSXR.Interaction.Interactables
             float maxValue = _maxScaleFactor >= 0 ? _maxScaleFactor : value;
 
             return Mathf.Clamp(value, minValue, maxValue);
+        }
+
+        public void HideFromPlayerForDuration(float duration)
+        {
+            AllowGrab = false;
+
+            if (_hiddenFromPlayerCoroutine != null)
+            {
+                StopCoroutine(_hiddenFromPlayerCoroutine);
+            }
+
+            if (duration > 0.0f)
+            {
+                _hiddenFromPlayerCoroutine = StartCoroutine(ShowHiddenFromPlayerDelayed(duration));
+            }
+        }
+
+        private void SetVisualsHidden(bool hidden)
+        {
+            foreach (Renderer render in GetComponentsInChildren<Renderer>())
+            {
+                // Debug.Log($"Setting render {render} hidden to {hidden}");
+                render.enabled = !hidden;
+            }
+        }
+
+        private IEnumerator ShowHiddenFromPlayerDelayed(float duration)
+        {
+            SetVisualsHidden(true);
+            yield return new WaitForSeconds(duration);
+            AllowGrab = true;
+            SetVisualsHidden(false);
         }
     }
 }

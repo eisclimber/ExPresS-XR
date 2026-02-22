@@ -5,6 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using ExPresSXR.Interaction.Interactors;
 using ExPresSXR.Interaction.Interactables;
 using ExPresSXR.Misc;
+using ExPresSXR.Interaction;
 
 namespace ExPresSXR.Minigames.TileGame
 {
