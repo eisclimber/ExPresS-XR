@@ -58,7 +58,7 @@ namespace ExPresSXR.Editor.Editors
                 {
                     // Displayed prefab seems invalid -> Try Update/Recreate
                     Debug.LogWarning("The references of your PutBackPrefab seem invalid! Maybe you deleted the object. "
-                                        + $"If you want to delete it for good, remove it the PutBackPrefab of { _putBackSocket }.");
+                                        + $"If you want to delete it for good, remove it the PutBackPrefab of { _putBackSocket }.", _putBackSocket);
                     serializedObject.ApplyModifiedProperties();
                     _putBackSocket.UpdatePutBackObject(true);
                 }
