@@ -5,10 +5,16 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace ExPresSXR.Interaction.Feedback
 {
+    /// <summary>
+    /// Allows playing a rumble based on hover events of an interactable.
+    /// </summary>
     public class HoverRumblePlayer : MonoBehaviour
     {
-        [Tooltip("If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.")]
+        /// <summary>
+        /// If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.")]
         private bool _findTargetOnHover = true;
         public bool FindTargetOnHover
         {
@@ -19,18 +25,25 @@ namespace ExPresSXR.Interaction.Feedback
             }
         }
 
-        [Tooltip("The default rumble that is performed when calling 'PerformDefaultRumble()'.")]
+        /// <summary>
+        /// The default rumble that is performed when calling 'PerformDefaultRumble()'.
+        /// </summary>
         [SerializeField]
+        [Tooltip("The default rumble that is performed when calling 'PerformDefaultRumble()'.")]
         private RumbleDescription _defaultRumble = new(0.5f, 0.5f);
 
-        [Tooltip("HapticImpulsePlayer to receive haptic events.")]
+        /// <summary>
+        /// HapticImpulsePlayer to receive haptic events.
+        /// </summary>
         [SerializeField]
+        [Tooltip("HapticImpulsePlayer to receive haptic events.")]
         private HapticImpulsePlayer _hapticsTarget;
         public HapticImpulsePlayer HapticsTarget
         {
             get => _hapticsTarget;
             set => _hapticsTarget = value;
         }
+
 
         private XRBaseInteractable hoverProvider;
 

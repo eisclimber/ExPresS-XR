@@ -6,8 +6,14 @@ namespace ExPresSXR.Misc.ColorSwitching
     [RequireComponent(typeof(Animator))]
     public class ColorAnimatorSwitcher : MonoBehaviour
     {
+        /// <summary>
+        /// Prefix assumed when changing colors via indices.
+        /// </summary>
         public const string TRIGGER_PREFIX = "TrColor";
 
+        /// <summary>
+        /// The animator with the Animation Controller implementing the logic for switching materials.
+        /// </summary>
         [SerializeField]
         [Tooltip("The animator with the Animation Controller implementing the logic for switching materials.")]
         protected Animator _animator;
@@ -19,6 +25,9 @@ namespace ExPresSXR.Misc.ColorSwitching
         [Tooltip("The MeshRenderer whose material will be manipulated.")]
         protected MeshRenderer _meshRenderer;
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected virtual void Awake()
         {
             if (_animator == null && !TryGetComponent(out _animator))
@@ -32,6 +41,10 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
+        /// <summary>
+        /// Changes to the specified material.
+        /// </summary>
+        /// <param name="switchMaterial">Material to switch to.</param>
         public virtual void ChangeToMaterial(Material switchMaterial)
         {
             if (_meshRenderer != null && switchMaterial != null && _meshRenderer.material != switchMaterial)
@@ -40,8 +53,16 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
+        /// <summary>
+        /// Sets a trigger to change the color, adding the prefix `TRIGGER_PREFIX`.
+        /// </summary>
+        /// <param name="triggerIdx">Index of the trigger.</param>
         public virtual void ChangeColorWithTrigger(int triggerIdx) => ChangeColorWithTrigger(TRIGGER_PREFIX + triggerIdx);
 
+        /// <summary>
+        /// Sets a trigger to change the color.
+        /// </summary>
+        /// <param name="triggerName">Name of the trigger.</param>
         public virtual void ChangeColorWithTrigger(string triggerName)
         {
             if (_animator != null)
@@ -50,6 +71,12 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
+
+        /// <summary>
+        /// Sets a bool to change the color.
+        /// </summary>
+        /// <param name="boolName">Name of the parameter.</param>
+        /// <param name="boolValue">Value to set.</param>
         public virtual void ChangeColorWithBool(string boolName, bool boolValue)
         {
             if (_animator != null)
@@ -58,6 +85,11 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
+        /// <summary>
+        /// Sets a float to change the color.
+        /// </summary>
+        /// <param name="floatName">Name of the parameter.</param>
+        /// <param name="floatValue">Value to set.</param>
         public virtual void ChangeColorWithFloat(string floatName, float floatValue)
         {
             if (_animator != null)
@@ -66,6 +98,9 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
+        /// <summary>
+        /// Checks the states of the animator if they can be used for color switching.
+        /// </summary>
         protected virtual void CheckAnimatorStates()
         {
             if (_animator == null)
@@ -92,7 +127,11 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
-        protected virtual void EvaluateStateBehaviours(AnimatorState state, AnimatorState defaultState = null)
+        /// <summary>
+        /// Checks a state if it can be used for color switching.
+        /// </summary>
+        /// <param name="state">State top check.</param>
+        protected virtual void EvaluateStateBehaviours(AnimatorState state)
         {
             foreach (StateMachineBehaviour behaviour in state.behaviours)
             {
@@ -114,6 +153,10 @@ namespace ExPresSXR.Misc.ColorSwitching
             );
         }
 
+        /// <summary>
+        /// Checks a states transitions if it can be used for color switching.
+        /// </summary>
+        /// <param name="state">State top check.</param>
         protected virtual void EvaluateStateTransitions(AnimatorState state)
         {
             foreach (AnimatorStateTransition transition in state.transitions)
@@ -138,6 +181,9 @@ namespace ExPresSXR.Misc.ColorSwitching
             }
         }
 
+        /// <summary>
+        /// Ensures a correct setup of the animator.
+        /// </summary>
         protected virtual void OnValidate()
         {
             CheckAnimatorStates();

@@ -7,6 +7,9 @@ using ExPresSXR.Misc;
 
 namespace ExPresSXR.Movement
 {
+    /// <summary>
+    /// Maintains a set to teleportation targets that are only visible when in teleport mode.
+    /// </summary>
     public class MapPointManager : MonoBehaviour
     {
         private const string MAP_POINT_LOCATION = "Movement/Map Point";

@@ -10,6 +10,10 @@ using System.Text.RegularExpressions;
 
 namespace ExPresSXR.Localization
 {
+    /// <summary>
+    /// Allows switching between locales.
+    /// Initializes the LocalizationSystem if necessary.
+    /// </summary>
     public class LocaleChanger : MonoBehaviour
     {
         /// <summary>
@@ -140,42 +144,6 @@ namespace ExPresSXR.Localization
             }
         }
 
-        /// <summary>
-        /// Finds the index of the desired locale in the LocalizationSettings.
-        /// </summary>
-        /// <param name="desiredLocale">The locale.</param>
-        /// <returns>The index of the locale or -1 if not found.</returns>
-        public int FindLocaleIndex(Locale desiredLocale)
-        {
-            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
-            for (int i = 0; i < locales.Count; i++)
-            {
-                if (locales[i].Equals(desiredLocale))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Finds the index of the desired locale in the LocalizationSettings using its language code.
-        /// </summary>
-        /// <param name="languageCode">The language code (en, de, ...).</param>
-        /// <returns>The index of the locale or -1 if not found.</returns>
-        public int FindLocaleIndex(string languageCode)
-        {
-            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
-            for (int i = 0; i < locales.Count; i++)
-            {
-                if (locales[i].Identifier.Code == languageCode)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
 
         private IEnumerator InitializeLocalization(Action callback)
         {
@@ -194,6 +162,43 @@ namespace ExPresSXR.Localization
         }
 
         // Remove language code suffix from locale names
-        private string RemoveLanguageCodeSuffix(string localeName) => Regex.Replace(localeName, @" \([^)]*\)$", "");
+        private static string RemoveLanguageCodeSuffix(string localeName) => Regex.Replace(localeName, @" \([^)]*\)$", "");
+
+        
+        /// <summary>
+        /// Finds the index of the desired locale in the LocalizationSettings.
+        /// </summary>
+        /// <param name="desiredLocale">The locale.</param>
+        /// <returns>The index of the locale or -1 if not found.</returns>
+        public static int FindLocaleIndex(Locale desiredLocale)
+        {
+            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
+            for (int i = 0; i < locales.Count; i++)
+            {
+                if (locales[i].Equals(desiredLocale))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds the index of the desired locale in the LocalizationSettings using its language code.
+        /// </summary>
+        /// <param name="languageCode">The language code (en, de, ...).</param>
+        /// <returns>The index of the locale or -1 if not found.</returns>
+        public static int FindLocaleIndex(string languageCode)
+        {
+            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
+            for (int i = 0; i < locales.Count; i++)
+            {
+                if (locales[i].Identifier.Code == languageCode)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }

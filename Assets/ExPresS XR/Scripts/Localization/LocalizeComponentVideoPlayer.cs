@@ -6,6 +6,9 @@ using UnityEditor;
 
 namespace ExPresSXR.Localization
 {
+    /// <summary>
+    /// Allows localizing the VideoPlayer component via the context menu.
+    /// </summary>
     internal static class LocalizeComponentVideoPlayer
     {
 #if UNITY_EDITOR

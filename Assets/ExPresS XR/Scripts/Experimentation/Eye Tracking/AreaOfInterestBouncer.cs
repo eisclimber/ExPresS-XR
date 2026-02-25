@@ -10,9 +10,21 @@ namespace ExPresSXR.Experimentation.EyeTracking
     public class AreaOfInterestBouncer : MonoBehaviour
     {
         /// <summary>
-        /// Collision layer used to detect aoi bounces.
+        /// Default collision layer used to detect aoi bounces.
         /// </summary>
-        public const int AOI_BOUNCER_LAYER = 10;
+        public const int DEFAULT_AOI_BOUNCER_LAYER = 10;
+
+        /// <summary>
+        /// Collision Layer to be used for determining AOI bounces. Should be the same as the GameObjects layer.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Collision Layer to be used for determining AOI bounces. Should be the same as the GameObjects layer.")]
+        private int _aoiBouncerLayer = DEFAULT_AOI_BOUNCER_LAYER;
+        public int AoiBounceLayer
+        {
+            get => _aoiBouncerLayer;
+            set => _aoiBouncerLayer = value;
+        }
 
         private void Awake() {
             if (!TryGetComponent(out Collider collider))
@@ -24,10 +36,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
                 Debug.LogWarning("Ray Bouncer's Collider is a trigger. Nothing can bounce from it.");
             }
             
-            if (gameObject.layer != AOI_BOUNCER_LAYER)
+            if (gameObject.layer != _aoiBouncerLayer)
             {
-                Debug.LogError("GameObject has the wrong Layer for being found by an AOIRay. Setting it's layer to 'AreaOfInterestBouncer'.");
-                gameObject.layer = AOI_BOUNCER_LAYER;
+                Debug.LogError($"GameObject has the wrong Layer for being found by an AOIRay. Setting it's layer to configured layer with id: {_aoiBouncerLayer}.");
+                gameObject.layer = _aoiBouncerLayer;
             }
         }
     }

@@ -3,10 +3,16 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows switching between two events based on a condition.
+    /// </summary>
     public class ConditionalEventSwitcher : MonoBehaviour
     {
-        [Tooltip("A description of the condition. No further use.")]
+        /// <summary>
+        /// A description of the condition. No further use.
+        /// </summary>
         [SerializeField]
+        [Tooltip("A description of the condition. No further use.")]
         private string _description = "";
         public string Description
         {
@@ -14,7 +20,11 @@ namespace ExPresSXR.Misc
             private set => _description = value;
         }
 
+        /// <summary>
+        /// Condition to switch.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Condition to switch.")]
         private bool _condition;
         public bool Condition
         {
@@ -33,7 +43,11 @@ namespace ExPresSXR.Misc
             }
         }
 
+        /// <summary>
+        /// If enabled will automatically invoke the respective events when changing `Condition`.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If enabled will automatically invoke the respective events when changing `Condition`.")]
         private bool _autoEmitWhenChanged = true;
         public bool AutoEmitWhenChanged
         {
@@ -44,15 +58,34 @@ namespace ExPresSXR.Misc
             }
         }
 
+        /// <summary>
+        /// Emitted if `Condition` is true.
+        /// </summary>
         public UnityEvent OnTrueEvent;
+
+        /// <summary>
+        /// Emitted if `Condition` is false.
+        /// </summary>
         public UnityEvent OnFalseEvent;
 
+        /// <summary>
+        /// Emitted always with the value of `Condition`.
+        /// </summary>
         public UnityEvent<bool> OnConditionChanged;
+
+        /// <summary>
+        /// Emitted always with the NEGATED value of `Condition`.
+        /// </summary>
         public UnityEvent<bool> OnConditionChangedNegated;
 
-
+        /// <summary>
+        /// Invokes the conditional events manually.
+        /// </summary>
         public void InvokeConditionalEvent() => (_condition ? OnTrueEvent : OnFalseEvent).Invoke();
 
+        /// <summary>
+        /// Toggles `Condition`.
+        /// </summary>
         public void ToggleConditional() => Condition = !_condition;
 
     }

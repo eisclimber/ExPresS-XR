@@ -4,6 +4,11 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Timing
 {
+    /// <summary>
+    /// Represents the internal logic of a timer counting down time.
+    /// 
+    /// Must be updated manually to process. This should ideally be done in the `FixedUpdate()` function providing `Time.fixedDeltaTime`.
+    /// </summary>
     [Serializable]
     public class TimingUnit
     {

@@ -9,6 +9,9 @@ using System;
 
 namespace ExPresSXR.Presentation.Pictures
 {
+    /// <summary>
+    /// Allows scrolling through a set of pictures interactively.
+    /// </summary>
     public class PictureScrollViewer : MonoBehaviour
     {
         /// <summary>

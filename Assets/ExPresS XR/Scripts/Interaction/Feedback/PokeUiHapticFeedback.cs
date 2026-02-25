@@ -8,22 +8,26 @@ namespace ExPresSXR.Interaction.Feedback
 {
     public class PokeUiHapticFeedback : MonoBehaviour
     {
+        /// <summary>
+        /// XRPokeInteractor to play the rumble on.
+        /// </summary>
         [SerializeField]
-        XRPokeInteractor _pokeInteractor;
-
-        [SerializeField]
-        HapticImpulsePlayer _hapticImpulsePlayer;
+        private XRPokeInteractor _pokeInteractor;
 
         /// <summary>
         /// The Haptic Impulse Player component to use to play haptic impulses.
         /// </summary>
+        [SerializeField]
+        private HapticImpulsePlayer _hapticImpulsePlayer;
         public HapticImpulsePlayer HapticImpulsePlayer
         {
             get => _hapticImpulsePlayer;
             set => _hapticImpulsePlayer = value;
         }
 
-
+        /// <summary>
+        /// Plays a rumble when entering ui elements.
+        /// </summary>
         [SerializeField]
         private bool _playUiHoverEntered;
 
@@ -48,7 +52,9 @@ namespace ExPresSXR.Interaction.Feedback
             set => _uiHoverEnteredData = value;
         }
 
-
+        /// <summary>
+        /// Plays a rumble when exiting ui elements.
+        /// </summary>
         [SerializeField]
         private bool _playUiHoverExited;
 

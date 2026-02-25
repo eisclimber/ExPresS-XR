@@ -152,8 +152,14 @@ namespace ExPresSXR.Interaction.Interactors
             set => _destroyIfNotSelecting = value;
         }
 
-
+        /// <summary>
+        /// If the next SelectEnter event should be omitted.
+        /// </summary>
         protected bool _omitSelectEnterEvent;
+        
+        /// <summary>
+        /// If the next SelectEnter event should be omitted.
+        /// </summary>
         protected bool _omitSelectExitEvent;
 
         private Coroutine _putBackCoroutine;

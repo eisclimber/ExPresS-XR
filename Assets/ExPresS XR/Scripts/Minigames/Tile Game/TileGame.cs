@@ -7,17 +7,33 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.TileGame
 {
+    /// <summary>
+    /// The main game logic for the tile game.
+    /// </summary>
     public class TileGame : MonoBehaviour
     {
+        /// <summary>
+        /// Default width of the board.
+        /// </summary>
         public const int DEFAULT_BOARD_WIDTH = 5;
+
+        /// <summary>
+        /// Default height of the board.
+        /// </summary>
         public const int DEFAULT_BOARD_HEIGHT = 3;
 
-        
+        /// <summary>
+        /// If the game should start automatically.
+        /// </summary>
         [SerializeField]
+        [Tooltip("")]
         private bool _autoStart;
-        
 
+        /// <summary>
+        /// Size of the board.
+        /// </summary>
         [SerializeField]
+        [Tooltip("")]
         private Vector2Int _boardSize = new(DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT);
         public Vector2Int BoardSize
         {
@@ -30,6 +46,7 @@ namespace ExPresSXR.Minigames.TileGame
         }
 
         [SerializeField]
+        [Tooltip("")]
         private Transform _boardSocketsParent;
         public Transform BoardSocketsParent
         {
@@ -38,6 +55,7 @@ namespace ExPresSXR.Minigames.TileGame
         }
 
         [SerializeField]
+        [Tooltip("")]
         private TileRespawnSocket[] _tileRespawnSockets;
         public TileRespawnSocket[] TileRespawnSockets
         {
@@ -51,10 +69,12 @@ namespace ExPresSXR.Minigames.TileGame
         }
 
         [SerializeField]
+        [Tooltip("")]
         private AreaDescription[] _areas;
 
 
         [SerializeField]
+        [Tooltip("")]
         [ReadonlyInInspector]
         private int _totalScore;
         public int TotalScore
@@ -68,6 +88,7 @@ namespace ExPresSXR.Minigames.TileGame
         }
 
         [SerializeField]
+        [Tooltip("")]
         [ReadonlyInInspector]
         private int _placedTiles;
         public int PlacedTiles
@@ -83,23 +104,47 @@ namespace ExPresSXR.Minigames.TileGame
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Number of slots on the board.
+        /// </summary>
         public int NumBoardSlots { get => _boardSize.x * _boardSize.y; }
 
+        /// <summary>
+        /// Number of area types configured to the game.
+        /// </summary>
         public int NumAreas { get => _areas.Length; }
 
 
+        /// <summary>
+        /// Current tiles set for the board.
+        /// </summary>
         private Tile[,] _board = new Tile[DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT];
 
+        /// <summary>
+        /// Emitted when the game is started.
+        /// </summary>
         public UnityEvent OnStarted;
+
+        /// <summary>
+        /// Emitted when a tile is added, providing its location on the board.
+        /// </summary>
         public UnityEvent<Vector2Int> OnTileAdded;
+
+        /// <summary>
+        /// Emitted when the score changes with the score received.
+        /// </summary>
         public UnityEvent<int> OnScoreChanged;
+
+        /// <summary>
+        /// Emitted when the game was completed with the final score.
+        /// </summary>
         public UnityEvent<int> OnCompleted;
 
         private void OnEnable()
         {
             UpdateAreasVisuals();
-            
+
             if (_autoStart)
             {
                 StartGame();
@@ -137,6 +182,10 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        /// <summary>
+        /// Adds a tile from a socket on the board.
+        /// </summary>
+        /// <param name="ctx">Board submission context provided.</param>
         public void AddTileFromBoardSubmission(TileSubmitSocket.BoardSubmitContext ctx)
         {
             TileVisuals display = ctx.TileVisuals;
@@ -145,6 +194,12 @@ namespace ExPresSXR.Minigames.TileGame
             TotalScore += score.TotalScore;
         }
 
+        /// <summary>
+        /// Adds a tile at the specified location.
+        /// </summary>
+        /// <param name="tile">Tile to add.</param>
+        /// <param name="pos">Board position to add it at.</param>
+        /// <returns>Score for the tile added.</returns>
         public ScoreResults AddTileAt(Tile tile, Vector2Int pos)
         {
             if (!IsPosInBounds(pos))
@@ -188,6 +243,13 @@ namespace ExPresSXR.Minigames.TileGame
             return score;
         }
 
+        /// <summary>
+        /// Checks the points received from creating a matching area with a neighboring tile position in the specified direction recursively.
+        /// </summary>
+        /// <param name="pos">Position to check.</param>
+        /// <param name="checkDir">Direction to check in.</param>
+        /// <param name="visited">Already visited tiles.</param>
+        /// <returns>Points received in that direction.</returns>
         public int CheckNeighbor(Vector2Int pos, Vector2Int checkDir, bool[,] visited)
         {
             Vector2Int nextPos = pos + checkDir;
@@ -206,6 +268,14 @@ namespace ExPresSXR.Minigames.TileGame
             return 0;
         }
 
+
+        /// <summary>
+        /// Recursive step for checking the point for creating matching areas relative to the position of a tile tile.
+        /// </summary>
+        /// <param name="pos">Position to check.</param>
+        /// <param name="score">Accumulative score.</param>
+        /// <param name="visited">Already visited tiles.</param>
+        /// <returns>Points received in that tile.</returns>
         public int EvaluatePointsFrom(Vector2Int pos, int score, bool[,] visited)
         {
             if (!IsPosInBounds(pos) || !IsTileOccupied(pos) || visited[pos.x, pos.y])
@@ -224,14 +294,27 @@ namespace ExPresSXR.Minigames.TileGame
             return score;
         }
 
+        /// <summary>
+        /// Check if the tile is occupied.
+        /// </summary>
+        /// <param name="pos">Position to check.</param>
+        /// <returns>Tile is occupied or empty.</returns>
         public bool IsTileOccupied(Vector2Int pos) => IsPosInBounds(pos) && _board[pos.x, pos.y] != null;
 
+        /// <summary>
+        /// Check if the position is a valid board position. 
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
         public bool IsPosInBounds(Vector2Int pos)
         {
-            return pos.x >= 0 && pos.x < DEFAULT_BOARD_WIDTH
-                && pos.y >= 0 && pos.y < DEFAULT_BOARD_HEIGHT;
+            return pos.x >= 0 && pos.x < _boardSize.x
+                && pos.y >= 0 && pos.y < _boardSize.y;
         }
 
+        /// <summary>
+        /// Updates the references to the available areas of the sockets creating new tiles.
+        /// </summary>
         [ContextMenu("Update Area Visuals")]
         public void UpdateAreasVisuals()
         {

@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Timing
 {
+    /// <summary>
+    /// A timer with an initial delay.
+    /// </summary>
     public class DelayTimer : Timer
     {
         /// <summary>

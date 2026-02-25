@@ -5,24 +5,51 @@ using ExPresSXR.Interaction.Interactors;
 
 namespace ExPresSXR.Minigames.Puzzle
 {
+    /// <summary>
+    /// Handles(re-)spawning pieces of the puzzle.
+    /// </summary>
     public class PuzzlePiecesSocketController : MonoBehaviour
     {
+        /// <summary>
+        /// Reference the puzzle to handle the pieces from.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference the puzzle to handle the pieces from.")]
         private PuzzleGame _puzzle;
 
+        /// <summary>
+        /// Sockets to spawn pieces in.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Sockets to spawn pieces in.")]
         private PutBackSocketInteractor[] _respawnSockets;
 
+        /// <summary>
+        /// If pieces should be spawned automatically on start.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If pieces should be spawned automatically on start.")]
         private bool _spawnTilesOnStart;
 
+        /// <summary>
+        /// List of unsubmitted pieces that still can be spawned.
+        /// </summary>
         [SerializeField]
+        [Tooltip("List of unsubmitted pieces that still can be spawned.")]
         private List<int> _unsubmittedPieces;
 
+
+        /// <summary>
+        /// List of index currently held in the `_respawnSockets`.
+        /// </summary>
         [SerializeField]
+        [Tooltip("List of index currently held in the `_respawnSockets`.")]
         [ReadonlyInInspector]
         private int[] _idxInSockets;
 
+        /// <summary>
+        /// Number of sockets to spawn pieces in.
+        /// </summary>
         public int NumSpawnSockets
         {
             get => _respawnSockets.Length;
@@ -98,7 +125,10 @@ namespace ExPresSXR.Minigames.Puzzle
             return tileIdx;
         }
 
-
+        /// <summary>
+        /// Returns a tile to the pool of possible tiles to be spawned.
+        /// </summary>
+        /// <param name="idx"></param>
         public void ReturnTile(int idx)
         {
             if (idx < 0)
@@ -119,6 +149,9 @@ namespace ExPresSXR.Minigames.Puzzle
             }
         }
 
+        /// <summary>
+        /// Rerolls the tiles currently in the sockets.
+        /// </summary>
         [ContextMenu("Reroll Socket Tiles")]
         public void RerollSocketsTiles()
         {

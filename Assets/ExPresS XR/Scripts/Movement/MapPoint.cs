@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Movement
 {
+    /// <summary>
+    /// A target for a MapPointManager-Setup().
+    /// </summary>
     public class MapPoint : MonoBehaviour
     {
         private const string TP_OPTION_PREFAB_LOCATION = "Movement/Teleport Option";

@@ -65,10 +65,12 @@ namespace ExPresSXR.Editor.Editors
             }
             
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_toggleMode"), true);
-
+            
             EditorGUILayout.Space();
 
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_repressTimeout"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_requireDirectInteraction"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNearFarInteraction"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_maxInteractionDistance"), true);
 
             EditorGUI.indentLevel--;

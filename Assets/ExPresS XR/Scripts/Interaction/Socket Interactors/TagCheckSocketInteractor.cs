@@ -8,15 +8,28 @@ namespace ExPresSXR.Interaction.Interactors
 {
     public class TagCheckSocketInteractor : HighlightableSocketInteractor
     {
+        /// <summary>
+        /// List of target tags allowed.
+        /// </summary>
         [SerializeField]
+        [Tooltip("List of target tags allowed.")]
         private List<string> _targetTags = new();
 
+        /// <summary>
+        /// If objects not matching `_targetTags` should be displayed with an invalid hover mesh.
+        /// </summary>
         [SerializeField]
         private bool _allowInvalidHover;
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         public override bool CanHover(IXRHoverInteractable interactable)
             => base.CanHover(interactable) && (IsTagMatch(interactable) || _allowInvalidHover);
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected override Material GetHoveredInteractableMaterial(IXRHoverInteractable interactable)
         {
             if (!IsTagMatch(interactable))
@@ -26,9 +39,15 @@ namespace ExPresSXR.Interaction.Interactors
             return base.GetHoveredInteractableMaterial(interactable);
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         public override bool CanSelect(IXRSelectInteractable interactable)
             => base.CanSelect(interactable) && IsTagMatch(interactable);
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected virtual bool IsTagMatch(IXRInteractable interactable)
         {
             // If empty, compare to the 'Untagged'-tag
@@ -48,6 +67,9 @@ namespace ExPresSXR.Interaction.Interactors
             return false;
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected override bool ShouldDrawHoverMesh(MeshFilter meshFilter, Renderer meshRenderer, Camera mainCamera)
         {
             return !IsMeshAlreadySelected(meshFilter) && base.ShouldDrawHoverMesh(meshFilter, meshRenderer, mainCamera);

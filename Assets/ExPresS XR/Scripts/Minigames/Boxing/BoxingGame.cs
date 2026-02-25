@@ -7,25 +7,52 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.Boxing
 {
+    /// <summary>
+    /// Main logic for the boxing game.
+    /// </summary>
     public class BoxingGame : MonoBehaviour
     {
+        /// <summary>
+        /// TargetAreaTriggerers used by this game (i.e. the hands).
+        /// </summary>
         [SerializeField]
+        [Tooltip("TargetAreaTriggerers used by this game (i.e. the hands).")]
         private TargetAreaTriggerer[] _targetTriggerers;
 
+        /// <summary>
+        /// Boxing targets for this game.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Boxing targets for this game.")]
         private BoxingTargetArea[] _targets;
 
+        /// <summary>
+        /// Randomizer for managing the activation of the boxing targets.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Randomizer for managing the activation of the boxing targets.")]
         private BoxingTargetRandomizer _targetRandomizer;
 
+        /// <summary>
+        /// Timer for for limiting the maximum boxing time.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Timer for for limiting the maximum boxing time.")]
         private Timer _timer;
 
+        /// <summary>
+        /// If the game should start automatically.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If the game should start automatically.")]
         private bool _autoStart;
 
+        /// <summary>
+        /// Current score for the game.
+        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
+        [Tooltip("Current score for the game.")]
         private int _currentScore;
         public int CurrentScore
         {
@@ -41,7 +68,7 @@ namespace ExPresSXR.Minigames.Boxing
         public UnityEvent<int> OnScoreChanged;
         public UnityEvent OnCompleted;
 
-        public void OnEnable()
+        private void OnEnable()
         {
             if (_targetTriggerers.Length <= 0)
             {
@@ -84,7 +111,7 @@ namespace ExPresSXR.Minigames.Boxing
             }
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             foreach (BoxingTargetArea target in _targets)
             {
@@ -98,7 +125,7 @@ namespace ExPresSXR.Minigames.Boxing
             EndGame();
         }
 
-        public void Start()
+        private void Start()
         {
             if (_autoStart)
             {
@@ -106,6 +133,9 @@ namespace ExPresSXR.Minigames.Boxing
             }
         }
 
+        /// <summary>
+        /// Starts the game.
+        /// </summary>
         [ContextMenu("Start Game")]
         public void StartGame()
         {
@@ -114,6 +144,9 @@ namespace ExPresSXR.Minigames.Boxing
             OnStarted.Invoke();
         }
 
+        /// <summary>
+        /// Ends the game.
+        /// </summary>
         [ContextMenu("End Game")]
         public void EndGame()
         {

@@ -5,8 +5,14 @@ using ExPresSXR.Minigames.Common;
 
 namespace ExPresSXR.Minigames.Boxing
 {
+    /// <summary>
+    /// A target area variant for the boxing game.
+    /// </summary>
     public class BoxingTargetArea : TargetArea.TargetArea
     {
+        /// <summary>
+        /// If the target can be hit.
+        /// </summary>
         [SerializeField]
         private bool _targetActive;
         public bool TargetActive
@@ -35,30 +41,64 @@ namespace ExPresSXR.Minigames.Boxing
             }
         }
 
+        /// <summary>
+        /// Prefab (i.e. ScoreNumbers) to be spawned when hit.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Prefab (i.e. ScoreNumbers) to be spawned when hit.")]
         private GameObject _damageDisplayPrefab;
 
+        /// <summary>
+        /// Multiplier for the damage read from `_pointsDistribution`.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Multiplier for the damage read from `_pointsDistribution`.")]
         private float _damageMultiplier = 100.0f;
 
+        /// <summary>
+        /// Distribution of points granted over time normalized between 0.0f and 1.0f for both axis.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Distribution of points granted over time normalized between 0.0f and 1.0f for both axis.")]
         private AnimationCurve _pointsDistribution = new();
 
+        /// <summary>
+        /// Scale with which the `_damageDisplayPrefab` is spawned.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Scale with which the `_damageDisplayPrefab` is spawned.")]
         private float _pointsDisplayScale = 0.35f;
 
+        /// <summary>
+        /// Offset with which the `_damageDisplayPrefab` is spawned.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Offset with which the `_damageDisplayPrefab` is spawned.")]
         private Vector3 _pointsDisplayOffset;
 
+        /// <summary>
+        /// Timer for eventually failing the target.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Timer for eventually failing the target.")]
         private Timer _timer;
 
+        /// <summary>
+        /// Animator for playing an animation indicating a decay in points.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Animator for playing an animation indicating a decay in points.")]
         private Animator _animator;
 
-        public UnityEvent OnFailed;
+        /// <summary>
+        /// Emitted with the points received on a successful hit.
+        /// </summary>
         public UnityEvent<int> OnPointsScored;
 
+        /// <summary>
+        /// Emitted when the target was failed.
+        /// </summary>
+        public UnityEvent OnFailed;
 
         private void OnEnable()
         {
@@ -81,6 +121,9 @@ namespace ExPresSXR.Minigames.Boxing
             }
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         public override void QueueAction()
         {
             if (_targetActive)

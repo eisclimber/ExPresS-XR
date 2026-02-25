@@ -17,6 +17,10 @@ namespace ExPresSXR.Minigames.CoinThrow
         [SerializeField]
         [Tooltip("Score if hit.")]
         private int _score;
+        public int Score
+        {
+            get => _score;
+        }
 
         /// <summary>
         /// If hits should be detected
@@ -24,7 +28,7 @@ namespace ExPresSXR.Minigames.CoinThrow
         [SerializeField]
         [Tooltip("If hits should be detected.")]
         private bool _detectHits;
-        public bool detectHits
+        public bool DetectHits
         {
             get => _detectHits;
             set => _detectHits = value;
@@ -34,6 +38,7 @@ namespace ExPresSXR.Minigames.CoinThrow
         /// Emitted when a hit from a Rigidbodys with a CoinReset-Component is detected.
         /// </summary>
         public UnityEvent OnHitInfo;
+        
         /// <summary>
         /// Same as `OnHitInfo` but passing `_score`.
         /// </summary>

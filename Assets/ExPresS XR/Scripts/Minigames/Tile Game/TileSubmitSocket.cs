@@ -9,12 +9,23 @@ using ExPresSXR.Interaction;
 
 namespace ExPresSXR.Minigames.TileGame
 {
+    /// <summary>
+    /// Socket representing a slot in the board snapping TileVisuals certain rotations. For the tile game 4 steps = 90 degrees.
+    /// </summary>
     public class TileSubmitSocket : HighlightableSocketInteractor
     {
+        /// <summary>
+        /// Radius for drawing the steps gizmos labels.
+        /// </summary>
         private const float STEP_LABEL_RADIUS = 0.06f;
 
         [Space]
+
+        /// <summary>
+        /// Position of this socket on the board.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Position of this socket on the board.")]
         private Vector2Int _boardPos;
         public Vector2Int BoardPos
         {
@@ -29,25 +40,61 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Disable this socket and the interactable if possible on submission.")]
         private bool _disableOnSelect = true;
 
+        /// <summary>
+        /// If non-TileVisuals should be displayed with an invalid hover mesh.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If non-TileVisuals should be displayed with an invalid hover mesh.")]
         private bool _allowInvalidHover;
 
         [Space]
 
+        /// <summary>
+        /// Number of steps to snap the selection to. Keep at 4 (= 90 degrees) for the tile game.
+        /// </summary>
+        /// 
         [SerializeField]
+        [Tooltip("Number of steps to snap the selection to. Keep at 4 (= 90 degrees) for the tile game.")]
         private int _numSteps = 4;
 
+
+        /// <summary>
+        /// Size of a step in degrees.
+        /// </summary>
         public float SnapAngle => 360f / _numSteps;
 
+
+        /// <summary>
+        /// Prevents tiles being submitted with the wrong size up.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Prevents tiles being submitted with the wrong size up.")]
         private bool _requireFrontSideUp = true;
+
+
 
         private XRBaseInteractable _interactable;
 
-        public UnityEvent<int> OnRotationSnapped;
+
+        /// <summary>
+        /// Emitted when an interactable is submitted.
+        /// </summary>
         public UnityEvent OnSubmitted;
+
+        /// <summary>
+        /// Emitted when an interactable is submitted with the snapped rotation.
+        /// </summary>
+        public UnityEvent<int> OnRotationSnapped;
+
+        /// <summary>
+        /// Emitted when an interactable is submitted with the tile data and the board position as BoardSubmitContext.
+        /// </summary>
         public UnityEvent<BoardSubmitContext> OnTileSubmitted;
 
+
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -70,6 +117,10 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -82,6 +133,9 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected override void OnSelectEntering(SelectEnterEventArgs args)
         {
             base.OnSelectEntering(args);
@@ -118,7 +172,7 @@ namespace ExPresSXR.Minigames.TileGame
 
             // Build snapped local rotation
             Quaternion snappedLocal = Quaternion.AngleAxis(steppedAngle, Vector3.up);
-            
+
             // Respecting the original rotation, adjust the socketAttach
             ownAttach.rotation = transform.rotation * snappedLocal;
 
@@ -155,6 +209,9 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        /// <summary>
+        /// Clears the current selected interactable, destroying it.
+        /// </summary>
         public void ClearSelection()
         {
             if (hasSelection)
@@ -163,15 +220,21 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         public override bool CanHover(IXRHoverInteractable interactable)
-            => base.CanHover(interactable) && !hasSelection&& IsInteractableAllowed(interactable) || _allowInvalidHover;
+            => base.CanHover(interactable) && !hasSelection && IsInteractableAllowed(interactable) || _allowInvalidHover;
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         public override bool CanSelect(IXRSelectInteractable interactable)
-            => base.CanSelect(interactable)  && IsInteractableAllowed(interactable);
+            => base.CanSelect(interactable) && IsInteractableAllowed(interactable);
 
 
         private bool IsInteractableAllowed(IXRInteractable interactable) => HasTileVisuals(interactable) && (!_requireFrontSideUp || IsInteractableOrientedCorrectly(interactable));
-    
+
         private bool HasTileVisuals(IXRInteractable interactable) => interactable.transform.TryGetComponent(out TileVisuals _);
 
         private bool IsInteractableOrientedCorrectly(IXRInteractable interactable)
@@ -183,6 +246,10 @@ namespace ExPresSXR.Minigames.TileGame
             return dot > 0.0f; // Adjust the threshold as needed
         }
 
+
+        /// <summary>
+        /// Draw the available steps as gizmos.
+        /// </summary>
         protected virtual void OnDrawGizmosSelected()
         {
             // Change to local space
@@ -196,11 +263,26 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        /// <summary>
+        /// Combines the tile visuals and board position of a tile submission. 
+        /// </summary>
         public class BoardSubmitContext
         {
+            /// <summary>
+            /// Tile visuals submitted.
+            /// </summary>
             public readonly TileVisuals TileVisuals;
+
+            /// <summary>
+            /// Board pos of the submission.
+            /// </summary>
             public readonly Vector2Int BoardPos;
 
+            /// <summary>
+            /// Creates a new BoardSubmitContext.
+            /// </summary>
+            /// <param name="tileVisuals">Tile visuals submitted.</param>
+            /// <param name="boardPos">Board pos of the submission.</param>
             public BoardSubmitContext(TileVisuals tileVisuals, Vector2Int boardPos)
             {
                 TileVisuals = tileVisuals;

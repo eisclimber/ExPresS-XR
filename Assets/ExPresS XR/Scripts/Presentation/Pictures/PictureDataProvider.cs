@@ -3,6 +3,9 @@ using UnityEngine.Localization.Components;
 
 namespace ExPresSXR.Presentation.Pictures
 {
+    /// <summary>
+    /// Makes a PictureData asset accessible to other components.
+    /// </summary>
     public class PictureDataProvider : MonoBehaviour
     {
         /// <summary>
@@ -47,6 +50,10 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
+        /// <summary>
+        /// Allows setting the description from a single value, separating descriptions by the value of `DESCRIPTION_SEPARATOR` to allow for more manageable localization.
+        /// </summary>
+        /// <param name="description">Description to parse and set.</param>
         public void SetDataDescriptionJoined(string description)
         {
             string[] descriptions = description.Split(DESCRIPTION_SEPARATOR);

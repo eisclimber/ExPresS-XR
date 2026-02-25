@@ -3,12 +3,13 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.Events;
-using System.Collections.Generic;
 using ExPresSXR.Misc;
+using System;
 
 
 namespace ExPresSXR.Interaction
 {
+    [Obsolete("The button functionality was reimplemented as ValueRangeInteractable.\nUse an `ExPresSXR.Interaction.Button` instead.")]
     [RequireComponent(typeof(AudioSource))]
     public class BaseButton : XRBaseInteractable
     {
@@ -111,10 +112,10 @@ namespace ExPresSXR.Interaction
         // as we can not differentiate hovers from it and the ray.
         /// </summary>
         [SerializeField]
-        [Tooltip("If enabled allows NearFarInteractors to be treates as valid Direct Interactor. "
+        [Tooltip("If enabled allows NearFarInteractors to be treats as valid DirectInteractor. "
             + "It is recommended to set the max interaction distance to the size of near interaction volume, "
             + "as we can not differentiate hovers from it and the ray.")]
-        private bool _allowNearFarInteraction = false;
+        private bool _allowNearFarInteraction = true;
         public bool AllowNearFarInteraction
         {
             get => _allowNearFarInteraction;

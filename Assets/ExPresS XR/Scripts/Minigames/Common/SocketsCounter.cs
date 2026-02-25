@@ -1,3 +1,4 @@
+using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -5,11 +6,23 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Minigames.Common
 {
+    /// <summary>
+    /// Counts the number of sockets selecting objects.
+    /// </summary>
     public class SocketsCounter : MonoBehaviour
     {
+        /// <summary>
+        /// Sockets to be regarded.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Sockets to be regarded.")]
         private XRSocketInteractor[] _sockets;
 
+        /// <summary>
+        /// Current count in the socket.
+        /// </summary>
+        [SerializeField]
+        [ReadonlyInInspector]
         private int _count;
         public int Count
         {
@@ -17,19 +30,18 @@ namespace ExPresSXR.Minigames.Common
             set
             {
                 bool wasEmpty = _count == 0;
-                bool hasFirst = _count == 1;
                 _count = value;
 
                 OnCountChanged.Invoke(_count);
 
+                if (!wasEmpty && _count == 0)
+                {
+                    OnAllSocketsEmptied.Invoke();
+                }
+
                 if (wasEmpty && _count > 0)
                 {
                     OnFirstSocketFilled.Invoke();
-                }
-
-                if (hasFirst && _count > 1)
-                {
-                    OnSecondSocketFilled.Invoke();
                 }
 
                 if (_count >= Capacity)
@@ -39,17 +51,43 @@ namespace ExPresSXR.Minigames.Common
             }
         }
 
+        /// <summary>
+        /// Number of sockets regarded.
+        /// </summary>
         public int Capacity
         {
             get => _sockets != null ? _sockets.Length : 0;
         }
 
-
+        
+        /// <summary>
+        /// Forwards the SelectEnterEventArgs of one of the sockets.
+        /// </summary>
         public UnityEvent<SelectEnterEventArgs> OnSocketsSelect;
+
+        /// <summary>
+        /// Forwards the SelectExitEventArgs of one of the sockets.
+        /// </summary>
         public UnityEvent<SelectExitEventArgs> OnSocketsDeselect;
+
+        /// <summary>
+        /// Emitted when the count changes providing the new count.
+        /// </summary>
         public UnityEvent<int> OnCountChanged;
+
+        /// <summary>
+        /// Emitted when the all socket were emptied.
+        /// </summary>
+        public UnityEvent OnAllSocketsEmptied;
+
+        /// <summary>
+        /// Emitted when the first socket was filled.
+        /// </summary>
         public UnityEvent OnFirstSocketFilled;
-        public UnityEvent OnSecondSocketFilled;
+
+        /// <summary>
+        /// Emitted when the all socket were filled.
+        /// </summary>
         public UnityEvent OnAllSocketsFilled;
 
         private void OnEnable()
@@ -90,5 +128,8 @@ namespace ExPresSXR.Minigames.Common
 
         [ContextMenu("Complete")]
         private void Complete() => Count = Capacity;
+
+        [ContextMenu("Reset Count")]
+        private void ResetCount() => Count = 0;
     }
 }

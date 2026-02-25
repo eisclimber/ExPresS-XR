@@ -260,10 +260,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         protected virtual void EndHover(HoverExitEventArgs args)
         {
             // Only stop hovering if the interactor hovering exists
-            if (args.interactorObject == _hoverInteractor)
+            if (args.interactorObject != _hoverInteractor)
             {
-                _selectInteractor = null;
+                return;
             }
+
+            _hoverInteractor = null;
 
             // Reset after emitting the event to allow passing the selected value
             if (_zeroValueOnRelease)
@@ -287,6 +289,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <param name="args">Context of this event.</param>
         protected virtual void EndGrab(SelectExitEventArgs args)
         {
+            // Only stop hovering if the interactor hovering exists
+            if (_selectInteractor != args.interactorObject)
+            {
+                return;
+            }
+            
             _selectInteractor = null;
 
             OnValueSelected.Invoke(Value);

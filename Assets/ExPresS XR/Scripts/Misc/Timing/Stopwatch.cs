@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.Timing
 {
+    /// <summary>
+    /// A stopwatch allowing to measure the time from a start time.
+    /// </summary>
     public class Stopwatch : MonoBehaviour
     {
         /// <summary>

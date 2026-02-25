@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using ExPresSXR.Minigames.Common;
@@ -6,11 +7,21 @@ using UnityEditor;
 
 namespace ExPresSXR.Minigames.TileGame
 {
+    /// <summary>
+    /// Controls the visual appearance of a tile of the tile game.
+    /// </summary>
     public class TileVisuals : MonoBehaviour
     {
+        /// <summary>
+        /// Offset for drawing the labels displaying the area types configured for the tile.
+        /// </summary>
         private const float GIZMO_LABEL_OFFSET = 0.075f;
 
+        /// <summary>
+        /// Tile data to be displayed.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Tile data to be displayed.")]
         private Tile _displayedTile = null;
         public Tile DisplayedTile
         {
@@ -22,10 +33,18 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        /// <summary>
+        /// Renderer to set the area materials in.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Renderer to set the area materials in.")]
         private Renderer _renderer;
 
+        /// <summary>
+        /// Areas to be displayed. Should be managed and set by the TileGame.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Areas to be displayed. Should be managed and set by the TileGame.")]
         [ReadonlyInInspector]
         private AreaDescription[] _areas;
         public AreaDescription[] Areas
@@ -44,26 +63,51 @@ namespace ExPresSXR.Minigames.TileGame
 
         [Space]
 
+        /// <summary>
+        /// Prefab (i.e. ScoreNumbers) to be spawned when displaying a score.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Prefab (i.e. ScoreNumbers) to be spawned when displaying a score.")]
         private GameObject _pointsDisplayPrefab;
 
+        /// <summary>
+        /// Delay for showing the subscores.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Delay for showing the subscores.")]
         private float _subScoreShowDelay = 0.5f;
 
+        /// <summary>
+        /// Scale with which the `_pointsDisplayPrefab` is spawned.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Scale with which the `_pointsDisplayPrefab` is spawned.")]
         private float _pointsDisplayScale = 0.1f;
 
+        /// <summary>
+        /// Radial offset with which the `_pointsDisplayPrefab` is spawned.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Radial offset with which the `_pointsDisplayPrefab` is spawned.")]
         private float _pointsDisplayRadius = 0.08f;
 
         [Space]
 
+        /// <summary>
+        /// Offset with which the `_pointsDisplayPrefab` is spawned.
+        /// </summary>
         [SerializeField]
+        [Tooltip("")]
         private Vector3 _pointsDisplayOffset = new(0.0f, 0.02f, 0.0f);
 
 
+        /// <summary>
+        /// Mapping between the renderers materials and area ids.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Mapping between the renderers materials and area ids.")]
         private MaterialMapping _materialIdxs;
+
 
         private Coroutine _displayScoreCoroutine;
 
@@ -106,6 +150,10 @@ namespace ExPresSXR.Minigames.TileGame
 #endif
         }
 
+        /// <summary>
+        /// Displays the provided score in the tile, showing the score for each direction slightly delayed.
+        /// </summary>
+        /// <param name="score">Score to display.</param>
         public void DisplayScore(ScoreResults score)
         {
             // Maybe order the scores...
@@ -171,14 +219,27 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
+        /// <summary>
+        /// Rotates the tile data the specified amount of degrees.
+        /// </summary>
+        /// <param name="degrees">Degrees to rotate.</param>
         public void RotateTileDataDegrees(float degrees) => _displayedTile.RotateDegrees(degrees);
 
+        /// <summary>
+        /// Rotates the tile data one step (= 90 degrees).
+        /// </summary>
         [ContextMenu("Rotate Tile Data")]
         public void RotateTileData() => _displayedTile?.Rotate(1);
 
+        /// <summary>
+        /// Rotates the tile data a certain amount of 90 degree steps.
+        /// </summary>
+        /// <param name="steps">Steps to rotate.</param>
         public void RotateTileData(int steps) => _displayedTile?.Rotate(steps);
 
-
+        /// <summary>
+        /// Displays a test score for debugging, not awarding any actual points.
+        /// </summary>
         [ContextMenu("Display Test Score")]
         public void DisplayTestScore()
         {
@@ -193,6 +254,9 @@ namespace ExPresSXR.Minigames.TileGame
 
         }
 
+        /// <summary>
+        /// Randomizes the displayed area types.
+        /// </summary>
         [ContextMenu("Randomize Area Types")]
         public void RandomizeAreaTypes()
         {
@@ -227,7 +291,11 @@ namespace ExPresSXR.Minigames.TileGame
         private Color GetAreaIdColor(int areaId) => areaId >= 0 && areaId < _areas.Length ? _areas[areaId].Color : Color.white;
     }
 
-    [System.Serializable]
+    /// <summary>
+    /// Helper class for mapping a renderers materials to the areas as the material ordering is not consistent.
+    /// Default values are set up for the example model coming with the project.
+    /// </summary>
+    [Serializable]
     public class MaterialMapping
     {
         public int Center = 1;

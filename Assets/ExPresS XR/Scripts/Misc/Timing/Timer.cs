@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Timing
 {
+    /// <summary>
+    /// A timer counting down time.
+    /// </summary>
     public class Timer : MonoBehaviour
     {
         /// <summary>

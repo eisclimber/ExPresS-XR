@@ -6,10 +6,16 @@ using UnityEngine.Localization.Settings;
 
 namespace ExPresSXR.Localization
 {
+    /// <summary>
+    /// Emits conditional events based on if the current locale matches the configured one or not.
+    /// </summary>
     public class LocalizedConditionalEvent : MonoBehaviour
     {
-        [Tooltip("A description of the condition. No further use.")]
+        /// <summary>
+        /// Description for the condition. No further use.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Description for the condition. No further use.")]
         private string _description = "";
         public string Description
         {
@@ -17,7 +23,11 @@ namespace ExPresSXR.Localization
             private set => _description = value;
         }
 
+        /// <summary>
+        /// Locale identifier to match against. The identifiers can be found in the localization setting. Usually something like `en` or `en-GB`.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Locale identifier to match against. The identifiers can be found in the localization setting. Usually something like `en` or `en-GB`.")]
         private string _locale;
         public string Locale
         {
@@ -25,21 +35,48 @@ namespace ExPresSXR.Localization
             set => _locale = value;
         }
 
+        /// <summary>
+        /// If an event should automatically be triggered on Start() and when the component gets enabled.
+        /// </summary>
         [SerializeField]
-        private bool _emitOnAwake = true;
+        [Tooltip("If an event should automatically be triggered on Start and when the component gets enabled.")]
+        private bool _emitOnEnable = true;
 
+        /// <summary>
+        /// If an event should automatically be triggered if the locale changes.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If an event should automatically be triggered if the locale changes.")]
         private bool _emitOnChanged = true;
 
-
+        /// <summary>
+        /// Event providing a bool representing if the locale matches.
+        /// </summary>
         public UnityEvent<bool> OnLocaleCheckEvent;
+
+        /// <summary>
+        /// Event providing a bool representing if the locale DOES NOT match.
+        /// </summary>
         public UnityEvent<bool> OnLocaleCheckNegatedEvent;
+
+        /// <summary>
+        /// Event emitted if the locale matches.
+        /// </summary>
+
         public UnityEvent OnLocaleMatchEvent;
+
+        /// <summary>
+        /// Event emitted if the locale DOES NOT match.
+        /// </summary>
+
         public UnityEvent OnLocaleMismatchEvent;
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         public void OnEnable()
         {
-            if (_emitOnAwake)
+            if (_emitOnEnable)
             {
                 InvokeLocalizedEvent();
             }
@@ -50,7 +87,9 @@ namespace ExPresSXR.Localization
             }
         }
 
-
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         public void OnDisable()
         {
             if (_emitOnChanged)
@@ -59,6 +98,9 @@ namespace ExPresSXR.Localization
             }
         }
 
+        /// <summary>
+        /// Checks if the locale matches and triggers the respective events.
+        /// </summary>
         [ContextMenu("Invoke Localized Event")]
         public void InvokeLocalizedEvent()
         {

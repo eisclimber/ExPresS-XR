@@ -3,9 +3,16 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Puzzle
 {
+    /// <summary>
+    /// Represents a puzzle piece at a specific board position.
+    /// </summary>
     public class PuzzlePiece : MonoBehaviour
     {
+        /// <summary>
+        /// Board position of the piece.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Board position of the piece.")]
         private Vector2Int _puzzlePosition;
         public Vector2Int PuzzlePosition
         {
@@ -21,7 +28,11 @@ namespace ExPresSXR.Minigames.Puzzle
             }
         }
 
+        /// <summary>
+        /// Allows displaying the board position in text object for debugging.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Allows displaying the board position in text object for debugging.")]
         private TMP_Text _tileText;
     }
 }

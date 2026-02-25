@@ -20,15 +20,31 @@ namespace ExPresSXR.Interaction.Interactables
             set => _hoveredMaterial = value;
         }
 
+        /// <summary>
+        /// Renderer to manipulate the material from. Determined on startup.
+        /// </summary>
+        [SerializeField]
+        private Renderer _renderer;
+        protected Renderer Renderer
+        {
+            get => _renderer;
+            set => _renderer = value;
+        }
+
+        /// <summary>
+        /// Original material. Determined on startup.
+        /// </summary>
         protected Material _originalMaterial;
-        protected Renderer _renderer;
 
 
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
 
-            if (TryGetComponent(out _renderer))
+            if (_renderer != null || TryGetComponent(out _renderer))
             {
                 _originalMaterial = _renderer.sharedMaterial;
             }
@@ -38,6 +54,9 @@ namespace ExPresSXR.Interaction.Interactables
             }
         }
 
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -46,6 +65,9 @@ namespace ExPresSXR.Interaction.Interactables
             hoverExited.AddListener(ChangeToOriginalMaterial);
         }
 
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -54,6 +76,10 @@ namespace ExPresSXR.Interaction.Interactables
             hoverExited.RemoveListener(ChangeToOriginalMaterial);
         }
 
+        /// <summary>
+        /// Changes the material to the one for hovering.
+        /// </summary>
+        /// <param name="_">Ignored</param>
         protected virtual void ChangeToHoverMaterial(HoverEnterEventArgs _)
         {
             if (_renderer != null && _hoveredMaterial != null)
@@ -62,6 +88,10 @@ namespace ExPresSXR.Interaction.Interactables
             }
         }
 
+        /// <summary>
+        /// Changes the material to the original one.
+        /// </summary>
+        /// <param name="_">Ignored</param>
         protected virtual void ChangeToOriginalMaterial(HoverExitEventArgs _)
         {
             if (_renderer != null)

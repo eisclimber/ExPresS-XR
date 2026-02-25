@@ -4,22 +4,37 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.ColorSwitching
 {
+    /// <summary>
+    /// Represents the color switching logic of a BaseButton and a Button-ValueRangeInteractable.
+    /// </summary>
     [RequireComponent(typeof(Animator))]
     public class ButtonColorSwitcher : ColorAnimatorSwitcher
     {
+        /// <summary>
+        /// The Button to which this ColorAnimatorSwitcher is linked.
+        /// </summary>
         [SerializeField]
         [Tooltip("The Button to which this ColorAnimatorSwitcher is linked.")]
         private Button _button;
 
+        /// <summary>
+        /// The (legacy) BaseButton to which this ColorAnimatorSwitcher is linked.
+        /// </summary>
         [SerializeField]
         [Tooltip("The (legacy) BaseButton to which this ColorAnimatorSwitcher is linked.")]
         private BaseButton _legacyButton;
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected virtual void OnEnable()
         {
             RegisterButtonEvents();
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected virtual void OnDisable()
         {
             UnregisterButtonEvents();

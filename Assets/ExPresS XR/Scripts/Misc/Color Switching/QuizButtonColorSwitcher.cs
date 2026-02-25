@@ -3,18 +3,30 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.ColorSwitching
 {
+    /// <summary>
+    /// Represents the color switching logic of a QuizButton.
+    /// </summary>
     [RequireComponent(typeof(Animator))]
     public class QuizButtonColorSwitcher : ColorAnimatorSwitcher
     {
+        /// <summary>
+        /// The QuizButton to which this ColorAnimatorSwitcher is linked.
+        /// </summary>
         [SerializeField]
         [Tooltip("The QuizButton to which this ColorAnimatorSwitcher is linked.")]
         private QuizButton _quizButton;
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected virtual void OnEnable()
         {
             RegisterButtonEvents();
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected virtual void OnDisable()
         {
             UnregisterButtonEvents();

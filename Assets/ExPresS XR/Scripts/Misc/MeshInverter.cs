@@ -1,7 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Inverts the faces of a mesh.
+    /// </summary>
+    [Obsolete("Operation is rather expensive. Rather adjust your model or use a shader.")]
     [RequireComponent(typeof(MeshFilter))]
     public class MeshInverter : MonoBehaviour
     {

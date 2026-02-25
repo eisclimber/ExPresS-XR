@@ -5,18 +5,38 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.TileGame
 {
+    /// <summary>
+    /// A helper utility for creating the board of a tile game instantiating and placing the sockets.
+    /// The setup functionality is provided via the context menu (three dots in the header of the component).
+    /// </summary>
     public class TileGameBoardSetupUtility : MonoBehaviour
     {
+        /// <summary>
+        /// Spacing between sockets in local space.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Spacing between sockets in local space.")]
         private float _spacing = 0.2f;
 
+        /// <summary>
+        /// Local height offset for the sockets.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Height offset for the sockets in local space.")]
         private float _heightOffset = 0.03f;
 
+        /// <summary>
+        /// Reference to the TileGame to set the socket up for.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the TileGame to set the socket up for.")]
         private TileGame _game;
 
+        /// <summary>
+        /// Prefab used to create new board sockets from.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Prefab used to create new board sockets from.")]
         private GameObject _boardSocketPrefab;
 
 

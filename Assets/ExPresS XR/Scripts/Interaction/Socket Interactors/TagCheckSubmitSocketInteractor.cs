@@ -19,6 +19,9 @@ namespace ExPresSXR.Interaction.Interactors
         /// </summary>
         public UnityEvent OnSubmitted;
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -28,6 +31,9 @@ namespace ExPresSXR.Interaction.Interactors
             selectEntered.AddListener(HandleSubmission);
         }
 
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();

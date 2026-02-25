@@ -38,32 +38,40 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-
+        /// <summary>
+        /// GameObject reference to retrieve the value from.
+        /// </summary>
         [SerializeField]
         private GameObject _targetObject = null;
 
+        /// <summary>
+        /// Component reference to retrieve the value from.
+        /// </summary>
         [SerializeField]
         private Component _targetComponent = null;
 
+        /// <summary>
+        /// Function/Property reflection reference to retrieve the value from.
+        /// </summary>
         [SerializeField]
         private MemberInfo _targetMemberInfo = null;
 
 
         /// <summary>
-        /// List of all members
+        /// List of all members.
         /// </summary>
         [SerializeField]
         private string[] _memberNameList = new string[0];
 
         /// <summary>
-        /// Prettified List of all members
+        /// Prettified List of all members.
         /// </summary>
         [SerializeField]
         private string[] _prettyMemberNameList = new string[0];
 
 
         /// <summary>
-        /// Index of components in the list
+        /// Index of components in the list.
         /// </summary>
         [SerializeField]
         private int _memberIdx = -1;

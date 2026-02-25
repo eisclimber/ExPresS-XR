@@ -46,6 +46,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// The ButtonQuizConfig that hold all question and general config to be exported.
         /// </summary>
         [SerializeField]
+        [Tooltip("The ButtonQuizConfig that hold all question and general config to be exported.")]
         private ButtonQuizConfig _config;
         public ButtonQuizConfig Config
         {
@@ -66,6 +67,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// Can be used to check if a quiz is currently undergoing.
         /// </summary>
         [SerializeField]
+        [Tooltip("Can be used to check if a quiz is currently undergoing.")]
         private bool _quizUndergoing;
         public bool QuizUndergoing
         {
@@ -717,14 +719,17 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /////////////////////////////////////////////////
 
         // Continuous Polling
+
         /// <summary>
         /// Gets the UNIX-timestamp of the start of the quiz.
         /// </summary>
         public float GetQuizUnixStartTime() => QuizUndergoing ? QuizStartTime : -1.0f;
+        
         /// <summary>
         /// Gets the duration of how long the quiz is currently running in milliseconds. If it is not running `-1.0f` is returned.
         /// </summary>
         public float GetCurrentQuizUnixTimeMillisecondsDuration() => QuizUndergoing ? QuizStartTime - DateTimeOffset.Now.ToUnixTimeMilliseconds() : -1.0f;
+        
         /// <summary>
         /// Gets the index of the current question (not the latest answered) specified in the config (i.e. `QuizQuestion.itemIdx`).
         /// Is only same as `GetCurrentQuestionNumber()` if questions are **not** shuffled.
@@ -759,7 +764,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <returns>A list of objects for the latest question.</returns>
         public List<object> GetLatestRoundDataExportValueList() => LatestRoundData?.GetCsvExportValuesList() ?? new( new object[QuizRoundData.NUM_CSV_EXPORT_COLUMNS] );
 
-
         /// <summary>
         /// Returns csv-values of the currently displayed question.
         /// </summary>
@@ -778,7 +782,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <returns>A list of objects for the currently displayed question.</returns>
         public List<object> GetCurrentQuestionCsvExportValueList()
                 => CurrentQuestion?.GetQuestionCsvExportValuesList() ?? new( new object[QuizRoundData.NUM_CSV_EXPORT_COLUMNS] );
-
 
         /// <summary>
         /// Returns csv-values containing all important values of the quiz.

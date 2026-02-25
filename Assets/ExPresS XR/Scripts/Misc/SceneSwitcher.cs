@@ -3,6 +3,9 @@ using ExPresSXR.Rig;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows switching scenes with a rig.
+    /// </summary>
     public class SceneSwitcher : MonoBehaviour
     {
         /// <summary>

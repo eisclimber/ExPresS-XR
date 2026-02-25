@@ -10,11 +10,22 @@ using ExPresSXR.Interaction.Interactors;
 
 namespace ExPresSXR.Presentation
 {
+    /// <summary>
+    /// Implements an exhibition display for VR, allowing displaying objects with additional information.
+    /// It supports interactables, spinning the objects and displaying information via text, image or video.
+    /// </summary>
     public class ExhibitionDisplay : MonoBehaviour
     {
-        const float AFTER_CLIP_TIMEOUT = 0.5f;
+        /// <summary>
+        /// Delay to close the info after an audio or video clip.
+        /// </summary>
+        private const float AFTER_CLIP_TIMEOUT = 0.5f;
 
+        /// <summary>
+        /// Prefab of the object to be displayed.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Prefab of the object to be displayed.")]
         private GameObject _displayedPrefab;
         public GameObject DisplayedPrefab
         {
@@ -29,7 +40,7 @@ namespace ExPresSXR.Presentation
 
                     if (_displayedPrefab != null && _socket.PutBackPrefab == null)
                     {
-                        Debug.LogError($"Could not set { _displayedPrefab }. You'll probably want to either add "
+                        Debug.LogError($"Could not set {_displayedPrefab}. You'll probably want to either add "
                             + "an Interactable-Component to the prefab or set `_allowNonInteractables` to true.", this);
                         _displayedPrefab = null;
                     }
@@ -41,7 +52,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// If the exhibited object should be spun.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If the exhibited object should be spun.")]
         private bool _spinObject;
         public bool SpinObject
         {
@@ -53,7 +68,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Speed of spinning the exhibited object.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Speed of spinning the exhibited object.")]
         private float _spinObjectSpeed = 30.0f;
         public float SpinObjectSpeed
         {
@@ -65,7 +84,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Axis of spinning the exhibited object.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Axis of spinning the exhibited object.")]
         private Vector3 _spinObjectAxis = Vector3.up;
         public Vector3 SpinObjectAxis
         {
@@ -77,7 +100,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// If the spinning of the exhibited object should start with a random offset.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If the spinning of the exhibited object should start with a random offset.")]
         private bool _spinObjectRandomizeRotationOffset;
         public bool SpinObjectRandomizeRotationOffset
         {
@@ -89,8 +116,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("If true GameObjects will be added to the socket but won't be able to be picked up")]
+        /// <summary>
+        /// If true GameObjects will be added to the socket but won't be able to be picked up.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If true GameObjects will be added to the socket but won't be able to be picked up.")]
         private bool _allowNonInteractables;
         public bool AllowNonInteractables
         {
@@ -106,7 +136,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Time until the object is retrieved automatically while not being held.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Time until the object is retrieved automatically while not being held.")]
         private float _putBackTime = 30.0f;
         public float PutBackTime
         {
@@ -122,8 +156,12 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Text displayed as the label.
+        /// </summary>
         [TextArea(2, 5)]
         [SerializeField]
+        [Tooltip("Text displayed as the label.")]
         private string _labelText;
         public string LabelText
         {
@@ -139,8 +177,12 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Text displayed as the description.
+        /// </summary>
         [TextArea(3, 5)]
         [SerializeField]
+        [Tooltip("Text displayed as the description.")]
         private string _infoText;
         public string InfoText
         {
@@ -157,7 +199,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Image displayed in the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Image displayed in the description.")]
         private Sprite _infoImage;
         public Sprite InfoImage
         {
@@ -175,7 +221,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Audio clip played when opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Audio clip played when opening the description.")]
         private AudioClip _infoAudioClip;
         public AudioClip InfoAudioClip
         {
@@ -192,7 +242,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Video clip played when opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Video clip played when opening the description.")]
         private VideoClip _infoVideoClip;
         public VideoClip InfoVideoClip
         {
@@ -209,7 +263,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// If a physical of UI button should be used to open the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If a physical of UI button should be used to open the description.")]
         private bool _usePhysicalInfoButton;
         public bool UsePhysicalInfoButton
         {
@@ -230,8 +288,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("Wether or not the info automatically closes. When closing automatically Videos and Audio will be played until finished ignoring '_showInfoDuration'.")]
+        /// <summary>
+        /// Wether or not the info automatically closes. When closing automatically Videos and Audio will be played until finished ignoring '_showInfoDuration'.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Wether or not the info automatically closes. When closing automatically Videos and Audio will be played until finished ignoring '_showInfoDuration'.")]
         private bool _toggleInfo;
         public bool ToggleInfo
         {
@@ -247,9 +308,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
-
-        [Tooltip("Duration of how long the info is shown. Audio and Videos will be played until finished even if it is longer than the duration.")]
+        /// <summary>
+        /// Duration of how long the info is shown. Audio and Videos will be played until finished even if it is longer than the duration.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Duration of how long the info is shown. Audio and Videos will be played until finished even if it is longer than the duration.")]
         private float _showInfoDuration;
         public float ShowInfoDuration
         {
@@ -258,7 +321,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Socket holding the exhibited object.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Socket holding the exhibited object.")]
         private PutBackSocketInteractor _socket;
         public PutBackSocketInteractor Socket
         {
@@ -286,7 +353,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Reference to the Text displaying the label.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Text displaying the label.")]
         private TMP_Text _labelTextGo;
         public TMP_Text LabelTextGo
         {
@@ -303,7 +374,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Reference to the Canvas displaying the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Canvas displaying the description.")]
         private Canvas _infoCanvas;
         public Canvas InfoCanvas
         {
@@ -314,7 +389,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Reference to the Text displaying the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Text displaying the description.")]
         private TMP_Text _infoTextGo;
         public TMP_Text InfoTextGo
         {
@@ -330,7 +409,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Reference to the Image displayed in the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Image displayed in the description.")]
         private Image _infoImageGo;
         public Image InfoImageGo
         {
@@ -346,7 +429,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Reference to the AudioSource playing when opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the AudioSource playing when opening the description.")]
         private AudioSource _infoAudioSource;
         public AudioSource InfoAudioSource
         {
@@ -363,7 +450,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Reference to the VideoPlayer playing when opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the VideoPlayer playing when opening the description.")]
         private VideoPlayer _infoVideoPlayer;
         public VideoPlayer InfoVideoPlayer
         {
@@ -380,9 +471,13 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Reference to the Image used to play the video in when opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Image used to play the video in when opening the description.")]
         private RawImage _infoVideoDisplayGo;
-        public RawImage infoVideoDisplayGo
+        public RawImage InfoVideoDisplayGo
         {
             get => _infoVideoDisplayGo;
             set
@@ -392,7 +487,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Reference to the Ui Button for opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Ui Button for opening the description.")]
         private Button _uiShowInfoButton;
         public Button UiShowInfoButton
         {
@@ -403,7 +502,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Reference to the Canvas containing the Ui Button for opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Canvas containing the Ui Button for opening the description.")]
         private Canvas _uiShowInfoButtonCanvas;
         public Canvas UiShowInfoButtonCanvas
         {
@@ -415,7 +518,11 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Reference to the BaseButton for opening the description.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the BaseButton for opening the description.")]
         private BaseButton _worldShowInfoButton;
         public BaseButton WorldShowInfoButton
         {
@@ -426,6 +533,9 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// If any info is currently shown.
+        /// </summary>
         public bool InfoActive
         {
             get => showInfoCoroutine != null
@@ -443,6 +553,7 @@ namespace ExPresSXR.Presentation
             {
                 _uiShowInfoButton.onClick.AddListener(OnUiShowInfoButtonPressed);
             }
+
             if (_worldShowInfoButton != null)
             {
                 ToggleInfo = _toggleInfo;
@@ -464,7 +575,8 @@ namespace ExPresSXR.Presentation
             GenerateRenderTexture();
         }
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             if (_socket != null)
             {
                 _socket.selectEntered.AddListener(UnpauseSpinnerOnSelectEnter);
@@ -472,7 +584,8 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             if (_socket != null)
             {
                 _socket.selectEntered.RemoveListener(UnpauseSpinnerOnSelectEnter);
@@ -534,15 +647,21 @@ namespace ExPresSXR.Presentation
             }
         }
 
+        /// <summary>
+        /// Shows the info of the exhibited object.
+        /// </summary>
         public void ShowInfo()
         {
             DisplayInfoContents(true);
         }
 
+        /// <summary>
+        /// Hides the info of the exhibited object.
+        /// </summary>
         public void HideInfo()
         {
             DisplayInfoContents(false);
-            
+
             if (showInfoCoroutine != null)
             {
                 StopCoroutine(showInfoCoroutine);
@@ -655,6 +774,9 @@ namespace ExPresSXR.Presentation
         }
 
 
+        /// <summary>
+        /// Allows pausing spinning of the socket holding the exhibited object, i.e. to not change the rotation of the object while being grabbed.
+        /// </summary>
         public void SetObjectSpinnerPaused(bool paused)
         {
             if (_socket.TryGetComponent(out ObjectSpinner spinner))

@@ -13,6 +13,9 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// A helper class to use at runtime.
+    /// </summary>
     public static class RuntimeUtils
     {
         /// <summary>

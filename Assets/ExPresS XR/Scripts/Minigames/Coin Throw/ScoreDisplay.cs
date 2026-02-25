@@ -15,6 +15,7 @@ namespace ExPresSXR.Minigames.CoinThrow
         /// Reference to the TMP_Text that displays the value.
         /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the TMP_Text that displays the value.")]
         private TMP_Text _textDisplay;
 
         private void Start() {

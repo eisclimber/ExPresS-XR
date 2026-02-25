@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Presentation.Pictures
 {
+    /// <summary>
+    /// Data asset for storing picture data for a PictureDataProvider.
+    /// </summary>
     [Serializable]
     public class PictureData : ScriptableObject
     {

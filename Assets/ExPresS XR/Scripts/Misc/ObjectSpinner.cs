@@ -3,9 +3,16 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Spins an objects automatically around an axis.
+    /// </summary>
     public class ObjectSpinner : MonoBehaviour
     {
+        /// <summary>
+        /// Axis of rotation.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Axis of rotation.")]
         private Vector3 _rotationAxis = Vector3.up;
         public Vector3 RotationAxis
         {
@@ -13,7 +20,11 @@ namespace ExPresSXR.Misc
             set => _rotationAxis = value;
         }
 
+        /// <summary>
+        /// Speed of the rotation.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Speed of the rotation.")]
         private float _speed = 10.0f;
         public float Speed
         {
@@ -21,7 +32,11 @@ namespace ExPresSXR.Misc
             set => _speed = value;
         }
 
+        /// <summary>
+        /// If rotation is paused.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If rotation is paused.")]
         private bool _paused;
         public bool Paused
         {
@@ -29,7 +44,11 @@ namespace ExPresSXR.Misc
             set => _paused = value;
         }
 
+        /// <summary>
+        /// If the rotation around `RotationAxis` should be automatically randomized on awake.
+        /// </summary>
         [SerializeField]
+        [Tooltip("If the rotation around `RotationAxis` should be automatically randomized on awake.")]
         private bool _randomRotationOnAwake;
         public bool RandomRotationOnAwake
         {
@@ -43,7 +62,7 @@ namespace ExPresSXR.Misc
             {
                 RandomizeRotation();
             }
-        } 
+        }
 
         private void Update()
         {
@@ -53,16 +72,25 @@ namespace ExPresSXR.Misc
             }
         }
 
-        public void Configure(float speed, Vector3 rotationAxis, bool autoRotate)
+        /// <summary>
+        /// Configures the rotation axis and rotation.
+        /// </summary>
+        /// <param name="speed">Rotation speed.</param>
+        /// <param name="rotationAxis">Rotation axis.</param>
+        /// <param name="randomizeRotation">Start with a random rotation.</param>
+        public void Configure(float speed, Vector3 rotationAxis, bool randomizeRotation)
         {
             _speed = speed;
             _rotationAxis = rotationAxis;
-            if (autoRotate)
+            if (randomizeRotation)
             {
                 RandomizeRotation();
             }
         }
 
+        /// <summary>
+        /// Randomizes current the rotation around `RotationAxis`.
+        /// </summary>
         public void RandomizeRotation()
         {
             transform.rotation = Quaternion.Euler(_rotationAxis * Random.Range(0.0f, 360.0f));

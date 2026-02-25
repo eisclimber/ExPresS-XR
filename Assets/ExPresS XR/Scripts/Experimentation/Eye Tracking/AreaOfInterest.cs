@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
@@ -7,9 +8,16 @@ namespace ExPresSXR.Experimentation.EyeTracking
     [RequireComponent(typeof(Collider))]
     public class AreaOfInterest : MonoBehaviour
     {
-        public const int AOI_LAYER = 9;
+        /// <summary>
+        /// Default collision layer to be used.
+        /// </summary>
+        public const int DEFAULT_AOI_LAYER = 9;
         
+        /// <summary>
+        /// Identifier for the AOI. If empty will be set to a GUID with a `AOI_` prefix. 
+        /// </summary>
         [SerializeField]
+        [Tooltip("Identifier for the AOI. If empty will be set to a GUID with a `AOI_` prefix.")]
         private string _aoiId = GenerateAoiId();
         public string AoiId
         {
@@ -25,12 +33,24 @@ namespace ExPresSXR.Experimentation.EyeTracking
             }
         }
 
+        /// <summary>
+        /// Collision Layer to be used for determining AOI collisions. Should be the same as the GameObjects layer.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Collision Layer to be used for determining AOI collisions. Should be the same as the GameObjects layer.")]
+        private int _aoiLayer = DEFAULT_AOI_LAYER;
+        public int AoiLayer
+        {
+            get => _aoiLayer;
+            set => _aoiLayer = value;
+        }
+
         
         private void Awake() {
-            if (gameObject.layer != AOI_LAYER)
+            if (gameObject.layer != _aoiLayer)
             {
-                Debug.LogError("GameObject has the wrong Layer for being found by an AOIRay. Setting it's layer to 'AreaOfInterest'.");
-                gameObject.layer = AOI_LAYER;
+                Debug.LogError($"GameObject has the wrong Layer for being found by an AOIRay. Setting it's layer to configured layer with id: {_aoiLayer}.");
+                gameObject.layer = _aoiLayer;
             }
         }
 
@@ -41,6 +61,6 @@ namespace ExPresSXR.Experimentation.EyeTracking
         }
 
         // Prefix "AOI_" and 4 random digits
-        private static string GenerateAoiId() => "AOI_" + System.Guid.NewGuid().ToString()[..4];
+        private static string GenerateAoiId() => "AOI_" + Guid.NewGuid().ToString()[..4];
     }
 }

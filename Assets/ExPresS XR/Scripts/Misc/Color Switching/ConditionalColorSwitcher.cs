@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.ColorSwitching
 {
+    /// <summary>
+    /// Provides the option to switch materials of a renderer.
+    /// 
+    /// It is highly recommended to use a ColorAnimationSwitcher instead.
+    /// </summary>
     public class ConditionalColorSwitcher : ColorSwitcher
     {
         /// <summary>

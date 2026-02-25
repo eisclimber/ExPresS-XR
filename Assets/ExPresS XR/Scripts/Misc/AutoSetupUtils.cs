@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Utility functions for automatic setups, mainly adding persistent listeners.
+    /// </summary>
     public class AutoSetupUtils
     {
         /// <summary>

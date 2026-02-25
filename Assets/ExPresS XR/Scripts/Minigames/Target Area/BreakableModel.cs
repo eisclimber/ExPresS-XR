@@ -23,9 +23,12 @@ namespace ExPresSXR.Minigames.TargetArea
             set => _maxDamage = value;
         }
 
-        [ReadonlyInInspector]
+        /// <summary>
+        /// Current damage.
+        /// </summary>
         [SerializeField]
         [Tooltip("Current damage.")]
+        [ReadonlyInInspector]
         private int _currentDamage;
         public int CurrentDamage
         {
@@ -114,6 +117,15 @@ namespace ExPresSXR.Minigames.TargetArea
         /// Emitted with the current damage when damaged.
         /// </summary>
         public UnityEvent<int> OnDamage;
+
+        /// <summary>
+        /// < inheritdoc />
+        /// </summary>
+        protected void Start()
+        {
+            // Reset the damage in case it got altered in the editor.
+            _currentDamage = 0;
+        }
 
         /// <summary>
         /// Increases the damage by one.

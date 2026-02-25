@@ -161,7 +161,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
-
         protected override void UpdateValueWithHover() => Value = _valueVisualizer.GetVisualizedValue(this, _hoverInteractor);
 
         /// <summary>

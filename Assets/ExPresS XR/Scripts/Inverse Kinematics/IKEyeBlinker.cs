@@ -7,49 +7,74 @@ namespace ExPresSXR.Experimentation.EyeTracking
 {
     public class IKEyeBlinker : MonoBehaviour
     {
+        /// <summary>
+        /// Defines the maximum value of a bend shape key.
+        /// </summary>
         public const float MAX_BLEND_VALUE = 100.0f;
 
-        [Tooltip("Determines the provider used for triggering blinking.")]
         [SerializeField]
+        [Tooltip("Determines the provider used for triggering blinking.")]
         private BlinkBehaviorType _blinkBehavior;
         public BlinkBehaviorType BlinkBehavior
         {
             get => _blinkBehavior;
         }
 
-        [Tooltip("InputActionReference to the provider of the right eye's openness for the right eye. Should be a float.")]
+        /// <summary>
+        /// InputActionReference to the provider of the right eye's openness for the right eye. Should be a float.
+        /// </summary>
         [SerializeField]
+        [Tooltip("InputActionReference to the provider of the right eye's openness for the right eye. Should be a float.")]
         private InputActionReference _leftEyeOpennessRef;
 
-        [Tooltip("InputActionReference to the provider of the left eye's openness for the right eye. Should be a float.")]
+        /// <summary>
+        /// InputActionReference to the provider of the left eye's openness for the right eye. Should be a float.
+        /// </summary>
         [SerializeField]
+        [Tooltip("InputActionReference to the provider of the left eye's openness for the right eye. Should be a float.")]
         private InputActionReference _rightEyeOpennessRef;
 
-        [Tooltip("BlendShape index for the left eye's blink. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
+        /// <summary>
+        /// BlendShape index for the left eye's blink. Right-click on the BlendShape and copy it's property-path to get it's idx.
+        /// </summary>
         [SerializeField]
+        [Tooltip("BlendShape index for the left eye's blink. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
         private int _leftBlinkIdx = -1;
 
-        [Tooltip("BlendShape index for the right eye's blink. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
+        /// <summary>
+        /// BlendShape index for the right eye's blink. Right-click on the BlendShape and copy it's property-path to get it's idx.
+        /// </summary>
         [SerializeField]
+        [Tooltip("BlendShape index for the right eye's blink. Right-click on the BlendShape and copy it's property-path to get it's idx.")]
         private int _rightBlinkIdx = -1;
 
-
-        [Tooltip("Duration of a blinking action in seconds.")]
+        /// <summary>
+        /// Duration of a blinking action in seconds.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Duration of a blinking action in seconds.")]
         private float _blinkDuration = 0.5f;
 
-        [Tooltip("Minimum duration between blinks in seconds when blinkBehavior is set to RandomInterval.")]
+        /// <summary>
+        /// Minimum duration between blinks in seconds when blinkBehavior is set to RandomInterval.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Minimum duration between blinks in seconds when blinkBehavior is set to RandomInterval.")]
         private float _minBlinkInterval = 5.0f;
 
-        [Tooltip("Maximum duration between blinks in seconds when blinkBehavior is set to RandomInterval.")]
+        /// <summary>
+        /// Maximum duration between blinks in seconds when blinkBehavior is set to RandomInterval.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Maximum duration between blinks in seconds when blinkBehavior is set to RandomInterval.")]
         private float _maxBlinkInterval = 12.0f;
 
 
-        // Mesh
-        [Tooltip("SkinnedMeshRenderer for which the BlendSpace Indices (and thus the morphing) are applied. Will be found automatically in the children if not provided.")]
+        /// <summary>
+        /// SkinnedMeshRenderer for which the BlendSpace Indices (and thus the morphing) are applied. Will be found automatically in the children if not provided.
+        /// </summary>
         [SerializeField]
+        [Tooltip("SkinnedMeshRenderer for which the BlendSpace Indices (and thus the morphing) are applied. Will be found automatically in the children if not provided.")]
         private SkinnedMeshRenderer _meshRenderer;
 
 
@@ -116,6 +141,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
             }
         }
 
+        /// <summary>
+        /// Different types of eye blinking behaviors.
+        /// `EyeTracking` requires a headset that supports and exposes the value via InputActions.
+        /// </summary>
         public enum BlinkBehaviorType
         {
             EyeTracking,

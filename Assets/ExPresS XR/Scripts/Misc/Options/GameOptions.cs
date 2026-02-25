@@ -23,6 +23,9 @@ namespace ExPresSXR.Misc.Options
         #endregion
 
         #region Default Values
+        /// <summary>
+        /// Categorizes the experience type.
+        /// </summary>
         [SerializeField]
         [Tooltip("Categorizes the experience type.")]
         protected ExperienceType _defaultExperience = ExperienceType.None;
@@ -31,12 +34,18 @@ namespace ExPresSXR.Misc.Options
         [Tooltip("With what this game was made with.")]
         protected string _defaultMadeWith = MADE_WITH_PLAYER_PREF;
 
+        /// <summary>
+        /// If subtitles are enabled or not.
+        /// </summary>
         [SerializeField]
         [Tooltip("If subtitles are enabled or not.")]
         protected bool _defaultSubtitlesEnabled = true;
 
         [Space]
 
+        /// <summary>
+        /// Create missing values on awake.
+        /// </summary>
         [SerializeField]
         [Tooltip("Create missing values on awake.")]
         protected bool _createMissingValuesOnAwake = true;

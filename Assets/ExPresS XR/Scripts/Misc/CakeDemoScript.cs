@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// A script for a UI demo of the project.
+    /// </summary>
     public class CakeDemoScript : MonoBehaviour
     {
         const float END_CONTENT_DURATION = 2.0f;

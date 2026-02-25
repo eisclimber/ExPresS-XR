@@ -320,6 +320,10 @@ namespace ExPresSXR.Interaction
             return Mathf.Clamp(value, minValue, maxValue);
         }
 
+        /// <summary>
+        /// Disables all visuals during which grabbing is prevented.
+        /// </summary>
+        /// <param name="duration">Duration to hide.</param>
         public void HideFromPlayerForDuration(float duration)
         {
             AllowGrab = false;

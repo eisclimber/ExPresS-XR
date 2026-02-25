@@ -1,14 +1,21 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows toggling the state of a ui button for supporting on the fly toggleMode.
+    /// </summary>
     [RequireComponent(typeof(Button))]
     public class ButtonToggler : MonoBehaviour
     {
+        /// <summary>
+        /// If the button should be considered pressed (toggledDown) or not (toggledUp).
+        /// </summary>
         [SerializeField]
+        [Tooltip("If the button should be considered pressed (toggledDown) or not (toggledUp).")]
         private bool _pressed = false;
         public bool Pressed
         {
@@ -42,6 +49,9 @@ namespace ExPresSXR.Misc
 
         [Space]
 
+        /// <summary>
+        /// Emitted when the toggle state changes, providing the toggle pressed state.
+        /// </summary>
         public ToggledChangedEvent OnToggleChanged;
 
 
@@ -92,7 +102,9 @@ namespace ExPresSXR.Misc
         }
     }
 
-    // Make the toggle changed event serializable again 
-    [System.Serializable]
+    /// <summary>
+    /// Wrapper class for a bool event emitted when the toggle state changes.
+    /// </summary>
+    [Serializable]
     public class ToggledChangedEvent : UnityEvent<bool> { }
 }

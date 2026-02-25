@@ -17,6 +17,9 @@ namespace ExPresSXR.Misc.Audio
         [Tooltip("Minimum possible pitch (inclusive).")]
         private float _minPitch = 0.95f;
 
+        /// <summary>
+        /// Maximum possible pitch (exclusive).
+        /// </summary>
         [SerializeField]
         [Tooltip("Maximum possible pitch (exclusive).")]
         private float _maxPitch = 1.05f;

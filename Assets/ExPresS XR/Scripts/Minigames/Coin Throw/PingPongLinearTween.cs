@@ -25,12 +25,14 @@ namespace ExPresSXR.Minigames.CoinThrow
         /// Duration of the tween for one direction.
         /// </summary>
         [SerializeField]
+        [Tooltip("Duration of the tween for one direction.")]
         private float _duration = 1.0f;
 
         /// <summary>
         /// If enabled, the tween starts automatically during Awake().
         /// </summary>
         [SerializeField]
+        [Tooltip("If enabled, the tween starts automatically during Awake().")]
         private bool _startOnAwake;
 
         private float _startTime;

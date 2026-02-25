@@ -4,6 +4,9 @@ using ExPresSXR.Rig;
 
 namespace ExPresSXR.Movement
 {
+    /// <summary>
+    /// Forces a manual teleportation.
+    /// </summary>
     public class ForceTeleport : MonoBehaviour
     {
         /// <summary>

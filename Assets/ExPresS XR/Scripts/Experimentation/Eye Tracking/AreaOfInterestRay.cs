@@ -10,7 +10,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
     public class AreaOfInterestRay : MonoBehaviour
     {
         /// <summary>
-        /// Default mask used to calculate hits with. Should be both the "AOI" and "AOI Bounce" layer.
+        /// Default mask used to calculate hits with. Should be both the "AOI"(9) and "AOI Bounce" (10) layer.
         /// </summary>
         private const int DEFAULT_AOI_LAYER_MASK = 1536;
 
