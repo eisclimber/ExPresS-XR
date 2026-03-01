@@ -22,48 +22,48 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     // ExPresSXR.Interaction.ButtonQuiz.QuizButton, Assembly-CSharp
     public class QuizButton : Button
     {
-        /// <summary>
-        /// If the question currently displayed is correct.
-        /// </summary>
         [SerializeField]
         [Tooltip("If the question currently displayed is correct.")]
         private bool _correctChoice;
+        /// <summary>
+        /// If the question currently displayed is correct.
+        /// </summary>
         public bool CorrectChoice
         {
             get => _correctChoice;
             set => _correctChoice = value;
         }
 
+        [SerializeField]
+        [Tooltip("If feedback should be given when pressing the button.")]
+        private bool _feedbackDisabled;
         /// <summary>
         /// If feedback should be given when pressing the button.
         /// </summary>
-        [SerializeField]
-        [Tooltip("If feedback should be given when pressing the button.")]
-        public bool _feedbackDisabled;
         public bool FeedbackDisabled
         {
             get => _feedbackDisabled;
             set => _feedbackDisabled = value;
         }
 
+        [SerializeField]
+        [Tooltip("If the feedback should be inverted (if feedback is given).")]
+        private bool _invertedFeedback;
         /// <summary>
         /// If the feedback should be inverted (if feedback is given).
         /// </summary>
-        [SerializeField]
-        [Tooltip("If the feedback should be inverted (if feedback is given).")]
-        public bool _invertedFeedback;
         public bool InvertedFeedback
         {
             get => _invertedFeedback;
             set => _invertedFeedback = value;
         }
 
-        /// <summary>
-        /// The string displayed as the answer.
-        /// </summary>
         [SerializeField]
         [Tooltip("The string displayed as the answer.")]
         private string _answerText;
+        /// <summary>
+        /// The string displayed as the answer.
+        /// </summary>
         public string AnswerText
         {
             get => _answerText;
@@ -83,12 +83,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             }
         }
 
-        /// <summary>
-        /// The prefab that is attached to the `feedbackObjectSocket` as answer option.
-        /// </summary>
         [SerializeField]
         [Tooltip("The prefab that is attached to the `feedbackObjectSocket` as answer option.")]
         private GameObject _answerObject;
+        /// <summary>
+        /// The prefab that is attached to the `feedbackObjectSocket` as answer option.
+        /// </summary>
         public GameObject AnswerObject
         {
             get => _answerObject;
@@ -129,37 +129,37 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         private TMP_Text _feedbackTextLabel;
 
 
-        /// <summary>
-        /// Used to not emit inputDisabled Events after an answer was given.
-        /// </summary>
         [SerializeField]
         [Tooltip("Used to not emit inputDisabled Events after an answer was given.")]
         private bool _overrideInputDisabledEvents;
+        /// <summary>
+        /// Used to not emit inputDisabled Events after an answer was given.
+        /// </summary>
         public bool OverrideInputDisabledEvents
         {
             get => _overrideInputDisabledEvents;
             set => _overrideInputDisabledEvents = value;
         }
 
-        // Sounds
-        /// <summary>
-        /// Sound played when the button pressed with a correct answer.
-        /// </summary>
+
         [SerializeField]
         [Tooltip("Sound played when the button pressed with a correct answer.")]
         protected AudioClip _answeredCorrectSound;
+        /// <summary>
+        /// Sound played when the button pressed with a correct answer.
+        /// </summary>
         public AudioClip AnsweredCorrectSound
         {
             get => _answeredCorrectSound;
             set => _answeredCorrectSound = value;
         }
 
-        /// <summary>
-        /// Sound played when the button pressed with an incorrect answer.
-        /// </summary>
         [SerializeField]
         [Tooltip("Sound played when the button pressed with an incorrect answer.")]
         protected AudioClip _answeredIncorrectSound;
+        /// <summary>
+        /// Sound played when the button pressed with an incorrect answer.
+        /// </summary>
         public AudioClip AnsweredIncorrectSound
         {
             get => _answeredIncorrectSound;
@@ -188,7 +188,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public UnityEvent OnAnsweredIncorrect;
 
 
-        ///////////
         private long triggerStartTime = -1;
 
         /// <summary>
@@ -241,7 +240,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <param name="answerText">Text to be displayed.</param>
         /// <param name="answerObject">Prefab to be displayed.</param>
-        /// <param name="correctChoice">Wether or not the button is correct.</param>
+        /// <param name="correctChoice">Whether or not the button is correct.</param>
         public void DisplayAnswer(string answerText, GameObject answerObject, bool correctChoice)
         {
             ClearAnswer();

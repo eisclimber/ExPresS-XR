@@ -55,12 +55,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         public const int NUM_CSV_EXPORT_COLUMNS = 2 + QuizRoundData.NUM_CSV_EXPORT_COLUMNS + ButtonQuizConfig.NUM_CSV_EXPORT_COLUMNS;
 
-        /// <summary>
-        /// The ButtonQuizConfig that hold all question and general config to be exported.
-        /// </summary>
         [SerializeField]
         [Tooltip("The ButtonQuizConfig that hold all question and general config to be exported.")]
         private ButtonQuizConfig _config;
+        /// <summary>
+        /// The ButtonQuizConfig that hold all question and general config to be exported.
+        /// </summary>
         public ButtonQuizConfig Config
         {
             get => _config;
@@ -76,12 +76,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             }
         }
 
-        /// <summary>
-        /// Can be used to check if a quiz is currently undergoing.
-        /// </summary>
         [SerializeField]
         [Tooltip("Can be used to check if a quiz is currently undergoing.")]
         private bool _quizUndergoing;
+        /// <summary>
+        /// Can be used to check if a quiz is currently undergoing.
+        /// </summary>
         public bool QuizUndergoing
         {
             get => _quizUndergoing;

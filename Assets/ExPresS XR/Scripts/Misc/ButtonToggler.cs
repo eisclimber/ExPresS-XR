@@ -11,12 +11,12 @@ namespace ExPresSXR.Misc
     [RequireComponent(typeof(Button))]
     public class ButtonToggler : MonoBehaviour
     {
-        /// <summary>
-        /// If the button should be considered pressed (toggledDown) or not (toggledUp).
-        /// </summary>
         [SerializeField]
         [Tooltip("If the button should be considered pressed (toggledDown) or not (toggledUp).")]
         private bool _pressed = false;
+        /// <summary>
+        /// If the button should be considered pressed (toggledDown) or not (toggledUp).
+        /// </summary>
         public bool Pressed
         {
             get => _pressed;
@@ -34,12 +34,12 @@ namespace ExPresSXR.Misc
             }
         }
 
-        /// <summary>
-        /// If enabled, will attempt to connect to the 'onClick' event of the button. Do not call ToggleButton in this case!
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled, will attempt to connect to the 'onClick' event of the button. Do not call ToggleButton in this case!")]
         private bool _connectToClick = false;
+        /// <summary>
+        /// If enabled, will attempt to connect to the 'onClick' event of the button. Do not call ToggleButton in this case!
+        /// </summary>
         public bool ConnectToClick
         {
             get => _connectToClick;
@@ -47,11 +47,11 @@ namespace ExPresSXR.Misc
         }
 
 
-        [Space]
 
         /// <summary>
         /// Emitted when the toggle state changes, providing the toggle pressed state.
         /// </summary>
+        [Space]
         public ToggledChangedEvent OnToggleChanged;
 
 

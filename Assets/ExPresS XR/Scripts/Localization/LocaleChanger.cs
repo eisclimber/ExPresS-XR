@@ -16,28 +16,28 @@ namespace ExPresSXR.Localization
     /// </summary>
     public class LocaleChanger : MonoBehaviour
     {
+        private int _currentLocaleIdx;
         /// <summary>
         /// Returns the index of the current selected locale or -1 if not initialized.
         /// </summary>
-        private int _currentLocaleIdx;
         public int CurrentLocaleIdx
         {
             get => _initialized ? _currentLocaleIdx : -1;
         }
 
+        private int _numLocales = 1;
         /// <summary>
         /// Returns the number of available locale or -1 if not initialized.
         /// </summary>
-        private int _numLocales = 1;
         public int NumLocales
         {
             get => _initialized ? _numLocales : -1;
         }
 
+        private bool _initialized;
         /// <summary>
         /// If the language server was initialized, meaning locales are replaced and can be switched.
         /// </summary>
-        private bool _initialized;
         public bool Initialized
         {
             get => _initialized;

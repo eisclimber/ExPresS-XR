@@ -10,11 +10,11 @@ namespace ExPresSXR.Minigames.Boxing
     /// </summary>
     public class BoxingTargetArea : TargetArea.TargetArea
     {
+        [SerializeField]
+        private bool _targetActive;
         /// <summary>
         /// If the target can be hit.
         /// </summary>
-        [SerializeField]
-        private bool _targetActive;
         public bool TargetActive
         {
             get => _targetActive;
@@ -121,9 +121,7 @@ namespace ExPresSXR.Minigames.Boxing
             }
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         public override void QueueAction()
         {
             if (_targetActive)

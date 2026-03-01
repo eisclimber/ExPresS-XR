@@ -5,7 +5,6 @@ namespace ExPresSXR.Minigames.CoinThrow
 {
     /// <summary>
     /// Displays and stores a numerical score via UI.
-
     /// </summary>
     public class ScoreDisplay : MonoBehaviour
     {

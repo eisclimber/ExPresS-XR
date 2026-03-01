@@ -45,10 +45,10 @@ namespace ExPresSXR.Experimentation.DataGathering
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field)]
     public class HeaderReplacementNoticeAttribute : Attribute
     {
+        private string _notice;
         /// <summary>
         /// Notice to be displayed.
         /// </summary>
-        private string _notice;
         public string Notice
         {
             get => _notice;

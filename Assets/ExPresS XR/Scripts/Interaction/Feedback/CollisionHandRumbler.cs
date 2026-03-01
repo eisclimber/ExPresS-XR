@@ -9,12 +9,12 @@ namespace ExPresSXR.Interaction.Feedback
     [RequireComponent(typeof(Collider))]
     public class CollisionHandRumbler : MonoBehaviour
     {
-        /// <summary>
-        /// Description of the rumble performed during collisions.
-        /// </summary>
         [SerializeField]
         [Tooltip("Description of the rumble performed during collisions.")]
         private RumbleDescription _rumble;
+        /// <summary>
+        /// Description of the rumble performed during collisions.
+        /// </summary>
         public RumbleDescription Rumble
         {
             get => _rumble;
@@ -23,24 +23,24 @@ namespace ExPresSXR.Interaction.Feedback
 
         [Space]
 
-        /// <summary>
-        /// HapticsImpulsePlayer used to perform the rumble for the left hand.
-        /// </summary>
         [SerializeField]
         [Tooltip("HapticsImpulsePlayer used to perform the rumble for the left hand.")]
         private HapticImpulsePlayer _leftHapticPlayer;
+        /// <summary>
+        /// HapticsImpulsePlayer used to perform the rumble for the left hand.
+        /// </summary>
         public HapticImpulsePlayer LeftHapticPlayer
         {
             get => _leftHapticPlayer;
             set => _leftHapticPlayer = value;
         }
 
-        /// <summary>
-        /// HapticsImpulsePlayer used to perform the rumble for the right hand.
-        /// </summary>
         [SerializeField]
         [Tooltip("HapticsImpulsePlayer used to perform the rumble for the right hand.")]
         private HapticImpulsePlayer _rightHapticPlayer;
+        /// <summary>
+        /// HapticsImpulsePlayer used to perform the rumble for the right hand.
+        /// </summary>
         public HapticImpulsePlayer RightXrController
         {
             get => _rightHapticPlayer;

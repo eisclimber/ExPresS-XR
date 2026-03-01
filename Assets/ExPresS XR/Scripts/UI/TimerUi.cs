@@ -116,12 +116,12 @@ namespace ExPresSXR.UI
             /// </summary>
             public CountDirection CountType = CountDirection.Down;
 
-            /// <summary>
-            /// Color of the text.
-            /// </summary>
             [SerializeField]
             [Tooltip("Color of the text.")]
             protected Color _color = Color.white;
+            /// <summary>
+            /// Color of the text.
+            /// </summary>
             public Color Color
             {
                 get => _color;
@@ -140,12 +140,12 @@ namespace ExPresSXR.UI
                 get => ShowMilliseconds ? "F2" : "F0";
             }
 
-            /// <summary>
-            /// Text to display the time.
-            /// </summary>
             [SerializeField]
             [Tooltip("Text to display the time.")]
             protected TMP_Text _text;
+            /// <summary>
+            /// Text to display the time.
+            /// </summary>
             public TMP_Text Text
             {
                 get => _text;
@@ -211,8 +211,10 @@ namespace ExPresSXR.UI
         /// </summary>
         public enum CountDirection
         {
-            Up, /// <summary> Text is counting up from 0. </summary>
-            Down /// <summary> Text is counting down to 0. </summary>
+            /// <summary> Text is counting up from 0. </summary>
+            Up,
+            /// <summary> Text is counting down to 0. </summary>
+            Down
         }
     }
 }

@@ -32,21 +32,21 @@ namespace ExPresSXR.Movement
         [SerializeField]
         protected CharacterController _characterController;
 
+        protected Vector3 _currentVelocity;
         /// <summary>
         /// The current velocity applied.
         /// </summary>
-        protected Vector3 _currentVelocity;
         public Vector3 CurrentVelocity
         {
             get => _currentVelocity;
             protected set => _currentVelocity = value;
         }
 
+        private bool _forceTemporarilyDisabled;
         /// <summary>
         /// Will be true if the force is temporarily disabled after a input action was performed.
         /// Do not apply the force in these cases to allow teleport movement.
         /// </summary>
-        private bool _forceTemporarilyDisabled;
         protected bool ForceTemporarilyDisabled
         {
             get => _forceTemporarilyDisabled;

@@ -130,7 +130,7 @@ namespace ExPresSXR.Minigames.Excavation
         /// THIS IS INSANELY EXPENSIVE AS THE GPU AND CPU NEED TO SYNC! CALL SPARINGLY!!!
         /// </summary>
         /// <param name="granularity">Granularity of the mipmap to be retrieved.</param>
-        /// <param name="pcallbacks">Callback executed after retrieving the texture.</param>
+        /// <param name="callback">Callback executed after retrieving the texture.</param>
         /// <returns>Average Color.</returns>
         public void GetAvgColors(int granularity, Action<AsyncGPUReadbackRequest> callback)
         {

@@ -59,10 +59,10 @@ namespace ExPresSXR.Rig
         private float _pointCancelDowntime = 0.2f;
 
 
+        private int _pointAreaCollisions;
         /// <summary>
         /// Number of collisions detected to indicate pointing.
         /// </summary>
-        private int _pointAreaCollisions;
         public int PointAreaCollisions
         {
             get => _pointAreaCollisions;

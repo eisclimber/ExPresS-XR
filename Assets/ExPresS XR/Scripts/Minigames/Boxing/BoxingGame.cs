@@ -1,7 +1,6 @@
 using ExPresSXR.Minigames.TargetArea;
 using ExPresSXR.Misc;
 using ExPresSXR.Misc.Timing;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -47,13 +46,13 @@ namespace ExPresSXR.Minigames.Boxing
         [Tooltip("If the game should start automatically.")]
         private bool _autoStart;
 
-        /// <summary>
-        /// Current score for the game.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         [Tooltip("Current score for the game.")]
         private int _currentScore;
+        /// <summary>
+        /// Current score for the game.
+        /// </summary>
         public int CurrentScore
         {
             get => _currentScore;

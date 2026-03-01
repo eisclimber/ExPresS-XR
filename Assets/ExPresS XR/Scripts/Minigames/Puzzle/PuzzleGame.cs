@@ -100,12 +100,12 @@ namespace ExPresSXR.Minigames.Puzzle
         [Tooltip("Bonus points granted when submitting the next tile within `_speedBonusThreshold`.")]
         private int _speedBonus = 25;
 
-        /// <summary>
-        /// Bonus prefix added to the ScoreNumbers when a speed bonus is granted.
-        /// </summary>
         [SerializeField]
         [Tooltip("Bonus prefix added to the ScoreNumbers when a speed bonus is granted.")]
         private string _speedBonusPrefix = "Speed Bonus: ";
+        /// <summary>
+        /// Bonus prefix added to the ScoreNumbers when a speed bonus is granted.
+        /// </summary>
         public string SpeedBonusPrefix
         {
             get => _speedBonusPrefix;
@@ -114,37 +114,37 @@ namespace ExPresSXR.Minigames.Puzzle
 
         [Space]
 
-        /// <summary>
-        /// Current number of submitted pieces.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         [Tooltip("Current number of submitted pieces.")]
         private int _numCompleted;
+        /// <summary>
+        /// Current number of submitted pieces.
+        /// </summary>
         public int NumCompleted
         {
             get => _numCompleted;
         }
 
-        /// <summary>
-        /// Boolean list which pieces were submitted.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         [Tooltip("Boolean list which pieces were submitted.")]
         private bool[] _pieceSubmitted;
+        /// <summary>
+        /// Boolean list which pieces were submitted.
+        /// </summary>
         public bool[] PieceSubmitted
         {
             get => _pieceSubmitted;
         }
 
-        /// <summary>
-        /// The current score of the puzzle.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         [Tooltip("The current score of the puzzle.")]
         private int _currentScore;
+        /// <summary>
+        /// The current score of the puzzle.
+        /// </summary>
         public int CurrentScore
         {
             get => _currentScore;
@@ -223,9 +223,7 @@ namespace ExPresSXR.Minigames.Puzzle
             }
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected void Start()
         {
             if (_autoStart)

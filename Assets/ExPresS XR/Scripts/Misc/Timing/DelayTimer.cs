@@ -56,11 +56,10 @@ namespace ExPresSXR.Misc.Timing
         }
 
         
-        [Space]
-        
         /// <summary>
         /// Event that is triggered when the delay timer starts (i.e. the timer is started).
         /// </summary>
+        [Space]
         [Tooltip("Event that is triggered when the timer times out.")]
         public UnityEvent OnDelayStarted;
         
@@ -103,7 +102,7 @@ namespace ExPresSXR.Misc.Timing
 
         /// <summary>
         /// (Re-)starts the timer with duration, setting waitTime in the process.
-        /// If duration is <= 0.0f the value of waitTime is used.
+        /// If duration is less or equal to 0.0f the value of waitTime is used.
         /// </summary>
         /// <param name="duration">The duration the timer will run. 
         ///     If the value is zero or negative the <see cref="waitTime"/> will be used. Default: -1.0f
@@ -112,10 +111,11 @@ namespace ExPresSXR.Misc.Timing
 
         /// <summary>
         /// (Re-)starts the timer with duration, setting waitTime in the process.
-        /// If duration is <= 0.0f the value of waitTime is used.
+        /// If duration is less or equal to 0.0f the value of waitTime is used.
         /// </summary>
         /// <param name="duration">The duration the timer will run. 
         ///     If the value is zero or negative the <see cref="waitTime"/> will be used. Default: -1.0f
+        /// </param>
         /// <param name="delay">The delay the timer will run. 
         ///     If the value is zero or negative the <see cref="startDelay"/> will be used. Default: -1.0f
         /// </param>

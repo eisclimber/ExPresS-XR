@@ -36,9 +36,7 @@ namespace ExPresSXR.Interaction.Interactors
         public override bool CanHover(IXRHoverInteractable interactable)
             => base.CanHover(interactable) && (IsTagMatch(interactable) || _allowInvalidHover);
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override Material GetHoveredInteractableMaterial(IXRHoverInteractable interactable)
         {
             if (!IsTagMatch(interactable))
@@ -57,9 +55,7 @@ namespace ExPresSXR.Interaction.Interactors
         public override bool CanSelect(IXRSelectInteractable interactable)
             => base.CanSelect(interactable) && IsTagMatch(interactable);
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected virtual bool IsTagMatch(IXRInteractable interactable)
         {
             // If empty, compare to the 'Untagged'-tag
@@ -79,9 +75,7 @@ namespace ExPresSXR.Interaction.Interactors
             return false;
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override bool ShouldDrawHoverMesh(MeshFilter meshFilter, Renderer meshRenderer, Camera mainCamera)
         {
             return !IsMeshAlreadySelected(meshFilter) && base.ShouldDrawHoverMesh(meshFilter, meshRenderer, mainCamera);

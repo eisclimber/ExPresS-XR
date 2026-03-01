@@ -15,13 +15,15 @@ namespace ExPresSXR.Interaction.Feedback
         /// XRPokeInteractor to play the rumble on.
         /// </summary>
         [SerializeField]
+        [Tooltip("XRPokeInteractor to play the rumble on.")]
         private XRPokeInteractor _pokeInteractor;
 
-        /// <summary>
-        /// The Haptic Impulse Player component to use to play haptic impulses.
-        /// </summary>
         [SerializeField]
+        [Tooltip("The HapticImpulsePlayer component to use to play haptic impulses.")]
         private HapticImpulsePlayer _hapticImpulsePlayer;
+        /// <summary>
+        /// The HapticImpulsePlayer component to use to play haptic impulses.
+        /// </summary>
         public HapticImpulsePlayer HapticImpulsePlayer
         {
             get => _hapticImpulsePlayer;
@@ -32,8 +34,8 @@ namespace ExPresSXR.Interaction.Feedback
         /// Plays a rumble when entering ui elements.
         /// </summary>
         [SerializeField]
+        [Tooltip("Plays a rumble when entering ui elements.")]
         private bool _playUiHoverEntered;
-
         /// <summary>
         /// Whether to play a haptic impulse when the interactor starts selecting an interactable.
         /// </summary>
@@ -44,8 +46,8 @@ namespace ExPresSXR.Interaction.Feedback
         }
 
         [SerializeField]
-        HapticImpulseData _uiHoverEnteredData = new() { amplitude = 0.5f, duration = 0.1f, };
-
+        [Tooltip("The haptic impulse to play when the interactor starts selecting an interactable.")]
+        private HapticImpulseData _uiHoverEnteredData = new() { amplitude = 0.5f, duration = 0.1f, };
         /// <summary>
         /// The haptic impulse to play when the interactor starts selecting an interactable.
         /// </summary>
@@ -55,12 +57,9 @@ namespace ExPresSXR.Interaction.Feedback
             set => _uiHoverEnteredData = value;
         }
 
-        /// <summary>
-        /// Plays a rumble when exiting ui elements.
-        /// </summary>
         [SerializeField]
+        [Tooltip("Whether to play a haptic impulse when the interactor starts selecting an interactable.")]
         private bool _playUiHoverExited;
-
         /// <summary>
         /// Whether to play a haptic impulse when the interactor starts selecting an interactable.
         /// </summary>
@@ -71,8 +70,8 @@ namespace ExPresSXR.Interaction.Feedback
         }
 
         [SerializeField]
-        HapticImpulseData _uiHoverExitedData = new() { amplitude = 0.5f, duration = 0.1f, };
-
+        [Tooltip("The haptic impulse to play when the interactor starts selecting an interactable.")]
+        private HapticImpulseData _uiHoverExitedData = new() { amplitude = 0.5f, duration = 0.1f, };
         /// <summary>
         /// The haptic impulse to play when the interactor starts selecting an interactable.
         /// </summary>

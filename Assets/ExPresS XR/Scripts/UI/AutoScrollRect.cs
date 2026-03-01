@@ -17,12 +17,12 @@ namespace ExPresSXR.UI
     [RequireComponent(typeof(ScrollRect))]
     public class AutoScrollRect : MonoBehaviour
     {
-        /// <summary>
-        /// If enabled, the rect will scroll automatically.
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled, the rect will scroll automatically.")]
         private bool _autoScrolling;
+        /// <summary>
+        /// If enabled, the rect will scroll automatically.
+        /// </summary>
         public bool AutoScrolling
         {
             get => _autoScrolling;
@@ -196,8 +196,10 @@ namespace ExPresSXR.UI
         /// </summary>
         public enum ScrollDirection
         {
-            Up = 1, /// <summary> Automatically scrolls up. </summary>
-            Down = -1 /// <summary> Automatically scrolls down. </summary>
+            /// <summary> Automatically scrolls up. </summary>
+            Up = 1,
+            /// <summary> Automatically scrolls down. </summary>
+            Down = -1
         }
     }
 }

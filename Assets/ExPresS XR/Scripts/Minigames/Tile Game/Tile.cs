@@ -81,7 +81,7 @@ namespace ExPresSXR.Minigames.TileGame
         }
 
         /// <summary>
-        /// Wether the tiles are adjacently connected in a direction by the same area type.
+        /// Whether the tiles are adjacently connected in a direction by the same area type.
         /// </summary>
         /// <param name="other">Tile to check the connection to.</param>
         /// <param name="checkDir">Direction to check in.</param>

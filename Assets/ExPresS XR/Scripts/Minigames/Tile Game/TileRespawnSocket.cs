@@ -27,13 +27,13 @@ namespace ExPresSXR.Minigames.TileGame
         [ReadonlyInInspector]
         private TileVisuals _currentVisuals;
 
-        /// <summary>
-        /// Areas used for tile randomization. Should be managed and set by the TileGame.
-        /// </summary>
         [SerializeField]
         [Tooltip("Areas used for tile randomization. Should be managed and set by the TileGame.")]
         [ReadonlyInInspector]
         private AreaDescription[] _areas;
+        /// <summary>
+        /// Areas used for tile randomization. Should be managed and set by the TileGame.
+        /// </summary>
         public AreaDescription[] Areas
         {
             get => _areas;
@@ -58,9 +58,7 @@ namespace ExPresSXR.Minigames.TileGame
         /// </summary>
         public UnityEvent OnRespawned;
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void ResetPutBackTimer(SelectEnterEventArgs args)
         {
             if (args != null && args.interactorObject is TileSubmitSocket)
@@ -75,9 +73,7 @@ namespace ExPresSXR.Minigames.TileGame
             base.ResetPutBackTimer(args);
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void InstantiatePutBackPrefab()
         {
             if (HasRespawnVariants)

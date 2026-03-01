@@ -7,11 +7,11 @@ namespace ExPresSXR.Movement
     /// </summary>
     public class PlayerRigidForce : PlayerForceBase
     {
+        [SerializeField]
+        private bool _applyForce = true;
         /// <summary>
         /// Whether or not the force should be applied.
         /// </summary>
-        [SerializeField]
-        private bool _applyForce = true;
         public bool ApplyForce
         {
             get => _applyForce;

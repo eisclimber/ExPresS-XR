@@ -19,10 +19,10 @@ namespace ExPresSXR.Minigames.TargetArea
         private int _actionsToComplete = 1;
 
 
+        private bool _completed;
         /// <summary>
         /// If the number of actions were performed and the target is completed, not registering any more actions.
         /// </summary>
-        private bool _completed;
         public bool Completed
         {
             get => _completed;

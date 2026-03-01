@@ -49,10 +49,14 @@ namespace ExPresSXR.Minigames.Excavation
         /// </summary>
         public enum Channels
         {
-            R, /// <summary> Red channel. </summary>
-            G, /// <summary> Green channel. </summary>
-            B, /// <summary> Blue channel. </summary>
-            A /// <summary> Alpha channel. </summary>
+            /// <summary> Red channel. </summary>
+            R,
+            /// <summary> Green channel. </summary>
+            G,
+            /// <summary> Blue channel. </summary>
+            B,
+            /// <summary> Alpha channel. </summary>
+            A
         }
     }
 }

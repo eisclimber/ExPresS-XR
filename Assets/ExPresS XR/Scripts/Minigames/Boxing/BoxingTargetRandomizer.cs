@@ -9,12 +9,12 @@ namespace ExPresSXR.Minigames.Boxing
     /// </summary>
     public class BoxingTargetRandomizer : MonoBehaviour
     {
-        /// <summary>
-        /// Targets to randomize.
-        /// </summary>
         [SerializeField]
         [Tooltip("Targets to randomize.")]
         private BoxingTargetArea[] _targets;
+        /// <summary>
+        /// Targets to randomize.
+        /// </summary>
         public BoxingTargetArea[] Targets
         {
             get => _targets;
@@ -23,12 +23,12 @@ namespace ExPresSXR.Minigames.Boxing
 
         [Space]
 
-        /// <summary>
-        /// If the randomization should start automatically.
-        /// </summary>
         [SerializeField]
         [Tooltip("If the randomization should start automatically.")]
         private bool _autoStart;
+        /// <summary>
+        /// If the randomization should start automatically.
+        /// </summary>
         public bool AutoStart
         {
             get => _autoStart;

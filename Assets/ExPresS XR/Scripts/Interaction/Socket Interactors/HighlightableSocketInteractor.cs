@@ -15,12 +15,12 @@ namespace ExPresSXR.Interaction.Interactors
     /// </summary>
     public class HighlightableSocketInteractor : XRSocketInteractor
     {
-        /// <summary>
-        /// If the highlighter object should be shown when no object is in the socket.
-        /// </summary>
         [SerializeField]
         [Tooltip("If the highlighter object should be shown when no object is in the socket.")]
         protected bool _showHighlighter;
+        /// <summary>
+        /// If the highlighter object should be shown when no object is in the socket.
+        /// </summary>
         public bool ShowHighlighter
         {
             get => _showHighlighter;
@@ -32,12 +32,12 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        /// <summary>
-        /// The highlighter shown when no object is in the socket.
-        /// </summary>
         [SerializeField]
         [Tooltip("The highlighter shown when no object is in the socket.")]
         protected GameObject _highlighterObject;
+        /// <summary>
+        /// The highlighter shown when no object is in the socket.
+        /// </summary>
         public GameObject HighlighterObject
         {
             get => _highlighterObject;
@@ -53,12 +53,12 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        /// <summary>
-        /// Controls the scale of the provided highlighter by the scale of the sockets collider.
-        /// </summary>
         [SerializeField]
         [Tooltip("Controls the scale of the provided highlighter by the scale of the sockets collider.")]
         protected bool _useColliderSizeAsScale;
+        /// <summary>
+        /// Controls the scale of the provided highlighter by the scale of the sockets collider.
+        /// </summary>
         public bool UseColliderSizeAsScale
         {
             get => _useColliderSizeAsScale;
@@ -70,12 +70,12 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        /// <summary>
-        /// The scale of the highlighterObject.
-        /// </summary>
         [SerializeField]
         [Tooltip("The scale of the highlighterObject.")]
         protected Vector3 _highlighterScale = Vector3.one * 0.1f;
+        /// <summary>
+        /// The scale of the highlighterObject.
+        /// </summary>
         public Vector3 HighlighterScale
         {
             get => _highlighterScale;
@@ -90,9 +90,7 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -103,9 +101,7 @@ namespace ExPresSXR.Interaction.Interactors
             selectExited.AddListener(ShowHighlighterFromSelect);
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -179,9 +175,7 @@ namespace ExPresSXR.Interaction.Interactors
             return TryGetComponent(out SphereCollider _) || TryGetComponent(out BoxCollider _) || TryGetComponent(out CapsuleCollider _);
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnValidate()
         {
             base.OnValidate();

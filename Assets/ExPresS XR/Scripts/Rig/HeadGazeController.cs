@@ -25,12 +25,12 @@ namespace ExPresSXR.Rig
     /// </summary>
     public class HeadGazeController : MonoBehaviour
     {
-        /// <summary>
-        /// Wether or not the head gaze can be used to teleport.
-        /// </summary>
         [SerializeField]
-        [Tooltip("Wether or not the head gaze can be used to teleport.")]
+        [Tooltip("Whether or not the head gaze can be used to teleport.")]
         private bool _TeleportationEnabled = true;
+        /// <summary>
+        /// Whether or not the head gaze can be used to teleport.
+        /// </summary>
         public bool TeleportationEnabled
         {
             get => _TeleportationEnabled;
@@ -49,24 +49,24 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Whether or not multiple interactions can be performed when keeping the focus on an interactable.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not multiple interactions can be performed when keeping the focus on an interactable.")]
         private bool _canReselect = true;
+        /// <summary>
+        /// Whether or not multiple interactions can be performed when keeping the focus on an interactable.
+        /// </summary>
         public bool CanReselect
         {
             get => _canReselect;
             set => _canReselect = value;
         }
 
-        /// <summary>
-        /// The time in seconds needed to focus the head gaze to interact.
-        /// </summary>
         [SerializeField]
         [Tooltip("The time in seconds needed to focus the head gaze to interact.")]
         private float _timeToSelect = 1.0f;
+        /// <summary>
+        /// The time in seconds needed to focus the head gaze to interact.
+        /// </summary>
         public float TimeToSelect
         {
             get => _timeToSelect;
@@ -96,12 +96,12 @@ namespace ExPresSXR.Rig
         [Tooltip("The time in seconds the reticle will not show after heavy head movement. \nThe intensity-threshold can be set by changing the 'Head/Head Gaze Prevent Interaction'-Input-Mapping.")]
         private float _timeInteractionPrevented = 0.2f;
 
-        /// <summary>
-        /// The reticle used to indicate head gaze interactions.
-        /// </summary>
         [SerializeField]
         [Tooltip("The reticle used to indicate head gaze interactions.")]
         private HeadGazeReticle _headGazeReticle;
+        /// <summary>
+        /// The reticle used to indicate head gaze interactions.
+        /// </summary>
         public HeadGazeReticle HeadGazeReticle
         {
             get => _headGazeReticle;

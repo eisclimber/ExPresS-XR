@@ -1,8 +1,5 @@
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Video;
 using ExPresSXR.Experimentation.DataGathering;
 using System.Linq;
 
@@ -101,7 +98,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         /// <summary>
         /// Permutes an array using the given permutation as indices. Both arrays must be of same length.
-        /// Entries in the permutation array < 0 will be ignored and no entries will be added. 
+        /// Entries in the permutation array less 0 will be ignored and no entries will be added. 
         /// </summary>
         /// <typeparam name="T">Type of the permuted array.</typeparam>
         /// <param name="array">Array to be permuted.</param>

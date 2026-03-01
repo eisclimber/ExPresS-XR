@@ -127,6 +127,7 @@ namespace ExPresSXR.UI
         /// <summary>
         /// Plays the provided audio clip.
         /// </summary>
+        /// <param name="clip">Clip to be played.</param>
         public void PlayAudio(AudioClip clip)
         {
             if (clip)

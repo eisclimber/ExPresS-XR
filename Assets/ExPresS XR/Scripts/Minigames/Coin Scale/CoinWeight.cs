@@ -9,12 +9,12 @@ namespace ExPresSXR.Minigames.CoinScale
     /// </summary>
     public class CoinWeight : MonoBehaviour
     {
-        /// <summary>
-        /// Defines whether the coin is fake or real.
-        /// </summary>
         [SerializeField]
         [Tooltip("Defines whether the coin is fake or real.")]
         private bool _isFake;
+        /// <summary>
+        /// Defines whether the coin is fake or real.
+        /// </summary>
         public bool IsFake
         {
             get => _isFake;

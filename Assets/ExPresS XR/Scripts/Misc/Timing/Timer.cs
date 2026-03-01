@@ -8,12 +8,12 @@ namespace ExPresSXR.Misc.Timing
     /// </summary>
     public class Timer : MonoBehaviour
     {
-        /// <summary>
-        /// A description of the timer. No further use.
-        /// </summary>
         [Tooltip("A description of the timer. No further use.")]
         [SerializeField]
         private string _description = "";
+        /// <summary>
+        /// A description of the timer. No further use.
+        /// </summary>
         public string Description
         {
             get => _description;
@@ -50,11 +50,11 @@ namespace ExPresSXR.Misc.Timing
 
         [Space]
 
+        [SerializeField]
+        private bool _timerPaused;
         /// <summary>
         /// If the timer is paused or not.
         /// </summary>
-        [SerializeField]
-        private bool _timerPaused;
         public bool TimerPaused
         {
             get => _timerPaused;
@@ -69,24 +69,24 @@ namespace ExPresSXR.Misc.Timing
             get => _timingUnit.Running && !TimerPaused;
         }
 
-        /// <summary>
-        /// If true, will start the timer during OnAwake()...
-        /// </summary>
         [Tooltip("If true, will start the timer during OnAwake()...")]
         [SerializeField]
         private bool _autoStart = false;
+        /// <summary>
+        /// If true, will start the timer during OnAwake()...
+        /// </summary>
         public bool AutoStart
         {
             get => _autoStart;
             set => _autoStart = value;
         }
 
-        /// <summary>
-        /// If false, the timer will restart after timeout.
-        /// </summary>
         [Tooltip("If false, the timer will restart after timeout.")]
         [SerializeField]
         private bool _oneShot = true;
+        /// <summary>
+        /// If false, the timer will restart after timeout.
+        /// </summary>
         public bool OneShot
         {
             get => _oneShot;
@@ -136,7 +136,7 @@ namespace ExPresSXR.Misc.Timing
 
         /// <summary>
         /// (Re-)starts the timer with duration, setting waitTime in the process.
-        /// If duration is <= 0.0f the value of waitTime is used.
+        /// If duration is less or equal to 0.0f the value of waitTime is used.
         /// </summary>
         /// <param name="duration">The duration the timer will run. 
         ///     If the value is zero or negative the <see cref="waitTime"/> will be used. Default: -1.0f
@@ -157,7 +157,7 @@ namespace ExPresSXR.Misc.Timing
 
 
         /// <summary>
-        /// Continues a paused timer or sStarts the timer using <see cref="waitTime"/>.
+        /// Continues a paused timer or starts the timer using <see cref="waitTime"/>.
         /// </summary>
         [ContextMenu("Resume Timer")]
         public virtual void ResumeTimer()

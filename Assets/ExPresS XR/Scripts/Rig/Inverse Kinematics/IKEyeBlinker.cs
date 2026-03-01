@@ -23,6 +23,9 @@ namespace ExPresSXR.Experimentation.EyeTracking
         [SerializeField]
         [Tooltip("Determines the provider used for triggering blinking.")]
         private BlinkBehaviorType _blinkBehavior;
+        /// <summary>
+        /// Determines the provider used for triggering blinking.
+        /// </summary>
         public BlinkBehaviorType BlinkBehavior
         {
             get => _blinkBehavior;
@@ -155,8 +158,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
         /// </summary>
         public enum BlinkBehaviorType
         {
-            EyeTracking, /// <summary> Derive blinking from eye tracking. </summary>
-            RandomInterval /// <summary> Use random intervals for blinking. </summary>
+            /// <summary> Derive blinking from eye tracking. </summary>
+            EyeTracking,
+            /// <summary> Use random intervals for blinking. </summary>
+            RandomInterval
         }
     }
 }

@@ -4,6 +4,12 @@ using UnityEngine.InputSystem;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
+    /// <summary>
+    /// Animates the blend shapes of a SkinnedMeshRenderer to make the look in a direction using eye-tracking values.
+    /// 
+    /// The SkinnedMeshRenderer must have the proper blendshapes set up for this to work.  
+    /// To get the blendshapes' index, find it in the editor. Right-click and Copy the 'Property Path'. Paste it somewhere and use the number in the short string as index.
+    /// </summary>
     public class IKEyeDirections : MonoBehaviour
     {
         /// <summary>

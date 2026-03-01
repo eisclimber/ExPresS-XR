@@ -136,11 +136,16 @@ namespace ExPresSXR.UI
         [Flags]
         public enum LogTypeFilter
         {
-            Error, /// <summary> LogType used for Errors. </summary>
-            Assert, /// <summary> LogType used for Asserts (These could also indicate an Unity internal error). </summary>
-            Warning, /// <summary> LogType used for Warnings. </summary>
-            Log, /// <summary> LogType used for regular log messages. </summary>
-            Exception /// <summary> LogType used for Exceptions. </summary> 
+            /// <summary> LogType used for Errors. </summary>
+            Error,
+            /// <summary> LogType used for Asserts (These could also indicate an Unity internal error). </summary>
+            Assert,
+            /// <summary> LogType used for Warnings. </summary>
+            Warning,
+            /// <summary> LogType used for regular log messages. </summary>
+            Log,
+            /// <summary> LogType used for Exceptions. </summary> 
+            Exception
         }
     }
 }

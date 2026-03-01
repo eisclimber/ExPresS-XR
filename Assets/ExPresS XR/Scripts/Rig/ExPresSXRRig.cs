@@ -8,14 +8,14 @@ namespace ExPresSXR.Rig
 {
     /// <summary>
     /// The main configurable GameObject for XR, having all necessary components for any form of interaction as children of this one GameObject.
-
+    /// 
     /// The rig supports three different types of input methods:
     /// 
     /// - Controller: Used with a complete VR Headset and controllers. Using this allows for the most immersive XR experience.
     /// - Head Gaze: Used with for Smartphone applications but also compatible with VR headsets without requiring controllers.
     /// - Eye Gaze: Used with for Smartphone applications but also compatible with VR headsets without requiring controllers. (As we do not have a compatible headset we are unable to test it. It is included as it is part of Unity's samples and was not changed by ExPresS XR.)
     /// 
-    /// Movement is dependent on the selected Input Method. While Head- and Eye-Gaze only allow for teleportation or no movement, there are the following possibilities when using controllers:
+    /// Movement is dependent on the pselected Input Method. While Head- and Eye-Gaze only allow for teleportation or no movement, there are the following possibilities when using controllers:
     /// 
     /// - Teleportation: Casts a ray and teleports the rig to the target position of the ray. At the end of the ray is a visual indicator (reticle) that highlight teleportation targets. These targets are defined by the GameObjects with a `TeleportationArea`- and `TeleportationAnchor`-Component.
     ///     *Note:* In case of HeadGaze the ray will not be rendered, only the reticle will be shown. The reticles must be added to the teleportation areas and anchors as otherwise they will be shown with all interactions).
@@ -42,12 +42,12 @@ namespace ExPresSXR.Rig
     public class ExPresSXRRig : MonoBehaviour
     {
         #region Config
-        /// <summary>
-        /// How the rig is controlled, either per controller, via Head Gaze or Eye Gaze.
-        /// </summary>
         [SerializeField]
         [Tooltip("How the rig is controlled, either per controller, via Head Gaze or Eye Gaze.")]
         private InputMethod _inputMethod = InputMethod.Controller;
+        /// <summary>
+        /// How the rig is controlled, either per controller, via Head Gaze or Eye Gaze.
+        /// </summary>
         public InputMethod InputMethod
         {
             get => _inputMethod;
@@ -77,12 +77,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Presets of how the player can move through space.
-        /// </summary>
         [SerializeField]
         [Tooltip("Presets of how the player can move through space.")]
         private MovementPreset _movementPreset = MovementPreset.Teleport;
+        /// <summary>
+        /// Presets of how the player can move through space.
+        /// </summary>
         public MovementPreset MovementPreset
         {
             get => _movementPreset;
@@ -93,12 +93,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Flags for enabling different movement options.
-        /// </summary>
         [SerializeField]
         [Tooltip("Flags for enabling different movement options.")]
         private MovementOptions _movementOptions;
+        /// <summary>
+        /// Flags for enabling different movement options.
+        /// </summary>
         public MovementOptions MovementOptions
         {
             get => _movementOptions;
@@ -109,12 +109,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Flags for enabling different interaction options with controllers.
-        /// </summary>
         [SerializeField]
         [Tooltip("Flags for enabling different interaction options with controllers.")]
         private InteractionOptions _interactionOptions;
+        /// <summary>
+        /// Flags for enabling different interaction options with controllers.
+        /// </summary>
         public InteractionOptions InteractionOptions
         {
             get => _interactionOptions;
@@ -127,12 +127,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region Head Gaze
-        /// <summary>
-        /// Allow reselection of currently hovered Interactable with HeadGaze.
-        /// </summary>
         [SerializeField]
         [Tooltip("Allow reselection of currently hovered Interactable with HeadGaze.")]
         private bool _headGazeCanReselect;
+        /// <summary>
+        /// Allow reselection of currently hovered Interactable with HeadGaze.
+        /// </summary>
         public bool HeadGazeCanReselect
         {
             get => _headGazeCanReselect;
@@ -147,12 +147,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Determines how long in seconds the head must be kept focussed on an interaction for it to be (re-)selected.
-        /// </summary>
         [SerializeField]
         [Tooltip("Determines how long in seconds the head must be kept focussed on an interaction for it to be (re-)selected.")]
         private float _headGazeTimeToSelect;
+        /// <summary>
+        /// Determines how long in seconds the head must be kept focussed on an interaction for it to be (re-)selected.
+        /// </summary>
         public float HeadGazeTimeToSelect
         {
             get => _headGazeTimeToSelect;
@@ -167,12 +167,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Reference to the HeadGazeReticle that is displayed as interaction indicator and crosshair for Head Gaze.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the HeadGazeReticle that is displayed as interaction indicator and crosshair for Head Gaze.")]
         private HeadGazeReticle _headGazeReticle;
+        /// <summary>
+        /// Reference to the HeadGazeReticle that is displayed as interaction indicator and crosshair for Head Gaze.
+        /// </summary>
         public HeadGazeReticle HeadGazeReticle
         {
             get => _headGazeReticle;
@@ -190,12 +190,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region XR Controllers
-        /// <summary>
-        /// Reference to the *left* HandControllerManager of the ExPresS XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the *left* HandControllerManager of the ExPresS XR Rig.")]
         private HandControllerManager _leftHandController;
+        /// <summary>
+        /// Reference to the *left* HandControllerManager of the ExPresS XR Rig.
+        /// </summary>
         public HandControllerManager LeftHandController
         {
             get => _leftHandController;
@@ -217,12 +217,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Reference to the *left* AutoHandModel of the ExPresS XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the *left* AutoHandModel of the ExPresS XR Rig.")]
         private AutoHandModel _leftAutoHand;
+        /// <summary>
+        /// Reference to the *left* AutoHandModel of the ExPresS XR Rig.
+        /// </summary>
         public AutoHandModel LeftAutoHand
         {
             get => _leftAutoHand;
@@ -233,12 +233,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Reference to the *right* HandControllerManager of the ExPresS XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the *right* HandControllerManager of the ExPresS XR Rig.")]
         private HandControllerManager _rightHandController;
+        /// <summary>
+        /// Reference to the *right* HandControllerManager of the ExPresS XR Rig.
+        /// </summary>
         public HandControllerManager RightHandController
         {
             get => _rightHandController;
@@ -259,12 +259,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Reference to the *right* AutoHandModel of the ExPresS XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the *right* AutoHandModel of the ExPresS XR Rig.")]
         private AutoHandModel _rightAutoHand;
+        /// <summary>
+        /// Reference to the *right* AutoHandModel of the ExPresS XR Rig.
+        /// </summary>
         public AutoHandModel RightAutoHand
         {
             get => _rightAutoHand;
@@ -275,12 +275,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Reference to the HeadGazeController of the ExPresS XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the HeadGazeController of the ExPresS XR Rig.")]
         private HeadGazeController _headGazeController;
+        /// <summary>
+        /// Reference to the HeadGazeController of the ExPresS XR Rig.
+        /// </summary>
         public HeadGazeController HeadGazeController
         {
             get => _headGazeController;
@@ -293,12 +293,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region Head Collisions
-        /// <summary>
-        /// Prevents the players Camera from clipping through Objects and looking inside them by actively pushing the player back.
-        /// </summary>
         [SerializeField]
         [Tooltip("Prevents the players Camera from clipping through Objects and looking inside them by actively pushing the player back.")]
         private bool _headCollisionPushback;
+        /// <summary>
+        /// Prevents the players Camera from clipping through Objects and looking inside them by actively pushing the player back.
+        /// </summary>
         public bool HeadCollisionPushback
         {
             get => _headCollisionPushback;
@@ -313,14 +313,14 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them.
-        /// Does not require headCollisionPushback to be enabled to work.
-        /// </summary>
         [SerializeField]
         [Tooltip("Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them."
                     + " Does not require headCollisionPushback to be enabled to work.")]
         private bool _showCollisionVignetteEffect;
+        /// <summary>
+        /// Shows a vignette effect (corners get blurry) if the players Camera is clipping through Objects and looking inside them.
+        /// Does not require headCollisionPushback to be enabled to work.
+        /// </summary>
         public bool ShowCollisionVignetteEffect
         {
             get => _showCollisionVignetteEffect;
@@ -337,12 +337,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region Misc References
-        /// <summary>
-        /// Reference to the LocomotionMediator of the ExPresS XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the LocomotionMediator of the ExPresS XR Rig.")]
         private LocomotionMediator _locomotionMediator;
+        /// <summary>
+        /// Reference to the LocomotionMediator of the ExPresS XR Rig.
+        /// </summary>
         public LocomotionMediator LocomotionMediator
         {
             get => _locomotionMediator;
@@ -352,12 +352,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Reference to the fadeRect of the ExPresS XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the fadeRect of the ExPresS XR Rig.")]
         private FadeRect _fadeRect;
+        /// <summary>
+        /// Reference to the fadeRect of the ExPresS XR Rig.
+        /// </summary>
         public FadeRect FadeRect
         {
             get => _fadeRect;
@@ -367,12 +367,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Must be a PlayerHeadCollider-Component attached to the Main Camera GameObject.
-        /// </summary>
         [SerializeField]
         [Tooltip("Must be a PlayerHeadCollider-Component attached to the Main Camera GameObject.")]
         private PlayerHeadCollider _playerHeadCollider;
+        /// <summary>
+        /// Must be a PlayerHeadCollider-Component attached to the Main Camera GameObject.
+        /// </summary>
         public PlayerHeadCollider PlayerHeadCollider
         {
             get => _playerHeadCollider;
@@ -388,12 +388,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// The camera that renders the hud. Should be configured as overlay for the Main Camera of the XR Rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("The camera that renders the hud. Should be configured as overlay for the Main Camera of the XR Rig.")]
         private Camera _hudCamera;
+        /// <summary>
+        /// The camera that renders the hud. Should be configured as overlay for the Main Camera of the XR Rig.
+        /// </summary>
         public Camera HudCamera
         {
             get => _hudCamera;
@@ -413,12 +413,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Canvas that acts as a hud for the rig.
-        /// </summary>
         [SerializeField]
         [Tooltip("Canvas that acts as a hud for the rig.")]
         private Canvas _hud;
+        /// <summary>
+        /// Canvas that acts as a hud for the rig.
+        /// </summary>
         public Canvas Hud
         {
             get => _hud;
@@ -437,12 +437,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Must be a ScreenCollisionIndicator-Component attached to the Hud.
-        /// </summary>
         [SerializeField]
         [Tooltip("Must be a ScreenCollisionIndicator-Component attached to the Hud.")]
         private ScreenCollisionIndicator _screenCollisionIndicator;
+        /// <summary>
+        /// Must be a ScreenCollisionIndicator-Component attached to the Hud.
+        /// </summary>
         public ScreenCollisionIndicator ScreenCollisionIndicator
         {
             get => _screenCollisionIndicator;
@@ -457,12 +457,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Prefab that will be displayed when teleporting to a valid location. Will be overwritten by the teleportation area/anchors reticle.
-        /// </summary>
         [SerializeField]
         [Tooltip("Prefab that will be displayed when teleporting to a valid location. Will be overwritten by the teleportation area/anchors reticle.")]
         private GameObject _teleportValidReticle;
+        /// <summary>
+        /// Prefab that will be displayed when teleporting to a valid location. Will be overwritten by the teleportation area/anchors reticle.
+        /// </summary>
         public GameObject TeleportValidReticle
         {
             get => _teleportValidReticle;
@@ -482,12 +482,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Prefab that will be displayed when teleporting to an invalid location. Will be overwritten by the teleportation area/anchors reticle.
-        /// </summary>
         [SerializeField]
         [Tooltip("Prefab that will be displayed when teleporting to an invalid location. Will be overwritten by the teleportation area/anchors reticle.")]
         private GameObject _teleportInvalidReticle;
+        /// <summary>
+        /// Prefab that will be displayed when teleporting to an invalid location. Will be overwritten by the teleportation area/anchors reticle.
+        /// </summary>
         public GameObject TeleportInvalidReticle
         {
             get => _teleportInvalidReticle;
@@ -509,12 +509,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region General Utility
-        /// <summary>
-        /// The way the 'Game'-view displays the rig's camera when entering play mode. Can be changed at runtime at the top right in the 'Game'-tab.
-        /// </summary>
         [SerializeField]
         [Tooltip("The way the 'Game'-view displays the rig's camera when entering play mode. Can be changed at runtime at the top right in the 'Game'-tab.")]
         private GameTabDisplayMode _gameTabDisplayMode;
+        /// <summary>
+        /// The way the 'Game'-view displays the rig's camera when entering play mode. Can be changed at runtime at the top right in the 'Game'-tab.
+        /// </summary>
         public GameTabDisplayMode GameTabDisplayMode
         {
             get => _gameTabDisplayMode;
@@ -524,12 +524,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Determines how the controllers/hands are rendered in the VR.
-        /// </summary>
         [SerializeField]
         [Tooltip("Determines how the controllers/hands are rendered in the VR.")]
         private HandModelMode _handModelMode = HandModelMode.Hand;
+        /// <summary>
+        /// Determines how the controllers/hands are rendered in the VR.
+        /// </summary>
         public HandModelMode HandModelMode
         {
             get => _handModelMode;
@@ -540,12 +540,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Enables or disables physical collisions of the controllers/hands with other objects in the VR.
-        /// </summary>
         [SerializeField]
         [Tooltip("Enables or disables physical collisions of the controllers/hands with other objects in the VR.")]
         private bool _handModelCollisions = true;
+        /// <summary>
+        /// Enables or disables physical collisions of the controllers/hands with other objects in the VR.
+        /// </summary>
         public bool HandModelCollisions
         {
             get => _handModelCollisions;

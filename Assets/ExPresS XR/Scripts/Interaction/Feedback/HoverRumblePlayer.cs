@@ -10,12 +10,12 @@ namespace ExPresSXR.Interaction.Feedback
     /// </summary>
     public class HoverRumblePlayer : MonoBehaviour
     {
-        /// <summary>
-        /// If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.")]
         private bool _findTargetOnHover = true;
+        /// <summary>
+        /// If enabled and attached to a XRBaseInteractable automatically updates the hapticTarget with the latest hovering controller.
+        /// </summary>
         public bool FindTargetOnHover
         {
             get => _findTargetOnHover;
@@ -32,12 +32,12 @@ namespace ExPresSXR.Interaction.Feedback
         [Tooltip("The default rumble that is performed when calling 'PerformDefaultRumble()'.")]
         private RumbleDescription _defaultRumble = new(0.5f, 0.5f);
 
-        /// <summary>
-        /// HapticImpulsePlayer to receive haptic events.
-        /// </summary>
         [SerializeField]
         [Tooltip("HapticImpulsePlayer to receive haptic events.")]
         private HapticImpulsePlayer _hapticsTarget;
+        /// <summary>
+        /// HapticImpulsePlayer to receive haptic events.
+        /// </summary>
         public HapticImpulsePlayer HapticsTarget
         {
             get => _hapticsTarget;

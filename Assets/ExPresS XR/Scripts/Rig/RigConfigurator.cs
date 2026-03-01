@@ -11,6 +11,14 @@ using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// Acts as a central location from which the player can teleport to other locations. This is especially useful if the other locations are far away or there is no line of sight, as regular teleports would not be possible in this case.
+    /// 
+    /// It provides functionality to hide/show certain objects when teleporting or the player is not present.  
+    /// You will usually want to add a PlayerDetector control `SetPlayerPresent()` with its Events. Otherwise the visibility of `_playerPresentVisible`and its children will not be affected.
+    /// 
+    /// The default prefab also allows teleportation at the MapPoint itself, indicated by the white are on the floor. 
+    /// </summary>
     public static class RigConfigurator
     {
         /// <summary>
@@ -76,12 +84,12 @@ namespace ExPresSXR.Rig
         public static void ApplyMovementPreset(ConfigData configData)
         {
             MovementPreset movementPreset = configData.MovementPreset;
-            
+
             if (!ShouldApplyMovementPreset(movementPreset, configData.InputMethod))
             {
                 return;
             }
-            
+
             EnsureRigConfigConsistency(configData);
 
             ApplyPresetHeadGaze(movementPreset, configData.HeadGazeController);
@@ -285,9 +293,12 @@ namespace ExPresSXR.Rig
     /// </summary>
     public enum InputMethod
     {
-        None, /// <summary> Player input is disabled. </summary>
-        Controller, /// <summary> Player input is provided via hand controllers. </summary>
-        HeadGaze /// <summary> Input is provided via head gaze. </summary>
+        /// <summary> Player input is disabled. </summary>
+        None,
+        /// <summary> Player input is provided via hand controllers. </summary>
+        Controller,
+        /// <summary> Input is provided via head gaze. </summary>
+        HeadGaze
     }
 
     /// <summary>
@@ -295,13 +306,20 @@ namespace ExPresSXR.Rig
     /// </summary>
     public enum MovementPreset
     {
-        None, /// <summary> Movement is disabled. </summary>
-        Teleport, /// <summary> Teleportation movement. </summary>
-        Joystick, /// <summary> Continuous movement using Joysticks with turning. </summary>
-        JoystickNoTurn, /// <summary> Continuous movement using Joysticks but without turning. </summary>
-        GrabWorldMotion, /// <summary> Grabbing the air and pulling yourself in a direction. </summary>
-        GrabWorldManipulation, /// <summary> Similar to GrabWorldMotion but with scaling when using two hands. </summary>
-        Custom /// <summary> Allows custom movement configuration. No movement will be applied. </summary>
+        /// <summary> Movement is disabled. </summary>
+        None,
+        /// <summary> Teleportation movement. </summary>
+        Teleport,
+        /// <summary> Continuous movement using Joysticks with turning. </summary>
+        Joystick,
+        /// <summary> Continuous movement using Joysticks but without turning. </summary>
+        JoystickNoTurn,
+        /// <summary> Grabbing the air and pulling yourself in a direction. </summary>
+        GrabWorldMotion,
+        /// <summary> Similar to GrabWorldMotion but with scaling when using two hands. </summary>
+        GrabWorldManipulation,
+        /// <summary> Allows custom movement configuration. No movement will be applied. </summary>
+        Custom
     }
 
     /// <summary>
@@ -310,16 +328,26 @@ namespace ExPresSXR.Rig
     [Flags]
     public enum InteractionOptions
     {
-        Nothing = 0, /// <summary> No interaction options are enabled. </summary>
-        Near = 1 << 0, /// <summary> Interact with nearby objects by grabbing them. </summary>
-        Far = 1 << 1, /// <summary> Interact with objects from a far using a ray. </summary>
-        FarAnchorControl = 1 << 2, /// <summary> Allow moving, rotating and scaling held objects via ray. </summary>
-        FarPullCloser = 1 << 3, /// <summary> Held objects via ray can be pulled closer to allow grabbing. </summary>
-        FarUi = 1 << 4, /// <summary> Interact with UI elements from a far using a ray. </summary>
-        Poke = 1 << 5, /// <summary> Interact with object by touching/poking them. </summary>
-        PokePointOnHover = 1 << 6, /// <summary> Alters the pose of the hand to a poke gesture when hovering a valid object. </summary>
-        PokeUi = 1 << 7, /// <summary> Interact with UI elements by poking them. </summary>
-        UiScrolling = 1 << 8 /// <summary> Allow scrolling UI elements, preventing turning and teleport in the meantime. </summary>
+        /// <summary> No interaction options are enabled. </summary>
+        Nothing = 0,
+        /// <summary> Interact with nearby objects by grabbing them. </summary>
+        Near = 1 << 0,
+        /// <summary> Interact with objects from a far using a ray. </summary>
+        Far = 1 << 1,
+        /// <summary> Allow moving, rotating and scaling held objects via ray. </summary>
+        FarAnchorControl = 1 << 2,
+        /// <summary> Held objects via ray can be pulled closer to allow grabbing. </summary>
+        FarPullCloser = 1 << 3,
+        /// <summary> Interact with UI elements from a far using a ray. </summary>
+        FarUi = 1 << 4,
+        /// <summary> Interact with object by touching/poking them. </summary>
+        Poke = 1 << 5,
+        /// <summary> Alters the pose of the hand to a poke gesture when hovering a valid object. </summary>
+        PokePointOnHover = 1 << 6,
+        /// <summary> Interact with UI elements by poking them. </summary>
+        PokeUi = 1 << 7,
+        /// <summary> Allow scrolling UI elements, preventing turning and teleport in the meantime. </summary>
+        UiScrolling = 1 << 8
     }
 
     /// <summary>
@@ -328,14 +356,22 @@ namespace ExPresSXR.Rig
     [Flags]
     public enum MovementOptions
     {
-        Nothing = 0, /// <summary> No additional movement options are enabled. </summary>
-        TeleportChooseForward = 1 << 0, /// <summary> Rotating the joystick in teleport mode allows changing the facing direction. </summary>
-        TeleportCancelPossible = 1 << 1, /// <summary> Grabbing the grip allows cancelling teleportation. </summary>
-        TeleportDuringNearInteraction = 1 << 2, /// <summary> Teleportation is allowed while holding an object in the same hand. </summary>
-        Gravity = 1 << 3, /// <summary> Apply gravity to the player. </summary>
-        Jump = 1 << 4, /// <summary> Players can jump using a controller button. </summary>
-        Climb = 1 << 5, /// <summary> Players can climb using special `ClimbInteractables`. </summary>
-        ClimbTeleport = 1 << 6 /// <summary> Players can skip the last part of a climb using a controller button and special `ClimbInteractables`s. </summary>
+        /// <summary> No additional movement options are enabled. </summary>
+        Nothing = 0,
+        /// <summary> Rotating the joystick in teleport mode allows changing the facing direction. </summary>
+        TeleportChooseForward = 1 << 0,
+        /// <summary> Grabbing the grip allows cancelling teleportation. </summary>
+        TeleportCancelPossible = 1 << 1,
+        /// <summary> Teleportation is allowed while holding an object in the same hand. </summary>
+        TeleportDuringNearInteraction = 1 << 2,
+        /// <summary> Apply gravity to the player. </summary>
+        Gravity = 1 << 3,
+        /// <summary> Players can jump using a controller button. </summary>
+        Jump = 1 << 4,
+        /// <summary> Players can climb using special `ClimbInteractables`. </summary>
+        Climb = 1 << 5,
+        /// <summary> Players can skip the last part of a climb using a controller button and special `ClimbInteractables`s. </summary>
+        ClimbTeleport = 1 << 6
     }
 
 
@@ -370,16 +406,16 @@ namespace ExPresSXR.Rig
         /// Reference to the left hand controller.
         /// </summary>
         public HandControllerManager LeftHandController;
-                /// <summary>
+        /// <summary>
         /// Reference to the right hand controller.
         /// </summary>
         public HandControllerManager RightHandController;
-                /// <summary>
+        /// <summary>
         /// Reference to the head gaze controller.
         /// </summary>
         public HeadGazeController HeadGazeController;
 
-                /// <summary>
+        /// <summary>
         /// Reference to the locomotion mediator.
         /// </summary>
         public LocomotionMediator LocomotionMediator;
@@ -427,6 +463,7 @@ namespace ExPresSXR.Rig
         /// <param name="inputMethod">Input method to apply.</param>
         /// <param name="movementPreset">Movement preset to apply.</param>
         /// <param name="movementOptions">Movement options to apply.</param>
+        /// <param name="interactionOptions">Interaction options to apply.</param>
         public ConfigData(ExPresSXRRig rig,
                             InputMethod inputMethod,
                             MovementPreset movementPreset,

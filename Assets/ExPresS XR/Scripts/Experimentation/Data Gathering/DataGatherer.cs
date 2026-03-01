@@ -74,24 +74,24 @@ namespace ExPresSXR.Experimentation.DataGathering
         public static readonly string timestampSafe = DateTimeOffset.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
 
-        /// <summary>
-        /// How the export should be performed. Either saving to a file or posting as http request.
-        /// </summary>
         [SerializeField]
         [Tooltip("How the export should be performed. Either saving to a file or posting as http request.")]
         private ExportType _dataExportType;
+        /// <summary>
+        /// How the export should be performed. Either saving to a file or posting as http request.
+        /// </summary>
         public ExportType DataExportType
         {
             get => _dataExportType;
             set => _dataExportType = value;
         }
 
-        /// <summary>
-        /// Separator type used for the columns.
-        /// </summary>
         [SerializeField]
         [Tooltip("Separator type used for the columns.")]
         private SeparatorType _separator;
+        /// <summary>
+        /// Separator type used for the columns.
+        /// </summary>
         public SeparatorType Separator
         {
             get => _separator;
@@ -110,12 +110,12 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        /// <summary>
-        /// Actual separator character used for the columns. Defined by the Separator if not set to 'Custom'.
-        /// </summary>
         [SerializeField]
         [Tooltip("Actual separator character used for the columns. Defined by the Separator if not set to 'Custom'.")]
         private char _columnSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
+        /// <summary>
+        /// Actual separator character used for the columns. Defined by the Separator if not set to 'Custom'.
+        /// </summary>
         public char ColumnSeparator
         {
             get => _columnSeparator;
@@ -130,24 +130,24 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        /// <summary>
-        /// If all columns should be escaped to prevent format issues.
-        /// </summary>
         [SerializeField]
         [Tooltip("If all columns should be escaped to prevent format issues.")]
         private bool _escapeColumns = true;
+        /// <summary>
+        /// If all columns should be escaped to prevent format issues.
+        /// </summary>
         public bool EscapeColumns
         {
             get => _escapeColumns;
             set => _escapeColumns = value;
         }
 
-        /// <summary>
-        /// Path to the local export directory relative to the apps data directory (Application.persistentDataPath).
-        /// </summary>
         [SerializeField]
         [Tooltip("Path to the local export directory relative to the apps data directory (Application.persistentDataPath).")]
         private string _localExportPath = DEFAULT_EXPORT_FILE_NAME;
+        /// <summary>
+        /// Path to the local export directory relative to the apps data directory (Application.persistentDataPath).
+        /// </summary>
         public string LocalExportPath
         {
             get => _localExportPath;
@@ -162,12 +162,13 @@ namespace ExPresSXR.Experimentation.DataGathering
                 }
             }
         }
-        /// <summary>
-        /// Url to post data to when exports should be performed via http.
-        /// </summary>
+
         [SerializeField]
         [Tooltip("Url to post data to when exports should be performed via http.")]
         private string _httpExportPath;
+        /// <summary>
+        /// Url to post data to when exports should be performed via http.
+        /// </summary>
         public string HttpExportPath
         {
             get => _httpExportPath;
@@ -175,12 +176,12 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
-        /// <summary>
-        /// When enabled a timestamped export file is created each time the app is started.
-        /// </summary>
         [SerializeField]
         [Tooltip("When enabled a timestamped export file is created each time the app is started.")]
         private bool _newExportFilePerPlaythrough = true;
+        /// <summary>
+        /// When enabled a timestamped export file is created each time the app is started.
+        /// </summary>
         public bool NewExportFilePerPlaythrough
         {
             get => _newExportFilePerPlaythrough;
@@ -188,39 +189,36 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
-
-        // Triggers
-
-        /// <summary>
-        /// Will automatically export data each frame in the Update() function.
-        /// </summary>
         [SerializeField]
         [Tooltip("Will automatically export data each frame in the Update() function.")]
         private bool _exportDuringUpdateEnabled;
+        /// <summary>
+        /// Will automatically export data each frame in the Update() function.
+        /// </summary>
         public bool ExportDuringUpdateEnabled
         {
             get => _exportDuringUpdateEnabled;
             set => _exportDuringUpdateEnabled = value;
         }
 
-        /// <summary>
-        /// Input actions that trigger an export when performed.
-        /// </summary>
         [SerializeField]
         [Tooltip("Input actions that trigger an export when performed.")]
         private InputActionReference[] _inputActionTrigger;
+        /// <summary>
+        /// Input actions that trigger an export when performed.
+        /// </summary>
         public InputActionReference[] InputActionTrigger
         {
             get => _inputActionTrigger;
             set => _inputActionTrigger = value;
         }
 
-        /// <summary>
-        /// When enabled, updates are performed periodically after `_periodicExportTime` seconds.
-        /// </summary>
         [SerializeField]
         [Tooltip("When enabled, updates are performed periodically after `_periodicExportTime` seconds.")]
         private bool _periodicExportEnabled = false;
+        /// <summary>
+        /// When enabled, updates are performed periodically after `_periodicExportTime` seconds.
+        /// </summary>
         public bool PeriodicExportEnabled
         {
             get => _periodicExportEnabled;
@@ -240,12 +238,12 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        /// <summary>
-        /// Frequency in seconds after which an automatic export is triggered, when enabled.
-        /// </summary>
         [SerializeField]
         [Tooltip("Frequency in seconds after which an automatic export is triggered, when enabled.")]
         private float _periodicExportTime = 1.0f;
+        /// <summary>
+        /// Frequency in seconds after which an automatic export is triggered, when enabled.
+        /// </summary>
         public float PeriodicExportTime
         {
             get => _periodicExportTime;
@@ -253,63 +251,61 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
-        // Data
-
-        /// <summary>
-        /// Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). Its value is relative to the computers local timezone.
-        /// </summary>
         [SerializeField]
         [Tooltip("Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). "
                     + "Its value is relative to the computers local timezone.")]
         private bool _includeHumanReadableTimestamp = true;
+        /// <summary>
+        /// Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). Its value is relative to the computers local timezone.
+        /// </summary>
         public bool IncludeHumanReadableTimestamp
         {
             get => _includeHumanReadableTimestamp;
             set => _includeHumanReadableTimestamp = value;
         }
 
-        /// <summary>
-        /// Includes a unix (numeric) timestamp.
-        /// </summary>
         [SerializeField]
         [Tooltip("Includes a unix (numeric) timestamp.")]
         private bool _includeUnixTimestamp = true;
+        /// <summary>
+        /// Includes a unix (numeric) timestamp.
+        /// </summary>
         public bool IncludeUnixTimestamp
         {
             get => _includeUnixTimestamp;
             set => _includeUnixTimestamp = value;
         }
 
-        /// <summary>
-        /// Includes the unity time (time since the app was started).
-        /// </summary>
         [SerializeField]
         [Tooltip("Includes the unity time (time since the app was started).")]
         private bool _includeUnityTime = true;
+        /// <summary>
+        /// Includes the unity time (time since the app was started).
+        /// </summary>
         public bool IncludeUnityTime
         {
             get => _includeUnityTime;
             set => _includeUnityTime = value;
         }
 
-        /// <summary>
-        /// Includes the unity delta time.
-        /// </summary>
         [SerializeField]
         [Tooltip("Includes the unity delta time.")]
         private bool _includeDeltaTime = true;
+        /// <summary>
+        /// Includes the unity delta time.
+        /// </summary>
         public bool IncludeDeltaTime
         {
             get => _includeDeltaTime;
             set => _includeDeltaTime = value;
         }
 
-        /// <summary>
-        /// Values and function return values to be exported.
-        /// </summary>
         [SerializeField]
         [Tooltip("Values and function return values to be exported.")]
         private DataGatheringBinding[] _dataBindings = new DataGatheringBinding[0];
+        /// <summary>
+        /// Values and function return values to be exported.
+        /// </summary>
         public DataGatheringBinding[] DataBindings
         {
             get => _dataBindings;
@@ -317,12 +313,12 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
-        /// <summary>
-        /// Inputaction values values to be exported.
-        /// </summary>
         [SerializeField]
         [Tooltip("InputAction values to be exported.")]
         private InputActionReference[] _inputActionDataBindings = new InputActionReference[0];
+        /// <summary>
+        /// InputAction values values to be exported.
+        /// </summary>
         public InputActionReference[] InputActionDataBindings
         {
             get => _inputActionDataBindings;
@@ -675,9 +671,12 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// </summary>
         public enum SeparatorType
         {
-            Semicolon, /// <summary> Separate columns using a semicolon `;`. </summary>
-            Comma, /// <summary> Separate columns using a comma `,`. </summary>
-            Custom /// <summary> Separate columns using the provided char. </summary>
+            /// <summary> Separate columns using a semicolon `;`. </summary>
+            Semicolon,
+            /// <summary> Separate columns using a comma `,`. </summary>
+            Comma,
+            /// <summary> Separate columns using the provided char. </summary>
+            Custom
         }
 
         /// <summary>
@@ -685,9 +684,12 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// </summary>
         public enum ExportType
         {
-            Local, /// <summary> Write data to disk. </summary>
-            Http, /// <summary> Send data via http. </summary>
-            Both /// <summary> Write both the file to disk and sent via http. </summary>
+            /// <summary> Write data to disk. </summary>
+            Local,
+            /// <summary> Send data via http. </summary>
+            Http,
+            /// <summary> Write both the file to disk and sent via http. </summary>
+            Both
         }
         #endregion
     }

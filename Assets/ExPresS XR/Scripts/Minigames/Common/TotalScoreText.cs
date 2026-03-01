@@ -36,12 +36,12 @@ namespace ExPresSXR.Minigames.Common
         [Tooltip("Offset with which the `_pointsDisplayOffset` is spawned.")]
         private Vector3 _pointsDisplayOffset;
 
-        /// <summary>
-        /// The currently displayed score. Creates a difference display when changed.
-        /// </summary>
         [SerializeField]
         [Tooltip("The currently displayed score. Creates a difference display when changed.")]
         private int _displayedScore;
+        /// <summary>
+        /// The currently displayed score. Creates a difference display when changed.
+        /// </summary>
         public int DisplayedScore
         {
             get => _displayedScore;

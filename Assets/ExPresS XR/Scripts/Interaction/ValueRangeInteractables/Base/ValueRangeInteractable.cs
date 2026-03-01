@@ -24,12 +24,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     /// </summary>
     public abstract class ValueRangeInteractable<T, U, V> : XRBaseInteractable, IRangeInteractorInternal where T : ValueDescriptor<V> where U : ValueVisualizer<V>
     {
-        /// <summary>
-        /// Describes the value and behavior of the manipulated value.
-        /// </summary>
         [SerializeField]
         [Tooltip("Describes the value and behavior of the manipulated value.")]
         protected T _valueDescriptor;
+        /// <summary>
+        /// Describes the value and behavior of the manipulated value.
+        /// </summary>
         public T ValueDescriptor
         {
             get => _valueDescriptor;
@@ -51,22 +51,23 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
-        /// <summary>
-        /// Describes the value and behavior of the manipulated value.
-        /// </summary>
         [SerializeField]
         [Tooltip("Describes how the value is displayed and modified during interactions.")]
         protected U _valueVisualizer;
+        /// <summary>
+        /// Describes the value and behavior of the manipulated value.
+        /// </summary>
         public U ValueVisualizer
         {
             get => _valueVisualizer;
         }
 
+        [SerializeField]
+        [Tooltip("If enabled, the button will refuse input and will stay in the up-position.")]
+        private bool _inputDisabled;
         /// <summary>
         /// If enabled, the button will refuse input and will stay in the up-position.
         /// </summary>
-        [SerializeField]
-        private bool _inputDisabled;
         public bool InputDisabled
         {
             get => _inputDisabled;
@@ -91,16 +92,16 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [Tooltip("If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.")]
         protected bool _requireDirectInteraction;
 
-        /// <summary>
-        /// If enabled allows NearFarInteractors to be treates as valid Direct Interactor.
-        // It is recommended to set the max interaction distance to the size of near interaction volume,
-        // as we can not differentiate hovers from it and the ray.
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled allows NearFarInteractors to be treates as valid Direct Interactor. "
             + "It is recommended to set the max interaction distance to the size of near interaction volume, "
             + "as we can not differentiate hovers from it and the ray.")]
         private bool _allowNearFarInteraction = true;
+        /// <summary>
+        /// If enabled allows NearFarInteractors to be treats as valid Direct Interactor.
+        /// It is recommended to set the max interaction distance to the size of near interaction volume,
+        /// as we can not differentiate hovers from it and the ray.
+        /// </summary>
         public bool AllowNearFarInteraction
         {
             get => _allowNearFarInteraction;

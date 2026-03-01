@@ -8,12 +8,12 @@ namespace ExPresSXR.Minigames.TileGame
     /// </summary>
     public class TileGameDebugUtility : MonoBehaviour
     {
-        /// <summary>
-        /// Center area id used for debugging features.
-        /// </summary>
         [SerializeField]
         [Tooltip("Center area id used for debugging features.")]
         private int _centerAreaId;
+        /// <summary>
+        /// Center area id used for debugging features.
+        /// </summary>
         public int CenterAreaId
         {
             get => _centerAreaId;
@@ -21,45 +21,45 @@ namespace ExPresSXR.Minigames.TileGame
 
         [Space]
 
-        /// <summary>
-        /// Top area id used for debugging features.
-        /// </summary>
         [SerializeField]
         [Tooltip("Top area id used for debugging features.")]
         private int _topAreaId;
+        /// <summary>
+        /// Top area id used for debugging features.
+        /// </summary>
         public int TopAreaId
         {
             get => _topAreaId;
         }
 
-        /// <summary>
-        /// Bottom area id used for debugging features.
-        /// </summary>
         [SerializeField]
         [Tooltip("Bottom area id used for debugging features.")]
         private int _bottomAreaId;
+        /// <summary>
+        /// Bottom area id used for debugging features.
+        /// </summary>
         public int BottomAreaId
         {
             get => _bottomAreaId;
         }
 
-        /// <summary>
-        /// Left area id used for debugging features.
-        /// </summary>
         [SerializeField]
         [Tooltip("Left area id used for debugging features.")]
         private int _leftAreaId;
+        /// <summary>
+        /// Left area id used for debugging features.
+        /// </summary>
         public int LeftAreaId
         {
             get => _leftAreaId;
         }
 
-        /// <summary>
-        /// Right area id used for debugging features.
-        /// </summary>
         [SerializeField]
         [Tooltip("Right area id used for debugging features.")]
         private int _rightAreaId;
+        /// <summary>
+        /// Right area id used for debugging features.
+        /// </summary>
         public int RightAreaId
         {
             get => _rightAreaId;

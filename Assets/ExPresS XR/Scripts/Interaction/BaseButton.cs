@@ -28,7 +28,6 @@ namespace ExPresSXR.Interaction
     /// In order to change color, a `ColorSwitcher`-Component can be added to components of the push anchor and be connected with the `OnPressed` and `OnReleased` (and/or `OnTogglePressed` and `OnToggleReleased`) signals to change colors. For reference have a look on the instantiable button prefabs (except the empty one).  
     /// 
     /// For testing button pressed in the editor the ContextMenu of the Button has options to emit the pressed events manually.
-
     /// </summary>
     [Obsolete("The button functionality was reimplemented as ValueRangeInteractable.\nUse an `ExPresSXR.Interaction.Button` instead.")]
     [RequireComponent(typeof(AudioSource))]
@@ -39,11 +38,11 @@ namespace ExPresSXR.Interaction
         /// </summary>
         private const float PRESS_PCT = 0.3f;
 
+        [SerializeField]
+        private bool _inputDisabled;
         /// <summary>
         /// If enabled, the button will refuse input and will stay in the up-position.
         /// </summary>
-        [SerializeField]
-        private bool _inputDisabled;
         public bool InputDisabled
         {
             get => _inputDisabled;
@@ -55,11 +54,11 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        [SerializeField]
+        private bool _toggleMode;
         /// <summary>
         /// If enabled, the button will be in toggle mode and stay in the up or down position after being pressed.
         /// </summary>
-        [SerializeField]
-        private bool _toggleMode;
         public bool ToggleMode
         {
             get => _toggleMode;
@@ -69,12 +68,12 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        [SerializeField]
+        private Vector3 _colliderSize;
         /// <summary>
         /// The Size of the box collider component of the `pushAnchor` that determines the area in which presses are detected. It should wrap around the objects in the `pushAnchor`.
         /// A common source of error is if set to (0, 0, 0) no pressed will be detected.
         /// </summary>
-        [SerializeField]
-        private Vector3 _colliderSize;
         public Vector3 ColliderSize
         {
             get => _colliderSize;
@@ -127,30 +126,30 @@ namespace ExPresSXR.Interaction
             + "If disabled other Interactors like RayInteractors can push the button too.")]
         private bool _requireDirectInteraction = true;
 
-        /// <summary>
-        /// If enabled allows NearFarInteractors to be treates as valid Direct Interactor.
-        // It is recommended to set the max interaction distance to the size of near interaction volume,
-        // as we can not differentiate hovers from it and the ray.
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled allows NearFarInteractors to be treats as valid DirectInteractor. "
             + "It is recommended to set the max interaction distance to the size of near interaction volume, "
             + "as we can not differentiate hovers from it and the ray.")]
         private bool _allowNearFarInteraction = true;
+        /// <summary>
+        /// If enabled allows NearFarInteractors to be treates as valid Direct Interactor.
+        /// It is recommended to set the max interaction distance to the size of near interaction volume,
+        /// as we can not differentiate hovers from it and the ray.
+        /// </summary>
         public bool AllowNearFarInteraction
         {
             get => _allowNearFarInteraction;
             set => _allowNearFarInteraction = value;
         }
 
-        /// <summary>
-        /// Max distance to to an interactor to be able to interact with the button.
-        /// This is a hack for being able to determine if the button is hovered near or far.
-        /// </summary>
         [SerializeField]
         [Tooltip("Max distance to to an interactor to be able to interact with the button. "
             + "This is a hack for being able to determine if the button is hovered near or far.")]
         private float _maxInteractionDistance = 0.1f;
+        /// <summary>
+        /// Max distance to to an interactor to be able to interact with the button.
+        /// This is a hack for being able to determine if the button is hovered near or far.
+        /// </summary>
         public float MaxInteractionDistance
         {
             get => _maxInteractionDistance;
@@ -189,10 +188,10 @@ namespace ExPresSXR.Interaction
         private AudioSource _defaultAudioPlayer;
 
 
+        private bool _pressed = false;
         /// <summary>
         /// If the button is currently considered pressed (or toggled down).
         /// </summary>
-        private bool _pressed = false;
         public bool Pressed
         {
             get => _pressed;
@@ -312,7 +311,7 @@ namespace ExPresSXR.Interaction
         /// Determines if the Button can be hovered or in this case pressed by an IXRHoverInteractor.
         /// </summary>
         /// <param name="interactor">Interactor hovering the button.</param>
-        /// <returns>Wether or not the interactor can hover (i.e. press) the button</returns>
+        /// <returns>Whether or not the interactor can hover (i.e. press) the button</returns>
         public override bool IsHoverableBy(IXRHoverInteractor interactor)
         {
             return !InputDisabled && (!_requireDirectInteraction || RuntimeUtils.IsCloseUpHandInteractor(interactor, _allowNearFarInteraction)) && IsInteractorInRange(interactor);

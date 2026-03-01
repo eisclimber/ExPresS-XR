@@ -30,9 +30,7 @@ namespace ExPresSXR.Misc.ColorSwitching
         [Tooltip("The MeshRenderer whose material will be manipulated.")]
         protected MeshRenderer _meshRenderer;
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected virtual void Awake()
         {
             if (_animator == null && !TryGetComponent(out _animator))

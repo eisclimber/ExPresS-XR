@@ -12,12 +12,12 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public const float INACTIVE_STOP_TIME = -1.0f;
 
-        /// <summary>
-        /// Stops and resets the stopwatch, returns the final time measurement.
-        /// </summary>
         [SerializeField]
         [Tooltip("Time when the stopwatch was started or INACTIVE_STOP_TIME if not started.")]
         private float _startTime = INACTIVE_STOP_TIME;
+        /// <summary>
+        /// Stops and resets the stopwatch, returns the final time measurement.
+        /// </summary>
         public float StartTime
         {
             get => _startTime;
@@ -34,24 +34,24 @@ namespace ExPresSXR.Misc.Timing
             }
         }
 
-        /// <summary>
-        /// If true, will start the stopwatch during OnAwake().
-        /// </summary>
         [SerializeField]
         [Tooltip("If true, will start the stopwatch during OnAwake().")]
         private bool _autoStart;
+        /// <summary>
+        /// If true, will start the stopwatch during OnAwake().
+        /// </summary>
         public bool AutoStart
         {
             get => _autoStart;
             set => _autoStart = value;
         }
 
-        /// <summary>
-        /// Is true if the stopwatch is currently measuring time.
-        /// </summary>
         [SerializeField]
         [Tooltip("Is true if the stopwatch is currently measuring time.")]
         private bool _running;
+        /// <summary>
+        /// Is true if the stopwatch is currently measuring time.
+        /// </summary>
         public bool Running 
         { 
             get => _running;
@@ -77,7 +77,7 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         /// Stops and resets the stopwatch, returns the final time measurement in seconds.
         /// </summary>
-        /// <param name="_restart">Wether to restart or not.</param>
+        /// <param name="_restart">Whether to restart or not.</param>
         /// <returns>The duration until the timer was stopped in seconds.</returns>
         public float StopTimeMeasurement(bool _restart = false)
         {

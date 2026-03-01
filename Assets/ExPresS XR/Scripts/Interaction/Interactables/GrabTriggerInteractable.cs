@@ -9,24 +9,24 @@ namespace ExPresSXR.Interaction.Interactables
     /// </summary>
     public class GrabTriggerInteractable : XRBaseInteractable
     {
-        /// <summary>
-        /// The material shown when the interactable is being hovered.
-        /// </summary>
         [SerializeField]
         [Tooltip("The material shown when the interactable is being hovered.")]
         protected Material _hoveredMaterial;
+        /// <summary>
+        /// The material shown when the interactable is being hovered.
+        /// </summary>
         public Material HoverMaterial
         {
             get => _hoveredMaterial;
             set => _hoveredMaterial = value;
         }
 
-        /// <summary>
-        /// Renderer to manipulate the material from. Determined on startup.
-        /// </summary>
         [SerializeField]
         [Tooltip("Renderer to manipulate the material from. Determined on startup.")]
         private Renderer _renderer;
+        /// <summary>
+        /// Renderer to manipulate the material from. Determined on startup.
+        /// </summary>
         protected Renderer Renderer
         {
             get => _renderer;
@@ -39,9 +39,7 @@ namespace ExPresSXR.Interaction.Interactables
         protected Material _originalMaterial;
 
 
-        /// <summary>
         /// <inheritdoc />
-        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -56,9 +54,7 @@ namespace ExPresSXR.Interaction.Interactables
             }
         }
 
-        /// <summary>
         /// <inheritdoc />
-        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -67,9 +63,7 @@ namespace ExPresSXR.Interaction.Interactables
             hoverExited.AddListener(ChangeToOriginalMaterial);
         }
 
-        /// <summary>
         /// <inheritdoc />
-        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();

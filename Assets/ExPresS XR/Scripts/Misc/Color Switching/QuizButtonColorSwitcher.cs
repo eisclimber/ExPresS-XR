@@ -16,17 +16,13 @@ namespace ExPresSXR.Misc.ColorSwitching
         [Tooltip("The QuizButton to which this ColorAnimatorSwitcher is linked.")]
         private QuizButton _quizButton;
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected virtual void OnEnable()
         {
             RegisterButtonEvents();
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected virtual void OnDisable()
         {
             UnregisterButtonEvents();

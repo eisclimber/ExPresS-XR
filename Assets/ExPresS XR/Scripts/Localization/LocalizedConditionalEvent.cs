@@ -11,24 +11,24 @@ namespace ExPresSXR.Localization
     /// </summary>
     public class LocalizedConditionalEvent : MonoBehaviour
     {
-        /// <summary>
-        /// Description for the condition. No further use.
-        /// </summary>
         [SerializeField]
         [Tooltip("Description for the condition. No further use.")]
         private string _description = "";
+        /// <summary>
+        /// Description for the condition. No further use.
+        /// </summary>
         public string Description
         {
             get => _description;
             private set => _description = value;
         }
 
-        /// <summary>
-        /// Locale identifier to match against. The identifiers can be found in the localization setting. Usually something like `en` or `en-GB`.
-        /// </summary>
         [SerializeField]
         [Tooltip("Locale identifier to match against. The identifiers can be found in the localization setting. Usually something like `en` or `en-GB`.")]
         private string _locale;
+        /// <summary>
+        /// Locale identifier to match against. The identifiers can be found in the localization setting. Usually something like `en` or `en-GB`.
+        /// </summary>
         public string Locale
         {
             get => _locale;

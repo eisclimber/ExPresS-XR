@@ -78,22 +78,22 @@ namespace ExPresSXR.Tutorial
         /// </summary>
         public Vector3 Position;
 
-        [Space]
 
         /// <summary>
         /// If the rotation should be used.
         /// </summary>
+        [Space]
         public readonly bool UseRotation;
         /// <summary>
         /// Rotation provided.
         /// </summary>
         public Quaternion Rotation;
 
-        [Space]
 
         /// <summary>
         /// If the scale should be used.
         /// </summary>
+        [Space]
         public readonly bool UseScale;
         /// <summary>
         /// Scale provided.

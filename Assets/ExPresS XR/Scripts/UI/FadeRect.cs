@@ -18,37 +18,37 @@ namespace ExPresSXR.UI
     [RequireComponent(typeof(Image))]
     public class FadeRect : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("The color to be faded to.\nDefault is Transparent Black (`new(0.0f, 0.0f, 0.0f, 0.0f`).")]
+        private Color _fadeColor = new(0.0f, 0.0f, 0.0f, 0.0f);
         /// <summary>
         /// The color to be faded to.
         /// Default is Transparent Black (`new(0.0f, 0.0f, 0.0f, 0.0f`).
         /// </summary>
-        [SerializeField]
-        [Tooltip("The color to be faded to.\nDefault is Transparent Black (`new(0.0f, 0.0f, 0.0f, 0.0f`).")]
-        private Color _fadeColor = new(0.0f, 0.0f, 0.0f, 0.0f);
         public Color FadeColor
         {
             get => _fadeColor;
             set => _fadeColor = value;
         }
 
-        /// <summary>
-        /// Duration in seconds of a fade to black.
-        /// </summary>
         [SerializeField]
         [Tooltip("Duration in seconds of a fade to black.")]
         private float _defaultFadeToColorTime = 0.5f;
+        /// <summary>
+        /// Duration in seconds of a fade to black.
+        /// </summary>
         public float DefaultFadeToColorTime
         {
             get => _defaultFadeToColorTime;
             set => _defaultFadeToColorTime = value;
         }
 
-        /// <summary>
-        /// Duration in seconds of a fade to transparent.
-        /// </summary>
         [SerializeField]
         [Tooltip("Duration in seconds of a fade to transparent.")]
         private float _defaultFadeToClearTime = 0.5f;
+        /// <summary>
+        /// Duration in seconds of a fade to transparent.
+        /// </summary>
         public float DefaultFadeToClearTime
         {
             get => _defaultFadeToClearTime;
@@ -81,13 +81,17 @@ namespace ExPresSXR.UI
         public UnityEvent OnFadeToClearCompleted;
 
 
-        // Screen visible
+        /// <summary>
+        /// If the screen is completely visible meaning opacity of the fade rect is 0.0f.
+        /// </summary>
         public bool ScreenCompletelyVisible
         {
             get => FadeColor.a == 0.0f;
         }
 
-        // Screen NOT visible
+        /// <summary>
+        /// If the screen is completely hidden meaning opacity of the fade rect is 1.0f.
+        /// </summary>
         public bool ScreenCompletelyHidden
         {
             get => FadeColor.a == 1.0f;

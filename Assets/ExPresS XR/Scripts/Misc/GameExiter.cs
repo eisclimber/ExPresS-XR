@@ -13,11 +13,11 @@ namespace ExPresSXR.Misc
     /// </summary>
     public class GameExiter : MonoBehaviour
     {
+        [SerializeField]
+        private bool _useFade = true;
         /// <summary>
         /// If the games should be exited with fade. A rig is required if exiting with fade.
         /// </summary>
-        [SerializeField]
-        private bool _useFade = true;
         public bool UseFade
         {
             get => _useFade;

@@ -123,6 +123,7 @@ namespace ExPresSXR.Misc
         /// Draws a grid with the given up-vector and the specified number of intersecting lines.
         /// </summary>
         /// <param name="center">Position of the gird.</param>
+        /// <param name="extents">Extents of the gird.</param>
         /// <param name="size">Size of the grid.</param>
         /// <param name="numTiles">Number of tiles in the grid.</param>
         /// <param name="outlineColor">Color of the outline.</param>
@@ -224,6 +225,7 @@ namespace ExPresSXR.Misc
         /// <param name="valueColor">Color of the value marker.</param>
         /// <param name="localOffset">Pivot offset of the angle.</param>
         /// <param name="localNormal">Normal vector defining the plane of the angles.</param>
+        /// <param name="atTransform">Transform context to draw the gizmo.</param>
         /// <param name="minLabel">Text label to draw at the min position.</param>
         /// <param name="maxLabel">Text label to draw at the max position.</param>
         /// <param name="valueFormat">Format used to display the value. No text will be shown if empty.</param>

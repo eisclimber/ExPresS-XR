@@ -12,12 +12,12 @@ namespace ExPresSXR.Interaction.Feedback
         + " It can be used to play a sound when Interactables are dropped on the ground.")]
     public class CollisionSoundEmitter : MonoBehaviour
     {
-        /// <summary>
-        /// The sound played when a collision is detected.
-        /// </summary>
         [SerializeField]
         [Tooltip("The sound played when a collision is detected.")]
         private AudioClip _collisionSound;
+        /// <summary>
+        /// The sound played when a collision is detected.
+        /// </summary>
         public AudioClip CollisionSound
         {
             get => _collisionSound;
@@ -47,24 +47,24 @@ namespace ExPresSXR.Interaction.Feedback
         [Tooltip("Reference to the rigidbody that is used to determine the impact velocity. If the value is set to null it will be automatically retrieved on start. Can be ignored if the threshold is 0.")]
         private Rigidbody _rb;
 
-        /// <summary>
-        /// The AudioSource used to play the provided 'dropSound'. If none is provided the current GameObject is searched for an AudioSource-Component.
-        /// </summary>
         [SerializeField]
         [Tooltip("The AudioSource used to play the provided 'dropSound'. If none is provided the current GameObject is searched for an AudioSource-Component.")]
         private AudioSource _audioSource;
+        /// <summary>
+        /// The AudioSource used to play the provided 'dropSound'. If none is provided the current GameObject is searched for an AudioSource-Component.
+        /// </summary>
         public AudioSource AudioSource
         {
             get => _audioSource;
             set => _audioSource = value;
         }
 
-        /// <summary>
-        /// Prevents playing the sound again if it is already played. Good for longer sound samples.
-        /// </summary>
         [SerializeField]
         [Tooltip("Prevents playing the sound again if it is already played. Good for longer sound samples.")]
         private bool _requireAudioCompletion;
+        /// <summary>
+        /// Prevents playing the sound again if it is already played. Good for longer sound samples.
+        /// </summary>
         public bool RequireAudioCompletion
         {
              get => _requireAudioCompletion;

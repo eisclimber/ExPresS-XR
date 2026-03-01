@@ -18,12 +18,12 @@ namespace ExPresSXR.Minigames.Common
         [Tooltip("Sockets to be regarded.")]
         private XRSocketInteractor[] _sockets;
 
-        /// <summary>
-        /// Current count in the socket.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         private int _count;
+        /// <summary>
+        /// Current count in the socket.
+        /// </summary>
         public int Count
         {
             get => _count;

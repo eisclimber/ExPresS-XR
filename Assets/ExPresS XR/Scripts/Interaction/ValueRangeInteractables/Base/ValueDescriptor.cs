@@ -167,9 +167,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public abstract class BaseValueDescriptor<V> : ValueDescriptor<V>
     {
-        /// <inheritdoc />
         [SerializeField]
         private V _value;
+        /// <inheritdoc />
         public override V Value
         {
             get => _value;
@@ -189,12 +189,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class Float01Descriptor : ValueDescriptor<float>
     {
-        /// <summary>
-        /// Inheriting directly from <see cref="ValueDescriptor"/> and redefining value here to add the Range-attribute.
-        /// </summary>
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float _value;
+        /// <summary>
+        /// Inheriting directly from <see cref="ValueDescriptor"/> and redefining value here to add the Range-attribute.
+        /// </summary>
         public override float Value
         {
             get => _value;
@@ -212,25 +212,25 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <inheritdoc />
         public override float DefaultMaxValue => 1.0f;
 
-        /// <summary>
-        /// Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.")]
         private int _numSteps = 0;
+        /// <summary>
+        /// Number of evenly spaced steps to snap the value to. Anything below 1 will deactivate snapping.
+        /// </summary>
         public int NumSteps
         {
             get => _numSteps;
             set => _numSteps = value;
         }
 
+        [SerializeField]
+        [Tooltip("If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion and only snap in certain situations like after a grab has been released.")]
+        private bool _enforceSnap = true;
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
         /// and only snap in certain situations like after a grab has been released.
         /// </summary>
-        [SerializeField]
-        [Tooltip("If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion and only snap in certain situations like after a grab has been released.")]
-        private bool _enforceSnap = true;
         public bool EnforceSnap
         {
             get => _enforceSnap;
@@ -238,14 +238,15 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         [SerializeField]
+        [Tooltip("If the button is pressed or not.")]
         private bool _pressed;
+        /// <summary>
+        /// If the button is pressed or not.
+        /// </summary>
         public bool Pressed
         {
             get => _pressed;
-            set
-            {
-                _pressed = value;   
-            }
+            set => _pressed = value;
         }
 
         /// <inheritdoc />
@@ -274,10 +275,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class ButtonDescriptor : ValueDescriptor<float>
     {
+        private bool _pressed;
         /// <summary>
         /// Bool wrapper for checking if the button is pressed (i.e. value = 1.0f) or not.
         /// </summary>
-        private bool _pressed;
         public bool Pressed
         {
             get => _pressed;
@@ -288,14 +289,14 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             } 
         }
 
-        /// <summary>
-        /// Inheriting directly from <see cref="ValueDescriptor"/> and redefining value here to add the Range-attribute.
-        /// This property is readonly in the inspector as the value is managed via the "pressed" function.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         [Range(0.0f, 1.0f)]
         private float _value;
+        /// <summary>
+        /// Inheriting directly from <see cref="ValueDescriptor"/> and redefining value here to add the Range-attribute.
+        /// This property is readonly in the inspector as the value is managed via the "pressed" function.
+        /// </summary>
         public override float Value
         {
             get => _value;
@@ -307,38 +308,38 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
-        /// <summary>
-        /// The threshold beyond which the button is considered pressed.
-        /// </summary>
         [SerializeField]
         [Tooltip("The threshold beyond which the button is considered pressed.")]
         private float _pressThreshold = 0.65f;
+        /// <summary>
+        /// The threshold beyond which the button is considered pressed.
+        /// </summary>
         public float PressThreshold
         {
             get => _pressThreshold;
             set => _pressThreshold = value;
         }
 
-        /// <summary>
-        /// Deadzone around the press threshold in BOTH directions to avoid rapid pressing/releasing.
-        /// If the deadzone expands beyond 0.0f or 1.0f, it will be clamped and the press/release events will be fired at exactly 0.0f or 1.0f.
-        /// </summary>
         [SerializeField]
         [Tooltip("Deadzone around the press threshold in BOTH directions to avoid rapid pressing/releasing.\n"
             + "If the deadzone expands beyond 0.0f or 1.0f, it will be clamped and the press/release events will be fired at exactly 0.0f or 1.0f.")]
         private float _pressDeadzone = 0.1f;
+        /// <summary>
+        /// Deadzone around the press threshold in BOTH directions to avoid rapid pressing/releasing.
+        /// If the deadzone expands beyond 0.0f or 1.0f, it will be clamped and the press/release events will be fired at exactly 0.0f or 1.0f.
+        /// </summary>
         public float PressDeadzone
         {
             get => _pressDeadzone;
             set => _pressDeadzone = value;
         }
 
-        /// <summary>
-        /// Time after which the button can be re-pressed after being pressed.
-        /// </summary>
         [SerializeField]
         [Tooltip("Time after which the button can be re-pressed after being pressed.")]
         private float _repressTimeout = 0.5f;
+        /// <summary>
+        /// Time after which the button can be re-pressed after being pressed.
+        /// </summary>
         public float RepressTimeout
         {
             get => _repressTimeout;
@@ -434,12 +435,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [Tooltip("Number of evenly spaced steps along the respective axis to snap the value to. Anything below 1 will deactivate snapping.")]
         protected Vector2Int _numSteps;
 
+        [SerializeField]
+        private bool _enforceSnap = true;
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
         /// and only snap in certain situations like after a grab has been released.
         /// </summary>
-        [SerializeField]
-        private bool _enforceSnap = true;
         public bool EnforceSnap
         {
             get => _enforceSnap;
@@ -483,12 +484,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class CircularDescriptor : ValueDescriptor<Vector2>
     {
+        [SerializeField]
+        private Vector2 _rawDirection;
         /// <summary>
         /// The raw direction to point too.
         /// This value does not need to be normalized and the coordinates can be both positive and negative.
         /// </summary>
-        [SerializeField]
-        private Vector2 _rawDirection;
         public Vector2 RawDirection
         {
             get => _rawDirection;
@@ -499,12 +500,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
-        /// <summary>
-        /// The actual magnitude of the Value.
-        /// </summary>
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float _rawMagnitude;
+        /// <summary>
+        /// The actual magnitude of the Value.
+        /// </summary>
         public float RawMagnitude
         {
             get => _rawMagnitude;
@@ -515,12 +516,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
-        /// <summary>
-        /// Inheriting directly from <see cref="ValueDescriptor"/> and redefining value here to add the Range-attribute.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         private Vector2 _value;
+        /// <summary>
+        /// Inheriting directly from <see cref="ValueDescriptor"/> and redefining value here to add the Range-attribute.
+        /// </summary>
         public override Vector2 Value
         {
             get => _value;
@@ -540,24 +541,24 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <inheritdoc />
         public override Vector2 DefaultMaxValue => new(1.0f, 0.0f);
 
-        /// <summary>
-        /// Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.")]
         private int _numSteps = 0;
+        /// <summary>
+        /// Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.
+        /// </summary>
         public int NumSteps
         {
             get => _numSteps;
             set => _numSteps = value;
         }
 
+        [SerializeField]
+        private bool _enforceSnap = true;
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
         /// and only snap in certain situations like after a grab has been released.
         /// </summary>
-        [SerializeField]
-        private bool _enforceSnap = true;
         public bool EnforceSnap
         {
             get => _enforceSnap;
@@ -609,24 +610,24 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <inheritdoc />
         public override Vector3 DefaultMaxValue => new(1.0f, 1.0f, 1.0f);
 
-        /// <summary>
-        /// Number of evenly spaced steps along the respective axis to snap the value to. Anything below 1 will deactivate snapping.
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps along the respective axis to snap the value to. Anything below 1 will deactivate snapping.")]
         private Vector3Int _numSteps;
+        /// <summary>
+        /// Number of evenly spaced steps along the respective axis to snap the value to. Anything below 1 will deactivate snapping.
+        /// </summary>
         public Vector3Int NumSteps
         {
             get => _numSteps;
             set => _numSteps = value;
         }
 
+        [SerializeField]
+        private bool _enforceSnap = true;
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
         /// and only snap in certain situations like after a grab has been released.
         /// </summary>
-        [SerializeField]
-        private bool _enforceSnap = true;
         public bool EnforceSnap
         {
             get => _enforceSnap;
@@ -672,24 +673,24 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <inheritdoc />
         public override Vector3 DefaultMaxValue => new(1.0f, 0.0f, 0.0f);
 
-        /// <summary>
-        /// Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.")]
         private int _numSteps = 0;
+        /// <summary>
+        /// Number of evenly spaced steps of the magnitude to snap the value to. Anything below 1 will deactivate snapping.
+        /// </summary>
         public int NumSteps
         {
             get => _numSteps;
             set => _numSteps = value;
         }
 
+        [SerializeField]
+        private bool _enforceSnap = true;
         /// <summary>
         /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
         /// and only snap in certain situations like after a grab has been released.
         /// </summary>
-        [SerializeField]
-        private bool _enforceSnap = true;
         public bool EnforceSnap
         {
             get => _enforceSnap;

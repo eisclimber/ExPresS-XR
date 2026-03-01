@@ -15,10 +15,12 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
     /// </summary>
     public class ObjectPoolManager : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("Default pool manager. If none is set, a new one is created and added to the scene.")]
+        private static ObjectPoolManager _defaultObjectPoolManager;
         /// <summary>
         /// Default pool manager. If none is set, a new one is created and added to the scene. 
         /// </summary>
-        private static ObjectPoolManager _defaultObjectPoolManager;
         public static ObjectPoolManager DefaultObjectPoolManager
         {
             get
@@ -50,12 +52,12 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
             }
         }
 
-        /// <summary>
-        /// The container serving as parent for the pooled object. Defaults to the managers own transform if null.
-        /// </summary>
         [SerializeField]
         [Tooltip("The container serving as parent for the pooled object. Defaults to the managers own transform if null.")]
         private Transform _poolContainer;
+        /// <summary>
+        /// The container serving as parent for the pooled object. Defaults to the managers own transform if null.
+        /// </summary>
         public Transform PoolContainer
         {
             get => _poolContainer != null ? _poolContainer : transform;

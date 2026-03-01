@@ -8,12 +8,12 @@ namespace ExPresSXR.Misc
     /// </summary>
     public class SceneSwitcher : MonoBehaviour
     {
-        /// <summary>
-        /// If the scene should be switched with fade. A rig is required if switching with fade.
-        /// </summary>
         [SerializeField]
         [Tooltip("If the scene should be switched with fade. A rig is required if switching with fade.")]
         private bool _useFade = true;
+        /// <summary>
+        /// If the scene should be switched with fade. A rig is required if switching with fade.
+        /// </summary>
         public bool UseFade
         {
             get => _useFade;

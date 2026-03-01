@@ -185,9 +185,12 @@ namespace ExPresSXR.Misc.Options
         /// </summary>
         public enum ExperienceType
         {
-            None = 0, /// <summary> No experience type. </summary>
-            Exhibition = 1, /// <summary> The `Exhibition` experience. </summary>
-            Excavation = 2 /// <summary> The `Excavation` experience. </summary>
+            /// <summary> No experience type. </summary>
+            None = 0,
+            /// <summary> The `Exhibition` experience. </summary>
+            Exhibition = 1,
+            /// <summary> The `Excavation` experience. </summary>
+            Excavation = 2
         }
         #endregion
 
@@ -198,15 +201,17 @@ namespace ExPresSXR.Misc.Options
         /// </summary>
         public enum GameOptionConditionals
         {
-            MadeWithExPresSXR, /// <summary> Refers to the `MadeWithExPresSXR` value. </summary>
-            Subtitles /// <summary> Refers to the `Subtitles` value. </summary>
+            /// <summary> Refers to the `MadeWithExPresSXR` value. </summary>
+            MadeWithExPresSXR,
+            /// <summary> Refers to the `Subtitles` value. </summary>
+            Subtitles
         }
 
         /// <summary>
         /// Returns the conditional value saved in the PlayerPrefs.
         /// </summary>
         /// <param name="conditional">Conditional value to check.</param>
-        /// <returns>Wether or not the condition is true.</returns>
+        /// <returns>Whether or not the condition is true.</returns>
         public static bool GetValueOfConditional(GameOptionConditionals conditional)
         {
             return conditional switch

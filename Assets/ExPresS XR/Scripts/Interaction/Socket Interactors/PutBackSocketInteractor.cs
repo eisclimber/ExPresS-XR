@@ -23,12 +23,12 @@ namespace ExPresSXR.Interaction.Interactors
     /// </summary>
     public class PutBackSocketInteractor : HighlightableSocketInteractor
     {
-        /// <summary>
-        /// The prefab that is displayed at the socket. Will automatically create an instance of the prefab and update the references.
-        /// </summary>
         [SerializeField]
         [Tooltip("The prefab that is displayed at the socket. Will automatically create an instance of the prefab and update the references.")]
         protected GameObject _putBackPrefab;
+        /// <summary>
+        /// The prefab that is displayed at the socket. Will automatically create an instance of the prefab and update the references.
+        /// </summary>
         public GameObject PutBackPrefab
         {
             get => _putBackPrefab;
@@ -39,39 +39,39 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        /// <summary>
-        /// The current instance of the putBackPrefab. Can not be changed via the editor.
-        /// </summary>
         [SerializeField]
         [Tooltip("The current instance of the putBackPrefab. Can not be changed via the editor.")]
         protected GameObject _putBackObjectInstance;
+        /// <summary>
+        /// The current instance of the putBackPrefab. Can not be changed via the editor.
+        /// </summary>
         public GameObject PutBackObjectInstance
         {
             get => _putBackObjectInstance;
         }
 
-        /// <summary>
-        /// The current interactable of the putBackPrefab. Can not be changed via the editor. 
-        /// May be null if the `putBackPrefab` has no `XRBaseInteractable`-Component and `allowNonInteractables` is true.
-        /// </summary>
         [SerializeField]
         [Tooltip("The current interactable of the putBackPrefab. Can not be changed via the editor.\n"
                 + "May be null if the `putBackPrefab` has no `XRBaseInteractable`-Component and `allowNonInteractables` is true.")]
         private XRBaseInteractable _putBackInteractable;
+        /// <summary>
+        /// The current interactable of the putBackPrefab. Can not be changed via the editor. 
+        /// May be null if the `putBackPrefab` has no `XRBaseInteractable`-Component and `allowNonInteractables` is true.
+        /// </summary>
         public XRBaseInteractable PutBackInteractable
         {
             get => _putBackInteractable;
         }
 
 
-        /// <summary>
-        /// If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`.
-        /// Otherwise the provided prefab will be set to null.
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`.\n"
                 + "Otherwise the provided prefab will be set to null.")]
         private bool _allowNonInteractables;
+        /// <summary>
+        /// If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`.
+        /// Otherwise the provided prefab will be set to null.
+        /// </summary>
         public bool AllowNonInteractables
         {
             get => _allowNonInteractables;
@@ -79,14 +79,14 @@ namespace ExPresSXR.Interaction.Interactors
         }
 
 
-        /// <summary>
-        /// Compensates the attach off set of the putback interactable.
-        /// Makes placing interactables with an attach easier but requires an attach transform to be set.
-        /// </summary>
         [SerializeField]
         [Tooltip("Compensates the attach off set of the putback interactable.\n"
                 + "Makes placing interactables with an attach easier but requires an attach transform to be set.")]
         private bool _compensateInteractableAttach;
+        /// <summary>
+        /// Compensates the attach off set of the putback interactable.
+        /// Makes placing interactables with an attach easier but requires an attach transform to be set.
+        /// </summary>
         public bool CompensateInteractableAttach
         {
             get => _compensateInteractableAttach;
@@ -97,12 +97,12 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        /// <summary>
-        /// Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.
-        /// </summary>
         [SerializeField]
         [Tooltip("Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.")]
         private bool _disableRetainTransformParent = true;
+        /// <summary>
+        /// Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.
+        /// </summary>
         public bool DisableRetainTransformParent
         {
             get => _disableRetainTransformParent;
@@ -113,14 +113,14 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        /// <summary>
-        /// The duration in seconds how long the put back object can be unselected outside the socket until being snapped back to the socket. 
-        /// If less or equal to 0, the object will snap back instantaneous.
-        /// </summary>
         [SerializeField]
         [Tooltip("The duration in seconds how long the put back object can be unselected outside the socket until being snapped back to the socket.\n"
                 + "If less or equal to 0, the object will snap back instantaneous.")]
         private float _putBackTime = 2.0f;
+        /// <summary>
+        /// The duration in seconds how long the put back object can be unselected outside the socket until being snapped back to the socket. 
+        /// If less or equal to 0, the object will snap back instantaneous.
+        /// </summary>
         public float PutBackTime
         {
             get => _putBackTime;
@@ -128,12 +128,12 @@ namespace ExPresSXR.Interaction.Interactors
         }
 
 
-        /// <summary>
-        /// Prevents emitting the initial OnSelectEnter event after the socket is activated.
-        /// </summary>
         [SerializeField]
         [Tooltip("Prevents emitting the initial OnSelectEnter event after the socket is activated.")]
         private bool _omitInitialSelectEnterEvent = true;
+        /// <summary>
+        /// Prevents emitting the initial OnSelectEnter event after the socket is activated.
+        /// </summary>
         public bool OmitInitialSelectEnterEvent
         {
             get => _omitInitialSelectEnterEvent;
@@ -141,12 +141,12 @@ namespace ExPresSXR.Interaction.Interactors
         }
 
 
-        /// <summary>
-        /// Prevents emitting the initial OnSelectExit event after the socket is activated.
-        /// </summary>
         [SerializeField]
         [Tooltip("Prevents emitting the initial OnSelectExit event after the socket is activated.")]
         private bool _omitInitialSelectExitEvent = true;
+        /// <summary>
+        /// Prevents emitting the initial OnSelectExit event after the socket is activated.
+        /// </summary>
         public bool OmitInitialSelectExitEvent
         {
             get => _omitInitialSelectExitEvent;
@@ -154,25 +154,25 @@ namespace ExPresSXR.Interaction.Interactors
         }
 
 
+        [SerializeField]
+        [Tooltip("Hidden in the editor! Used to disable certain fields in the editor when controlled by an Exhibition Display.")]
+        private bool _externallyControlled;
         /// <summary>
         /// Hidden in the editor!
         /// Used to disable certain fields in the editor when controlled by an Exhibition Display.
         /// </summary>
-        [SerializeField]
-        [Tooltip("Hidden in the editor! Used to disable certain fields in the editor when controlled by an Exhibition Display.")]
-        private bool _externallyControlled;
         public bool ExternallyControlled
         {
             get => _externallyControlled;
             set => _externallyControlled = value;
         }
 
-        /// <summary>
-        /// Destroys the putbackObject if it gets removed even if the socket is currently not selecting it.
-        /// </summary>
         [SerializeField]
         [Tooltip("Destroys the putbackObject if it gets removed even if the socket is currently not selecting it.")]
         private bool _destroyIfNotSelecting;
+        /// <summary>
+        /// Destroys the PutbackObject if it gets removed even if the socket is currently not selecting it.
+        /// </summary>
         public bool DestroyIfNotSelecting
         {
             get => _destroyIfNotSelecting;
@@ -349,6 +349,7 @@ namespace ExPresSXR.Interaction.Interactors
         /// Updates the `putBackPrefab` by destroying and creating instances, adding/removing listeners and de-/selecting the interactable. 
         /// Will be automatically called when setting `putBackPrefab`.
         /// </summary>
+        /// <param name="force">Forces an update, deleting any old instance.</param>
         public void UpdatePutBackObject(bool force = false)
         {
             if (!ValidatePutBackPrefab())
@@ -363,13 +364,19 @@ namespace ExPresSXR.Interaction.Interactors
             RegisterPutBackInteractable();
         }
 
+        /// <summary>
+        /// Forces the deletion of the putback interactable instance.
+        /// </summary>
         public void ForceClearPutBackInteractable()
         {
             UnregisterPutBackInteractable(true);
             DeleteOldPutBackInstance(true);
         }
 
-
+        /// <summary>
+        /// Unregisters the callback events of the current putback interactable instance.
+        /// </summary>
+        /// <param name="force">Forces the unregistering.</param>
         protected void UnregisterPutBackInteractable(bool force = false)
         {
             if (_putBackInteractable != null && (IsSelecting(_putBackInteractable) || _destroyIfNotSelecting || force))
@@ -384,7 +391,11 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-        private void DeleteOldPutBackInstance(bool force = false)
+        /// <summary>
+        /// Deletes the old putback interactable instance and selection.
+        /// </summary>
+        /// <param name="force">Forces the deletion.</param>
+        protected void DeleteOldPutBackInstance(bool force = false)
         {
             if (_putBackObjectInstance != null && (IsSelecting(_putBackInteractable) || _destroyIfNotSelecting || force))
             {
@@ -404,19 +415,9 @@ namespace ExPresSXR.Interaction.Interactors
             _putBackInteractable = null;
         }
 
-        protected virtual void UnregisterPutBackInteractable()
-        {
-            if (_putBackInteractable != null)
-            {
-                _putBackInteractable.selectExited.RemoveListener(StartPutBackTimer);
-                _putBackInteractable.selectEntered.RemoveListener(ResetPutBackTimer);
-
-                startingSelectedInteractable = null;
-                _putBackInteractable = null;
-            }
-        }
-
-
+        /// <summary>
+        /// Registers the callback events of the current putback interactable instance and selects it.
+        /// </summary>
         protected virtual void RegisterPutBackInteractable()
         {
             if (_putBackObjectInstance != null && _putBackObjectInstance.TryGetComponent(out _putBackInteractable))
@@ -434,7 +435,9 @@ namespace ExPresSXR.Interaction.Interactors
             }
         }
 
-
+        /// <summary>
+        /// Instantiates a new putback interactable instance.
+        /// </summary>
         protected virtual void InstantiatePutBackPrefab()
         {
             if (_putBackPrefab != null)
@@ -474,7 +477,9 @@ namespace ExPresSXR.Interaction.Interactors
             SetHighlighterVisible(ShowHighlighter && _putBackObjectInstance == null);
         }
 
-
+        /// <summary>
+        /// Used internally to update the attach compensation. 
+        /// </summary>
         public void UpdatePutbackAttachCompensation()
         {
             if (!_compensateInteractableAttach)

@@ -55,12 +55,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [Tooltip("Factor for faster/slower turns.")]
         protected float _turnSpeed = 1.0f;
 
-        /// <summary>
-        /// How turning is performed.
-        /// </summary>
         [SerializeField]
         [Tooltip("How turning is performed.")]
         protected InteractorTurnType _turnType;
+        /// <summary>
+        /// How turning is performed.
+        /// </summary>
         public InteractorTurnType TurnType
         {
             get => _turnType;
@@ -70,6 +70,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [SerializeField]
         [Tooltip("If true, inverses the turn direction.")]
         private bool _flipTurnDirection;
+        /// <summary>
+        /// If true, inverses the turn direction.
+        /// </summary>
         public bool FlipTurnDirection
         {
             get => _flipTurnDirection;
@@ -94,20 +97,20 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             get => _maxAngle - _minAngle;
         }
 
+        private float _rawValue;
         /// <summary>
         /// Raw value visualized. Ensured to be in the range between 0.0f and 1.0f (inclusive).
         /// </summary>
-        private float _rawValue;
         public float RawValue
         {
             get => _rawValue;
             set => _rawValue = Mathf.Clamp01(value);
         }
 
+        private Vector3 _previousTurnForward = Vector3.zero;
         /// <summary>
         /// Forward direction of the previous update.
         /// </summary>
-        private Vector3 _previousTurnForward = Vector3.zero;
         public Vector3 PreviousTurnForward
         {
             get => _previousTurnForward;
@@ -183,8 +186,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public enum InteractorTurnType
         {
-            Forward, /// <summary> Turning is determined from wrist movement. </summary>
-            Direction /// <summary> Turning is determined the direction from the interactable to the interactor. </summary>
+            /// <summary> Turning is determined from wrist movement. </summary>
+            Forward,
+            /// <summary> Turning is determined the direction from the interactable to the interactor. </summary>
+            Direction
         }
     }
 }

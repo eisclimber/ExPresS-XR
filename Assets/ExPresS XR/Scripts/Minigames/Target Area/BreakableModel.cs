@@ -19,25 +19,25 @@ namespace ExPresSXR.Minigames.TargetArea
         /// </summary>
         private const string DEFAULT_SHADER_VARIABLE_NAME = "_DamagePct";
 
-        /// <summary>
-        /// Maximum possible damage. Make sure that the value can be reached with the your setup of TargetAreas.
-        /// </summary>
         [SerializeField]
         [Tooltip("Maximum possible damage.")]
         private int _maxDamage = 3;
+        /// <summary>
+        /// Maximum possible damage. Make sure that the value can be reached with the your setup of TargetAreas.
+        /// </summary>
         public int MaxDamage
         {
             get => _maxDamage;
             set => _maxDamage = value;
         }
 
-        /// <summary>
-        /// Current damage.
-        /// </summary>
         [SerializeField]
         [Tooltip("Current damage.")]
         [ReadonlyInInspector]
         private int _currentDamage;
+        /// <summary>
+        /// Current damage.
+        /// </summary>
         public int CurrentDamage
         {
             get => _currentDamage;
@@ -126,9 +126,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// </summary>
         public UnityEvent<int> OnDamage;
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected void Start()
         {
             // Reset the damage in case it got altered in the editor.

@@ -13,13 +13,13 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueCombiner
     /// </summary>
     public class TwoSlidersToPosCombiner : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("Value that is manipulated by a slider each for the x- and z-axis. The value is a Vector3 to be used directly as position.")]
+        private Vector3 _value;
         /// <summary>
         /// Value that is manipulated by a slider each for the x- and z-axis.
         /// The value is a Vector3 to be used directly as position.
         /// </summary>
-        [SerializeField]
-        [Tooltip("Value that is manipulated by a slider each for the x- and z-axis. The value is a Vector3 to be used directly as position.")]
-        private Vector3 _value;
         public Vector3 Value
         {
             get => _value;

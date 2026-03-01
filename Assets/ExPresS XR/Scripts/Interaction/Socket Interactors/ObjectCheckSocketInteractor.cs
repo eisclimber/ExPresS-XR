@@ -9,12 +9,12 @@ namespace ExPresSXR.Interaction.Interactors
     /// </summary>
     public class ObjectCheckSocketInteractor : HighlightableSocketInteractor
     {
-        /// <summary>
-        /// Object the socket accepts.
-        /// </summary>
         [SerializeField]
         [Tooltip("Object the socket accepts.")]
         private XRGrabInteractable _targetObject;
+        /// <summary>
+        /// Object the socket accepts.
+        /// </summary>
         public XRGrabInteractable TargetObject
         {
             get => _targetObject;
@@ -37,9 +37,7 @@ namespace ExPresSXR.Interaction.Interactors
             => base.CanHover(interactable) && (IsObjectMatch(interactable) || _allowInvalidHover);
 
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override Material GetHoveredInteractableMaterial(IXRHoverInteractable interactable)
         {
             if (!IsObjectMatch(interactable))
@@ -58,9 +56,7 @@ namespace ExPresSXR.Interaction.Interactors
         public override bool CanSelect(IXRSelectInteractable interactable)
             => base.CanSelect(interactable) && IsObjectMatch(interactable);
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         private bool IsObjectMatch(IXRInteractable interactable)
         {
             XRGrabInteractable grabInteractable = interactable.transform.GetComponent<XRGrabInteractable>();

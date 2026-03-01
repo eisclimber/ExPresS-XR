@@ -8,24 +8,24 @@ namespace ExPresSXR.Misc
     /// </summary>
     public class ConditionalEventSwitcher : MonoBehaviour
     {
-        /// <summary>
-        /// A description of the condition. No further use.
-        /// </summary>
         [SerializeField]
         [Tooltip("A description of the condition. No further use.")]
         private string _description = "";
+        /// <summary>
+        /// A description of the condition. No further use.
+        /// </summary>
         public string Description
         {
             get => _description;
             private set => _description = value;
         }
 
-        /// <summary>
-        /// Condition to switch.
-        /// </summary>
         [SerializeField]
         [Tooltip("Condition to switch.")]
         private bool _condition;
+        /// <summary>
+        /// Condition to switch.
+        /// </summary>
         public bool Condition
         {
             get => _condition;
@@ -43,12 +43,12 @@ namespace ExPresSXR.Misc
             }
         }
 
-        /// <summary>
-        /// If enabled will automatically invoke the respective events when changing `Condition`.
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled will automatically invoke the respective events when changing `Condition`.")]
         private bool _autoEmitWhenChanged = true;
+        /// <summary>
+        /// If enabled will automatically invoke the respective events when changing `Condition`.
+        /// </summary>
         public bool AutoEmitWhenChanged
         {
             get => _autoEmitWhenChanged;

@@ -42,12 +42,12 @@ namespace ExPresSXR.Rig
 
 
         #region Movement Configuration
-        /// <summary>
-        /// Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).")]
         private bool _teleportCancelEnabled;
+        /// <summary>
+        /// Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).
+        /// </summary>
         public bool TeleportCancelEnabled
         {
             get => _teleportCancelEnabled;
@@ -58,14 +58,14 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Whether or not the forwards direction after teleporting can be chosen when rotating the joystick.
-        /// The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not the forwards direction after teleporting can be chosen when rotating the joystick. "
                 + "The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.")]
         private bool _chooseTeleportForwardEnabled;
+        /// <summary>
+        /// Whether or not the forwards direction after teleporting can be chosen when rotating the joystick.
+        /// The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.
+        /// </summary>
         public bool ChooseTeleportForwardEnabled
         {
             get => _chooseTeleportForwardEnabled;
@@ -82,12 +82,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region Near Config
-        /// <summary>
-        /// Whether or not near interaction is enabled.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not near interaction is enabled.")]
         private bool _nearInteractionEnabled;
+        /// <summary>
+        /// Whether or not near interaction is enabled.
+        /// </summary>
         public bool NearInteractionEnabled
         {
             get => _nearInteractionEnabled;
@@ -104,12 +104,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region Far Config
-        /// <summary>
-        /// Whether or not far (and/or ray) interaction is enabled.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not far (and/or ray) interaction is enabled.")]
         private bool _farInteractionEnabled;
+        /// <summary>
+        /// Whether or not far (and/or ray) interaction is enabled.
+        /// </summary>
         public bool FarInteractionEnabled
         {
             get => _farInteractionEnabled;
@@ -129,12 +129,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.")]
         private bool _farAnchorControlEnabled;
+        /// <summary>
+        /// Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.
+        /// </summary>
         public bool FarAnchorControlEnabled
         {
             get => _farAnchorControlEnabled;
@@ -155,12 +155,12 @@ namespace ExPresSXR.Rig
         }
 
 
-        /// <summary>
-        /// Whether pulling (and pushing) an object closer during far interaction is enabled.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether pulling (and pushing) an object closer during far interaction is enabled.")]
         private bool _farPullCloserEnabled;
+        /// <summary>
+        /// Whether pulling (and pushing) an object closer during far interaction is enabled.
+        /// </summary>
         public bool FarPullCloserEnabled
         {
             get => _farPullCloserEnabled;
@@ -175,12 +175,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Whether or not the ray can also interact with UI.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not the ray can also interact with UI.")]
         private bool _farUiInteractionEnabled;
+        /// <summary>
+        /// Whether or not the ray can also interact with UI.
+        /// </summary>
         public bool FarUiInteractionEnabled
         {
             get => _farUiInteractionEnabled;
@@ -202,12 +202,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region Poke Config
-        /// <summary>
-        /// Whether or not poke interaction is enabled.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not poke interaction is enabled.")]
         private bool _pokeInteractionEnabled;
+        /// <summary>
+        /// Whether or not poke interaction is enabled.
+        /// </summary>
         public bool PokeInteractionEnabled
         {
             get => _pokeInteractionEnabled;
@@ -235,12 +235,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// If the auto hand should automatically switch to a pointing pose when hovering interactables.
-        /// </summary>
         [SerializeField]
         [Tooltip("If the auto hand should automatically switch to a pointing pose when hovering interactables.")]
         private bool _pokePointOnHover;
+        /// <summary>
+        /// If the auto hand should automatically switch to a pointing pose when hovering interactables.
+        /// </summary>
         public bool PokePointOnHover
         {
             get => _pokePointOnHover;
@@ -250,12 +250,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.")]
         private bool _pokeShowReticle;
+        /// <summary>
+        /// Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.
+        /// </summary>
         public bool PokeShowReticle
         {
             get => _pokeShowReticle;
@@ -273,12 +273,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Whether or not poking can be used with UI.
-        /// </summary>
         [SerializeField]
         [Tooltip("Whether or not poking can be used with UI.")]
         private bool _pokeUiInteractionEnabled;
+        /// <summary>
+        /// Whether or not poking can be used with UI.
+        /// </summary>
         public bool PokeUiInteractionEnabled
         {
             get => _pokeUiInteractionEnabled;
@@ -295,12 +295,12 @@ namespace ExPresSXR.Rig
         #endregion
 
         #region Teleport Reticles
-        /// <summary>
-        /// Reticle for valid teleports.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reticle for valid teleports.")]
         private GameObject _teleportValidReticle;
+        /// <summary>
+        /// Reticle for valid teleports.
+        /// </summary>
         public GameObject TeleportValidReticle
         {
             get => _teleportValidReticle;
@@ -315,12 +315,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        /// <summary>
-        /// Reticle for invalid teleports.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reticle for invalid teleports.")]
         private GameObject _teleportInvalidReticle;
+        /// <summary>
+        /// Reticle for invalid teleports.
+        /// </summary>
         public GameObject TeleportInvalidReticle
         {
             get => _teleportInvalidReticle;
@@ -336,13 +336,13 @@ namespace ExPresSXR.Rig
         }
         #endregion
 
+        [SerializeField]
+        [Tooltip("Used to disable certain fields in the editor when controlled by a rig.\n Hidden in the editor!")]
+        private bool _externallyControlled;
         /// <summary>
         /// Used to disable certain fields in the editor when controlled by a rig.
         /// Hidden in the editor!
         /// </summary>
-        [SerializeField]
-        [Tooltip("Used to disable certain fields in the editor when controlled by a rig.\n Hidden in the editor!")]
-        private bool _externallyControlled;
         public bool ExternallyControlled
         {
             get => _externallyControlled;

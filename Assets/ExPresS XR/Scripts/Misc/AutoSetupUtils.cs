@@ -112,7 +112,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="trigger">EventTrigger to modify.</param>
         /// <param name="triggerType">EventTriggerType to add the callback to.</param>
-        /// <param name="call">Int function call.</param>
+        /// <param name="callback">Int function call.</param>
         /// <param name="argument">Int passed as argument.</param>
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddIntPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<int> callback, int argument, bool requireNoListeners = true)

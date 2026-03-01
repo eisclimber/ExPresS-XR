@@ -6,6 +6,11 @@ using ExPresSXR.Experimentation.DataGathering;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
+    /// <summary>
+    /// Serializable class representing a question in the TutorialButtonQuiz.
+    /// 
+    /// Besides being able to store question, answer and feedback values it also features methods for retrieving them using a QuizConfig.
+    /// </summary>
     [System.Serializable]
     // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizQuestion, Assembly-CSharp
     public class ButtonQuizQuestion

@@ -51,10 +51,10 @@ namespace ExPresSXR.Rig
         [Tooltip("InputActions that toggle the menu for the right side.")]
         private InputActionReference[] _menuRightToggleActions;
 
+        private bool _leftHandSide;
         /// <summary>
         /// Whether or not the menu is attached on the left side or the right. Changing it will only affect the attach, but keep the hand menus active status.
         /// </summary>
-        private bool _leftHandSide;
         public bool LeftHandSide
         {
             get => _leftHandSide;
@@ -65,10 +65,10 @@ namespace ExPresSXR.Rig
             }
         }
 
+        private bool _showMenu;
         /// <summary>
         /// Whether or not the menu is shown.
         /// </summary>
-        private bool _showMenu;
         public bool ShowMenu
         {
             get => _showMenu;

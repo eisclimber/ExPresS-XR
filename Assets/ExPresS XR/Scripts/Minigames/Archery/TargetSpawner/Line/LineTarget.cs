@@ -15,12 +15,12 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         [Tooltip("Reference to the ObjectContinuousMove driving this target.")]
         private ObjectContinuousMove _continuousMove;
 
-        /// <summary>
-        /// Reference to the GameObject gets detected by a collision detector to despawn this target.
-        /// </summary>
         [SerializeField]
         [Tooltip("Reference to the GameObject gets detected by a collision detector to despawn this target.")]
         private GameObject _despawnColliderObject;
+        /// <summary>
+        /// Reference to the GameObject gets detected by a collision detector to despawn this target.
+        /// </summary>
         public GameObject DespawnColliderObject
         {
             get => _despawnColliderObject;
@@ -36,7 +36,7 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         /// <summary>
         /// Sets up this target.
         /// </summary>
-        /// <param name="goodTarget">Wether the target is good or not.</param>
+        /// <param name="goodTarget">Whether the target is good or not.</param>
         /// <param name="speed">Speed for the ObjectContinuousMove.</param>
         /// <param name="direction">Direction for the ObjectContinuousMove.</param>
         /// <param name="sprite">Sprite to be set.</param>

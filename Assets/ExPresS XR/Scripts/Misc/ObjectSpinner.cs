@@ -8,48 +8,48 @@ namespace ExPresSXR.Misc
     /// </summary>
     public class ObjectSpinner : MonoBehaviour
     {
-        /// <summary>
-        /// Axis of rotation.
-        /// </summary>
         [SerializeField]
         [Tooltip("Axis of rotation.")]
         private Vector3 _rotationAxis = Vector3.up;
+        /// <summary>
+        /// Axis of rotation.
+        /// </summary>
         public Vector3 RotationAxis
         {
             get => _rotationAxis;
             set => _rotationAxis = value;
         }
 
-        /// <summary>
-        /// Speed of the rotation.
-        /// </summary>
         [SerializeField]
         [Tooltip("Speed of the rotation.")]
         private float _speed = 10.0f;
+        /// <summary>
+        /// Speed of the rotation.
+        /// </summary>
         public float Speed
         {
             get => _speed;
             set => _speed = value;
         }
 
-        /// <summary>
-        /// If rotation is paused.
-        /// </summary>
         [SerializeField]
         [Tooltip("If rotation is paused.")]
         private bool _paused;
+        /// <summary>
+        /// If rotation is paused.
+        /// </summary>
         public bool Paused
         {
             get => _paused;
             set => _paused = value;
         }
 
-        /// <summary>
-        /// If the rotation around `RotationAxis` should be automatically randomized on awake.
-        /// </summary>
         [SerializeField]
         [Tooltip("If the rotation around `RotationAxis` should be automatically randomized on awake.")]
         private bool _randomRotationOnAwake;
+        /// <summary>
+        /// If the rotation around `RotationAxis` should be automatically randomized on awake.
+        /// </summary>
         public bool RandomRotationOnAwake
         {
             get => _randomRotationOnAwake;

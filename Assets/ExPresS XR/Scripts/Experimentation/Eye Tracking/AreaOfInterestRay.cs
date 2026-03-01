@@ -72,50 +72,48 @@ namespace ExPresSXR.Experimentation.EyeTracking
         private Stopwatch _aoiStopwatch;
 
         // Data Retrieval
-
+        private RaycastHit _currentRaycastHit;
         /// <summary>
         /// The raycast on the focussed AOI or the last hit after bouncing
         /// </summary>
-        private RaycastHit _currentRaycastHit;
         public RaycastHit CurrentRaycastHit
         {
             get => _currentRaycastHit;
         }
 
+        private Vector3 _currentEyePos;
         /// <summary>
         /// Accessor for the current eye position.
         /// </summary>
-        private Vector3 _currentEyePos;
         public Vector3 CurrentEyePos
         {
             get => _currentEyePos;
         }
 
+        private Vector3 _currentEyeDir;
         /// <summary>
         /// Accessor for the current eye looking direction.
         /// </summary>
-        private Vector3 _currentEyeDir;
         public Vector3 CurrentEyeDir
         {
             get => _currentEyeDir;
         }
 
+        private List<Vector3> _bounceTracePath;
         /// <summary>
         /// List of detected AOI positions including bounces on configured reflective surfaces.
         /// Begins with the eye position and ends on a AOI hit, if any.
         /// </summary>
-        private List<Vector3> _bounceTracePath;
         public List<Vector3> BounceTracePath
         {
             get => _bounceTracePath;
         }
 
 
+        private string _focusedAoiId = NO_AOI_DETECTED_ID;
         /// <summary>
         /// Currently focussed AOI id.
         /// </summary>
-
-        private string _focusedAoiId = NO_AOI_DETECTED_ID;
         public string FocusedAoiId
         {
             get => _focusedAoiId;

@@ -228,7 +228,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="rig">The rig that is will be attempted to fade. </param>
         /// <param name="sceneIdx"> The Scene index to change to (from the build settings). </param>
-        /// <param name="keepRig"> Wether or not the rig should be kept after loading the new scene. </param>
+        /// <param name="keepRig"> Whether or not the rig should be kept after loading the new scene. </param>
         /// <param name="sceneLoadedCallback"> A callback that will be executed after the new scene loaded. Can be null. </param>
         public static void ChangeSceneWithFade(ExPresSXRRig rig, int sceneIdx, bool keepRig, Action sceneLoadedCallback)
         {

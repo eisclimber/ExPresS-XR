@@ -73,12 +73,12 @@ namespace ExPresSXR.Minigames.Archery.Bow
         // For debugging
         [Space]
 
-        /// <summary>
-        /// Will shoot arrows automatically. For debugging.
-        /// </summary>
         [SerializeField]
         [Tooltip("Will shoot arrows automatically. For debugging.")]
         private bool _autoShot;
+        /// <summary>
+        /// Will shoot arrows automatically. For debugging.
+        /// </summary>
         public bool AutoShot
         {
             get => _autoShot;
@@ -96,13 +96,13 @@ namespace ExPresSXR.Minigames.Archery.Bow
         [Tooltip("Time of arrows shot automatically, if enabled. For debugging.")]
         private float _autoShotFrequency = 1.0f;
 
-        /// <summary>
-        /// Current pull strength. For debugging.
-        /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
         [Tooltip("Current pull strength. For debugging.")]
         private float _pullStrength = 0.0f;
+        /// <summary>
+        /// Current pull strength. For debugging.
+        /// </summary>
         public float PullStrength
         {
             get => _pullStrength;

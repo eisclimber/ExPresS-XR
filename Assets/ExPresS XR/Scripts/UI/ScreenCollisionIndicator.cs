@@ -10,13 +10,13 @@ namespace ExPresSXR.UI
     /// </summary>
     public class ScreenCollisionIndicator : MonoBehaviour
     {
-        /// <summary>
-        /// The strength of the indicator. Ranging from 0.0f (=invisible) to 1.0f(=completely visible).
-        /// </summary>
         [Range(0f, 1f)]
         [SerializeField]
         [Tooltip("The strength of the indicator. Ranging from 0.0f (=invisible) to 1.0f(=completely visible).")]
         private float _strength;
+        /// <summary>
+        /// The strength of the indicator. Ranging from 0.0f (=invisible) to 1.0f(=completely visible).
+        /// </summary>
         public float Strength
         {
             get => _strength;
@@ -28,12 +28,12 @@ namespace ExPresSXR.UI
             }
         }
 
-        /// <summary>
-        /// The color the indicator is tinted.
-        /// </summary>
         [SerializeField]
         [Tooltip("The color the indicator is tinted.")]
         private Color _indicatorColor;
+        /// <summary>
+        /// The color the indicator is tinted.
+        /// </summary>
         public Color IndicatorColor
         {
             get => _indicatorColor;

@@ -8,12 +8,12 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
     /// </summary>
     public class ObjectCollisionDetector : MonoBehaviour
     {
-        /// <summary>
-        /// The object this component detects collisions with.
-        /// </summary>
         [SerializeField]
         [Tooltip("The object this component detects collisions with.")]
         private GameObject _objectToDetect;
+        /// <summary>
+        /// The object this component detects collisions with.
+        /// </summary>
         public GameObject ObjectToDetect
         {
             get => _objectToDetect;

@@ -27,13 +27,13 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class JoystickVisualizer : ValueVisualizer<Vector2>
     {
-        /// <summary>
-        /// Maximal angle to lean the joystick in any direction from the center.
-        /// </summary>
         [SerializeField]
         [Range(0.0f, 90.0f)]
         [Tooltip("Maximal angle to lean the joystick in any direction from the center.")]
         private float _angleRange = 42.0f;
+        /// <summary>
+        /// Maximal angle to lean the joystick in any direction from the center.
+        /// </summary>
         public float AngleRange
         {
             get => _angleRange;

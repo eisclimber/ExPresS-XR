@@ -8,24 +8,24 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
     /// </summary>
     public class ObjectContinuousMove : MonoBehaviour
     {
-        /// <summary>
-        /// Speed to move the GameObjet with.
-        /// </summary>
         [SerializeField]
         [Tooltip("Speed to move the GameObjet with.")]
         private float _speed;
+        /// <summary>
+        /// Speed to move the GameObjet with.
+        /// </summary>
         public float Speed
         {
             get => _speed;
             set => _speed = value;
         }
 
-        /// <summary>
-        /// Direction to move the GameObject.
-        /// </summary>
         [SerializeField]
         [Tooltip("Direction to move the GameObject.")]
         private Vector3 _direction;
+        /// <summary>
+        /// Direction to move the GameObject.
+        /// </summary>
         public Vector3 Direction
         {
             get => _direction;

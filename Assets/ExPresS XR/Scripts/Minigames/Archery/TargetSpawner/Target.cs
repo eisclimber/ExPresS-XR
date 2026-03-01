@@ -25,25 +25,25 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner
         protected int _points = 1;
 
 
-        /// <summary>
-        /// Transform  used to attach arrows to. All children will be removed when this target is returned to a pool.
-        /// Defaults to itt's own transform if none is provided.
-        /// </summary>
         [SerializeField]
         [Tooltip("Transform  used to attach arrows to. All children will be removed when this target is returned to a pool. "
             + "Defaults to itt's own transform if none is provided.")]
         protected Transform _arrowAttach;
+        /// <summary>
+        /// Transform  used to attach arrows to. All children will be removed when this target is returned to a pool.
+        /// Defaults to itt's own transform if none is provided.
+        /// </summary>
         public Transform ArrowAttach
         {
             get => _arrowAttach != null ? _arrowAttach : transform;
         }
 
-        /// <summary>
-        /// Score Managers that will be notified upon hitting this target.
-        /// </summary>
         [SerializeField]
         [Tooltip("Score Managers that will be notified upon hitting this target.")]
         protected ScoreManager[] _scoreManagers;
+        /// <summary>
+        /// Score Managers that will be notified upon hitting this target.
+        /// </summary>
         public ScoreManager[] ScoreManagers
         {
             get => _scoreManagers;

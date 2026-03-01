@@ -9,21 +9,12 @@ namespace ExPresSXR.Minigames.CoinScale
     /// </summary>
     public class Bowl : MonoBehaviour
     {
-        /// <summary>
-        /// Which Side of the scale this bowl is located.
-        /// </summary>
-        public enum ScaleSide
-        {
-            Left, /// <summary>Left side of the scale.</summary>
-            Right /// <summary>Right side of the scale.</summary>
-        };
-
-        /// <summary>
-        /// Which Side of the scale this bowl is located.
-        /// </summary>
         [Tooltip("Which Side of the scale this bowl is located.")]
         [SerializeField]
         private ScaleSide _side;
+        /// <summary>
+        /// Which Side of the scale this bowl is located.
+        /// </summary>
         public ScaleSide Side
         {
             get => _side;
@@ -73,4 +64,15 @@ namespace ExPresSXR.Minigames.CoinScale
             transform.localPosition = _initialPos;
         }
     }
+
+    /// <summary>
+    /// Which Side of the scale this bowl is located.
+    /// </summary>
+    public enum ScaleSide
+    {
+        /// <summary> Left side of the scale. </summary>
+        Left,
+        /// <summary> Right side of the scale. </summary>
+        Right
+    };
 }

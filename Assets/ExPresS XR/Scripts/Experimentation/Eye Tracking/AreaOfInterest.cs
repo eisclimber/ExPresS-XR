@@ -15,12 +15,12 @@ namespace ExPresSXR.Experimentation.EyeTracking
         /// </summary>
         public const int DEFAULT_AOI_LAYER = 9;
         
-        /// <summary>
-        /// Identifier for the AOI. If empty will be set to a GUID with a `AOI_` prefix. 
-        /// </summary>
         [SerializeField]
         [Tooltip("Identifier for the AOI. If empty will be set to a GUID with a `AOI_` prefix.")]
         private string _aoiId = GenerateAoiId();
+        /// <summary>
+        /// Identifier for the AOI. If empty will be set to a GUID with a `AOI_` prefix. 
+        /// </summary>
         public string AoiId
         {
             get => _aoiId;
@@ -35,12 +35,12 @@ namespace ExPresSXR.Experimentation.EyeTracking
             }
         }
 
-        /// <summary>
-        /// Collision Layer to be used for determining AOI collisions. Should be the same as the GameObjects layer.
-        /// </summary>
         [SerializeField]
         [Tooltip("Collision Layer to be used for determining AOI collisions. Should be the same as the GameObjects layer.")]
         private int _aoiLayer = DEFAULT_AOI_LAYER;
+        /// <summary>
+        /// Collision Layer to be used for determining AOI collisions. Should be the same as the GameObjects layer.
+        /// </summary>
         public int AoiLayer
         {
             get => _aoiLayer;

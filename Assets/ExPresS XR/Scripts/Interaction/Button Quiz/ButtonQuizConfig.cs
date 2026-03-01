@@ -168,9 +168,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum QuizMode
     {
-        // ExPresSXR.Interaction.ButtonQuiz.QuizMode, Assembly-CSharp
-        SingleChoice, /// <summary>Only one answer is correct.</summary>
-        MultipleChoice /// <summary>Multiple answers can be correct.</summary>
+        /// <summary>Only one answer is correct.</summary>
+        SingleChoice,
+        /// <summary>Multiple answers can be correct.</summary>
+        MultipleChoice
     }
 
     /// <summary>
@@ -178,9 +179,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum QuestionOrdering
     {
-        // ExPresSXR.Interaction.ButtonQuiz.QuestionOrdering, Assembly-CSharp
-        Ordered, /// <summary>Questions are asked in the order they are defined.</summary>
-        Randomize/// <summary>Questions are asked in random order.</summary>
+        /// <summary>Questions are asked in the order they are defined.</summary>
+        Ordered,
+        /// <summary>Questions are asked in random order.</summary>
+        Randomize
     }
 
     /// <summary>
@@ -188,12 +190,16 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum AnswersAmount
     {
-        // ExPresSXR.Interaction.ButtonQuiz.AnswersAmount, Assembly-CSharp
-        One, /// <summary>Only one answer is available.</summary>
-        Two, /// <summary>Two answers are available.</summary>
-        Three, /// <summary>Three answers are available.</summary>
-        Four, /// <summary>Four answers are available.</summary>
-        DifferingAmounts /// <summary>Answer amount is derived from config using the available answers.</summary>
+        /// <summary>Only one answer is available.</summary>
+        One,
+        /// <summary>Two answers are available.</summary>
+        Two,
+        /// <summary>Three answers are available.</summary>
+        Three,
+        /// <summary>Four answers are available.</summary>
+        Four,
+        /// <summary>Answer amount is derived from config using the available answers.</summary>
+        DifferingAmounts
     }
 
     /// <summary>
@@ -201,9 +207,10 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum AnswerOrdering
     {
-        // ExPresSXR.Interaction.ButtonQuiz.AnswerOrdering, Assembly-CSharp
-        Ordered, /// <summary>Answers are provided in the order they are defined.</summary>
-        Randomize/// <summary>Answers are provided in random order.</summary>
+        /// <summary>Answers are provided in the order they are defined.</summary>
+        Ordered,
+        /// <summary>Answers are provided in random order.</summary>
+        Randomize
     }
 
     /// <summary>
@@ -211,11 +218,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum QuestionType
     {
-        // ExPresSXR.Interaction.ButtonQuiz.QuestionType, Assembly-CSharp
-        Object, /// <summary>Only objects are displayed as questions.</summary>
-        Video, /// <summary>Only videos are shown as questions.</summary>
-        Text, /// <summary>Only text is displayed as questions.</summary>
-        DifferingTypes /// <summary>Any type of question is allowed.</summary>
+        /// <summary>Only objects are displayed as questions.</summary>
+        Object,
+        /// <summary>Only videos are shown as questions.</summary>
+        Video,
+        /// <summary>Only text is displayed as questions.</summary>
+        Text,
+        /// <summary>Any type of question is allowed.</summary>
+        DifferingTypes
     }
 
     /// <summary>
@@ -223,10 +233,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum AnswerType
     {
-        // ExPresSXR.Interaction.ButtonQuiz.AnswerType, Assembly-CSharp
-        Object, /// <summary>Objects can be chosen as answers.</summary>
-        Text, /// <summary>Text can be chosen as answers.</summary>
-        DifferingTypes /// <summary>Any type of answers is allowed.</summary>
+        /// <summary>Objects can be chosen as answers.</summary>
+        Object,
+        /// <summary>Text can be chosen as answers.</summary>
+        Text,
+        /// <summary>Any type of answers is allowed.</summary>
+        DifferingTypes
     }
 
     /// <summary>
@@ -234,11 +246,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum FeedbackMode
     {
-        // ExPresSXR.Interaction.ButtonQuiz.FeedbackMode, Assembly-CSharp
-        None, /// <summary>No feedback is provided.</summary>
-        AlwaysCorrect, /// <summary>The correct feedback is provided.</summary>
-        AlwaysWrong, /// <summary>The wrong feedback is provided.</summary>
-        Random /// <summary>The feedback is chosen randomly (correct or wrong).</summary>
+        /// <summary>No feedback is provided.</summary>
+        None,
+        /// <summary>The correct feedback is provided.</summary>
+        AlwaysCorrect,
+        /// <summary>The wrong feedback is provided.</summary>
+        AlwaysWrong,
+        /// <summary>The feedback is chosen randomly (correct or wrong).</summary>
+        Random
     }
 
     /// <summary>
@@ -246,11 +261,15 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     /// </summary>
     public enum FeedbackType
     {
-        // ExPresSXR.Interaction.ButtonQuiz.FeedbackType, Assembly-CSharp
-        ShowAnswers, /// <summary>The correct answer(s) are shown. Overrides Feedback Mode.</summary>
-        Object, /// <summary>Feedback is provided via objects.</summary>
-        Text, /// <summary>Feedback is provided via text.</summary>
-        Video, /// <summary>Feedback is provided via a video.</summary>
-        DifferingTypes /// <summary>Feedback provided differs per question.</summary>
+        /// <summary>The correct answer(s) are shown. Overrides Feedback Mode.</summary>
+        ShowAnswers,
+        /// <summary>Feedback is provided via objects.</summary>
+        Object,
+        /// <summary>Feedback is provided via text.</summary>
+        Text,
+        /// <summary>Feedback is provided via a video.</summary>
+        Video,
+        /// <summary>Feedback provided differs per question.</summary>
+        DifferingTypes
     }
 }

@@ -13,11 +13,11 @@ namespace ExPresSXR.Rig
     /// </summary>
     public class AutoHandModel : MonoBehaviour
     {
+        [SerializeField]
+        private HandModelMode _HandModelMode;
         /// <summary>
         /// Determines which model is displayed.
         /// </summary>
-        [SerializeField]
-        private HandModelMode _HandModelMode;
         public HandModelMode HandModelMode
         {
             get => _HandModelMode;
@@ -75,13 +75,13 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Completely disables collisions with the hand/controller models during runtime. Overwrites the functionality of _collisionsEnabled.")]
+        [SerializeField]
+        private bool _modelCollisionsEnabled;
         /// <summary>
         /// Completely disables collisions with the hand/controller models during runtime.
         /// Overwrites the functionality of `_collisionsEnabled`.
         /// </summary>
-        [Tooltip("Completely disables collisions with the hand/controller models during runtime. Overwrites the functionality of _collisionsEnabled.")]
-        [SerializeField]
-        private bool _modelCollisionsEnabled;
         public bool ModelCollisionsEnabled
         {
             get => _modelCollisionsEnabled;
@@ -93,12 +93,12 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Temporary en-/disables collisions if _modelCollisionsEnabled is true. Will be controlled by the HandController. To disable collisions completely use _modelCollisionsEnabled instead.")]
+        private bool _collisionsCurrentlyEnabled;
         /// <summary>
         /// Temporary en-/disables collisions if `_modelCollisionsEnabled` is true. Will be controlled by the HandController.
         /// To disable collisions completely use `_modelCollisionsEnabled` instead.
         /// </summary>
-        [Tooltip("Temporary en-/disables collisions if _modelCollisionsEnabled is true. Will be controlled by the HandController. To disable collisions completely use _modelCollisionsEnabled instead.")]
-        private bool _collisionsCurrentlyEnabled;
         public bool CollisionsCurrentlyEnabled
         {
             get => _collisionsCurrentlyEnabled;
@@ -236,10 +236,15 @@ namespace ExPresSXR.Rig
     /// </summary>
     public enum HandModelMode
     {
-        Controller, /// <summary> Displays the hands as controllers matching the headset. </summary>
-        Hand, /// <summary> Uses an articulated hand for visualization. </summary>
-        Both, /// <summary> Uses both hand and controller models. </summary>
-        Custom, /// <summary> Uses a custom model. </summary>
-        None /// No hand visualization. </summary>
+        /// <summary> Displays the hands as controllers matching the headset. </summary>
+        Controller,
+        /// <summary> Uses an articulated hand for visualization. </summary>
+        Hand,
+        /// <summary> Uses both hand and controller models. </summary>
+        Both,
+        /// <summary> Uses a custom model. </summary>
+        Custom,
+        /// <summary> No hand visualization. </summary>
+        None
     }
 }

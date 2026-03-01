@@ -7,16 +7,17 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 namespace ExPresSXR.Minigames.TargetArea
 {
     /// <summary>
-    /// Triggers <seealso cref="TargetArea"> that are set as target and tracks the progress of triggering all targets.
+    /// Triggers a `TargetArea` that are set as target and tracks the progress of triggering all targets.
     /// Should be attached to the GameObject holding the Collider that is used as a trigger.
     /// </summary>
     public class TargetAreaTriggerer : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("The TargetAreas that are required to be completed.")]
+        private TargetArea[] _targets;
         /// <summary>
         /// The TargetAreas that are required to be completed.
         /// </summary>
-        [SerializeField]
-        private TargetArea[] _targets;
         public TargetArea[] Targets
         {
             get => _targets;
@@ -27,6 +28,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// If enabled, the target areas will be automatically set up on Start().
         /// </summary>
         [SerializeField]
+        [Tooltip("If enabled, the target areas will be automatically set up on Start().")]
         private bool _autoStart = true;
 
         /// <summary>
@@ -49,6 +51,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// The haptics player used for feedback.
         /// </summary>
         [SerializeField]
+        [Tooltip("The haptics player used for feedback.")]
         private HapticImpulsePlayer _hapticsPlayer;
 
         /// <summary>
@@ -58,11 +61,11 @@ namespace ExPresSXR.Minigames.TargetArea
         [SerializeField]
         private RumbleDescription _rumble = new(0.5f, 0.5f);
 
-        [Space]
 
         /// <summary>
         /// If an action was performed on a valid TargetArea.
         /// </summary>
+        [Space]
         public UnityEvent OnTargetAreaActionPerformed;
         /// <summary>
         /// If a single TargetArea was completed but not all.

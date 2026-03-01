@@ -14,12 +14,12 @@ namespace ExPresSXR.Experimentation.EyeTracking
         /// </summary>
         public const int DEFAULT_AOI_BOUNCER_LAYER = 10;
 
-        /// <summary>
-        /// Collision Layer to be used for determining AOI bounces. Should be the same as the GameObjects layer.
-        /// </summary>
         [SerializeField]
         [Tooltip("Collision Layer to be used for determining AOI bounces. Should be the same as the GameObjects layer.")]
         private int _aoiBouncerLayer = DEFAULT_AOI_BOUNCER_LAYER;
+        /// <summary>
+        /// Collision Layer to be used for determining AOI bounces. Should be the same as the GameObjects layer.
+        /// </summary>
         public int AoiBounceLayer
         {
             get => _aoiBouncerLayer;

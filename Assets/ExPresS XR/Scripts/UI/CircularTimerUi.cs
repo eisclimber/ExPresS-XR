@@ -66,12 +66,12 @@ namespace ExPresSXR.UI
                 + "\nHas no effect if `fillType` is set to `Smooth` or set to a value equal or below zero.")]
             public int tickFrequency = 0;
 
-            /// <summary>
-            /// If the caps shown at the ends of the progress meter to round the ends.
-            /// </summary>
             [SerializeField]
             [Tooltip("If the caps shown at the ends of the progress meter to round the ends.")]
             private bool _capsEnabled;
+            /// <summary>
+            /// If the caps shown at the ends of the progress meter to round the ends.
+            /// </summary>
             public bool CapsEnabled
             {
                 get => _capsEnabled;
@@ -82,12 +82,12 @@ namespace ExPresSXR.UI
                 }
             }
 
-            /// <summary>
-            /// Color of the fill meter and the caps.
-            /// </summary>
             [SerializeField]
             [Tooltip("Color of the fill meter and the caps.")]
             private Color _color = Color.white;
+            /// <summary>
+            /// Color of the fill meter and the caps.
+            /// </summary>
             public Color Color
             {
                 get => _color;
@@ -98,12 +98,12 @@ namespace ExPresSXR.UI
                 }
             }
 
-            /// <summary>
-            /// The image used to visualize the fill of the timer. Should be of Image Type 'Filled' for correct visualization.
-            /// </summary>
             [SerializeField]
             [Tooltip("The image used to visualize the fill of the timer. Should be of Image Type 'Filled' for correct visualization.")]
             private Image _fillImage;
+            /// <summary>
+            /// The image used to visualize the fill of the timer. Should be of Image Type 'Filled' for correct visualization.
+            /// </summary>
             public Image FillImage
             {
                 get => _fillImage;
@@ -114,12 +114,12 @@ namespace ExPresSXR.UI
                 }
             }
 
-            /// <summary>
-            /// The image used to visualize the start cap of the timer.
-            /// </summary>
             [SerializeField]
             [Tooltip("The image used to visualize the start cap of the timer.")]
             private Image _startCapImage;
+            /// <summary>
+            /// The image used to visualize the start cap of the timer.
+            /// </summary>
             public Image StartCapImage
             {
                 get => _startCapImage;
@@ -131,12 +131,12 @@ namespace ExPresSXR.UI
                 }
             }
 
-            /// <summary>
-            /// The image used to visualize the end cap of the timer.
-            /// </summary>
             [SerializeField]
             [Tooltip("The image used to visualize the end cap of the timer.")]
             private Image _endCapImage;
+            /// <summary>
+            /// The image used to visualize the end cap of the timer.
+            /// </summary>
             public Image EndCapImage
             {
                 get => _endCapImage;
@@ -148,12 +148,12 @@ namespace ExPresSXR.UI
                 }
             }
 
-            /// <summary>
-            /// If the caps will be hidden when the timer is not running and the fill amount is 0.
-            /// </summary>
             [SerializeField]
             [Tooltip("If the caps will be hidden when the timer is not running and the fill amount is 0.")]
             private bool _hideCapsIfNotRunning = true;
+            /// <summary>
+            /// If the caps will be hidden when the timer is not running and the fill amount is 0.
+            /// </summary>
             public bool HideCapsIfNotRunning
             {
                 get => _hideCapsIfNotRunning;
@@ -257,8 +257,10 @@ namespace ExPresSXR.UI
         /// </summary>
         public enum FillDirection
         {
-            Up, /// <summary>Progress is shown as counting up.</summary>
-            Down /// <summary>Progress is shown as counting down.</summary>
+            /// <summary>Progress is shown as counting up.</summary>
+            Up,
+            /// <summary>Progress is shown as counting down.</summary>
+            Down
         }
 
         /// <summary>
@@ -266,9 +268,12 @@ namespace ExPresSXR.UI
         /// </summary>
         public enum ProgressType
         {
-            TickTime, /// <summary>Progress will be visualized in discrete time-based steps.</summary>
-            TickNum, /// <summary>Progress will be visualized in discrete value-based steps.</summary>
-            Smooth /// <summary>Progress will be visualized smoothly.</summary>
+            /// <summary>Progress will be visualized in discrete time-based steps.</summary>
+            TickTime,
+            /// <summary>Progress will be visualized in discrete value-based steps.</summary>
+            TickNum,
+            /// <summary>Progress will be visualized smoothly.</summary>
+            Smooth
         }
     }
 }

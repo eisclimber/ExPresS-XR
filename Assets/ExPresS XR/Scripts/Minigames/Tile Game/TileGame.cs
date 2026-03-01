@@ -29,12 +29,12 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("If the game should start automatically.")]
         private bool _autoStart;
 
-        /// <summary>
-        /// Size of the board.
-        /// </summary>
         [SerializeField]
         [Tooltip("Size of the board.")]
         private Vector2Int _boardSize = new(DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT);
+        /// <summary>
+        /// Size of the board.
+        /// </summary>
         public Vector2Int BoardSize
         {
             get => _boardSize;
@@ -45,24 +45,24 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
-        /// <summary>
-        /// Parent transform for creating new board sockets in.
-        /// </summary>
         [SerializeField]
         [Tooltip("Parent transform for creating new board sockets in.")]
         private Transform _boardSocketsParent;
+        /// <summary>
+        /// Parent transform for creating new board sockets in.
+        /// </summary>
         public Transform BoardSocketsParent
         {
             get => _boardSocketsParent;
             set => _boardSocketsParent = value;
         }
 
-        /// <summary>
-        /// Sockets for spawning new tiles after submitting one.
-        /// </summary>
         [SerializeField]
         [Tooltip("Sockets for spawning new tiles after submitting one.")]
         private TileRespawnSocket[] _tileRespawnSockets;
+        /// <summary>
+        /// Sockets for spawning new tiles after submitting one.
+        /// </summary>
         public TileRespawnSocket[] TileRespawnSockets
         {
             get => _tileRespawnSockets;
@@ -81,13 +81,13 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Areas available in the game.")]
         private AreaDescription[] _areas;
 
-        /// <summary>
-        /// Total score of the current game.
-        /// </summary>
         [SerializeField]
         [Tooltip("Total score of the current game.")]
         [ReadonlyInInspector]
         private int _totalScore;
+        /// <summary>
+        /// Total score of the current game.
+        /// </summary>
         public int TotalScore
         {
             get => _totalScore;
@@ -98,13 +98,13 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
-        /// <summary>
-        /// Number of placed tiles in the current game.
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of placed tiles in the current game.")]
         [ReadonlyInInspector]
         private int _placedTiles;
+        /// <summary>
+        /// Number of placed tiles in the current game.
+        /// </summary>
         public int PlacedTiles
         {
             get => _placedTiles;

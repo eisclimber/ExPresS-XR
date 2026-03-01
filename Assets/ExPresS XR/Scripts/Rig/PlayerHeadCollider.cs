@@ -23,27 +23,37 @@ namespace ExPresSXR.Rig
         [Tooltip("If true the players camera will be pushed back.")]
         public bool CollisionPushbackEnabled;
 
-        /// <summary>
-        /// If true the players cameras corner will be faded.
-        /// </summary>
         [Tooltip("If true the players cameras corner will be faded.")]
         [SerializeField]
         private bool _showCollisionVignetteEffect;
+        /// <summary>
+        /// If true the players cameras corner will be faded.
+        /// </summary>
         public bool ShowCollisionVignetteEffect
         {
             get => _showCollisionVignetteEffect;
             set => _showCollisionVignetteEffect = value;
         }
 
-        public ScreenCollisionIndicator screenCollisionIndicator;
+        [SerializeField]
+        [Tooltip("Screen collision indicator used to indicate collisions.")]
+        private ScreenCollisionIndicator _screenCollisionIndicator;
+        /// <summary>
+        /// Screen collision indicator used to indicate collisions.
+        /// </summary>
+        public ScreenCollisionIndicator ScreenCollisionIndicator
+        {
+            get => _screenCollisionIndicator;
+            set => _screenCollisionIndicator = value;
+        }
 
+        [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
+        [SerializeField]
+        private Transform _pushbackAnchor;
         /// <summary>
         /// The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height.
         /// Usually should be set to the ExPresSXRRig or XROrigin.
         /// </summary>
-        [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
-        [SerializeField]
-        private Transform _pushbackAnchor;
         public Transform PushbackAnchor {
             get => _pushbackAnchor; 
             set => _pushbackAnchor = value;
@@ -56,12 +66,12 @@ namespace ExPresSXR.Rig
         [SerializeField]
         private float _colliderSize = 0.25f;
 
-        /// <summary>
-        /// The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s
-        /// </summary>
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
         private float _maxFadeDuration = 0.5f;
+        /// <summary>
+        /// The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s
+        /// </summary>
         public float MaxFadeDuration { 
             get => _maxFadeDuration; 
             set => _maxFadeDuration = value;
@@ -74,11 +84,11 @@ namespace ExPresSXR.Rig
         [SerializeField]
         private LayerMask _layerMask = 1; // Layer: Default
 
-        [Space]
 
         /// <summary>
         /// Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.
         /// </summary>
+        [Space]
         [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
         public UnityEvent OnCollisionStarted;
 
@@ -143,13 +153,13 @@ namespace ExPresSXR.Rig
 
         private void ConnectScreenCollisionIndicator()
         {
-            if (screenCollisionIndicator != null)
+            if (_screenCollisionIndicator != null)
             {
                 OnCollisionStarted.AddListener(() =>
                 {
                     if (ShowCollisionVignetteEffect)
                     {
-                        screenCollisionIndicator.FadeIn(_maxFadeDuration);
+                        _screenCollisionIndicator.FadeIn(_maxFadeDuration);
                     }
                 });
 
@@ -157,7 +167,7 @@ namespace ExPresSXR.Rig
                 {
                     if (ShowCollisionVignetteEffect)
                     {
-                        screenCollisionIndicator.FadeOut(_maxFadeDuration);
+                        _screenCollisionIndicator.FadeOut(_maxFadeDuration);
                     }
                 });
             }

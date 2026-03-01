@@ -52,7 +52,6 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <param name="values">Values to be converted to a CSV line.</param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <param name="safe">If true escapes all values using the DEFAULT_ESCAPE_CHARACTER (and replace it in the string).</param>
-        /// <typeparam name="T">Type of values to be converted.</typeparam>
         /// <returns>A (csv)-string representation of the values-array.</returns>
         public static string JoinAsCsv<T>(IEnumerable<T> values, char sep = DEFAULT_COLUMN_SEPARATOR, bool safe = true)
         {
@@ -68,7 +67,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// If the lists do not match in lengths, iteration will stop at the shorter one.
         /// </summary>
         /// <param name="values">Values to be converted to a CSV line.</param>
-        /// <param name="safeIndividual">A list of denoting if the column should be escaped./param>
+        /// <param name="safeIndividual">A list of denoting if the column should be escaped.</param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <typeparam name="T">Type of values to be converted.</typeparam>
         /// <returns>A (csv)-string representation of the values-array.</returns>

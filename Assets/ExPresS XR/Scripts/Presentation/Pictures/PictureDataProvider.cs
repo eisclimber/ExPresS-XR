@@ -14,12 +14,12 @@ namespace ExPresSXR.Presentation.Pictures
         const string DESCRIPTION_SEPARATOR = "----";
 
 
-        /// <summary>
-        /// Picture data to be provided.
-        /// </summary>
         [Tooltip("Picture data to be provided.")]
         [SerializeField]
         private PictureData _data;
+        /// <summary>
+        /// Picture data to be provided.
+        /// </summary>
         public PictureData Data
         {
             get => _data;

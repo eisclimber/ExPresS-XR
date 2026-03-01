@@ -12,24 +12,24 @@ namespace ExPresSXR.Rig
     /// </summary>
     public partial class ScalingRayInteractor : XRRayInteractor
     {
-        /// <summary>
-        /// Determines how the anchorControl/scaling InputActions (Joystick up/down) are handled.
-        /// </summary>
         [SerializeField]
         [Tooltip("Determines how the anchorControl/scaling InputActions (Joystick up/down) are handled.")]
         private AnchorControlMode _anchorControlMode = AnchorControlMode.ScaleWithTranslateFallback;
+        /// <summary>
+        /// Determines how the anchorControl/scaling InputActions (Joystick up/down) are handled.
+        /// </summary>
         public AnchorControlMode AnchorControlMode
         {
             get => _anchorControlMode;
             set => _anchorControlMode = value;
         }
 
-        /// <summary>
-        /// How fast the scale is in-/decreased. Will be synchronized with deltaTime.
-        /// </summary>
         [SerializeField]
         [Tooltip("How fast the scale is in-/decreased. Will be synchronized with deltaTime.")]
         private float _scaleSpeed = 1.0f;
+        /// <summary>
+        /// How fast the scale is in-/decreased. Will be synchronized with deltaTime.
+        /// </summary>
         public float ScaleSpeed
         {
             get => _scaleSpeed;
@@ -37,9 +37,7 @@ namespace ExPresSXR.Rig
         }
 
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void TranslateAttachTransform(Transform rayOrigin, Transform anchor, float directionAmount)
         {
             bool canScale = TryGetSelectedScaleInteractableWrapper(out ExPresSXRGrabInteractable scaleInteractable);
@@ -68,8 +66,11 @@ namespace ExPresSXR.Rig
     /// </summary>
     public enum AnchorControlMode
     {
-        Translate, /// <summary> Translate (move) the interactable. </summary>
-        Scale, /// <summary> Scale the interactable. </summary>
-        ScaleWithTranslateFallback /// <summary> Scale the interactable, falling back to translation not supported. </summary>
+        /// <summary> Translate (move) the interactable. </summary>
+        Translate,
+        /// <summary> Scale the interactable. </summary>
+        Scale,
+        /// <summary> Scale the interactable, falling back to translation not supported. </summary>
+        ScaleWithTranslateFallback
     }
 }

@@ -23,7 +23,13 @@ namespace ExPresSXR.UI
         [SerializeField]
         [Tooltip("Length of the show-animation clip. Used to calculate the right speed for the animation.")]
         private float _showHintAnimationDuration = 1.0f;
+
+        [SerializeField]
+        [Tooltip("Duration of the interaction hint, will be normalized using `_showHintAnimationDuration` to ensure the correct duration.")]
         private float _hintDuration = 0.5f;
+        /// <summary>
+        /// Duration of the interaction hint, will be normalized using `_showHintAnimationDuration` to ensure the correct duration.
+        /// </summary>
         public float HintDuration
         {
             get => _hintDuration;

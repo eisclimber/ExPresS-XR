@@ -8,11 +8,12 @@ namespace ExPresSXR.Interaction.ButtonQuiz
     // ExPresSXR.Interaction.ButtonQuiz.McConfirmButton, Assembly-CSharp
     public class McConfirmButton : QuizButton
     {
+        [SerializeField]
+        [Tooltip("An arrays of references to `QuizButtons` that are used to determine if a multiple choice answer was given correctly.")]
+        private QuizButton[] _answerButtons;
         /// <summary>
         /// An arrays of references to `QuizButtons` that are used to determine if a multiple choice answer was given correctly.
         /// </summary>
-        [SerializeField]
-        private QuizButton[] _answerButtons;
         public QuizButton[] AnswerButtons
         {
             get => _answerButtons;

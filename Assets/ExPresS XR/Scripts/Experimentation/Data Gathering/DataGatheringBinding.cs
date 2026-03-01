@@ -14,24 +14,24 @@ namespace ExPresSXR.Experimentation.DataGathering
     [Serializable]
     public class DataGatheringBinding
     {
-        /// <summary>
-        /// The header value for the column storing values of this binding.
-        /// </summary>
         [SerializeField]
         [Tooltip("The header value for the column storing values of this binding.")]
         private string _exportColumnName = "";
+        /// <summary>
+        /// The header value for the column storing values of this binding.
+        /// </summary>
         public string ExportColumnName
         {
             get => _exportColumnName;
             set => _exportColumnName = value;
         }
 
-        /// <summary>
-        /// Separator used for the header, will be controlled by the DataGatherer controlling this binding.
-        /// </summary>
         [SerializeField]
         [Tooltip("Separator used for the header, will be controlled by the DataGatherer controlling this binding.")]
         private char _headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
+        /// <summary>
+        /// Separator used for the header, will be controlled by the DataGatherer controlling this binding.
+        /// </summary>
         public char HeaderSeparator
         {
             get => _headerSeparator;
@@ -100,7 +100,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// The later must be a pretty name (i.e. as displayed in the menu, including the annotation for methods).
         /// If the name is invalid, it will be bound only to the GameObject but no value will be selected.
         /// </summary>
-        /// <param name="targetComponent">Component(&Object) to be bound.</param>
+        /// <param name="targetComponent">Component(and Object) to be bound.</param>
         /// <param name="valueName">Name of the member to bind to.</param>
         /// <param name="exportColumnName">Name of the export column.</param>
         public DataGatheringBinding(Component targetComponent, string valueName, string exportColumnName = "")

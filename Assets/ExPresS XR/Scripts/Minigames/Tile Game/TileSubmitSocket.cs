@@ -21,12 +21,12 @@ namespace ExPresSXR.Minigames.TileGame
 
         [Space]
 
-        /// <summary>
-        /// Position of this socket on the board.
-        /// </summary>
         [SerializeField]
         [Tooltip("Position of this socket on the board.")]
         private Vector2Int _boardPos;
+        /// <summary>
+        /// Position of this socket on the board.
+        /// </summary>
         public Vector2Int BoardPos
         {
             get => _boardPos;
@@ -92,9 +92,7 @@ namespace ExPresSXR.Minigames.TileGame
         public UnityEvent<BoardSubmitContext> OnTileSubmitted;
 
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -118,9 +116,7 @@ namespace ExPresSXR.Minigames.TileGame
         }
 
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -133,9 +129,7 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnSelectEntering(SelectEnterEventArgs args)
         {
             base.OnSelectEntering(args);

@@ -9,12 +9,12 @@ namespace ExPresSXR.Misc.ColorSwitching
     /// </summary>
     public class ConditionalColorSwitcher : ColorSwitcher
     {
-        /// <summary>
-        /// Setting this bool controls if 'SwitchMaterialWithBool()' switches to the original or alternative material.
-        /// </summary>
         [SerializeField]
         [Tooltip("Setting this bool controls if 'SwitchMaterialWithBool()' switches to the original or alternative material.")]
         private bool _switchToOriginal;
+        /// <summary>
+        /// Setting this bool controls if 'SwitchMaterialWithBool()' switches to the original or alternative material.
+        /// </summary>
         public bool SwitchToOriginal
         {
             get => _switchToOriginal;

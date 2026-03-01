@@ -27,25 +27,25 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public const float DEFAULT_WAIT_TIME = 1.0f;
 
-        /// <summary>
-        /// How long the timer takes to timeout. Must be greater than 0.0f.
-        /// </summary>
         [Tooltip("How long the timer takes to timeout. Must be greater than 0.0f.")]
         [SerializeField]
         private float _waitTime = DEFAULT_WAIT_TIME;
+        /// <summary>
+        /// How long the timer takes to timeout. Must be greater than 0.0f.
+        /// </summary>
         public float WaitTime
         {
             get => _waitTime;
             set => _waitTime = value;
         }
 
+        [SerializeField]
+        [ReadonlyInInspector]
+        private float _remainingTime;
         /// <summary>
         /// Returns the remaining time of the timer.
         /// If the timer is was not started or timed out, the value will be the value of TIMER_INACTIVE_WAIT_TIME.
         /// </summary>
-        [SerializeField]
-        [ReadonlyInInspector]
-        private float _remainingTime;
         public float RemainingTime
         {
             get => _remainingTime;
@@ -96,7 +96,7 @@ namespace ExPresSXR.Misc.Timing
 
         /// <summary>
         /// (Re-)starts the timer with duration, setting waitTime in the process.
-        /// If duration is <= 0.0f the value of waitTime is used.
+        /// If duration is less or equal to 0.0f the value of waitTime is used.
         /// </summary>
         /// <param name="duration">The duration the timer will run. 
         ///     If the value is zero or negative the <see cref="waitTime"/> will be used. Default: -1.0f

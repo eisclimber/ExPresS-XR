@@ -17,12 +17,12 @@ namespace ExPresSXR.Minigames.TileGame
         /// </summary>
         private const float GIZMO_LABEL_OFFSET = 0.075f;
 
-        /// <summary>
-        /// Tile data to be displayed.
-        /// </summary>
         [SerializeField]
         [Tooltip("Tile data to be displayed.")]
         private Tile _displayedTile = null;
+        /// <summary>
+        /// Tile data to be displayed.
+        /// </summary>
         public Tile DisplayedTile
         {
             get => _displayedTile;
@@ -40,13 +40,13 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Renderer to set the area materials in.")]
         private Renderer _renderer;
 
-        /// <summary>
-        /// Areas to be displayed. Should be managed and set by the TileGame.
-        /// </summary>
         [SerializeField]
         [Tooltip("Areas to be displayed. Should be managed and set by the TileGame.")]
         [ReadonlyInInspector]
         private AreaDescription[] _areas;
+        /// <summary>
+        /// Areas to be displayed. Should be managed and set by the TileGame.
+        /// </summary>
         public AreaDescription[] Areas
         {
             get => _areas;

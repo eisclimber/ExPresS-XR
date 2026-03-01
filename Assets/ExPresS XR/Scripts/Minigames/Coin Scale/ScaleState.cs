@@ -6,16 +6,6 @@ namespace ExPresSXR.Minigames.CoinScale
     public class ScaleState
     {
         /// <summary>
-        /// The position of the bowl during weighing.
-        /// </summary>
-        public enum BowlPosition
-        {
-            Down, /// <summary>Down position when weighing.</summary>
-            Center, /// <summary>Center position when weighing.</summary>
-            Up /// <summary>Up position when weighing.</summary>
-        }
-
-        /// <summary>
         /// The elevation state of the left bowl.
         /// </summary>
         public BowlPosition LeftBowlPosition { get; }
@@ -48,6 +38,19 @@ namespace ExPresSXR.Minigames.CoinScale
         {
             LeftBowlPosition = left;
             RightBowlPosition = right;
+        }
+
+        /// <summary>
+        /// The position of the bowl during weighing.
+        /// </summary>
+        public enum BowlPosition
+        {
+            /// <summary> Down position when weighing. </summary>
+            Down,
+            /// <summary> Center position when weighing. </summary>
+            Center,
+            /// <summary> Up position when weighing. </summary>
+            Up
         }
     }
 }

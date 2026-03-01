@@ -107,7 +107,7 @@ namespace ExPresSXR.Interaction.Feedback
         /// <summary>
         /// Creates a new RumbleDescription
         /// </summary>
-        /// <param name="strength">Strength between 0.0f and 1.0f./param>
+        /// <param name="strength">Strength between 0.0f and 1.0f.</param>
         /// <param name="duration">Rumble duration (in s).</param>
         public RumbleDescription(float strength, float duration)
         {

@@ -10,12 +10,12 @@ namespace ExPresSXR.Tutorial
     /// </summary>
     public class TutorialManager : MonoBehaviour
     {
-        /// <summary>
-        /// Number of steps in the tutorial.
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of steps in the tutorial.")]
         private int _numSteps = 1;
+        /// <summary>
+        /// Number of steps in the tutorial.
+        /// </summary>
         public int NumSteps
         {
             get => _numSteps;
@@ -27,13 +27,13 @@ namespace ExPresSXR.Tutorial
             }
         }
 
-        /// <summary>
-        /// Readonly field of the current step in the tutorial.
-        /// </summary>
         [SerializeField]
         [ReadonlyInInspector]
         [Tooltip("Readonly field of the current step in the tutorial.")]
         private int _currentStep;
+        /// <summary>
+        /// Readonly field of the current step in the tutorial.
+        /// </summary>
         public int CurrentStep
         {
             get => _currentStep;
@@ -86,11 +86,11 @@ namespace ExPresSXR.Tutorial
         [Tooltip("List of TutorialStepHandlers that implement extra behaviors per tutorial steps.")]
         private TutorialStepHandler[] _tutorialComponents;
 
-        [Space]
 
         /// <summary>
         /// Emitted when the tutorial is started.
         /// </summary>
+        [Space]
         public UnityEvent OnTutorialStarted;
 
         /// <summary>

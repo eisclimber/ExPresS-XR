@@ -8,12 +8,12 @@ namespace ExPresSXR.Minigames.Puzzle
     /// </summary>
     public class PuzzlePiece : MonoBehaviour
     {
-        /// <summary>
-        /// Board position of the piece.
-        /// </summary>
         [SerializeField]
         [Tooltip("Board position of the piece.")]
         private Vector2Int _puzzlePosition;
+        /// <summary>
+        /// Board position of the piece.
+        /// </summary>
         public Vector2Int PuzzlePosition
         {
             get => _puzzlePosition;

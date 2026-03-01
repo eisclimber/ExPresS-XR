@@ -24,17 +24,13 @@ namespace ExPresSXR.Misc.ColorSwitching
         [Tooltip("The (legacy) BaseButton to which this ColorAnimatorSwitcher is linked.")]
         private BaseButton _legacyButton;
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected virtual void OnEnable()
         {
             RegisterButtonEvents();
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
+        /// <inheritdoc />
         protected virtual void OnDisable()
         {
             UnregisterButtonEvents();

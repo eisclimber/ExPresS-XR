@@ -608,7 +608,9 @@ namespace ExPresSXR.Rig
             m_AnchorChild.localRotation *= localRotation;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Resets the offset.
+        /// </summary>
         public void ResetOffset()
         {
             m_FirstMovementFrame = true;

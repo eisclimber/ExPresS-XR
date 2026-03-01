@@ -13,12 +13,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     /// </summary>
     public class Button : ValueRangeInteractable<ButtonDescriptor, ButtonVisualizer, float>
     {
-        /// <summary>
-        /// If the button press is pressed normally or should toggle.
-        /// </summary>
         [SerializeField]
         [Tooltip("If the button press is pressed normally or should toggle.")]
         private bool _toggleMode = false;
+        /// <summary>
+        /// If the button press is pressed normally or should toggle.
+        /// </summary>
         public bool ToggleMode
         {
             get => _toggleMode;
@@ -29,11 +29,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
+        [SerializeField]
+        private bool _pressed;
         /// <summary>
         /// Current pressed state.
         /// </summary>
-        [SerializeField]
-        private bool _pressed;
         public bool Pressed
         {
             get => _pressed;
@@ -62,13 +62,13 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
         }
 
+        [SerializeField]
+        [Tooltip("Max distance to to an interactor to be able to interact with the button. This is a hack for being able to determine if the button is hovered near or far.")]
+        private float _maxInteractionDistance = 0.1f;
         /// <summary>
         /// Max distance to to an interactor to be able to interact with the button.
         /// This is a hack for being able to determine if the button is hovered near or far.
         /// </summary>
-        [SerializeField]
-        [Tooltip("Max distance to to an interactor to be able to interact with the button. This is a hack for being able to determine if the button is hovered near or far.")]
-        private float _maxInteractionDistance = 0.1f;
         public float MaxInteractionDistance
         {
             get => _maxInteractionDistance;
@@ -334,11 +334,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             return Mathf.Clamp01((localPosition.y - _upPosition) / (_downPosition - _upPosition));
         }
 
-        /// <summary>
         /// <inheritdoc />
-        /// </summary>
         /// <param name="value">Value to be displayed.</param>
-        /// <param name="interactable">Interactable to be manipulated.</param>
+        /// <param name="_">Interactable to be manipulated.</param>
         public override void UpdateVisualization(float value, IXRInteractable _)
         {
             if (_buttonCap == null)

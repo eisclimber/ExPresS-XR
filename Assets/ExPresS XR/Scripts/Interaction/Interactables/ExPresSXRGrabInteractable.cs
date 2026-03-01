@@ -13,24 +13,24 @@ namespace ExPresSXR.Interaction
     [AddComponentMenu("ExPresS XR/ExPresS XR Grab Interactable")]
     public class ExPresSXRGrabInteractable : UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable
     {
-        /// <summary>
-        /// Minimal scale possible, negative values are considered unbound.
-        /// </summary>
         [SerializeField]
         [Tooltip("Minimal scale possible, negative values are considered unbound.")]
         private float _minScaleFactor = 1.0f;
+        /// <summary>
+        /// Minimal scale possible, negative values are considered unbound.
+        /// </summary>
         public float MinScaleFactor
         {
             get => _minScaleFactor;
             set => _minScaleFactor = value;
         }
 
-        /// <summary>
-        /// Maximal scale possible, negative values are considered unbound.
-        /// </summary>
         [SerializeField]
         [Tooltip("Maximal scale possible, negative values are considered unbound.")]
         private float _maxScaleFactor = 1.0f;
+        /// <summary>
+        /// Maximal scale possible, negative values are considered unbound.
+        /// </summary>
         public float MaxScaleFactor
         {
             get => _maxScaleFactor;
@@ -46,14 +46,14 @@ namespace ExPresSXR.Interaction
         }
 
 
-        /// <summary>
-        /// Override to the scale speed of the `ScalingRayInteractor` or `ScalingDirectInteractor`. 
-        /// It is recommended to change the scale speed in the interactors themselves and use this override sparingly!
-        /// </summary>
         [SerializeField]
         [Tooltip("Override to the scale speed of the `ScalingRayInteractor` or `ScalingDirectInteractor`. \n"
                 + "It is recommended to change the scale speed in the interactors themselves and use this override sparingly!")]
         private float _scaleSpeedOverride = -1.0f;
+        /// <summary>
+        /// Override to the scale speed of the `ScalingRayInteractor` or `ScalingDirectInteractor`. 
+        /// It is recommended to change the scale speed in the interactors themselves and use this override sparingly!
+        /// </summary>
         public float ScaleSpeedOverride
         {
             get => _scaleSpeedOverride;
@@ -68,24 +68,24 @@ namespace ExPresSXR.Interaction
         private bool _resetScaleInSockets = true;
 
 
-        /// <summary>
-        /// If all children should be scaled or only those set as `scaledChildren` via the editor.
-        /// </summary>
         [SerializeField]
         [Tooltip("If all children should be scaled or only those set as `scaledChildren` via the editor.")]
         private bool _scaleAllChildren = true;
+        /// <summary>
+        /// If all children should be scaled or only those set as `scaledChildren` via the editor.
+        /// </summary>
         public bool ScaleAllChildren
         {
             get => _scaleAllChildren;
         }
 
 
-        /// <summary>
-        /// Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.
-        /// </summary>
         [Tooltip("Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.")]
         [SerializeField]
         private Transform[] _scaledChildren;
+        /// <summary>
+        /// Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.
+        /// </summary>
         public Transform[] ScaledChildren
         {
             get => _scaledChildren;
@@ -104,12 +104,12 @@ namespace ExPresSXR.Interaction
         }
 
 
-        /// <summary>
-        /// If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.
-        /// </summary>
         [SerializeField]
         [Tooltip("If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.")]
         private bool _allowGrab = true;
+        /// <summary>
+        /// If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.
+        /// </summary>
         public bool AllowGrab
         {
             get => _allowGrab;
@@ -125,10 +125,10 @@ namespace ExPresSXR.Interaction
         }
 
 
+        private float _scaleFactor = 1.0f;
         /// <summary>
         /// The current scale to the children, relative to their initial scale.
         /// </summary>
-        private float _scaleFactor = 1.0f;
         public float ScaleFactor
         {
             get => _scaleFactor;
@@ -141,10 +141,10 @@ namespace ExPresSXR.Interaction
         }
 
 
+        private Vector3[] _initialScales;
         /// <summary>
         /// The initial scales of the object in `_scaledChildren`. Only available at runtime.
         /// </summary>
-        private Vector3[] _initialScales;
         public Vector3[] InitialScales
         {
             get => _initialScales;

@@ -9,12 +9,12 @@ namespace ExPresSXR.Interaction.Feedback
     /// </summary>
     public class HapticImpulsePlayerProxy : MonoBehaviour
     {
-        /// <summary>
-        /// HapticsImpulsePlayer reference provided by this component.
-        /// </summary>
         [SerializeField]
         [Tooltip("HapticsImpulsePlayer references provided by this component.")]
         private HapticImpulsePlayer _player;
+        /// <summary>
+        /// HapticsImpulsePlayer reference provided by this component.
+        /// </summary>
         public HapticImpulsePlayer Player
         {
             get => _player;

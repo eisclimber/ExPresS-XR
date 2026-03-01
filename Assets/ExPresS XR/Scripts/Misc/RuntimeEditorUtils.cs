@@ -72,12 +72,19 @@ namespace ExPresSXR.Misc
     /// </summary>
     public enum GameTabDisplayMode
     {
-        Default = 0, /// <summary> Default view. </summary>
-        LeftEye = -1, /// <summary> Left eye perspective. </summary>
-        RightEye = -2, /// <summary> Right eye perspective. </summary>
-        SideBySide = -3, /// <summary> Side-by-side. </summary>
-        SideBySideOcclusionMesh = -4, /// <summary> Side-by-side with occlusion mesh. </summary>
-        Distort = -5, /// <summary> Displays the distorted screen. </summary>
-        None = -6 /// <summary> Displays nothing. </summary>
+        /// <summary> The default view. </summary>
+        Default = 0,
+        /// <summary> Left eye perspective. </summary>
+        LeftEye = -1,
+        /// <summary> Right eye perspective. </summary>
+        RightEye = -2,
+        /// <summary> Side-by-side. </summary>
+        SideBySide = -3,
+        /// <summary> Side-by-side with occlusion mesh. </summary>
+        SideBySideOcclusionMesh = -4,
+        /// <summary> Displays the distorted screen. </summary>
+        Distort = -5,
+        /// <summary> Displays nothing. </summary>
+        None = -6
     }
 }

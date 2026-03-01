@@ -7,12 +7,12 @@ namespace ExPresSXR.Misc.ColorSwitching
     /// </summary>
     public class MaterialSwitchingStateBehaviour : StateMachineBehaviour
     {
-        /// <summary>
-        /// Material to switch to.
-        /// </summary>
         [SerializeField]
         [Tooltip("Material to switch to.")]
         private Material _switchMaterial;
+        /// <summary>
+        /// Material to switch to.
+        /// </summary>
         public Material SwitchMaterial
         {
             get => _switchMaterial;
@@ -25,6 +25,9 @@ namespace ExPresSXR.Misc.ColorSwitching
         /// Called when the state is entered.
         /// Tries to retrieve the `ColorAnimationSwitcher`-Component from the Animators GameObject and use it to change the material.
         /// </summary>
+        /// <param name="animator">Animator associated with this state machine.</param>
+        /// <param name="stateInfo">Runtime information on the state of the animator.</param>
+        /// <param name="layerIndex">LayerIndex of the state.</param>
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (_colorSwitcher == null && !animator.TryGetComponent(out _colorSwitcher))
