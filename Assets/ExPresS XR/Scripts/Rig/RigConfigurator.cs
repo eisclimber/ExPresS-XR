@@ -98,6 +98,11 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// Applies the movement preset on the hand controllers.
+        /// </summary>
+        /// <param name="movementPreset">MovementPreset to apply.</param>
+        /// <param name="handController">HandControllerManager to apply the preset on.</param>
         public static void ApplyPresetHands(MovementPreset movementPreset, HandControllerManager handController)
         {
             if (handController == null)
@@ -134,6 +139,12 @@ namespace ExPresSXR.Rig
             SetChildComponentEnabled<TeleportationProvider>(mediator, movementPreset == MovementPreset.Teleport);
         }
 
+        /// <summary>
+        /// Checks if the movement preset should be applied, based on the input method and the movement preset itself.
+        /// </summary>
+        /// <param name="movementPreset">MovementPreset to check.</param>
+        /// <param name="inputMethod">InputMethod to check against.</param>
+        /// <returns>True if the movement preset should be applied, false otherwise.</returns>
         public static bool ShouldApplyMovementPreset(MovementPreset movementPreset, InputMethod inputMethod)
         {
             if (inputMethod != InputMethod.Controller
@@ -152,7 +163,12 @@ namespace ExPresSXR.Rig
             return true;
         }
         #endregion
+
         #region Movement Options
+        /// <summary>
+        /// Applies only the movement options to the rig.
+        /// </summary>
+        /// <param name="configData">ConfigData to apply the movement options from.</param>
         public static void ApplyMovementOptions(ConfigData configData)
         {
             if (configData == null || !configData.IsValid())
@@ -168,6 +184,11 @@ namespace ExPresSXR.Rig
             ApplyMovementOptionsLocomotionMediator(movementOptions, configData.LocomotionMediator);
         }
 
+        /// <summary>
+        /// Applies the movement options on hand controllers.
+        /// </summary>
+        /// <param name="movementOptions">MovementOptions to apply.</param>
+        /// <param name="handController">HandControllerManager to apply the movement options on.</param>
         public static void ApplyMovementOptionsHands(MovementOptions movementOptions, HandControllerManager handController)
         {
             if (handController == null)
@@ -180,6 +201,11 @@ namespace ExPresSXR.Rig
             handController.NearFarEnableTeleportDuringNearInteraction = movementOptions.HasFlag(MovementOptions.TeleportDuringNearInteraction);
         }
 
+        /// <summary>
+        /// Applies the movement options on the LocomotionMediator.
+        /// </summary>
+        /// <param name="movementOptions">MovementOptions to apply.</param>
+        /// <param name="mediator">LocomotionMediator to apply the movement options on.</param>
         public static void ApplyMovementOptionsLocomotionMediator(MovementOptions movementOptions, LocomotionMediator mediator)
         {
             if (mediator == null)
@@ -253,51 +279,63 @@ namespace ExPresSXR.Rig
     }
 
     #region Enums & Structs
+
+    /// <summary>
+    /// How the player provides input to the rig.
+    /// </summary>
     public enum InputMethod
     {
-        None,
-        Controller,
-        HeadGaze
+        None, /// <summary> Player input is disabled. </summary>
+        Controller, /// <summary> Player input is provided via hand controllers. </summary>
+        HeadGaze /// <summary> Input is provided via head gaze. </summary>
     }
 
+    /// <summary>
+    /// Preset for common movement types of the rig.
+    /// </summary>
     public enum MovementPreset
     {
-        None,
-        Teleport,
-        Joystick,
-        JoystickNoTurn,
-        GrabWorldMotion,
-        GrabWorldManipulation,
-        Custom
+        None, /// <summary> Movement is disabled. </summary>
+        Teleport, /// <summary> Teleportation movement. </summary>
+        Joystick, /// <summary> Continuous movement using Joysticks with turning. </summary>
+        JoystickNoTurn, /// <summary> Continuous movement using Joysticks but without turning. </summary>
+        GrabWorldMotion, /// <summary> Grabbing the air and pulling yourself in a direction. </summary>
+        GrabWorldManipulation, /// <summary> Similar to GrabWorldMotion but with scaling when using two hands. </summary>
+        Custom /// <summary> Allows custom movement configuration. No movement will be applied. </summary>
     }
 
-
+    /// <summary>
+    /// Options for configuring available interactions. 
+    /// </summary>
     [Flags]
     public enum InteractionOptions
     {
-        Nothing = 0,
-        Near = 1 << 0,
-        Far = 1 << 1,
-        FarAnchorControl = 1 << 2,
-        FarPullCloser = 1 << 3,
-        FarUi = 1 << 4,
-        Poke = 1 << 5,
-        PokePointOnHover = 1 << 6,
-        PokeUi = 1 << 7,
-        UiScrolling = 1 << 8
+        Nothing = 0, /// <summary> No interaction options are enabled. </summary>
+        Near = 1 << 0, /// <summary> Interact with nearby objects by grabbing them. </summary>
+        Far = 1 << 1, /// <summary> Interact with objects from a far using a ray. </summary>
+        FarAnchorControl = 1 << 2, /// <summary> Allow moving, rotating and scaling held objects via ray. </summary>
+        FarPullCloser = 1 << 3, /// <summary> Held objects via ray can be pulled closer to allow grabbing. </summary>
+        FarUi = 1 << 4, /// <summary> Interact with UI elements from a far using a ray. </summary>
+        Poke = 1 << 5, /// <summary> Interact with object by touching/poking them. </summary>
+        PokePointOnHover = 1 << 6, /// <summary> Alters the pose of the hand to a poke gesture when hovering a valid object. </summary>
+        PokeUi = 1 << 7, /// <summary> Interact with UI elements by poking them. </summary>
+        UiScrolling = 1 << 8 /// <summary> Allow scrolling UI elements, preventing turning and teleport in the meantime. </summary>
     }
 
+    /// <summary>
+    /// Options for configuring optional movement features. 
+    /// </summary>
     [Flags]
     public enum MovementOptions
     {
-        Nothing = 0,
-        TeleportChooseForward = 1 << 0,
-        TeleportCancelPossible = 1 << 1,
-        TeleportDuringNearInteraction = 1 << 2,
-        Gravity = 1 << 3,
-        Jump = 1 << 4,
-        Climb = 1 << 5,
-        ClimbTeleport = 1 << 6
+        Nothing = 0, /// <summary> No additional movement options are enabled. </summary>
+        TeleportChooseForward = 1 << 0, /// <summary> Rotating the joystick in teleport mode allows changing the facing direction. </summary>
+        TeleportCancelPossible = 1 << 1, /// <summary> Grabbing the grip allows cancelling teleportation. </summary>
+        TeleportDuringNearInteraction = 1 << 2, /// <summary> Teleportation is allowed while holding an object in the same hand. </summary>
+        Gravity = 1 << 3, /// <summary> Apply gravity to the player. </summary>
+        Jump = 1 << 4, /// <summary> Players can jump using a controller button. </summary>
+        Climb = 1 << 5, /// <summary> Players can climb using special `ClimbInteractables`. </summary>
+        ClimbTeleport = 1 << 6 /// <summary> Players can skip the last part of a climb using a controller button and special `ClimbInteractables`s. </summary>
     }
 
 
@@ -306,23 +344,58 @@ namespace ExPresSXR.Rig
     /// </summary>
     public class ConfigData
     {
-        // Rig Optional
+        /// <summary>
+        /// Optional reference to the rig to be configured.
+        /// </summary>
         public ExPresSXRRig Rig;
 
-        // Config
+        /// <summary>
+        /// Input method to apply.
+        /// </summary>
         public InputMethod InputMethod;
+        /// <summary>
+        /// Movement preset to apply.
+        /// </summary>
         public MovementPreset MovementPreset;
+        /// <summary>
+        /// Movement options to apply.
+        /// </summary>
         public MovementOptions MovementOptions;
+        /// <summary>
+        /// Interaction options to apply.
+        /// </summary>
         public InteractionOptions InteractionOptions;
 
-        // Controller References
+        /// <summary>
+        /// Reference to the left hand controller.
+        /// </summary>
         public HandControllerManager LeftHandController;
+                /// <summary>
+        /// Reference to the right hand controller.
+        /// </summary>
         public HandControllerManager RightHandController;
+                /// <summary>
+        /// Reference to the head gaze controller.
+        /// </summary>
         public HeadGazeController HeadGazeController;
 
-        // Locomotion
+                /// <summary>
+        /// Reference to the locomotion mediator.
+        /// </summary>
         public LocomotionMediator LocomotionMediator;
 
+        /// <summary>
+        /// Contructor for the ConfigData struct.
+        /// </summary>
+        /// <param name="rig">Rig to be configured.</param>
+        /// <param name="inputMethod">Input method to apply.</param>
+        /// <param name="movementPreset">Movement preset to apply.</param>
+        /// <param name="movementOptions">Movement options to apply.</param>
+        /// <param name="interactionOptions">Interaction options to apply.</param>
+        /// <param name="leftHandController">Left hand controller reference.</param>
+        /// <param name="rightHandController">Right hand controller reference.</param>
+        /// <param name="headGazeController">Head gaze controller reference.</param>
+        /// <param name="locomotionMediator">Locomotion mediator reference.</param>
         public ConfigData(ExPresSXRRig rig,
                             InputMethod inputMethod,
                             MovementPreset movementPreset,
@@ -347,6 +420,13 @@ namespace ExPresSXR.Rig
             LocomotionMediator = locomotionMediator;
         }
 
+        /// <summary>
+        /// Contructor for the ConfigData struct, retrieving references from the rig.
+        /// </summary>
+        /// <param name="rig">Rig to be configured.</param>
+        /// <param name="inputMethod">Input method to apply.</param>
+        /// <param name="movementPreset">Movement preset to apply.</param>
+        /// <param name="movementOptions">Movement options to apply.</param>
         public ConfigData(ExPresSXRRig rig,
                             InputMethod inputMethod,
                             MovementPreset movementPreset,
@@ -367,6 +447,10 @@ namespace ExPresSXR.Rig
             LocomotionMediator = rig.LocomotionMediator;
         }
 
+        /// <summary>
+        /// Checks if the configuration data is valid.
+        /// </summary>
+        /// <returns>True if the configuration data is valid, false otherwise.</returns>
         public bool IsValid() => Rig != null;
     }
     #endregion

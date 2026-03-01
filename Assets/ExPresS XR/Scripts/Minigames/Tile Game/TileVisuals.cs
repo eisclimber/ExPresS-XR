@@ -109,17 +109,20 @@ namespace ExPresSXR.Minigames.TileGame
         private MaterialMapping _materialIdxs;
 
 
+        /// <summary> Utility accessor for the center area id with -1 if the displayed tile is null. </summary>
+        public int CenterAreaId => _displayedTile != null ? _displayedTile.CenterAreaId : -1;
+        /// <summary> Utility accessor for the top area id with -1 if the displayed tile is null. </summary>
+        public int TopAreaId => _displayedTile != null ? _displayedTile.TopAreaId : -1;
+        /// <summary> Utility accessor for the bottom area id with -1 if the displayed tile is null. </summary>
+        public int BottomAreaId => _displayedTile != null ? _displayedTile.BottomAreaId : -1;
+        /// <summary> Utility accessor for the left area id with -1 if the displayed tile is null. </summary>
+        public int LeftAreaId => _displayedTile != null ? _displayedTile.LeftAreaId : -1;
+        /// <summary> Utility accessor for the right area id with -1 if the displayed tile is null. </summary>
+        public int RightAreaId => _displayedTile != null ? _displayedTile.RightAreaId : -1;
+
+
         private Coroutine _displayScoreCoroutine;
 
-
-        /// <summary>
-        /// Utility accessors
-        /// </summary>
-        public int CenterAreaId => _displayedTile != null ? _displayedTile.CenterAreaId : -1;
-        public int TopAreaId => _displayedTile != null ? _displayedTile.TopAreaId : -1;
-        public int BottomAreaId => _displayedTile != null ? _displayedTile.BottomAreaId : -1;
-        public int LeftAreaId => _displayedTile != null ? _displayedTile.LeftAreaId : -1;
-        public int RightAreaId => _displayedTile != null ? _displayedTile.RightAreaId : -1;
 
 
         [ContextMenu("Update Visuals")]
@@ -298,11 +301,26 @@ namespace ExPresSXR.Minigames.TileGame
     [Serializable]
     public class MaterialMapping
     {
+        /// <summary>
+        /// Renderer material index for the center area.
+        /// </summary>
         public int Center = 1;
 
+        /// <summary>
+        /// Renderer material index for the top area.
+        /// </summary>
         public int Top = 4;
+        /// <summary>
+        /// Renderer material index for the bottom area.
+        /// </summary>
         public int Bottom = 2;
+        /// <summary>
+        /// Renderer material index for the left area.
+        /// </summary>
         public int Left = 3;
+        /// <summary>
+        /// Renderer material index for the right area.
+        /// </summary>
         public int Right = 5;
     }
 }

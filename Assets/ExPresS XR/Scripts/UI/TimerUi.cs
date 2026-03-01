@@ -79,19 +79,48 @@ namespace ExPresSXR.UI
             _textSettings.ResetVisualization();
         }
 
+        /// <summary>
+        /// A helper class to hold the settings for the visualization text of a timer.
+        /// </summary>
         [Serializable]
         public class TextSettings
         {
+            /// <summary>
+            /// Default format for displaying the remaining time. Uses `string.Format`. Any occurrence of '{0}' will be replaced with the time.
+            /// </summary>
             public const string DEFAULT_TIME_DISPLAY_FORMAT = "{0}";
+
+            /// <summary>
+            /// If the text should be shown.
+            /// </summary>
             public bool TextEnabled = true;
-            
-            [Tooltip("A format string how the time is displayed. Any occurrence of '{0}' will be replaced with the time.")]
+
+            /// <summary>
+            /// A format string how the time is displayed. Uses `string.Format`. Any occurrence of '{0}' will be replaced with the time.
+            /// </summary>
+            [Tooltip("A format string how the time is displayed. Uses `string.Format`. Any occurrence of '{0}' will be replaced with the time.")]
             public string TimeDisplayFormatter = DEFAULT_TIME_DISPLAY_FORMAT;
+
+            /// <summary>
+            /// If only seconds or also milliseconds should be displayed.
+            /// </summary>
             public bool ShowMilliseconds;
+
+            /// <summary>
+            /// Text displayed when the timer times out or isn't running.
+            /// </summary>
             public string TimeoutText = "0";
+
+            /// <summary>
+            /// How the remaining time is displayed (i.e. count up or down).
+            /// </summary>
             public CountDirection CountType = CountDirection.Down;
 
+            /// <summary>
+            /// Color of the text.
+            /// </summary>
             [SerializeField]
+            [Tooltip("Color of the text.")]
             protected Color _color = Color.white;
             public Color Color
             {
@@ -103,12 +132,19 @@ namespace ExPresSXR.UI
                 }
             }
 
+            /// <summary>
+            /// Format string for displaying time as float or not.
+            /// </summary>
             protected string TimeValueFormatter
             {
                 get => ShowMilliseconds ? "F2" : "F0";
             }
 
+            /// <summary>
+            /// Text to display the time.
+            /// </summary>
             [SerializeField]
+            [Tooltip("Text to display the time.")]
             protected TMP_Text _text;
             public TMP_Text Text
             {
@@ -120,6 +156,9 @@ namespace ExPresSXR.UI
                 }
             }
 
+            /// <summary>
+            /// Updates the text color.
+            /// </summary>
             public void UpdateColors()
             {
                 if (_text != null)
@@ -128,6 +167,11 @@ namespace ExPresSXR.UI
                 }
             }
 
+            /// <summary>
+            /// Updates the visualization of the time.
+            /// </summary>
+            /// <param name="remainingTime">Remaining time of the timer.</param>
+            /// <param name="waitTime">Total wait time of the timer.</param>
             public void UpdateVisualization(float remainingTime, float waitTime)
             {
                 if (Text == null)
@@ -153,17 +197,22 @@ namespace ExPresSXR.UI
                 Text.text = string.Format(TimeDisplayFormatter, timeValue);
             }
 
+            /// <summary>
+            /// Resets the visualization.
+            /// </summary>
             public void ResetVisualization()
             {
                 Text.text = TimeoutText;
             }
         }
 
-        // Enums
+        /// <summary>
+        /// How the text indicates the remaining time. Either counting up or down.
+        /// </summary>
         public enum CountDirection
         {
-            Up,
-            Down
+            Up, /// <summary> Text is counting up from 0. </summary>
+            Down /// <summary> Text is counting down to 0. </summary>
         }
     }
 }

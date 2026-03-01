@@ -141,6 +141,20 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
 
+        /// <summary>
+        /// Creates a new QuizRoundData object for the current quiz round.
+        /// </summary>
+        /// <param name="question">Question object for the round.</param>
+        /// <param name="answerCorrect">If the question was answered correctly this round.</param>
+        /// <param name="answerChosen">Answers (=buttons) chosen this round.</param>
+        /// <param name="firstPressedButtonIdx">Index of the first pressed button this round.</param>
+        /// <param name="answerPermutation">Answer Permutation for this round.</param>
+        /// <param name="askOrderIdx">The index of the current question relative to the question permutation.</param>
+        /// <param name="feedbackText">Feedback text shown this round.</param>
+        /// <param name="feedbackObjects">Feedback text shown this round.</param>
+        /// <param name="feedbackVideo">Feedback video shown this round.</param>
+        /// <param name="feedbackVideoUrl">Feedback video url shown this round.</param>
+        /// <returns>A new QuizRoundData generated from the data.</returns>
         private QuizRoundData(ButtonQuizQuestion question, bool answerCorrect, bool[] answerChosen, int firstPressedButtonIdx,
                                 int[] answerPermutation, int askOrderIdx, float answerPressTime,
                                 string feedbackText, GameObject[] feedbackObjects, VideoClip feedbackVideo, string feedbackVideoUrl)
@@ -200,12 +214,14 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <summary>
         /// Provides a string of empty columns for the quiz data. Used to maintain no mess up the format when exporting but no QuizRoundData was created.  Contains `NUM_CSV_EXPORT_COLUMNS` columns.
         /// </summary>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <returns>Empty of the provided headers.</returns>
         public static string GetEmptyCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.EmptyCSVColumns(NUM_CSV_EXPORT_COLUMNS, sep);
 
         /// <summary>
         /// Provides a string representing the CSV headers for the data provided when exported. Contains `NUM_CSV_EXPORT_COLUMNS` columns.
         /// </summary>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <returns>CSV headers string.</returns>
         public static string GetQuizRoundCsvHeader(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR) => CsvUtility.JoinAsCsv(
             GetQuizRoundCsvHeaderList(),

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery.ObjectPool
 {
+    /// <summary>
+    /// Returns the attached GameObject to the configured (or default) pool.
+    /// </summary>
     public class PoolObjectDestroyTimer : MonoBehaviour
     {
         /// <summary>

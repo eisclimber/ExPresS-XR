@@ -48,7 +48,7 @@ namespace ExPresSXR.Misc.ColorSwitching
                 _quizButton.OnInputEnabled.AddListener(HandleButtonEnabled);
                 _quizButton.OnInputDisabled.AddListener(HandleButtonDisabled);
 
-                _quizButton.OnButtonPressReset.AddListener(HandleButtonPressReset);
+                _quizButton.OnValueReset.AddListener(HandleButtonPressReset);
             }
         }
 
@@ -68,7 +68,7 @@ namespace ExPresSXR.Misc.ColorSwitching
                 _quizButton.OnInputEnabled.RemoveListener(HandleButtonEnabled);
                 _quizButton.OnInputDisabled.RemoveListener(HandleButtonDisabled);
 
-                _quizButton.OnButtonPressReset.RemoveListener(HandleButtonPressReset);
+                _quizButton.OnValueReset.RemoveListener(HandleButtonPressReset);
             }
         }
 

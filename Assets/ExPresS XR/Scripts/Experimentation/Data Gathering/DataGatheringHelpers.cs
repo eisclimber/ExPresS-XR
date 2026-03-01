@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
+    /// <summary>
+    /// Utility functions for data gathering.
+    /// </summary>
     public static class DataGatheringHelpers
     {
         /// <summary>

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
+    /// <summary>
+    /// Helper class for validating the button quiz.
+    /// </summary>
     public class SetupValidator : MonoBehaviour
     {
         /// <summary>

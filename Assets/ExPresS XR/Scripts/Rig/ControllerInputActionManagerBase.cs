@@ -82,7 +82,7 @@ namespace ExPresSXR.Rig
         protected bool _smoothMotionEnabled;
 
         [SerializeField]
-        [Tooltip("If true, continuous turn will be enabled. If false, snap turn will be enabled. Note: If smooth motion is enabled and enable strafe is enabled on the continuous move provider, turn will be overriden in favor of strafe.")]
+        [Tooltip("If true, continuous turn will be enabled. If false, snap turn will be enabled.\nNote: If smooth motion is enabled and enable strafe is enabled on the continuous move provider, turn will be overridden in favor of strafe.")]
         protected bool _smoothTurnEnabled;
 
         [SerializeField]
@@ -99,10 +99,16 @@ namespace ExPresSXR.Rig
         // [Space]
         // [Header("Mediation Events")]
 
+        /// <summary>
+        /// Event fired when the active ray interactor changes between interaction and teleport.
+        /// </summary>
         [SerializeField]
         [Tooltip("Event fired when the active ray interactor changes between interaction and teleport.")]
         public UnityEvent<IXRRayProvider> _rayInteractorChanged;
 
+        /// <summary>
+        /// If true, continuous movement will be enabled. If false, teleport will be enabled.
+        /// </summary>
         public bool SmoothMotionEnabled
         {
             get => _smoothMotionEnabled;
@@ -113,6 +119,10 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// If true, continuous turn will be enabled. If false, snap turn will be enabled.
+        /// Note: If smooth motion is enabled and enable strafe is enabled on the continuous move provider, turn will be overridden in favor of strafe.
+        /// </summary>
         public bool SmoothTurnEnabled
         {
             get => _smoothTurnEnabled;
@@ -123,12 +133,18 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// With the Near-Far Interactor, if true, teleport will be enabled during near interaction. If false, teleport will be disabled during near interaction.
+        /// </summary>
         public bool NearFarEnableTeleportDuringNearInteraction
         {
             get => _nearFarEnableTeleportDuringNearInteraction;
             set => _nearFarEnableTeleportDuringNearInteraction = value;
         }
 
+        /// <summary>
+        /// If true, UI scrolling will be enabled. Locomotion will be disabled when pointing at UI to allow it to be scrolled.
+        /// </summary>
         public bool UiScrollingEnabled
         {
             get => _uiScrollingEnabled;

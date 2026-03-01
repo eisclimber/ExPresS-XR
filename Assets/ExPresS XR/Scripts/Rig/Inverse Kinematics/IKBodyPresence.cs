@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Rig.InverseKinematics
 {
+    /// <summary>
+    /// Uses `IKTransformMappings` to automatically track the targets (head and hands) of an IK setup with a normal HMD.
+    /// </summary>
     public class IKBodyPresence : MonoBehaviour
     {
         /// <summary>

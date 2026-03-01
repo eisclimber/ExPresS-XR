@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 {
+    /// <summary>
+    /// A target that is spawned by a `LineSpawner` allowing easier setup and access to its despawn collider.
+    /// </summary>
     public class LineTarget : Target
     {
         /// <summary>

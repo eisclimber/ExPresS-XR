@@ -4,6 +4,9 @@ using ExPresSXR.Minigames.Archery.ObjectPool;
 
 namespace ExPresSXR.Minigames.Archery.Bow
 {
+    /// <summary>
+    /// Component that creates and shoots a prefab that implements the interfaces IShootable and IPoolObject.
+    /// </summary>
     public class ArrowShotSpawner : MonoBehaviour
     {
         /// <summary>

@@ -29,6 +29,13 @@ namespace ExPresSXR.Minigames.TileGame
         /// </summary>
         public Material Material;
 
+        /// <summary>
+        /// Constructor for creating a new area description.
+        /// </summary>
+        /// <param name="id">Id of the area.</param>
+        /// <param name="name">Display name of the area.</param>
+        /// <param name="color">Color of the area (used for scores).</param>
+        /// <param name="material">Material set to tiles with that area.</param>
         public AreaDescription(int id, string name, Color color, Material material)
         {
             Id = id;

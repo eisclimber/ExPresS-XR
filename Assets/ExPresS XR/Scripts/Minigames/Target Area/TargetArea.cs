@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace ExPresSXR.Minigames.TargetArea
 {
     /// <summary>
-    /// Triggers <seealso cref="TargetArea"> that are set as target and tracks the progress of triggering all targets.
+    /// Triggers a `TargetArea` that are set as target and tracks the progress of triggering all targets.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public class TargetArea : MonoBehaviour
@@ -14,6 +14,8 @@ namespace ExPresSXR.Minigames.TargetArea
         /// If less or equal to zero, infinite actions area assumed.
         /// </summary>
         [SerializeField]
+        [Tooltip("How many times the triggerer must enter and exit for the target to be completed.\n"
+                + "If less or equal to zero, infinite actions area assumed.")]
         private int _actionsToComplete = 1;
 
 
@@ -28,8 +30,14 @@ namespace ExPresSXR.Minigames.TargetArea
 
         private int _performedActions;
 
+        /// <summary>
+        /// Emitted when an action is performed.
+        /// </summary>
         public UnityEvent OnActionPerformed;
 
+        /// <summary>
+        /// Emitted when the specified amount of actions were performed needed for completion.
+        /// </summary>
         public UnityEvent OnCompleted;
 
         /// <summary>

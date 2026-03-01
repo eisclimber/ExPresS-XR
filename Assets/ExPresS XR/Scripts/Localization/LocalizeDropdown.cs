@@ -7,7 +7,11 @@ using TMPro;
 
 namespace ExPresSXR.Localization
 {
-    // Credits: exe2be (https://discussions.unity.com/t/localizing-ui-dropdown-options/792432/14)
+    /// <summary>
+    /// Allows localizing the individual options of a dropdown.
+    /// 
+    /// Credits: [exe2be](https://discussions.unity.com/t/localizing-ui-dropdown-options/792432/14)
+    /// </summary>
     [AddComponentMenu("Localization/Localize Dropdown")]
     public class LocalizeDropdown : MonoBehaviour
     {

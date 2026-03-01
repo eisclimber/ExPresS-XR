@@ -8,6 +8,9 @@ using ExPresSXR.Misc;
 
 namespace ExPresSXR.UI.Menu
 {
+    /// <summary>
+    /// Based on `BasicMenuLogic`, implements a main menu for switching to the game scene directly.
+    /// </summary>
     public class MainMenuLogic : BasicMenuLogic
     {
         /// <summary>

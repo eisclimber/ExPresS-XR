@@ -9,6 +9,9 @@ namespace ExPresSXR.UI
 {
     public class WorldSpaceKeyboard : MonoBehaviour
     {
+        /// <summary>
+        /// The current text input of the keyboard.
+        /// </summary>
         [SerializeField]
         private string _inputText = "";
         public string InputText
@@ -32,6 +35,10 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// A prefix that is always added to the displayed text but is not considered part of the input.
+        /// Can be used to e.g. display currency symbols like `EUR 100`.
+        /// </summary>
         [SerializeField]
         private string _textPrefix = "";
         public string TextPrefix
@@ -40,6 +47,10 @@ namespace ExPresSXR.UI
             set => _textPrefix = value;
         }
 
+        /// <summary>
+        /// A suffix that is always added to the displayed text but is not considered part of the input.
+        /// Can be used to e.g. display currency symbols like `100 €`.
+        /// </summary>
         [SerializeField]
         private string _textSuffix = "​";
         public string TextSuffix
@@ -48,6 +59,9 @@ namespace ExPresSXR.UI
             set => _textSuffix = value;
         }
 
+        /// <summary>
+        /// Defines how the caps/shift button behaves.
+        /// </summary>
         [SerializeField]
         private CapsMode _capsMode = CapsMode.Toggle;
         public CapsMode CapsMode
@@ -74,6 +88,9 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// Whether or not the caps/shift button is currently active. The behavior depends on the selected `CapsMode`.
+        /// </summary>
         [SerializeField]
         private bool _capsActive = false;
         public bool CapsActive
@@ -85,6 +102,9 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// Whether or not the keyboard input is currently disabled. This will make all buttons non-interactable and also disable the input field.
+        /// </summary>
         [SerializeField]
         private bool _inputDisabled;
         public bool InputDisabled
@@ -113,24 +133,46 @@ namespace ExPresSXR.UI
             }
         }
 
+        /// <summary>
+        /// If the keyboard should be disabled after confirming the input text.
+        /// </summary>
         [SerializeField]
         private bool _disableOnConfirm;
 
+        /// <summary>
+        /// If an empty input is allowed or not. The confirm button will be interactable accordingly.
+        /// </summary>
         [SerializeField]
         private bool _confirmNotEmpty;
 
+        /// <summary>
+        /// The input field used to display the current text.
+        /// </summary>
         [SerializeField]
         private TMP_InputField _inputField;
 
+        /// <summary>
+        /// The caps button of the keyboard.
+        /// </summary>
         [SerializeField]
         private Button _capsButton;
 
+        /// <summary>
+        /// The confirm button of the keyboard.
+        /// </summary>
         [SerializeField]
         private Button _confirmButton;
 
         [Space]
 
+        /// <summary>
+        /// Event invoked when the text was confirmed, providing the final text.
+        /// </summary>
         public UnityEvent<string> OnTextEntered;
+
+        /// <summary>
+        /// Event invoked when the text was changed, providing the new text.
+        /// </summary>
         public UnityEvent<string> OnTextChanged;
 
 
@@ -268,6 +310,10 @@ namespace ExPresSXR.UI
 
     /// <summary>
     /// Defines possible behaviors for toggle behaviors.
+    /// - Toggle: The caps button is toggled on and off until pressed again.
+    /// - OneCharUpper: The caps button will only affect the next character and then automatically turns off.
+    /// - AlwaysUpper: Text will be always upper case.
+    /// - AlwaysLower: Text will be always lower case.
     /// </summary>
     public enum CapsMode
     {

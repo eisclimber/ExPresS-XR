@@ -32,6 +32,9 @@ namespace ExPresSXR.Editor.Editors
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._requireDirectInteraction"/>.</summary>
         protected SerializedProperty _requireDirectInteraction;
 
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._allowNearFarInteraction"/>.</summary>
+        protected SerializedProperty _allowNearFarInteraction;
+
 
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._snapSound"/>.</summary>
         protected SerializedProperty _snapSound;
@@ -116,6 +119,7 @@ namespace ExPresSXR.Editor.Editors
             _inputDisabled = serializedObject.FindProperty("_inputDisabled");
             _zeroValueOnRelease = serializedObject.FindProperty("_zeroValueOnRelease");
             _requireDirectInteraction = serializedObject.FindProperty("_requireDirectInteraction");
+            _allowNearFarInteraction = serializedObject.FindProperty("_allowNearFarInteraction");
 
             _snapSound = serializedObject.FindProperty("_snapSound");
             _minValueSound = serializedObject.FindProperty("_minValueSound");
@@ -144,6 +148,7 @@ namespace ExPresSXR.Editor.Editors
             DrawRangeProperties();
             DrawSoundsFoldout();
             DrawButtons();
+
             base.DrawProperties();
         }
 
@@ -166,6 +171,7 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.PropertyField(_zeroValueOnRelease);
             EditorGUILayout.PropertyField(_requireDirectInteraction);
+            EditorGUILayout.PropertyField(_allowNearFarInteraction);
             EditorGUILayout.Space();
         }
 

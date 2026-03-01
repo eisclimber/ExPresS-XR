@@ -12,7 +12,7 @@ namespace ExPresSXR.Movement
         /// </summary>
         [SerializeField]
         private bool _applyForce = true;
-        public bool applyForce
+        public bool ApplyForce
         {
             get => _applyForce;
             set => _applyForce = value;

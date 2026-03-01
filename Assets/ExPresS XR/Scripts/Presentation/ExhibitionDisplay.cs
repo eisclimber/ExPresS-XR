@@ -1,12 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Video;
-using ExPresSXR.Interaction;
 using ExPresSXR.Misc;
 using UnityEngine.XR.Interaction.Toolkit;
 using ExPresSXR.Interaction.Interactors;
+using ExPresSXR.Interaction.ValueRangeInteractable;
 
 namespace ExPresSXR.Presentation
 {
@@ -414,8 +413,8 @@ namespace ExPresSXR.Presentation
         /// </summary>
         [SerializeField]
         [Tooltip("Reference to the Image displayed in the description.")]
-        private Image _infoImageGo;
-        public Image InfoImageGo
+        private UnityEngine.UI.Image _infoImageGo;
+        public UnityEngine.UI.Image InfoImageGo
         {
             get => _infoImageGo;
             set
@@ -476,8 +475,8 @@ namespace ExPresSXR.Presentation
         /// </summary>
         [SerializeField]
         [Tooltip("Reference to the Image used to play the video in when opening the description.")]
-        private RawImage _infoVideoDisplayGo;
-        public RawImage InfoVideoDisplayGo
+        private UnityEngine.UI.RawImage _infoVideoDisplayGo;
+        public UnityEngine.UI.RawImage InfoVideoDisplayGo
         {
             get => _infoVideoDisplayGo;
             set
@@ -492,8 +491,8 @@ namespace ExPresSXR.Presentation
         /// </summary>
         [SerializeField]
         [Tooltip("Reference to the Ui Button for opening the description.")]
-        private Button _uiShowInfoButton;
-        public Button UiShowInfoButton
+        private UnityEngine.UI.Button _uiShowInfoButton;
+        public UnityEngine.UI.Button UiShowInfoButton
         {
             get => _uiShowInfoButton;
             set
@@ -523,8 +522,8 @@ namespace ExPresSXR.Presentation
         /// </summary>
         [SerializeField]
         [Tooltip("Reference to the BaseButton for opening the description.")]
-        private BaseButton _worldShowInfoButton;
-        public BaseButton WorldShowInfoButton
+        private Button _worldShowInfoButton;
+        public Button WorldShowInfoButton
         {
             get => _worldShowInfoButton;
             set
@@ -724,9 +723,12 @@ namespace ExPresSXR.Presentation
             HideInfo();
         }
 
-        // Duration that the info is shown: 
-        // - If 'toggleInfo' is false: The maximum of '_showInfoDuration' and the lengths of the Video and Audio Clips
-        // - If in 'toggleInfo' is true -1
+        /// <summary>
+        /// Duration that the info is shown: 
+        /// - If 'toggleInfo' is false: The maximum of '_showInfoDuration' and the lengths of the Video and Audio Clips
+        /// - If in 'toggleInfo' is true -1
+        /// </summary>
+        /// <returns>Determined duration.</returns>
         public float GetInfoActivationDuration()
         {
             if (ToggleInfo)
@@ -777,6 +779,7 @@ namespace ExPresSXR.Presentation
         /// <summary>
         /// Allows pausing spinning of the socket holding the exhibited object, i.e. to not change the rotation of the object while being grabbed.
         /// </summary>
+        /// <param name="paused">If spinning is paused.</param>
         public void SetObjectSpinnerPaused(bool paused)
         {
             if (_socket.TryGetComponent(out ObjectSpinner spinner))

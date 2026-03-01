@@ -1,9 +1,3 @@
-/*
-    Script Name: Scale.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Compares the weight in both bowls.
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +5,9 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
+    /// <summary>
+    /// Compares the weight in both bowls.
+    /// </summary>
     public class Scale : MonoBehaviour
     {
         /// <summary>

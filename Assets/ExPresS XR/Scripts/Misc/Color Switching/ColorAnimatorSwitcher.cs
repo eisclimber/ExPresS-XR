@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.ColorSwitching
 {
+    /// <summary>
+    /// Uses an Animator to switch between colors.
+    /// The logic for switching is implemented inside the AnimationController of the assigned Animator.
+    /// For this each state must have a `MaterialSwitchingStateBehaviour` assigned with the desired material.
+    /// </summary>
     [RequireComponent(typeof(Animator))]
     public class ColorAnimatorSwitcher : MonoBehaviour
     {

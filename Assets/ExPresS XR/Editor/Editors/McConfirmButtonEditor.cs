@@ -15,13 +15,13 @@ namespace ExPresSXR.Editor.Editors
             _mcConfirmButton = (McConfirmButton)target;
         }
 
-        protected override void DrawBaseProperties()
-        {
-            DrawInputProperties();
-            DrawPushLimitProperties();
-            DrawSoundsProperties();
-            DrawAnswerButtons();
-        }
+        // protected override void DrawBaseProperties()
+        // {
+        //     DrawInputProperties();
+        //     DrawPushLimitProperties();
+        //     DrawSoundsProperties();
+        //     DrawAnswerButtons();
+        // }
 
         protected virtual void DrawAnswerButtons()
         {

@@ -1,17 +1,14 @@
-/*
-    Script Name: PingPongLinearTween.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: This is only a minimal script to allow ping-pong-tweening. 
-                If you need something more elaborate, safe yourself the headache 
-                and buy a tween library like DOTween:)
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinThrow
 {
+    /// <summary>
+    /// This is only a minimal script to allow ping-pong-tweening. 
+    /// 
+    /// If you need something more elaborate, safe yourself the headache and buy a tween library like DOTween:)
+    /// </summary>
     public class PingPongLinearTween : MonoBehaviour
     {
         /// <summary>

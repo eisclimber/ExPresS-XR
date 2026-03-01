@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Tutorial
 {
+    /// <summary>
+    /// Represents a tutorial step handler for triggering animations based on a trigger in a tutorial.
+    /// </summary>
     public class TutorialTriggerAnimations : TutorialStepHandler
     {
         /// <summary>

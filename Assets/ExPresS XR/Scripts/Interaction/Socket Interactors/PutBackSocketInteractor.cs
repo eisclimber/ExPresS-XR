@@ -8,12 +8,26 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction.Interactors
 {
+    /// <summary>
+    /// An Expansion of the `HighlightableSocketInteractor` to restrict access to a single GameObject an instance of the `putBackPrefab`.
+    /// After a certain amount of time outside the interactor and *not* being held or selected elsewhere, the object will be snap back to this socket.  
+    /// 
+    /// The `putBackPrefab` will be automatically be instanced. If it does not have a `XRGrabInteractable`-Component and `allowNonInteractables` is `true`
+    /// it will be instanced at the attach point of the socket but won't be able to be interacted with.
+    /// If the component is missing and the non-interactables are disallowed the `putBackPrefab` will be set to `null`.  
+    /// 
+    /// If the socket does not hold an object, it will be disabled.  
+    /// 
+    /// The socket and `putBackPrefab` can be controlled by an Exhibition Display or any other component by setting `externallyControlled` to `true`.
+    /// This will lock "PutBack" section of the sockets editor, as it is controlled elsewhere.
+    /// </summary>
     public class PutBackSocketInteractor : HighlightableSocketInteractor
     {
         /// <summary>
         /// The prefab that is displayed at the socket. Will automatically create an instance of the prefab and update the references.
         /// </summary>
         [SerializeField]
+        [Tooltip("The prefab that is displayed at the socket. Will automatically create an instance of the prefab and update the references.")]
         protected GameObject _putBackPrefab;
         public GameObject PutBackPrefab
         {
@@ -29,6 +43,7 @@ namespace ExPresSXR.Interaction.Interactors
         /// The current instance of the putBackPrefab. Can not be changed via the editor.
         /// </summary>
         [SerializeField]
+        [Tooltip("The current instance of the putBackPrefab. Can not be changed via the editor.")]
         protected GameObject _putBackObjectInstance;
         public GameObject PutBackObjectInstance
         {
@@ -40,6 +55,8 @@ namespace ExPresSXR.Interaction.Interactors
         /// May be null if the `putBackPrefab` has no `XRBaseInteractable`-Component and `allowNonInteractables` is true.
         /// </summary>
         [SerializeField]
+        [Tooltip("The current interactable of the putBackPrefab. Can not be changed via the editor.\n"
+                + "May be null if the `putBackPrefab` has no `XRBaseInteractable`-Component and `allowNonInteractables` is true.")]
         private XRBaseInteractable _putBackInteractable;
         public XRBaseInteractable PutBackInteractable
         {
@@ -48,10 +65,12 @@ namespace ExPresSXR.Interaction.Interactors
 
 
         /// <summary>
-        /// If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`. Otherwise the provided prefab will be set to null.
+        /// If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`.
+        /// Otherwise the provided prefab will be set to null.
         /// </summary>
-        [Tooltip("If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`. Otherwise the provided prefab will be set to null.")]
         [SerializeField]
+        [Tooltip("If enabled GameObjects without an `XRGrabInteractable`-Component will be allowed to be set as `putBackPrefab`.\n"
+                + "Otherwise the provided prefab will be set to null.")]
         private bool _allowNonInteractables;
         public bool AllowNonInteractables
         {
@@ -61,9 +80,12 @@ namespace ExPresSXR.Interaction.Interactors
 
 
         /// <summary>
-        /// Compensates the attach off set of the putback interactable. Makes placing interactables with an attach easier but requires an attach transform to be set.
+        /// Compensates the attach off set of the putback interactable.
+        /// Makes placing interactables with an attach easier but requires an attach transform to be set.
         /// </summary>
         [SerializeField]
+        [Tooltip("Compensates the attach off set of the putback interactable.\n"
+                + "Makes placing interactables with an attach easier but requires an attach transform to be set.")]
         private bool _compensateInteractableAttach;
         public bool CompensateInteractableAttach
         {
@@ -78,8 +100,8 @@ namespace ExPresSXR.Interaction.Interactors
         /// <summary>
         /// Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.
         /// </summary>
-        [Tooltip("Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.")]
         [SerializeField]
+        [Tooltip("Will set the 'Retain Parent Transform' property of the interactable to false to disable a warning regarding it.")]
         private bool _disableRetainTransformParent = true;
         public bool DisableRetainTransformParent
         {
@@ -96,6 +118,8 @@ namespace ExPresSXR.Interaction.Interactors
         /// If less or equal to 0, the object will snap back instantaneous.
         /// </summary>
         [SerializeField]
+        [Tooltip("The duration in seconds how long the put back object can be unselected outside the socket until being snapped back to the socket.\n"
+                + "If less or equal to 0, the object will snap back instantaneous.")]
         private float _putBackTime = 2.0f;
         public float PutBackTime
         {
@@ -108,6 +132,7 @@ namespace ExPresSXR.Interaction.Interactors
         /// Prevents emitting the initial OnSelectEnter event after the socket is activated.
         /// </summary>
         [SerializeField]
+        [Tooltip("Prevents emitting the initial OnSelectEnter event after the socket is activated.")]
         private bool _omitInitialSelectEnterEvent = true;
         public bool OmitInitialSelectEnterEvent
         {
@@ -120,6 +145,7 @@ namespace ExPresSXR.Interaction.Interactors
         /// Prevents emitting the initial OnSelectExit event after the socket is activated.
         /// </summary>
         [SerializeField]
+        [Tooltip("Prevents emitting the initial OnSelectExit event after the socket is activated.")]
         private bool _omitInitialSelectExitEvent = true;
         public bool OmitInitialSelectExitEvent
         {
@@ -133,6 +159,7 @@ namespace ExPresSXR.Interaction.Interactors
         /// Used to disable certain fields in the editor when controlled by an Exhibition Display.
         /// </summary>
         [SerializeField]
+        [Tooltip("Hidden in the editor! Used to disable certain fields in the editor when controlled by an Exhibition Display.")]
         private bool _externallyControlled;
         public bool ExternallyControlled
         {
@@ -156,7 +183,7 @@ namespace ExPresSXR.Interaction.Interactors
         /// If the next SelectEnter event should be omitted.
         /// </summary>
         protected bool _omitSelectEnterEvent;
-        
+
         /// <summary>
         /// If the next SelectEnter event should be omitted.
         /// </summary>
@@ -342,7 +369,7 @@ namespace ExPresSXR.Interaction.Interactors
             DeleteOldPutBackInstance(true);
         }
 
-        
+
         protected void UnregisterPutBackInteractable(bool force = false)
         {
             if (_putBackInteractable != null && (IsSelecting(_putBackInteractable) || _destroyIfNotSelecting || force))

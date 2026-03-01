@@ -72,6 +72,9 @@ namespace ExPresSXR.Minigames.Boxing
 
         private Coroutine _waitForSpawnCoroutine;
 
+        /// <summary>
+        /// Emitted when a new target is activated providing the index of the activated target.
+        /// </summary>
         public UnityEvent<int> OnTargetActivate;
 
 

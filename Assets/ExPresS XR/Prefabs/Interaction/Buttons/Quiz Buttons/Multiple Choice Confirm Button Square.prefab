@@ -110,27 +110,79 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   m_AutoFindParentInteractableInHierarchy: 0
   m_ParentInteractableObject: {fileID: 0}
+  _valueDescriptor:
+    OnMinValue:
+      m_PersistentCalls:
+        m_Calls: []
+    OnMaxValue:
+      m_PersistentCalls:
+        m_Calls: []
+    OnSnapped:
+      m_PersistentCalls:
+        m_Calls: []
+    OnValueChanged:
+      m_PersistentCalls:
+        m_Calls: []
+    _value: 0
+    _pressThreshold: 0.65
+    _pressDeadzone: 0.1
+    _repressTimeout: 0.5
+    _lastPressTime: 0
+    OnPressed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnReleased:
+      m_PersistentCalls:
+        m_Calls: []
+  _valueVisualizer:
+    _upPosition: 0.029
+    _downPosition: 0.014
+    _toggledDownPosition: 0.032
+    _positionReference: 1
+    _buttonCap: {fileID: 0}
   _inputDisabled: 0
-  _toggleMode: 0
-  _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
-  BaseAnchor: {fileID: 320453321735774683}
-  PushAnchor: {fileID: 6559422290832575961}
-  _yMin: 0.019
-  _yMax: 0.029
-  _repressTimeout: 0.3
+  _zeroValueOnRelease: 1
   _requireDirectInteraction: 1
-  _maxInteractionDistance: 0.15
-  PressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
-  ReleasedSound: {fileID: 8300000, guid: cb0b4b45ea34969418dae32138cc9e37, type: 3}
-  ToggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
-  ToggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
+  _allowNearFarInteraction: 1
+  _snapSound: {fileID: 0}
+  _minValueSound: {fileID: 0}
+  _maxValueSound: {fileID: 0}
+  _moveSound: {fileID: 0}
   _defaultAudioPlayer: {fileID: 6842511493332019435}
+  OnMinValue:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMaxValue:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSnapped:
+    m_PersistentCalls:
+      m_Calls: []
+  OnValueChangedSingle:
+    m_PersistentCalls:
+      m_Calls: []
+  OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnValueReset:
+    m_PersistentCalls:
+      m_Calls: []
+  OnValueSelected:
+    m_PersistentCalls:
+      m_Calls: []
   OnInputDisabled:
     m_PersistentCalls:
       m_Calls: []
   OnInputEnabled:
     m_PersistentCalls:
       m_Calls: []
+  _toggleMode: 0
+  _pressed: 0
+  _maxInteractionDistance: 0.15
+  _pressedSound: {fileID: 0}
+  _releasedSound: {fileID: 0}
+  _toggledDownSound: {fileID: 0}
+  _toggledUpSound: {fileID: 0}
   OnPressed:
     m_PersistentCalls:
       m_Calls: []
@@ -143,18 +195,18 @@ MonoBehaviour:
   OnToggleReleased:
     m_PersistentCalls:
       m_Calls: []
-  OnButtonPressReset:
+  OnToggleModeChanged:
     m_PersistentCalls:
       m_Calls: []
-  CorrectChoice: 0
-  FeedbackDisabled: 0
-  InvertedFeedback: 0
+  _correctChoice: 0
+  _feedbackDisabled: 0
+  _invertedFeedback: 0
   _answerText: 
   _answerObject: {fileID: 0}
   _feedbackObjectSocket: {fileID: 2531335217909990670}
   _feedbackTextLabel: {fileID: 1642844122987566910}
-  AnsweredCorrectSound: {fileID: 8300000, guid: c78e51dc01092a344b84fb6de865ac11, type: 3}
-  AnsweredIncorrectSound: {fileID: 8300000, guid: cb0b4b45ea34969418dae32138cc9e37, type: 3}
+  _answeredCorrectSound: {fileID: 0}
+  _answeredIncorrectSound: {fileID: 0}
   _answerFeedbackAudioPlayer: {fileID: 7382420573894735941}
   OnAnsweredCorrect:
     m_PersistentCalls:

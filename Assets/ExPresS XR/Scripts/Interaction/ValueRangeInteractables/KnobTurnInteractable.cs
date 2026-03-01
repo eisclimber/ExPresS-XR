@@ -16,6 +16,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     /// </summary>
     public class KnobInteractable : ValueRangeInteractable<Float01Descriptor, TurnVisualizer, float>
     {
+        /// <inheritdoc />
         protected override void StartGrab(SelectEnterEventArgs args)
         {
             base.StartGrab(args);
@@ -93,6 +94,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             get => _maxAngle - _minAngle;
         }
 
+        /// <summary>
+        /// Raw value visualized. Ensured to be in the range between 0.0f and 1.0f (inclusive).
+        /// </summary>
         private float _rawValue;
         public float RawValue
         {
@@ -100,7 +104,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set => _rawValue = Mathf.Clamp01(value);
         }
 
-        public Vector3 _previousTurnForward = Vector3.zero;
+        /// <summary>
+        /// Forward direction of the previous update.
+        /// </summary>
+        private Vector3 _previousTurnForward = Vector3.zero;
         public Vector3 PreviousTurnForward
         {
             get => _previousTurnForward;
@@ -176,8 +183,8 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public enum InteractorTurnType
         {
-            Forward,
-            Direction
+            Forward, /// <summary> Turning is determined from wrist movement. </summary>
+            Direction /// <summary> Turning is determined the direction from the interactable to the interactor. </summary>
         }
     }
 }

@@ -71,6 +71,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             _handle.localPosition = value * _radius;
         }
 
+        /// <summary>
+        /// Adjusts the grab offset with the current interaction.
+        /// </summary>
+        /// <param name="interactable">Interactable from this interaction.</param>
+        /// <param name="interactor">Interactor from this interaction.</param>
         public void SetHandleGrabOffsetWithInteraction(IXRInteractable interactable, IXRInteractor interactor)
         {
             _grabOffset = _useHandleGrabOffset ? GetInteractorLocalPosition(interactable, interactor) - _handle.localPosition : Vector3.zero;

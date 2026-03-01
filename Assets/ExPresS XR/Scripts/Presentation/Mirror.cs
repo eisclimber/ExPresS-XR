@@ -197,8 +197,11 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("The material used to display the RenderTexture.")]
+        /// <summary>
+        /// The material used to display the RenderTexture.
+        /// </summary>
         [SerializeField]
+        [Tooltip("The material used to display the RenderTexture.")]
         private Material _mirrorMaterial;
         public Material MirrorMaterial
         {

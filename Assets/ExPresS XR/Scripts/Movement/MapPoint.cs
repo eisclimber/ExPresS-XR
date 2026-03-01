@@ -79,7 +79,7 @@ namespace ExPresSXR.Movement
         /// <summary>
         /// (De-)activates the 'Player Present' GameObject.
         /// </summary>
-        /// <param name="visible">If it should be visible or not</param>    
+        /// <param name="present">If it should be visible or not</param>    
         public void SetPlayerPresent(bool present)
         {
             if (_playerPresentVisible != null)

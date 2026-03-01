@@ -1,14 +1,11 @@
-/*
-    Script Name: ThrowTarget.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Detects hits of Rigidbodys with a CoinReset-Component
-*/
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.CoinThrow
 {
+    /// <summary>
+    /// Detects hits of Rigidbodys with a CoinReset-Component.
+    /// </summary>
     public class ThrowTarget : MonoBehaviour
     {
         /// <summary>

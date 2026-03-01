@@ -3,6 +3,9 @@ using UnityEngine.UIElements.Experimental;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 {
+    /// <summary>
+    /// Moves the position with a set speed and direction.
+    /// </summary>
     public class ObjectContinuousMove : MonoBehaviour
     {
         /// <summary>

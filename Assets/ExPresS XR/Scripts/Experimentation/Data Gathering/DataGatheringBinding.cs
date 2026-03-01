@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
+    /// <summary>
+    /// A class to represent a binding of a value from some GameObject's Component to be used by DataGatherer.
+    /// 
+    /// The values can be either return values of public functions or public members.
+    /// Using reflections these values will automatically be read when data is required to be exported.
+    /// </summary>
     [Serializable]
     public class DataGatheringBinding
     {
@@ -12,6 +18,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// The header value for the column storing values of this binding.
         /// </summary>
         [SerializeField]
+        [Tooltip("The header value for the column storing values of this binding.")]
         private string _exportColumnName = "";
         public string ExportColumnName
         {
@@ -23,6 +30,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// Separator used for the header, will be controlled by the DataGatherer controlling this binding.
         /// </summary>
         [SerializeField]
+        [Tooltip("Separator used for the header, will be controlled by the DataGatherer controlling this binding.")]
         private char _headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         public char HeaderSeparator
         {
@@ -42,18 +50,21 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// GameObject reference to retrieve the value from.
         /// </summary>
         [SerializeField]
+        [Tooltip("GameObject reference to retrieve the value from.")]
         private GameObject _targetObject = null;
 
         /// <summary>
         /// Component reference to retrieve the value from.
         /// </summary>
         [SerializeField]
+        [Tooltip("Component reference to retrieve the value from.")]
         private Component _targetComponent = null;
 
         /// <summary>
         /// Function/Property reflection reference to retrieve the value from.
         /// </summary>
         [SerializeField]
+        [Tooltip("Function/Property reflection reference to retrieve the value from.")]
         private MemberInfo _targetMemberInfo = null;
 
 
@@ -61,12 +72,14 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// List of all members.
         /// </summary>
         [SerializeField]
+        [Tooltip("List of all members.")]
         private string[] _memberNameList = new string[0];
 
         /// <summary>
         /// Prettified List of all members.
         /// </summary>
         [SerializeField]
+        [Tooltip("Prettified List of all members.")]
         private string[] _prettyMemberNameList = new string[0];
 
 
@@ -74,6 +87,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// Index of components in the list.
         /// </summary>
         [SerializeField]
+        [Tooltip("Index of components in the list.")]
         private int _memberIdx = -1;
 
         /// <summary>
@@ -88,6 +102,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// </summary>
         /// <param name="targetComponent">Component(&Object) to be bound.</param>
         /// <param name="valueName">Name of the member to bind to.</param>
+        /// <param name="exportColumnName">Name of the export column.</param>
         public DataGatheringBinding(Component targetComponent, string valueName, string exportColumnName = "")
         {
             _targetObject = targetComponent.gameObject;
@@ -319,8 +334,8 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             UpdateInvocationInfo(null);
             _targetObject = null;
-            _memberNameList = new string[0];;
-            _prettyMemberNameList = new string[0];;
+            _memberNameList = new string[0]; ;
+            _prettyMemberNameList = new string[0]; ;
             _memberIdx = -1;
             HeaderSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         }

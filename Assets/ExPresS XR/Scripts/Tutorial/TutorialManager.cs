@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Tutorial
 {
+    /// <summary>
+    /// Manages the process of a tutorial handling the individual.
+    /// </summary>
     public class TutorialManager : MonoBehaviour
     {
         /// <summary>

@@ -42,7 +42,9 @@ namespace ExPresSXR.Rig.InverseKinematics
         private Transform _presenceRoot;
         private Vector3 _initialFollowPosition;
 
-
+        /// <summary>
+        /// Tracks the 'ikTarget'to the 'vrTarget'.
+        /// </summary>
         public void UpdateMapping()
         {
             if (_vrTarget != null)
@@ -53,10 +55,15 @@ namespace ExPresSXR.Rig.InverseKinematics
                     _presenceRoot.forward = Vector3.ProjectOnPlane(_vrTarget.forward, Vector3.up).normalized;
                 }
                 _ikTarget.SetPositionAndRotation(_vrTarget.TransformPoint(_positionOffset),
-                        _vrTarget.rotation * _rotationOffset);            
+                        _vrTarget.rotation * _rotationOffset);
             }
         }
 
+        /// <summary>
+        /// Initializes the mapping. Should be called during `OnStart()` or `OnAwake()`.
+        /// </summary>
+        /// <param name="presenceRoot">Root transform of the virtual presence.</param>
+        /// <param name="moveRoot">If root movement is allowed.</param>
         public void InitializeMapping(Transform presenceRoot, bool moveRoot)
         {
             _presenceRoot = presenceRoot;

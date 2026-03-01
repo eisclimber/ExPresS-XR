@@ -71,6 +71,21 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         public string FeedbackText;
 
+        /// <summary>
+        /// Contructor for a ButtonQuizQuestion.
+        /// </summary>
+        /// <param name="itemIdx">Id of the question.</param>
+        /// <param name="questionVideo">Question video shown.</param>
+        /// <param name="questionVideoUrl">Question video URL shown (ignored if `questionVideo` is provided).</param>
+        /// <param name="questionObject">Question displayed</param>
+        /// <param name="questionText">Question text displayed.</param>
+        /// <param name="answerObjects">Answer objects displayed.</param>
+        /// <param name="answerTexts">Answer texts displayed.</param>
+        /// <param name="correctAnswers">Correct answers.</param>
+        /// <param name="feedbackVideo">Feedback video shown.</param>
+        /// <param name="feedbackVideoUrl">Feedback video URL shown (ignored if `feedbackVideo` is provided).</param>
+        /// <param name="feedbackObject">Feedback object shown.</param>
+        /// <param name="feedbackText">Feedback text shown.</param>
         public ButtonQuizQuestion(int itemIdx, VideoClip questionVideo, string questionVideoUrl, GameObject questionObject,
                             string questionText, GameObject[] answerObjects, string[] answerTexts, bool[] correctAnswers,
                             VideoClip feedbackVideo, string feedbackVideoUrl, GameObject feedbackObject, string feedbackText)

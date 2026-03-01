@@ -4,6 +4,14 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.TargetArea
 {
+    /// <summary>
+    /// Allows the visual destruction of an object by showing different models and/or using a material to change it's appearance.  
+    /// This system can be used for tearing down wall to reveal something or sculpting something from stone.  
+    /// Bear in mind that this is not about being physically accurate but rather about to revealing different versions of a model,
+    /// allowing you to break the model. This however requires you to make the model though.  
+    /// 
+    /// As a an example shader for breaking" the texture you can use the "Breakable Stone Shader" in ExPresS XR's shader folder.
+    /// </summary>
     public class BreakableModel : MonoBehaviour
     {
         /// <summary>
@@ -148,6 +156,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// <summary>
         /// Disables the visuals of all models after a given period of time.
         /// </summary>
+        /// <param name="delay">Delay for disabling the visuals.</param>
         public void DisableModelVisualsDelayed(float delay) => Invoke(nameof(DisableVisuals), delay);
 
         /// <summary>

@@ -4,7 +4,9 @@ using System;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
-    
+    /// <summary>
+    /// Represents an area of interest that can be a target of an AreaOfInteresRay. Has an ID for identification. Requires a 'Collider'-Component.
+    /// </summary>
     [RequireComponent(typeof(Collider))]
     public class AreaOfInterest : MonoBehaviour
     {

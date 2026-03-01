@@ -81,8 +81,12 @@ namespace ExPresSXR.Interaction.Feedback
         [ContextMenu("Perform Default Haptic Event On Current Target")]
         public void PerformDefaultHapticEventOnCurrentTarget() => PerformHapticEventOnCurrentTarget(_defaultRumble, null);
 
-        // Use this function to send haptic Events to the current hapticTarget.
-        // Note: If targetOverride is active the hapticTarget will be updated automatically.
+        /// <summary>
+        /// Use this function to send haptic Events to the current hapticTarget.
+        /// Note: If targetOverride is active the hapticTarget will be updated automatically.
+        /// </summary>
+        /// <param name="rumble">Rumble to be performed.</param>
+        /// <param name="targetOverride">Optional target override.</param>
         public void PerformHapticEventOnCurrentTarget(RumbleDescription rumble, HapticImpulsePlayer targetOverride = null)
         {
             if (targetOverride)

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Tutorial
 {
+    /// <summary>
+    /// Represents a tutorial step handler for manipulating transforms in a tutorial.
+    /// </summary>
     public class TutorialTransforms : TutorialStepHandler
     {
         /// <summary>
@@ -66,17 +69,35 @@ namespace ExPresSXR.Tutorial
     [System.Serializable]
     public class OptionalTransform
     {
+        /// <summary>
+        /// If the position should be used.
+        /// </summary>
         public readonly bool UsePosition;
+        /// <summary>
+        /// Position provided.
+        /// </summary>
         public Vector3 Position;
 
         [Space]
 
+        /// <summary>
+        /// If the rotation should be used.
+        /// </summary>
         public readonly bool UseRotation;
+        /// <summary>
+        /// Rotation provided.
+        /// </summary>
         public Quaternion Rotation;
 
         [Space]
 
+        /// <summary>
+        /// If the scale should be used.
+        /// </summary>
         public readonly bool UseScale;
+        /// <summary>
+        /// Scale provided.
+        /// </summary>
         public Vector3 Scale;
     }
 }

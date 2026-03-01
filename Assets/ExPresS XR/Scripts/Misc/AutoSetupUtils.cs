@@ -15,7 +15,6 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="trigger">Trigger to add the callback to.</param>
         /// <param name="type">Type of event to add the cal</param>
-        /// <param name="callback">Callback to add.</param>
         public static EventTrigger.TriggerEvent GetOrCreateEventTriggerEvent(EventTrigger trigger, EventTriggerType type)
         {
             EventTrigger.Entry entry = trigger.triggers.Find(e => e.eventID == type);
@@ -36,7 +35,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="trigger">EventTrigger to modify.</param>
         /// <param name="triggerType">EventTriggerType to add the callback to.</param>
-        /// <param name="call">Void function call.</param>
+        /// <param name="callback">Void function call.</param>
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddVoidPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction callback, bool requireNoListeners = true)
         {
@@ -61,7 +60,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="trigger">EventTrigger to modify.</param>
         /// <param name="triggerType">EventTriggerType to add the callback to.</param>
-        /// <param name="call">Bool function call.</param>
+        /// <param name="callback">Bool function call.</param>
         /// <param name="argument">Bool passed as argument.</param>
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<bool> callback, bool argument, bool requireNoListeners = true)
@@ -87,7 +86,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="trigger">EventTrigger to modify.</param>
         /// <param name="triggerType">EventTriggerType to add the callback to.</param>
-        /// <param name="call">Float function call.</param>
+        /// <param name="callback">Float function call.</param>
         /// <param name="argument">Float passed as argument.</param>
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<float> callback, float argument, bool requireNoListeners = true)
@@ -140,8 +139,8 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="trigger">EventTrigger to modify.</param>
         /// <param name="triggerType">EventTriggerType to add the callback to.</param>
-        /// <param name="call">String function call.</param>
-        /// <param name="argument">String passed as argument.</param></param>
+        /// <param name="callback">String function call.</param>
+        /// <param name="argument">String passed as argument.</param>
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddStringPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<string> callback, string argument, bool requireNoListeners = true)
         {
@@ -166,7 +165,7 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="trigger">EventTrigger to modify.</param>
         /// <param name="triggerType">EventTriggerType to add the callback to.</param>
-        /// <param name="call">Void function call.</param>
+        /// <param name="callback">Void function call.</param>
         /// <param name="argument">UnityEngine.Object passed as argument.</param>
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddObjectPersistentTriggerCall<T>(EventTrigger trigger, EventTriggerType triggerType, UnityAction<UnityEngine.Object> callback, UnityEngine.Object argument, bool requireNoListeners = true) where T : UnityEngine.Object

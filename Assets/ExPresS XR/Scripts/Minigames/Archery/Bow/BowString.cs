@@ -9,6 +9,10 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Minigames.Archery.Bow
 {
+    /// <summary>
+    /// An interactable that can be grabbed that will visualized a bowstring.
+    /// It will calculate the strength the bow will be drawn (linear between two points) and visualize it via a LineRenderer.
+    /// </summary>
     public class BowString : XRBaseInteractable
     {
         /*------------------------------------------------------------------------------------

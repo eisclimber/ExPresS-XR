@@ -10,7 +10,14 @@ namespace ExPresSXR.Misc
     /// </summary>
     public static class RuntimeEditorUtils
     {
+        /// <summary>
+        /// Base path to the ExPresS XR prefabs directory.
+        /// </summary>
         public const string EXPRESS_XR_PREFABS_PATH = "Assets/ExPresS XR/Prefabs/";
+
+        /// <summary>
+        /// Format for specifying a prefab inside the ExPresS XR prefabs directory.
+        /// </summary>
         public const string EXPRESS_XR_PREFAB_FORMAT = EXPRESS_XR_PREFABS_PATH + "{0}.prefab";
 
         /// <summary>
@@ -65,12 +72,12 @@ namespace ExPresSXR.Misc
     /// </summary>
     public enum GameTabDisplayMode
     {
-        Default = 0,
-        LeftEye = -1,
-        RightEye = -2,
-        SideBySide = -3,
-        SideBySideOcclusionMesh = -4,
-        Distort = -5,
-        None = -6
+        Default = 0, /// <summary> Default view. </summary>
+        LeftEye = -1, /// <summary> Left eye perspective. </summary>
+        RightEye = -2, /// <summary> Right eye perspective. </summary>
+        SideBySide = -3, /// <summary> Side-by-side. </summary>
+        SideBySideOcclusionMesh = -4, /// <summary> Side-by-side with occlusion mesh. </summary>
+        Distort = -5, /// <summary> Displays the distorted screen. </summary>
+        None = -6 /// <summary> Displays nothing. </summary>
     }
 }

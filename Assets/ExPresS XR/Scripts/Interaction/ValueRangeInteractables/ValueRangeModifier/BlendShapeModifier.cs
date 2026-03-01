@@ -8,9 +8,16 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
     /// </summary>
     public class BlendShapeModifier : BaseValueRangeModifier<float, float>
     {
+        /// <summary>
+        /// Maximum value of a blend shape in Unity.
+        /// </summary>
         protected const float BLEND_SHAPE_MAX_VALUE = 100.0f;
 
+        /// <summary>
+        /// Index of the blend shape to controlled. Can be retrieved fro the SkinnedMeshRenderer component of the target mesh.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Index of the blend shape to controlled. Can be retrieved fro the SkinnedMeshRenderer component of the target mesh.")]
         private int _blendShapeIdx = 0;
 
 

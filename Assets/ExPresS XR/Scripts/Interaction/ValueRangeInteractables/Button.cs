@@ -289,22 +289,37 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     [Serializable]
     public class ButtonVisualizer : ValueVisualizer<float>
     {
+        /// <summary>
+        /// The offset of the button in up position (value=0) along the y-axis
+        /// </summary>
         [SerializeField]
         [Tooltip("The offset of the button in up position (value=0) along the y-axis.")]
         protected float _upPosition = 0.029f;
 
+        /// <summary>
+        /// The offset of the button in down position (value=1) along the y-axis.
+        /// </summary>
         [SerializeField]
         [Tooltip("The offset of the button in down position (value=1) along the y-axis.")]
         protected float _downPosition = 0.014f;
 
+        /// <summary>
+        /// The offset of the button in down position when toggling (value=1) along the y-axis.
+        /// </summary>
         [SerializeField]
         [Tooltip("The offset of the button in down position when toggling (value=1) along the y-axis.")]
         protected float _toggledDownPosition = 0.032f;
 
+        /// <summary>
+        /// How the press distance is calculated, either from the hover start or the interactors transform position.
+        /// </summary>
         [SerializeField]
         [Tooltip("How the press distance is calculated, either from the hover start or the interactors transform position.")]
         protected PositionReference _positionReference = PositionReference.HoverStart;
 
+        /// <summary>
+        /// The object that is visually grabbed and manipulated.
+        /// </summary>
         [SerializeField]
         [Tooltip("The object that is visually grabbed and manipulated.")]
         protected Transform _buttonCap = null;
@@ -312,13 +327,18 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         private float _hoverStartHeight;
 
         /// <inheritdoc />
+        /// <param name="value">Value to be displayed.</param>
         public override float GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             Vector3 localPosition = GetInteractorLocalPosition(interactable, interactor) - GetHoverOffset();
             return Mathf.Clamp01((localPosition.y - _upPosition) / (_downPosition - _upPosition));
         }
 
+        /// <summary>
         /// <inheritdoc />
+        /// </summary>
+        /// <param name="value">Value to be displayed.</param>
+        /// <param name="interactable">Interactable to be manipulated.</param>
         public override void UpdateVisualization(float value, IXRInteractable _)
         {
             if (_buttonCap == null)
@@ -337,7 +357,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         /// <param name="value">Value to be displayed.</param>
         /// <param name="toggledDown">Toggle state of the button.</param>
-        /// <param name="interactable">Interactable to be manipulated.</param>
+        /// <param name="_">Interactable to be manipulated.</param>
         public void UpdateVisualizationWithToggle(float value, bool toggledDown, IXRInteractable _)
         {
             if (_buttonCap == null)
@@ -352,8 +372,17 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             _buttonCap.localPosition = capPos;
         }
 
+        /// <summary>
+        /// Returns the hover hover offset used for the press.
+        /// </summary>
+        /// <returns>Current hover offset.</returns>
         protected virtual Vector3 GetHoverOffset() => _positionReference == PositionReference.HoverStart ? new(0.0f, _hoverStartHeight, 0.0f) : Vector3.zero;
 
+        /// <summary>
+        /// Records the hover start height of an interaction.
+        /// </summary>
+        /// <param name="interactable">Interactble of the interaction.</param>
+        /// <param name="interactor">Interactor of the interaction.</param>
         public void RecordHoverStartHeight(IXRInteractable interactable, IXRInteractor interactor)
         {
             _hoverStartHeight = GetInteractorLocalPosition(interactable, interactor).y - _upPosition;

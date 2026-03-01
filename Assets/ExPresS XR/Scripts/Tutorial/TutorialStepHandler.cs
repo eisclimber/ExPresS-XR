@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Tutorial
 {
+    /// <summary>
+    /// Interface to handle a step in a tutorial.
+    /// </summary>
     public interface ITutorialStepHandler
     {
         /// <summary>

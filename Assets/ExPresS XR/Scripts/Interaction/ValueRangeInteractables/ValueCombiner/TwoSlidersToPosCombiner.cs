@@ -2,16 +2,15 @@ using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
-/// This class is used to combine the values of two (float) slider
-/// as there seems to be no easy way of adding multiple sliders as 
-/// of determining which handle is currently selected. The result is
-/// that both sliders always move.
-/// Instead we use two float sliders and this script to combine them.
-/// </summary>
-
 namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueCombiner
 {
+    /// <summary>
+    /// This class is used to combine the values of two (float) slider
+    /// as there seems to be no easy way of adding multiple sliders as 
+    /// of determining which handle is currently selected. The result is
+    /// that both sliders always move.
+    /// Instead we use two float sliders and this script to combine them.
+    /// </summary>
     public class TwoSlidersToPosCombiner : MonoBehaviour
     {
         /// <summary>

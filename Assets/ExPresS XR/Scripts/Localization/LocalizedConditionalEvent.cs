@@ -68,13 +68,9 @@ namespace ExPresSXR.Localization
         /// <summary>
         /// Event emitted if the locale DOES NOT match.
         /// </summary>
-
         public UnityEvent OnLocaleMismatchEvent;
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
-        public void OnEnable()
+        private void OnEnable()
         {
             if (_emitOnEnable)
             {
@@ -87,10 +83,7 @@ namespace ExPresSXR.Localization
             }
         }
 
-        /// <summary>
-        /// < inheritdoc />
-        /// </summary>
-        public void OnDisable()
+        private void OnDisable()
         {
             if (_emitOnChanged)
             {

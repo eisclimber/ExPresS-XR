@@ -499,16 +499,22 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
+        /// <summary>
+        /// Internally use to update the picture data in the editor.
+        /// </summary>
         public void InternalUpdatePictureData()
         {
             PictureData = PictureData;
         }
     }
 
+    /// <summary>
+    /// How automatic scrolling is performed.
+    /// </summary>
     public enum ScrollType
     {
-        ConstantDuration,
-        ConstantSpeed,
-        PictureSnap
+        ConstantDuration, /// <summary> Scroll through the images in a constant duration picture data with different lengths. </summary>
+        ConstantSpeed, /// <summary> Scroll through the images with a constant speed. </summary>
+        PictureSnap  /// <summary> Snap between pictures displaying them a certain duration. </summary>
     }
 }

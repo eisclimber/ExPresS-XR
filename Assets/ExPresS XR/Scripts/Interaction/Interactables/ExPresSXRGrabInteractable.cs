@@ -17,6 +17,7 @@ namespace ExPresSXR.Interaction
         /// Minimal scale possible, negative values are considered unbound.
         /// </summary>
         [SerializeField]
+        [Tooltip("Minimal scale possible, negative values are considered unbound.")]
         private float _minScaleFactor = 1.0f;
         public float MinScaleFactor
         {
@@ -28,6 +29,7 @@ namespace ExPresSXR.Interaction
         /// Maximal scale possible, negative values are considered unbound.
         /// </summary>
         [SerializeField]
+        [Tooltip("Maximal scale possible, negative values are considered unbound.")]
         private float _maxScaleFactor = 1.0f;
         public float MaxScaleFactor
         {
@@ -62,6 +64,7 @@ namespace ExPresSXR.Interaction
         /// If the interactable should reset its scale when selected by a socket or retain the current scale.
         /// </summary>
         [SerializeField]
+        [Tooltip(" If the interactable should reset its scale when selected by a socket or retain the current scale.")]
         private bool _resetScaleInSockets = true;
 
 
@@ -69,6 +72,7 @@ namespace ExPresSXR.Interaction
         /// If all children should be scaled or only those set as `scaledChildren` via the editor.
         /// </summary>
         [SerializeField]
+        [Tooltip("If all children should be scaled or only those set as `scaledChildren` via the editor.")]
         private bool _scaleAllChildren = true;
         public bool ScaleAllChildren
         {
@@ -104,6 +108,7 @@ namespace ExPresSXR.Interaction
         /// If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.
         /// </summary>
         [SerializeField]
+        [Tooltip("If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.")]
         private bool _allowGrab = true;
         public bool AllowGrab
         {

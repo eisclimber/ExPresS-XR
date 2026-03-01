@@ -8,6 +8,9 @@ using ExPresSXR.Rig;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows exiting the game in both the built version of the game and the Unity Editor.
+    /// </summary>
     public class GameExiter : MonoBehaviour
     {
         /// <summary>

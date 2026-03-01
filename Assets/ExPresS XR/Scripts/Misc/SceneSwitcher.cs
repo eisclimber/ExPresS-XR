@@ -12,6 +12,7 @@ namespace ExPresSXR.Misc
         /// If the scene should be switched with fade. A rig is required if switching with fade.
         /// </summary>
         [SerializeField]
+        [Tooltip("If the scene should be switched with fade. A rig is required if switching with fade.")]
         private bool _useFade = true;
         public bool UseFade
         {
@@ -30,6 +31,7 @@ namespace ExPresSXR.Misc
         /// A reference to the rig. Will prevent interactions after exiting and required for fading out.
         /// </summary>
         [SerializeField]
+        [Tooltip("A reference to the rig. Will prevent interactions after exiting and required for fading out.")]
         private ExPresSXRRig _rig;
 
         /// <summary>
@@ -37,6 +39,8 @@ namespace ExPresSXR.Misc
         /// As this operation is rather expensive, it is best to directly set the reference directly.
         /// </summary>
         [SerializeField]
+        [Tooltip("If enabled will try to find the current ExPresSXRRig.\n"
+                + "As this operation is rather expensive, it is best to directly set the reference directly.")]
         private bool _findRigIfMissing = true;
 
 

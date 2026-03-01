@@ -1,18 +1,18 @@
-/*
-    Script Name: ScaleState.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Represents the state of a scale (one side heavier or both equal).
-*/
 namespace ExPresSXR.Minigames.CoinScale
 {
+    /// <summary>
+    /// Represents the state of a scale (one side heavier or both equal).
+    /// </summary>
     public class ScaleState
     {
+        /// <summary>
+        /// The position of the bowl during weighing.
+        /// </summary>
         public enum BowlPosition
         {
-            Down,
-            Center,
-            Up
+            Down, /// <summary>Down position when weighing.</summary>
+            Center, /// <summary>Center position when weighing.</summary>
+            Up /// <summary>Up position when weighing.</summary>
         }
 
         /// <summary>

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Tutorial
 {
+    /// <summary>
+    /// Represents a tutorial step handler for triggering animations based on a step index in a tutorial.
+    /// </summary>
     public class TutorialStepAnimations : TutorialStepHandler
     {
         /// <summary>

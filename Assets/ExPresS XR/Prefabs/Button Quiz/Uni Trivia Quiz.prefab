@@ -29,10 +29,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8888978629272485977}
-  - {fileID: 8188460272224587311}
-  - {fileID: 4009758582312962735}
-  - {fileID: 5936482002703996957}
+  - {fileID: 8661171618428421607}
+  - {fileID: 2841046722590442871}
+  - {fileID: 2082764474875677167}
+  - {fileID: 7799629231482632275}
   m_Father: {fileID: 2967302771462325464}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2967302770961034527
@@ -213,10 +213,10 @@ MonoBehaviour:
   _canRestartFromAfterQuizDialog: 1
   _feedbackDuration: 3
   Buttons:
-  - {fileID: 6735616089321918386}
-  - {fileID: 6305330751759663556}
-  - {fileID: 1263206907300382020}
-  - {fileID: 8376931974304552950}
+  - {fileID: 323161059906257990}
+  - {fileID: 6567334600797193430}
+  - {fileID: 6965317884816394318}
+  - {fileID: 1185407130130905586}
   McConfirmButton: {fileID: 0}
   DisplayText: {fileID: 2967302772214795076}
   DisplayAnchor: {fileID: 0}
@@ -556,6 +556,79 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &3320195147137560158
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6916485731418424885}
+    m_Modifications:
+    - target: {fileID: 1173146436986038597, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_Name
+      value: Quiz Button 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+--- !u!114 &1185407130130905586 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4494832552014960556, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 3320195147137560158}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Interaction.ValueRangeInteractable.Button
+--- !u!4 &7799629231482632275 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 3320195147137560158}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3423549198775153297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -763,7 +836,7 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 1609898589039242622, guid: 4e7436a3de2377d4cb40dc514b252d96, type: 3}
   m_PrefabInstance: {fileID: 3423549198775153297}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &4292282228949695638
+--- !u!1001 &4187436302855394282
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -771,242 +844,72 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6916485731418424885}
     m_Modifications:
-    - target: {fileID: 879532188256843320, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_Name
-      value: Quiz Button 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
-      value: 1801810542
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
---- !u!114 &1263206907300382020 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3032875347758627282, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 4292282228949695638}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &4009758582312962735 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 4292282228949695638}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &6797663775667908132
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 6916485731418424885}
-    m_Modifications:
-    - target: {fileID: 879532188256843320, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_Name
-      value: Quiz Button 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
-      value: 1801810542
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
---- !u!4 &5936482002703996957 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 6797663775667908132}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8376931974304552950 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3032875347758627282, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 6797663775667908132}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1001 &8606175659384993376
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 6916485731418424885}
-    m_Modifications:
-    - target: {fileID: 879532188256843320, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 1173146436986038597, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_Name
       value: Quiz Button 1
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.45
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
-      value: 1801810542
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
---- !u!114 &6735616089321918386 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+--- !u!114 &323161059906257990 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3032875347758627282, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 8606175659384993376}
+  m_CorrespondingSourceObject: {fileID: 4494832552014960556, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 4187436302855394282}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &8888978629272485977 stripped
+  m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Interaction.ValueRangeInteractable.Button
+--- !u!4 &8661171618428421607 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 8606175659384993376}
+  m_CorrespondingSourceObject: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 4187436302855394282}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &9049975643869706262
+--- !u!1001 &6830023099067326434
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1014,76 +917,141 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6916485731418424885}
     m_Modifications:
-    - target: {fileID: 879532188256843320, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 1173146436986038597, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_Name
-      value: Quiz Button 2
+      value: Quiz Button 3
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.15
+      value: 0.15
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1384225190523228788, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
-      value: 1801810542
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
---- !u!114 &6305330751759663556 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+--- !u!4 &2082764474875677167 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 6830023099067326434}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6965317884816394318 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3032875347758627282, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 9049975643869706262}
+  m_CorrespondingSourceObject: {fileID: 4494832552014960556, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 6830023099067326434}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &8188460272224587311 stripped
+  m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Interaction.ValueRangeInteractable.Button
+--- !u!1001 &7296682839281554298
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6916485731418424885}
+    m_Modifications:
+    - target: {fileID: 1173146436986038597, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_Name
+      value: Quiz Button 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+--- !u!4 &2841046722590442871 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 879532188256843321, guid: 763fb4419152c4848bf18a74554416c0, type: 3}
-  m_PrefabInstance: {fileID: 9049975643869706262}
+  m_CorrespondingSourceObject: {fileID: 4768866235299026445, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 7296682839281554298}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6567334600797193430 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4494832552014960556, guid: 5b806f63f4dc68f40861e82d35202232, type: 3}
+  m_PrefabInstance: {fileID: 7296682839281554298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b0d8230bde420a4aabd8cf3eff4e879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Interaction.ValueRangeInteractable.Button

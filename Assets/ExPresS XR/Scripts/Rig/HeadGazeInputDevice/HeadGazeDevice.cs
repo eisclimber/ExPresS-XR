@@ -10,6 +10,12 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace ExPresSXR.Rig.HeadGazeInputDevice
 {
+    /// <summary>
+    /// Defines a (virtual) InputDevice for triggering select InputActions used for the use HeadGaze.
+    /// This is done so the device does not interfere with other devices and their specific logic as well as making the input easier to recognize.
+    /// </summary>
+
+
     // Add the InitializeOnLoad attribute to automatically run the static
     // constructor of the class after each C# domain load.
 #if UNITY_EDITOR
@@ -30,7 +36,15 @@ namespace ExPresSXR.Rig.HeadGazeInputDevice
         /// </summary>
         /// <value></value>
         public static HeadGazeDevice Current { get; private set; }
+
+        /// <summary>
+        /// Returns a readonly list of all head gaze devices (always empty).
+        /// </summary>
         public static IReadOnlyList<HeadGazeDevice> All => AllHeadGazeDevice;
+
+        /// <summary>
+        /// Returns a list of all head gaze devices (always empty).
+        /// </summary>
         private static readonly List<HeadGazeDevice> AllHeadGazeDevice = new();
 
 

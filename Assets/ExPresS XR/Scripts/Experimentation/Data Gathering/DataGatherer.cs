@@ -12,6 +12,20 @@ using UnityEngine.Networking;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
+    /// <summary>
+    /// The Data Gatherer is a component to extract and save data in a Unity Scene.
+    /// All values that are specified in the Data Gatherer will be stored in a CSV-formatted file which will be saved at the path and/or be send via http POST to a server.
+    /// 
+    /// A more detailed description of the capabilities of the `Data Gatherer` can be found in the [DataGathering-Tutorial](Data-Gathering) which is also available in the editor under "ExPresS XR > Data Gathering".
+    /// 
+    /// Some important things to note:  
+    /// 
+    /// - The DataGatherer can automatically export values but any script can export new values at any time calling`ExportNewCsvLine()`.
+    /// - When played in the editor the Values will be stored at `Application.dataPath`. The Build will store it at the apps data-path (e.g. `%APPDATA%` on Windows)
+    /// - While `includeTimestamp` is optional it is recommended to include it as the export times might differ by a few milliseconds.
+    /// - The shortest somewhat stable value for `periodicExportTime` was about `0.01s`. 
+    /// - Using `exportDuringUpdate` the exports were around 0.02 on a Valve Index (aprox. `Time.DeltaTime` with 60FPs).
+    /// </summary>
     public class DataGatherer : MonoBehaviour
     {
         /// <summary>
@@ -49,7 +63,14 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// </summary>
         public static readonly string[] EXPORT_FILE_ENDINGS = new string[] { DEFAULT_EXPORT_FILE_ENDING, ".log", ".txt" };
 
+        /// <summary>
+        /// Format for a pretty timestamp with a space separating date and time.
+        /// </summary>
         public static readonly string timestampPretty = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+        /// <summary>
+        /// Format for a safe timestamp with a underscore separating date and time.
+        /// </summary>
         public static readonly string timestampSafe = DateTimeOffset.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
 
@@ -152,7 +173,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             get => _httpExportPath;
             set => _httpExportPath = value;
         }
-        
+
 
         /// <summary>
         /// When enabled a timestamped export file is created each time the app is started.
@@ -233,7 +254,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         // Data
-        
+
         /// <summary>
         /// Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). Its value is relative to the computers local timezone.
         /// </summary>
@@ -381,7 +402,7 @@ namespace ExPresSXR.Experimentation.DataGathering
             // Add InputAction bindings
             bindingHeaders.AddRange(_inputActionDataBindings.Select(v => v != null ? v.name : ""));
             escapeIndividual.AddRange(Enumerable.Repeat(_escapeColumns, bindingHeaders.Count - escapeIndividual.Count));
-            
+
             // Convert to string
             if (EscapeColumns)
             {
@@ -594,6 +615,10 @@ namespace ExPresSXR.Experimentation.DataGathering
         #endregion
 
         #region Utility
+        /// <summary>
+        /// Returns the local safe path either in appdata or in the editor.
+        /// </summary>
+        /// <returns>A safe path to write files to.</returns>
         public string GetLocalSavePath()
         {
             string path = _newExportFilePerPlaythrough ? InsertBeforeExportPostfixes(LocalExportPath, $"_{timestampSafe}") : LocalExportPath;
@@ -645,19 +670,24 @@ namespace ExPresSXR.Experimentation.DataGathering
         #endregion
 
         #region Enums
+        /// <summary>
+        /// Type of separating csv columns.
+        /// </summary>
         public enum SeparatorType
         {
-            Semicolon,
-            Comma,
-            Custom
+            Semicolon, /// <summary> Separate columns using a semicolon `;`. </summary>
+            Comma, /// <summary> Separate columns using a comma `,`. </summary>
+            Custom /// <summary> Separate columns using the provided char. </summary>
         }
 
-
+        /// <summary>
+        /// How data is exported.
+        /// </summary>
         public enum ExportType
         {
-            Local,
-            Http,
-            Both
+            Local, /// <summary> Write data to disk. </summary>
+            Http, /// <summary> Send data via http. </summary>
+            Both /// <summary> Write both the file to disk and sent via http. </summary>
         }
         #endregion
     }

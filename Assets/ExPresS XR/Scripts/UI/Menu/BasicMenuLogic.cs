@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace ExPresSXR.UI.Menu
 {
+    /// <summary>
+    /// Implements a basic menu navigation for switching menus (to a fixe "back"-menu or to an arbitrary one).
+    /// </summary>
     public class BasicMenuLogic : MonoBehaviour
     {
         /// <summary>

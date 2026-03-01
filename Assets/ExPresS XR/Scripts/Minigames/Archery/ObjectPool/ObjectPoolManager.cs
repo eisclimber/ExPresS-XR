@@ -3,6 +3,16 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery.ObjectPool
 {
+    /// <summary>
+    /// Allows the use of simple Object Pooling. This will create object instance if necessary. When an object is not needed it get returned to the pool and deactivated instead of destroyed. When there are unused objects in the pool, this object is returned insrtead of creating a completely new instance, saving time and resources.  
+    /// Pooled Objects should ideally be a prefab and implement the `IPooledObject` interface to allow resetting certain components of the object like forces of rigidbodies. Position, rotation, parent transform and active status are reset automatically.  
+    /// 
+    /// You can register a default pool manager to be globally accessible, by checking the option in its inspector. You should avoid setting multiple as default since they might interfere, messing up object return and retrieval.  
+    /// If none is set, but you try to access it, a new one gets created.
+    /// The actual use of the default manager as must be implemented by the components using it.
+    /// 
+    /// Pooling and object retrieval is based on the name of the provided object/prefab. It is basically the name of the object truncated to seven characters but allowing fewer. This needs to be taken in consideration when spawning similarly named prefabs using the same ObjectPoolManager to avoid naming collisions.
+    /// </summary>
     public class ObjectPoolManager : MonoBehaviour
     {
         /// <summary>
@@ -137,7 +147,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
                 Debug.LogError($"Trying to release the object '{toReturn}' but found no pool.");
                 return;
             }
-            
+
             if (toReturn.TryGetComponent(out IPoolObject po))
             {
                 po.HandlePoolReturned();

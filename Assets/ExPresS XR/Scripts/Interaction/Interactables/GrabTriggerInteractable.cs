@@ -13,6 +13,7 @@ namespace ExPresSXR.Interaction.Interactables
         /// The material shown when the interactable is being hovered.
         /// </summary>
         [SerializeField]
+        [Tooltip("The material shown when the interactable is being hovered.")]
         protected Material _hoveredMaterial;
         public Material HoverMaterial
         {
@@ -24,6 +25,7 @@ namespace ExPresSXR.Interaction.Interactables
         /// Renderer to manipulate the material from. Determined on startup.
         /// </summary>
         [SerializeField]
+        [Tooltip("Renderer to manipulate the material from. Determined on startup.")]
         private Renderer _renderer;
         protected Renderer Renderer
         {

@@ -196,8 +196,7 @@ namespace ExPresSXR.Minigames.Common
         /// <summary>
         /// Sets the outline colors of both scores.
         /// </summary>
-        /// <param name="fontColor">Color to set.</param>
-
+        /// <param name="outlineColor">Color to set.</param>
         public void SetOutlineColor(Color outlineColor)
         {
             _text.outlineColor = outlineColor;

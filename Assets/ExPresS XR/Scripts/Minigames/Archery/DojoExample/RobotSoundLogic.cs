@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery.DojoExample
 {
+    /// <summary>
+    /// A helper component managing the audio logic of the Kyudojo example scene.
+    /// </summary>
     public class RobotSoundLogic : MonoBehaviour
     {
         /// <summary>

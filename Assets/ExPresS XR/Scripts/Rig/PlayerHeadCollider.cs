@@ -6,12 +6,13 @@ using ExPresSXR.UI;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
-// Thanks to metaanomie for basic code (https://metaanomie.blogspot.com/2020/04/unity-vr-head-blocking-steam-vr-v2.html)
-// Attach this to the 'Main Camera' of an XROrigin and assign an anchor (e.g. the XROrigin's CameraOffset) 
-// to prevent the camera clipping through walls
-
+// Thanks to metaanomie for the basic implementation: https://metaanomie.blogspot.com/2020/04/unity-vr-head-blocking-steam-vr-v2.html
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// Detects collisions of an `ExPresS XR Rig`s camera.
+    /// It can optionally push the rig back to prevent clipping inside objects (this may be weird though) and/or display vignette effect of an `ScreenCollisionIndicator` when collisions occur.
+    /// </summary>
     public class PlayerHeadCollider : MonoBehaviour
     {
         private const float GRAVITY_STRENGTH = 9.81f;

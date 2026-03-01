@@ -8,20 +8,36 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// A manager for the different interaction components a hand.
+    /// This includes managing teleport, hand visuals and poke interaction.
+    /// </summary>
     [AddComponentMenu("ExPresS XR/Hand Controller")]
     public class HandControllerManager : ControllerInputActionManagerBase
     {
+        /// <summary>
+        /// The interaction attach controller of the hand used for far interaction.
+        /// </summary>
         [SerializeField]
+        [Tooltip("The interaction attach controller of the hand used for far interaction.")]
         private InteractionAttachController _attachController;
 
         [Space]
 
+        /// <summary>
+        /// The poke interactor of the hand.
+        /// </summary>
         [SerializeField]
+        [Tooltip("The poke interactor of the hand.")]
         private XRPokeInteractor _pokeInteractor;
 
         [Space]
 
+        /// <summary>
+        /// The Prefab for instantiating an auto hand model for this hand.
+        /// </summary>
         [SerializeField]
+        [Tooltip("The Prefab for instantiating an auto hand model for this hand.")]
         private AutoHandModel _handModel;
 
 
@@ -30,6 +46,7 @@ namespace ExPresSXR.Rig
         /// Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).")]
         private bool _teleportCancelEnabled;
         public bool TeleportCancelEnabled
         {
@@ -46,6 +63,8 @@ namespace ExPresSXR.Rig
         /// The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not the forwards direction after teleporting can be chosen when rotating the joystick. "
+                + "The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.")]
         private bool _chooseTeleportForwardEnabled;
         public bool ChooseTeleportForwardEnabled
         {
@@ -67,6 +86,7 @@ namespace ExPresSXR.Rig
         /// Whether or not near interaction is enabled.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not near interaction is enabled.")]
         private bool _nearInteractionEnabled;
         public bool NearInteractionEnabled
         {
@@ -88,6 +108,7 @@ namespace ExPresSXR.Rig
         /// Whether or not far (and/or ray) interaction is enabled.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not far (and/or ray) interaction is enabled.")]
         private bool _farInteractionEnabled;
         public bool FarInteractionEnabled
         {
@@ -112,6 +133,7 @@ namespace ExPresSXR.Rig
         /// Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.")]
         private bool _farAnchorControlEnabled;
         public bool FarAnchorControlEnabled
         {
@@ -132,11 +154,12 @@ namespace ExPresSXR.Rig
             }
         }
 
-        
+
         /// <summary>
         /// Whether pulling (and pushing) an object closer during far interaction is enabled.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether pulling (and pushing) an object closer during far interaction is enabled.")]
         private bool _farPullCloserEnabled;
         public bool FarPullCloserEnabled
         {
@@ -156,6 +179,7 @@ namespace ExPresSXR.Rig
         /// Whether or not the ray can also interact with UI.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not the ray can also interact with UI.")]
         private bool _farUiInteractionEnabled;
         public bool FarUiInteractionEnabled
         {
@@ -182,6 +206,7 @@ namespace ExPresSXR.Rig
         /// Whether or not poke interaction is enabled.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not poke interaction is enabled.")]
         private bool _pokeInteractionEnabled;
         public bool PokeInteractionEnabled
         {
@@ -195,7 +220,7 @@ namespace ExPresSXR.Rig
                     _pokeInteractor.hoverExited.RemoveListener(OnPokeHoverExited);
                     _pokeInteractor.uiHoverExited.RemoveListener(OnPokeUiHoverExited);
                 }
-                
+
                 _pokeInteractionEnabled = value;
 
                 if (_pokeInteractor != null)
@@ -211,10 +236,10 @@ namespace ExPresSXR.Rig
         }
 
         /// <summary>
-        /// Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.
+        /// If the auto hand should automatically switch to a pointing pose when hovering interactables.
         /// </summary>
-        [Tooltip("Turns all mesh renderers in children of the PokeInteractor on or off.")]
         [SerializeField]
+        [Tooltip("If the auto hand should automatically switch to a pointing pose when hovering interactables.")]
         private bool _pokePointOnHover;
         public bool PokePointOnHover
         {
@@ -228,8 +253,8 @@ namespace ExPresSXR.Rig
         /// <summary>
         /// Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.
         /// </summary>
-        [Tooltip("Turns all mesh renderers in children of the PokeInteractor on or off.")]
         [SerializeField]
+        [Tooltip("Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.")]
         private bool _pokeShowReticle;
         public bool PokeShowReticle
         {
@@ -252,6 +277,7 @@ namespace ExPresSXR.Rig
         /// Whether or not poking can be used with UI.
         /// </summary>
         [SerializeField]
+        [Tooltip("Whether or not poking can be used with UI.")]
         private bool _pokeUiInteractionEnabled;
         public bool PokeUiInteractionEnabled
         {
@@ -273,6 +299,7 @@ namespace ExPresSXR.Rig
         /// Reticle for valid teleports.
         /// </summary>
         [SerializeField]
+        [Tooltip("Reticle for valid teleports.")]
         private GameObject _teleportValidReticle;
         public GameObject TeleportValidReticle
         {
@@ -289,9 +316,10 @@ namespace ExPresSXR.Rig
         }
 
         /// <summary>
-        /// Reticle for valid teleports.
+        /// Reticle for invalid teleports.
         /// </summary>
         [SerializeField]
+        [Tooltip("Reticle for invalid teleports.")]
         private GameObject _teleportInvalidReticle;
         public GameObject TeleportInvalidReticle
         {
@@ -309,10 +337,11 @@ namespace ExPresSXR.Rig
         #endregion
 
         /// <summary>
-        /// Hidden in the editor!
         /// Used to disable certain fields in the editor when controlled by a rig.
+        /// Hidden in the editor!
         /// </summary>
         [SerializeField]
+        [Tooltip("Used to disable certain fields in the editor when controlled by a rig.\n Hidden in the editor!")]
         private bool _externallyControlled;
         public bool ExternallyControlled
         {

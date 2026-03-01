@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 {
+    /// <summary>
+    /// A spawner that spawns a single target and moves it with a certain speed between two target positions.  
+    /// Despawning/Resets of the target happen based on collisions with an `ObjectCollisionDetector`.
+    /// 
+    /// Objects can either be only good or bad, while the selection can be randomized.
+    /// The selection of good and bad objects and visuals is also configurable and randomizable.
+    /// </summary>
     public class LineSpawner : TargetSpawnerBase
     {
         /// <summary>

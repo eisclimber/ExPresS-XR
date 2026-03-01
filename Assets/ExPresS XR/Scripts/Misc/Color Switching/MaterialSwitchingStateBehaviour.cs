@@ -22,7 +22,8 @@ namespace ExPresSXR.Misc.ColorSwitching
         private ColorAnimatorSwitcher _colorSwitcher;
 
         /// <summary>
-        /// < inheritdoc />
+        /// Called when the state is entered.
+        /// Tries to retrieve the `ColorAnimationSwitcher`-Component from the Animators GameObject and use it to change the material.
         /// </summary>
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {

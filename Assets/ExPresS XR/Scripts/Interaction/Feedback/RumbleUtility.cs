@@ -5,6 +5,9 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 
 namespace ExPresSXR.Interaction.Feedback
 {
+    /// <summary>
+    /// A set of utility functions to perform rumbles on HapticImpulsePlayers, supporting the use of HapticImpulsePlayerProxies.
+    /// </summary>
     public static class RumbleUtility
     {
         /// <summary>
@@ -59,6 +62,12 @@ namespace ExPresSXR.Interaction.Feedback
             PerformConstantRumble(rumble.Strength, rumble.Duration, haptics);
         }
 
+        /// <summary>
+        /// Triggers a constant rumble with the given strength for the given duration on the target (if possible).
+        /// </summary>
+        /// <param name="strength">Strength of the rumble in pct between 0.0f and 1.0f.</param>
+        /// <param name="duration">Duration of the rumble in seconds.</param>
+        /// <param name="haptics">HapticImpulsePlayer to perform the rumble with.</param>
         public static void PerformConstantRumble(float strength, float duration, HapticImpulsePlayer haptics)
         {
             if (haptics == null)

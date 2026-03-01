@@ -42,6 +42,7 @@ namespace ExPresSXR.Presentation.Pictures
         /// Allows to set the PictureData's description to be localized.
         /// </summary>
         /// <param name="description">Description to be set.</param>
+        /// <param name="idx">Index to the description.</param>
         public void SetDataDescription(string description, int idx)
         {
             if (_data != null && idx >= 0 && idx < _data.Descriptions.Length)

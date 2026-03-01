@@ -1,10 +1,3 @@
-/*
-    Script Name: CoinInitializer.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: (Re-)Sets the positions of coins and optionally randomizes the fake coin.
-*/
-
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -13,6 +6,9 @@ using ExPresSXR.Interaction.Feedback;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
+    /// <summary>
+    /// (Re-)Sets the positions of coins and optionally randomizes the fake coin.
+    /// </summary>
     public class CoinInitializer : MonoBehaviour
     {
         /// <summary>

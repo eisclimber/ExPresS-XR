@@ -6,6 +6,12 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction.Interactors
 {
+    /// <summary>
+    /// An Expansion of the `HighlightableSocketInteractor` to restrict access to GameObjects with the tags specified in `_targetTags`.
+    /// This allows a set of multiple Object to be a valid target.
+    /// 
+    /// An empty string as `targetTag` will match the "Untagged"-tag.
+    /// </summary>
     public class TagCheckSocketInteractor : HighlightableSocketInteractor
     {
         /// <summary>
@@ -22,8 +28,11 @@ namespace ExPresSXR.Interaction.Interactors
         private bool _allowInvalidHover;
 
         /// <summary>
-        /// < inheritdoc />
+        /// Determines if a `XRGrabInteractable` can hover, i.e. is considered a valid target.
+        /// Can be overwritten, but `base.CanHover(interactable)` should be called to ensure correct behavior.
         /// </summary>
+        /// <param name="interactable">Interactable hovering.</param>
+        /// <returns>If the interactable can hover.</returns>
         public override bool CanHover(IXRHoverInteractable interactable)
             => base.CanHover(interactable) && (IsTagMatch(interactable) || _allowInvalidHover);
 
@@ -40,8 +49,11 @@ namespace ExPresSXR.Interaction.Interactors
         }
 
         /// <summary>
-        /// < inheritdoc />
+        /// Determines if a `XRGrabInteractable` can be selected, i.e. is considered a valid target.
+        /// Can be overwritten, but `base.CanSelect(interactable)` should be called to ensure correct behavior.
         /// </summary>
+        /// <param name="interactable">Interactable selecting</param>
+        /// <returns>If the interactable can select.</returns>
         public override bool CanSelect(IXRSelectInteractable interactable)
             => base.CanSelect(interactable) && IsTagMatch(interactable);
 

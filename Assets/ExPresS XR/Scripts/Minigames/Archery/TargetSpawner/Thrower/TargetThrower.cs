@@ -5,6 +5,9 @@ using ExPresSXR.Minigames.Archery.ObjectPool;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner.Thrower
 {
+    /// <summary>
+    /// A spawner that spawns targets from a collection as pool object and shoots them up.
+    /// </summary>
     public class TargetThrower : TargetSpawnerBase
     {
         /// <summary>

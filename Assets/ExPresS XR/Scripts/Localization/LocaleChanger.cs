@@ -108,7 +108,7 @@ namespace ExPresSXR.Localization
         /// <summary>
         /// Sets the locale using its identifierCode, if it is available.
         /// </summary>
-        /// <param name="desiredLocale">The locales identifier code (en, de, ...).</param>
+        /// <param name="identifierCode">The locales identifier code (en, de, ...).</param>
         public void SetLocale(string identifierCode)
         {
             int localeIndex = FindLocaleIndex(identifierCode);

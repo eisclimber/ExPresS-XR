@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// Allows controlling the visibility of a hand menu and where it is attached to (left or right hand).
+    /// </summary>
     public class HandMenuToggler : MonoBehaviour
     {
         /// <summary>

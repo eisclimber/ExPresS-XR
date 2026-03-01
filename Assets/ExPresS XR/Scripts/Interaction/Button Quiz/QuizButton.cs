@@ -2,31 +2,67 @@ using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
 using ExPresSXR.Interaction.Interactors;
+using ExPresSXR.Interaction.ValueRangeInteractable;
+
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
+    /// <summary>
+    /// An expansion of `BaseButton` representing the Button that is used when answering a `TutorialButtonQuiz`.
+    /// 
+    /// It is able to display answer options in the form of text and GameObject that will hover above the press anchor.
+    /// In order to display the GameObjects it is advised to create a Prefab.
+    /// Also move them a bit up on the y-axis and if they should be made interactable add a `XRGrabInteractable` to it.
+    /// 
+    /// Most logic is restricted to non-Toggle-Mode as Toggle-Mode is used when the quiz is in MultipleChoice-Mode. If in MultipleChoice-Mode the button will be automatically set to Toggle-Mode and the feedback is handled via an extra (See `McConfirmButton`).
+    /// 
+    /// When pressed the events `OnPressedCorrect` and `OnPressedIncorrect` are invoked to notify if the button was pressed correctly or not.
+    /// </summary>
+
     // ExPresSXR.Interaction.ButtonQuiz.QuizButton, Assembly-CSharp
-    public class QuizButton : BaseButton
+    public class QuizButton : Button
     {
         /// <summary>
         /// If the question currently displayed is correct.
         /// </summary>
-        public bool CorrectChoice;
+        [SerializeField]
+        [Tooltip("If the question currently displayed is correct.")]
+        private bool _correctChoice;
+        public bool CorrectChoice
+        {
+            get => _correctChoice;
+            set => _correctChoice = value;
+        }
 
         /// <summary>
         /// If feedback should be given when pressing the button.
         /// </summary>
-        public bool FeedbackDisabled;
+        [SerializeField]
+        [Tooltip("If feedback should be given when pressing the button.")]
+        public bool _feedbackDisabled;
+        public bool FeedbackDisabled
+        {
+            get => _feedbackDisabled;
+            set => _feedbackDisabled = value;
+        }
 
         /// <summary>
         /// If the feedback should be inverted (if feedback is given).
         /// </summary>
-        public bool InvertedFeedback;
+        [SerializeField]
+        [Tooltip("If the feedback should be inverted (if feedback is given).")]
+        public bool _invertedFeedback;
+        public bool InvertedFeedback
+        {
+            get => _invertedFeedback;
+            set => _invertedFeedback = value;
+        }
 
         /// <summary>
         /// The string displayed as the answer.
         /// </summary>
         [SerializeField]
+        [Tooltip("The string displayed as the answer.")]
         private string _answerText;
         public string AnswerText
         {
@@ -51,6 +87,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// The prefab that is attached to the `feedbackObjectSocket` as answer option.
         /// </summary>
         [SerializeField]
+        [Tooltip("The prefab that is attached to the `feedbackObjectSocket` as answer option.")]
         private GameObject _answerObject;
         public GameObject AnswerObject
         {
@@ -80,18 +117,23 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// This will instantiate a new GameObject, so prefabs are recommended as normal GameObjects will be duplicated. 
         /// </summary>
         [SerializeField]
+        [Tooltip("Socket to hold an answer object prefab.\nAdding a `XRGrabInteractable`-Component to the `_answerObject` will make it interactable."
+                + "\nThis will instantiate a new GameObject, so prefabs are recommended as normal GameObjects will be duplicated.")]
         private PutBackSocketInteractor _feedbackObjectSocket;
 
         /// <summary>
         /// Reference to a `Text`-GameObject that is used to display the answer texts.
         /// </summary>
         [SerializeField]
+        [Tooltip("Reference to a `Text`-GameObject that is used to display the answer texts.")]
         private TMP_Text _feedbackTextLabel;
 
 
         /// <summary>
         /// Used to not emit inputDisabled Events after an answer was given.
         /// </summary>
+        [SerializeField]
+        [Tooltip("Used to not emit inputDisabled Events after an answer was given.")]
         private bool _overrideInputDisabledEvents;
         public bool OverrideInputDisabledEvents
         {
@@ -103,14 +145,26 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <summary>
         /// Sound played when the button pressed with a correct answer.
         /// </summary>
+        [SerializeField]
         [Tooltip("Sound played when the button pressed with a correct answer.")]
-        public AudioClip AnsweredCorrectSound;
+        protected AudioClip _answeredCorrectSound;
+        public AudioClip AnsweredCorrectSound
+        {
+            get => _answeredCorrectSound;
+            set => _answeredCorrectSound = value;
+        }
 
         /// <summary>
         /// Sound played when the button pressed with an incorrect answer.
         /// </summary>
+        [SerializeField]
         [Tooltip("Sound played when the button pressed with an incorrect answer.")]
-        public AudioClip AnsweredIncorrectSound;
+        protected AudioClip _answeredIncorrectSound;
+        public AudioClip AnsweredIncorrectSound
+        {
+            get => _answeredIncorrectSound;
+            set => _answeredIncorrectSound = value;
+        }
 
 
         /// <summary>
@@ -118,6 +172,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// This prevents interferences with pressed/released sounds when answering.
         /// </summary>
         [SerializeField]
+        [Tooltip("Audio Source used to play `answeredCorrectSound` and `answeredCorrectSound`.\nThis prevents interferences with pressed/released sounds when answering.")]
         private AudioSource _answerFeedbackAudioPlayer;
 
 
@@ -135,7 +190,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         ///////////
         private long triggerStartTime = -1;
-        
+
         /// <summary>
         /// Resets the timer measuring the time until the button was pressed to give an answer.
         /// Will be automatically called when displaying a new answer (`DisplayAnswer()` is called).
@@ -222,7 +277,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 _answerFeedbackAudioPlayer.Stop();
             }
 
-            ResetButtonPress();
+            ResetValue();
         }
 
         /// <summary>
@@ -263,16 +318,5 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// Plays the `answeredIncorrectSound`, if assigned.
         /// </summary>
         public void PlayAnsweredIncorrectSound() => PlaySound(AnsweredIncorrectSound, _answerFeedbackAudioPlayer);
-
-        /// <summary>
-        /// Calls the base function only if not disabled via `_overrideInputDisabledEvents`.
-        /// </summary>
-        public override void InternalEmitInputDisabledEvents()
-        {
-            if (!_overrideInputDisabledEvents)
-            {
-                base.InternalEmitInputDisabledEvents();
-            }
-        }
     }
 }

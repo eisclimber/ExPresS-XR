@@ -1,23 +1,21 @@
-/*
-    Script Name: Bowl.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: This script represents a bowl of a scale, detecting coins and calculates
-                a weight (1 for real, 0 for fake coins) from all coins in the bowl. 
-*/
-
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
+    /// <summary>
+    /// This script represents a bowl of a scale, detecting coins and calculates a weight (1 for real, 0 for fake coins) from all coins in the bowl. 
+    /// </summary>
     public class Bowl : MonoBehaviour
     {
+        /// <summary>
+        /// Which Side of the scale this bowl is located.
+        /// </summary>
         public enum ScaleSide
         {
-            Left,
-            Right
+            Left, /// <summary>Left side of the scale.</summary>
+            Right /// <summary>Right side of the scale.</summary>
         };
 
         /// <summary>

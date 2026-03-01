@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace ExPresSXR.UI
 {
+    /// <summary>
+    /// A visual indicator for on screen collision that fades the screen corners.A visual indicator for on screen collision that fades the screen corners.A visual indicator for on screen collision that fades the screen corners.
+    /// </summary>
     public class ScreenCollisionIndicator : MonoBehaviour
     {
         /// <summary>
@@ -12,6 +15,7 @@ namespace ExPresSXR.UI
         /// </summary>
         [Range(0f, 1f)]
         [SerializeField]
+        [Tooltip("The strength of the indicator. Ranging from 0.0f (=invisible) to 1.0f(=completely visible).")]
         private float _strength;
         public float Strength
         {
@@ -28,6 +32,7 @@ namespace ExPresSXR.UI
         /// The color the indicator is tinted.
         /// </summary>
         [SerializeField]
+        [Tooltip("The color the indicator is tinted.")]
         private Color _indicatorColor;
         public Color IndicatorColor
         {

@@ -1,14 +1,12 @@
-/*
-    Script Name: ScoreDisplay.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Displays and stores a numerical score via UI.
-*/
 using TMPro;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinThrow
 {
+    /// <summary>
+    /// Displays and stores a numerical score via UI.
+
+    /// </summary>
     public class ScoreDisplay : MonoBehaviour
     {
         /// <summary>

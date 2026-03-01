@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction;
+using System;
 
 namespace ExPresSXR.Editor.Editors
 {
+    [Obsolete("The button functionality was reimplemented as ValueRangeInteractable.\nUse an `ExPresSXR.Interaction.Button` instead.")]
     [CustomEditor(typeof(BaseButton))]
     [CanEditMultipleObjects]
     public class BaseButtonEditor : UnityEditor.Editor

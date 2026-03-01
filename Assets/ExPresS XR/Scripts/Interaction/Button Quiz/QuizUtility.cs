@@ -8,7 +8,9 @@ using System.Linq;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
-
+    /// <summary>
+    /// Helper class for the button quiz.
+    /// </summary>
     public class QuizUtility : MonoBehaviour
     {
         /// <summary>
@@ -187,7 +189,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// Can be used to check if a question was answered completely right or wrong.
         /// </summary>
         /// <param name="a">first array to check</param>
-        /// <param name="a">second array to check</param>
+        /// <param name="b">second array to check</param>
         /// <returns>if all value pairs matched</returns>
         public static bool ArrayMatch(bool[] a, bool[] b) => Enumerable.SequenceEqual(a, b);
 

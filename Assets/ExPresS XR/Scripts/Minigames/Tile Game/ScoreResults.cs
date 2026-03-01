@@ -3,8 +3,14 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.TileGame
 {
+    /// <summary>
+    /// The individual results of placing a tile in a tile game. 
+    /// </summary>
     public class ScoreResults
     {
+        /// <summary>
+        /// Total score for placing the tile (sum of all other scores).
+        /// </summary>
         public int TotalScore;
 
         /// <summary>

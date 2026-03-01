@@ -129,21 +129,23 @@ namespace ExPresSXR.Minigames.Excavation
         /// Returns the average color of the splatMap.
         /// THIS IS INSANELY EXPENSIVE AS THE GPU AND CPU NEED TO SYNC! CALL SPARINGLY!!!
         /// </summary>
+        /// <param name="granularity">Granularity of the mipmap to be retrieved.</param>
+        /// <param name="pcallbacks">Callback executed after retrieving the texture.</param>
         /// <returns>Average Color.</returns>
-        public void GetAvgColors(int _granularity, Action<AsyncGPUReadbackRequest> callback)
+        public void GetAvgColors(int granularity, Action<AsyncGPUReadbackRequest> callback)
         {
-            if (_granularity < 0)
+            if (granularity < 0)
             {
                 Debug.LogError($"Granularity is less than 0. Its value must be in the range [0, {_detailLevel}]. "
                     + "Return data for the min granularity instead.", this);
             }
-            if (_granularity > _detailLevel)
+            if (granularity > _detailLevel)
             {
                 Debug.LogError($"Granularity is greater than the detail level of the texture. Its value must be in the range [0, {_detailLevel}]. "
                     + "Return data for the max granularity instead.", this);
             }
             // Ensure correct value, mipLevel is the inverse of granularity.
-            int mipLevel = Mathf.Clamp(_detailLevel - _granularity, 0, _detailLevel);
+            int mipLevel = Mathf.Clamp(_detailLevel - granularity, 0, _detailLevel);
 
             // Read texture from gpu
             AsyncGPUReadback.Request(_excavationTexture, mipLevel, callback);

@@ -21,10 +21,16 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     {
         [Space]
 
+        /// <summary>
+        /// The offset of the screw at value '0' along the y-axis.
+        /// </summary>
         [SerializeField]
         [Tooltip("The offset of the screw at value '0' along the y-axis.")]
         protected float _minPosition = -1.0f;
 
+        /// <summary>
+        /// The offset of the screw at value '1' along the y-axis.
+        /// </summary>
         [SerializeField]
         [Tooltip("The offset of the screw at value '1' along the y-axis.")]
         protected float _maxPosition = 1.0f;

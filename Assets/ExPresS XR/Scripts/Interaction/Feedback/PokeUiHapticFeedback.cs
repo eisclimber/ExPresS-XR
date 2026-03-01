@@ -6,6 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
 namespace ExPresSXR.Interaction.Feedback 
 {
+    /// <summary>
+    /// Allows providing haptic feedback during poke interaction.
+    /// </summary>
     public class PokeUiHapticFeedback : MonoBehaviour
     {
         /// <summary>

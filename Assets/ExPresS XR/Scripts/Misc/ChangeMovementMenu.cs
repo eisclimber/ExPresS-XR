@@ -6,6 +6,9 @@ using TMPro;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows changing the movement configuration of an `ExPresS XR Rig` in a world space UI.
+    /// </summary>
     public class ChangeMovementMenu : MonoBehaviour
     {
         /// <summary>
@@ -40,34 +43,101 @@ namespace ExPresSXR.Misc
             }
         }
 
+        /// <summary>
+        /// A helper class holding all references to ui elements of the `ChangeMovementMenu` and controlling their values.
+        /// </summary>
         [Serializable]
         public class MovementMenuData
         {
+            /// <summary>
+            /// Dropdowns to change the input method.
+            /// </summary>
             public TMP_Dropdown InputMethodDropdown;
+            /// <summary>
+            /// Dropdowns to change the movement preset.
+            /// </summary>
             public TMP_Dropdown MovementPresetDropdown;
+            /// <summary>
+            /// Dropdowns to change the hand model mode.
+            /// </summary>
             public TMP_Dropdown HandModelDropdown;
 
 
+            /// <summary>
+            /// Toggle to enabled/disable near interaction.
+            /// </summary>
             public Toggle NearInteractionToggle;
+            /// <summary>
+            /// Toggle to enabled/disable far interaction.
+            /// </summary>
             public Toggle FarInteractionToggle;
+            /// <summary>
+            /// Toggle to enabled/disable far anchor control.
+            /// </summary>
             public Toggle FarAnchorControlToggle;
+            /// <summary>
+            /// Toggle to enabled/disable far pull closer.
+            /// </summary>
             public Toggle FarPullCloserToggle;
+            /// <summary>
+            /// Toggle to enabled/disable far ui interaction.
+            /// </summary>
             public Toggle FarUiToggle;
+            /// <summary>
+            /// Toggle to enabled/disable poke interaction.
+            /// </summary>
             public Toggle PokeInteractionToggle;
+            /// <summary>
+            /// Toggle to enabled/disable poke hand pose pointing on hover.
+            /// </summary>
             public Toggle PokePointOnHoverToggle;
+            /// <summary>
+            /// Toggle to enabled/disable poke ui interaction.
+            /// </summary>
             public Toggle PokeUiToggle;
+            /// <summary>
+            /// Toggle to enabled/disable turn prevention during ui scrolling.
+            /// </summary>
             public Toggle UiScrollingToggle;
 
+
+            /// <summary>
+            /// Toggle to enabled/disable choosing the forward direction when teleport.
+            /// </summary>
             public Toggle ChooseTeleportForwardToggle;
+            /// <summary>
+            /// Toggle to enabled/disable cancelling teleports.
+            /// </summary>
             public Toggle CancelTeleportToggle;
+            /// <summary>
+            /// Toggle to enabled/disable teleporting while grabbing objects with the same hand.
+            /// </summary>
             public Toggle TeleportWhileGrabbingToggle;
+            /// <summary>
+            /// Toggle to enabled/disable jumping.
+            /// </summary>
             public Toggle JumpToggle;
+            /// <summary>
+            /// Toggle to enabled/disable gravity.
+            /// </summary>
             public Toggle GravityToggle;
+            /// <summary>
+            /// Toggle to enabled/disable climbing.
+            /// </summary>
             public Toggle ClimbToggle;
+            /// <summary>
+            /// Toggle to enabled/disable teleport skipping during climbing.
+            /// </summary>
             public Toggle ClimbTeleportToggle;
 
-            
+
+            /// <summary>
+            /// Toggle to enabled/disable the head collision indicator.
+            /// </summary>
             public Toggle HeadCollisionIndicatorToggle;
+            /// <summary>
+            /// Toggle to enabled/disable head collision pushback.
+            /// </summary>
             public Toggle HeadCollisionPushbackToggle;
 
 
@@ -216,7 +286,7 @@ namespace ExPresSXR.Misc
                 TrySetToggleValue(PokePointOnHoverToggle, rig.InteractionOptions.HasFlag(InteractionOptions.PokePointOnHover));
                 TrySetToggleValue(PokeUiToggle, rig.InteractionOptions.HasFlag(InteractionOptions.PokeUi));
                 TrySetToggleValue(UiScrollingToggle, rig.InteractionOptions.HasFlag(InteractionOptions.UiScrolling));
-                
+
                 TrySetToggleValue(ChooseTeleportForwardToggle, rig.MovementOptions.HasFlag(MovementOptions.TeleportChooseForward));
                 TrySetToggleValue(CancelTeleportToggle, rig.MovementOptions.HasFlag(MovementOptions.TeleportCancelPossible));
                 TrySetToggleValue(TeleportWhileGrabbingToggle, rig.MovementOptions.HasFlag(MovementOptions.TeleportDuringNearInteraction));

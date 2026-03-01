@@ -5,6 +5,11 @@ using ExPresSXR.Interaction.Interactables;
 
 namespace ExPresSXR.Interaction.Interactors
 {
+    /// <summary>
+    /// An Expansion of the `TagCheckSocketInteractor` allowing submission of a objects by tag, optionally disabling both the socket and submitted interactable.
+    /// 
+    /// The submission can be tested using "DEBUG Emit Submit Event" in the context menu for the component.
+    /// </summary>
     public class TagCheckSubmitSocketInteractor : TagCheckSocketInteractor
     {
         /// <summary>

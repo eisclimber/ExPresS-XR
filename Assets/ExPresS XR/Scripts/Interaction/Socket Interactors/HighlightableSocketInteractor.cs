@@ -4,6 +4,15 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction.Interactors
 {
+    /// <summary>
+    /// A SocketInteractor can shows a visual queue (`highlighterObject`) where the interactable area is of nothing is in the socket.
+    /// 
+    /// The visual queue can be scaled automatically if `useColliderSizeAsScale` is set to true and it **this** `SocketInteractor` 
+    /// has a `SphereCollider`- or `BoxCollider`-Component.
+    /// If not the size can be set by modifying `highlighterScale`.
+    /// 
+    /// Make sure the `highlighterObject` does **not** have a Collider, only a `Mesh` and `MeshRenderer`.
+    /// </summary>
     public class HighlightableSocketInteractor : XRSocketInteractor
     {
         /// <summary>

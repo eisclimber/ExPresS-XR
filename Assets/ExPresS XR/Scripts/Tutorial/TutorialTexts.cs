@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Tutorial
 {
+    /// <summary>
+    /// Represents a tutorial step handler for displaying texts in a tutorial.
+    /// </summary>
     public class TutorialTexts : TutorialStepHandler
     {
         /// <summary>

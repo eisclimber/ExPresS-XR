@@ -6,6 +6,9 @@ using UnityEngine.Rendering;
 
 namespace ExPresSXR.Minigames.Excavation
 {
+    /// <summary>
+    /// The main game logic of a brush-based excavation game.
+    /// </summary>
     public class ExcavationGame : MonoBehaviour
     {
         /// <summary>

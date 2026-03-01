@@ -5,6 +5,12 @@ using UnityEngine.XR;
 
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// The Auto Hand Model detects and displays the currently used controller as well as providing an optional animated hand model.
+    /// It is used to represent the hand/controller of the XR Rig.  
+    /// 
+    /// There are in total four versions, two for for the for each hand, one having collisions and one doesn't.
+    /// </summary>
     public class AutoHandModel : MonoBehaviour
     {
         /// <summary>
@@ -42,6 +48,9 @@ namespace ExPresSXR.Rig
         /// </summary>
         public GameObject customModel;
 
+        /// <summary>
+        /// The current attach transform provided by the current model.
+        /// </summary>
         public Transform CurrentAttach
         {
             get
@@ -116,7 +125,9 @@ namespace ExPresSXR.Rig
         private GameObject _currentControllerModel;
         private GameObject _currentHandModel;
 
-
+        /// <summary>
+        /// Emitted when the auto hand models were loaded, meaning a controller was detected.
+        /// </summary>
         public UnityEvent OnModelsLoaded;
 
         private void Update()
@@ -207,7 +218,10 @@ namespace ExPresSXR.Rig
             OnModelsLoaded.Invoke();
         }
 
-
+        /// <summary>
+        /// Sets the hand pointing pose enabled/disabled, if possible.
+        /// </summary>
+        /// <param name="pointing">If the hand should be pointing or not.</param>
         public void SetHandPointing(bool pointing)
         {
             if (_currentHandModel != null && _currentHandModel.TryGetComponent(out VirtualHandAnimator handAnimator))
@@ -217,12 +231,15 @@ namespace ExPresSXR.Rig
         }
     }
 
+    /// <summary>
+    /// How the hands are represented.
+    /// </summary>
     public enum HandModelMode
     {
-        Controller,
-        Hand,
-        Both,
-        Custom,
-        None
+        Controller, /// <summary> Displays the hands as controllers matching the headset. </summary>
+        Hand, /// <summary> Uses an articulated hand for visualization. </summary>
+        Both, /// <summary> Uses both hand and controller models. </summary>
+        Custom, /// <summary> Uses a custom model. </summary>
+        None /// No hand visualization. </summary>
     }
 }

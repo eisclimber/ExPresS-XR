@@ -7,6 +7,12 @@ using ExPresSXR.Misc.Timing;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
+    /// <summary>
+    /// Casts a ray that can be used to detect 'AreaOfInterests'-Components, mostly used for EyeTracking but can be done with arbitrary Position- and Rotation-InputActions.
+    /// 
+    /// Supports bouncing (e.g. with Mirrors). The number of bounces is determined by '_numAOIBounces'. 
+    /// For objects to bounce they must be in the 'AreaOfInterestBouncer'-Layer and have an 'AreaOfInterestRayBouncer'-Component attached to them.
+    /// </summary>
     public class AreaOfInterestRay : MonoBehaviour
     {
         /// <summary>
@@ -129,7 +135,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
         /// </summary>
         public float AoiFocusDuration
         {
-            get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
+            get => _aoiStopwatch != null && _aoiStopwatch.Running ? _aoiStopwatch.CurrentStopTime : Stopwatch.INACTIVE_STOP_TIME;
         }
 
         /// <summary>
@@ -137,7 +143,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
         /// </summary>
         public float AoiFocusStart
         {
-            get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
+            get => _aoiStopwatch != null && _aoiStopwatch.Running ? _aoiStopwatch.CurrentStopTime : Stopwatch.INACTIVE_STOP_TIME;
         }
 
 
@@ -263,7 +269,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
                 float finalFocusDuration = AoiFocusDuration;
                 _aoiStopwatch.StartTimeMeasurement();
 
-                float newStartTime = _aoiStopwatch.startTime;
+                float newStartTime = _aoiStopwatch.StartTime;
                 
                 // Debug.Log($"Switched from '{_focusedAoiId}' to '{newAoiId}' after {finalFocusDuration}s at time: {newStartTime}.");
 

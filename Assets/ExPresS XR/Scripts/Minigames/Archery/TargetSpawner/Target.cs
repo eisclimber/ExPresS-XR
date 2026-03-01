@@ -5,6 +5,9 @@ using ExPresSXR.Minigames.Archery.ObjectPool;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner
 {
+    /// <summary>
+    /// A base class for an archery target supporting pooling, being hit and scoring.
+    /// </summary>
     public class Target : MonoBehaviour, IPoolObject
     {
         /// <summary>
@@ -82,7 +85,6 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner
         [Tooltip("Optional rigidbody associated with this target.")]
         protected Rigidbody _rb;
 
-        // Events
 
         /// <summary>
         /// Emitted on hit with the points of this target and if it was good or bad.

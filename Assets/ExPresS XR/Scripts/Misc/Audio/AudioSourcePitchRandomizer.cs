@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.Audio
 {
+    /// <summary>
+    /// Manipulates the pitch (tone height) of an AudioSource to make playing the same sound less monotonous.
+    /// </summary>
     public class AudioSourcePitchRandomizer : MonoBehaviour
     {
         /// <summary>

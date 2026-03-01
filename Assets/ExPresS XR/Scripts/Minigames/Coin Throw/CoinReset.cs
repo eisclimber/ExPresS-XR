@@ -1,13 +1,10 @@
-/*
-    Script Name: CoinReset.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Resets an object to a position upon entering the trigger.
-*/
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinThrow
 {
+    /// <summary>
+    /// Resets an object to a position upon entering the trigger.
+    /// </summary>
     public class CoinReset : MonoBehaviour
     {
         /// <summary>

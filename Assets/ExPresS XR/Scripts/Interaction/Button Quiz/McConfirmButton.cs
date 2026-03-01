@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
+    /// <summary>
+    /// An expansion of `BaseButton` representing the Button that is used when confirming a answer `TutorialButtonQuiz` when in MultipleChoiceMode.
+    /// </summary>
     // ExPresSXR.Interaction.ButtonQuiz.McConfirmButton, Assembly-CSharp
     public class McConfirmButton : QuizButton
     {

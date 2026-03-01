@@ -9,6 +9,27 @@ using System;
 
 namespace ExPresSXR.Interaction
 {
+    /// <summary>
+    /// Implements a basic 3D button that can be physically pressed in VR. It may be used as base class to extend on the behavior.  
+    /// 
+    /// The button can be disabled and used as toggle by setting the respective booleans to true.  
+    /// Also the button press can be augmented with sounds for pressing and releasing the buttons.  
+    /// 
+    /// It features two anchors for the base and the push anchor:
+    /// - The base anchor stays in place as it acts as the base of the button.
+    /// - The push anchor will move when being pushed, so anything that should move when being pushed can be a child of this, e.g. the button cap.  
+    /// 
+    /// It also hold a collider which is used to determine if the button should be pressed which can be customized to fit the objects in the anchor by changing `colliderSize`.  
+    /// 
+    /// There are a multitude of Events to listen to including for being pressed, released, reset and having inputDisabled. Note that there are separate Events for toggleMode and normalMode, that are emitted exclusively in these modes. Meaning `OnPressed` will **NOT** be triggered if `toggleMode = true` but instead `OnTogglePressed`.  
+    /// 
+    /// A set of buttons can be instantiated via the context menu. To create a custom button it is recommended starting with the empty button prefab.  
+    /// 
+    /// In order to change color, a `ColorSwitcher`-Component can be added to components of the push anchor and be connected with the `OnPressed` and `OnReleased` (and/or `OnTogglePressed` and `OnToggleReleased`) signals to change colors. For reference have a look on the instantiable button prefabs (except the empty one).  
+    /// 
+    /// For testing button pressed in the editor the ContextMenu of the Button has options to emit the pressed events manually.
+
+    /// </summary>
     [Obsolete("The button functionality was reimplemented as ValueRangeInteractable.\nUse an `ExPresSXR.Interaction.Button` instead.")]
     [RequireComponent(typeof(AudioSource))]
     public class BaseButton : XRBaseInteractable
@@ -189,18 +210,39 @@ namespace ExPresSXR.Interaction
 
 
         // Input Disabled Events
+        /// <summary>
+        /// Emitted when input gets disabled.
+        /// </summary>
         public UnityEvent OnInputDisabled;
+        /// <summary>
+        /// Emitted when input gets disabled.
+        /// </summary>
         public UnityEvent OnInputEnabled;
 
         // Press Events
+        /// <summary>
+        /// Emitted when the button is pressed in normal mode.
+        /// </summary>
         public UnityEvent OnPressed;
+        /// <summary>
+        /// Emitted when the button is released in normal mode.
+        /// </summary>
         public UnityEvent OnReleased;
 
         // Toggle Events
+        /// <summary>
+        /// Emitted when the button is pressed in toggle mode.
+        /// </summary>
         public UnityEvent OnTogglePressed;
+        /// <summary>
+        /// Emitted when the button is released in toggle mode.
+        /// </summary>
         public UnityEvent OnToggleReleased;
 
         // Reset Event
+        /// <summary>
+        /// Emitted when the button press is reset.
+        /// </summary>
         public UnityEvent OnButtonPressReset;
 
 

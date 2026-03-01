@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Misc.Animations
 {
+    /// <summary>
+    /// Checks if an animator is finished playing a certain animation and emits an event if that is the case.
+    /// </summary>
     public class AnimationFinished : MonoBehaviour
     {
         /// <summary>

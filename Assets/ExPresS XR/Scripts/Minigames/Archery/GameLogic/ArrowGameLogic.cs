@@ -5,6 +5,9 @@ using ExPresSXR.Minigames.Archery.TargetSpawner;
 
 namespace ExPresSXR.Minigames.Archery.GameLogic
 {
+    /// <summary>
+    /// Implements the basic logic of an arrow game, starting the timer, registering the score managers and starting the spawners.
+    /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public class ArrowGameLogic : MonoBehaviour
     {

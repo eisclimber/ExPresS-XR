@@ -9,11 +9,21 @@ namespace ExPresSXR.Misc.Options
     public class GameOptions : MonoBehaviour
     {
         #region Key Names & Constants
+        // Define the keys for storing the values here, making them public to be used elsewhere if needed.
+
         /// <summary>
-        /// Define the keys for storing the values here, making them public to be used elsewhere if needed. 
+        /// Key for the selected player experience.
         /// </summary>
         public const string SELECTED_EXPERIENCE_PLAYER_PREF = "ExperienceType";
+
+        /// <summary>
+        /// Key for the made with value.
+        /// </summary>
         public const string MADE_WITH_PLAYER_PREF = "MadeWith";
+
+        /// <summary>
+        /// Key for storing if subtitles should be enabled.
+        /// </summary>
         public const string SUBTITLES_PLAYER_PREF = "Subtitles";
 
         /// <summary>
@@ -170,11 +180,14 @@ namespace ExPresSXR.Misc.Options
         #endregion
 
         #region Custom GameOption Values
+        /// <summary>
+        /// Available types of experiences.
+        /// </summary>
         public enum ExperienceType
         {
-            None = 0,
-            Exhibition = 1,
-            Experience = 2
+            None = 0, /// <summary> No experience type. </summary>
+            Exhibition = 1, /// <summary> The `Exhibition` experience. </summary>
+            Excavation = 2 /// <summary> The `Excavation` experience. </summary>
         }
         #endregion
 
@@ -185,8 +198,8 @@ namespace ExPresSXR.Misc.Options
         /// </summary>
         public enum GameOptionConditionals
         {
-            MadeWithExPresSXR,
-            Subtitles
+            MadeWithExPresSXR, /// <summary> Refers to the `MadeWithExPresSXR` value. </summary>
+            Subtitles /// <summary> Refers to the `Subtitles` value. </summary>
         }
 
         /// <summary>

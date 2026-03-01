@@ -55,6 +55,7 @@ namespace ExPresSXR.Misc
         /// <param name="color">Color of the marker.</param>
         /// <param name="upVector">Determines the direction of the end markers.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="label">Text label to draw at the center of the marker line.</param>
         public static void DrawMarkerLineAt(Vector3 pos, float length, Color color, Vector3 upVector, Transform atTransform = null, string label = "")
         {
             Gizmos.matrix = atTransform != null ? atTransform.localToWorldMatrix : Matrix4x4.identity;
@@ -73,6 +74,8 @@ namespace ExPresSXR.Misc
         /// <param name="lineColor">Color of the line between the points.</param>
         /// <param name="upVector">Determines the direction of the end markers.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="minLabel">Text label to draw at the start (=min) of the marker line.</param>
+        /// <param name="maxLabel">Text label to draw at the end (=max) of the marker line.</param>
         public static void DrawMinMaxLine(Vector3 minPos, Vector3 maxPos, Color minColor, Color maxColor, Color lineColor, Vector3 upVector,
                                             Transform atTransform = null, string minLabel = "", string maxLabel = "")
         {
@@ -103,6 +106,9 @@ namespace ExPresSXR.Misc
         /// <param name="valueColor">Color of the value marker.</param>
         /// <param name="upVector">Determines the direction of the end markers.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="minLabel">Text label to draw at the start (=min) of the marker line.</param>
+        /// <param name="maxLabel">Text label to draw at the end (=max) of the marker line.</param>
+        /// <param name="valueFormat">Format used to display the value. No text will be shown if empty.</param>
         public static void DrawMinMaxValueLine(Vector3 minPos, Vector3 maxPos, float value, Color minColor, Color maxColor,
                                                     Color lineColor, Color valueColor, Vector3 upVector, Transform atTransform = null,
                                                     string minLabel = "", string maxLabel = "", string valueFormat = "")
@@ -122,6 +128,10 @@ namespace ExPresSXR.Misc
         /// <param name="outlineColor">Color of the outline.</param>
         /// <param name="gridColor">Color of the grid lines.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="blLabel">Text label to draw at the bottom left grid.</param>
+        /// <param name="brLabel">Text label to draw at the bottom right grid.</param>
+        /// <param name="tlLabel">Text label to draw at the top left grid.</param>
+        /// <param name="trLabel">Text label to draw at the top right grid.</param>
         public static void DrawGrid(Vector3 center, Vector2 extents, Vector2 numTiles, Color outlineColor, Color gridColor,
                                     Transform atTransform = null, string blLabel = "", string brLabel = "", string tlLabel = "", string trLabel = "")
         {
@@ -179,6 +189,9 @@ namespace ExPresSXR.Misc
         /// <param name="localOffset">Pivot offset of the angle.</param>
         /// <param name="localNormal">Normal vector defining the plane of the angles.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="minLabel">Text label to draw at the start (=min) of the marker line.</param>
+        /// <param name="maxLabel">Text label to draw at the end (=max) of the marker line.</param>
+        /// <param name="valueFormat">Format used to display the value. No text will be shown if empty.</param>
         public static void DrawMinMaxArc(float minAngle, float maxAngle, Color minColor, Color maxColor, Color arcColor,
                                             Vector3 localOffset, Vector3 localNormal, Transform atTransform = null,
                                             string minLabel = "", string maxLabel = "", string valueFormat = "")
@@ -211,6 +224,9 @@ namespace ExPresSXR.Misc
         /// <param name="valueColor">Color of the value marker.</param>
         /// <param name="localOffset">Pivot offset of the angle.</param>
         /// <param name="localNormal">Normal vector defining the plane of the angles.</param>
+        /// <param name="minLabel">Text label to draw at the min position.</param>
+        /// <param name="maxLabel">Text label to draw at the max position.</param>
+        /// <param name="valueFormat">Format used to display the value. No text will be shown if empty.</param>
         public static void DrawMinMaxValueArc(float minAngle, float maxAngle, float value, Color minColor, Color maxColor,
                                                 Color arcColor, Color valueColor, Vector3 localOffset, Vector3 localNormal,
                                                 Transform atTransform = null, string minLabel = "", string maxLabel = "", string valueFormat = "")
@@ -235,6 +251,8 @@ namespace ExPresSXR.Misc
         /// <param name="localNormal">Normal of the plane where the markers are placed.</param>
         /// <param name="localForward">Direction in the which the angle arc is oriented.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="minLabel">Text label to draw at the min position.</param>
+        /// <param name="maxLabel">Text label to draw at the max position.</param>
         public static void DrawMinMaxRotationSpan(Quaternion minRotation, Quaternion maxRotation, Color minColor, Color maxColor, Color spanColor,
                                                     Vector3 localOffset, Vector3 localNormal, Vector3 localForward, Transform atTransform = null,
                                                     string minLabel = "", string maxLabel = "")
@@ -279,6 +297,9 @@ namespace ExPresSXR.Misc
         /// <param name="localNormal">Normal of the plane where the markers are placed.</param>
         /// <param name="localForward">Direction in the which the angle arc is oriented.</param>
         /// <param name="atTransform">Transform context to draw the gizmo.</param>
+        /// <param name="minLabel">Text label to draw at the min position.</param>
+        /// <param name="maxLabel">Text label to draw at the max position.</param>
+        /// <param name="valueFormat">Format used to display the value. No text will be shown if empty.</param>
         public static void DrawMinMaxValueRotationSpan(Quaternion minRotation, Quaternion maxRotation, float value, Color minColor, Color maxColor, Color spanColor,
                                                         Color valueColor, Vector3 localOffset, Vector3 localNormal, Vector3 localForward, Transform atTransform = null,
                                                         string minLabel = "", string maxLabel = "", string valueFormat = "")

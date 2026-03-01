@@ -1,15 +1,12 @@
-/*
-    Script Name: CoinWeight.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Assigns a binary "weight" (fake/real) to a GameObject.
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
+    /// <summary>
+    /// Assigns a binary "weight" (fake/real) to a GameObject.
+    /// </summary>
     public class CoinWeight : MonoBehaviour
     {
         /// <summary>

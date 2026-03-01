@@ -7,6 +7,14 @@ using System.Collections;
 
 namespace ExPresSXR.UI
 {
+    /// <summary>
+    /// A HUD Canvas item that can be faded between a certain color (default: black) and transparency.
+    /// These fades can either be done over a certain time or instantaneous.
+    /// 
+    /// It is set to be rendered in layer `UI Always on Top`, meaning it can be used as a full screen fade.
+    /// 
+    /// When used in the context of an XR Rig, the rig provides convenience functions to fade in and out.
+    /// </summary>
     [RequireComponent(typeof(Image))]
     public class FadeRect : MonoBehaviour
     {
@@ -14,6 +22,8 @@ namespace ExPresSXR.UI
         /// The color to be faded to.
         /// Default is Transparent Black (`new(0.0f, 0.0f, 0.0f, 0.0f`).
         /// </summary>
+        [SerializeField]
+        [Tooltip("The color to be faded to.\nDefault is Transparent Black (`new(0.0f, 0.0f, 0.0f, 0.0f`).")]
         private Color _fadeColor = new(0.0f, 0.0f, 0.0f, 0.0f);
         public Color FadeColor
         {
@@ -24,7 +34,9 @@ namespace ExPresSXR.UI
         /// <summary>
         /// Duration in seconds of a fade to black.
         /// </summary>
-        public float _defaultFadeToColorTime = 0.5f;
+        [SerializeField]
+        [Tooltip("Duration in seconds of a fade to black.")]
+        private float _defaultFadeToColorTime = 0.5f;
         public float DefaultFadeToColorTime
         {
             get => _defaultFadeToColorTime;
@@ -34,7 +46,9 @@ namespace ExPresSXR.UI
         /// <summary>
         /// Duration in seconds of a fade to transparent.
         /// </summary>
-        public float _defaultFadeToClearTime = 0.5f;
+        [SerializeField]
+        [Tooltip("Duration in seconds of a fade to transparent.")]
+        private float _defaultFadeToClearTime = 0.5f;
         public float DefaultFadeToClearTime
         {
             get => _defaultFadeToClearTime;
@@ -45,6 +59,7 @@ namespace ExPresSXR.UI
         /// Reference to the image used for fading.
         /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the image used for fading.")]
         private Image _fadeImage;
 
         private Coroutine _fadeCoroutine;
@@ -188,7 +203,7 @@ namespace ExPresSXR.UI
 
             // Ensure fully faded
             ChangeFadeRectAlpha(toAlpha);
-            
+
             if (toAlpha == 0.0f)
             {
                 OnFadeToClearCompleted.Invoke();
@@ -198,7 +213,7 @@ namespace ExPresSXR.UI
             {
                 OnFadeToColorCompleted.Invoke();
             }
-            
+
             OnFadeCompleted.Invoke();
         }
     }

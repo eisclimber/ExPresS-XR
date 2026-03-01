@@ -89,9 +89,9 @@ namespace ExPresSXR.Misc
         }
 
         /// <summary>
-        /// Steps a value on a range between [0.0f, 1.0f] to the closest of even <param name="numSteps"> intervals 
+        /// Steps a value on a range between [0.0f, 1.0f] to the closest of even `numSteps` intervals 
         /// including the borders 0.0f and 1.0f.
-        /// If <param name="numSteps"> is less than 1, the value will only be clamped between 0.0f and 1.0f.
+        /// If `numSteps` is less than 1, the value will only be clamped between 0.0f and 1.0f.
         /// </summary>
         /// <param name="value">Value to be stepped.</param>
         /// <param name="numSteps">Number of intermediate steps.</param>
@@ -419,7 +419,7 @@ namespace ExPresSXR.Misc
         /// Populates a <see cref="TMP_Dropdown"/> with the names proved by stringOptions.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
-        /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
+        /// <param name="stringOptions">List of options to set.</param>
         public static void PopulateTMPDropDownWithCustomValues(TMP_Dropdown dropdown, string[] stringOptions)
         {
             List<TMP_Dropdown.OptionData> newOptions = new();

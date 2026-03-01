@@ -64,8 +64,19 @@ namespace ExPresSXR.Minigames.Boxing
             }
         }
 
+        /// <summary>
+        /// Emitted when the boxing starts.
+        /// </summary>
         public UnityEvent OnStarted;
+
+        /// <summary>
+        /// Emitted when the score changes, providing the scored points.
+        /// </summary>
         public UnityEvent<int> OnScoreChanged;
+
+        /// <summary>
+        /// Emitted when the boxing ends.
+        /// </summary>
         public UnityEvent OnCompleted;
 
         private void OnEnable()

@@ -1,33 +1,38 @@
-using ExPresSXR.Rig;
 using UnityEngine;
 
-public class HandPointerArea : MonoBehaviour
+namespace ExPresSXR.Rig
 {
-    private void OnTriggerEnter(Collider other)
+    /// <summary>
+    /// Defines an area that triggers a pointing gesture of an `AutoHandModel` when entering.
+    /// </summary>
+    public class HandPointerArea : MonoBehaviour
     {
-        Rigidbody rb = other.attachedRigidbody;
-        if (!other.gameObject.CompareTag("Player") || rb == null)
+        private void OnTriggerEnter(Collider other)
         {
-            return; // Not the player's hands -> not what we're looking for
+            Rigidbody rb = other.attachedRigidbody;
+            if (!other.gameObject.CompareTag("Player") || rb == null)
+            {
+                return; // Not the player's hands -> not what we're looking for
+            }
+            VirtualHandAnimator handAnimator = rb.GetComponentInChildren<VirtualHandAnimator>();
+            if (handAnimator != null)
+            {
+                handAnimator.PointAreaCollisions++;
+            }
         }
-        VirtualHandAnimator handAnimator = rb.GetComponentInChildren<VirtualHandAnimator>();
-        if (handAnimator != null)
-        {
-            handAnimator.PointAreaCollisions++;
-        }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        Rigidbody rb = other.attachedRigidbody;
-        if (!other.gameObject.CompareTag("Player") || rb == null)
+        private void OnTriggerExit(Collider other)
         {
-            return; // Not the player's hands -> not what we're looking for
-        }
-        VirtualHandAnimator handAnimator = rb.GetComponentInChildren<VirtualHandAnimator>();
-        if (handAnimator != null)
-        {
-            handAnimator.PointAreaCollisions--;
+            Rigidbody rb = other.attachedRigidbody;
+            if (!other.gameObject.CompareTag("Player") || rb == null)
+            {
+                return; // Not the player's hands -> not what we're looking for
+            }
+            VirtualHandAnimator handAnimator = rb.GetComponentInChildren<VirtualHandAnimator>();
+            if (handAnimator != null)
+            {
+                handAnimator.PointAreaCollisions--;
+            }
         }
     }
 }

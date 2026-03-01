@@ -22,11 +22,20 @@ namespace ExPresSXR.Experimentation.DataGathering
     {
         private string[] _headers;
 
+        /// <summary>
+        /// Defines a new header replacement attribute.
+        /// </summary>
+        /// <param name="headers">List of headers to replace.</param>
         public HeaderReplacementAttribute(params string[] headers)
         {
             _headers = headers;
         }
 
+        /// <summary>
+        /// Returns the list of headers as csv string with the provided separator.
+        /// </summary>
+        /// <param name="sep">Separator to be used.</param>
+        /// <returns>Csv string with the headers as columns.</returns>
         public string GetHeaders(char sep) => string.Join(sep, _headers);
     }
 
@@ -36,12 +45,19 @@ namespace ExPresSXR.Experimentation.DataGathering
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field)]
     public class HeaderReplacementNoticeAttribute : Attribute
     {
+        /// <summary>
+        /// Notice to be displayed.
+        /// </summary>
         private string _notice;
         public string Notice
         {
             get => _notice;
         }
 
+        /// <summary>
+        /// Defines a new header replacement attribute.
+        /// </summary>
+        /// <param name="notice">Notice to be displayed.</param>
         public HeaderReplacementNoticeAttribute(string notice)
         {
             _notice = notice;

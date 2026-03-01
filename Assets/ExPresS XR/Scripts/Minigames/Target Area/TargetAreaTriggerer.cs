@@ -38,13 +38,22 @@ namespace ExPresSXR.Minigames.TargetArea
 
         [Space]
 
+        /// <summary>
+        /// TIf haptics should be performed when hitting a target.
+        /// </summary>
         [SerializeField]
         [Tooltip("If haptics should be performed when hitting a target.")]
         private bool _doHaptics;
 
+        /// <summary>
+        /// The haptics player used for feedback.
+        /// </summary>
         [SerializeField]
         private HapticImpulsePlayer _hapticsPlayer;
 
+        /// <summary>
+        /// The default rumble that is performed when calling 'PerformDefaultRumble()'.
+        /// </summary>
         [Tooltip("The default rumble that is performed when calling 'PerformDefaultRumble()'.")]
         [SerializeField]
         private RumbleDescription _rumble = new(0.5f, 0.5f);
@@ -150,7 +159,7 @@ namespace ExPresSXR.Minigames.TargetArea
             {
                 OnAllTargetsCompleted.Invoke();
             }
-            
+
             if (!_emitEventsExclusively || _numCompleted != NumTargets)
             {
                 OnSingleTargetCompleted.Invoke();

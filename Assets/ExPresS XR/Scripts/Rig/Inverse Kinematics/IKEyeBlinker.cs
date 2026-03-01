@@ -5,6 +5,14 @@ using UnityEngine.InputSystem;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
+    /// <summary>
+    /// Animates the blend shapes of a SkinnedMeshRenderer to make the eyes blink. One can either use the openness values from eye-tracking or random intervals.
+    /// 
+    /// The SkinnedMeshRenderer must have the proper blendshapes set up for this to work.
+    /// 
+    /// To get the blendshapes' index, find it in the editor. Right-click and Copy the 'Property Path'. 
+    /// Paste it somewhere and use the number in the short string as index.
+    /// </summary>
     public class IKEyeBlinker : MonoBehaviour
     {
         /// <summary>
@@ -147,8 +155,8 @@ namespace ExPresSXR.Experimentation.EyeTracking
         /// </summary>
         public enum BlinkBehaviorType
         {
-            EyeTracking,
-            RandomInterval
+            EyeTracking, /// <summary> Derive blinking from eye tracking. </summary>
+            RandomInterval /// <summary> Use random intervals for blinking. </summary>
         }
     }
 }
