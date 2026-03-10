@@ -392,7 +392,6 @@ namespace ExPresSXR.Editor.Editors
 
             if (_showObjectRefs)
             {
-                EditorGUI.indentLevel++;
                 EditorGUILayout.LabelField("Handle these with care! Thank you:)");
 
                 EditorGUILayout.Space();
@@ -400,7 +399,7 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.LabelField("Interactors", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftHandController"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("__rightHandController"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightHandController"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeController"), true);
                 EditorGUI.indentLevel--;
 
@@ -409,7 +408,7 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftAutoHand"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("__rightAutoHand"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightAutoHand"), true);
                 EditorGUI.indentLevel--;
 
                 EditorGUILayout.Space();
@@ -441,7 +440,6 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_screenCollisionIndicator"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_fadeRect"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeReticle"), true);
-                EditorGUI.indentLevel--;
                 EditorGUI.indentLevel--;
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
