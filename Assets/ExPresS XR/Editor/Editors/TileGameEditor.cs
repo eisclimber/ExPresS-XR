@@ -27,6 +27,7 @@ public class TileGameEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_boardSize"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_boardSocketsParent"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_tileRespawnSockets"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_scoreCalculator"), true);
 
         EditorGUI.BeginChangeCheck();
         SerializedProperty areas = serializedObject.FindProperty("_areas");

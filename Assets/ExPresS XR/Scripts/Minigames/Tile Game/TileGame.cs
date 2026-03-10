@@ -1,8 +1,6 @@
 using System;
 using ExPresSXR.Misc;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.TileGame
@@ -32,6 +30,7 @@ namespace ExPresSXR.Minigames.TileGame
         [SerializeField]
         [Tooltip("Size of the board.")]
         private Vector2Int _boardSize = new(DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT);
+
         /// <summary>
         /// Size of the board.
         /// </summary>
@@ -81,6 +80,18 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Areas available in the game.")]
         private AreaDescription[] _areas;
 
+        /// <summary>
+        /// Optional Score calculator. If none is provided, a default score calculation is used.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Optional Score calculator. If none is provided, a default score calculation is used.")]
+        private ScoreCalculator _scoreCalculator;
+        public ScoreCalculator ScoreCalculator
+        {
+            get => _scoreCalculator;
+            set => _scoreCalculator = value;
+        }
+
         [SerializeField]
         [Tooltip("Total score of the current game.")]
         [ReadonlyInInspector]
@@ -118,7 +129,7 @@ namespace ExPresSXR.Minigames.TileGame
                 }
             }
         }
-        
+
         /// <summary>
         /// Number of slots on the board.
         /// </summary>
@@ -165,7 +176,6 @@ namespace ExPresSXR.Minigames.TileGame
             }
         }
 
-
         [ContextMenu("Start Game")]
         private void StartGame()
         {
@@ -176,7 +186,6 @@ namespace ExPresSXR.Minigames.TileGame
         [ContextMenu("End Game")]
         private void EndGame()
         {
-            Debug.Log($"Completed with a score of: {_totalScore}.", this);
             OnCompleted.Invoke(_totalScore);
         }
 
@@ -203,7 +212,8 @@ namespace ExPresSXR.Minigames.TileGame
         public void AddTileFromBoardSubmission(TileSubmitSocket.BoardSubmitContext ctx)
         {
             TileVisuals display = ctx.TileVisuals;
-            ScoreResults score = AddTileAt(display.DisplayedTile, ctx.BoardPos);
+            PlacementData data = AddTileAt(display.DisplayedTile, ctx.BoardPos);
+            ScoreResults score = _scoreCalculator != null ? _scoreCalculator.CalculateScore(data) : ScoreCalculator.CalculateDefaultScore(data);
             display.DisplayScore(score);
             TotalScore += score.TotalScore;
         }
@@ -214,11 +224,10 @@ namespace ExPresSXR.Minigames.TileGame
         /// <param name="tile">Tile to add.</param>
         /// <param name="pos">Board position to add it at.</param>
         /// <returns>Score for the tile added.</returns>
-        public ScoreResults AddTileAt(Tile tile, Vector2Int pos)
+        public PlacementData AddTileAt(Tile tile, Vector2Int pos)
         {
             if (!IsPosInBounds(pos))
             {
-                Debug.Log($"Starting pos out of bounds at {pos}.", this);
                 return new();
             }
 
@@ -232,80 +241,88 @@ namespace ExPresSXR.Minigames.TileGame
             OnTileAdded.Invoke(pos);
             PlacedTiles++;
 
-            // Dirty but we want fresh copies for each direction to avoid one side not awarding any points
-            bool[,] visitedTop = new bool[_boardSize.x, _boardSize.y];
-            visitedTop[pos.x, pos.y] = true;
-            bool[,] visitedBottom = new bool[_boardSize.x, _boardSize.y];
-            visitedBottom[pos.x, pos.y] = true;
-            bool[,] visitedLeft = new bool[_boardSize.x, _boardSize.y];
-            visitedLeft[pos.x, pos.y] = true;
-            bool[,] visitedRight = new bool[_boardSize.x, _boardSize.y];
-            visitedRight[pos.x, pos.y] = true;
+            // Discover tiles using flood fill (per direction)
+            AreaDiscoveryData upDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.up);
+            AreaDiscoveryData downDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.down);
+            AreaDiscoveryData leftDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.left);
+            AreaDiscoveryData rightDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.right);
 
-            ScoreResults score = new(
-                1,
-                tile.CenterAreaId,
-                CheckNeighbor(pos, Vector2Int.down, visitedTop), // Invert neighbor up/down dir since were using different axis
-                tile.TopAreaId,
-                CheckNeighbor(pos, Vector2Int.up, visitedBottom), // Invert neighbor up/down dir since were using different axis
-                tile.BottomAreaId,
-                CheckNeighbor(pos, Vector2Int.left, visitedLeft),
-                tile.LeftAreaId,
-                CheckNeighbor(pos, Vector2Int.right, visitedRight),
-                tile.RightAreaId
-            );
-            return score;
+            return new(tile, pos, PlacedTiles, upDiscovery, downDiscovery, leftDiscovery, rightDiscovery);
         }
 
-        /// <summary>
-        /// Checks the points received from creating a matching area with a neighboring tile position in the specified direction recursively.
-        /// </summary>
-        /// <param name="pos">Position to check.</param>
-        /// <param name="checkDir">Direction to check in.</param>
-        /// <param name="visited">Already visited tiles.</param>
-        /// <returns>Points received in that direction.</returns>
-        public int CheckNeighbor(Vector2Int pos, Vector2Int checkDir, bool[,] visited)
+        private AreaDiscoveryData FindConnectedAreasInDirection(Vector2Int pos, Vector2Int dir)
         {
-            Vector2Int nextPos = pos + checkDir;
-            if (!IsPosInBounds(nextPos))
+            if (!IsPosInBounds(pos))
             {
-                return 0;
+                Debug.LogError($"Initial position {pos} is outside the board (size: {BoardSize})!", this);
+                return null;
+            }
+            else if (_board[pos.x, pos.y] == null)
+            {
+                Debug.LogError($"No tile at {pos} to start searching from. Make sure to add the tile to the board first!", this);
+                return null;
             }
 
-            Tile currentTile = _board[pos.x, pos.y];
-            Tile nextTile = _board[nextPos.x, nextPos.y];
-
-            if (currentTile.IsAdjacentConnected(nextTile, checkDir))
-            {
-                return EvaluatePointsFrom(nextPos, 0, visited) + 1;
-            }
-            return 0;
+            int areaId = _board[pos.x, pos.y].DirectionToAreaId(dir);
+            AreaDiscoveryData data = new(areaId, pos, _boardSize);
+            return DiscoverTileInDirection(pos, dir, data);
         }
 
-
-        /// <summary>
-        /// Recursive step for checking the point for creating matching areas relative to the position of a tile tile.
-        /// </summary>
-        /// <param name="pos">Position to check.</param>
-        /// <param name="score">Accumulative score.</param>
-        /// <param name="visited">Already visited tiles.</param>
-        /// <returns>Points received in that tile.</returns>
-        public int EvaluatePointsFrom(Vector2Int pos, int score, bool[,] visited)
+        private AreaDiscoveryData DiscoverTileInDirection(Vector2Int fromPos, Vector2Int checkDir, AreaDiscoveryData data)
         {
-            if (!IsPosInBounds(pos) || !IsTileOccupied(pos) || visited[pos.x, pos.y])
-            {
-                return score;
-            }
-            // Mark tile visited and add increase score
-            visited[pos.x, pos.y] = true;
-            score++;
+            // First calculate where we're going and from which direction
+            Vector2Int discoverPos = fromPos + checkDir;
+            Vector2Int discoverDir = -checkDir;
 
-            // Add Scores from neighbors
-            score += CheckNeighbor(pos, Vector2Int.down, visited); // Invert neighbor up/down dir since were using different axis
-            score += CheckNeighbor(pos, Vector2Int.up, visited); // Invert neighbor up/down dir since were using different axis
-            score += CheckNeighbor(pos, Vector2Int.left, visited);
-            score += CheckNeighbor(pos, Vector2Int.right, visited);
-            return score;
+            if (!IsTileOccupied(discoverPos) || !data.IsDiscoverable(discoverPos))
+            {
+                // We either reached the border, an empty or a visited tile -> end recursion
+                return data;
+            }
+
+            Tile fromTile = _board[fromPos.x, fromPos.y];
+            Tile discoveredTile = _board[discoverPos.x, discoverPos.y];
+
+            if (!fromTile.DoOpposingSidesMatch(discoveredTile, checkDir))
+            {
+                // Areas of the touching sides do not match -> Also end the recursion
+                return data;
+            }
+
+            // We can now visit the tile
+            data.RecordTileVisit(discoverPos);
+
+            // ... and then visit & search from the areas on that tile
+            if (discoveredTile.AreaConnectionExists(discoverDir, Vector2Int.zero))
+            {
+                // Do not search from this one, as there is no connection. Duh!
+                data.NumAreas++;
+            }
+
+            if (discoveredTile.AreaConnectionExists(discoverDir, Vector2Int.left))
+            {
+                data.NumAreas++;
+                DiscoverTileInDirection(discoverPos, Vector2Int.left, data);
+            }
+
+            if (discoveredTile.AreaConnectionExists(discoverDir, Vector2Int.right))
+            {
+                data.NumAreas++;
+                DiscoverTileInDirection(discoverPos, Vector2Int.right, data);
+            }
+
+            if (discoveredTile.AreaConnectionExists(discoverDir, Vector2Int.up))
+            {
+                data.NumAreas++;
+                DiscoverTileInDirection(discoverPos, Vector2Int.up, data);
+            }
+
+            if (discoveredTile.AreaConnectionExists(discoverDir, Vector2Int.down))
+            {
+                data.NumAreas++;
+                DiscoverTileInDirection(discoverPos, Vector2Int.down, data);
+            }
+            return data;
         }
 
         /// <summary>
@@ -319,12 +336,9 @@ namespace ExPresSXR.Minigames.TileGame
         /// Check if the position is a valid board position. 
         /// </summary>
         /// <param name="pos"></param>
+        /// <param name="pos"></param>
         /// <returns></returns>
-        public bool IsPosInBounds(Vector2Int pos)
-        {
-            return pos.x >= 0 && pos.x < _boardSize.x
-                && pos.y >= 0 && pos.y < _boardSize.y;
-        }
+        public bool IsPosInBounds(Vector2Int pos) => IsValidBoardPosition(pos, _boardSize);
 
         /// <summary>
         /// Updates the references to the available areas of the sockets creating new tiles.
@@ -340,6 +354,51 @@ namespace ExPresSXR.Minigames.TileGame
 
         [ContextMenu("Add Test Score")]
         private void AddTestScore() => TotalScore += UnityEngine.Random.Range(1, 20);
+
+        [ContextMenu("Print Board")]
+        private void PrintBoard() => Debug.Log(ToString());
+
+        /// <summary>
+        /// Prints the tiles of the board as string.
+        /// </summary>
+        /// <returns>String representation of the board with its tiles.</returns>
+        public override string ToString()
+        {
+            string board = "";
+            for (int y = 0; y < BoardSize.y; y++)
+            {
+                for (int x = 0; x < BoardSize.x; x++)
+                {
+                    board += _board[x, y] != null ? _board[x, y].ToStringStringRow1() : Tile.EMPTY_TILE_ROW;
+                }
+                board += "\n";
+                for (int x = 0; x < BoardSize.x; x++)
+                {
+                    board += _board[x, y] != null ? _board[x, y].ToStringStringRow2() : Tile.EMPTY_TILE_ROW;
+                }
+                board += "\n";
+                for (int x = 0; x < BoardSize.x; x++)
+                {
+                    board += _board[x, y] != null ? _board[x, y].ToStringStringRow3() : Tile.EMPTY_TILE_ROW;
+                }
+                board += "\n\n";
+            }
+            return board;
+        }
+
+
+        /// <summary>
+        /// Check if the position is a valid position for the provided board size. 
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="boardSize"></param>
+        /// <returns></returns>
+        public static bool IsValidBoardPosition(Vector2Int pos, Vector2Int boardSize)
+        {
+            return pos.x >= 0 && pos.x < boardSize.x
+                && pos.y >= 0 && pos.y < boardSize.y;
+        }
+
 
         private void OnDrawGizmosSelected()
         {

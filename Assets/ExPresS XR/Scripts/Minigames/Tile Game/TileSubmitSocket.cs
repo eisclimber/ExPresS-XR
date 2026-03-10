@@ -170,6 +170,12 @@ namespace ExPresSXR.Minigames.TileGame
             // Respecting the original rotation, adjust the socketAttach
             ownAttach.rotation = transform.rotation * snappedLocal;
 
+            // Apply rotation to tile visual data
+            if (interactable.transform.TryGetComponent(out TileVisuals visuals))
+            {
+                visuals.RotateTileData(step);
+            }
+
             // Emit snap signal
             OnRotationSnapped.Invoke(step);
         }

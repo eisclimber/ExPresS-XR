@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ExPresSXR.Minigames.TileGame.TileGame;
 
 namespace ExPresSXR.Minigames.TileGame
 {
@@ -102,16 +103,9 @@ namespace ExPresSXR.Minigames.TileGame
         private void AddTile()
         {
             Tile tile = new(_game.NumAreas, _centerAreaId, _topAreaId, _bottomAreaId, _leftAreaId, _rightAreaId);
-            ScoreResults score = _game.AddTileAt(tile, _insertPos);
+            PlacementData data = _game.AddTileAt(tile, _insertPos);
+            ScoreResults score = _game.ScoreCalculator != null ? _game.ScoreCalculator.CalculateScore(data) : ScoreCalculator.CalculateDefaultScore(data);
             score.PrintScore();
-        }
-
-        [ContextMenu("Evaluate Board")]
-        private void Evaluate()
-        {
-            Vector2Int size = _game.BoardSize;
-            bool[,] visited = new bool[size.x, size.y];
-            _game.EvaluatePointsFrom(_insertPos, 0, visited);
         }
     }
 }

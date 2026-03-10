@@ -561,7 +561,7 @@ namespace ExPresSXR.Editor.SetupDialogs
                                         (QuizButton)_button4Field.value };
 
             if (CreateQuiz(_quizConfig, buttons, (McConfirmButton)_mcConfirmButtonField.value,
-                            (TMP_Text)_textLabelField.value, ((GameObject)_gameObjectField.value)?.transform,
+                            (TMP_Text)_textLabelField.value, (Transform)_gameObjectField.value,
                             (VideoPlayer)_videoPlayerField.value, (UnityEngine.UI.RawImage)_videoImageField.value,
                             (Canvas)_afterQuizMenuField.value))
             {
@@ -1042,16 +1042,24 @@ namespace ExPresSXR.Editor.SetupDialogs
         }
 
 
-        // Config IO
         private void SaveConfig()
         {
-            if (_quizConfig != null && _configSavePathField.value != null)
+            if (_quizConfig == null || string.IsNullOrWhiteSpace(_configSavePathField.value))
+            {
+                Debug.LogError($"Failed saving '{_quizConfig}' to '{_configSavePathField.value}' both must be provided.");
+                ShowErrorElement(_saveConfigFailureLabel);
+                return;
+            }
+
+            try
             {
                 AssetDatabase.CreateAsset(_quizConfig, _configSavePathField.value);
+                Debug.Log($"Successfully saved '{_quizConfig}' to '{_configSavePathField.value}'");
                 ShowErrorElement(_saveConfigSuccessLabel);
             }
-            else
+            catch (System.Exception e)
             {
+                Debug.LogError($"Failed saving '{_quizConfig}' to '{_configSavePathField.value}' with error: '{e}'");
                 ShowErrorElement(_saveConfigFailureLabel);
             }
         }

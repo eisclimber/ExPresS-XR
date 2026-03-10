@@ -74,7 +74,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set
             {
                 _inputDisabled = value;
-                (_inputDisabled ? OnInputDisabled : OnInputEnabled).Invoke();
+                (_inputDisabled ? OnInputDisabled : OnInputEnabled)?.Invoke();
             }
         }
 

@@ -63,16 +63,16 @@ namespace ExPresSXR.Minigames.CoinScale
             _containedCoins = new();
             transform.localPosition = _initialPos;
         }
-    }
 
-    /// <summary>
-    /// Which Side of the scale this bowl is located.
-    /// </summary>
-    public enum ScaleSide
-    {
-        /// <summary> Left side of the scale. </summary>
-        Left,
-        /// <summary> Right side of the scale. </summary>
-        Right
-    };
+        /// <summary>
+        /// Which Side of the scale this bowl is located.
+        /// </summary>
+        public enum ScaleSide
+        {
+            /// <summary> Left side of the scale. </summary>
+            Left,
+            /// <summary> Right side of the scale. </summary>
+            Right
+        };
+    }
 }

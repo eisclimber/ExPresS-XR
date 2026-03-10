@@ -236,13 +236,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1637998969121074405}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c89dbf18ac705d4fb05aa4130a3f936, type: 3}
+  m_Script: {fileID: 11500000, guid: 541daece91bf6a04abcaff3de01cb7c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Misc.ColorSwitching.ButtonColorSwitcher
   _animator: {fileID: 5078257535193640643}
   _meshRenderer: {fileID: 1637998969121074407}
-  _button: {fileID: 0}
-  _legacyButton: {fileID: 1637998969631898565}
+  _legacyButton: {fileID: 0}
 --- !u!1 &1637998969631898587
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,6 +353,20 @@ MonoBehaviour:
   m_ParentInteractableObject: {fileID: 0}
   _inputDisabled: 0
   _toggleMode: 0
+  _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
+  BaseAnchor: {fileID: 1637998969869302093}
+  PushAnchor: {fileID: 1637998969681601336}
+  _yMin: 0.019
+  _yMax: 0.029
+  _repressTimeout: 0.3
+  _requireDirectInteraction: 1
+  _allowNearFarInteraction: 1
+  _maxInteractionDistance: 0.1
+  PressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
+  ReleasedSound: {fileID: 8300000, guid: 16e54074595a53243b89758106431e7a, type: 3}
+  ToggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
+  ToggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
+  _defaultAudioPlayer: {fileID: 287295890795094054}
   OnInputDisabled:
     m_PersistentCalls:
       m_Calls: []
@@ -375,18 +388,6 @@ MonoBehaviour:
   OnButtonPressReset:
     m_PersistentCalls:
       m_Calls: []
-  BaseAnchor: {fileID: 1637998969869302093}
-  PushAnchor: {fileID: 1637998969681601336}
-  _yMin: 0.019
-  _yMax: 0.029
-  _colliderSize: {x: 0.08, y: 0.02, z: 0.08}
-  _repressTimeout: 0.3
-  _requireDirectInteraction: 1
-  _defaultAudioPlayer: {fileID: 287295890795094054}
-  PressedSound: {fileID: 8300000, guid: c0a97774b2f3ce6439fbd3003ca86762, type: 3}
-  ReleasedSound: {fileID: 8300000, guid: 16e54074595a53243b89758106431e7a, type: 3}
-  ToggledDownSound: {fileID: 8300000, guid: 4ea7c4ab9a86e6c43a92ffce4ebda8c7, type: 3}
-  ToggledUpSound: {fileID: 8300000, guid: 1d36486b07650aa4398bdc1b941e304d, type: 3}
 --- !u!82 &287295890795094054
 AudioSource:
   m_ObjectHideFlags: 0

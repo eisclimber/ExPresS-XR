@@ -122,6 +122,7 @@ public class HandControllerManagerEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_rayInteractor"), true);
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_attachController"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_scalingAttachController"), true);
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_handModel"), true);
             EditorGUILayout.Space();

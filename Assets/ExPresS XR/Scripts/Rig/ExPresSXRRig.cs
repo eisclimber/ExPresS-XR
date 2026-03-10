@@ -382,7 +382,7 @@ namespace ExPresSXR.Rig
 
                 if (_playerHeadCollider != null)
                 {
-                    _playerHeadCollider.screenCollisionIndicator = ScreenCollisionIndicator;
+                    _playerHeadCollider.ScreenCollisionIndicator = ScreenCollisionIndicator;
                     _playerHeadCollider.PushbackAnchor = transform;
                 }
             }
@@ -452,7 +452,7 @@ namespace ExPresSXR.Rig
 
                 if (_playerHeadCollider != null)
                 {
-                    _playerHeadCollider.screenCollisionIndicator = ScreenCollisionIndicator;
+                    _playerHeadCollider.ScreenCollisionIndicator = ScreenCollisionIndicator;
                 }
             }
         }

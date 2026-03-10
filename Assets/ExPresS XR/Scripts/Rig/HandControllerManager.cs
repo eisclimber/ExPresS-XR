@@ -22,6 +22,13 @@ namespace ExPresSXR.Rig
         [Tooltip("The interaction attach controller of the hand used for far interaction.")]
         private InteractionAttachController _attachController;
 
+        /// <summary>
+        /// The interaction attach controller of the hand used for far interaction.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The interaction attach controller of the hand used for far interaction.")]
+        private ScalingInteractionAttachController _scalingAttachController;
+
         [Space]
 
         /// <summary>
@@ -151,6 +158,11 @@ namespace ExPresSXR.Rig
                 {
                     _attachController.useManipulationInput = value;
                 }
+
+                if (_scalingAttachController != null)
+                {
+                    _scalingAttachController.useManipulationInput = value;
+                }
             }
         }
 
@@ -171,6 +183,11 @@ namespace ExPresSXR.Rig
                 if (_attachController != null)
                 {
                     _attachController.useDistanceBasedVelocityScaling = value;
+                }
+
+                if (_scalingAttachController != null)
+                {
+                    _scalingAttachController.useDistanceBasedVelocityScaling = value;
                 }
             }
         }

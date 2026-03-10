@@ -335,9 +335,22 @@ namespace ExPresSXR.Rig
             var attachController = _nearFarInteractor.interactionAttachController as InteractionAttachController;
             if (attachController != null)
             {
-                manipulateAttachTransform = attachController.useManipulationInput &&
-                    (attachController.manipulationInput.inputSourceMode == XRInputValueReader.InputSourceMode.InputActionReference && attachController.manipulationInput.inputActionReference != null) ||
-                    (attachController.manipulationInput.inputSourceMode != XRInputValueReader.InputSourceMode.InputActionReference && attachController.manipulationInput.inputSourceMode != XRInputValueReader.InputSourceMode.Unused);
+                manipulateAttachTransform = attachController.useManipulationInput
+                    && (attachController.manipulationInput.inputSourceMode == XRInputValueReader.InputSourceMode.InputActionReference
+                        && attachController.manipulationInput.inputActionReference != null)
+                    || (attachController.manipulationInput.inputSourceMode != XRInputValueReader.InputSourceMode.InputActionReference
+                        && attachController.manipulationInput.inputSourceMode != XRInputValueReader.InputSourceMode.Unused);
+            }
+
+            // Do the same thing for the scaling interactor 
+            var scalingAttachController = _nearFarInteractor.interactionAttachController as ScalingInteractionAttachController;
+            if (scalingAttachController != null)
+            {
+                manipulateAttachTransform = scalingAttachController.useManipulationInput
+                    && (scalingAttachController.manipulationInput.inputSourceMode == XRInputValueReader.InputSourceMode.InputActionReference
+                        && scalingAttachController.manipulationInput.inputActionReference != null)
+                    || (scalingAttachController.manipulationInput.inputSourceMode != XRInputValueReader.InputSourceMode.InputActionReference
+                        && scalingAttachController.manipulationInput.inputSourceMode != XRInputValueReader.InputSourceMode.Unused);
             }
 
             if (selectionRegion == NearFarInteractor.Region.Far)
@@ -352,7 +365,7 @@ namespace ExPresSXR.Rig
                 // Determine if the user entered the near region due to pulling back on the thumbstick.
                 // If so, postpone enabling locomotion until the user releases the thumbstick
                 // in order to avoid an immediate snap turn around from triggering on region change.
-                var hasStickInput = manipulateAttachTransform && HasStickInput(attachController);
+                var hasStickInput = manipulateAttachTransform && (HasStickInput(attachController) || HasStickInput(scalingAttachController));
                 if (hasStickInput)
                 {
                     _postponedNearRegionLocomotion = true;
@@ -518,10 +531,27 @@ namespace ExPresSXR.Rig
 
         protected static bool HasStickInput(InteractionAttachController attachController)
         {
+            if (attachController == null)
+            {
+                return false;
+            }
             // 75% of default 0.5 press threshold
             const float sqrStickReleaseThreshold = 0.375f * 0.375f;
 
             return attachController.manipulationInput.TryReadValue(out var stickInput) &&
+                stickInput.sqrMagnitude > sqrStickReleaseThreshold;
+        }
+
+        protected static bool HasStickInput(ScalingInteractionAttachController scalingAttachController)
+        {
+            if (scalingAttachController == null)
+            {
+                return false;
+            }
+            // 75% of default 0.5 press threshold
+            const float sqrStickReleaseThreshold = 0.375f * 0.375f;
+
+            return scalingAttachController.manipulationInput.TryReadValue(out var stickInput) &&
                 stickInput.sqrMagnitude > sqrStickReleaseThreshold;
         }
 

@@ -76,7 +76,7 @@ namespace ExPresSXR.Minigames.Common
 
             if (scoreNumbersGo.TryGetComponent(out ScoreNumbers scoreNumbers))
             {
-                scoreNumbers.Score = diff;
+                scoreNumbers.SetupScoreData(diff);
             }
         }
     }

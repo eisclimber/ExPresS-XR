@@ -224,6 +224,20 @@ MonoBehaviour:
   m_ParentInteractableObject: {fileID: 0}
   _inputDisabled: 0
   _toggleMode: 0
+  _colliderSize: {x: 0.07, y: 0.02, z: 0.07}
+  BaseAnchor: {fileID: 868307829438254884}
+  PushAnchor: {fileID: 868307829391070545}
+  _yMin: 0.019
+  _yMax: 0.029
+  _repressTimeout: 0.3
+  _requireDirectInteraction: 1
+  _allowNearFarInteraction: 1
+  _maxInteractionDistance: 0.1
+  PressedSound: {fileID: 0}
+  ReleasedSound: {fileID: 0}
+  ToggledDownSound: {fileID: 0}
+  ToggledUpSound: {fileID: 0}
+  _defaultAudioPlayer: {fileID: 3718774432014875446}
   OnInputDisabled:
     m_PersistentCalls:
       m_Calls: []
@@ -245,18 +259,6 @@ MonoBehaviour:
   OnButtonPressReset:
     m_PersistentCalls:
       m_Calls: []
-  BaseAnchor: {fileID: 868307829438254884}
-  PushAnchor: {fileID: 868307829391070545}
-  _yMin: 0.019
-  _yMax: 0.029
-  _colliderSize: {x: 0.07, y: 0.02, z: 0.07}
-  _repressTimeout: 0.3
-  _requireDirectInteraction: 1
-  _defaultAudioPlayer: {fileID: 3718774432014875446}
-  PressedSound: {fileID: 0}
-  ReleasedSound: {fileID: 0}
-  ToggledDownSound: {fileID: 0}
-  ToggledUpSound: {fileID: 0}
 --- !u!82 &3718774432014875446
 AudioSource:
   m_ObjectHideFlags: 0
@@ -619,10 +621,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 868307829625974734}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c89dbf18ac705d4fb05aa4130a3f936, type: 3}
+  m_Script: {fileID: 11500000, guid: 541daece91bf6a04abcaff3de01cb7c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Misc.ColorSwitching.ButtonColorSwitcher
   _animator: {fileID: 4181420912130335447}
   _meshRenderer: {fileID: 868307829625974729}
-  _button: {fileID: 0}
-  _legacyButton: {fileID: 868307829206093228}
+  _legacyButton: {fileID: 0}

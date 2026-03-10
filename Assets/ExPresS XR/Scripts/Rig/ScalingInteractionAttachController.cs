@@ -1,28 +1,23 @@
 using System;
+using ExPresSXR.Interaction;
+
 #if BURST_PRESENT
 using Unity.Burst;
 #endif
-using UnityEngine;
 using Unity.Mathematics;
 using Unity.XR.CoreUtils;
-using UnityEngine.XR.Interaction.Toolkit.Attachment;
+using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.Utilities;
-using ExPresSXR.Interaction;
 
-
-/**
-This script was the InteractionAttachController from Unity's XR Interaction Toolkit but with slight adjustments.
-These were necessary to support but the initial class was impossible to extend...
-*/
-
-namespace ExPresSXR.Rig
+namespace UnityEngine.XR.Interaction.Toolkit.Attachment
 {
     /// <summary>
-    /// Manages and controls the anchor position for an XR interaction, handling how interactables snap and follow the interactor.
-    /// It applies velocity-based scaling for anchor movements and supports stabilization options.
+    /// This is a copy-pasta from the `InteractionAttachController` since it it can not properly modified.
+    /// Rather having to overwrite 4 different functions to be able to adjust the logic of manipulating the y-axis, we chose to copy the whole class...
+    /// This is a dirty hack but we're hoping the feature can be deprecated with rework of the XRITK Affordance System, some time soon.
     /// </summary>
 #if BURST_PRESENT
     [BurstCompile]
@@ -353,6 +348,20 @@ namespace ExPresSXR.Rig
             set => m_ManipulationTranslateSpeed = value;
         }
 
+
+        [SerializeField]
+        float m_ManipulationScaleSpeed = 0.1f;
+
+        /// <summary>
+        /// Speed at which the anchor is translated when using manipulation input.
+        /// </summary>
+        /// <seealso cref="manipulationInput"/>
+        public float manipulationScaleSpeed
+        {
+            get => m_ManipulationScaleSpeed;
+            set => m_ManipulationScaleSpeed = value;
+        }
+
         [SerializeField]
         float m_ManipulationRotateSpeed = 180f;
 
@@ -403,36 +412,38 @@ namespace ExPresSXR.Rig
         public event Action attachUpdated;
 
         // Offset state
-        bool m_FirstMovementFrame;
-        bool m_HasOffset;
+        protected bool m_FirstMovementFrame;
+        protected bool m_HasOffset;
 
-        float m_StartLocalOffsetLength;
-        Vector3 m_StartLocalOffset;
-        Vector3 m_StartLocalOffsetNormalized;
-        Vector3 m_TargetLocalOffsetNormalized;
+        protected float m_StartLocalOffsetLength;
+        protected Vector3 m_StartLocalOffset;
+        protected Vector3 m_StartLocalOffsetNormalized;
+        protected Vector3 m_TargetLocalOffsetNormalized;
 
-        float m_Pivot;
-        float m_Momentum;
-        bool m_MomentumDecayFromInput;
+        protected float m_Pivot;
+        protected float m_Momentum;
+        protected bool m_MomentumDecayFromInput;
 
-        bool m_WasVelocityScalingBlocked;
-        bool m_HasSelectInteractor;
-        IXRSelectInteractor m_SelectInteractor;
+        protected bool m_WasVelocityScalingBlocked;
+        protected bool m_HasSelectInteractor;
+        protected IXRSelectInteractor m_SelectInteractor;
 
-        bool m_HasXROrigin;
-        XROrigin m_XROrigin;
-        Transform m_AnchorParent;
-        Transform m_AnchorChild;
+        protected bool m_HasXROrigin;
+        protected XROrigin m_XROrigin;
+        protected Transform m_AnchorParent;
+        protected Transform m_AnchorChild;
 
-        Vector3 m_LastTargetLocalPosition;
-        Vector3 m_LastTargetOriginSpacePosition;
+        protected Vector3 m_LastTargetLocalPosition;
+        protected Vector3 m_LastTargetOriginSpacePosition;
 
-        readonly AttachPointVelocityTracker m_VelocityTracker = new AttachPointVelocityTracker();
+        protected readonly AttachPointVelocityTracker m_VelocityTracker = new AttachPointVelocityTracker();
 
-        Transform GetXROriginTransform() => InitializeXROrigin() ? m_XROrigin.Origin.transform : null;
+        protected Transform GetXROriginTransform() => InitializeXROrigin() ? m_XROrigin.Origin.transform : null;
 
-        bool InitializeXROrigin()
+        protected bool InitializeXROrigin()
         {
+            if (m_XROrigin == null)
+                m_XROrigin = FindFirstObjectByType<XROrigin>(); // We can't use the component utility function here...
             m_HasXROrigin = m_XROrigin != null;
             return m_HasXROrigin;
         }
@@ -504,7 +515,7 @@ namespace ExPresSXR.Rig
         /// <summary>
         /// Update the parent anchor pose to match the transform to follow.
         /// </summary>
-        void SyncAnchorParent()
+        protected void SyncAnchorParent()
         {
             if (m_TransformToFollow == null)
                 m_TransformToFollow = transform;
@@ -513,7 +524,14 @@ namespace ExPresSXR.Rig
         }
 
         /// <inheritdoc />
-        Transform IInteractionAttachController.GetOrCreateAnchorTransform(bool updateTransform)
+        Transform IInteractionAttachController.GetOrCreateAnchorTransform(bool updateTransform) => GetOrCreateAnchorTransform(updateTransform);
+
+        /// <summary>
+        /// Get or creates an anchor transform.
+        /// </summary>
+        /// <param name="updateTransform">If the transform should be updated.</param>
+        /// <returns>Anchor Transform.</returns>
+        protected Transform GetOrCreateAnchorTransform(bool updateTransform)
         {
             if (m_AnchorParent == null)
             {
@@ -544,7 +562,13 @@ namespace ExPresSXR.Rig
         }
 
         /// <inheritdoc />
-        void IInteractionAttachController.MoveTo(Vector3 targetWorldPosition)
+        void IInteractionAttachController.MoveTo(Vector3 targetWorldPosition) => MoveTo(targetWorldPosition);
+
+        /// <summary>
+        /// Moves an anchor to a position.
+        /// </summary>
+        /// <param name="targetWorldPosition">Target position.</param>
+        protected void MoveTo(Vector3 targetWorldPosition)
         {
             SyncAnchorParent();
             MoveToPosition(targetWorldPosition);
@@ -553,12 +577,12 @@ namespace ExPresSXR.Rig
         /// <summary>
         /// Reapply the anchor child's position to update dependent offset fields.
         /// </summary>
-        void SyncOffset()
+        protected void SyncOffset()
         {
             MoveToPosition(m_AnchorChild.position);
         }
 
-        void MoveToPosition(Vector3 targetWorldPosition)
+        protected void MoveToPosition(Vector3 targetWorldPosition)
         {
             // Set the anchor child's position to the target world position
             m_AnchorChild.position = targetWorldPosition;
@@ -596,21 +620,31 @@ namespace ExPresSXR.Rig
         }
 
         /// <inheritdoc />
-        void IInteractionAttachController.ApplyLocalPositionOffset(Vector3 offset)
+        void IInteractionAttachController.ApplyLocalPositionOffset(Vector3 offset) => ApplyLocalPositionOffset(offset);
+
+        /// <summary>
+        /// Applies local position offset.
+        /// </summary>
+        /// <param name="offset">Offset used.</param>
+        protected void ApplyLocalPositionOffset(Vector3 offset)
         {
             SyncAnchorParent();
             MoveToPosition(m_AnchorChild.position + m_AnchorParent.TransformDirection(offset));
         }
 
         /// <inheritdoc />
-        void IInteractionAttachController.ApplyLocalRotationOffset(Quaternion localRotation)
+        void IInteractionAttachController.ApplyLocalRotationOffset(Quaternion localRotation) => ApplyLocalRotationOffset(localRotation);
+
+        /// <summary>
+        /// Applies local rotation offset.
+        /// </summary>
+        /// <param name="offset">Offset used.</param>
+        protected void ApplyLocalRotationOffset(Quaternion localRotation)
         {
             m_AnchorChild.localRotation *= localRotation;
         }
 
-        /// <summary>
-        /// Resets the offset.
-        /// </summary>
+        /// <inheritdoc />
         public void ResetOffset()
         {
             m_FirstMovementFrame = true;
@@ -622,7 +656,13 @@ namespace ExPresSXR.Rig
         }
 
         /// <inheritdoc />
-        void IInteractionAttachController.DoUpdate(float deltaTime)
+        void IInteractionAttachController.DoUpdate(float deltaTime) => DoUpdate(deltaTime);
+
+        /// <summary>
+        /// Performs attach updates.
+        /// </summary>
+        /// <param name="deltaTime">Delta time for the update.</param>
+        protected void DoUpdate(float deltaTime)
         {
             if (!m_HasXROrigin)
                 return;
@@ -671,7 +711,6 @@ namespace ExPresSXR.Rig
             if (m_UseDistanceBasedVelocityScaling)
                 m_VelocityTracker.UpdateAttachPointVelocityData(m_TransformToFollow, originTransform);
 
-
             // Position
             if ((m_UseDistanceBasedVelocityScaling || m_UseManipulationInput) && !UpdateVelocityScalingBlock())
                 DoPositionUpdate(deltaTime);
@@ -697,7 +736,7 @@ namespace ExPresSXR.Rig
             attachUpdated?.Invoke();
         }
 
-        void DoPositionUpdate(float deltaTime)
+        protected void DoPositionUpdate(float deltaTime)
         {
             float3 currentLocalOffset = m_SmoothOffset ? m_LastTargetLocalPosition : m_AnchorChild.localPosition;
             float3 velocityLocal;
@@ -724,12 +763,14 @@ namespace ExPresSXR.Rig
             bool useTranslateFallback = true;
             ExPresSXRGrabInteractable scaleInteractable = m_SelectInteractor.interactablesSelected[0] as ExPresSXRGrabInteractable;
 
-            // Rotation 
-            if (m_UseManipulationInput && inputValid && scaleInteractable != null && (m_ManipulationYAxisMode == ManipulationYAxisMode.Scale || m_ManipulationYAxisMode == ManipulationYAxisMode.ScaleTranslate))
+            // Scale 
+            if (m_UseManipulationInput && inputValid && scaleInteractable != null
+                && (m_ManipulationYAxisMode == ManipulationYAxisMode.Scale || m_ManipulationYAxisMode == ManipulationYAxisMode.ScaleTranslate))
             {
+                float speed = scaleInteractable.HasScaleSpeedOverride ? scaleInteractable.ScaleSpeedOverride : m_ManipulationScaleSpeed;
                 input = FilterManipulationInput(input);
-
-                scaleInteractable.ScaleFactor += input.y * m_ManipulationTranslateSpeed;
+                
+                scaleInteractable.ScaleFactor += input.y * speed;
                 useTranslateFallback = false;
                 // Don't apply momentum while manipulation input is active, it should wait to apply
                 // once the input is stopped (assuming momentum is enabled at all).
@@ -739,8 +780,8 @@ namespace ExPresSXR.Rig
                 m_MomentumDecayFromInput = true;
             }
 
-            
-            if (m_UseManipulationInput && inputValid && (m_ManipulationYAxisMode == ManipulationYAxisMode.Translate || useTranslateFallback))
+            // Translation
+            if (m_UseManipulationInput && inputValid && (m_ManipulationYAxisMode == ManipulationYAxisMode.Translate || (m_ManipulationYAxisMode == ManipulationYAxisMode.ScaleTranslate && useTranslateFallback)))
             {
                 input = FilterManipulationInput(input);
 
@@ -772,7 +813,7 @@ namespace ExPresSXR.Rig
                 UpdatePosition(newOffset, deltaTime);
         }
 
-        bool UpdateVelocityScalingBlock()
+        protected bool UpdateVelocityScalingBlock()
         {
             if (!m_HasSelectInteractor)
                 return false;
@@ -795,7 +836,7 @@ namespace ExPresSXR.Rig
             return shouldBlock;
         }
 
-        void UpdatePosition(Vector3 targetLocalPosition, float deltaTime)
+        protected void UpdatePosition(Vector3 targetLocalPosition, float deltaTime)
         {
             if (!m_SmoothOffset || !m_HasXROrigin)
             {
@@ -819,7 +860,7 @@ namespace ExPresSXR.Rig
 #if BURST_PRESENT
         [BurstCompile]
 #endif
-        static void ComputeAmplifiedOffset(in float3 velocityLocal, in float3 startLocalOffsetNormalized, float startLocalOffsetLength,
+        protected static void ComputeAmplifiedOffset(in float3 velocityLocal, in float3 startLocalOffsetNormalized, float startLocalOffsetLength,
             in float3 targetLocalOffsetNormalized, in float3 currentLocalOffset, float minAdditionalVelocityScalar, float maxAdditionalVelocityScalar,
             float pushVelocityBias, float pullVelocityBias, float zVelocityRampThreshold, bool calculateMomentum, bool applyMomentum, float momentumDecayScale,
             ref float momentum, ref float pivot, float deltaTime, out float3 newOffset)
@@ -916,7 +957,7 @@ namespace ExPresSXR.Rig
                 pivot = math.lerp(pivot, (startLocalOffsetLength + newOffsetMagnitude) / 2f, deltaTime * movementScale);
         }
 
-        Vector2 FilterManipulationInput(in Vector2 input)
+        protected Vector2 FilterManipulationInput(in Vector2 input)
         {
             // When an axis is not configured for translation or rotation, we allow the entire half circle of input
             // to drive the axis rather than limiting to a quarter circle to allow the greatest precision of control.

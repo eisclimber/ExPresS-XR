@@ -544,7 +544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CollisionPushbackEnabled: 1
   _showCollisionVignetteEffect: 1
-  screenCollisionIndicator: {fileID: 8656674135484974729}
+  _screenCollisionIndicator: {fileID: 8656674135484974729}
   _pushbackAnchor: {fileID: 7915389058222313704}
   _colliderSize: 0.25
   _maxFadeDuration: 0.5
@@ -1565,8 +1565,8 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_InputActionReferencePerformed: {fileID: -4866196317054981580, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-    m_InputActionReferenceValue: {fileID: -4866196317054981580, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_InputActionReferencePerformed: {fileID: 0}
+    m_InputActionReferenceValue: {fileID: 0}
     m_ObjectReferenceObject: {fileID: 0}
     m_ManualPerformed: 0
     m_ManualValue: 0
@@ -1618,8 +1618,8 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_InputActionReferencePerformed: {fileID: -4866196317054981580, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-    m_InputActionReferenceValue: {fileID: -646386373352811967, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_InputActionReferencePerformed: {fileID: 0}
+    m_InputActionReferenceValue: {fileID: 0}
     m_ObjectReferenceObject: {fileID: 0}
     m_ManualPerformed: 0
     m_ManualValue: 0
@@ -1838,7 +1838,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_InputActionReference: {fileID: -8525429354371678379, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_InputActionReference: {fileID: 0}
     m_ObjectReferenceObject: {fileID: 0}
     m_ManualValue: {x: 0, y: 0}
 --- !u!114 &1583196055916688169
@@ -3025,7 +3025,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2201256356169897054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 792f6c7eaa1a4b82abf8351559ac97eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 18e43f4a154a95c4195e2c553c67bc24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Attachment.InteractionAttachController
   m_TransformToFollow: {fileID: 1805713120476623219}
@@ -3050,7 +3050,7 @@ MonoBehaviour:
       m_Name: Manipulation
       m_Type: 0
       m_ExpectedControlType: Vector2
-      m_Id: a1895d98-8758-4ddd-9637-55121162fd0d
+      m_Id: 052d3dd4-bc72-451b-83e2-46d8c3b645c6
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -3059,9 +3059,10 @@ MonoBehaviour:
     m_ObjectReferenceObject: {fileID: 0}
     m_ManualValue: {x: 0, y: 0}
   m_ManipulationXAxisMode: 1
-  m_ManipulationYAxisMode: 2
+  m_ManipulationYAxisMode: 4
   m_CombineManipulationAxes: 0
   m_ManipulationTranslateSpeed: 1
+  m_ManipulationScaleSpeed: 0.1
   m_ManipulationRotateSpeed: 180
   m_ManipulationRotateReferenceFrame: {fileID: 0}
   m_EnableDebugLines: 0
@@ -3207,7 +3208,8 @@ MonoBehaviour:
   _rayInteractorChanged:
     m_PersistentCalls:
       m_Calls: []
-  _attachController: {fileID: 1499128268861793969}
+  _attachController: {fileID: 0}
+  _scalingAttachController: {fileID: 1499128268861793969}
   _pokeInteractor: {fileID: 694318557576406824}
   _handModel: {fileID: 2280003420643814311}
   _teleportCancelEnabled: 1
@@ -3297,7 +3299,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -3326005586356538449, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_Reference: {fileID: 0}
   m_RotationInput:
     m_UseReference: 1
     m_Action:
@@ -3464,6 +3466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 7296220327068249948}
   _showHintAnimationDuration: 1
+  _hintDuration: 0.5
 --- !u!1 &3165414815494353806
 GameObject:
   m_ObjectHideFlags: 0
@@ -4923,7 +4926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e43f4a154a95c4195e2c553c67bc24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Attachment.InteractionAttachController
-  m_TransformToFollow: {fileID: 9189025490969196588}
+  m_TransformToFollow: {fileID: 1170552397605611656}
   m_MotionStabilizationMode: 1
   m_PositionStabilization: 0.25
   m_AngleStabilization: 20
@@ -4945,7 +4948,7 @@ MonoBehaviour:
       m_Name: Manipulation
       m_Type: 0
       m_ExpectedControlType: Vector2
-      m_Id: a1895d98-8758-4ddd-9637-55121162fd0d
+      m_Id: 83dc7d3e-6a6c-4281-bcf3-71c8d329a699
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -4954,9 +4957,10 @@ MonoBehaviour:
     m_ObjectReferenceObject: {fileID: 0}
     m_ManualValue: {x: 0, y: 0}
   m_ManipulationXAxisMode: 1
-  m_ManipulationYAxisMode: 2
+  m_ManipulationYAxisMode: 4
   m_CombineManipulationAxes: 0
   m_ManipulationTranslateSpeed: 1
+  m_ManipulationScaleSpeed: 0.1
   m_ManipulationRotateSpeed: 180
   m_ManipulationRotateReferenceFrame: {fileID: 0}
   m_EnableDebugLines: 0
@@ -5508,6 +5512,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _attachController: {fileID: 0}
+  _scalingAttachController: {fileID: 2580361150721930194}
   _pokeInteractor: {fileID: 6299014777377658242}
   _handModel: {fileID: 5288974985322749612}
   _teleportCancelEnabled: 1
@@ -6291,6 +6296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c53c078195434994297982389c87a0c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fadeColor: {r: 0, g: 0, b: 0, a: 0}
   _defaultFadeToColorTime: 0.5
   _defaultFadeToClearTime: 0.5
   _fadeImage: {fileID: 5405359619521108517}

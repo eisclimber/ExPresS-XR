@@ -19,8 +19,8 @@ namespace ExPresSXR.Editor.Utility
         public const string NONE_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - None";
         public const string CUSTOM_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom";
         public const string SAVED_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom (Saved)";
-        public const string QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Quiz Button Square";
-        public const string MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Multiple Choice Confirm Button Square";
+        public const string QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Interaction/Buttons/Quiz Buttons/Quiz Button Square";
+        public const string MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Interaction/Buttons/Quiz Buttons/Multiple Choice Confirm Button Square";
         public const string AFTER_QUIZ_DIALOG_PATH_NAME = "Misc/After Quiz Dialog";
 
 

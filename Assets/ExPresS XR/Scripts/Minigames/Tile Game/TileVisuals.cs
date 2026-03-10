@@ -112,9 +112,9 @@ namespace ExPresSXR.Minigames.TileGame
         /// <summary> Utility accessor for the center area id with -1 if the displayed tile is null. </summary>
         public int CenterAreaId => _displayedTile != null ? _displayedTile.CenterAreaId : -1;
         /// <summary> Utility accessor for the top area id with -1 if the displayed tile is null. </summary>
-        public int TopAreaId => _displayedTile != null ? _displayedTile.TopAreaId : -1;
+        public int UpAreaId => _displayedTile != null ? _displayedTile.UpAreaId : -1;
         /// <summary> Utility accessor for the bottom area id with -1 if the displayed tile is null. </summary>
-        public int BottomAreaId => _displayedTile != null ? _displayedTile.BottomAreaId : -1;
+        public int DownAreaId => _displayedTile != null ? _displayedTile.DownAreaId : -1;
         /// <summary> Utility accessor for the left area id with -1 if the displayed tile is null. </summary>
         public int LeftAreaId => _displayedTile != null ? _displayedTile.LeftAreaId : -1;
         /// <summary> Utility accessor for the right area id with -1 if the displayed tile is null. </summary>
@@ -139,10 +139,10 @@ namespace ExPresSXR.Minigames.TileGame
 #endif
             Material[] newMats = Application.isPlaying ? _renderer.materials : _renderer.sharedMaterials;
             // Materials are messed up when exported for some reason...
-            // Left, Top, Right, Bottom, Center
+            // Left, Up, Right, Down, Center
             newMats[_materialIdxs.Center] = _areas[CenterAreaId].Material;
-            newMats[_materialIdxs.Top] = _areas[TopAreaId].Material;
-            newMats[_materialIdxs.Bottom] = _areas[BottomAreaId].Material;
+            newMats[_materialIdxs.Up] = _areas[UpAreaId].Material;
+            newMats[_materialIdxs.Down] = _areas[DownAreaId].Material;
             newMats[_materialIdxs.Left] = _areas[LeftAreaId].Material;
             newMats[_materialIdxs.Right] = _areas[RightAreaId].Material;
             _renderer.materials = newMats;
@@ -175,15 +175,15 @@ namespace ExPresSXR.Minigames.TileGame
                 yield return new WaitForSeconds(_subScoreShowDelay);
             }
 
-            if (score.TopScore > 0)
+            if (score.UpScore > 0)
             {
-                SpawnPointsDisplay(score.TopScore, score.TopAreaId, Vector3.forward);
+                SpawnPointsDisplay(score.UpScore, score.UpAreaId, Vector3.forward);
                 yield return new WaitForSeconds(_subScoreShowDelay);
             }
 
-            if (score.BottomScore > 0)
+            if (score.DownScore > 0)
             {
-                SpawnPointsDisplay(score.BottomScore, score.BottomAreaId, Vector3.back);
+                SpawnPointsDisplay(score.DownScore, score.DownAreaId, Vector3.back);
                 yield return new WaitForSeconds(_subScoreShowDelay);
             }
 
@@ -248,7 +248,7 @@ namespace ExPresSXR.Minigames.TileGame
         {
             if (Application.isPlaying)
             {
-                DisplayScore(new(1, CenterAreaId, 2, TopAreaId, 10, BottomAreaId, 1, LeftAreaId, 4, RightAreaId));
+                DisplayScore(new(1, CenterAreaId, 2, UpAreaId, 10, DownAreaId, 1, LeftAreaId, 4, RightAreaId));
             }
             else
             {
@@ -285,8 +285,8 @@ namespace ExPresSXR.Minigames.TileGame
             }
 
             GizmoUtils.DrawLabel($"{DisplayedTile.CenterAreaId}", new Vector3(1.0f, 0.0f, 1.0f) * GIZMO_LABEL_OFFSET / 4.0f, transform);
-            GizmoUtils.DrawLabel($"{DisplayedTile.TopAreaId}", Vector3.forward * GIZMO_LABEL_OFFSET, transform);
-            GizmoUtils.DrawLabel($"{DisplayedTile.BottomAreaId}", -Vector3.forward * GIZMO_LABEL_OFFSET, transform);
+            GizmoUtils.DrawLabel($"{DisplayedTile.UpAreaId}", Vector3.forward * GIZMO_LABEL_OFFSET, transform);
+            GizmoUtils.DrawLabel($"{DisplayedTile.DownAreaId}", -Vector3.forward * GIZMO_LABEL_OFFSET, transform);
             GizmoUtils.DrawLabel($"{DisplayedTile.LeftAreaId}", Vector3.left * GIZMO_LABEL_OFFSET, transform);
             GizmoUtils.DrawLabel($"{DisplayedTile.RightAreaId}", Vector3.right * GIZMO_LABEL_OFFSET, transform);
         }
@@ -309,11 +309,11 @@ namespace ExPresSXR.Minigames.TileGame
         /// <summary>
         /// Renderer material index for the top area.
         /// </summary>
-        public int Top = 4;
+        public int Up = 4;
         /// <summary>
         /// Renderer material index for the bottom area.
         /// </summary>
-        public int Bottom = 2;
+        public int Down = 2;
         /// <summary>
         /// Renderer material index for the left area.
         /// </summary>

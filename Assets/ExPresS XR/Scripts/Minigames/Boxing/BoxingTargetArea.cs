@@ -156,7 +156,7 @@ namespace ExPresSXR.Minigames.Boxing
 
             if (scoreNumbersGo.TryGetComponent(out ScoreNumbers scoreNumbers))
             {
-                scoreNumbers.Score = points;
+                scoreNumbers.SetupScoreData(points);
             }
         }
 

@@ -234,6 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 895473995495050367}
   - component: {fileID: 1981871600894229264}
+  - component: {fileID: 2719230038229755151}
   - component: {fileID: 9150951211651483778}
   - component: {fileID: 1014715443571641408}
   m_Layer: 0
@@ -308,6 +309,7 @@ MonoBehaviour:
     Name: Clay
     Color: {r: 0.5943396, g: 0.32847795, b: 0.12615702, a: 1}
     Material: {fileID: 2100000, guid: 861aff4cbbd7a9c4aa8411fab35b8083, type: 2}
+  _scoreCalculator: {fileID: 2719230038229755151}
   _totalScore: 0
   _placedTiles: 0
   OnStarted:
@@ -358,6 +360,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &2719230038229755151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373230641770126529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40624b5bc79f4dc4e84d4262ac69e944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.DefaultScoreCalculator
+  _tilePlacementPoints: 1
+  _countType: 1
+  _countMultiplier: 1
+  _scoreAccumulation: 0
+  _scoreAccumulationMultiplier: 1
 --- !u!114 &9150951211651483778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,7 +410,7 @@ MonoBehaviour:
   _bottomAreaId: 0
   _leftAreaId: 0
   _rightAreaId: 0
-  _insertPos: {x: 1, y: 0}
+  _insertPos: {x: 0, y: 0}
   _game: {fileID: 1981871600894229264}
   _targetVisualsInstance: {fileID: 1909401320349762851}
 --- !u!1 &3558951676680614955
@@ -463,9 +482,9 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: 2a5f757c2acb047409e80126aadbc3e1, type: 2}
   - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
-  - {fileID: 2100000, guid: dcb6eef10f2ddab47b7b8b860e33acea, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
   - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
-  - {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
   - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -594,8 +613,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.ClothTileDisplay
   _displayedTile:
     CenterAreaId: 3
-    TopAreaId: 1
-    BottomAreaId: 2
+    UpAreaId: 0
+    DownAreaId: 0
     LeftAreaId: 3
     RightAreaId: 3
   _renderer: {fileID: 6708206997761351080}
@@ -631,8 +650,8 @@ MonoBehaviour:
   _pointsDisplayOffset: {x: 0, y: 0.02, z: 0}
   _materialIdxs:
     Center: 1
-    Top: 4
-    Bottom: 2
+    Up: 4
+    Down: 2
     Left: 3
     Right: 5
 --- !u!114 &4179555665526441712
@@ -882,9 +901,9 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: 2a5f757c2acb047409e80126aadbc3e1, type: 2}
   - {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
-  - {fileID: 2100000, guid: 88bfa3a11baef7a4cb3249277bdf5de1, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
   - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
-  - {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
+  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
   - {fileID: 2100000, guid: a93886e92cfd3f9459958f0d14c2028d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -979,8 +998,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.ClothTileDisplay
   _displayedTile:
     CenterAreaId: 1
-    TopAreaId: 1
-    BottomAreaId: 4
+    UpAreaId: 0
+    DownAreaId: 0
     LeftAreaId: 3
     RightAreaId: 1
   _renderer: {fileID: 3905106369206734374}
@@ -1016,8 +1035,8 @@ MonoBehaviour:
   _pointsDisplayOffset: {x: 0, y: 0.02, z: 0}
   _materialIdxs:
     Center: 1
-    Top: 4
-    Bottom: 2
+    Up: 4
+    Down: 2
     Left: 3
     Right: 5
 --- !u!114 &4767462082151347256
@@ -1266,11 +1285,11 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 2a5f757c2acb047409e80126aadbc3e1, type: 2}
-  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
-  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
-  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
-  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
-  - {fileID: 2100000, guid: ae3d7363cbffcff4f922905f8768641d, type: 2}
+  - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
+  - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
+  - {fileID: 2100000, guid: 861aff4cbbd7a9c4aa8411fab35b8083, type: 2}
+  - {fileID: 2100000, guid: 3af9802ae78a82b40b28a60e7d777363, type: 2}
+  - {fileID: 2100000, guid: 88bfa3a11baef7a4cb3249277bdf5de1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1409,11 +1428,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.TileGame.ClothTileDisplay
   _displayedTile:
-    CenterAreaId: 0
-    TopAreaId: 0
-    BottomAreaId: 0
-    LeftAreaId: 0
-    RightAreaId: 0
+    CenterAreaId: 3
+    UpAreaId: 3
+    DownAreaId: 3
+    LeftAreaId: 5
+    RightAreaId: 4
   _renderer: {fileID: 5638475848987777889}
   _areas:
   - Id: 0
@@ -1447,8 +1466,8 @@ MonoBehaviour:
   _pointsDisplayOffset: {x: 0, y: 0.02, z: 0}
   _materialIdxs:
     Center: 1
-    Top: 4
-    Bottom: 2
+    Up: 4
+    Down: 2
     Left: 3
     Right: 5
 --- !u!114 &8155646452855676981

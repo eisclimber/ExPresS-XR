@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ExPresSXR.Misc.ColorSwitching
 {
     /// <summary>
-    /// Represents the color switching logic of a BaseButton and a Button-ValueRangeInteractable.
+    /// Represents the color switching logic of a Button-ValueRangeInteractable.
     /// </summary>
     [RequireComponent(typeof(Animator))]
     public class ButtonColorSwitcher : ColorAnimatorSwitcher
@@ -16,13 +16,6 @@ namespace ExPresSXR.Misc.ColorSwitching
         [SerializeField]
         [Tooltip("The Button to which this ColorAnimatorSwitcher is linked.")]
         private Button _button;
-
-        /// <summary>
-        /// The (legacy) BaseButton to which this ColorAnimatorSwitcher is linked.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The (legacy) BaseButton to which this ColorAnimatorSwitcher is linked.")]
-        private BaseButton _legacyButton;
 
         /// <inheritdoc />
         protected virtual void OnEnable()
@@ -49,20 +42,6 @@ namespace ExPresSXR.Misc.ColorSwitching
                 _button.OnInputEnabled.AddListener(HandleButtonEnabled);
                 _button.OnInputDisabled.AddListener(HandleButtonDisabled);
             }
-
-            if (_legacyButton != null)
-            {
-                _legacyButton.OnPressed.AddListener(HandleLegacyButtonPressed);
-                _legacyButton.OnReleased.AddListener(HandleLegacyButtonReleased);
-
-                _legacyButton.OnTogglePressed.AddListener(HandleLegacyButtonPressed);
-                _legacyButton.OnToggleReleased.AddListener(HandleLegacyButtonReleased);
-
-                _legacyButton.OnInputEnabled.AddListener(HandleLegacyButtonEnabled);
-                _legacyButton.OnInputDisabled.AddListener(HandleLegacyButtonDisabled);
-
-                _legacyButton.OnButtonPressReset.AddListener(HandleLegacyButtonPressReset);
-            }
         }
 
         private void UnregisterButtonEvents()
@@ -77,20 +56,6 @@ namespace ExPresSXR.Misc.ColorSwitching
 
                 _button.OnInputEnabled.RemoveListener(HandleButtonEnabled);
                 _button.OnInputDisabled.RemoveListener(HandleButtonDisabled);
-            }
-
-            if (_legacyButton != null)
-            {
-                _legacyButton.OnPressed.RemoveListener(HandleLegacyButtonPressed);
-                _legacyButton.OnReleased.RemoveListener(HandleLegacyButtonReleased);
-
-                _legacyButton.OnTogglePressed.RemoveListener(HandleLegacyButtonPressed);
-                _legacyButton.OnToggleReleased.RemoveListener(HandleLegacyButtonReleased);
-
-                _legacyButton.OnInputEnabled.RemoveListener(HandleLegacyButtonEnabled);
-                _legacyButton.OnInputDisabled.RemoveListener(HandleLegacyButtonDisabled);
-
-                _legacyButton.OnButtonPressReset.RemoveListener(HandleLegacyButtonPressReset);
             }
         }
 
@@ -113,33 +78,6 @@ namespace ExPresSXR.Misc.ColorSwitching
         private void HandleButtonDisabled()
         {
             ChangeColorWithBool("IsDisabled", true);
-        }
-
-        // Legacy BaseButton handlers
-        private void HandleLegacyButtonPressed()
-        {
-            ChangeColorWithBool("IsPressed", true);
-        }
-
-        private void HandleLegacyButtonReleased()
-        {
-            ChangeColorWithBool("IsPressed", false);
-        }
-
-        private void HandleLegacyButtonEnabled()
-        {
-            ChangeColorWithBool("IsDisabled", false);
-        }
-
-        private void HandleLegacyButtonDisabled()
-        {
-            ChangeColorWithBool("IsDisabled", true);
-        }
-
-        private void HandleLegacyButtonPressReset()
-        {
-            // We need to update the pressed state, as it won't get set automatically
-            ChangeColorWithBool("IsPressed", false);
         }
     }
 }

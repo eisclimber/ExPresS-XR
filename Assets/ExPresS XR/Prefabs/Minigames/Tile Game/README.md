@@ -10,6 +10,23 @@ Placed tiles taken from sockets are respawned with either a purely random select
 These areas are represented by an array of entries, consisting of a unique id (=array index), a name, a color for displaying their scores and a material assigning to a tile.
 The scores are simply calculated using a flood fill in each direction that continues only if tiles are connected through adjacent specs of the same area type.
 
+### Scoring
+
+The scoring logic can be customized by altering how points get accumulated and weighted in the editor. If needed the scoring logic can be overwritten having access to all information gathered from the board.  
+
+The image below describes the general rules how tile areas area connected on a intra tile basis and for adjacent tiles. The provided formulae aim to provide a *hint* on how the score are calculated.
+
+The they use pseudo code notation:
+- `$` refers to another formula
+- `#` refers to a number of objects
+- `Σ`<sub>i</sub> is the sum of all *connected* groups
+- A <sub>subscript</sub> indicates a direction
+- *italic* values are constant multipliers that can be configured
+
+If not providing any configuration the default calculation counts the `Areas` and accumulating them `Individually`. The `BasicScoreCalculator` does the same thing, but allows for grouping, multipliers and additional tile placement points. The `Basic` example uses the default values but adds `ConnectedGroups` of the start tile.
+
+![Tile Game Scoring](./Tile%20Game%20Scoring.png "An example for the tile game scoring mechanism")
+
 ## Setup
 
 ### Tile Interactable

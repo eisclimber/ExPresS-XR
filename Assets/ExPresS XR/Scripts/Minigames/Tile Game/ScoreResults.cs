@@ -24,24 +24,24 @@ namespace ExPresSXR.Minigames.TileGame
         public int CenterAreaId;
 
         /// <summary>
-        /// Score of the top area.
+        /// Score of the up area.
         /// </summary>
-        public int TopScore;
+        public int UpScore;
 
         /// <summary>
-        /// Type of the top area.
+        /// Type of the up area.
         /// </summary>
-        public int TopAreaId;
+        public int UpAreaId;
 
         /// <summary>
-        /// Score of the bottom area.
+        /// Score of the down area.
         /// </summary>
-        public int BottomScore;
+        public int DownScore;
 
         /// <summary>
-        /// Type of the bottom area.
+        /// Type of the down area.
         /// </summary>
-        public int BottomAreaId;
+        public int DownAreaId;
 
         /// <summary>
         /// Score of the left area.
@@ -72,17 +72,17 @@ namespace ExPresSXR.Minigames.TileGame
         /// Creates a score without area types.
         /// </summary>
         /// <param name="centerScore">Center Score.</param>
-        /// <param name="topScore">Top Score.</param>
-        /// <param name="bottomScore">Bottom Score.</param>
+        /// <param name="upScore">Up Score.</param>
+        /// <param name="downScore">Down Score.</param>
         /// <param name="leftScore">Left Score.</param>
         /// <param name="rightScore">Right Score.</param>
-        public ScoreResults(int centerScore, int topScore, int bottomScore, int leftScore, int rightScore)
+        public ScoreResults(int centerScore, int upScore, int downScore, int leftScore, int rightScore)
         {
-            TotalScore = centerScore + topScore + bottomScore + leftScore + rightScore;
+            TotalScore = centerScore + upScore + downScore + leftScore + rightScore;
 
             CenterScore = centerScore;
-            TopScore = topScore;
-            BottomScore = bottomScore;
+            UpScore = upScore;
+            DownScore = downScore;
             LeftScore = leftScore;
             RightScore = rightScore;
         }
@@ -92,25 +92,25 @@ namespace ExPresSXR.Minigames.TileGame
         /// </summary>
         /// <param name="centerScore">Center Score.</param>
         /// <param name="centerAreaId">Center area type.</param>
-        /// <param name="topScore">Top Score.</param>
-        /// <param name="topAreaId">Top area type.</param>
-        /// <param name="bottomScore">Bottom Score.</param>
-        /// <param name="bottomAreaId">Bottom Score.</param>
+        /// <param name="upScore">Up Score.</param>
+        /// <param name="upAreaId">Up area type.</param>
+        /// <param name="downScore">Down Score.</param>
+        /// <param name="downAreaId">Down Score.</param>
         /// <param name="leftScore">Left Score.</param>
         /// <param name="leftAreaId">Left area type.</param>
         /// <param name="rightScore">Right Score.</param>
         /// <param name="rightAreaId">Right area type.</param>
-        public ScoreResults(int centerScore, int centerAreaId, int topScore, int topAreaId, int bottomScore,
-                            int bottomAreaId, int leftScore, int leftAreaId, int rightScore, int rightAreaId)
+        public ScoreResults(int centerScore, int centerAreaId, int upScore, int upAreaId, int downScore,
+                            int downAreaId, int leftScore, int leftAreaId, int rightScore, int rightAreaId)
         {
-            TotalScore = centerScore + topScore + bottomScore + leftScore + rightScore;
+            TotalScore = centerScore + upScore + downScore + leftScore + rightScore;
 
             CenterScore = centerScore;
             CenterAreaId = centerAreaId;
-            TopScore = topScore;
-            TopAreaId = topAreaId;
-            BottomScore = bottomScore;
-            BottomAreaId = bottomAreaId;
+            UpScore = upScore;
+            UpAreaId = upAreaId;
+            DownScore = downScore;
+            DownAreaId = downAreaId;
             LeftScore = leftScore;
             LeftAreaId = leftAreaId;
             RightScore = rightScore;
@@ -123,11 +123,11 @@ namespace ExPresSXR.Minigames.TileGame
         public void PrintScore()
         {
             Debug.Log($"Final Score: {TotalScore}\n"
-                + $"- Center ({CenterAreaId}): {CenterScore}\n"
-                + $"- Top ({TopAreaId}): {TopScore}\n"
-                + $"- Bottom ({BottomAreaId}): {BottomScore}\n"
-                + $"- Left ({LeftAreaId}): {LeftScore}\n"
-                + $"- Right ({RightAreaId}): {RightScore})");
+                + $"- Center (ID: {CenterAreaId}): {CenterScore}\n"
+                + $"- Up (ID: {UpAreaId}): {UpScore}\n"
+                + $"- Down (ID: {DownAreaId}): {DownScore}\n"
+                + $"- Left (ID: {LeftAreaId}): {LeftScore}\n"
+                + $"- Right (ID: {RightAreaId}): {RightScore}");
         }
     }
 }

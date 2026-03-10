@@ -149,6 +149,10 @@ namespace ExPresSXR.Editor.SetupDialogs
                 yield return new EditorWaitForSeconds(ERROR_MESSAGE_DURATION);
                 _errorElement.style.display = DisplayStyle.None;
             }
+            else
+            {
+                Debug.LogWarning("Failed to display error element which was 'null'.", this);
+            }
         }
 
 
