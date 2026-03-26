@@ -2,6 +2,7 @@ using ExPresSXR.Misc.Timing;
 using UnityEngine;
 using UnityEngine.Events;
 using ExPresSXR.Minigames.Common;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 namespace ExPresSXR.Minigames.Boxing
 {
@@ -22,15 +23,15 @@ namespace ExPresSXR.Minigames.Boxing
             {
                 _targetActive = value;
 
-                if (_timer != null)
+                if (_activeDuration > 0.0f)
                 {
                     if (_targetActive)
                     {
-                        _timer.StartTimerDefault();
+                        _timingUnit.StartTimer(_activeDuration);
                     }
                     else
                     {
-                        _timer.StopTimer();
+                        _timingUnit.StopTimer();
                     }
                 }
 
@@ -40,6 +41,14 @@ namespace ExPresSXR.Minigames.Boxing
                 }
             }
         }
+
+        /// <summary>
+        /// How long the target stays active after being enabled.
+        /// Negative values or zero prevent deactivation and the `_damageMultiplier` is always rewarded.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("How long the target stays active after being enabled. Negative values or zero prevent deactivation and the `_damageMultiplier` is always rewarded.")]
+        private float _activeDuration = 3.0f;
 
         /// <summary>
         /// Prefab (i.e. ScoreNumbers) to be spawned when hit.
@@ -77,18 +86,13 @@ namespace ExPresSXR.Minigames.Boxing
         private Vector3 _pointsDisplayOffset;
 
         /// <summary>
-        /// Timer for eventually failing the target.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Timer for eventually failing the target.")]
-        private Timer _timer;
-
-        /// <summary>
         /// Animator for playing an animation indicating a decay in points.
         /// </summary>
         [SerializeField]
         [Tooltip("Animator for playing an animation indicating a decay in points.")]
         private Animator _animator;
+
+        private TimingUnit _timingUnit = new();
 
         /// <summary>
         /// Emitted with the points received on a successful hit.
@@ -103,33 +107,27 @@ namespace ExPresSXR.Minigames.Boxing
         private void OnEnable()
         {
             OnActionPerformed.AddListener(HitTarget);
-
-            if (_timer != null)
-            {
-                _timer.OnTimeout.AddListener(FailTarget);
-            }
+            
+            _timingUnit.OnTimeout.AddListener(FailTarget);
         }
 
         private void OnDisable()
         {
             OnActionPerformed.RemoveListener(HitTarget);
 
-            if (_timer != null)
-            {
-                _timer.OnTimeout.RemoveListener(FailTarget);
-                _timer.StopTimer();
-            }
+            _timingUnit.OnTimeout.RemoveListener(FailTarget);
+            _timingUnit.StopTimer();
         }
 
         /// <inheritdoc />
-        public override void QueueAction()
+        public override bool QueueAction()
         {
-            if (_targetActive)
+            if (!_targetActive)
             {
-                return;
+                return false;
             }
 
-            base.QueueAction();
+            return base.QueueAction();
         }
 
         [ContextMenu("Fail Target")]
@@ -162,7 +160,11 @@ namespace ExPresSXR.Minigames.Boxing
 
         private int GetCurrentPoints()
         {
-            float pct = _timer != null && _timer.WaitTime >= 0 ? _timer.RemainingTime / _timer.WaitTime : 1.0f;
+            if (_activeDuration <= 0.0f)
+            {
+                return (int)_damageMultiplier;
+            }
+            float pct = _timingUnit.WaitTime >= 0 ? _timingUnit.RemainingTime / _timingUnit.WaitTime : 1.0f;
             return (int)Mathf.Ceil(_pointsDistribution.Evaluate(1.0f - pct) * _damageMultiplier);
         }
     }

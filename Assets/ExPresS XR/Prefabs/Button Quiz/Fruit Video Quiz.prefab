@@ -435,7 +435,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1250
+  m_VersionIndex: 1442
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -912,8 +912,9 @@ MonoBehaviour:
   OnQuizStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExPresSXR.Interaction.BaseButton, Assembly-CSharp
+      - m_Target: {fileID: 2232820435739376733}
+        m_TargetAssemblyTypeName: ExPresSXR.Interaction.ValueRangeInteractable.Button,
+          Assembly-CSharp
         m_MethodName: set_InputDisabled
         m_Mode: 6
         m_Arguments:
@@ -930,8 +931,9 @@ MonoBehaviour:
   OnQuizCompleted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExPresSXR.Interaction.BaseButton, Assembly-CSharp
+      - m_Target: {fileID: 2232820435739376733}
+        m_TargetAssemblyTypeName: ExPresSXR.Interaction.ValueRangeInteractable.Button,
+          Assembly-CSharp
         m_MethodName: set_InputDisabled
         m_Mode: 6
         m_Arguments:
@@ -1465,6 +1467,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5119e02b5a1c3647abfe27bdd857486, type: 3}
+--- !u!114 &2232820435739376733 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8840095656870078357, guid: d5119e02b5a1c3647abfe27bdd857486, type: 3}
+  m_PrefabInstance: {fileID: 7229058548960631752}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89e86023148366a4d9b10e596a157049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Interaction.ValueRangeInteractable.Button
 --- !u!4 &7880883888638064969 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 651966787076907649, guid: d5119e02b5a1c3647abfe27bdd857486, type: 3}

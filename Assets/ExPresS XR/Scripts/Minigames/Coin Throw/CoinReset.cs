@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinThrow
@@ -13,6 +14,13 @@ namespace ExPresSXR.Minigames.CoinThrow
         [SerializeField]
         [Tooltip("Position to reset the coin after hitting / missing. If null, uses its own Transform during awake.")]
         private Transform _resetTransform;
+
+        /// <summary>
+        /// List of colliders that cause a reset when entered.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("List of colliders that cause a reset when entered.")]
+        private Collider[] _resetColliders;
 
         private Vector3 _initialPos;
         private Quaternion _initialRot;
@@ -31,6 +39,8 @@ namespace ExPresSXR.Minigames.CoinThrow
             {
                 transform.SetPositionAndRotation(_initialPos, _initialRot);
             }
+
+            CheckTriggers();
         }
 
         /// <summary>
@@ -51,9 +61,25 @@ namespace ExPresSXR.Minigames.CoinThrow
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other != null && !other.CompareTag("Player"))
+            if (other != null && _resetColliders.Contains(other))
             {
                 ResetOwnPosition();
+            }
+        }
+
+        private void CheckTriggers()
+        {
+            if (_resetColliders.Length <= 0)
+            {
+                Debug.LogError("No reset colliders configured to reset this object.", this);
+            }
+
+            foreach (Collider col in _resetColliders)
+            {
+                if (!col.isTrigger)
+                {
+                    Debug.LogWarning("Collider is not a trigger, can't reset the coins position based on it.", col);
+                }
             }
         }
     }

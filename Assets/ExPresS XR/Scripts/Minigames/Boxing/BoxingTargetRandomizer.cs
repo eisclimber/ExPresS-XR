@@ -36,11 +36,11 @@ namespace ExPresSXR.Minigames.Boxing
         }
 
         /// <summary>
-        /// If active targets should be canceled when activating a new one.
+        /// If active targets are canceled when activating a new one.
         /// </summary>
         [SerializeField]
-        [Tooltip("If active targets should be canceled when activating a new one.")]
-        private bool _cancelActiveTargets = true;
+        [Tooltip("If active targets are canceled when activating a new one.")]
+        private bool _onlyOneActive = true;
 
         /// <summary>
         /// If all targets should be set hidden initially.
@@ -84,7 +84,7 @@ namespace ExPresSXR.Minigames.Boxing
             {
                 if (!_autoStart)
                 {
-                    SetTargetsVisible(true);
+                    SetTargetsVisible(false);
                 }
                 else
                 {
@@ -136,14 +136,19 @@ namespace ExPresSXR.Minigames.Boxing
         }
 
         /// <summary>
-        /// Stosp randomization.
+        /// Stops randomization.
         /// </summary>
         [ContextMenu("Stop Target Randomization")]
-        public void StopTargetRandomization()
+        public void StopTargetRandomization(bool cancelTargets = false)
         {
             if (_waitForSpawnCoroutine != null)
             {
                 StopCoroutine(_waitForSpawnCoroutine);
+            }
+
+            if (cancelTargets)
+            {
+                DeactivateAllTargets();
             }
         }
 
@@ -159,7 +164,7 @@ namespace ExPresSXR.Minigames.Boxing
             {
                 bool isNewActivation = i == nextIdx;
                 // Change only to activate or if they should be canceled
-                if (isNewActivation || _cancelActiveTargets)
+                if (isNewActivation || _onlyOneActive)
                 {
                     _targets[i].TargetActive = isNewActivation;
                 }
@@ -179,7 +184,7 @@ namespace ExPresSXR.Minigames.Boxing
         }
 
         /// <summary>
-        /// Controlls the visibility of all targets
+        /// Controls the visibility of all targets
         /// </summary>
         /// <param name="visible">If it should be set to visible or not.</param>
         public void SetTargetsVisible(bool visible)

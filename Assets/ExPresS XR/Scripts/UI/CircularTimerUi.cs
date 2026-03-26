@@ -6,7 +6,15 @@ using ExPresSXR.Misc;
 namespace ExPresSXR.UI
 {
     /// <summary>
-    /// Visualizes an ExPresSXR Timer as a filling circle.
+    /// Visualizes an ExPresSXR Timer as a filling circle with an optional display of time and text.
+    /// 
+    /// The visuals can be customized in various ways such as counting up or down as well as smooth or tick movement based on time or steps.
+    /// To further control the timing of the visuals both text and progress can be rounded independently.
+    /// It is recommended to use the same `RoundType` if both use the `CountType` is the same.
+    /// With `FillDirection` being set to `Down` these values are recommended based on `RoundType`:
+    /// - Smooth: Ceil (Text), None (Fill)
+    /// - TickNum: Ceil (Both)
+    /// - TickTime: Floor (Both)
     /// </summary>
     public class CircularTimerUi : TimerUi
     {
@@ -55,6 +63,11 @@ namespace ExPresSXR.UI
             public ProgressType FillType = ProgressType.Smooth;
 
             /// <summary>
+            /// How the remaining time is displayed (i.e. count up or down).
+            /// </summary>
+            public RuntimeUtils.RoundType RoundType = RuntimeUtils.RoundType.Floor;
+
+            /// <summary>
             /// The tick frequency for the tick-based visualization.
             /// Will be interpreted as seconds if 'fillType' is set to 'TickTime'.
             /// If 'fillType' is set to 'TickNum' the value is interpreted as number of ticks.
@@ -64,7 +77,7 @@ namespace ExPresSXR.UI
                 + "\nWill be interpreted as seconds if 'fillType' is set to 'TickTime'."
                 + "\nIf 'fillType' is set to 'TickNum' the value is interpreted as number of ticks."
                 + "\nHas no effect if `fillType` is set to `Smooth` or set to a value equal or below zero.")]
-            public int tickFrequency = 0;
+            public int tickFrequency = 1;
 
             [SerializeField]
             [Tooltip("If the caps shown at the ends of the progress meter to round the ends.")]
@@ -237,15 +250,15 @@ namespace ExPresSXR.UI
 
             private float CalculateProgressPct(float remainingTime, float waitTime)
             {
-                float progressPct = remainingTime / waitTime;
+                float progressPct = Mathf.Clamp01(remainingTime / waitTime);
                 if (FillType == ProgressType.TickTime && tickFrequency > 0)
                 {
                     int numTicks = Mathf.CeilToInt(waitTime / tickFrequency);
-                    return RuntimeUtils.GetValue01Stepped(progressPct, numTicks);
+                    return RuntimeUtils.RoundValue(progressPct * numTicks, RoundType) / numTicks;
                 }
                 else if (FillType == ProgressType.TickNum && tickFrequency > 0)
                 {
-                    return RuntimeUtils.GetValue01Stepped(progressPct, tickFrequency);
+                    return RuntimeUtils.RoundValue(progressPct * tickFrequency, RoundType) / tickFrequency;
                 }
 
                 return progressPct;

@@ -93,7 +93,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         protected bool _requireDirectInteraction;
 
         [SerializeField]
-        [Tooltip("If enabled allows NearFarInteractors to be treates as valid Direct Interactor. "
+        [Tooltip("If enabled allows NearFarInteractors to be treats as valid Direct Interactor. "
             + "It is recommended to set the max interaction distance to the size of near interaction volume, "
             + "as we can not differentiate hovers from it and the ray.")]
         private bool _allowNearFarInteraction = true;

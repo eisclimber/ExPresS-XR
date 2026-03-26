@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.ColorSwitching
 {
-    /// </summary>
     /// <summary>
     /// Represents the color switching logic of a Legacy BaseButton.
     /// </summary>
@@ -23,6 +22,11 @@ namespace ExPresSXR.Misc.ColorSwitching
         protected virtual void OnEnable()
         {
             RegisterButtonEvents();
+
+            if (_legacyButton == null)
+            {
+                Debug.LogError("No button reference set for this color switcher.", this);
+            }
         }
 
         /// <inheritdoc />

@@ -644,7 +644,9 @@ namespace UnityEngine.XR.Interaction.Toolkit.Attachment
             m_AnchorChild.localRotation *= localRotation;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Resets the offset of an attached interactable.
+        /// </summary>
         public void ResetOffset()
         {
             m_FirstMovementFrame = true;

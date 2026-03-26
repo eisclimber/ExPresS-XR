@@ -301,6 +301,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             OnQuizCompleted.Invoke();
 
             ClearAnswers();
+            ClearVideoDisplay();
 
             SetButtonsDisabled(true);
 

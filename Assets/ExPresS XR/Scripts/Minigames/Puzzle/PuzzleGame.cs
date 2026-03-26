@@ -264,8 +264,10 @@ namespace ExPresSXR.Minigames.Puzzle
                 DisplaySocketScore(idx, _pieceScore, bonus);
 
                 OnPieceSubmitted.Invoke(idx);
+                Debug.Log($"Puzzle completed ({_numCompleted}/{NumPieces}): {CurrentScore}");
                 if (_numCompleted == NumPieces)
                 {
+                    Debug.Log("Puzzle fully completed");
                     EndGame();
                 }
             }

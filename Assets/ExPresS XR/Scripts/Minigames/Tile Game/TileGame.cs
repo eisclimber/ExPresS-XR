@@ -80,12 +80,12 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Areas available in the game.")]
         private AreaDescription[] _areas;
 
-        /// <summary>
-        /// Optional Score calculator. If none is provided, a default score calculation is used.
-        /// </summary>
         [SerializeField]
         [Tooltip("Optional Score calculator. If none is provided, a default score calculation is used.")]
         private ScoreCalculator _scoreCalculator;
+        /// <summary>
+        /// Optional Score calculator. If none is provided, a default score calculation is used.
+        /// </summary>
         public ScoreCalculator ScoreCalculator
         {
             get => _scoreCalculator;

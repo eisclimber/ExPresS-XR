@@ -23,8 +23,9 @@ namespace ExPresSXR.Minigames.TargetArea
         /// <summary>
         /// If the number of actions were performed and the target is completed, not registering any more actions.
         /// </summary>
-        public bool Completed
+        public virtual bool Completed
         {
+            protected set => _completed = value;
             get => _completed;
         }
 
@@ -43,18 +44,19 @@ namespace ExPresSXR.Minigames.TargetArea
         /// <summary>
         /// Adds another action to be performed and handle completion.
         /// </summary>
-        public virtual void QueueAction()
+        /// <returns>Returns if the action was successful.</returns>
+        public virtual bool QueueAction()
         {
             if (_completed)
             {
                 // Do not progress if completed or infinite
-                return;
+                return false;
             }
             else if (_actionsToComplete < 1)
             {
                 // No actions to complete -> assume infinite actions
                 OnActionPerformed.Invoke();
-                return;
+                return true;
             }
 
             _performedActions++;
@@ -66,6 +68,7 @@ namespace ExPresSXR.Minigames.TargetArea
                 _completed = true;
                 OnCompleted.Invoke();
             }
+            return true;
         }
     }
 }

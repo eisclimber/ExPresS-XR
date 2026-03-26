@@ -91,13 +91,14 @@ namespace ExPresSXR.Minigames.TargetArea
         {
             if (!TryGetComponent(out Collider col))
             {
-                Debug.LogError("Could not find a Collider-Component so we won't be able to be detected targets.");
+                Debug.LogError("Could not find a Collider-Component so we won't be able to be detected targets.", this);
                 return;
             }
 
             if (!col.isTrigger)
             {
-                Debug.LogWarning("Setting the Collider as trigger to not collide with objects. Please make the Collider a trigger via the inspector. ");
+                Debug.LogWarning("Setting the Collider as trigger to not collide with objects. "
+                    + "Please make the Collider a trigger via the inspector.", this);
                 col.isTrigger = true;
             }
         }
@@ -138,10 +139,9 @@ namespace ExPresSXR.Minigames.TargetArea
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent(out TargetArea target)
-                && IsUncompletedTarget(target))
+                && IsUncompletedTarget(target)
+                && target.QueueAction())
             {
-                target.QueueAction();
-
                 if (_hapticsPlayer != null && _doHaptics)
                 {
                     RumbleUtility.PerformConstantRumble(_rumble.Strength, _rumble.Duration, _hapticsPlayer);

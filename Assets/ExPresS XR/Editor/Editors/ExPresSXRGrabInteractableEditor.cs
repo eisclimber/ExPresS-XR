@@ -15,25 +15,31 @@ namespace ExPresSXR.Editor.Editors
     [CustomEditor(typeof(ExPresSXRGrabInteractable), true), CanEditMultipleObjects]
     public class ExPresSXRGrabInteractableEditor : XRGrabInteractableEditor
     {
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.AllowGrab"/>.</summary>
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._allowGrab"/>.</summary>
         protected SerializedProperty _allowGrab;
 
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.minScaleFactor"/>.</summary>
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._requireDirectInteraction"/>.</summary>
+        protected SerializedProperty _requireDirectInteraction;
+
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._treatNearFarAsGrab"/>.</summary>
+        protected SerializedProperty _treatNearFarAsGrab;
+
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._minScaleFactor"/>.</summary>
         protected SerializedProperty _minScaleFactor;
 
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.maxScaleFactor"/>.</summary>
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._maxScaleFactor"/>.</summary>
         protected SerializedProperty _maxScaleFactor;
 
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.scaleSpeedOverride"/>.</summary>
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._scaleSpeedOverride"/>.</summary>
         protected SerializedProperty _scaleSpeedOverride;
 
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.resetScaleInSockets"/>.</summary>
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._resetScaleInSockets"/>.</summary>
         protected SerializedProperty _resetScaleInSockets;
 
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.maxScaleFactor"/>.</summary>
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._maxScaleFactor"/>.</summary>
         protected SerializedProperty _scaleAllChildren;
 
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable.maxScaleFactor"/>.</summary>
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ExPresSXRGrabInteractable._maxScaleFactor"/>.</summary>
         protected SerializedProperty _scaledChildren;
 
 
@@ -46,6 +52,8 @@ namespace ExPresSXR.Editor.Editors
             scaleInteractable = (ExPresSXRGrabInteractable)target;
 
             _allowGrab = serializedObject.FindProperty("_allowGrab");
+            _requireDirectInteraction = serializedObject.FindProperty("_requireDirectInteraction");
+            _treatNearFarAsGrab = serializedObject.FindProperty("_treatNearFarAsGrab");
 
             _minScaleFactor = serializedObject.FindProperty("_minScaleFactor");
             _maxScaleFactor = serializedObject.FindProperty("_maxScaleFactor");
@@ -75,6 +83,9 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(_allowGrab, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_requireDirectInteraction, true);
+            EditorGUILayout.PropertyField(_treatNearFarAsGrab, true);
             EditorGUI.indentLevel--;
 
             EditorGUILayout.LabelField("Scaling", EditorStyles.boldLabel);

@@ -13,7 +13,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueModifier
         /// </summary>
         [SerializeField]
         [Tooltip("Format string applied to the value. See: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings")]
-        private string _floatFormat = "{0:F1}";
+        private string _floatFormat = "F1";
 
         /// <inheritdoc />
         protected override string GetModifiedValue(float value) => value.ToString(_floatFormat);

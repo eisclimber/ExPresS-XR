@@ -1,4 +1,5 @@
 ﻿using System;
+using ExPresSXR.Misc;
 using ExPresSXR.Misc.Timing;
 using TMPro;
 using UnityEngine;
@@ -116,6 +117,13 @@ namespace ExPresSXR.UI
             /// </summary>
             public CountDirection CountType = CountDirection.Down;
 
+
+            /// <summary>
+            /// How the remaining time is rounded when being displayed.
+            /// </summary>
+            public RuntimeUtils.RoundType TimeRoundType = RuntimeUtils.RoundType.None;
+
+
             [SerializeField]
             [Tooltip("Color of the text.")]
             protected Color _color = Color.white;
@@ -192,8 +200,8 @@ namespace ExPresSXR.UI
                 }
 
                 float time = CountType == CountDirection.Up ? waitTime - remainingTime : remainingTime;
-
-                string timeValue = time.ToString(TimeValueFormatter);
+                float timeRounded = RuntimeUtils.RoundValue(time, TimeRoundType);
+                string timeValue = timeRounded.ToString(TimeValueFormatter);
                 Text.text = string.Format(TimeDisplayFormatter, timeValue);
             }
 

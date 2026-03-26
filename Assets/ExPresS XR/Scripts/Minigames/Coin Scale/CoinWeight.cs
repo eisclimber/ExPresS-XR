@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExPresSXR.Misc;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinScale
@@ -19,6 +20,14 @@ namespace ExPresSXR.Minigames.CoinScale
         {
             get => _isFake;
             set => _isFake = value;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_isFake)
+            {
+                GizmoUtils.DrawLabel("X", Vector3.zero, transform);
+            }
         }
     }
 }

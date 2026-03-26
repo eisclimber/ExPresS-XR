@@ -8,6 +8,7 @@ namespace ExPresSXR.Misc.Timing
     /// Represents the internal logic of a timer counting down time.
     /// 
     /// Must be updated manually to process. This should ideally be done in the `FixedUpdate()` function providing `Time.fixedDeltaTime`.
+    /// *Important*: Declare **and** instantiate the timing unit to prevent null errors: `private TimingUnit _timingUnit = new();`
     /// </summary>
     [Serializable]
     public class TimingUnit
@@ -64,13 +65,13 @@ namespace ExPresSXR.Misc.Timing
         /// Event that is triggered when the timer was started. A started timer automatically be unpaused.
         /// </summary>
         [HideInInspector]
-        public UnityEvent OnStarted;
+        public UnityEvent OnStarted = new();
 
         /// <summary>
         /// Event that is triggered when the timer times out.
         /// </summary>
         [HideInInspector]
-        public UnityEvent OnTimeout;
+        public UnityEvent OnTimeout = new();
 
 
         /// <summary>

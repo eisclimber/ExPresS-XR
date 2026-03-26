@@ -270,7 +270,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
     /// <summary>
     /// Represents the internal press value of a button represented by a value between 0.0f (up-position) and 1.0f (down-position).
-    /// Sllows customizing the press threshold and deadzone and repress timeouts, whilst also supporting an optional toggle mode.
+    /// Allows customizing the press threshold and deadzone and repress timeouts, whilst also supporting an optional toggle mode.
     /// </summary>
     [Serializable]
     public class ButtonDescriptor : ValueDescriptor<float>
@@ -284,9 +284,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             get => _pressed;
             set
             {
-                _pressed = value;
-                Value = _pressed ? 1.0f : 0.0f;
-            } 
+                // Pressed will be set via value
+                Value = value ? 1.0f : 0.0f;
+            }
         }
 
         [SerializeField]
@@ -346,8 +346,18 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             set => _repressTimeout = value;
         }
 
-        [SerializeField]
-        [ReadonlyInInspector ]
+
+        private bool _forceUpdatePressState;
+        /// <summary>
+        /// Helper value to ignore the repress timeout temporarily for the editor. Resets automatically after the next press/release.
+        /// </summary>
+        public bool ForceUpdatePressState
+        {
+            get => _forceUpdatePressState;
+            set => _forceUpdatePressState = value;
+        }
+
+
         [Tooltip("Internal time of the last press to handle the repress timeout.")]
         private float _lastPressTime = 0.0f;
 
@@ -356,7 +366,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
         /// <inheritdoc />
         public override float DefaultMaxValue => 1.0f;
-
 
 
         /// <summary>
@@ -392,21 +401,26 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 return;
             }
 
-            // If we can repress the button (or if it hasn't been pressed yet)
-            bool canRepress = (Time.time >= _lastPressTime + _repressTimeout) || _lastPressTime <= 0.0f;
             // Check if we are outside of the deadzone still allow pressing if the the deadzone extends outside the range [0.0f, 1.0f] via the OR-condition
             bool wantsPress = _value > _pressThreshold + _pressDeadzone || _value >= 1.0f;
             bool wantsRelease = _value < _pressThreshold - _pressDeadzone || _value <= 0.0f;
+            // If we can repress the button (or if it hasn't been pressed yet)
+            bool canRepress = (Time.time >= _lastPressTime + _repressTimeout) || _lastPressTime <= 0.0f;
 
-            if (!_pressed && canRepress && wantsPress)
+            if (wantsPress && !_pressed && canRepress)
             {
                 _pressed = true;
-                _lastPressTime = Time.time;
+                if (!_forceUpdatePressState)
+                {
+                    _lastPressTime = Time.time;
+                }
+                _forceUpdatePressState = false;
                 OnPressed.Invoke();
             }
-            else if (_pressed && wantsRelease)
+            else if (wantsRelease && _pressed)
             {
                 _pressed = false;
+                _forceUpdatePressState = false;
                 OnReleased.Invoke();
             }
         }

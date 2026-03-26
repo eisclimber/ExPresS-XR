@@ -49,7 +49,11 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Multiplier to for the accumulated scores. Will always be rounded up.")]
         private float _scoreAccumulationMultiplier = 1.0f;
 
-        /// < inheritdoc />
+        /// <summary>
+        /// Calculates the score based on the PlacementData.
+        /// </summary>
+        /// <param name="data">Context of the placed tile.</param>
+        /// <returns>Score for that placement.</returns>
         public override ScoreResults CalculateScore(PlacementData data)
         {
             if (data == null || !data.Valid)

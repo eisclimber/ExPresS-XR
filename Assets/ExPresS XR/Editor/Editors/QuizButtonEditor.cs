@@ -122,7 +122,7 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            base.DrawEvents();
+            base.DrawValueEvents();
         }
 
         protected override void DrawEvents()

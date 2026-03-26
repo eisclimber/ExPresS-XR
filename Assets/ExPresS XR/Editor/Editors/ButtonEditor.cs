@@ -51,6 +51,8 @@ namespace ExPresSXR.Editor.Editors
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnToggleModeChanged"/>.</summary>
         protected SerializedProperty _onToggleModeChanged;
 
+        protected Button _button;
+
         protected override string SnapToMinButtonLabel
         {
             get => "Set Released";
@@ -68,7 +70,7 @@ namespace ExPresSXR.Editor.Editors
 
             _pressed = serializedObject.FindProperty("_pressed");
             _toggleMode = serializedObject.FindProperty("_toggleMode");
-            
+
             _maxInteractionDistance = serializedObject.FindProperty("_maxInteractionDistance");
 
             _pressedSound = serializedObject.FindProperty("_pressedSound");
@@ -83,14 +85,17 @@ namespace ExPresSXR.Editor.Editors
             _onToggleReleased = serializedObject.FindProperty("OnToggleReleased");
 
             _onToggleModeChanged = serializedObject.FindProperty("OnToggleModeChanged");
+
+            _button = (Button)target;
         }
 
         /// <inheritdoc />
         protected override void DrawRangeProperties()
         {
+            DrawPressButtons();
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(_pressed);
             EditorGUILayout.PropertyField(_toggleMode);
+            EditorGUILayout.PropertyField(_inputDisabled);
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
@@ -109,6 +114,42 @@ namespace ExPresSXR.Editor.Editors
             }
             EditorGUILayout.PropertyField(_requireDirectInteraction);
             EditorGUILayout.Space();
+        }
+
+        /// <summary>
+        /// Draws buttons to invoke presses via the editor.
+        /// </summary>
+        protected virtual void DrawPressButtons()
+        {
+            bool toggle = _toggleMode.boolValue;
+            bool inputDisabled = _inputDisabled.boolValue;
+
+            EditorGUI.BeginDisabledGroup(inputDisabled);
+            if (!toggle)
+            {
+                if (GUILayout.Button("Press"))
+                {
+                    _button.InternalForceNextPressState();
+                    _button.Pressed = true;
+                    // serializedObject.ApplyModifiedProperties();
+                    // Reset press manually delayed
+                    EditorApplication.delayCall += UndoEditorButtonPress;
+                }
+            }
+            else
+            {
+                serializedObject.ApplyModifiedProperties();
+                bool pressed = _pressed.boolValue;
+                string label = pressed ? "Toggle Up" : "Toggle Down";
+
+                if (GUILayout.Button(label))
+                {
+                    serializedObject.UpdateIfRequiredOrScript();
+                    _button.InternalForceNextPressState();
+                    _button.Pressed = !pressed;
+                }
+            }
+            EditorGUI.EndDisabledGroup();
         }
 
         /// <inheritdoc />
@@ -148,6 +189,13 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.PropertyField(_onInputDisabled, true);
             EditorGUILayout.PropertyField(_onInputEnabled, true);
             EditorGUI.indentLevel--;
+        }
+
+        protected void UndoEditorButtonPress()
+        {
+            _button.InternalForceNextPressState();
+            _button.Pressed = false;
+            // serializedObject.ApplyModifiedProperties();
         }
     }
 }

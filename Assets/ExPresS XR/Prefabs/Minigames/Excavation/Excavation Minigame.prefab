@@ -222,6 +222,9 @@ MonoBehaviour:
   _scaleAllChildren: 1
   _scaledChildren: []
   _allowGrab: 1
+  _requireDirectInteraction: 0
+  _treatNearFarAsGrab: 1
+  _customSocketAttach: {fileID: 0}
   OnGrabStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -382,7 +385,7 @@ Transform:
   m_GameObject: {fileID: 455650357563761542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.587, y: 1.195, z: -0.199}
+  m_LocalPosition: {x: 0.587, y: 0.945, z: -0.199}
   m_LocalScale: {x: 0.2, y: 0.05, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5450,7 +5453,7 @@ Transform:
   m_GameObject: {fileID: 2348302024641322390}
   serializedVersion: 2
   m_LocalRotation: {x: -0.3026785, y: 0.41896468, z: 0.017630715, w: 0.8558876}
-  m_LocalPosition: {x: 0.326, y: 1.171, z: 0.234}
+  m_LocalPosition: {x: 0.326, y: 0.921, z: 0.234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5750,6 +5753,9 @@ MonoBehaviour:
   _scaleAllChildren: 1
   _scaledChildren: []
   _allowGrab: 0
+  _requireDirectInteraction: 0
+  _treatNearFarAsGrab: 1
+  _customSocketAttach: {fileID: 0}
   OnGrabStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -6058,7 +6064,7 @@ Transform:
   m_GameObject: {fileID: 8046831915586220050}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7010577, y: -0.09229584, z: 0.09229574, w: 0.7010572}
-  m_LocalPosition: {x: 0.5874, y: 1.2316, z: -0.2261}
+  m_LocalPosition: {x: 0.5874, y: 0.982, z: -0.2261}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6317,6 +6323,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: fdf71cbaf6d05ec44870654f43bd77c6, type: 2}
+    - target: {fileID: -1781608720911647110, guid: 3a32c5f159b55f749bbf95a1e3843bd5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.985
+      objectReference: {fileID: 0}
+    - target: {fileID: 533193074659131909, guid: 3a32c5f159b55f749bbf95a1e3843bd5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3a32c5f159b55f749bbf95a1e3843bd5, type: 3}
       propertyPath: m_Name
       value: Excavation Minigame
@@ -6396,7 +6410,6 @@ MonoBehaviour:
     - {x: 3, y: 1}
     - {x: 0, y: 2}
     - {x: 1, y: 2}
-    - {x: 3, y: 2}
     _granularity: 2
     _completed: 0
     OnZoneCompleted:

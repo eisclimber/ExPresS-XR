@@ -169,6 +169,7 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawPostRangeProperties()
         {
+            EditorGUILayout.PropertyField(_inputDisabled);
             EditorGUILayout.PropertyField(_zeroValueOnRelease);
             EditorGUILayout.PropertyField(_requireDirectInteraction);
             EditorGUILayout.PropertyField(_allowNearFarInteraction);

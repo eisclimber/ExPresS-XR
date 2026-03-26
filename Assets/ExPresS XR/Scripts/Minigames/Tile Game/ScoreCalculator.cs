@@ -1,5 +1,4 @@
 using UnityEngine;
-using static ExPresSXR.Minigames.TileGame.TileGame;
 
 namespace ExPresSXR.Minigames.TileGame
 {

@@ -108,7 +108,7 @@ namespace ExPresSXR.Minigames.Puzzle
                     return;
                 }
             }
-            Debug.LogError($"Was not able to spawn the idx {idx}. There seems to be no free socket.", this);
+            Debug.LogError($"Was not able to spawn the next piece with idx {idx}. There seems to be no free socket.", this);
         }
 
 

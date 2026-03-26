@@ -21,6 +21,11 @@ namespace ExPresSXR.Misc.ColorSwitching
         protected virtual void OnEnable()
         {
             RegisterButtonEvents();
+
+            if (_button == null)
+            {
+                Debug.LogError("No button reference set for this color switcher.", this);
+            }
         }
 
         /// <inheritdoc />

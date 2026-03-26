@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction
 {
@@ -103,7 +105,6 @@ namespace ExPresSXR.Interaction
             }
         }
 
-
         [SerializeField]
         [Tooltip("If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.")]
         private bool _allowGrab = true;
@@ -124,6 +125,40 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <summary>
+        /// If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.")]
+        protected bool _requireDirectInteraction;
+
+        [SerializeField]
+        [Tooltip("If enabled allows NearFarInteractors to be treates as valid Direct Interactor. "
+                + "It is recommended to set the max interaction distance to the size of near interaction volume, "
+                + "as we can not differentiate hovers from it and the ray.")]
+        private bool _treatNearFarAsGrab = true;
+        /// <summary>
+        /// If enabled allows NearFarInteractors to be treats as valid Direct Interactor.
+        /// It is recommended to set the max interaction distance to the size of near interaction volume,
+        /// as we can not differentiate hovers from it and the ray.
+        /// </summary>
+        public bool TreatNearFarAsGrab
+        {
+            get => _treatNearFarAsGrab;
+            set => _treatNearFarAsGrab = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Custom attach used for socket interactors.")]
+        private Transform _customSocketAttach;
+        /// <summary>
+        /// Custom attach used for socket interactors.
+        /// </summary>
+        public Transform CustomSocketAttach
+        {
+            get => _customSocketAttach;
+            set => _customSocketAttach = value;
+        }
 
         private float _scaleFactor = 1.0f;
         /// <summary>
@@ -158,7 +193,7 @@ namespace ExPresSXR.Interaction
         {
             get => _scaleSpeedOverride > 0.0f;
         }
-        
+
         private Coroutine _hiddenFromPlayerCoroutine;
 
         // Events
@@ -220,7 +255,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
-            if (args.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor or UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, _treatNearFarAsGrab))
             {
                 OnGrabStarted.Invoke();
             }
@@ -233,7 +268,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
-            if (args.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor or UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, _treatNearFarAsGrab))
             {
                 OnGrabReleased.Invoke();
             }
@@ -244,17 +279,35 @@ namespace ExPresSXR.Interaction
         /// </summary>
         /// <param name="interactor">Interactor trying to select</param>
         /// <returns>Whether or not selection is allowed.</returns>
-        public override bool IsSelectableBy(UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor)
+        public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
             // Allow Direct and ray only if grab allowed and add parent checks
-            bool canGrab = (_allowGrab || interactor is not (UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor or UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)) && base.IsSelectableBy(interactor);
+            bool isGrabInteractor = RuntimeUtils.IsCloseUpHandInteractor(interactor, _treatNearFarAsGrab);
+            bool canGrab = (_allowGrab || !isGrabInteractor) && base.IsSelectableBy(interactor);
 
-            if (interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor || interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
+            if (interactor is XRDirectInteractor or XRRayInteractor)
             {
                 (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();
             }
             return canGrab;
         }
+
+        /// <summary>
+        /// Return the attach transform for the interactor.
+        /// If the interactor is a SocketInteractor and a `_customSocketAttach` is set, it is returned.
+        /// </summary>
+        /// <param name="interactor"></param>
+        /// <returns></returns>
+        public override Transform GetAttachTransform(IXRInteractor interactor)
+        {
+            if (_customSocketAttach != null && interactor is XRSocketInteractor)
+            {
+                return _customSocketAttach;
+            }
+
+            return base.GetAttachTransform(interactor);
+        }
+
 
         /// <summary>
         /// Resets the scale of all (scaled) children to 1.0f
@@ -300,8 +353,8 @@ namespace ExPresSXR.Interaction
             // Don't use a for each here, because the list will shrink
             for (int i = 0; i < interactorsSelecting.Count; i++)
             {
-                UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor = interactorsSelecting[i];
-                if (interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor || interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor)
+                IXRSelectInteractor interactor = interactorsSelecting[i];
+                if (interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
                 {
                     interactionManager.SelectExit(interactor, this);
                     i--; // Decrement as the next element will take the removed interactors place
@@ -311,7 +364,7 @@ namespace ExPresSXR.Interaction
 
         private void TryResetScaleInSockets(SelectEnterEventArgs args)
         {
-            if (_resetScaleInSockets && args.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor)
+            if (_resetScaleInSockets && args.interactorObject is XRSocketInteractor)
             {
                 ResetScale();
             }

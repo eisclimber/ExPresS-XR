@@ -39,9 +39,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             get => _pressed;
             set
             {
-                _pressed = value;
                 // Update the value in the descriptor to keep them in sync -> Value gets updated automatically
-                ValueDescriptor.Pressed = _pressed;
+                ValueDescriptor.Pressed = value;
+                _pressed = ValueDescriptor.Pressed;
             }
         }
 
@@ -130,7 +130,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public UnityEvent<bool> OnToggleModeChanged;
 
-        // Helper value to allow repressing 
+        // Helper value to allow repressing
         private bool _canRepressToggle = true;
 
 
@@ -254,11 +254,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <returns>If the interactor is in range or not.</returns>
         protected virtual bool IsInteractorInRange(IXRHoverInteractor interactor)
         {
-            return _maxInteractionDistance <= 0.0f || GetDistanceSqrToInteractor(interactor) <= Mathf.Pow(_maxInteractionDistance, 2.0f);   
+            return _maxInteractionDistance <= 0.0f || GetDistanceSqrToInteractor(interactor) <= Mathf.Pow(_maxInteractionDistance, 2.0f);
         }
 
         /// <inheritdoc />
-         public override void ResetValue()
+        public override void ResetValue()
         {
             _valueDescriptor.ResetValue();
             // We need to update the visualization with our custom logic
@@ -281,6 +281,35 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             // We need to update visualization accordingly
             UpdateValueVisualization();
         }
+
+        /// <summary>
+        /// Used in the editor. Emits the pressed event.
+        /// </summary>
+        [ContextMenu("Emit Pressed Event")]
+        public void InternalEmitPressedSignal() => OnPressed.Invoke();
+
+        /// <summary>
+        /// Used in the editor. Emits the release event.
+        /// </summary>
+        [ContextMenu("Emit Released Event")]
+        public void InternalEmitReleasedSignal() => OnReleased.Invoke();
+
+        /// <summary>
+        /// Used in the editor. Emits the toggle pressed event.
+        /// </summary>
+        [ContextMenu("Emit Toggle Pressed Event")]
+        public void InternalEmitTogglePressedSignal() => OnTogglePressed.Invoke();
+
+        /// <summary>
+        /// Used in the editor. Emits the toggle released event.
+        /// </summary>
+        [ContextMenu("Emit Toggle Released Event")]
+        public void InternalEmitToggleReleasedSignal() => OnToggleReleased.Invoke();
+
+        /// <summary>
+        /// Used in the editor. Allows changing the repress timeout of the value descriptor.
+        /// </summary>
+        public void InternalForceNextPressState() => ValueDescriptor.ForceUpdatePressState = true;
     }
 
     /// <summary>

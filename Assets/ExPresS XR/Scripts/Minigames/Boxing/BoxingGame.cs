@@ -1,3 +1,4 @@
+using System.Collections;
 using ExPresSXR.Minigames.TargetArea;
 using ExPresSXR.Misc;
 using ExPresSXR.Misc.Timing;
@@ -46,6 +47,13 @@ namespace ExPresSXR.Minigames.Boxing
         [Tooltip("If the game should start automatically.")]
         private bool _autoStart;
 
+        /// <summary>
+        /// Delay until the target randomization starts (i.e. the first target is activated).
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Delay until the target randomization starts (i.e. the first target is activated).")]
+        private float _targetRandomizationDelay = 1.0f;
+
         [SerializeField]
         [ReadonlyInInspector]
         [Tooltip("Current score for the game.")]
@@ -62,6 +70,9 @@ namespace ExPresSXR.Minigames.Boxing
                 OnScoreChanged.Invoke(_currentScore);
             }
         }
+
+
+        private Coroutine _randomizationStartCoroutine;
 
         /// <summary>
         /// Emitted when the boxing starts.
@@ -149,7 +160,7 @@ namespace ExPresSXR.Minigames.Boxing
         [ContextMenu("Start Game")]
         public void StartGame()
         {
-            _targetRandomizer.StartTargetRandomization();
+            StartTargetRandomization();
             _timer.StartTimerDefault();
             OnStarted.Invoke();
         }
@@ -160,12 +171,38 @@ namespace ExPresSXR.Minigames.Boxing
         [ContextMenu("End Game")]
         public void EndGame()
         {
-            _targetRandomizer.StopTargetRandomization();
+            _targetRandomizer.StopTargetRandomization(true);
             _timer.StopTimer();
             OnCompleted.Invoke();
         }
 
         private void HandlePointsScored(int points) => CurrentScore += points;
+
+
+        private void StartTargetRandomization()
+        {
+            if (_randomizationStartCoroutine != null)
+            {
+                StopCoroutine(_randomizationStartCoroutine);
+            }
+
+            if (_targetRandomizationDelay <= 0.0f)
+            {
+                _targetRandomizer.StartTargetRandomization();
+            }
+            else
+            {
+                _randomizationStartCoroutine = StartCoroutine(WaitForTargetAreaRandomization());
+            }
+        }
+
+        
+        private IEnumerator WaitForTargetAreaRandomization()
+        {
+            yield return new WaitForSeconds(_targetRandomizationDelay);
+            _targetRandomizer.StartTargetRandomization();
+        }
+
 
         private void OnValidate()
         {

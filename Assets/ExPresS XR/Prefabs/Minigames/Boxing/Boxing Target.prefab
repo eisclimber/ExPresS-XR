@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6967753203470597855}
   - component: {fileID: 6793831879877058549}
-  - component: {fileID: 9085271424610715142}
   - component: {fileID: 5012753139324219286}
   - component: {fileID: 1329351918093311818}
   - component: {fileID: 5469999478133693752}
-  - component: {fileID: 4880193043697483589}
+  - component: {fileID: 1132105879373904008}
   - component: {fileID: 1035990256178431505}
   - component: {fileID: 742547608612337692}
   m_Layer: 0
@@ -50,7 +49,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13f5a0903f6eb1f46be13c72f7917660, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExPresSXR.Minigames.Boxing.BoxingTargetArea
   _actionsToComplete: -1
   OnActionPerformed:
     m_PersistentCalls:
@@ -84,6 +83,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _targetActive: 0
+  _activeDuration: 3
   _damageDisplayPrefab: {fileID: 3528977270142281369, guid: 1a1f4120541b6ef4990b079d292b3b7b, type: 3}
   _damageMultiplier: 100
   _pointsDistribution:
@@ -112,46 +112,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   _pointsDisplayScale: 0.35
   _pointsDisplayOffset: {x: 0, y: 0, z: 0}
-  _timer: {fileID: 9085271424610715142}
   _animator: {fileID: 5012753139324219286}
-  OnFailed:
-    m_PersistentCalls:
-      m_Calls: []
   OnPointsScored:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &9085271424610715142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4154883554453257425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a911722e1bb685448d8e964c9561c6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _description: Boxing Area Max Time
-  _timingUnit:
-    _waitTime: 3
-    _remainingTime: 0
-    OnStarted:
-      m_PersistentCalls:
-        m_Calls: []
-    OnTimeout:
-      m_PersistentCalls:
-        m_Calls: []
-  _timerPaused: 0
-  _autoStart: 0
-  _oneShot: 1
-  OnStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTimeout:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPaused:
+  OnFailed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!95 &5012753139324219286
@@ -233,8 +198,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &4880193043697483589
-CapsuleCollider:
+--- !u!64 &1132105879373904008
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -248,14 +213,13 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1035990256178431505
 MonoBehaviour:
   m_ObjectHideFlags: 0

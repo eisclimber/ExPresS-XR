@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Misc
@@ -89,19 +88,46 @@ namespace ExPresSXR.Misc
         }
 
         /// <summary>
+        /// A single function to round a value to an full number in different ways.
+        /// </summary>
+        /// <param name="value">Value to be rounded.</param>
+        /// <param name="roundType">How rounding should be performed.</param>
+        /// <returns>Ad rounded float number.</returns>
+        public static float RoundValue(float value, RoundType roundType)
+        {
+            return roundType switch
+            {
+                RoundType.Round => Mathf.Round(value),
+                RoundType.Ceil => Mathf.Ceil(value),
+                RoundType.Floor => Mathf.Floor(value),
+                _ => value
+            };
+        }
+
+        /// <summary>
+        /// A single function to round a value to an full number as integer in different ways.
+        /// </summary>
+        /// <param name="value">Value to be rounded.</param>
+        /// <param name="roundType">How rounding should be performed.</param>
+        /// <returns>A rounded int number.</returns>
+        public static int RoundValueInt(float value, RoundType roundType) => (int)RoundValue(value, roundType);
+
+
+        /// <summary>
         /// Steps a value on a range between [0.0f, 1.0f] to the closest of even `numSteps` intervals 
         /// including the borders 0.0f and 1.0f.
         /// If `numSteps` is less than 1, the value will only be clamped between 0.0f and 1.0f.
         /// </summary>
         /// <param name="value">Value to be stepped.</param>
         /// <param name="numSteps">Number of intermediate steps.</param>
+        /// <param name="roundType">How the number is rounded towards a step.</param>
         /// <returns>Value in range [0.0f, 1.0f] stepped to the closest value.</returns>
-        public static float GetValue01Stepped(float value, int numSteps)
+        public static float GetValue01Stepped(float value, int numSteps, RoundType roundType = RoundType.Round)
         {
             float valueClamped = Mathf.Clamp01(value);
             if (numSteps > 0)
             {
-                return Mathf.Round(valueClamped * numSteps) / numSteps;
+                return RoundValue(valueClamped * numSteps, roundType) / numSteps;
             }
             return valueClamped;
         }
@@ -461,5 +487,20 @@ namespace ExPresSXR.Misc
             return intValue >= 0 && intValue < maxEnumValue ? intValue : maxEnumValue;
         }
         #endregion
+
+        /// <summary>
+        /// How the a value can be rounded.
+        /// </summary>
+        public enum RoundType
+        {
+            /// <summary> No rounding is performed. </summary>
+            None,
+            /// <summary> Normal rounding is performed. </summary>
+            Round,
+            /// <summary> Value is counting up from 0. </summary>
+            Ceil,
+            /// <summary> Value is rounded down. </summary>
+            Floor
+        }
     }
 }

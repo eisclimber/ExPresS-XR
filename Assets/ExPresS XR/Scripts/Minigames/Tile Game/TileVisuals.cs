@@ -203,8 +203,13 @@ namespace ExPresSXR.Minigames.TileGame
         private void SpawnPointsDisplay(int points, int areaId, Vector3 direction)
         {
             GameObject scoreNumbersGo = Instantiate(_pointsDisplayPrefab);
-            // Use offset of the reference or global offset
-            scoreNumbersGo.transform.SetPositionAndRotation(transform.position + direction * _pointsDisplayRadius + _pointsDisplayOffset, Quaternion.identity);
+            // Set position to visuals position with forward
+            scoreNumbersGo.transform.position = transform.position + direction * _pointsDisplayRadius + _pointsDisplayOffset;
+            // Face inverted forward direction but stay upright (no tilt)
+            Vector3 LookDirection = -transform.forward;
+            LookDirection.y = 0f;
+            scoreNumbersGo.transform.rotation = Quaternion.LookRotation(LookDirection);
+            // Apply scale
             scoreNumbersGo.transform.localScale = Vector3.one * _pointsDisplayScale;
 
             if (scoreNumbersGo.TryGetComponent(out ScoreNumbers scoreNumbers))

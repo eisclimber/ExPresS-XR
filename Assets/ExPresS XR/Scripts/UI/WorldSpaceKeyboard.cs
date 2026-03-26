@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using ExPresSXR.Misc;
 
-
 namespace ExPresSXR.UI
 {
     /// <summary>
@@ -35,7 +34,7 @@ namespace ExPresSXR.UI
         /// </summary>
         public string InputText
         {
-            get => _inputText;
+            get => _inputText.Replace("\u200B", ""); // TMP might add zero-space chars to the text for layout that we don't want
             set
             {
                 _inputText = value;
@@ -47,9 +46,9 @@ namespace ExPresSXR.UI
                     _inputField.text = prefix + _inputText + suffix;
                 }
 
-                if (_confirmButton != null && _confirmNotEmpty)
+                if (_confirmButton != null)
                 {
-                    _confirmButton.interactable = _inputText != "" && !_inputDisabled;
+                    _confirmButton.interactable = Confirmable;
                 }
             }
         }
@@ -135,9 +134,9 @@ namespace ExPresSXR.UI
 
                 foreach (Button btn in GetComponentsInChildren<Button>())
                 {
-                    if (_confirmButton != null && btn == _confirmButton)
+                    if (btn == _confirmButton)
                     {
-                        _confirmButton.interactable = _inputText != "" && !_inputDisabled;
+                        _confirmButton.interactable = Confirmable;
                     }
                     else
                     {
@@ -162,7 +161,7 @@ namespace ExPresSXR.UI
         /// If an empty input is allowed or not. The confirm button will be interactable accordingly.
         /// </summary>
         [SerializeField]
-        private bool _confirmNotEmpty;
+        private bool _confirmIfNotEmpty;
 
         /// <summary>
         /// The input field used to display the current text.
@@ -183,6 +182,26 @@ namespace ExPresSXR.UI
         private Button _confirmButton;
 
         /// <summary>
+        /// Returns true if the text is empty. Use this to resolve some kinks with TMP texts.
+        /// </summary>
+        public bool Empty
+        {
+            // There might be a case that the text gets set to a zero-width character '\u200B' via the editor...
+            // See: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/10651
+            get => string.IsNullOrEmpty(_inputText) || _inputText == "\u200B";
+        }
+
+        /// <summary>
+        /// If the text is confirmable.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Confirmable
+        {
+            get => !_inputDisabled && (!Empty || _confirmIfNotEmpty);
+        }
+
+
+        /// <summary>
         /// Event invoked when the text was confirmed, providing the final text.
         /// </summary>
         [Space]
@@ -200,6 +219,9 @@ namespace ExPresSXR.UI
             {
                 _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
             }
+            // Force Update text and input initially
+            InputText = _inputText;
+            InputDisabled = _inputDisabled;
         }
 
         /// <summary>
@@ -247,15 +269,7 @@ namespace ExPresSXR.UI
         /// Adds a linebreak "\n" to the text.
         /// </summary>
         [ContextMenu("Add Line Break to Text")]
-        public void AppendLineBreak()
-        {
-            if (_disableOnConfirm)
-            {
-                InputDisabled = true;
-            }
-
-            OnTextEntered.Invoke(InputText);
-        }
+        public void AppendLineBreak() => AppendToText("\n");
 
         /// <summary>
         /// Removes the last character from the text, but keeping possible pre- and suffixes.

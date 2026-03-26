@@ -131,6 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3668041750881960252}
   - component: {fileID: 1199617253216581444}
+  - component: {fileID: 1334307362375852332}
   m_Layer: 0
   m_Name: Puzzle Minigame
   m_TagString: Untagged
@@ -200,7 +201,7 @@ MonoBehaviour:
   - {fileID: 5008055816944709201, guid: 479d833cd737c2c40a32cc9ebb5c015f, type: 3}
   - {fileID: 3115568670067777295, guid: 26e09aa2899adb54badda0d1288ca0b1, type: 3}
   _autoStart: 0
-  _scoreNumbersPrefab: {fileID: 0}
+  _scoreNumbersPrefab: {fileID: 3528977270142281369, guid: 1a1f4120541b6ef4990b079d292b3b7b, type: 3}
   _scoreNumbersOffset: {x: 0, y: 0.1, z: -0.1}
   _scoreNumbersScale: 0.35
   _pieceScore: 100
@@ -222,6 +223,103 @@ MonoBehaviour:
   OnCompleted:
     m_PersistentCalls:
       m_Calls: []
+--- !u!82 &1334307362375852332
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390513541021900351}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: e24c60137e8756b4d8a69c3df1c16e24, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &681354088703908897
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +432,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &692519913960995452
 GameObject:
@@ -691,7 +789,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1453063424262538345
 GameObject:
@@ -1211,7 +1309,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3126395409455374375
 GameObject:
@@ -1325,7 +1423,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3314631425837574761
 GameObject:
@@ -1619,7 +1717,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3483385129915725284
 GameObject:
@@ -2556,7 +2654,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4923610961683339967
 GameObject:
@@ -2670,7 +2768,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5506074845681292487
 GameObject:
@@ -2815,7 +2913,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5748509115519399748
 GameObject:
@@ -3234,7 +3332,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6604923632435989982
 GameObject:
@@ -3348,7 +3446,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7185797809286952444
 GameObject:
@@ -3583,7 +3681,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7582041970886953541
 GameObject:
@@ -3939,7 +4037,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.19, z: 0.02}
+  m_Size: {x: 0.19, y: 0.19, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8694573771803182594
 GameObject:

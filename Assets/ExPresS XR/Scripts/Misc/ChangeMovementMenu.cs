@@ -39,7 +39,7 @@ namespace ExPresSXR.Misc
             }
             else
             {
-                Debug.LogError("No 'ExpresSXRRig' or 'MovementMenuData' was set so the ChangeMovementMenu won't change anything.");
+                Debug.LogError("No 'ExpresSXRRig' or 'MovementMenuData' was set so the ChangeMovementMenu won't change anything.", this);
             }
         }
 
