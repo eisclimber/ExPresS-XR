@@ -68,10 +68,8 @@ namespace ExPresSXR.Misc.ColorSwitching
         /// <param name="triggerName">Name of the trigger.</param>
         public virtual void ChangeColorWithTrigger(string triggerName)
         {
-            Debug.Log("Change color with trigger");
             if (_animator != null)
             {
-                Debug.Log("Change color with trigger: " + triggerName);
                 _animator.SetTrigger(triggerName);
             }
         }
