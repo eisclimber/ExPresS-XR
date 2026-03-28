@@ -68,6 +68,7 @@ namespace ExPresSXR.UI
             if (_fadeCoroutine != null)
             {
                 StopCoroutine(_fadeCoroutine);
+                _fadeCoroutine = null;
             }
 
             if (fadeDuration <= 0.0f)
@@ -85,6 +86,7 @@ namespace ExPresSXR.UI
                     yield return null;
                 }
             }
+            _fadeCoroutine = null;
         }
 
         private void UpdateIndicator()

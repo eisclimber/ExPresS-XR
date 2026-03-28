@@ -306,6 +306,7 @@ namespace ExPresSXR.Interaction.Interactors
             if (_putBackCoroutine != null)
             {
                 StopCoroutine(_putBackCoroutine);
+                _putBackCoroutine = null;
             }
 
             if (isActiveAndEnabled && _putBackTime <= 0)
@@ -324,6 +325,7 @@ namespace ExPresSXR.Interaction.Interactors
             if (_putBackCoroutine != null)
             {
                 StopCoroutine(_putBackCoroutine);
+                _putBackCoroutine = null;
             }
         }
 
@@ -337,8 +339,8 @@ namespace ExPresSXR.Interaction.Interactors
                 interactionManager.SelectEnter(this, (IXRSelectInteractable)_putBackInteractable);
                 OnPutBack.Invoke();
             }
-            _putBackCoroutine = null;
             SetHighlighterVisible(false);
+            _putBackCoroutine = null;
         }
 
         private bool IsObjectMatch(IXRInteractable interactable)

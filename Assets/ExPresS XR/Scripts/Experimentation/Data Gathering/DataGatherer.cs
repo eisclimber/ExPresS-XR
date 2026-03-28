@@ -588,6 +588,7 @@ namespace ExPresSXR.Experimentation.DataGathering
                     if (_periodicExportCoroutine != null)
                     {
                         StopCoroutine(_periodicExportCoroutine);
+                        _periodicExportCoroutine = null;
                     }
                     _periodicExportCoroutine = StartCoroutine(TimeTriggerCoroutine());
                 }

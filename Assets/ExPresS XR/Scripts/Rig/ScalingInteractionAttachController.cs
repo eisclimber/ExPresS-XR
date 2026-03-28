@@ -767,7 +767,8 @@ namespace UnityEngine.XR.Interaction.Toolkit.Attachment
 
             // Scale 
             if (m_UseManipulationInput && inputValid && scaleInteractable != null
-                && (m_ManipulationYAxisMode == ManipulationYAxisMode.Scale || m_ManipulationYAxisMode == ManipulationYAxisMode.ScaleTranslate))
+                && (m_ManipulationYAxisMode == ManipulationYAxisMode.Scale || m_ManipulationYAxisMode == ManipulationYAxisMode.ScaleTranslate)
+                && scaleInteractable.Scalable)
             {
                 float speed = scaleInteractable.HasScaleSpeedOverride ? scaleInteractable.ScaleSpeedOverride : m_ManipulationScaleSpeed;
                 input = FilterManipulationInput(input);

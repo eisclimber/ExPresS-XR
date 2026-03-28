@@ -97,7 +97,7 @@ namespace ExPresSXR.Misc.ColorSwitching
         public void ActivateAlternativeMaterialForASecond()
         {
             StopAllCoroutines();
-            StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1f));
+            StartCoroutine(ActivateAlternativeMaterialForSecondsCoroutine(1.0f));
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace ExPresSXR.Misc.ColorSwitching
         public void ActivateOriginalMaterialForASecond()
         {
             StopAllCoroutines();
-            StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(1f));
+            StartCoroutine(ActivateOriginalMaterialForSecondsCoroutine(1.0f));
         }
 
 
@@ -118,7 +118,7 @@ namespace ExPresSXR.Misc.ColorSwitching
         public void ToggleMaterialForASecond()
         {
             StopAllCoroutines();
-            StartCoroutine(ToggleMaterialForSecondsCoroutine(1f));
+            StartCoroutine(ToggleMaterialForSecondsCoroutine(1.0f));
         }
         #endregion
 

@@ -334,7 +334,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
   m_AutoFindParentInteractableInHierarchy: 0
-  m_ParentInteractableObject: {fileID: 0}
+  m_ParentInteractableObject: {fileID: 6294436139776366912}
   _startPosition: {fileID: 461354028849984197}
   _endPosition: {fileID: 290672860078026099}
   _anchor: {fileID: 2891553140354374528}
@@ -871,6 +871,8 @@ MonoBehaviour:
   _scaleAllChildren: 1
   _scaledChildren: []
   _allowGrab: 1
+  _requireDirectInteraction: 0
+  _treatNearFarAsGrab: 1
   _customSocketAttach: {fileID: 4873251500615019985}
   OnGrabStarted:
     m_PersistentCalls:

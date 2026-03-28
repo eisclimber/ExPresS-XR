@@ -70,11 +70,13 @@ namespace ExPresSXR.Misc.ColorSwitching
 
         private void HandleButtonAnsweredCorrect()
         {
+            Debug.Log("TrPressedCorrect");
             ChangeColorWithTrigger("TrPressedCorrect");
         }
 
         private void HandleButtonAnsweredIncorrect()
         {
+            Debug.Log("TrPressedIncorrect");
             ChangeColorWithTrigger("TrPressedIncorrect");
         }
 
@@ -102,6 +104,7 @@ namespace ExPresSXR.Misc.ColorSwitching
         {
             // We need to update the pressed state, as it won't get set automatically
             ChangeColorWithBool("IsPressed", false);
+            ChangeColorWithTrigger("TrResetPress");
         }
     }
 }

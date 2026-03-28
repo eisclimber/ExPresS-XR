@@ -114,6 +114,7 @@ namespace ExPresSXR.Interaction.Feedback
             if (_silenceCoroutine != null)
             {
                 StopCoroutine(_silenceCoroutine);
+                _silenceCoroutine = null;
             }
 
             // Only use silent time if the trigger time is greater than zero

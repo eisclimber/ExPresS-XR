@@ -91,6 +91,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             if (_errorCoroutine != null)
             {
                 EditorCoroutineUtility.StopCoroutine(_errorCoroutine);
+                _errorCoroutine = null;
             }
             return EditorCoroutineUtility.StartCoroutine(ShowErrorCoroutine(_errorElement), this);
         }
@@ -103,6 +104,11 @@ namespace ExPresSXR.Editor.SetupDialogs
                 yield return new EditorWaitForSeconds(ERROR_MESSAGE_DURATION);
                 _errorElement.style.display = DisplayStyle.None;
             }
+            else
+            {
+                Debug.LogWarning($"Failed to show error coroutine for visual element '{ _errorElement}'.");
+            }
+            _errorCoroutine = null;
         }
     }
 }

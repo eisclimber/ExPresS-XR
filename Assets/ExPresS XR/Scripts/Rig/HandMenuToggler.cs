@@ -143,6 +143,7 @@ namespace ExPresSXR.Rig
         {
             yield return new WaitForSeconds(_autoToggleOffDelay);
             ShowMenu = false;
+            _toggleOffCoroutine = null;
         }
     }
 }

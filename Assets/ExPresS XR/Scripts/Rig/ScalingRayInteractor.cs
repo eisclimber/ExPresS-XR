@@ -43,7 +43,7 @@ namespace ExPresSXR.Rig
             bool canScale = TryGetSelectedScaleInteractableWrapper(out ExPresSXRGrabInteractable scaleInteractable);
             if (canScale 
                 && (_anchorControlMode == AnchorControlMode.Scale || _anchorControlMode == AnchorControlMode.ScaleWithTranslateFallback) 
-                && scaleInteractable.ScaleRange > 0.0f)
+                && scaleInteractable.Scalable)
             {
                 float speed = scaleInteractable.HasScaleSpeedOverride ? scaleInteractable.ScaleSpeedOverride : _scaleSpeed;
                 scaleInteractable.ScaleFactor += directionAmount * speed * Time.deltaTime;

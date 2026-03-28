@@ -337,7 +337,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         [SerializeField]
         [Tooltip("The offset of the button in down position when toggling (value=1) along the y-axis.")]
-        protected float _toggledDownPosition = 0.032f;
+        protected float _toggledDownPosition = 0.018f;
 
         /// <summary>
         /// How the press distance is calculated, either from the hover start or the interactors transform position.

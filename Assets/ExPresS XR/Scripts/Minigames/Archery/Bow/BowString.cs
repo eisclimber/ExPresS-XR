@@ -233,6 +233,7 @@ namespace ExPresSXR.Minigames.Archery.Bow
             if (!_autoShot && _autoShotCoroutine != null)
             {
                 StopCoroutine(_autoShotCoroutine);
+                _autoShotCoroutine = null;
             }
             
             if (_autoShot)
@@ -246,10 +247,7 @@ namespace ExPresSXR.Minigames.Archery.Bow
             yield return new WaitForSeconds(_autoShotFrequency);
             EmitStringReleasedEvent();
 
-            if (_autoShot)
-            {
-                _autoShotCoroutine = StartCoroutine(AutoShootLoop());
-            }
+            _autoShotCoroutine = _autoShot ? StartCoroutine(AutoShootLoop()) : null;
         }
     }
 }

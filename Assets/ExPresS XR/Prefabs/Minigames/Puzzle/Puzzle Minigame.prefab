@@ -200,7 +200,7 @@ MonoBehaviour:
   - {fileID: 8384328552360150539, guid: fa63089fe464f1f4899e6c7c40eb4c75, type: 3}
   - {fileID: 5008055816944709201, guid: 479d833cd737c2c40a32cc9ebb5c015f, type: 3}
   - {fileID: 3115568670067777295, guid: 26e09aa2899adb54badda0d1288ca0b1, type: 3}
-  _autoStart: 0
+  _autoStart: 1
   _scoreNumbersPrefab: {fileID: 3528977270142281369, guid: 1a1f4120541b6ef4990b079d292b3b7b, type: 3}
   _scoreNumbersOffset: {x: 0, y: 0.1, z: -0.1}
   _scoreNumbersScale: 0.35
@@ -222,7 +222,19 @@ MonoBehaviour:
       m_Calls: []
   OnCompleted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1334307362375852332}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!82 &1334307362375852332
 AudioSource:
   m_ObjectHideFlags: 0

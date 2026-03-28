@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Configuration;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -105,6 +106,40 @@ namespace ExPresSXR.Rig
                 if (_nearFarInteractor != null)
                 {
                     _nearFarInteractor.enableNearCasting = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Duration in seconds for which the hand collisions are disabled after grabbing an object to allow it to be thrown.
+        /// If set to `0.0f` hand model collisions will be turned on immediately.
+        /// </summary>
+        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
+        [SerializeField]
+        private float _afterGrabCollisionsDisabled = 0.3f;
+        public float AfterGrabCollisionsDisabled
+        {
+            get => _afterGrabCollisionsDisabled;
+            set => _afterGrabCollisionsDisabled = value;
+        }
+
+        /// <summary>
+        /// Whether or not the hand models have collisions to push objects. They are disabled when hovering an object.
+        /// Does not affect collisions when teleporting, these are always disabled.
+        /// Change the TeleportInteractors AutoHandModel to the one with collision to enable them.
+        /// </summary>
+        [SerializeField]
+        private bool _handModelCollisions;
+        public bool HandModelCollisions
+        {
+            get => _handModelCollisions;
+            set
+            {
+                _handModelCollisions = value;
+
+                if (_handModel)
+                {
+                    _handModel.ModelCollisionsEnabled = _handModelCollisions;
                 }
             }
         }
@@ -367,6 +402,50 @@ namespace ExPresSXR.Rig
         }
 
 
+        private Coroutine _afterGrabCoroutine;
+
+
+        protected override void SetupInteractorEvents()
+        {
+            base.SetupInteractorEvents();
+
+            if (_nearFarInteractor != null)
+            {
+                _nearFarInteractor.selectEntered.AddListener(OnNearFarSelectEntered);
+                _nearFarInteractor.selectExited.AddListener(OnNearFarSelectExited);
+            }
+        }
+
+        protected override void TeardownInteractorEvents()
+        {
+            base.TeardownInteractorEvents();
+
+            if (_nearFarInteractor != null)
+            {
+                _nearFarInteractor.selectEntered.RemoveListener(OnNearFarSelectEntered);
+                _nearFarInteractor.selectExited.RemoveListener(OnNearFarSelectExited);
+            }
+        }
+
+
+        protected virtual void OnNearFarSelectEntered(SelectEnterEventArgs args)
+        {
+            if (gameObject.activeInHierarchy && isActiveAndEnabled)
+            {
+                _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
+            }
+        }
+
+        protected virtual void OnNearFarSelectExited(SelectExitEventArgs args)
+        {
+            // Reset after grab no collisions
+            if (_afterGrabCoroutine != null)
+            {
+                StopCoroutine(_afterGrabCoroutine);
+                _afterGrabCoroutine = null;
+            }
+        }
+
         private void SetHandPointing(bool pointing)
         {
             if (PokePointOnHover && _handModel != null)
@@ -375,6 +454,26 @@ namespace ExPresSXR.Rig
             }
         }
 
+        private void SetAutoHandCollisionsCurrentlyEnabled(bool enabled)
+        {
+            if (_handModel != null)
+            {
+                _handModel.CollisionsCurrentlyEnabled = enabled;
+            }
+        }
+
+        private IEnumerator AfterGrabWaitTimer()
+        {
+            // Disable Collisions
+            SetAutoHandCollisionsCurrentlyEnabled(false);
+
+            yield return new WaitForSeconds(_afterGrabCollisionsDisabled);
+
+            // Enable auto hand Collisions
+            SetAutoHandCollisionsCurrentlyEnabled(HandModelCollisions);
+
+            _afterGrabCoroutine = null;
+        }
 
         private void OnPokeHoverEntered(HoverEnterEventArgs args) => SetHandPointing(true);
 

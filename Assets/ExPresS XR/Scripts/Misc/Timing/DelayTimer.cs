@@ -19,6 +19,11 @@ namespace ExPresSXR.Misc.Timing
         [SerializeField]
         [Tooltip("The timing logic for the delay.")]
         private TimingUnit _delayTimingUnit = new();
+        protected TimingUnit DelayTimingUnit
+        {
+            get => _delayTimingUnit;
+            set => _delayTimingUnit = value;
+        }
 
         /// <summary>
         /// Delay until the timer stats. Must be greater than 0.0f.
@@ -52,7 +57,7 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public override bool Running
         {
-            get => base.Running || _delayTimingUnit.Running && !TimerPaused;
+            get => base.Running || (_delayTimingUnit.Running && !TimerPaused);
         }
 
         
@@ -73,12 +78,9 @@ namespace ExPresSXR.Misc.Timing
         protected override void Awake()
         {
             _delayTimingUnit.OnStarted.AddListener(HandleDelayTimingUnitStarted);
-            _delayTimingUnit.OnStarted.AddListener(HandleDelayTimingUnitTimeout);
+            _delayTimingUnit.OnTimeout.AddListener(HandleDelayTimingUnitTimeout);
 
-            if (AutoStart)
-            {
-                StartTimer();
-            }
+            base.Awake();
         }
 
         /// <summary>
@@ -90,13 +92,14 @@ namespace ExPresSXR.Misc.Timing
             {
                 return;
             }
-            else if (_delayTimingUnit.Running)
+
+            if (_delayTimingUnit.Running)
             {
                 _delayTimingUnit.UpdateTimer(Time.fixedDeltaTime);
             }
             else
             {
-                base.FixedUpdate();
+                TimingUnit.UpdateTimer(Time.fixedDeltaTime);
             }
         }
 
@@ -121,8 +124,8 @@ namespace ExPresSXR.Misc.Timing
         /// </param>
         public virtual void StartTimer(float duration = -1.0f, float delay = -1.0f)
         {
-            _delayTimingUnit.StartTimer(duration);
-            base.StartTimer(duration);
+            _delayTimingUnit.StartTimer(delay);
+            TimingUnit.StartTimer(delay);
         }
 
         /// <summary>
@@ -132,13 +135,17 @@ namespace ExPresSXR.Misc.Timing
         public override void StopTimer()
         {
             _delayTimingUnit.StopTimer();
-            base.StopTimer();
+            TimingUnit.StopTimer();
         }
 
         /// <summary>
         /// Handles the timers delay started, invoking the event.
         /// </summary>
-        protected virtual void HandleDelayTimingUnitStarted() => OnDelayStarted.Invoke();
+        protected virtual void HandleDelayTimingUnitStarted()
+        {
+            base.StartTimer();
+            OnDelayStarted.Invoke();
+        }
 
         /// <summary>
         /// Handles the timers delay timeout, invoking the event.

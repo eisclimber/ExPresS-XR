@@ -25,6 +25,11 @@ namespace ExPresSXR.Rig
     /// </summary>
     public class HeadGazeController : MonoBehaviour
     {
+        /// <summary>
+        /// Time to wait until a select is released.
+        /// </summary>
+        private const float PRESS_RELEASE_TIME = 0.1f;
+
         [SerializeField]
         [Tooltip("Whether or not the head gaze can be used to teleport.")]
         private bool _TeleportationEnabled = true;
@@ -156,7 +161,7 @@ namespace ExPresSXR.Rig
 
         private void OnEnable()
         {
-            // Add a fake mouse that will be used to trigger the action (by pressing mouse_forward)
+            // Add a input device that will be used to trigger the action (by pressing mouse_forward)
             _headGazeDevice = InputSystem.AddDevice<HeadGazeDevice>();
             _headGazeDevice.MakeCurrent();
         }
@@ -210,7 +215,6 @@ namespace ExPresSXR.Rig
             }
         }
 
-
         private GameObject TryGetNewTarget()
         {
             if (_rayInteractor.TryGetCurrentRaycast(
@@ -227,10 +231,16 @@ namespace ExPresSXR.Rig
                 }
                 else if (raycastHit != null && raycastHit.HasValue)
                 {
-                    bool hasInteractor = raycastHit.Value.transform.GetComponent<IXRInteractable>() != null;
+                    Transform hitTransform = raycastHit.Value.transform;
+                    if (raycastHit.Value.transform == null)
+                    {
+                        // Can happen if the hit is about to be null I think
+                        return null;
+                    }
+                    bool hasInteractor = hitTransform.TryGetComponent<IXRInteractable>(out _);
                     bool ignoreTeleportation = !TeleportationEnabled
-                        && (raycastHit.Value.transform.GetComponent<TeleportationAnchor>()
-                            || raycastHit.Value.transform.GetComponent<TeleportationArea>());
+                        && (hitTransform.TryGetComponent(out TeleportationAnchor _)
+                            || hitTransform.TryGetComponent(out TeleportationArea _));
                     // Any Hit (might be not an XRInteractor though)
                     if (hasInteractor && !ignoreTeleportation)
                     {
@@ -264,13 +274,8 @@ namespace ExPresSXR.Rig
 
         private IEnumerator ReleaseButtonPress()
         {
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(PRESS_RELEASE_TIME);
             _headGazeDevice.SetHeadGazeSelectReleased();
-            using (StateEvent.From(_headGazeDevice, out var eventPtr))
-            {
-                _headGazeDevice.HeadGazeSelect.WriteValueIntoEvent(0.0f, eventPtr);
-                InputSystem.QueueEvent(eventPtr);
-            }
 
             TryHideReticle();
 

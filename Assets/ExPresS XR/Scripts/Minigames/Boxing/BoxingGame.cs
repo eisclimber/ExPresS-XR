@@ -184,6 +184,7 @@ namespace ExPresSXR.Minigames.Boxing
             if (_randomizationStartCoroutine != null)
             {
                 StopCoroutine(_randomizationStartCoroutine);
+                _randomizationStartCoroutine = null;
             }
 
             if (_targetRandomizationDelay <= 0.0f)
@@ -201,6 +202,7 @@ namespace ExPresSXR.Minigames.Boxing
         {
             yield return new WaitForSeconds(_targetRandomizationDelay);
             _targetRandomizer.StartTargetRandomization();
+            _randomizationStartCoroutine = null;
         }
 
 

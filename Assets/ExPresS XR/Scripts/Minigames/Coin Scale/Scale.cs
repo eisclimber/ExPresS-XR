@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace ExPresSXR.Minigames.CoinScale
 {
     /// <summary>
-    /// Compares the weight in both bowls.
+    /// Compares the checkt in both bowls.
     /// </summary>
     public class Scale : MonoBehaviour
     {
@@ -25,6 +25,21 @@ namespace ExPresSXR.Minigames.CoinScale
         private Bowl _rightBowl;
 
         /// <summary>
+        /// Audio clip played the bowls are checked.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Audio clip played the bowls are checked.")]
+        private AudioClip _checkSound;
+
+        /// <summary>
+        /// Audio source used to play the sound when checking the bowls.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Audio source used to play the sound when checking the bowls.")]
+
+        private AudioSource _checkAudioPlayer;
+
+        /// <summary>
         /// Emitted when `CheckBowls()` is called, returning the current state of the scale.
         /// </summary>
         public UnityEvent<ScaleState> OnScaleCheck;
@@ -32,7 +47,27 @@ namespace ExPresSXR.Minigames.CoinScale
         /// <summary>
         /// Checks and calculates the current state of the scale (which side is lower), emits the result via the Event `OnScaleCheck`.
         /// </summary>
-        public void CheckBowls() => OnScaleCheck.Invoke(ScaleState.CreateFromWeights(_leftBowl.GetWeight(), _rightBowl.GetWeight()));
+        public void CheckBowls()
+        {
+            PlayCheckedSound();
+            OnScaleCheck.Invoke(ScaleState.CreateFromWeights(_leftBowl.GetWeight(), _rightBowl.GetWeight()));
+        }
+
+
+        private void PlayCheckedSound()
+        {
+            if (_checkSound)
+            {
+                if (_checkAudioPlayer != null)
+                {
+                    _checkAudioPlayer.PlayOneShot(_checkSound);
+                }
+                else
+                {
+                    Debug.LogWarning("Can't play check sound. No AudioSource provided.", this);
+                }
+            }
+        }
 
         /// <summary>
         /// Resets the state of the scale, by resetting both bowls.

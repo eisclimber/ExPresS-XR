@@ -42,7 +42,7 @@ namespace ExPresSXR.Misc.Timing
 
         [SerializeField]
         [ReadonlyInInspector]
-        private float _remainingTime;
+        private float _remainingTime = TIMER_INACTIVE_WAIT_TIME;
         /// <summary>
         /// Returns the remaining time of the timer.
         /// If the timer is was not started or timed out, the value will be the value of TIMER_INACTIVE_WAIT_TIME.

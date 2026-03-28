@@ -26,7 +26,7 @@ namespace ExPresSXR.UI
 
         [SerializeField]
         [Tooltip("Duration of the interaction hint, will be normalized using `_showHintAnimationDuration` to ensure the correct duration.")]
-        private float _hintDuration = 0.5f;
+        private float _hintDuration = 1.0f;
         /// <summary>
         /// Duration of the interaction hint, will be normalized using `_showHintAnimationDuration` to ensure the correct duration.
         /// </summary>

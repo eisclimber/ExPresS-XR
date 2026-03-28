@@ -29,6 +29,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
             if (_destroyCoroutine != null)
             {
                 StopCoroutine(_destroyCoroutine);
+                _destroyCoroutine = null;
             }
 
             if (_objectPoolManager == null)
@@ -44,6 +45,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
             if (_destroyCoroutine != null)
             {
                 StopCoroutine(_destroyCoroutine);
+                _destroyCoroutine = null;
             }
         }
 
@@ -57,6 +59,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
             }
 
             _objectPoolManager.ReturnToPool(gameObject);
+            _destroyCoroutine = null;
         }
     }
 }

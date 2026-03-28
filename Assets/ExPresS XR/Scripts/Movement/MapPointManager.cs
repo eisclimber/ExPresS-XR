@@ -186,6 +186,7 @@ namespace ExPresSXR.Movement
             if (_postTeleportCoroutine != null)
             {
                 StopCoroutine(_postTeleportCoroutine);
+                _postTeleportCoroutine = null;
             }
 
             // Set Teleport Mode stuff visible
@@ -202,6 +203,7 @@ namespace ExPresSXR.Movement
             if (_postTeleportCoroutine != null)
             {
                 StopCoroutine(_postTeleportCoroutine);
+                _postTeleportCoroutine = null;
             }
 
             if (isActiveAndEnabled)

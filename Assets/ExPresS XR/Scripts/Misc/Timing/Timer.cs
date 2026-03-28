@@ -26,6 +26,11 @@ namespace ExPresSXR.Misc.Timing
         [SerializeField]
         [Tooltip("The actual heart of the timing logic.")]
         private TimingUnit _timingUnit = new();
+        protected TimingUnit TimingUnit
+        {
+            get => _timingUnit;
+            set => _timingUnit = value;
+        }
 
 
         /// <summary>

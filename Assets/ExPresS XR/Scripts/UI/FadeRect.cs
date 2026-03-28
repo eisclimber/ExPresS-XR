@@ -155,6 +155,7 @@ namespace ExPresSXR.UI
             if (_fadeCoroutine != null)
             {
                 StopCoroutine(_fadeCoroutine);
+                _fadeCoroutine = null;
             }
         }
 
@@ -219,6 +220,7 @@ namespace ExPresSXR.UI
             }
 
             OnFadeCompleted.Invoke();
+            _fadeCoroutine = null;
         }
     }
 }

@@ -144,6 +144,7 @@ namespace ExPresSXR.Minigames.Boxing
             if (_waitForSpawnCoroutine != null)
             {
                 StopCoroutine(_waitForSpawnCoroutine);
+                _waitForSpawnCoroutine = null;
             }
 
             if (cancelTargets)

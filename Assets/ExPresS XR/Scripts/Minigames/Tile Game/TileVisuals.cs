@@ -198,6 +198,7 @@ namespace ExPresSXR.Minigames.TileGame
                 SpawnPointsDisplay(score.RightScore, score.RightAreaId, Vector3.right);
                 yield return new WaitForSeconds(_subScoreShowDelay);
             }
+            _displayScoreCoroutine = null;
         }
 
         private void SpawnPointsDisplay(int points, int areaId, Vector3 direction)

@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,13 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2845241, g: 0.26792023, b: 0.25336966, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -67,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -157,15 +153,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 2147483648
   m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_FocusMode: 1
-  m_CustomReticle: {fileID: 0}
+  m_CustomReticle: {fileID: 1622911015057595677, guid: 2f13b868d59f25b498dc37182eb55357, type: 3}
   m_AllowGazeInteraction: 0
   m_AllowGazeSelect: 0
   m_OverrideGazeTimeToSelect: 0
@@ -218,33 +211,8 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_OnFirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectCanceled:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnActivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnDeactivate:
-    m_PersistentCalls:
-      m_Calls: []
+  m_AutoFindParentInteractableInHierarchy: 0
+  m_ParentInteractableObject: {fileID: 0}
   m_TeleportationProvider: {fileID: 0}
   m_MatchOrientation: 0
   m_MatchDirectionalInput: 1
@@ -293,6 +261,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -314,9 +287,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &210839606
 MeshFilter:
@@ -341,6 +316,252 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &491603955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4659061420412482801, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
+  m_PrefabInstance: {fileID: 2023509869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &491603960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491603955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonHoverOn
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonHoverOff
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!1 &608156587 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4659061419978111968, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
+  m_PrefabInstance: {fileID: 2023509869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &608156592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608156587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonHoverOn
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonHoverOff
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!1 &1017852712 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4659061419219533133, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
+  m_PrefabInstance: {fileID: 2023509869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1017852717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017852712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonHoverOn
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonHoverOff
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ExPresSXR.UI.UiAudio, Assembly-CSharp
+          m_MethodName: PlayButtonUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1496486821
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,15 +588,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496486821}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 12
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -419,8 +639,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &1496486823
 Transform:
   m_ObjectHideFlags: 0
@@ -448,17 +672,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1001 &1593779191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -467,55 +697,205 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7789569447456739800, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: m_Name
-      value: ExPresS XR Rig - Head Gaze
+    - target: {fileID: 2005238275336094456, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: _hintDuration
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7789569447456739804, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3356952892261212080, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_HoverToSelect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356952892261212080, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_EnableUIInteraction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356952892261212080, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_UIPressInput.m_InputActionReferencePerformed
+      value: 
+      objectReference: {fileID: -5422220485999792505, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    - target: {fileID: 6477962746327777882, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_Name
+      value: ExPresS XR Rig - Head Gaze
+      objectReference: {fileID: 0}
+    - target: {fileID: 6802501942813884875, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7417869775944892597, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7417869775944892597, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: m_SnapEndpointIfAvailable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658683807053546574, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: _canReselect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658683807053546574, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: PerformInteractionReference
+      value: 
+      objectReference: {fileID: -5422220485999792505, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    - target: {fileID: 8658683807053546574, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      propertyPath: PreventInteractionReference
+      value: 
+      objectReference: {fileID: 3290697712529668637, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_RemovedComponents:
+    - {fileID: 5721938781061562480, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5935161262783829785, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1638140388}
   m_SourcePrefab: {fileID: 100100000, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+--- !u!1 &1638140381 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5935161262783829785, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+  m_PrefabInstance: {fileID: 1593779191}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1638140388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638140381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_IgnoreTrackingState: 0
+  m_PositionInput:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Position
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 0bacfa51-7938-4a88-adae-9e8ba6c59d23
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: f5efb008-b167-4d0f-b9e0-49a2350a85b3
+        m_Path: <XRHMD>/centerEyePosition
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Position
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 7862207684358717888, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_RotationInput:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Rotation
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 5439f14e-c9da-4bd1-ad3f-7121a75c10d9
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: f984a7fd-f7e2-45ef-b21d-699a5d160f29
+        m_Path: <XRHMD>/centerEyeRotation
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: -530380113134220495, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_TrackingStateInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Tracking State Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: ef829303-1e32-4d27-a1b5-5aa5b14b40bb
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PositionAction:
+    m_Name: Position
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0bacfa51-7938-4a88-adae-9e8ba6c59d23
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: f5efb008-b167-4d0f-b9e0-49a2350a85b3
+      m_Path: <XRHMD>/centerEyePosition
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Position
+      m_Flags: 0
+    m_Flags: 0
+  m_RotationAction:
+    m_Name: Rotation
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5439f14e-c9da-4bd1-ad3f-7121a75c10d9
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: f984a7fd-f7e2-45ef-b21d-699a5d160f29
+      m_Path: <XRHMD>/centerEyeRotation
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Rotation
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1001 &2023509869
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -791,7 +1171,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4659061419978111968, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 608156592}
+    - targetCorrespondingSourceObject: {fileID: 4659061419219533133, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1017852717}
+    - targetCorrespondingSourceObject: {fileID: 4659061420412482801, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 491603960}
   m_SourcePrefab: {fileID: 100100000, guid: 684b7b9a37110094bb0fb5b59a0192c5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

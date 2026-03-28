@@ -537,13 +537,13 @@ namespace ExPresSXR.Presentation
         /// </summary>
         public bool InfoActive
         {
-            get => showInfoCoroutine != null
+            get => _showInfoCoroutine != null
                     || (_infoCanvas != null && _infoCanvas.gameObject.activeSelf)
                     || (_infoAudioSource != null && _infoAudioSource.isPlaying)
                     || (_infoVideoPlayer != null && _infoVideoPlayer.isPlaying);
         }
 
-        private Coroutine showInfoCoroutine;
+        private Coroutine _showInfoCoroutine;
 
 
         private void Awake()
@@ -661,10 +661,10 @@ namespace ExPresSXR.Presentation
         {
             DisplayInfoContents(false);
 
-            if (showInfoCoroutine != null)
+            if (_showInfoCoroutine != null)
             {
-                StopCoroutine(showInfoCoroutine);
-                showInfoCoroutine = null;
+                StopCoroutine(_showInfoCoroutine);
+                _showInfoCoroutine = null;
             }
         }
 
@@ -676,11 +676,9 @@ namespace ExPresSXR.Presentation
             }
             else
             {
-                // Debug.Log((showInfoCoroutine == null) + " x " + _infoCanvas.gameObject.activeSelf + " x " + _infoAudioSource.isPlaying);
-
                 if (!InfoActive)
                 {
-                    showInfoCoroutine = StartCoroutine(ShowInfoCoroutine());
+                    _showInfoCoroutine = StartCoroutine(ShowInfoCoroutine());
                 }
                 else
                 {
@@ -694,7 +692,7 @@ namespace ExPresSXR.Presentation
             if (!InfoActive)
             {
                 // Show Button
-                showInfoCoroutine = StartCoroutine(ShowInfoCoroutine());
+                _showInfoCoroutine = StartCoroutine(ShowInfoCoroutine());
             }
             else
             {
@@ -705,10 +703,10 @@ namespace ExPresSXR.Presentation
 
         private void StopShowInfoCoroutine()
         {
-            if (showInfoCoroutine != null)
+            if (_showInfoCoroutine != null)
             {
-                StopCoroutine(showInfoCoroutine);
-                showInfoCoroutine = null;
+                StopCoroutine(_showInfoCoroutine);
+                _showInfoCoroutine = null;
             }
 
             HideInfo();
@@ -719,8 +717,8 @@ namespace ExPresSXR.Presentation
         {
             ShowInfo();
             yield return new WaitForSeconds(GetInfoActivationDuration());
-            showInfoCoroutine = null;
             HideInfo();
+            _showInfoCoroutine = null;
         }
 
         /// <summary>

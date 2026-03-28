@@ -163,7 +163,7 @@ namespace ExPresSXR.Rig
         protected readonly HashSet<InputAction> _locomotionUsers = new();
         protected readonly BindingsGroup _bindingsGroup = new();
 
-        protected void SetupInteractorEvents()
+        protected virtual void SetupInteractorEvents()
         {
             if (_nearFarInteractor != null)
             {
@@ -217,7 +217,7 @@ namespace ExPresSXR.Rig
             }
         }
 
-        protected void TeardownInteractorEvents()
+        protected virtual void TeardownInteractorEvents()
         {
             _bindingsGroup.Clear();
 

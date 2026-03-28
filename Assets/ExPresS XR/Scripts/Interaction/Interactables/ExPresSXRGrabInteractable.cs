@@ -40,11 +40,19 @@ namespace ExPresSXR.Interaction
         }
 
         /// <summary>
-        /// Range of scaling. If either the min or max scale is unbound, infinity will be returned. 
+        /// Range of scaling. If either the min or max scale is set. Else infinity will be returned. 
         /// </summary>
         public float ScaleRange
         {
-            get => _maxScaleFactor > 0.0f & _minScaleFactor > 0.0f ? Mathf.Max(_maxScaleFactor - _minScaleFactor) : Mathf.Infinity;
+            get => _maxScaleFactor > 0.0f && _minScaleFactor > 0.0f ? _maxScaleFactor - _minScaleFactor : Mathf.Infinity;
+        }
+
+        /// <summary>
+        /// If scaling is possible, that if the ScaleRange is greater than zero.
+        /// </summary>
+        public bool Scalable
+        {
+            get => ScaleRange > 0.0f;
         }
 
 
@@ -133,7 +141,7 @@ namespace ExPresSXR.Interaction
         protected bool _requireDirectInteraction;
 
         [SerializeField]
-        [Tooltip("If enabled allows NearFarInteractors to be treates as valid Direct Interactor. "
+        [Tooltip("If enabled allows NearFarInteractors to be treats as valid Direct Interactor. "
                 + "It is recommended to set the max interaction distance to the size of near interaction volume, "
                 + "as we can not differentiate hovers from it and the ray.")]
         private bool _treatNearFarAsGrab = true;
@@ -259,6 +267,7 @@ namespace ExPresSXR.Interaction
             {
                 OnGrabStarted.Invoke();
             }
+
         }
 
         /// <summary>
@@ -285,7 +294,7 @@ namespace ExPresSXR.Interaction
             bool isGrabInteractor = RuntimeUtils.IsCloseUpHandInteractor(interactor, _treatNearFarAsGrab);
             bool canGrab = (_allowGrab || !isGrabInteractor) && base.IsSelectableBy(interactor);
 
-            if (interactor is XRDirectInteractor or XRRayInteractor)
+            if (isGrabInteractor)
             {
                 (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();
             }
@@ -354,7 +363,7 @@ namespace ExPresSXR.Interaction
             for (int i = 0; i < interactorsSelecting.Count; i++)
             {
                 IXRSelectInteractor interactor = interactorsSelecting[i];
-                if (interactor is XRDirectInteractor or XRRayInteractor or NearFarInteractor)
+                if (RuntimeUtils.IsCloseUpHandInteractor(interactor, _treatNearFarAsGrab))
                 {
                     interactionManager.SelectExit(interactor, this);
                     i--; // Decrement as the next element will take the removed interactors place
@@ -389,6 +398,7 @@ namespace ExPresSXR.Interaction
             if (_hiddenFromPlayerCoroutine != null)
             {
                 StopCoroutine(_hiddenFromPlayerCoroutine);
+                _hiddenFromPlayerCoroutine = null;
             }
 
             if (duration > 0.0f)
@@ -412,6 +422,7 @@ namespace ExPresSXR.Interaction
             yield return new WaitForSeconds(duration);
             AllowGrab = true;
             SetVisualsHidden(false);
+            _hiddenFromPlayerCoroutine = null;
         }
     }
 }
