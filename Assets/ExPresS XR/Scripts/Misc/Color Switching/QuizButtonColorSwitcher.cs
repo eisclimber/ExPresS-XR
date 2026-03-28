@@ -70,13 +70,11 @@ namespace ExPresSXR.Misc.ColorSwitching
 
         private void HandleButtonAnsweredCorrect()
         {
-            Debug.Log("TrPressedCorrect");
             ChangeColorWithTrigger("TrPressedCorrect");
         }
 
         private void HandleButtonAnsweredIncorrect()
         {
-            Debug.Log("TrPressedIncorrect");
             ChangeColorWithTrigger("TrPressedIncorrect");
         }
 

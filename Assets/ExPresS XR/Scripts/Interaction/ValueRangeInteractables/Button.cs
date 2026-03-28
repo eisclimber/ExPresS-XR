@@ -149,7 +149,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// <summary>
         /// Function wrapper that wraps the function calls for the different toggle modes.
         /// </summary>
-        protected virtual void UpdateValueVisualization()
+        public virtual void UpdateValueVisualization()
         {
             if (_toggleMode)
             {
@@ -261,6 +261,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public override void ResetValue()
         {
             _valueDescriptor.ResetValue();
+            _pressed = false;
             // We need to update the visualization with our custom logic
             UpdateValueVisualization();
             OnValueReset.Invoke();

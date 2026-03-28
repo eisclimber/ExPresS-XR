@@ -134,6 +134,7 @@ namespace ExPresSXR.Editor.Editors
                     // serializedObject.ApplyModifiedProperties();
                     // Reset press manually delayed
                     EditorApplication.delayCall += UndoEditorButtonPress;
+                    _button.UpdateValueVisualization();
                 }
             }
             else
@@ -147,6 +148,7 @@ namespace ExPresSXR.Editor.Editors
                     serializedObject.UpdateIfRequiredOrScript();
                     _button.InternalForceNextPressState();
                     _button.Pressed = !pressed;
+                    _button.UpdateValueVisualization();
                 }
             }
             EditorGUI.EndDisabledGroup();
@@ -195,7 +197,7 @@ namespace ExPresSXR.Editor.Editors
         {
             _button.InternalForceNextPressState();
             _button.Pressed = false;
-            // serializedObject.ApplyModifiedProperties();
+            _button.UpdateValueVisualization();
         }
     }
 }
