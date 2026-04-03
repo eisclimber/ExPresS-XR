@@ -2,7 +2,6 @@ using ExPresSXR.Misc.Timing;
 using UnityEngine;
 using UnityEngine.Events;
 using ExPresSXR.Minigames.Common;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 namespace ExPresSXR.Minigames.Boxing
 {
@@ -107,7 +106,7 @@ namespace ExPresSXR.Minigames.Boxing
         private void OnEnable()
         {
             OnActionPerformed.AddListener(HitTarget);
-            
+
             _timingUnit.OnTimeout.AddListener(FailTarget);
         }
 
@@ -118,6 +117,17 @@ namespace ExPresSXR.Minigames.Boxing
             _timingUnit.OnTimeout.RemoveListener(FailTarget);
             _timingUnit.StopTimer();
         }
+
+        protected virtual void FixedUpdate()
+        {
+            if (!TargetActive)
+            {
+                return;
+            }
+
+            _timingUnit.UpdateTimer(Time.fixedDeltaTime);
+        }
+
 
         /// <inheritdoc />
         public override bool QueueAction()
@@ -141,6 +151,7 @@ namespace ExPresSXR.Minigames.Boxing
         private void HitTarget()
         {
             int points = GetCurrentPoints();
+
             ShowDamageDisplay(points);
             OnPointsScored.Invoke(points);
             TargetActive = false;

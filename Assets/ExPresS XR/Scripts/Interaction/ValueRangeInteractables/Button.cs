@@ -1,10 +1,10 @@
 using System;
-using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using ExPresSXR.Misc;
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
 {
@@ -211,6 +211,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             if (_toggleMode && _canRepressToggle)
             {
                 _pressed = !_pressed;
+                _canRepressToggle = false;
                 (_pressed ? OnTogglePressed : OnToggleReleased).Invoke();
             }
             else if (!_toggleMode)
@@ -235,7 +236,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             }
             else
             {
-                _pressed = true;
+                _pressed = false;
                 OnReleased.Invoke();
             }
         }
@@ -261,7 +262,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public override void ResetValue()
         {
             _valueDescriptor.ResetValue();
-            _pressed = false;
             // We need to update the visualization with our custom logic
             UpdateValueVisualization();
             OnValueReset.Invoke();

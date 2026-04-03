@@ -238,13 +238,11 @@ namespace ExPresSXR.Rig
                         return null;
                     }
                     bool hasInteractor = hitTransform.TryGetComponent<IXRInteractable>(out _);
-                    bool ignoreTeleportation = !TeleportationEnabled
-                        && (hitTransform.TryGetComponent(out TeleportationAnchor _)
-                            || hitTransform.TryGetComponent(out TeleportationArea _));
-                    // Any Hit (might be not an XRInteractor though)
-                    if (hasInteractor && !ignoreTeleportation)
+                    bool hasTeleportation = hitTransform.TryGetComponent(out TeleportationAnchor _) || hitTransform.TryGetComponent(out TeleportationArea _);
+                    bool isTeleportation = !TeleportationEnabled && hasTeleportation;
+                    
+                    if (hasInteractor && (TeleportationEnabled || !isTeleportation))
                     {
-                        // Interactor Hit
                         return raycastHit.Value.transform.gameObject;
                     }
                 }

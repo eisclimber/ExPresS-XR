@@ -151,6 +151,13 @@ namespace ExPresSXR.Editor.Editors
                     _button.UpdateValueVisualization();
                 }
             }
+
+            EditorGUI.BeginDisabledGroup(true);
+            {
+                EditorGUILayout.PropertyField(_pressed, true);
+            }
+            EditorGUI.EndDisabledGroup();
+
             EditorGUI.EndDisabledGroup();
         }
 

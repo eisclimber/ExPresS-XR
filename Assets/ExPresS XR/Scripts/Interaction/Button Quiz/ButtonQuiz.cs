@@ -445,6 +445,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                     Instantiate(CurrentQuestion.QuestionObject, DisplayAnchor);
                 }
 
+                if (DisplayVideoImage != null && (showVideoQuestion || showStreamedVideoQuestion))
+                {
+                    DisplayVideoImage.gameObject.SetActive(true);
+                }
+
                 if (DisplayPlayer != null)
                 {
                     if (showVideoQuestion)
@@ -614,6 +619,11 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             if (DisplayPlayer != null && DisplayPlayer.targetTexture != null)
             {
                 DisplayPlayer.targetTexture.Release();
+            }
+
+            if (DisplayVideoImage != null && AfterQuizMenu != null)
+            {
+                DisplayVideoImage.gameObject.SetActive(false);
             }
         }
 

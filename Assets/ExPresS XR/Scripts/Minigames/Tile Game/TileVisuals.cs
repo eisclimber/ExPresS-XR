@@ -78,11 +78,11 @@ namespace ExPresSXR.Minigames.TileGame
         private float _subScoreShowDelay = 0.5f;
 
         /// <summary>
-        /// Scale with which the `_pointsDisplayPrefab` is spawned.
+        /// Offset with which the `_pointsDisplayPrefab` is spawned.
         /// </summary>
         [SerializeField]
-        [Tooltip("Scale with which the `_pointsDisplayPrefab` is spawned.")]
-        private float _pointsDisplayScale = 0.1f;
+        [Tooltip("Offset with which the `_pointsDisplayPrefab` is spawned.")]
+        private Vector3 _pointsDisplayOffset = new(0.0f, 0.02f, 0.0f);
 
         /// <summary>
         /// Radial offset with which the `_pointsDisplayPrefab` is spawned.
@@ -91,15 +91,22 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Radial offset with which the `_pointsDisplayPrefab` is spawned.")]
         private float _pointsDisplayRadius = 0.08f;
 
-        [Space]
-
         /// <summary>
-        /// Offset with which the `_pointsDisplayPrefab` is spawned.
+        /// Mapping between the renderers materials and area ids.
         /// </summary>
         [SerializeField]
-        [Tooltip("")]
-        private Vector3 _pointsDisplayOffset = new(0.0f, 0.02f, 0.0f);
+        [Tooltip("Mapping between the renderers materials and area ids.")]
+        private Vector3 _scoreDisplayRotation = new(90.0f, 0.0f, 0.0f);
 
+
+        /// <summary>
+        /// Scale with which the `_pointsDisplayPrefab` is spawned.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Scale with which the `_pointsDisplayPrefab` is spawned.")]
+        private float _pointsDisplayScale = 0.1f;
+
+        [Space]
 
         /// <summary>
         /// Mapping between the renderers materials and area ids.
@@ -203,15 +210,11 @@ namespace ExPresSXR.Minigames.TileGame
 
         private void SpawnPointsDisplay(int points, int areaId, Vector3 direction)
         {
-            GameObject scoreNumbersGo = Instantiate(_pointsDisplayPrefab);
-            // Set position to visuals position with forward
-            scoreNumbersGo.transform.position = transform.position + direction * _pointsDisplayRadius + _pointsDisplayOffset;
-            // Face inverted forward direction but stay upright (no tilt)
-            Vector3 LookDirection = -transform.forward;
-            LookDirection.y = 0f;
-            scoreNumbersGo.transform.rotation = Quaternion.LookRotation(LookDirection);
-            // Apply scale
-            scoreNumbersGo.transform.localScale = Vector3.one * _pointsDisplayScale;
+            GameObject scoreNumbersGo = Instantiate(_pointsDisplayPrefab, transform);
+            Transform scoreTransform = scoreNumbersGo.transform;
+            scoreTransform.localPosition = _pointsDisplayOffset + direction * _pointsDisplayRadius;
+            scoreTransform.localScale = Vector3.one * _pointsDisplayScale;
+            scoreTransform.localRotation = Quaternion.Euler(_scoreDisplayRotation);
 
             if (scoreNumbersGo.TryGetComponent(out ScoreNumbers scoreNumbers))
             {

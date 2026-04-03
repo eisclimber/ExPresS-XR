@@ -697,10 +697,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2005238275336094456, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: _hintDuration
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2466094846825208069, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -741,161 +737,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3356952892261212080, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: m_HoverToSelect
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3356952892261212080, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: m_EnableUIInteraction
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3356952892261212080, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: m_UIPressInput.m_InputActionReferencePerformed
-      value: 
-      objectReference: {fileID: -5422220485999792505, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     - target: {fileID: 6477962746327777882, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
       propertyPath: m_Name
       value: ExPresS XR Rig - Head Gaze
       objectReference: {fileID: 0}
-    - target: {fileID: 6802501942813884875, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7417869775944892597, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7417869775944892597, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: m_SnapEndpointIfAvailable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658683807053546574, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: _canReselect
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658683807053546574, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: PerformInteractionReference
-      value: 
-      objectReference: {fileID: -5422220485999792505, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-    - target: {fileID: 8658683807053546574, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      propertyPath: PreventInteractionReference
-      value: 
-      objectReference: {fileID: 3290697712529668637, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-    m_RemovedComponents:
-    - {fileID: 5721938781061562480, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5935161262783829785, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1638140388}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
---- !u!1 &1638140381 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5935161262783829785, guid: 4a18bf7c36de7c040999406ac180b617, type: 3}
-  m_PrefabInstance: {fileID: 1593779191}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1638140388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1638140381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TrackingType: 0
-  m_UpdateType: 0
-  m_IgnoreTrackingState: 0
-  m_PositionInput:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Position
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 0bacfa51-7938-4a88-adae-9e8ba6c59d23
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: f5efb008-b167-4d0f-b9e0-49a2350a85b3
-        m_Path: <XRHMD>/centerEyePosition
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Position
-        m_Flags: 0
-      m_Flags: 0
-    m_Reference: {fileID: 7862207684358717888, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_RotationInput:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Rotation
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 5439f14e-c9da-4bd1-ad3f-7121a75c10d9
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: f984a7fd-f7e2-45ef-b21d-699a5d160f29
-        m_Path: <XRHMD>/centerEyeRotation
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Rotation
-        m_Flags: 0
-      m_Flags: 0
-    m_Reference: {fileID: -530380113134220495, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_TrackingStateInput:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Tracking State Input
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: ef829303-1e32-4d27-a1b5-5aa5b14b40bb
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_PositionAction:
-    m_Name: Position
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 0bacfa51-7938-4a88-adae-9e8ba6c59d23
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: f5efb008-b167-4d0f-b9e0-49a2350a85b3
-      m_Path: <XRHMD>/centerEyePosition
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Position
-      m_Flags: 0
-    m_Flags: 0
-  m_RotationAction:
-    m_Name: Rotation
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 5439f14e-c9da-4bd1-ad3f-7121a75c10d9
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: f984a7fd-f7e2-45ef-b21d-699a5d160f29
-      m_Path: <XRHMD>/centerEyeRotation
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Rotation
-      m_Flags: 0
-    m_Flags: 0
 --- !u!1001 &2023509869
 PrefabInstance:
   m_ObjectHideFlags: 0

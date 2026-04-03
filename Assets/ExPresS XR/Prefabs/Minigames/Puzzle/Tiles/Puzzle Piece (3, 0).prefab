@@ -196,7 +196,7 @@ MonoBehaviour:
   m_ParentInteractableObject: {fileID: 0}
   m_AttachTransform: {fileID: 0}
   m_SecondaryAttachTransform: {fileID: 0}
-  m_UseDynamicAttach: 0
+  m_UseDynamicAttach: 1
   m_MatchAttachPosition: 1
   m_MatchAttachRotation: 1
   m_SnapToColliderVolume: 1
@@ -256,6 +256,9 @@ MonoBehaviour:
   _scaleAllChildren: 1
   _scaledChildren: []
   _allowGrab: 1
+  _requireDirectInteraction: 0
+  _treatNearFarAsGrab: 1
+  _customSocketAttach: {fileID: 0}
   OnGrabStarted:
     m_PersistentCalls:
       m_Calls: []
