@@ -276,7 +276,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 _answerFeedbackAudioPlayer.Stop();
             }
 
-            ResetValue();
+            ResetButtonPress();
         }
 
         /// <summary>

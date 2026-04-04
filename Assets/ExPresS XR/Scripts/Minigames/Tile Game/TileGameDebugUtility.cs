@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using UnityEngine;
 using static ExPresSXR.Minigames.TileGame.TileGame;
 
@@ -91,12 +92,24 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Tile visuals instance to show debug scores in.")]
         private TileVisuals _targetVisualsInstance;
 
+        /// <summary>
+        /// Parent GameObject to retrieve TileSubmitSockets from.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Parent GameObject to retrieve TileSubmitSockets from.")]
+        private Transform _boardSocketParent;
+
 
         [ContextMenu("Add Tile From Board Submission")]
         private void AddTileFromBoardSubmission()
         {
+            int socketIdx = _insertPos.y * _game.BoardSize.x + _insertPos.x;
             _targetVisualsInstance.DisplayedTile = new(_game.NumAreas, _centerAreaId, _topAreaId, _bottomAreaId, _leftAreaId, _rightAreaId);
-            _game.AddTileFromBoardSubmission(new(_targetVisualsInstance, _insertPos));
+            Transform socketTransform = _boardSocketParent.GetChild(socketIdx);
+            if (socketTransform != null && socketTransform.TryGetComponent(out TileSubmitSocket targetSocket))
+            {
+                _game.AddTileFromBoardSubmission(new(targetSocket, _targetVisualsInstance));
+            }
         }
 
         [ContextMenu("Add Tile Manually")]

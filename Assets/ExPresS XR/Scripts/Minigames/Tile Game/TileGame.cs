@@ -211,10 +211,11 @@ namespace ExPresSXR.Minigames.TileGame
         /// <param name="ctx">Board submission context provided.</param>
         public void AddTileFromBoardSubmission(TileSubmitSocket.BoardSubmitContext ctx)
         {
-            TileVisuals display = ctx.TileVisuals;
-            PlacementData data = AddTileAt(display.DisplayedTile, ctx.BoardPos);
+            TileVisuals visuals = ctx.TileVisuals;
+            TileSubmitSocket socket = ctx.SubmittedSocket;
+            PlacementData data = AddTileAt(visuals.DisplayedTile, socket.BoardPos);
             ScoreResults score = _scoreCalculator != null ? _scoreCalculator.CalculateScore(data) : ScoreCalculator.CalculateDefaultScore(data);
-            display.DisplayScore(score);
+            ctx.SubmittedSocket.DisplayScore(score, _areas);
             TotalScore += score.TotalScore;
         }
 
@@ -242,8 +243,8 @@ namespace ExPresSXR.Minigames.TileGame
             PlacedTiles++;
 
             // Discover tiles using flood fill (per direction)
-            AreaDiscoveryData upDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.up);
-            AreaDiscoveryData downDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.down);
+            AreaDiscoveryData upDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.down); // Our up/down is flipped
+            AreaDiscoveryData downDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.up);
             AreaDiscoveryData leftDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.left);
             AreaDiscoveryData rightDiscovery = FindConnectedAreasInDirection(pos, Vector2Int.right);
 
@@ -311,7 +312,7 @@ namespace ExPresSXR.Minigames.TileGame
                 DiscoverTileInDirection(discoverPos, Vector2Int.right, data);
             }
 
-            if (discoveredTile.AreaConnectionExists(discoverDir, Vector2Int.up))
+            if (discoveredTile.AreaConnectionExists(discoverDir, Vector2Int.down))
             {
                 data.NumAreas++;
                 DiscoverTileInDirection(discoverPos, Vector2Int.up, data);

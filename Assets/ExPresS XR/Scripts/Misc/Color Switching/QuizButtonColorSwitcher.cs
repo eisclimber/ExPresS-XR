@@ -44,7 +44,7 @@ namespace ExPresSXR.Misc.ColorSwitching
                 _quizButton.OnInputEnabled.AddListener(HandleButtonEnabled);
                 _quizButton.OnInputDisabled.AddListener(HandleButtonDisabled);
 
-                _quizButton.OnValueReset.AddListener(HandleButtonPressReset);
+                _quizButton.OnButtonPressReset.AddListener(HandleButtonPressReset);
             }
         }
 
@@ -64,7 +64,7 @@ namespace ExPresSXR.Misc.ColorSwitching
                 _quizButton.OnInputEnabled.RemoveListener(HandleButtonEnabled);
                 _quizButton.OnInputDisabled.RemoveListener(HandleButtonDisabled);
 
-                _quizButton.OnValueReset.RemoveListener(HandleButtonPressReset);
+                _quizButton.OnButtonPressReset.RemoveListener(HandleButtonPressReset);
             }
         }
 
@@ -102,7 +102,7 @@ namespace ExPresSXR.Misc.ColorSwitching
         {
             // We need to update the pressed state, as it won't get set automatically
             ChangeColorWithBool("IsPressed", false);
-            ChangeColorWithTrigger("TrResetPress");
+            ChangeColorWithTrigger("TrButtonPressReset");
         }
     }
 }

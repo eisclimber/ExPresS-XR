@@ -130,6 +130,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public UnityEvent<bool> OnToggleModeChanged;
 
+        /// <summary>
+        /// Emitted when the toggle mode of the button has changed.
+        /// </summary>
+        public UnityEvent OnButtonPressReset;
+
         // Helper value to allow repressing
         private bool _canRepressToggle = true;
 
@@ -257,6 +262,20 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         {
             return _maxInteractionDistance <= 0.0f || GetDistanceSqrToInteractor(interactor) <= Mathf.Pow(_maxInteractionDistance, 2.0f);
         }
+
+        /// <summary>
+        /// Resets the button pressed state.
+        /// Use it instead of the "ResetValue()" with toggle mode to ensure the correct toggle state. 
+        /// </summary>
+        public void ResetButtonPress()
+        {
+            _valueDescriptor.ResetValue();
+            Pressed = false;
+            // We need to update the visualization with our custom logic
+            UpdateValueVisualization();
+            OnButtonPressReset.Invoke();
+        }
+
 
         /// <inheritdoc />
         public override void ResetValue()

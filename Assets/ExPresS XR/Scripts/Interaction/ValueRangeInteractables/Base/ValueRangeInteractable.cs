@@ -522,7 +522,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
 
         /// <summary>
-        /// Snaps to the default value of the range.
+        /// Resets to the default (raw) value of the range.
         /// </summary>
         public virtual void ResetValue()
         {

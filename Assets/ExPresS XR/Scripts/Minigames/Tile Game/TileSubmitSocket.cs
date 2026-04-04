@@ -6,6 +6,8 @@ using ExPresSXR.Interaction.Interactors;
 using ExPresSXR.Interaction.Interactables;
 using ExPresSXR.Misc;
 using ExPresSXR.Interaction;
+using System.Collections;
+using ExPresSXR.Minigames.Common;
 
 namespace ExPresSXR.Minigames.TileGame
 {
@@ -71,9 +73,54 @@ namespace ExPresSXR.Minigames.TileGame
         [Tooltip("Prevents tiles being submitted with the wrong size up.")]
         private bool _requireFrontSideUp = true;
 
+        [Space]
+
+        /// <summary>
+        /// Prefab (i.e. ScoreNumbers) to be spawned when displaying a score.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Prefab (i.e. ScoreNumbers) to be spawned when displaying a score.")]
+        private GameObject _pointsDisplayPrefab;
+
+        /// <summary>
+        /// Offset with which the `_pointsDisplayPrefab` is spawned.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Offset with which the `_pointsDisplayPrefab` is spawned.")]
+        private Vector3 _pointsDisplayOffset = new(0.0f, 0.02f, 0.0f);
+
+        /// <summary>
+        /// Radial offset with which the `_pointsDisplayPrefab` is spawned.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Radial offset with which the `_pointsDisplayPrefab` is spawned.")]
+        private float _pointsDisplayRadius = 0.08f;
+
+        /// <summary>
+        /// Mapping between the renderers materials and area ids.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Mapping between the renderers materials and area ids.")]
+        private Vector3 _scoreDisplayRotation = new(90.0f, 0.0f, 0.0f);
+
+
+        /// <summary>
+        /// Scale with which the `_pointsDisplayPrefab` is spawned.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Scale with which the `_pointsDisplayPrefab` is spawned.")]
+        private float _pointsDisplayScale = 0.1f;
+        
+        /// <summary>
+        /// Delay for showing the subscores.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Delay for showing the subscores.")]
+        private float _subScoreShowDelay = 0.5f;
 
 
         private XRBaseInteractable _interactable;
+        private Coroutine _displayScoreCoroutine;
 
 
         /// <summary>
@@ -201,7 +248,7 @@ namespace ExPresSXR.Minigames.TileGame
 
             if (args.interactableObject.transform.TryGetComponent(out TileVisuals visuals))
             {
-                OnTileSubmitted.Invoke(new(visuals, _boardPos));
+                OnTileSubmitted.Invoke(new(this, visuals));
             }
             else
             {
@@ -253,6 +300,78 @@ namespace ExPresSXR.Minigames.TileGame
         }
 
 
+
+        /// <summary>
+        /// Displays the provided score in the tile, showing the score for each direction slightly delayed.
+        /// </summary>
+        /// <param name="score">Score to display.</param>
+        public void DisplayScore(ScoreResults score, AreaDescription[] areas)
+        {
+            // Maybe order the scores...
+            if (_displayScoreCoroutine != null)
+            {
+                StopCoroutine(_displayScoreCoroutine);
+            }
+            _displayScoreCoroutine = StartCoroutine(ShowScoresSequential(score, areas));
+        }
+
+        private IEnumerator ShowScoresSequential(ScoreResults score, AreaDescription[] areas)
+        {
+            if (score.CenterScore > 0)
+            {
+                SpawnPointsDisplay(score.CenterScore, score.CenterAreaId, areas, Vector3.zero);
+                yield return new WaitForSeconds(_subScoreShowDelay);
+            }
+
+            if (score.UpScore > 0)
+            {
+                SpawnPointsDisplay(score.UpScore, score.UpAreaId, areas, Vector3.forward);
+                yield return new WaitForSeconds(_subScoreShowDelay);
+            }
+
+            if (score.DownScore > 0)
+            {
+                SpawnPointsDisplay(score.DownScore, score.DownAreaId, areas, Vector3.back);
+                yield return new WaitForSeconds(_subScoreShowDelay);
+            }
+
+            if (score.LeftScore > 0)
+            {
+                SpawnPointsDisplay(score.LeftScore, score.LeftAreaId, areas, Vector3.left);
+                yield return new WaitForSeconds(_subScoreShowDelay);
+            }
+
+            if (score.RightScore > 0)
+            {
+                SpawnPointsDisplay(score.RightScore, score.RightAreaId, areas, Vector3.right);
+                yield return new WaitForSeconds(_subScoreShowDelay);
+            }
+            _displayScoreCoroutine = null;
+        }
+
+        private void SpawnPointsDisplay(int points, int areaId, AreaDescription[] areas, Vector3 direction)
+        {
+            GameObject scoreNumbersGo = Instantiate(_pointsDisplayPrefab, transform);
+            Transform scoreTransform = scoreNumbersGo.transform;
+            scoreTransform.localPosition = _pointsDisplayOffset + direction * _pointsDisplayRadius;
+            scoreTransform.localScale = Vector3.one * _pointsDisplayScale;
+            scoreTransform.localRotation = Quaternion.Euler(_scoreDisplayRotation);
+
+            if (scoreNumbersGo.TryGetComponent(out ScoreNumbers scoreNumbers))
+            {
+                scoreNumbers.SetupScoreData(points);
+                if (areaId >= 0)
+                {
+                    Color areaColor = areaId >= 0 && areaId < areas.Length ? areas[areaId].Color : Color.white;
+                    scoreNumbers.SetScoreColor(areaColor);
+                }
+                else
+                {
+                    scoreNumbers.RandomizeColorHue();
+                }
+            }
+        }
+
         /// <summary>
         /// Draw the available steps as gizmos.
         /// </summary>
@@ -275,24 +394,24 @@ namespace ExPresSXR.Minigames.TileGame
         public class BoardSubmitContext
         {
             /// <summary>
+            /// Socket submitted to.
+            /// </summary>
+            public readonly TileSubmitSocket SubmittedSocket;
+
+            /// <summary>
             /// Tile visuals submitted.
             /// </summary>
             public readonly TileVisuals TileVisuals;
-
-            /// <summary>
-            /// Board pos of the submission.
-            /// </summary>
-            public readonly Vector2Int BoardPos;
 
             /// <summary>
             /// Creates a new BoardSubmitContext.
             /// </summary>
             /// <param name="tileVisuals">Tile visuals submitted.</param>
             /// <param name="boardPos">Board pos of the submission.</param>
-            public BoardSubmitContext(TileVisuals tileVisuals, Vector2Int boardPos)
+            public BoardSubmitContext(TileSubmitSocket submittedSocket, TileVisuals tileVisuals)
             {
+                SubmittedSocket = submittedSocket;
                 TileVisuals = tileVisuals;
-                BoardPos = boardPos;
             }
         }
     }
