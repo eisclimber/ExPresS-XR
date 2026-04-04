@@ -9,10 +9,10 @@ public class SetupDialogExperimentationTutorial : SetupDialogBase
     {
         // Get existing open window or if none, make a new one:
         EditorWindow window = GetWindow<SetupDialogExperimentationTutorial>("Create Experiments");
-        window.minSize = defaultWindowSize;
+        window.minSize = DefaultWindowSize;
     }
 
-    public override string uxmlName
+    public override string UxmlName
     {
         get => "Assets/ExPresS XR/Editor/Setup Dialogs/Experimentation Tutorial/experimentation-tutorial.uxml";
     }
@@ -23,7 +23,7 @@ public class SetupDialogExperimentationTutorial : SetupDialogBase
 
     protected override void AssignStepContainersRefs()
     {
-        step3Container = contentContainer.Q<VisualElement>("step-3-add-button-quiz");
+        step3Container = ContentContainer.Q<VisualElement>("step-3-add-button-quiz");
     }
 
     // Expand this method and add bindings for each step

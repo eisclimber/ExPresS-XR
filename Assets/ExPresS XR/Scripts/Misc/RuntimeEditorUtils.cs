@@ -1,15 +1,7 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro;
-using ExPresSXR.UI;
-using ExPresSXR.Rig;
-using UnityEditor;
+using UnityEngine.EventSystems;
 using UnityEngine.XR;
-using System.Reflection;
-using UnityEngine.Events;
 
 namespace ExPresSXR.Misc
 {
@@ -18,7 +10,14 @@ namespace ExPresSXR.Misc
     /// </summary>
     public static class RuntimeEditorUtils
     {
+        /// <summary>
+        /// Base path to the ExPresS XR prefabs directory.
+        /// </summary>
         public const string EXPRESS_XR_PREFABS_PATH = "Assets/ExPresS XR/Prefabs/";
+
+        /// <summary>
+        /// Format for specifying a prefab inside the ExPresS XR prefabs directory.
+        /// </summary>
         public const string EXPRESS_XR_PREFAB_FORMAT = EXPRESS_XR_PREFABS_PATH + "{0}.prefab";
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace ExPresSXR.Misc
         {
 #if UNITY_EDITOR
             List<XRDisplaySubsystem> displaySubsystems = new();
-            SubsystemManager.GetInstances(displaySubsystems);
+            SubsystemManager.GetSubsystems(displaySubsystems);
 
             // Update in-editor display mode
             if (displaySubsystems.Count > 0)
@@ -73,12 +72,19 @@ namespace ExPresSXR.Misc
     /// </summary>
     public enum GameTabDisplayMode
     {
+        /// <summary> The default view. </summary>
         Default = 0,
+        /// <summary> Left eye perspective. </summary>
         LeftEye = -1,
+        /// <summary> Right eye perspective. </summary>
         RightEye = -2,
+        /// <summary> Side-by-side. </summary>
         SideBySide = -3,
+        /// <summary> Side-by-side with occlusion mesh. </summary>
         SideBySideOcclusionMesh = -4,
+        /// <summary> Displays the distorted screen. </summary>
         Distort = -5,
+        /// <summary> Displays nothing. </summary>
         None = -6
     }
 }

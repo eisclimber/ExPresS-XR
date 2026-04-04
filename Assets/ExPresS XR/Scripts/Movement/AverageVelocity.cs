@@ -4,12 +4,16 @@ using UnityEngine;
 
 namespace ExPresSXR.Movement
 {
+    /// <summary>
+    /// Allows calculating the average velocity of an object over time.
+    /// </summary>
     public class AverageVelocity : MonoBehaviour
     {
         /// <summary>
         /// Number of position samples used to calculate the velocity.
         /// </summary>
         [SerializeField]
+        [Tooltip("Number of position samples used to calculate the velocity.")]
         private int _numSamples = 3;
 
         private List<Vector3> _samples = new();

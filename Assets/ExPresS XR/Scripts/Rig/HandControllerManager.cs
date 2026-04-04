@@ -1,553 +1,465 @@
 using System.Collections;
-using System.Linq;
+using System.Configuration;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
-
+using UnityEngine.XR.Interaction.Toolkit.Attachment;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals;
+using UnityEngine.XR.Interaction.Toolkit.UI;
 
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// A manager for the different interaction components a hand.
+    /// This includes managing teleport, hand visuals and poke interaction.
+    /// </summary>
     [AddComponentMenu("ExPresS XR/Hand Controller")]
-    public class HandControllerManager : ControllerManagerBase
+    public class HandControllerManager : ControllerInputActionManagerBase
     {
-        #region Movement Configuration
         /// <summary>
-        /// Whether or not teleportation is enabled.
+        /// The interaction attach controller of the hand used for far interaction.
         /// </summary>
         [SerializeField]
-        private bool _teleportationEnabled;
-        public bool teleportationEnabled
-        {
-            get => _teleportationEnabled;
-            set
-            {
-                _teleportationEnabled = value;
-                UpdateLocomotionActions();
-            }
-        }
+        [Tooltip("The interaction attach controller of the hand used for far interaction.")]
+        private InteractionAttachController _attachController;
 
+        /// <summary>
+        /// The interaction attach controller of the hand used for far interaction.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The interaction attach controller of the hand used for far interaction.")]
+        private ScalingInteractionAttachController _scalingAttachController;
+
+        [Space]
+
+        /// <summary>
+        /// The poke interactor of the hand.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The poke interactor of the hand.")]
+        private XRPokeInteractor _pokeInteractor;
+
+        [Space]
+
+        /// <summary>
+        /// The Prefab for instantiating an auto hand model for this hand.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The Prefab for instantiating an auto hand model for this hand.")]
+        private AutoHandModel _handModel;
+
+
+        #region Movement Configuration
+        [SerializeField]
+        [Tooltip("Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).")]
+        private bool _teleportCancelEnabled;
         /// <summary>
         /// Whether or not teleportation can be canceled with the configured InputAction (usually the Grab-Input).
         /// </summary>
-        [SerializeField]
-        private bool _teleportCancelEnabled;
-        public bool teleportCancelEnabled
+        public bool TeleportCancelEnabled
         {
             get => _teleportCancelEnabled;
             set
             {
                 _teleportCancelEnabled = value;
-                UpdateLocomotionActions();
+                SetEnabled(_teleportModeCancel, _teleportCancelEnabled);
             }
         }
 
+        [SerializeField]
+        [Tooltip("Whether or not the forwards direction after teleporting can be chosen when rotating the joystick. "
+                + "The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.")]
+        private bool _chooseTeleportForwardEnabled;
         /// <summary>
         /// Whether or not the forwards direction after teleporting can be chosen when rotating the joystick.
         /// The TeleportationAreas must have `matchDirectionalInput` enabled for it to work.
         /// </summary>
-        [SerializeField]
-        private bool _chooseTeleportForwardEnabled;
-        public bool chooseTeleportForwardEnabled
+        public bool ChooseTeleportForwardEnabled
         {
-            get => chooseTeleportForwardEnabled;
+            get => _chooseTeleportForwardEnabled;
             set
             {
                 _chooseTeleportForwardEnabled = value;
 
-                if (m_TeleportInteractor != null)
+                if (_teleportInteractor != null)
                 {
-                    m_TeleportInteractor.allowAnchorControl = _chooseTeleportForwardEnabled;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Whether or not smooth movement (with the joystick) is enabled.
-        /// Overrides SmoothTurn and Teleportation.
-        /// </summary>
-        [SerializeField]
-        private bool _smoothMoveEnabled;
-        public bool smoothMoveEnabled
-        {
-            get => _smoothMoveEnabled;
-            set
-            {
-                _smoothMoveEnabled = value;
-                UpdateLocomotionActions();
-            }
-        }
-
-        /// <summary>
-        /// Whether or not smooth turn (with the joystick) is enabled.
-        /// Overrides Teleportation.
-        /// </summary>
-        [SerializeField]
-        private bool _smoothTurnEnabled;
-        public bool smoothTurnEnabled
-        {
-            get => _smoothTurnEnabled;
-            set
-            {
-                _smoothTurnEnabled = value;
-                UpdateLocomotionActions();
-            }
-        }
-
-        /// <summary>
-        /// Whether or not snap turn (with the joystick) is enabled.
-        /// The turn amount in degrees can be configured in the SnapTurn-Provider of the LocomotionSystem.
-        /// </summary>
-        [SerializeField]
-        private bool _snapTurnEnabled;
-        public bool snapTurnEnabled
-        {
-            get => _snapTurnEnabled;
-            set
-            {
-                _snapTurnEnabled = value;
-                UpdateLocomotionActions();
-            }
-        }
-
-
-        /// <summary>
-        /// Whether or not (single hand) grab movement for this hand. 
-        /// </summary>
-        [SerializeField]
-        private bool _grabMoveEnabled;
-        public bool grabMoveEnabled
-        {
-            get => _grabMoveEnabled;
-            set
-            {
-                _grabMoveEnabled = value;
-
-                if (TryGetComponent(out GrabMoveProvider provider))
-                {
-                    provider.enabled = _grabMoveEnabled;
+                    _teleportInteractor.manipulateAttachTransform = _chooseTeleportForwardEnabled;
                 }
             }
         }
         #endregion
 
-        #region Interaction Config
-        /// <summary>
-        /// Whether or not direct interaction (i.e. grabbing) is enabled.
-        /// </summary>
+        #region Near Config
         [SerializeField]
-        private bool _directInteractionEnabled;
-        public bool directInteractionEnabled
+        [Tooltip("Whether or not near interaction is enabled.")]
+        private bool _nearInteractionEnabled;
+        /// <summary>
+        /// Whether or not near interaction is enabled.
+        /// </summary>
+        public bool NearInteractionEnabled
         {
-            get => _directInteractionEnabled;
+            get => _nearInteractionEnabled;
             set
             {
-                _directInteractionEnabled = value;
+                _nearInteractionEnabled = value;
 
-                if (m_DirectInteractor)
+                if (_nearFarInteractor != null)
                 {
-                    m_DirectInteractor.enabled = _directInteractionEnabled;
+                    _nearFarInteractor.enableNearCasting = value;
                 }
             }
         }
 
-        /// <summary>
-        /// Whether or not poke interaction is enabled.
-        /// </summary>
+        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
         [SerializeField]
-        private bool _pokeInteractionEnabled;
-        public bool pokeInteractionEnabled
-        {
-            get => _pokeInteractionEnabled;
-            set
-            {
-                _pokeInteractionEnabled = value;
-
-                if (m_PokeInteractor != null)
-                {
-                    // Not ideal but should be fine for now...
-                    // -1 = Everything; 0 = Nothing
-                    m_PokeInteractor.physicsLayerMask = _pokeInteractionEnabled ? -1 : 0;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Whether or not ray interaction is enabled.
-        /// </summary>
-        [SerializeField]
-        private bool _rayInteractionEnabled;
-        public bool rayInteractionEnabled
-        {
-            get => _rayInteractionEnabled;
-            set
-            {
-                _rayInteractionEnabled = value;
-
-                if (m_RayInteractor != null)
-                {
-                    m_RayInteractor.enabled = _rayInteractionEnabled;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.
-        /// </summary>
-        [SerializeField]
-        private bool _rayAnchorControlEnabled;
-        public bool rayAnchorControlEnabled
-        {
-            get => _rayAnchorControlEnabled;
-            set
-            {
-                _rayAnchorControlEnabled = value;
-
-                if (m_RayInteractor != null)
-                {
-                    m_RayInteractor.allowAnchorControl = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Whether or not the ray can also interact with UI.
-        /// </summary>
-        [SerializeField]
-        private bool _uiRayInteractionEnabled;
-        public bool uiRayInteractionEnabled
-        {
-            get => _uiRayInteractionEnabled;
-            set
-            {
-                _uiRayInteractionEnabled = value;
-
-                if (m_RayInteractor != null)
-                {
-                    m_RayInteractor.enableUIInteraction = _uiRayInteractionEnabled;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Whether or not poking can be used with UI.
-        /// </summary>
-        [SerializeField]
-        private bool _uiPokeInteractionEnabled;
-        public bool uiPokeInteractionEnabled
-        {
-            get => _uiPokeInteractionEnabled;
-            set
-            {
-                _uiPokeInteractionEnabled = value;
-
-                if (m_PokeInteractor != null)
-                {
-                    m_PokeInteractor.enableUIInteraction = _uiPokeInteractionEnabled;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.
-        /// </summary>
-        [Tooltip("Turns all mesh renderers in children of the PokeInteractor on or off.")]
-        [SerializeField]
-        private bool _showPokeReticle;
-        public bool showPokeReticle
-        {
-            get => _showPokeReticle;
-            set
-            {
-                _showPokeReticle = value;
-
-                if (m_PokeInteractor != null)
-                {
-                    foreach (Renderer renderer in m_PokeInteractor.GetComponentsInChildren<Renderer>(true))
-                    {
-                        renderer.enabled = _showPokeReticle;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Enables scaling grabbed objects by pushing the joystick back and forward.
-        /// Requires Scaling[Direct/Ray]Interactors and AnchorControl to be enabled on the Ray.
-        /// </summary>
-        [Tooltip("Enables scaling grabbed objects by pushing the joystick back and forward. (Requires Scaling[Direct/Ray]Interactors and AnchorControl to be enabled on the Ray).")]
-        [SerializeField]
-        private bool _scaleGrabbedObjects;
-        public bool scaleGrabbedObjects
-        {
-            get => _scaleGrabbedObjects;
-            set
-            {
-                _scaleGrabbedObjects = value;
-
-                if (m_DirectInteractor != null)
-                {
-                    ScalingDirectInteractor scalingDirect = m_DirectInteractor as ScalingDirectInteractor;
-
-                    if (scalingDirect != null)
-                    {
-                        scalingDirect.scalingEnabled = _scaleGrabbedObjects;
-                    }
-                }
-
-                if (m_RayInteractor != null)
-                {
-                    ScalingRayInteractor scalingRay = m_RayInteractor as ScalingRayInteractor;
-
-                    if (scalingRay != null)
-                    {
-                        scalingRay.anchorControlMode = _scaleGrabbedObjects ? AnchorControlMode.ScaleWithTranslateFallback : AnchorControlMode.Translate;
-                    }
-                }
-            }
-        }
-
+        private float _afterGrabCollisionsDisabled = 0.3f;
         /// <summary>
         /// Duration in seconds for which the hand collisions are disabled after grabbing an object to allow it to be thrown.
         /// If set to `0.0f` hand model collisions will be turned on immediately.
         /// </summary>
-        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
-        [SerializeField]
-        private float _afterGrabWaitDuration = 0.3f;
-        public float afterGrabWaitDuration
+        public float AfterGrabCollisionsDisabled
         {
-            get => _afterGrabWaitDuration;
-            set => _afterGrabWaitDuration = value;
-        }
-        #endregion
-
-
-        #region Hand Models
-        /// <summary>
-        /// How the Hand Model is displayed.
-        /// </summary>
-        [SerializeField]
-        private HandModelMode _handModelMode;
-        public HandModelMode handModelMode
-        {
-            get => _handModelMode;
-            set
-            {
-                _handModelMode = value;
-
-                if (TryGetAutoHand(out AutoHandModel autoHand))
-                {
-                    autoHand.handModelMode = _handModelMode;
-                    if (m_DirectInteractor != null)
-                    {
-                        m_DirectInteractor.attachTransform = autoHand.currentAttach;
-                    }
-                }
-            }
+            get => _afterGrabCollisionsDisabled;
+            set => _afterGrabCollisionsDisabled = value;
         }
 
+        [SerializeField]
+        private bool _handModelCollisions;
         /// <summary>
         /// Whether or not the hand models have collisions to push objects. They are disabled when hovering an object.
         /// Does not affect collisions when teleporting, these are always disabled.
         /// Change the TeleportInteractors AutoHandModel to the one with collision to enable them.
         /// </summary>
-        [SerializeField]
-        private bool _handModelCollisions;
-        public bool handModelCollisions
+        public bool HandModelCollisions
         {
             get => _handModelCollisions;
             set
             {
                 _handModelCollisions = value;
 
-                if (TryGetAutoHand(out AutoHandModel autoHand))
+                if (_handModel)
                 {
-                    autoHand.modelCollisionsEnabled = _handModelCollisions;
+                    _handModel.ModelCollisionsEnabled = _handModelCollisions;
                 }
             }
         }
         #endregion
 
+        #region Far Config
+        [SerializeField]
+        [Tooltip("Whether or not far (and/or ray) interaction is enabled.")]
+        private bool _farInteractionEnabled;
+        /// <summary>
+        /// Whether or not far (and/or ray) interaction is enabled.
+        /// </summary>
+        public bool FarInteractionEnabled
+        {
+            get => _farInteractionEnabled;
+            set
+            {
+                _farInteractionEnabled = value;
+
+                if (_nearFarInteractor != null)
+                {
+                    _nearFarInteractor.enableFarCasting = value;
+                }
+
+                if (_rayInteractor != null)
+                {
+                    _rayInteractor.enabled = value;
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.")]
+        private bool _farAnchorControlEnabled;
+        /// <summary>
+        /// Whether or not ray anchor control (i.e. using the joystick to rotate/move the grabbed objects) is enabled.
+        /// </summary>
+        public bool FarAnchorControlEnabled
+        {
+            get => _farAnchorControlEnabled;
+            set
+            {
+                _farAnchorControlEnabled = value;
+
+                if (_rayInteractor != null)
+                {
+                    _rayInteractor.manipulateAttachTransform = value;
+                }
+
+                if (_attachController != null)
+                {
+                    _attachController.useManipulationInput = value;
+                }
+
+                if (_scalingAttachController != null)
+                {
+                    _scalingAttachController.useManipulationInput = value;
+                }
+            }
+        }
+
+
+        [SerializeField]
+        [Tooltip("Whether pulling (and pushing) an object closer during far interaction is enabled.")]
+        private bool _farPullCloserEnabled;
+        /// <summary>
+        /// Whether pulling (and pushing) an object closer during far interaction is enabled.
+        /// </summary>
+        public bool FarPullCloserEnabled
+        {
+            get => _farPullCloserEnabled;
+            set
+            {
+                _farPullCloserEnabled = value;
+
+                if (_attachController != null)
+                {
+                    _attachController.useDistanceBasedVelocityScaling = value;
+                }
+
+                if (_scalingAttachController != null)
+                {
+                    _scalingAttachController.useDistanceBasedVelocityScaling = value;
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Whether or not the ray can also interact with UI.")]
+        private bool _farUiInteractionEnabled;
+        /// <summary>
+        /// Whether or not the ray can also interact with UI.
+        /// </summary>
+        public bool FarUiInteractionEnabled
+        {
+            get => _farUiInteractionEnabled;
+            set
+            {
+                _farUiInteractionEnabled = value;
+
+                if (_nearFarInteractor != null)
+                {
+                    _nearFarInteractor.enableUIInteraction = _farUiInteractionEnabled;
+                }
+
+                if (_rayInteractor != null)
+                {
+                    _rayInteractor.enableUIInteraction = _farUiInteractionEnabled;
+                }
+            }
+        }
+        #endregion
+
+        #region Poke Config
+        [SerializeField]
+        [Tooltip("Whether or not poke interaction is enabled.")]
+        private bool _pokeInteractionEnabled;
+        /// <summary>
+        /// Whether or not poke interaction is enabled.
+        /// </summary>
+        public bool PokeInteractionEnabled
+        {
+            get => _pokeInteractionEnabled;
+            set
+            {
+                if (_pokeInteractor != null)
+                {
+                    _pokeInteractor.hoverEntered.RemoveListener(OnPokeHoverEntered);
+                    _pokeInteractor.uiHoverEntered.RemoveListener(OnPokeUiHoverEntered);
+                    _pokeInteractor.hoverExited.RemoveListener(OnPokeHoverExited);
+                    _pokeInteractor.uiHoverExited.RemoveListener(OnPokeUiHoverExited);
+                }
+
+                _pokeInteractionEnabled = value;
+
+                if (_pokeInteractor != null)
+                {
+                    _pokeInteractor.enabled = value;
+
+                    _pokeInteractor.hoverEntered.AddListener(OnPokeHoverEntered);
+                    _pokeInteractor.uiHoverEntered.AddListener(OnPokeUiHoverEntered);
+                    _pokeInteractor.hoverExited.AddListener(OnPokeHoverExited);
+                    _pokeInteractor.uiHoverExited.AddListener(OnPokeUiHoverExited);
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("If the auto hand should automatically switch to a pointing pose when hovering interactables.")]
+        private bool _pokePointOnHover;
+        /// <summary>
+        /// If the auto hand should automatically switch to a pointing pose when hovering interactables.
+        /// </summary>
+        public bool PokePointOnHover
+        {
+            get => _pokePointOnHover;
+            set
+            {
+                _pokePointOnHover = value;
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.")]
+        private bool _pokeShowReticle;
+        /// <summary>
+        /// Whether or not the poke reticle (i.e. all Renderer-Components in the children of the PokeInteractor) is shown.
+        /// </summary>
+        public bool PokeShowReticle
+        {
+            get => _pokeShowReticle;
+            set
+            {
+                _pokeShowReticle = value;
+
+                if (_pokeInteractor != null)
+                {
+                    foreach (Renderer renderer in _pokeInteractor.GetComponentsInChildren<Renderer>(true))
+                    {
+                        renderer.enabled = _pokeShowReticle;
+                    }
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Whether or not poking can be used with UI.")]
+        private bool _pokeUiInteractionEnabled;
+        /// <summary>
+        /// Whether or not poking can be used with UI.
+        /// </summary>
+        public bool PokeUiInteractionEnabled
+        {
+            get => _pokeUiInteractionEnabled;
+            set
+            {
+                _pokeUiInteractionEnabled = value;
+
+                if (_pokeInteractor != null)
+                {
+                    _pokeInteractor.enableUIInteraction = value;
+                }
+            }
+        }
+        #endregion
+
+        #region Teleport Reticles
+        [SerializeField]
+        [Tooltip("Reticle for valid teleports.")]
+        private GameObject _teleportValidReticle;
+        /// <summary>
+        /// Reticle for valid teleports.
+        /// </summary>
+        public GameObject TeleportValidReticle
+        {
+            get => _teleportValidReticle;
+            set
+            {
+                _teleportValidReticle = value;
+
+                if (_teleportInteractor != null && _teleportInteractor.TryGetComponent(out XRInteractorLineVisual visuals))
+                {
+                    visuals.reticle = value;
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Reticle for invalid teleports.")]
+        private GameObject _teleportInvalidReticle;
+        /// <summary>
+        /// Reticle for invalid teleports.
+        /// </summary>
+        public GameObject TeleportInvalidReticle
+        {
+            get => _teleportInvalidReticle;
+            set
+            {
+                _teleportInvalidReticle = value;
+
+                if (_teleportInteractor != null && _teleportInteractor.TryGetComponent(out XRInteractorLineVisual visuals))
+                {
+                    visuals.blockedReticle = value;
+                }
+            }
+        }
+        #endregion
+
+        [SerializeField]
+        [Tooltip("Used to disable certain fields in the editor when controlled by a rig.\n Hidden in the editor!")]
+        private bool _externallyControlled;
+        /// <summary>
+        /// Used to disable certain fields in the editor when controlled by a rig.
+        /// Hidden in the editor!
+        /// </summary>
+        public bool ExternallyControlled
+        {
+            get => _externallyControlled;
+            set => _externallyControlled = value;
+        }
+
 
         private Coroutine _afterGrabCoroutine;
 
-        /// <summary>
-        /// Connects additional events.
-        /// </summary>
-        protected override void OnEnable()
+
+        protected override void SetupInteractorEvents()
         {
-            base.OnEnable();
+            base.SetupInteractorEvents();
 
-            if (m_DirectInteractor != null)
+            if (_nearFarInteractor != null)
             {
-                m_DirectInteractor.selectExited.AddListener(OnDirectInteractorSelectExited);
-                m_DirectInteractor.selectEntered.AddListener(OnDirectInteractorSelectEntered);
-            }
-
-            if (TryGetAutoHand(out AutoHandModel autoHand))
-            {
-                autoHand.OnModelsLoaded.RemoveListener(UpdateAutoHandModelValues);
-            }
-
-            // Reticles (AutoHandModels) need to be instantiated so they are available in the next frame
-            StartCoroutine(AutoHandReticleCreationTimer());
-        }
-
-
-        /// <summary>
-        /// Removes connected additional events.
-        /// </summary>
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            if (m_DirectInteractor != null)
-            {
-                m_DirectInteractor.selectExited.RemoveListener(OnDirectInteractorSelectExited);
-                m_DirectInteractor.selectEntered.RemoveListener(OnDirectInteractorSelectEntered);
-            }
-
-            if (TryGetAutoHand(out AutoHandModel autoHand))
-            {
-                autoHand.OnModelsLoaded.RemoveListener(UpdateAutoHandModelValues);
+                _nearFarInteractor.selectEntered.AddListener(OnNearFarSelectEntered);
+                _nearFarInteractor.selectExited.AddListener(OnNearFarSelectExited);
             }
         }
 
-        /// <summary>
-        /// Expands the base function by disabling AutoHand-Collisions during teleport.
-        /// </summary>
-        /// <param name="context">Callback Context of the InputAction.</param>
-        protected override void OnStartTeleport(InputAction.CallbackContext context)
+        protected override void TeardownInteractorEvents()
         {
-            base.OnStartTeleport(context);
+            base.TeardownInteractorEvents();
 
-            SetAutoHandCollisionsCurrentlyEnabled(false);
-        }
-
-        /// <summary>
-        /// Expands the base function by enabling AutoHand-Collisions after teleport.
-        /// </summary>
-        /// <param name="context">Callback Context of the InputAction.</param>
-        protected override void OnCancelTeleport(InputAction.CallbackContext context)
-        {
-            base.OnCancelTeleport(context);
-
-            SetAutoHandCollisionsCurrentlyEnabled(true);
-        }
-
-
-        private bool TryGetAutoHand(out AutoHandModel autoHand)
-        {
-            autoHand = null;
-            if (TryGetComponent(out XRBaseController controller) && controller.model != null)
+            if (_nearFarInteractor != null)
             {
-                return controller.model.TryGetComponent(out autoHand);
-            }
-            return false;
-        }
-
-        private void SetAutoHandCollisionsCurrentlyEnabled(bool enabled)
-        {
-            if (TryGetAutoHand(out AutoHandModel autoHand))
-            {
-                autoHand.collisionsCurrentlyEnabled = enabled;
-            }
-        }
-
-        /// <summary>
-        /// Manages which InputActions are available.
-        /// This is slightly different to how the base function handles it.
-        /// </summary>
-        protected override void UpdateLocomotionActions()
-        {
-            // Disable/enable Teleport and Turn when Move is enabled/disabled.
-            SetEnabled(m_Move, smoothMoveEnabled);
-            SetEnabled(m_TeleportModeActivate, !smoothMoveEnabled && teleportationEnabled);
-            SetEnabled(m_TeleportModeCancel, !smoothMoveEnabled && teleportationEnabled && teleportCancelEnabled);
-
-            // Disable ability to turn when using continuous movement
-            SetEnabled(m_Turn, !smoothMoveEnabled && smoothTurnEnabled);
-            SetEnabled(m_SnapTurn, !smoothMoveEnabled && !smoothTurnEnabled && snapTurnEnabled);
-        }
-
-        private void NotifyOverwrittenBehavior()
-        {
-            if (smoothMoveEnabled && teleportationEnabled)
-            {
-                Debug.LogWarning("SmoothMove and Teleportation are both enabled on this hand. Teleportation is disabled, as it is overwritten by SmoothMove.");
-            }
-
-            if (smoothMoveEnabled && smoothTurnEnabled)
-            {
-                Debug.LogWarning("SmoothMove and SmoothTurn are both enabled on this hand. SmoothTurn is disabled, as it is overwritten by SmoothMove.");
-            }
-
-            if ((smoothMoveEnabled || smoothTurnEnabled) && snapTurnEnabled)
-            {
-                Debug.LogWarning("SmoothMove and/or SmoothTurn are both enabled with SnapTurn on this hand. SnapTurn is disabled, as it is overwritten by SmoothMove/SmoothTurn.");
+                _nearFarInteractor.selectEntered.RemoveListener(OnNearFarSelectEntered);
+                _nearFarInteractor.selectExited.RemoveListener(OnNearFarSelectExited);
             }
         }
 
 
-        private void OnDirectInteractorSelectExited(SelectExitEventArgs args)
+        protected virtual void OnNearFarSelectEntered(SelectEnterEventArgs args)
         {
-            // Start wait timer 
             if (gameObject.activeInHierarchy && isActiveAndEnabled)
             {
                 _afterGrabCoroutine = StartCoroutine(AfterGrabWaitTimer());
             }
-
-            // Enable the snap turn InputAction if it was previously enabled
-            SetEnabled(m_SnapTurn, !smoothMoveEnabled && !smoothTurnEnabled && snapTurnEnabled);
-            SetEnabled(m_TeleportModeActivate, !smoothMoveEnabled && teleportationEnabled);
         }
 
-
-        private void OnDirectInteractorSelectEntered(SelectEnterEventArgs args)
+        protected virtual void OnNearFarSelectExited(SelectExitEventArgs args)
         {
-            // Stop wait timer
+            // Reset after grab no collisions
             if (_afterGrabCoroutine != null)
             {
                 StopCoroutine(_afterGrabCoroutine);
+                _afterGrabCoroutine = null;
             }
-            _afterGrabCoroutine = null;
+        }
 
-            // Disable the snap turn InputAction turn while grabbing when the interactor has anchor control enabled
-            if (hasDirectInteractorScalingSelection)
+        private void SetHandPointing(bool pointing)
+        {
+            if (PokePointOnHover && _handModel != null)
             {
-                SetEnabled(m_SnapTurn, false);
-                SetEnabled(m_TeleportModeActivate, false);
+                _handModel.SetHandPointing(pointing);
             }
         }
 
-
-        private bool hasDirectInteractorScalingSelection
+        private void SetAutoHandCollisionsCurrentlyEnabled(bool enabled)
         {
-            get
+            if (_handModel != null)
             {
-                ScalingDirectInteractor scalableInteractor = m_DirectInteractor as ScalingDirectInteractor;
-                if (scalableInteractor != null)
-                {
-                    return scalableInteractor.hasScalingSelection;
-                }
-                return false;
+                _handModel.CollisionsCurrentlyEnabled = enabled;
             }
-        }
-
-
-        private IEnumerator AutoHandReticleCreationTimer()
-        {
-            // Not pretty but we wait a bit after initialization to get the attach
-            yield return new WaitForSeconds(1.0f);
-            UpdateAutoHandModelValues();
-        }
-
-
-        private void UpdateAutoHandModelValues()
-        {
-            handModelMode = _handModelMode;
-            handModelCollisions = _handModelCollisions;
         }
 
         private IEnumerator AfterGrabWaitTimer()
@@ -555,39 +467,20 @@ namespace ExPresSXR.Rig
             // Disable Collisions
             SetAutoHandCollisionsCurrentlyEnabled(false);
 
-            yield return new WaitForSeconds(_afterGrabWaitDuration);
+            yield return new WaitForSeconds(_afterGrabCollisionsDisabled);
 
             // Enable auto hand Collisions
-            SetAutoHandCollisionsCurrentlyEnabled(handModelCollisions);
+            SetAutoHandCollisionsCurrentlyEnabled(HandModelCollisions);
 
             _afterGrabCoroutine = null;
         }
 
+        private void OnPokeHoverEntered(HoverEnterEventArgs args) => SetHandPointing(true);
 
-        private void OnValidate()
-        {
-            teleportationEnabled = _teleportationEnabled;
-            teleportCancelEnabled = _teleportCancelEnabled;
-            chooseTeleportForwardEnabled = _chooseTeleportForwardEnabled;
-            smoothMoveEnabled = _smoothMoveEnabled;
-            smoothTurnEnabled = _smoothTurnEnabled;
-            grabMoveEnabled = _grabMoveEnabled;
-            directInteractionEnabled = _directInteractionEnabled;
-            pokeInteractionEnabled = _pokeInteractionEnabled;
-            rayInteractionEnabled = _rayInteractionEnabled;
-            rayAnchorControlEnabled = _rayAnchorControlEnabled;
-            uiRayInteractionEnabled = _uiRayInteractionEnabled;
-            uiPokeInteractionEnabled = _uiPokeInteractionEnabled;
-            handModelMode = _handModelMode;
-            handModelCollisions = _handModelCollisions;
-            scaleGrabbedObjects = _scaleGrabbedObjects;
+        private void OnPokeHoverExited(HoverExitEventArgs args) => SetHandPointing(false);
 
-            NotifyOverwrittenBehavior();
-        }
+        private void OnPokeUiHoverEntered(UIHoverEventArgs args) => SetHandPointing(true);
 
-        public void EditorRevalidate()
-        {
-            showPokeReticle = _showPokeReticle;
-        }
+        private void OnPokeUiHoverExited(UIHoverEventArgs args) => SetHandPointing(false);
     }
 }

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.Animations
 {
+    /// <summary>
+    /// Controls the progress of an animation.
+    /// </summary>
     public class AnimatorProgressController : MonoBehaviour
     {
         /// <summary>

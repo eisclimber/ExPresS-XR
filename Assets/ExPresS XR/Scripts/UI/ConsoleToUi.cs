@@ -2,19 +2,16 @@ using System;
 using UnityEngine;
 using TMPro;
 
-
-/*
- * This component that can be added to a TMP_Text to display the console log inside the application.
- * The first element of the Stack Trace will be logged too.
- *
- * Note that you can connect your device to your your computer and select it as "Connected Player" in the editor.
- * Use this component instead if this is not possible.
- *
- * A discussion and credits to bboysil on this topic: https://answers.unity.com/questions/125049/is-there-any-way-to-view-the-console-in-a-build.html
- */
 namespace ExPresSXR.UI
 {
-    public class ConsoleToGUI : MonoBehaviour
+    /// <summary>
+    /// This component that can be added to a TMP_Text to display the console log inside the application.
+    /// The first element of the Stack Trace will be logged too.
+    /// 
+    /// Please note that you can connect your device to your your computer and select it as "Connected Player" in the editor. Use this component instead if this is not possible.  
+    /// A discussion and credits to bboysil on this topic: https://answers.unity.com/questions/125049/is-there-any-way-to-view-the-console-in-a-build.html
+    /// </summary>
+    public class ConsoleToUI : MonoBehaviour
     {
         /// <summary>
         /// Number of max lines after which the oldest lines get removed. No restriction if less or equal to 0.
@@ -28,16 +25,19 @@ namespace ExPresSXR.UI
         /// </summary>
         [SerializeField]
         [Tooltip("Which types of logs should be displayed.")]
-        private LogTypeFilter _logTypeFilter = LogTypeFilter.Error | LogTypeFilter.Assert | LogTypeFilter.Warning 
+        private LogTypeFilter _logTypeFilter = LogTypeFilter.Error | LogTypeFilter.Assert | LogTypeFilter.Warning
                                                 | LogTypeFilter.Log | LogTypeFilter.Exception; // Default: Everything
-        
+
         /// <summary>
         /// Reference to the TMP_Text that should display the console log.
         /// </summary>
         [SerializeField]
         private TMP_Text _textDisplay;
 
-        public string currentLog { get; private set; }
+        /// <summary>
+        /// The currently gathered log messages.
+        /// </summary>
+        public string CurrentLog { get; private set; }
 
 
         private void Start()
@@ -77,15 +77,15 @@ namespace ExPresSXR.UI
             string stackBeginning = stackLines.Length > 0 ? "\t" + stackLines[0] : "";
             string logColor = ColorForLogType(type);
 
-            currentLog += $"<color={logColor}>{ logString }</color>\n<color={ logColor }> - { stackBeginning }</color>\n";
+            CurrentLog += $"<color={logColor}>{logString}</color>\n<color={logColor}> - {stackBeginning}</color>\n";
 
             // Truncate text
-            string[] logLines = currentLog.Split("\n");
-            
+            string[] logLines = CurrentLog.Split("\n");
+
             if (_maxLines > 0 && logLines.Length > _maxLines)
             {
                 // Remove lines that are not fitting anymore
-                currentLog = string.Join("\n", logLines[^(_maxLines + 1)..]);
+                CurrentLog = string.Join("\n", logLines[^(_maxLines + 1)..]);
             }
         }
 
@@ -101,16 +101,16 @@ namespace ExPresSXR.UI
         /// Helper functions to log a long string via the Components context menu
         /// </summary>
         [ContextMenu("Append Test Entry (Long)")]
-        public void AppendTestEntryLong() 
+        public void AppendTestEntryLong()
                         => AppendToLog("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy "
-                                        + "eirmod tempor invidunt ut labore et dolore magna aliquyam", 
+                                        + "eirmod tempor invidunt ut labore et dolore magna aliquyam",
                                         "Stack Trace Lorem Ipsum", GetRandomLogType());
 
         private void Update()
         {
             if (_textDisplay != null)
             {
-                _textDisplay.text = currentLog;
+                _textDisplay.text = CurrentLog;
             }
         }
 
@@ -127,18 +127,25 @@ namespace ExPresSXR.UI
             };
         }
 
-        private LogType GetRandomLogType() => (LogType) UnityEngine.Random.Range(0, Enum.GetValues(typeof(LogType)).Length);
+        private LogType GetRandomLogType() => (LogType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(LogType)).Length);
 
 
-        // Reflects UnityEngine.LogType but as flags.
+        /// <summary>
+        /// Reflects UnityEngine.LogType but as flags.
+        /// </summary>
         [Flags]
         public enum LogTypeFilter
         {
-            Error, // LogType used for Errors.
-            Assert, // LogType used for Asserts (These could also indicate an Unity internal error).
-            Warning, // LogType used for Warnings.
-            Log, // LogType used for regular log messages.
-            Exception// LogType used for Exceptions.
+            /// <summary> LogType used for Errors. </summary>
+            Error,
+            /// <summary> LogType used for Asserts (These could also indicate an Unity internal error). </summary>
+            Assert,
+            /// <summary> LogType used for Warnings. </summary>
+            Warning,
+            /// <summary> LogType used for regular log messages. </summary>
+            Log,
+            /// <summary> LogType used for Exceptions. </summary> 
+            Exception
         }
     }
 }

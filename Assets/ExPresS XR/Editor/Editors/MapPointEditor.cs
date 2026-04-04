@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Movement;
-
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -11,11 +8,11 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class MapPointEditor : UnityEditor.Editor
     {
-        MapPoint targetScript;
+        protected MapPoint _mapPoint;
 
         protected virtual void OnEnable()
         {
-            targetScript = (MapPoint)target;
+            _mapPoint = (MapPoint)target;
         }
 
         public override void OnInspectorGUI()
@@ -43,7 +40,7 @@ namespace ExPresSXR.Editor.Editors
 
             if (GUILayout.Button("Add New TP Option"))
             {
-                targetScript.CreateNewTpOptionObject();
+                _mapPoint.CreateNewTpOptionObject();
             }
 
             EditorGUI.indentLevel++;

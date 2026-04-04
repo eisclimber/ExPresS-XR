@@ -7,85 +7,141 @@ using ExPresSXR.Misc.Timing;
 
 namespace ExPresSXR.Experimentation.EyeTracking
 {
-    [RequireComponent(typeof(Stopwatch))]
+    /// <summary>
+    /// Casts a ray that can be used to detect 'AreaOfInterests'-Components, mostly used for EyeTracking but can be done with arbitrary Position- and Rotation-InputActions.
+    /// 
+    /// Supports bouncing (e.g. with Mirrors). The number of bounces is determined by '_numAOIBounces'. 
+    /// For objects to bounce they must be in the 'AreaOfInterestBouncer'-Layer and have an 'AreaOfInterestRayBouncer'-Component attached to them.
+    /// </summary>
     public class AreaOfInterestRay : MonoBehaviour
     {
+        /// <summary>
+        /// Default mask used to calculate hits with. Should be both the "AOI"(9) and "AOI Bounce" (10) layer.
+        /// </summary>
         private const int DEFAULT_AOI_LAYER_MASK = 1536;
+
+        /// <summary>
+        /// May length of the ray drawn in the editor to indicate the looking direction. 
+        /// </summary>
         private const float GIZMOS_RAY_MAX_LENGTH = 5.0f;
+
+        /// <summary>
+        /// Size of the cube drawn at the AOI hit point.
+        /// </summary>
         private const float GIZMOS_CUBE_SIZE = 0.05f;
+
+        /// <summary>
+        /// AOI Id used when no hit is detected.
+        /// </summary>
         public const string NO_AOI_DETECTED_ID = "None";
 
-
+        /// <summary>
+        /// The InputActionRef that provides the value of the eye's position.
+        /// </summary>
         [Tooltip("The InputActionRef that provides the value of the eye's position.")]
         [SerializeField]
         private InputActionReference _eyePositionRef;
         
+        /// <summary>
+        /// The InputActionRef that provides the value of the eye's rotation.
+        /// </summary>
         [Tooltip("The InputActionRef that provides the value of the eye's rotation.")]
         [SerializeField]
         private InputActionReference _eyeRotationRef;
 
+        /// <summary>
+        /// If set to a value greater than 0 will allow _numAOIBounces until hitting an AOIArea.
+        /// For a GameObject to bounce the 'AreaOfInterestRayBouncer'-Component must be added and it's layer be set to 'AreaOfInterestBouncer'.
+        /// </summary>
         [Tooltip("If set to a value greater than 0 will allow _numAOIBounces until hitting an AOIArea. For a GameObject to bounce the 'AreaOfInterestRayBouncer'-Component must be added and it's layer be set to 'AreaOfInterestBouncer'.")]
         [SerializeField]
         private int _numAOIBounces = 1;
 
+        /// <summary>
+        /// LayerMask for detecting AOIs and AOIBouncers.
+        /// </summary>
         [Tooltip("LayerMask for detecting AOIs and AOIBouncers.")]
         [SerializeField]
         private LayerMask _layerMask = DEFAULT_AOI_LAYER_MASK;
 
-        // Data Retrieval
+        /// <summary>
+        /// Stopwatch to time aoi focus. Will retrieve the component on Awake if missing and create a new one if missing.
+        /// </summary>
+        [Tooltip("Stopwatch to time aoi focus. Will retrieve the component on Awake if missing and create a new one if missing.")]
+        [SerializeField]
+        private Stopwatch _aoiStopwatch;
 
-        // The raycast on the focussed AOI or the last hit after bouncing
+        // Data Retrieval
         private RaycastHit _currentRaycastHit;
-        public RaycastHit currentRaycastHit
+        /// <summary>
+        /// The raycast on the focussed AOI or the last hit after bouncing
+        /// </summary>
+        public RaycastHit CurrentRaycastHit
         {
             get => _currentRaycastHit;
         }
 
         private Vector3 _currentEyePos;
-        public Vector3 currentEyePos
+        /// <summary>
+        /// Accessor for the current eye position.
+        /// </summary>
+        public Vector3 CurrentEyePos
         {
             get => _currentEyePos;
         }
 
         private Vector3 _currentEyeDir;
-        public Vector3 currentEyeDir
+        /// <summary>
+        /// Accessor for the current eye looking direction.
+        /// </summary>
+        public Vector3 CurrentEyeDir
         {
             get => _currentEyeDir;
         }
 
         private List<Vector3> _bounceTracePath;
-        public List<Vector3> bounceTracePath
+        /// <summary>
+        /// List of detected AOI positions including bounces on configured reflective surfaces.
+        /// Begins with the eye position and ends on a AOI hit, if any.
+        /// </summary>
+        public List<Vector3> BounceTracePath
         {
             get => _bounceTracePath;
         }
 
-        private Stopwatch _aoiStopwatch;
-
-
-        // AOI ID
 
         private string _focusedAoiId = NO_AOI_DETECTED_ID;
-        public string focusedAoiId
+        /// <summary>
+        /// Currently focussed AOI id.
+        /// </summary>
+        public string FocusedAoiId
         {
             get => _focusedAoiId;
             private set => _focusedAoiId = value;
         }
 
-        public bool hasAOIFocussed
+        /// <summary>
+        /// If an AOI is currently focussed.
+        /// </summary>
+        public bool HasAOIFocussed
         { 
             get => IsColliderAoi(_currentRaycastHit.collider);
         }
 
-        // Time the current aoi (or none) was focussed
-        public float aoiFocusDuration
+        /// <summary>
+        /// Time the current aoi (or none) was focussed.
+        /// </summary>
+        public float AoiFocusDuration
         {
-            get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
+            get => _aoiStopwatch != null && _aoiStopwatch.Running ? _aoiStopwatch.CurrentStopTime : Stopwatch.INACTIVE_STOP_TIME;
         }
 
-        // (UNIX) Start Time of the focus on an aoi
-        public float aoiFocusStart
+        /// <summary>
+        /// (UNIX) Start Time of the focus on an aoi.
+        /// </summary>
+        public float AoiFocusStart
         {
-            get => _aoiStopwatch != null && _aoiStopwatch.running ? _aoiStopwatch.currentStopTime : Stopwatch.INACTIVE_STOP_TIME;
+            get => _aoiStopwatch != null && _aoiStopwatch.Running ? _aoiStopwatch.CurrentStopTime : Stopwatch.INACTIVE_STOP_TIME;
         }
 
 
@@ -101,9 +157,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
         private void Awake() {
             _bounceTracePath = new();
 
-            if (!TryGetComponent(out _aoiStopwatch))
+            if (_aoiStopwatch == null && !TryGetComponent(out _aoiStopwatch))
             {
-                Debug.LogError("Did not found a 'Stopwatch'-Component.");
+                Debug.LogError("Did not found a 'Stopwatch'-Component, creating a new one.");
+                _aoiStopwatch = gameObject.AddComponent<Stopwatch>();
             }
             // Start to get a valid first measurement (AOI = 'None')
             _aoiStopwatch.StartTimeMeasurement();
@@ -194,7 +251,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
             Collider collider = _currentRaycastHit.collider;
             if (collider != null && collider.TryGetComponent(out AreaOfInterest aoi))
             {
-                ChangeFocussedAoiId(aoi.aoiId);
+                ChangeFocussedAoiId(aoi.AoiId);
             }
             else
             {
@@ -207,10 +264,10 @@ namespace ExPresSXR.Experimentation.EyeTracking
             // Only emit the event when ids change
             if (_focusedAoiId != newAoiId)
             {
-                float finalFocusDuration = aoiFocusDuration;
+                float finalFocusDuration = AoiFocusDuration;
                 _aoiStopwatch.StartTimeMeasurement();
 
-                float newStartTime = _aoiStopwatch.startTime;
+                float newStartTime = _aoiStopwatch.StartTime;
                 
                 // Debug.Log($"Switched from '{_focusedAoiId}' to '{newAoiId}' after {finalFocusDuration}s at time: {newStartTime}.");
 
@@ -223,12 +280,12 @@ namespace ExPresSXR.Experimentation.EyeTracking
 
         private void OnDrawGizmosSelected() {
             // Vector3 eyeEnd = _currentEyeDir * GIZMOS_RAY_MAX_LENGTH;
-            if (bounceTracePath == null || bounceTracePath.Count == 0)
+            if (BounceTracePath == null || BounceTracePath.Count == 0)
             {
                 // Something went wrong... Should not happen
                 return;
             }
-            else if (bounceTracePath.Count == 1)
+            else if (BounceTracePath.Count == 1)
             {
                 // No hits, draw ray
                 Gizmos.color = Color.red;
@@ -245,7 +302,7 @@ namespace ExPresSXR.Experimentation.EyeTracking
                     if (i == _bounceTracePath.Count - 1)
                     {
                         // Draw last cube differently (AOI hit = green, no AOI hit = red)
-                        Gizmos.color = hasAOIFocussed ? Color.green : Color.red;
+                        Gizmos.color = HasAOIFocussed ? Color.green : Color.red;
                     }
                     Gizmos.DrawCube(_bounceTracePath[i], Vector3.one * GIZMOS_CUBE_SIZE);
                 }

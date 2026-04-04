@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using ExPresSXR.Rig;
 using ExPresSXR.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// A helper class to use at runtime.
+    /// </summary>
     public static class RuntimeUtils
     {
         /// <summary>
@@ -83,21 +88,60 @@ namespace ExPresSXR.Misc
         }
 
         /// <summary>
-        /// Steps a value on a range between [0.0f, 1.0f] to the closest of even <param name="numSteps"> intervals 
+        /// A single function to round a value to an full number in different ways.
+        /// </summary>
+        /// <param name="value">Value to be rounded.</param>
+        /// <param name="roundType">How rounding should be performed.</param>
+        /// <returns>Ad rounded float number.</returns>
+        public static float RoundValue(float value, RoundType roundType)
+        {
+            return roundType switch
+            {
+                RoundType.Round => Mathf.Round(value),
+                RoundType.Ceil => Mathf.Ceil(value),
+                RoundType.Floor => Mathf.Floor(value),
+                _ => value
+            };
+        }
+
+        /// <summary>
+        /// A single function to round a value to an full number as integer in different ways.
+        /// </summary>
+        /// <param name="value">Value to be rounded.</param>
+        /// <param name="roundType">How rounding should be performed.</param>
+        /// <returns>A rounded int number.</returns>
+        public static int RoundValueInt(float value, RoundType roundType) => (int)RoundValue(value, roundType);
+
+
+        /// <summary>
+        /// Steps a value on a range between [0.0f, 1.0f] to the closest of even `numSteps` intervals 
         /// including the borders 0.0f and 1.0f.
-        /// If <param name="numSteps"> is less than 1, the value will only be clamped between 0.0f and 1.0f.
+        /// If `numSteps` is less than 1, the value will only be clamped between 0.0f and 1.0f.
         /// </summary>
         /// <param name="value">Value to be stepped.</param>
         /// <param name="numSteps">Number of intermediate steps.</param>
+        /// <param name="roundType">How the number is rounded towards a step.</param>
         /// <returns>Value in range [0.0f, 1.0f] stepped to the closest value.</returns>
-        public static float GetValue01Stepped(float value, int numSteps)
+        public static float GetValue01Stepped(float value, int numSteps, RoundType roundType = RoundType.Round)
         {
             float valueClamped = Mathf.Clamp01(value);
             if (numSteps > 0)
             {
-                return Mathf.Round(valueClamped * numSteps) / numSteps;
+                return RoundValue(valueClamped * numSteps, roundType) / numSteps;
             }
             return valueClamped;
+        }
+
+        /// <summary>
+        /// Checks if an interactor is capable of close-up interactions usually done with a hand like grabbing or poking.
+        /// Has an optional option for NearFarInteractors, checking if it is currently selecting 'near'. This does not work for hovering.
+        /// </summary>
+        /// <param name="interactor">Interactor in question.</param>
+        /// <param name="includeNearFar">Allows if an NearFarSelectors too. Default: false</param>
+        /// <returns>If the interactor considered a close up hand interactor.</returns>
+        public static bool IsCloseUpHandInteractor(IXRInteractor interactor, bool includeNearFar = false)
+        {
+            return interactor is XRDirectInteractor or XRRayInteractor || (includeNearFar && interactor is NearFarInteractor);
         }
 
         #region Random
@@ -194,7 +238,7 @@ namespace ExPresSXR.Misc
         {
             if (objects.Length <= 0 || objects.Length != probabilities.Length)
             {
-                Debug.LogError("Invalid array size for generating random ");
+                Debug.LogError("Invalid array size for generating a random weighted array.");
                 return default;
             }
             int randomIdx = GetWeightedRandomIdx(probabilities);
@@ -210,18 +254,18 @@ namespace ExPresSXR.Misc
         /// </summary>
         /// <param name="rig">The rig that is will be attempted to fade. </param>
         /// <param name="sceneIdx"> The Scene index to change to (from the build settings). </param>
-        /// <param name="keepRig"> Wether or not the rig should be kept after loading the new scene. </param>
+        /// <param name="keepRig"> Whether or not the rig should be kept after loading the new scene. </param>
         /// <param name="sceneLoadedCallback"> A callback that will be executed after the new scene loaded. Can be null. </param>
         public static void ChangeSceneWithFade(ExPresSXRRig rig, int sceneIdx, bool keepRig, Action sceneLoadedCallback)
         {
-            if (rig == null || rig.fadeRect == null)
+            if (rig == null || rig.FadeRect == null)
             {
                 // No Rig => No Fade Out
                 SwitchSceneAsync(sceneIdx, sceneLoadedCallback);
             }
             else
             {
-                FadeRect fadeRect = rig.fadeRect;
+                FadeRect fadeRect = rig.FadeRect;
 
                 if (keepRig)
                 {
@@ -242,7 +286,7 @@ namespace ExPresSXR.Misc
                     {
                         if (TryFindExPresSXRRigReference(out ExPresSXRRig newRig))
                         {
-                            fadeRect = newRig.fadeRect;
+                            fadeRect = newRig.FadeRect;
                         }
                         else
                         {
@@ -257,8 +301,8 @@ namespace ExPresSXR.Misc
                     }
 
                     fadeRect.OnFadeToClearCompleted.AddListener(SwitchCleanup);
-                    fadeRect.FadeToColor(true);
-                    fadeRect.FadeToClear(false);
+                    fadeRect.FadeToColorInstant();
+                    fadeRect.FadeToClear();
 
                     // Invoke Callback if provided
                     sceneLoadedCallback?.Invoke();
@@ -271,7 +315,7 @@ namespace ExPresSXR.Misc
 
 
                 // Fade out and switch scene
-                fadeRect.FadeToColor(false);
+                fadeRect.FadeToColor();
                 fadeRect.OnFadeToColorCompleted.AddListener(SceneSwitcher);
             }
         }
@@ -401,7 +445,7 @@ namespace ExPresSXR.Misc
         /// Populates a <see cref="TMP_Dropdown"/> with the names proved by stringOptions.
         /// </summary>
         /// <param name="dropdown">The Dropdown to be populated.</param>
-        /// <param name="enumType">The Type of the Enum the Dropdown should be populated with.</param>
+        /// <param name="stringOptions">List of options to set.</param>
         public static void PopulateTMPDropDownWithCustomValues(TMP_Dropdown dropdown, string[] stringOptions)
         {
             List<TMP_Dropdown.OptionData> newOptions = new();
@@ -443,5 +487,20 @@ namespace ExPresSXR.Misc
             return intValue >= 0 && intValue < maxEnumValue ? intValue : maxEnumValue;
         }
         #endregion
+
+        /// <summary>
+        /// How the a value can be rounded.
+        /// </summary>
+        public enum RoundType
+        {
+            /// <summary> No rounding is performed. </summary>
+            None,
+            /// <summary> Normal rounding is performed. </summary>
+            Round,
+            /// <summary> Value is counting up from 0. </summary>
+            Ceil,
+            /// <summary> Value is rounded down. </summary>
+            Floor
+        }
     }
 }

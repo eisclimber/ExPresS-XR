@@ -1,23 +1,29 @@
-/*
-    Script Name: SolutionBowl.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Represents the solution bowl which checks if the coin is fake. 
-                Prevents multiple coins from being submitted.
-*/
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
+    /// <summary>
+    /// Represents the solution bowl which checks if the coin is fake.
+    /// Prevents multiple coins from being submitted.
+    /// </summary>
     public class SolutionBowl : MonoBehaviour
     {
+        /// <summary>
+        /// Emitted when the coin was correctly submitted.
+        /// </summary>
         public UnityEvent OnCorrectSolving;
+
+        /// <summary>
+        /// Emitted when the coin was correctly submitted.
+        /// </summary>
         public UnityEvent OnFalseSolving;
 
-        [SerializeField, Tooltip("Transform of the respawn position")]
+        /// <summary>
+        /// Transform of the respawn position.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Transform of the respawn position.")]
         private Transform _respawnPosition;
 
         private CoinWeight _currentSelection;
@@ -29,7 +35,7 @@ namespace ExPresSXR.Minigames.CoinScale
         {
 
             // Correct is finding the fake coin
-            if (_currentSelection != null && _currentSelection.isFake)
+            if (_currentSelection != null && _currentSelection.IsFake)
             {
                 OnCorrectSolving?.Invoke();
             }

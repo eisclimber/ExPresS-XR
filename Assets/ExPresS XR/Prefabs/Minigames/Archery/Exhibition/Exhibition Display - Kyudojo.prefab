@@ -117,15 +117,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -251,15 +253,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -835,7 +839,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5250526870915085326, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
       propertyPath: m_Name
-      value: Exhibition Display - Kyudojo Variant
+      value: Exhibition Display - Kyudojo
       objectReference: {fileID: 0}
     - target: {fileID: 5250526870915085327, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
       propertyPath: _infoText
@@ -857,6 +861,14 @@ PrefabInstance:
       propertyPath: _infoAudioClip
       value: 
       objectReference: {fileID: 8300000, guid: decf181e345d3824b8e29f4d547edc50, type: 3}
+    - target: {fileID: 5250526870915085327, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
+      propertyPath: _spinObjectSpeed
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5250526870915085327, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
+      propertyPath: _spinObjectAxis.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5426774379927706106, guid: 2b274944a8fd4d04dba961dff57cf11d, type: 3}
       propertyPath: m_Size.x
       value: 1.6

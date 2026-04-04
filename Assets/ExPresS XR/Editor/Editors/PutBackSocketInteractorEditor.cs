@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.XR.Interaction.Toolkit;
-using ExPresSXR.Interaction;
-using UnityEditor.VersionControl;
-
+using ExPresSXR.Interaction.Interactors;
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -11,13 +8,13 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class PutBackSocketInteractorEditor : HighlightableSocketInteractorEditor
     {
-        PutBackSocketInteractor putBackSocket;
+        protected PutBackSocketInteractor _putBackSocket;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            putBackSocket = (PutBackSocketInteractor)target;
+            _putBackSocket = (PutBackSocketInteractor)target;
         }
 
         public override void OnInspectorGUI()
@@ -37,7 +34,7 @@ namespace ExPresSXR.Editor.Editors
 
         protected void DrawPutBackProperties()
         {
-            bool locked = putBackSocket.externallyControlled;
+            bool locked = _putBackSocket.ExternallyControlled;
             EditorGUILayout.LabelField("Put Back Object", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             
@@ -55,26 +52,27 @@ namespace ExPresSXR.Editor.Editors
                 {
                     // Update displayed prefab only when necessary
                     serializedObject.ApplyModifiedProperties();
-                    putBackSocket.UpdatePutBackObject();
+                    _putBackSocket.UpdatePutBackObject(true);
                 }
-                else if (!putBackSocket.ArePutBackReferencesValid())
+                else if (!_putBackSocket.ArePutBackReferencesValid())
                 {
                     // Displayed prefab seems invalid -> Try Update/Recreate
                     Debug.LogWarning("The references of your PutBackPrefab seem invalid! Maybe you deleted the object. "
-                                        + $"If you want to delete it for good, remove it the PutBackPrefab of { putBackSocket }.");
+                                        + $"If you want to delete it for good, remove it the PutBackPrefab of { _putBackSocket }.", _putBackSocket);
                     serializedObject.ApplyModifiedProperties();
-                    putBackSocket.UpdatePutBackObject();
+                    _putBackSocket.UpdatePutBackObject(true);
                 }
 
                 // Display reference to the actual held prefab instance
                 EditorGUI.BeginDisabledGroup(true);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackInstance"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackObjectInstance"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackInteractable"), true);
                 EditorGUI.EndDisabledGroup();
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
                 EditorGUI.BeginChangeCheck();         
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_compensateInteractableAttach"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_disableRetainTransformParent"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_destroyIfNotSelecting"), true);
 
                 EditorGUILayout.Space();
 

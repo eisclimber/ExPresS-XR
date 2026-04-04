@@ -8,26 +8,20 @@ using ExPresSXR.Rig;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows exiting the game in both the built version of the game and the Unity Editor.
+    /// </summary>
     public class GameExiter : MonoBehaviour
     {
-        /// <summary>
-        /// How the game is exited. QuitGame quits the game completely 
-        /// while the other two switch to another (menu-)scene with optional fade.
-        /// </summary>
         [SerializeField]
-        private ExitType _exitType = ExitType.QuitGame;
-        public ExitType exitType
+        private bool _useFade = true;
+        /// <summary>
+        /// If the games should be exited with fade. A rig is required if exiting with fade.
+        /// </summary>
+        public bool UseFade
         {
-            get => _exitType;
+            get => _useFade;
         }
-
-        /// <summary>
-        /// The scene index of your menu scene.
-        /// It must be added via the Build Settings and should usually be 0.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The scene index of your menu scene. It must be added via the Build Settings and should usually be 0.")]
-        private int _menuSceneIdx = 0; // Default value should be the menu scene
 
         /// <summary>
         /// A reference to the rig. Will prevent interactions after exiting and required for fading out.
@@ -54,48 +48,31 @@ namespace ExPresSXR.Misc
         /// <summary>
         /// Exits the game as configured.
         /// </summary>
-        public void QuitGame()
+        public void ExitGame()
         {
             // Disable interactions while exiting
             if (_rig != null)
             {
-                _rig.interactionOptions = InteractionOptions.Nothing;
+                _rig.InteractionOptions = InteractionOptions.Nothing;
             }
 
-            if (_exitType == ExitType.QuitGame)
+            if (_useFade)
             {
-                _rig.fadeRect.OnFadeToColorCompleted.AddListener(ExitGame);
+                _rig.FadeRect.OnFadeToColorCompleted.AddListener(PerformGameExit);
                 _rig.FadeToColor();
-            }
-            else if (_exitType == ExitType.ToScene)
-            {
-                RuntimeUtils.ChangeSceneWithFade(_rig, _menuSceneIdx, false, null);
-            }
-            else if (_exitType == ExitType.ToSceneNoFade)
-            {
-                RuntimeUtils.SwitchSceneAsync(_menuSceneIdx, null);
             }
             else
             {
-                ExitGame();
+                PerformGameExit();
             }
         }
 
-        private void ExitGame()
+        private void PerformGameExit()
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
             Application.Quit();
-        }
-
-
-        public enum ExitType
-        {
-            QuitGame,
-            QuitGameNoFade,
-            ToScene,
-            ToSceneNoFade
         }
     }
 }

@@ -25,60 +25,72 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             // Get existing open window or if none, make a new one:
             EditorWindow window = GetWindow<SetupDialogInitial>("Initial Setup");
-            window.minSize = defaultWindowSize;
+            window.minSize = new(1060.0f, 560.0f);
         }
 
-        public override string uxmlName
+        public override string UxmlName
         {
             get => "Assets/ExPresS XR/Editor/Setup Dialogs/Initial Setup/initial-setup.uxml";
         }
 
-        private VisualElement step2Container;
-        private VisualElement step3Container;
-        private VisualElement step4Container;
-        private VisualElement step5Container;
+        private VisualElement _step2Container;
+        private VisualElement _step3Container;
+        private VisualElement _step4Container;
+        private VisualElement _step5Container;
+        private VisualElement _step6Container;
 
 
         [SerializeField]
         private DialogInputMethod _inputMethod;
-        public DialogInputMethod inputMethod
+        public DialogInputMethod InputMethod
         {
             get => _inputMethod;
             set
             {
-                SwitchStepValue(step2Container, (int)_inputMethod, (int)value);
+                SwitchStepValue(_step2Container, (int)_inputMethod, (int)value);
 
                 _inputMethod = value;
 
                 // Disable Controller Options for Eye/HeadGaze devices in the next container
-                step3Container.Q<Button>("choice-1-button").SetEnabled(_inputMethod != DialogInputMethod.None);
+                _step3Container.Q<Button>("choice-1-button").SetEnabled(_inputMethod != DialogInputMethod.None);
 
-                step3Container.Q<Button>("choice-2-button").SetEnabled(_inputMethod == DialogInputMethod.Controller);
-                step3Container.Q<Button>("choice-3-button").SetEnabled(_inputMethod == DialogInputMethod.Controller);
-                step3Container.Q<Button>("choice-4-button").SetEnabled(_inputMethod == DialogInputMethod.Controller);
+                _step3Container.Q<Button>("choice-2-button").SetEnabled(_inputMethod == DialogInputMethod.Controller);
+                _step3Container.Q<Button>("choice-3-button").SetEnabled(_inputMethod == DialogInputMethod.Controller);
+                _step3Container.Q<Button>("choice-4-button").SetEnabled(_inputMethod == DialogInputMethod.Controller);
 
                 // Disable Step 3 if no controllers were used
-                stepsContainer.Q<Button>("step-3").SetEnabled(_inputMethod == DialogInputMethod.Controller);
+                StepsContainer.Q<Button>("step-3").SetEnabled(_inputMethod == DialogInputMethod.Controller);
             }
         }
 
         [SerializeField]
         private DialogMovementPreset _movementPreset;
-        public DialogMovementPreset movementPreset
+        public DialogMovementPreset MovementPreset
         {
             get => _movementPreset;
             set
             {
-                SwitchStepValue(step3Container, (int)_movementPreset, (int)value);
+                SwitchStepValue(_step3Container, (int)_movementPreset, (int)value);
 
                 _movementPreset = value;
+            }
+        }
+
+        [SerializeField]
+        private MovementOptions _movementOptions;
+        public MovementOptions MovementOptions
+        {
+            get => _movementOptions;
+            set
+            {
+                _movementOptions = value;
             }
         }
 
 
         [SerializeField]
         private InteractionOptions _interactionOptions;
-        public InteractionOptions interactionOptions
+        public InteractionOptions InteractionOptions
         {
             get => _interactionOptions;
             set
@@ -90,12 +102,12 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         [SerializeField]
         private LaunchOption _launchOption;
-        public LaunchOption launchOption
+        public LaunchOption LaunchOption
         {
             get => _launchOption;
             set
             {
-                SwitchStepValue(step5Container, (int)_launchOption, (int)value);
+                SwitchStepValue(_step6Container, (int)_launchOption, (int)value);
 
                 _launchOption = value;
             }
@@ -103,10 +115,11 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         protected override void AssignStepContainersRefs()
         {
-            step2Container = contentContainer.Q<VisualElement>("step-2-input-method");
-            step3Container = contentContainer.Q<VisualElement>("step-3-controls-presets");
-            step4Container = contentContainer.Q<VisualElement>("step-4-input-options");
-            step5Container = contentContainer.Q<VisualElement>("step-5-further-steps");
+            _step2Container = ContentContainer.Q<VisualElement>("step-2-input-method");
+            _step3Container = ContentContainer.Q<VisualElement>("step-3-controls-presets");
+            _step4Container = ContentContainer.Q<VisualElement>("step-4-movement-options");
+            _step5Container = ContentContainer.Q<VisualElement>("step-5-input-options");
+            _step6Container = ContentContainer.Q<VisualElement>("step-6-further-steps");
         }
 
         // Expand this method and add bindings for each step
@@ -117,6 +130,7 @@ namespace ExPresSXR.Editor.SetupDialogs
             BindStep3();
             BindStep4();
             BindStep5();
+            BindStep6();
 
             // Bind remaining UI Elements
             base.BindUiElements();
@@ -126,12 +140,12 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             for (int i = 0; i < Enum.GetNames(typeof(DialogInputMethod)).Length; i++)
             {
-                Button button = step2Container.Q<Button>($"choice-{i + 1}-button");
+                Button button = _step2Container.Q<Button>($"choice-{i + 1}-button");
                 if (button != null)
                 {
                     // Move first entry ('None') to the last button
                     DialogInputMethod j = (DialogInputMethod)i;
-                    button.clickable.clicked += () => { inputMethod = j; };
+                    button.clickable.clicked += () => { InputMethod = j; };
                     button.style.backgroundColor = j == _inputMethod ? Color.gray : Color.black;
                 }
             }
@@ -141,21 +155,21 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             for (int i = 0; i < Enum.GetNames(typeof(DialogMovementPreset)).Length; i++)
             {
-                Button button = step3Container.Q<Button>($"choice-{i + 1}-button");
+                Button button = _step3Container.Q<Button>($"choice-{i + 1}-button");
                 if (button != null)
                 {
                     DialogMovementPreset j = (DialogMovementPreset)i;
-                    button.clickable.clicked += () => { movementPreset = j; };
-                    button.style.backgroundColor = j == movementPreset ? Color.gray : Color.black;
+                    button.clickable.clicked += () => { MovementPreset = j; };
+                    button.style.backgroundColor = j == _movementPreset ? Color.gray : Color.black;
                 }
             }
 
-            contentContainer.Query<Button>("movement-next-button").ForEach((nextButton) =>
+            ContentContainer.Query<Button>("movement-next-button").ForEach((nextButton) =>
             {
                 nextButton.clickable.clicked += () =>
                 {
-                    int nextStepDelta = inputMethod == DialogInputMethod.Controller ? 1 : 2;
-                    currentStep += nextStepDelta;
+                    int nextStepDelta = _inputMethod == DialogInputMethod.Controller ? 1 : 2;
+                    CurrentStep += nextStepDelta;
                 };
             });
         }
@@ -163,54 +177,66 @@ namespace ExPresSXR.Editor.SetupDialogs
         private void BindStep4()
         {
             // Start at i=1 to ignore 'None'
-            for (int i = 1; i < Enum.GetNames(typeof(InteractionOptions)).Length; i++)
+            for (int i = 1; i < Enum.GetNames(typeof(MovementOptions)).Length; i++)
             {
-                Toggle toggle = step4Container.Q<Toggle>($"option-toggle-{i}");
+                Toggle toggle = _step4Container.Q<Toggle>($"option-toggle-{i}");
                 if (toggle != null)
                 {
-                    InteractionOptions j = (InteractionOptions)(1 << (i - 1));
-                    toggle.value = interactionOptions.HasFlag(j);
-                    toggle.RegisterValueChangedCallback(evt => { EnableInteractionOptionsFlag(j, evt.newValue); });
+                    MovementOptions j = (MovementOptions)(1 << (i - 1));
+                    toggle.value = _movementOptions.HasFlag(j);
+                    toggle.RegisterValueChangedCallback(evt => { EnableMovementOptionsFlag(j, evt.newValue); });
                 }
             }
         }
 
         private void BindStep5()
         {
+            // Start at i=1 to ignore 'None'
+            for (int i = 1; i < Enum.GetNames(typeof(InteractionOptions)).Length; i++)
+            {
+                Toggle toggle = _step5Container.Q<Toggle>($"option-toggle-{i}");
+                if (toggle != null)
+                {
+                    InteractionOptions j = (InteractionOptions)(1 << (i - 1));
+                    toggle.value = _interactionOptions.HasFlag(j);
+                    toggle.RegisterValueChangedCallback(evt => { EnableInteractionOptionsFlag(j, evt.newValue); });
+                }
+            }
+        }
+
+        private void BindStep6()
+        {
             for (int i = 0; i < Enum.GetNames(typeof(LaunchOption)).Length; i++)
             {
-                Button button = step5Container.Q<Button>($"choice-{i + 1}-button");
+                Button button = _step6Container.Q<Button>($"choice-{i + 1}-button");
                 if (button != null)
                 {
                     LaunchOption j = (LaunchOption)i;
-                    button.clickable.clicked += () => { launchOption = j; };
-                    button.style.backgroundColor = j == launchOption ? Color.gray : Color.black;
+                    button.clickable.clicked += () => { LaunchOption = j; };
+                    button.style.backgroundColor = j == _launchOption ? Color.gray : Color.black;
                 }
             }
 
-            contentContainer.Query<Button>("movement-back-button").ForEach((nextButton) =>
+            ContentContainer.Query<Button>("movement-back-button").ForEach((nextButton) =>
             {
                 nextButton.clickable.clicked += () =>
                 {
-                    int nextStepDelta = inputMethod == DialogInputMethod.Controller ? 1 : 2;
-                    currentStep -= nextStepDelta;
+                    int nextStepDelta = _inputMethod == DialogInputMethod.Controller ? 1 : 2;
+                    CurrentStep -= nextStepDelta;
                 };
             });
         }
 
         protected override void FinalizeSetup()
         {
-            InputMethod input = DialogToNormalMovementPreset(inputMethod);
-            MovementPreset preset = DialogToNormalMovementPreset(movementPreset);
+            InputMethod input = DialogToNormalMovementPreset(_inputMethod);
+            MovementPreset preset = DialogToNormalMovementPreset(_movementPreset);
 
             // Create Rig
-            CreationUtils.InstantiateAndConfigureExPresSXRRig(input, preset, interactionOptions);
+            CreationUtils.InstantiateAndConfigureExPresSXRRig(input, preset, _movementOptions, _interactionOptions);
 
             // Show Tutorials
             ShowTutorialsSetupDialogs();
-
-            // Open ProBuilder-Window
-            EditorApplication.ExecuteMenuItem("Tools/ProBuilder/ProBuilder Window");
 
             // Close the editor window
             Close();
@@ -219,34 +245,45 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         private void ShowTutorialsSetupDialogs()
         {
-            if (launchOption == LaunchOption.Exhibition || launchOption == LaunchOption.Both)
+            if (_launchOption == LaunchOption.Exhibition || _launchOption == LaunchOption.Both)
             {
                 SetupDialogExhibitionTutorial.ShowWindow();
             }
 
-            if (launchOption == LaunchOption.Experimentation || launchOption == LaunchOption.Both)
+            if (_launchOption == LaunchOption.Experimentation || _launchOption == LaunchOption.Both)
             {
                 SetupDialogExperimentationTutorial.ShowWindow();
             }
         }
 
+        private void EnableMovementOptionsFlag(MovementOptions flagToChange, bool enableFlag)
+        {
+            if (enableFlag)
+            {
+                _movementOptions |= flagToChange;
+            }
+            else
+            {
+                _movementOptions &= ~flagToChange;
+            }
+        }
 
         private void EnableInteractionOptionsFlag(InteractionOptions flagToChange, bool enableFlag)
         {
             if (enableFlag)
             {
-                interactionOptions |= flagToChange;
+                _interactionOptions |= flagToChange;
             }
             else
             {
-                interactionOptions &= ~flagToChange;
+                _interactionOptions &= ~flagToChange;
             }
         }
 
 
         public string GetSceneNameFromLaunchOption()
         {
-            return launchOption switch
+            return _launchOption switch
             {
                 LaunchOption.Exhibition => EXHIBITION_TUTORIAL_SCENE_NAME,
                 LaunchOption.Experimentation => EXPERIMENTATION_TUTORIAL_SCENE_NAME,
@@ -259,11 +296,11 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             return preset switch
             {
-                DialogMovementPreset.Teleport => MovementPreset.Teleport,
-                DialogMovementPreset.Joystick => MovementPreset.Joystick,
-                DialogMovementPreset.GrabWorldMotion => MovementPreset.GrabWorldMotion,
-                DialogMovementPreset.GrabWorldManipulation => MovementPreset.GrabWorldManipulation,
-                _ => MovementPreset.None
+                DialogMovementPreset.Teleport => Rig.MovementPreset.Teleport,
+                DialogMovementPreset.Joystick => Rig.MovementPreset.Joystick,
+                DialogMovementPreset.GrabWorldMotion => Rig.MovementPreset.GrabWorldMotion,
+                DialogMovementPreset.GrabWorldManipulation => Rig.MovementPreset.GrabWorldManipulation,
+                _ => Rig.MovementPreset.None
             };
         }
 
@@ -271,10 +308,9 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             return input switch
             {
-                DialogInputMethod.Controller => InputMethod.Controller,
-                DialogInputMethod.HeadGaze => InputMethod.HeadGaze,
-                DialogInputMethod.EyeGaze => InputMethod.EyeGaze,
-                _ => InputMethod.None
+                DialogInputMethod.Controller => Rig.InputMethod.Controller,
+                DialogInputMethod.HeadGaze => Rig.InputMethod.HeadGaze,
+                _ => Rig.InputMethod.None
             };
         }
     }

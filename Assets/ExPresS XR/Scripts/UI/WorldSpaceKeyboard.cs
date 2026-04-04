@@ -1,33 +1,88 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
 using UnityEngine.UI;
 using ExPresSXR.Misc;
 
-
 namespace ExPresSXR.UI
 {
+    /// <summary>
+    /// A world space UI element representing keyboard with an input field for XR.
+    /// It can be configured to match any set of characters or even longer string sequences.
+    /// Keyboards of the German and English key layouts, and a numpad can be created directly from the GameObject-Menu.
+    /// 
+    /// The keyboard can have a Caps-key which is interpreted determined by `capsMode`.  
+    /// It can either be:
+    /// 
+    /// - Toggle: Pressing Caps will change between upper to lower and keep it until pressed again.
+    /// - OneCharUpper: Pressing Caps will change the next character to upper, then go back to lower
+    /// - AlwaysUpper: The caps does not have an effect. All characters are in *upper* case.
+    /// - AlwaysLower: The caps does not have an effect. All characters are in *lower* case.
+    /// 
+    /// To make a new custom Keyboard create a Canvas Object and add a `WorldSpaceKeyboards`-Component.
+    /// Then place all Buttons and connect the Buttons with their `OnPressed`-Event with
+    /// the `WorldSpaceKeyboard.appendToText()`-function passing the text of the button as parameter.
+    /// For the deletion of the last character, clearing or confirming the text simply connect their respective functions instead.
+    /// If the current text should be shown, add a `TMP_InputField` and drag it into the property of the `WorldSpaceKeyboards`.
+    /// </summary>
     public class WorldSpaceKeyboard : MonoBehaviour
     {
         [SerializeField]
         private string _inputText = "";
-        public string inputText
+        /// <summary>
+        /// The current text input of the keyboard.
+        /// </summary>
+        public string InputText
         {
-            get => _inputText;
+            get => _inputText.Replace("\u200B", ""); // TMP might add zero-space chars to the text for layout that we don't want
             set
             {
                 _inputText = value;
 
                 if (_inputField != null)
                 {
-                    _inputField.text = _inputText;
+                    string prefix = _inputText.StartsWith(_textPrefix) ? "" : _textPrefix;
+                    string suffix = _inputText.EndsWith(_textSuffix) ? "" : _textSuffix;
+                    _inputField.text = prefix + _inputText + suffix;
+                }
+
+                if (_confirmButton != null)
+                {
+                    _confirmButton.interactable = Confirmable;
                 }
             }
         }
 
         [SerializeField]
+        private string _textPrefix = "";
+        /// <summary>
+        /// A prefix that is always added to the displayed text but is not considered part of the input.
+        /// Can be used to e.g. display currency symbols like `EUR 100`.
+        /// </summary>
+        public string TextPrefix
+        {
+            get => _textPrefix;
+            set => _textPrefix = value;
+        }
+
+        [SerializeField]
+        private string _textSuffix = "​";
+        /// <summary>
+        /// A suffix that is always added to the displayed text but is not considered part of the input.
+        /// Can be used to e.g. display currency symbols like `100 €`.
+        /// </summary>
+        public string TextSuffix
+        {
+            get => _textSuffix;
+            set => _textSuffix = value;
+        }
+
+        [SerializeField]
         private CapsMode _capsMode = CapsMode.Toggle;
-        public CapsMode capsMode
+        /// <summary>
+        /// Defines how the caps/shift button behaves.
+        /// </summary>
+        public CapsMode CapsMode
         {
             get => _capsMode;
             set
@@ -35,25 +90,28 @@ namespace ExPresSXR.UI
                 _capsMode = value;
 
                 // Always start with tabs of if not always upper
-                capsActive = _capsMode == CapsMode.AlwaysUpper;
+                CapsActive = _capsMode == CapsMode.AlwaysUpper;
 
                 if (_capsButton != null)
                 {
                     // Update the model if forced always upper
-                    if (_capsButton.gameObject.GetComponent<ButtonToggler>())
+                    if (_capsButton.gameObject.TryGetComponent(out ButtonToggler toggler))
                     {
-                        _capsButton.gameObject.GetComponent<ButtonToggler>().pressed = (capsMode == CapsMode.AlwaysUpper);
+                        toggler.Pressed = CapsMode == CapsMode.AlwaysUpper;
                     }
 
                     // Can't interact if one mode is forced
-                    _capsButton.interactable = (capsMode != CapsMode.AlwaysUpper && capsMode != CapsMode.AlwaysLower);
+                    _capsButton.interactable = CapsMode != CapsMode.AlwaysUpper && CapsMode != CapsMode.AlwaysLower;
                 }
             }
         }
 
         [SerializeField]
         private bool _capsActive = false;
-        public bool capsActive
+        /// <summary>
+        /// Whether or not the caps/shift button is currently active. The behavior depends on the selected `CapsMode`.
+        /// </summary>
+        public bool CapsActive
         {
             get => _capsActive;
             set
@@ -63,14 +121,95 @@ namespace ExPresSXR.UI
         }
 
         [SerializeField]
+        private bool _inputDisabled;
+        /// <summary>
+        /// Whether or not the keyboard input is currently disabled. This will make all buttons non-interactable and also disable the input field.
+        /// </summary>
+        public bool InputDisabled
+        {
+            get => _inputDisabled;
+            set
+            {
+                _inputDisabled = value;
+
+                foreach (Button btn in GetComponentsInChildren<Button>())
+                {
+                    if (btn == _confirmButton)
+                    {
+                        _confirmButton.interactable = Confirmable;
+                    }
+                    else
+                    {
+                        btn.interactable = !_inputDisabled;
+                    }
+                }
+
+                if (_inputField != null)
+                {
+                    _inputField.interactable = !_inputDisabled;
+                }
+            }
+        }
+
+        /// <summary>
+        /// If the keyboard should be disabled after confirming the input text.
+        /// </summary>
+        [SerializeField]
+        private bool _disableOnConfirm;
+
+        /// <summary>
+        /// If an empty input is allowed or not. The confirm button will be interactable accordingly.
+        /// </summary>
+        [SerializeField]
+        private bool _confirmIfNotEmpty;
+
+        /// <summary>
+        /// The input field used to display the current text.
+        /// </summary>
+        [SerializeField]
         private TMP_InputField _inputField;
 
+        /// <summary>
+        /// The caps button of the keyboard.
+        /// </summary>
         [SerializeField]
         private Button _capsButton;
 
-        [Space]
+        /// <summary>
+        /// The confirm button of the keyboard.
+        /// </summary>
+        [SerializeField]
+        private Button _confirmButton;
 
+        /// <summary>
+        /// Returns true if the text is empty. Use this to resolve some kinks with TMP texts.
+        /// </summary>
+        public bool Empty
+        {
+            // There might be a case that the text gets set to a zero-width character '\u200B' via the editor...
+            // See: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/10651
+            get => string.IsNullOrEmpty(_inputText) || _inputText == "\u200B";
+        }
+
+        /// <summary>
+        /// If the text is confirmable.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Confirmable
+        {
+            get => !_inputDisabled && (!Empty || _confirmIfNotEmpty);
+        }
+
+
+        /// <summary>
+        /// Event invoked when the text was confirmed, providing the final text.
+        /// </summary>
+        [Space]
         public UnityEvent<string> OnTextEntered;
+
+        /// <summary>
+        /// Event invoked when the text was changed, providing the new text.
+        /// </summary>
         public UnityEvent<string> OnTextChanged;
 
 
@@ -80,85 +219,139 @@ namespace ExPresSXR.UI
             {
                 _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
             }
-
-            if (_capsButton != null)
-            {
-                if (_capsButton != null && _capsButton.gameObject.GetComponent<ButtonToggler>())
-                {
-                    _capsButton.gameObject.GetComponent<ButtonToggler>().OnToggleChanged.AddListener(ChangeCapsActive);
-                }
-            }
+            // Force Update text and input initially
+            InputText = _inputText;
+            InputDisabled = _inputDisabled;
         }
 
-
+        /// <summary>
+        /// Confirms the text input.
+        /// </summary>
+        [ContextMenu("Confirm Text")]
         public void ConfirmText()
         {
-            OnTextEntered.Invoke(inputText);
+            if (_disableOnConfirm)
+            {
+                InputDisabled = true;
+            }
+
+            OnTextEntered.Invoke(InputText);
         }
 
+        /// <summary>
+        /// Appends the string to the displayed text.
+        /// </summary>
+        /// <param name="stringToAppend">String literal to append.</param>
         public void AppendToText(string stringToAppend)
         {
-            // This will set the text to the inputField (via the setter)
-            inputText += capsActive ? stringToAppend.ToUpper() : stringToAppend.ToLower();
-
-            if (capsActive && _capsMode == CapsMode.OneCharUpper)
+            // This will update the text displayed via the setter function
+            string rawValue = CapsActive ? stringToAppend.ToUpper() : stringToAppend.ToLower();
+            if (_textSuffix != "" && _inputText.EndsWith(_textSuffix)) // Remove suffix if present
             {
-                capsActive = !capsActive;
+                _inputText = _inputText[..^_textSuffix.Length];
+            }
+            InputText += rawValue + _textSuffix;
 
-                if (_capsButton != null && _capsButton.gameObject.GetComponent<ButtonToggler>())
+            if (CapsActive && _capsMode == CapsMode.OneCharUpper)
+            {
+                CapsActive = !CapsActive;
+
+                if (_capsButton != null && _capsButton.gameObject.TryGetComponent(out ButtonToggler toggler))
                 {
-                    _capsButton.gameObject.GetComponent<ButtonToggler>().pressed = capsActive;
+                    toggler.Pressed = CapsActive;
                 }
             }
 
-            OnTextChanged.Invoke(inputText);
+            OnTextChanged.Invoke(_inputText);
         }
 
+        /// <summary>
+        /// Adds a linebreak "\n" to the text.
+        /// </summary>
+        [ContextMenu("Add Line Break to Text")]
+        public void AppendLineBreak() => AppendToText("\n");
+
+        /// <summary>
+        /// Removes the last character from the text, but keeping possible pre- and suffixes.
+        /// </summary>
+        [ContextMenu("Remove Last from Text")]
         public void RemoveLastFromText()
         {
-            if (inputText.Length > 0)
+            if (_inputText.Length > 0)
             {
-                inputText = inputText.Substring(0, inputText.Length - 1);
-                OnTextChanged.Invoke(inputText);
+                int numToStrip = _inputText.EndsWith(_textSuffix) ? _textSuffix.Length + 1 : 1;
+                string newText = _inputText[..^numToStrip];
+                newText = newText != _textPrefix ? newText + _textSuffix : "";
+                InputText = newText;
+
+                OnTextChanged.Invoke(_inputText);
             }
         }
 
+        /// <summary>
+        /// Clears text displayed in the keyboard.
+        /// </summary>
+        [ContextMenu("Clear Text")]
         public void ClearText()
         {
-            inputText = "";
-            OnTextChanged.Invoke(inputText);
+            InputText = "";
+            OnTextChanged.Invoke(_inputText);
         }
 
 
+        /// <summary>
+        /// Explicit setter function for setting caps active so we can connect use a named reference. 
+        /// </summary>
+        /// <param name="newCaps"></param>
         public void ChangeCapsActive(bool newCaps)
         {
-            capsActive = newCaps;
+            CapsActive = newCaps;
+        }
+
+        /// <summary>
+        /// Toggles the caps active state.
+        /// </summary>
+        public void ToggleCapsActive()
+        {
+            CapsActive = !CapsActive;
         }
 
 
-        // Allow text input via keyboard
+        /// <summary>
+        /// Allow text input via mouse and keyboard while playing.
+        /// </summary>
+        /// <param name="newValue">New text value.</param>
         private void OnInputFieldValueChanged(string newValue)
         {
-            if (inputText != newValue)
+            if (_inputText != newValue)
             {
-                inputText = newValue;
+                _inputText = newValue;
             }
         }
 
-        // Allows in-editor changes
+        /// <summary>
+        /// Allows in-editor changes.
+        /// </summary>
         private void OnValidate()
         {
-            inputText = _inputText;
-            capsMode = _capsMode;
+            InputText = _inputText;
+            CapsMode = _capsMode;
+            InputDisabled = _inputDisabled;
         }
     }
 
-
+    /// <summary>
+    /// Defines possible behaviors for toggle behaviors.
+    /// </summary>
     public enum CapsMode
     {
+        /// <summary> The caps button is toggled on and off until pressed again. </summary>
         Toggle,
+        /// <summary> The caps button will only affect the next character and then automatically turns off.</summary>
         OneCharUpper,
+        /// <summary> Text will be always upper case. </summary>
         AlwaysUpper,
+        /// <summary> Text will be always lower case. </summary>
         AlwaysLower
     }
 }

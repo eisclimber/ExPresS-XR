@@ -5,6 +5,9 @@ using ExPresSXR.Minigames.Archery.ObjectPool;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner
 {
+    /// <summary>
+    /// A base class for an archery target supporting pooling, being hit and scoring.
+    /// </summary>
     public class Target : MonoBehaviour, IPoolObject
     {
         /// <summary>
@@ -22,25 +25,25 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner
         protected int _points = 1;
 
 
-        /// <summary>
-        /// Transform  used to attach arrows to. All children will be removed when this target is returned to a pool.
-        /// Defaults to itt's own transform if none is provided.
-        /// </summary>
         [SerializeField]
         [Tooltip("Transform  used to attach arrows to. All children will be removed when this target is returned to a pool. "
             + "Defaults to itt's own transform if none is provided.")]
         protected Transform _arrowAttach;
+        /// <summary>
+        /// Transform  used to attach arrows to. All children will be removed when this target is returned to a pool.
+        /// Defaults to itt's own transform if none is provided.
+        /// </summary>
         public Transform ArrowAttach
         {
             get => _arrowAttach != null ? _arrowAttach : transform;
         }
 
-        /// <summary>
-        /// Score Managers that will be notified upon hitting this target.
-        /// </summary>
         [SerializeField]
         [Tooltip("Score Managers that will be notified upon hitting this target.")]
         protected ScoreManager[] _scoreManagers;
+        /// <summary>
+        /// Score Managers that will be notified upon hitting this target.
+        /// </summary>
         public ScoreManager[] ScoreManagers
         {
             get => _scoreManagers;
@@ -82,7 +85,6 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner
         [Tooltip("Optional rigidbody associated with this target.")]
         protected Rigidbody _rb;
 
-        // Events
 
         /// <summary>
         /// Emitted on hit with the points of this target and if it was good or bad.
@@ -198,7 +200,7 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner
         {
             if (_rb != null)
             {
-                _rb.velocity = Vector3.zero;
+                _rb.linearVelocity = Vector3.zero;
                 _rb.angularVelocity = Vector3.zero;
             }
         }

@@ -1,7 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
+using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction
 {
@@ -10,24 +13,26 @@ namespace ExPresSXR.Interaction
     /// This will **not** scale the GameObject itself but all of it's children. Scaling will be applied to the children using their initial scale.
     /// </summary>
     [AddComponentMenu("ExPresS XR/ExPresS XR Grab Interactable")]
-    public class ExPresSXRGrabInteractable : XRGrabInteractable
+    public class ExPresSXRGrabInteractable : UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable
     {
+        [SerializeField]
+        [Tooltip("Minimal scale possible, negative values are considered unbound.")]
+        private float _minScaleFactor = 1.0f;
         /// <summary>
         /// Minimal scale possible, negative values are considered unbound.
         /// </summary>
-        [SerializeField]
-        private float _minScaleFactor = 1.0f;
         public float MinScaleFactor
         {
             get => _minScaleFactor;
             set => _minScaleFactor = value;
         }
 
+        [SerializeField]
+        [Tooltip("Maximal scale possible, negative values are considered unbound.")]
+        private float _maxScaleFactor = 1.0f;
         /// <summary>
         /// Maximal scale possible, negative values are considered unbound.
         /// </summary>
-        [SerializeField]
-        private float _maxScaleFactor = 1.0f;
         public float MaxScaleFactor
         {
             get => _maxScaleFactor;
@@ -35,22 +40,30 @@ namespace ExPresSXR.Interaction
         }
 
         /// <summary>
-        /// Range of scaling. If either the min or max scale is unbound, infinity will be returned. 
+        /// Range of scaling. If either the min or max scale is set. Else infinity will be returned. 
         /// </summary>
         public float ScaleRange
         {
-            get => _maxScaleFactor > 0.0f & _minScaleFactor > 0.0f ? Mathf.Max(_maxScaleFactor - _minScaleFactor) : Mathf.Infinity;
+            get => _maxScaleFactor > 0.0f && _minScaleFactor > 0.0f ? _maxScaleFactor - _minScaleFactor : Mathf.Infinity;
+        }
+
+        /// <summary>
+        /// If scaling is possible, that if the ScaleRange is greater than zero.
+        /// </summary>
+        public bool Scalable
+        {
+            get => ScaleRange > 0.0f;
         }
 
 
-        /// <summary>
-        /// Override to the scale speed of the `ScalingRayInteractor` or `ScalingDirectInteractor`. 
-        /// It is recommended to change the scale speed in the interactors themselves and use this override sparingly!
-        /// </summary>
         [SerializeField]
         [Tooltip("Override to the scale speed of the `ScalingRayInteractor` or `ScalingDirectInteractor`. \n"
                 + "It is recommended to change the scale speed in the interactors themselves and use this override sparingly!")]
         private float _scaleSpeedOverride = -1.0f;
+        /// <summary>
+        /// Override to the scale speed of the `ScalingRayInteractor` or `ScalingDirectInteractor`. 
+        /// It is recommended to change the scale speed in the interactors themselves and use this override sparingly!
+        /// </summary>
         public float ScaleSpeedOverride
         {
             get => _scaleSpeedOverride;
@@ -61,26 +74,28 @@ namespace ExPresSXR.Interaction
         /// If the interactable should reset its scale when selected by a socket or retain the current scale.
         /// </summary>
         [SerializeField]
+        [Tooltip(" If the interactable should reset its scale when selected by a socket or retain the current scale.")]
         private bool _resetScaleInSockets = true;
 
 
+        [SerializeField]
+        [Tooltip("If all children should be scaled or only those set as `scaledChildren` via the editor.")]
+        private bool _scaleAllChildren = true;
         /// <summary>
         /// If all children should be scaled or only those set as `scaledChildren` via the editor.
         /// </summary>
-        [SerializeField]
-        private bool _scaleAllChildren = true;
         public bool ScaleAllChildren
         {
             get => _scaleAllChildren;
         }
 
 
-        /// <summary>
-        /// Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.
-        /// </summary>
         [Tooltip("Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.")]
         [SerializeField]
         private Transform[] _scaledChildren;
+        /// <summary>
+        /// Children affected by scaling. Setting this value during runtime will use the current scales as initial scale.
+        /// </summary>
         public Transform[] ScaledChildren
         {
             get => _scaledChildren;
@@ -98,12 +113,12 @@ namespace ExPresSXR.Interaction
             }
         }
 
-
+        [SerializeField]
+        [Tooltip("If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.")]
+        private bool _allowGrab = true;
         /// <summary>
         /// If false, denies interactions with ray and direct interactors. Can be used to enable interaction after a certain stage or disable it later.
         /// </summary>
-        [SerializeField]
-        private bool _allowGrab = true;
         public bool AllowGrab
         {
             get => _allowGrab;
@@ -118,11 +133,45 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <summary>
+        /// If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("If only direct (i.e. grab) interactions are allowed. For this you'll need a child GameObject with a RigidBody with a collision.")]
+        protected bool _requireDirectInteraction;
 
+        [SerializeField]
+        [Tooltip("If enabled allows NearFarInteractors to be treats as valid Direct Interactor. "
+                + "It is recommended to set the max interaction distance to the size of near interaction volume, "
+                + "as we can not differentiate hovers from it and the ray.")]
+        private bool _treatNearFarAsGrab = true;
+        /// <summary>
+        /// If enabled allows NearFarInteractors to be treats as valid Direct Interactor.
+        /// It is recommended to set the max interaction distance to the size of near interaction volume,
+        /// as we can not differentiate hovers from it and the ray.
+        /// </summary>
+        public bool TreatNearFarAsGrab
+        {
+            get => _treatNearFarAsGrab;
+            set => _treatNearFarAsGrab = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Custom attach used for socket interactors.")]
+        private Transform _customSocketAttach;
+        /// <summary>
+        /// Custom attach used for socket interactors.
+        /// </summary>
+        public Transform CustomSocketAttach
+        {
+            get => _customSocketAttach;
+            set => _customSocketAttach = value;
+        }
+
+        private float _scaleFactor = 1.0f;
         /// <summary>
         /// The current scale to the children, relative to their initial scale.
         /// </summary>
-        private float _scaleFactor = 1.0f;
         public float ScaleFactor
         {
             get => _scaleFactor;
@@ -135,10 +184,10 @@ namespace ExPresSXR.Interaction
         }
 
 
+        private Vector3[] _initialScales;
         /// <summary>
         /// The initial scales of the object in `_scaledChildren`. Only available at runtime.
         /// </summary>
-        private Vector3[] _initialScales;
         public Vector3[] InitialScales
         {
             get => _initialScales;
@@ -152,6 +201,8 @@ namespace ExPresSXR.Interaction
         {
             get => _scaleSpeedOverride > 0.0f;
         }
+
+        private Coroutine _hiddenFromPlayerCoroutine;
 
         // Events
 
@@ -212,10 +263,11 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
-            if (args.interactorObject is XRDirectInteractor or XRRayInteractor)
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, _treatNearFarAsGrab))
             {
                 OnGrabStarted.Invoke();
             }
+
         }
 
         /// <summary>
@@ -225,7 +277,7 @@ namespace ExPresSXR.Interaction
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
-            if (args.interactorObject is XRDirectInteractor or XRRayInteractor)
+            if (RuntimeUtils.IsCloseUpHandInteractor(args.interactorObject, _treatNearFarAsGrab))
             {
                 OnGrabReleased.Invoke();
             }
@@ -239,14 +291,32 @@ namespace ExPresSXR.Interaction
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
         {
             // Allow Direct and ray only if grab allowed and add parent checks
-            bool canGrab = (_allowGrab || interactor is not (XRDirectInteractor or XRRayInteractor)) && base.IsSelectableBy(interactor);
+            bool isGrabInteractor = RuntimeUtils.IsCloseUpHandInteractor(interactor, _treatNearFarAsGrab);
+            bool canGrab = (_allowGrab || !isGrabInteractor) && base.IsSelectableBy(interactor);
 
-            if (interactor is XRDirectInteractor || interactor is XRRayInteractor)
+            if (isGrabInteractor)
             {
                 (canGrab ? OnGrabAllowed : OnGrabDenied).Invoke();
             }
             return canGrab;
         }
+
+        /// <summary>
+        /// Return the attach transform for the interactor.
+        /// If the interactor is a SocketInteractor and a `_customSocketAttach` is set, it is returned.
+        /// </summary>
+        /// <param name="interactor"></param>
+        /// <returns></returns>
+        public override Transform GetAttachTransform(IXRInteractor interactor)
+        {
+            if (_customSocketAttach != null && interactor is XRSocketInteractor)
+            {
+                return _customSocketAttach;
+            }
+
+            return base.GetAttachTransform(interactor);
+        }
+
 
         /// <summary>
         /// Resets the scale of all (scaled) children to 1.0f
@@ -293,7 +363,7 @@ namespace ExPresSXR.Interaction
             for (int i = 0; i < interactorsSelecting.Count; i++)
             {
                 IXRSelectInteractor interactor = interactorsSelecting[i];
-                if (interactor is XRDirectInteractor || interactor is XRRayInteractor)
+                if (RuntimeUtils.IsCloseUpHandInteractor(interactor, _treatNearFarAsGrab))
                 {
                     interactionManager.SelectExit(interactor, this);
                     i--; // Decrement as the next element will take the removed interactors place
@@ -315,6 +385,44 @@ namespace ExPresSXR.Interaction
             float maxValue = _maxScaleFactor >= 0 ? _maxScaleFactor : value;
 
             return Mathf.Clamp(value, minValue, maxValue);
+        }
+
+        /// <summary>
+        /// Disables all visuals during which grabbing is prevented.
+        /// </summary>
+        /// <param name="duration">Duration to hide.</param>
+        public void HideFromPlayerForDuration(float duration)
+        {
+            AllowGrab = false;
+
+            if (_hiddenFromPlayerCoroutine != null)
+            {
+                StopCoroutine(_hiddenFromPlayerCoroutine);
+                _hiddenFromPlayerCoroutine = null;
+            }
+
+            if (duration > 0.0f)
+            {
+                _hiddenFromPlayerCoroutine = StartCoroutine(ShowHiddenFromPlayerDelayed(duration));
+            }
+        }
+
+        private void SetVisualsHidden(bool hidden)
+        {
+            foreach (Renderer render in GetComponentsInChildren<Renderer>())
+            {
+                // Debug.Log($"Setting render {render} hidden to {hidden}");
+                render.enabled = !hidden;
+            }
+        }
+
+        private IEnumerator ShowHiddenFromPlayerDelayed(float duration)
+        {
+            SetVisualsHidden(true);
+            yield return new WaitForSeconds(duration);
+            AllowGrab = true;
+            SetVisualsHidden(false);
+            _hiddenFromPlayerCoroutine = null;
         }
     }
 }

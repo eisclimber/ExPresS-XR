@@ -3,6 +3,12 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.Excavation
 {
+    /// <summary>
+    /// A component that allows drawing on an excavation area.
+    /// 
+    /// This is done by casting a raycast in the local *up* direction of this component.
+    /// If it hits an excavation area, it will automatically draw on it with a strength relative to the distance.
+    /// </summary>
     public class ExcavationBrush : MonoBehaviour
     {
         /// <summary>
@@ -80,7 +86,7 @@ namespace ExPresSXR.Minigames.Excavation
             _hasHit = Physics.SphereCast(startPos, _brushSphereCastRadius, transform.up, out _hit, drawDist);
             ExcavationArea area = null; // Define the variable here to avoid liner errors
             _hasExcavationAreaHit = _hasHit && _hit.transform.TryGetComponent(out area);
- 
+
             if (_hasExcavationAreaHit)
             {
                 Vector2 excavatePos = _hit.textureCoord;

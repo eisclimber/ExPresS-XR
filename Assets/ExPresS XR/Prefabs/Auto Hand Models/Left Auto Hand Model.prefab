@@ -45,18 +45,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e32b2a802dd9845b4574f8376e7d6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handModelMode: 0
-  controllerCharacteristics: 324
-  controllerModels:
+  _HandModelMode: 1
+  _controllerCharacteristics: 324
+  _controllerModels:
   - {fileID: 7634514334346526944, guid: c2285fc937be62641b392c24ab84994b, type: 3}
   - {fileID: 5928091942230486030, guid: f140636c8eaa5024e82f1f336fc443c2, type: 3}
   - {fileID: 4818293155451206850, guid: b9046a841483cf343a4a28e7faa23c2c, type: 3}
-  - {fileID: 4245457492171364763, guid: 2e1d85736a2beef4289fd6e59a01a718, type: 3}
-  - {fileID: 7523567926693483842, guid: 63a7539aaba64d2458db2a577fa217bb, type: 3}
-  - {fileID: 3111370764688594423, guid: 966430a62a72694488dd020c31dc5d94, type: 3}
-  handModel: {fileID: 109434732395284509, guid: 65847589f926b734d9eaed6e25f0046b, type: 3}
+  - {fileID: 4245457492171364763, guid: c836783e3928a624e9ff9c70d4f21606, type: 3}
+  - {fileID: 7523567926693483842, guid: b2ec64201e9ec6c4ba155691307536cb, type: 3}
+  - {fileID: 1854124053158451197, guid: e7c42b3a6ca0de247af6ad067b2201fc, type: 3}
+  _handModel: {fileID: 109434732395284509, guid: 65847589f926b734d9eaed6e25f0046b, type: 3}
   customModel: {fileID: 8007995345765236298, guid: ec18445aa65efa4488f481c98af0292f, type: 3}
   _modelCollisionsEnabled: 1
+  OnModelsLoaded:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &4125834924217455386
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -64,10 +67,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192034326077010314}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 20
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

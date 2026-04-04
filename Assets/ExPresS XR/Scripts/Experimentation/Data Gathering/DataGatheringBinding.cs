@@ -5,19 +5,34 @@ using System.Collections.Generic;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
+    /// <summary>
+    /// A class to represent a binding of a value from some GameObject's Component to be used by DataGatherer.
+    /// 
+    /// The values can be either return values of public functions or public members.
+    /// Using reflections these values will automatically be read when data is required to be exported.
+    /// </summary>
     [Serializable]
     public class DataGatheringBinding
     {
+        [SerializeField]
+        [Tooltip("The header value for the column storing values of this binding.")]
+        private string _exportColumnName = "";
         /// <summary>
         /// The header value for the column storing values of this binding.
         /// </summary>
-        public string exportColumnName = "";
+        public string ExportColumnName
+        {
+            get => _exportColumnName;
+            set => _exportColumnName = value;
+        }
 
+        [SerializeField]
+        [Tooltip("Separator used for the header, will be controlled by the DataGatherer controlling this binding.")]
+        private char _headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         /// <summary>
         /// Separator used for the header, will be controlled by the DataGatherer controlling this binding.
         /// </summary>
-        private char _headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
-        public char headerSeparator
+        public char HeaderSeparator
         {
             get => _headerSeparator;
             set
@@ -26,33 +41,53 @@ namespace ExPresSXR.Experimentation.DataGathering
 
                 if (AttributeHelpers.HasAttribute<HeaderReplacementAttribute>(_targetMemberInfo))
                 {
-                    exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
+                    ExportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
                 }
             }
         }
 
-
+        /// <summary>
+        /// GameObject reference to retrieve the value from.
+        /// </summary>
         [SerializeField]
+        [Tooltip("GameObject reference to retrieve the value from.")]
         private GameObject _targetObject = null;
 
+        /// <summary>
+        /// Component reference to retrieve the value from.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Component reference to retrieve the value from.")]
         private Component _targetComponent = null;
 
+        /// <summary>
+        /// Function/Property reflection reference to retrieve the value from.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Function/Property reflection reference to retrieve the value from.")]
         private MemberInfo _targetMemberInfo = null;
 
 
-        // List of all members
+        /// <summary>
+        /// List of all members.
+        /// </summary>
         [SerializeField]
+        [Tooltip("List of all members.")]
         private string[] _memberNameList = new string[0];
 
-        // Prettified List of all members
+        /// <summary>
+        /// Prettified List of all members.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Prettified List of all members.")]
         private string[] _prettyMemberNameList = new string[0];
 
 
-        // Index of components in the list
+        /// <summary>
+        /// Index of components in the list.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Index of components in the list.")]
         private int _memberIdx = -1;
 
         /// <summary>
@@ -65,13 +100,14 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// The later must be a pretty name (i.e. as displayed in the menu, including the annotation for methods).
         /// If the name is invalid, it will be bound only to the GameObject but no value will be selected.
         /// </summary>
-        /// <param name="targetComponent">Component(&Object) to be bound.</param>
+        /// <param name="targetComponent">Component(and Object) to be bound.</param>
         /// <param name="valueName">Name of the member to bind to.</param>
+        /// <param name="exportColumnName">Name of the export column.</param>
         public DataGatheringBinding(Component targetComponent, string valueName, string exportColumnName = "")
         {
             _targetObject = targetComponent.gameObject;
             _targetComponent = targetComponent;
-            this.exportColumnName = exportColumnName;
+            ExportColumnName = exportColumnName;
             UpdateMemberList();
             _memberIdx = Array.FindIndex(_prettyMemberNameList, s => s.EndsWith(valueName));
             ValidateBinding();
@@ -200,7 +236,7 @@ namespace ExPresSXR.Experimentation.DataGathering
                     case MemberTypes.Method:
                         MethodInfo methodInfo = (MethodInfo)_targetMemberInfo;
                         // Allow passing a separator to other functions
-                        object[] args = DataGatheringHelpers.GetMethodParameterValues(methodInfo, headerSeparator);
+                        object[] args = DataGatheringHelpers.GetMethodParameterValues(methodInfo, HeaderSeparator);
                         result = methodInfo.Invoke(valueProvider, args);
                         break;
                     case MemberTypes.Field:
@@ -229,13 +265,13 @@ namespace ExPresSXR.Experimentation.DataGathering
             // Clear only if there was a replacement or if a replacement should be added/updated
             if (hadHeaderReplacement || hasHeaderReplacement)
             {
-                exportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
+                ExportColumnName = AttributeHelpers.GetReplacementHeader(_targetMemberInfo, _headerSeparator);
             }
 
             // Print Notice (only if changed)
             if (memberChanged && AttributeHelpers.TryGetAttribute(_targetMemberInfo, out HeaderReplacementNoticeAttribute notice))
             {
-                Debug.LogWarning(notice.notice);
+                Debug.LogWarning(notice.Notice);
             }
         }
 
@@ -282,7 +318,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// Returns a description of the binding, listing all important values.
         /// </summary>
         /// <returns>The description as string.</returns>
-        public string GetBindingDescription() => $"{GetBoundObjectDescription()} will be exported to column '{exportColumnName}'.";
+        public string GetBindingDescription() => $"{GetBoundObjectDescription()} will be exported to column '{ExportColumnName}'.";
 
         /// <summary>
         /// Returns a description of the bound object.
@@ -298,10 +334,10 @@ namespace ExPresSXR.Experimentation.DataGathering
         {
             UpdateInvocationInfo(null);
             _targetObject = null;
-            _memberNameList = new string[0];
-            _prettyMemberNameList = new string[0];
+            _memberNameList = new string[0]; ;
+            _prettyMemberNameList = new string[0]; ;
             _memberIdx = -1;
-            headerSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
+            HeaderSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
         }
 
         /// <summary>

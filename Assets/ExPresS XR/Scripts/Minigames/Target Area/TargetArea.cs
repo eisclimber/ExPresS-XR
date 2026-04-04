@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace ExPresSXR.Minigames.TargetArea
 {
     /// <summary>
-    /// Triggers <seealso cref="TargetArea"> that are set as target and tracks the progress of triggering all targets.
+    /// Triggers a `TargetArea` that are set as target and tracks the progress of triggering all targets.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public class TargetArea : MonoBehaviour
@@ -14,39 +14,49 @@ namespace ExPresSXR.Minigames.TargetArea
         /// If less or equal to zero, infinite actions area assumed.
         /// </summary>
         [SerializeField]
+        [Tooltip("How many times the triggerer must enter and exit for the target to be completed.\n"
+                + "If less or equal to zero, infinite actions area assumed.")]
         private int _actionsToComplete = 1;
 
 
+        private bool _completed;
         /// <summary>
         /// If the number of actions were performed and the target is completed, not registering any more actions.
         /// </summary>
-        private bool _completed;
-        public bool completed
+        public virtual bool Completed
         {
+            protected set => _completed = value;
             get => _completed;
         }
 
         private int _performedActions;
 
+        /// <summary>
+        /// Emitted when an action is performed.
+        /// </summary>
         public UnityEvent OnActionPerformed;
 
+        /// <summary>
+        /// Emitted when the specified amount of actions were performed needed for completion.
+        /// </summary>
         public UnityEvent OnCompleted;
 
         /// <summary>
         /// Adds another action to be performed and handle completion.
         /// </summary>
-        public void QueueAction()
+        /// <returns>Returns if the action was successful.</returns>
+        public virtual bool QueueAction()
         {
-            if (completed)
+            if (_completed)
             {
                 // Do not progress if completed or infinite
-                return;
+                return false;
             }
             else if (_actionsToComplete < 1)
             {
                 // No actions to complete -> assume infinite actions
                 OnActionPerformed.Invoke();
-                return;
+                return true;
             }
 
             _performedActions++;
@@ -58,6 +68,7 @@ namespace ExPresSXR.Minigames.TargetArea
                 _completed = true;
                 OnCompleted.Invoke();
             }
+            return true;
         }
     }
 }

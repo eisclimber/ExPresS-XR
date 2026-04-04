@@ -57,23 +57,23 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4920381749473151255, guid: 93526bd0460f1bb40bcda9dcc9b6db35, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: fdf71cbaf6d05ec44870654f43bd77c6, type: 2}
     - target: {fileID: -3821897388746556401, guid: 93526bd0460f1bb40bcda9dcc9b6db35, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a6439dde91bdda94d80a65833045d96c, type: 2}
     - target: {fileID: -1358796214734762176, guid: 93526bd0460f1bb40bcda9dcc9b6db35, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5847b25ed2f1c904bb676c34a48392e3, type: 2}
     - target: {fileID: -312358580875611574, guid: 93526bd0460f1bb40bcda9dcc9b6db35, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ce3ef97c10006104e9d74525a95e6669, type: 2}
     - target: {fileID: 263761965032173906, guid: 93526bd0460f1bb40bcda9dcc9b6db35, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a6439dde91bdda94d80a65833045d96c, type: 2}
     - target: {fileID: 919132149155446097, guid: 93526bd0460f1bb40bcda9dcc9b6db35, type: 3}
@@ -220,10 +220,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4495229323008473750}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -235,7 +235,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
@@ -259,9 +259,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
   m_DistanceCalculationMode: 1
@@ -320,33 +317,8 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_OnFirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectCanceled:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnActivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnDeactivate:
-    m_PersistentCalls:
-      m_Calls: []
+  m_AutoFindParentInteractableInHierarchy: 0
+  m_ParentInteractableObject: {fileID: 0}
   _valueDescriptor:
     OnMinValue:
       m_PersistentCalls:
@@ -363,16 +335,19 @@ MonoBehaviour:
     _value: 0
     _numSteps: 0
     _enforceSnap: 1
+    _pressed: 0
   _valueVisualizer:
     _minAngle: -60
     _maxAngle: 60
     _pivot: {fileID: 9141266998858524560}
+  _inputDisabled: 0
   _zeroValueOnRelease: 0
   _requireDirectInteraction: 1
-  _snapSound: {fileID: 8300000, guid: b1f01435dfc81d14dbfb312e7c93d441, type: 3}
-  _minValueSound: {fileID: 8300000, guid: e7475df4ca784694cb19b4bbda6a606c, type: 3}
-  _maxValueSound: {fileID: 8300000, guid: 084ec7fe860056c48a146027b78a475a, type: 3}
-  _moveSound: {fileID: 8300000, guid: 76e86595afe757a4ab09b78fbe905231, type: 3}
+  _allowNearFarInteraction: 1
+  _snapSound: {fileID: 0}
+  _minValueSound: {fileID: 0}
+  _maxValueSound: {fileID: 0}
+  _moveSound: {fileID: 0}
   _defaultAudioPlayer: {fileID: 149528300593154600}
   OnMinValue:
     m_PersistentCalls:
@@ -383,10 +358,22 @@ MonoBehaviour:
   OnSnapped:
     m_PersistentCalls:
       m_Calls: []
+  OnValueChangedSingle:
+    m_PersistentCalls:
+      m_Calls: []
   OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  OnValueReset:
+    m_PersistentCalls:
+      m_Calls: []
   OnValueSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnabled:
     m_PersistentCalls:
       m_Calls: []
 --- !u!82 &149528300593154600
@@ -399,7 +386,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e7475df4ca784694cb19b4bbda6a606c, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: e7475df4ca784694cb19b4bbda6a606c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

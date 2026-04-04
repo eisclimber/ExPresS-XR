@@ -4,45 +4,52 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-[RequireComponent(typeof(Collider))]
-public class PlayerDetector : MonoBehaviour
+namespace ExPresSXR.Movement
 {
     /// <summary>
-    /// Event emitted when the player enters.
+    /// Detects the player's CharacterController when entering.
+    /// Be aware that without proper centering of the play area, the CharacterController can be shifted an not at the origin.
     /// </summary>
-    public UnityEvent OnPlayerEntered;
-
-    /// <summary>
-    /// Event emitted when the player exits.
-    /// </summary>
-    public UnityEvent OnPlayerExited;
-
-
-    private void Start()
+    [RequireComponent(typeof(Collider))]
+    public class PlayerDetector : MonoBehaviour
     {
-       if (!TryGetComponent(out Collider col) || !col.isTrigger)
-       {
-            Debug.LogError("Collider was either missing or not configured as trigger.");
-       } 
-    }
+        /// <summary>
+        /// Event emitted when the player enters.
+        /// </summary>
+        public UnityEvent OnPlayerEntered;
+
+        /// <summary>
+        /// Event emitted when the player exits.
+        /// </summary>
+        public UnityEvent OnPlayerExited;
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (isActiveAndEnabled && IsCollisionPlayerCharacterController(other))
+        private void Start()
         {
-            OnPlayerEntered.Invoke();
+            if (!TryGetComponent(out Collider col) || !col.isTrigger)
+            {
+                Debug.LogError("Collider was either missing or not configured as trigger.");
+            }
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (isActiveAndEnabled && IsCollisionPlayerCharacterController(other))
+
+        private void OnTriggerEnter(Collider other)
         {
-            OnPlayerExited.Invoke();
+            if (isActiveAndEnabled && IsCollisionPlayerCharacterController(other))
+            {
+                OnPlayerEntered.Invoke();
+            }
         }
-    }
 
-    private bool IsCollisionPlayerCharacterController(Collider col) 
-                    => col.gameObject.CompareTag("Player") && col.TryGetComponent(out CharacterController _);
+        private void OnTriggerExit(Collider other)
+        {
+            if (isActiveAndEnabled && IsCollisionPlayerCharacterController(other))
+            {
+                OnPlayerExited.Invoke();
+            }
+        }
+
+        private bool IsCollisionPlayerCharacterController(Collider col)
+                        => col.gameObject.CompareTag("Player") && col.TryGetComponent(out CharacterController _);
+    }
 }

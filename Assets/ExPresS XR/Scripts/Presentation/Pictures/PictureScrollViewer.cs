@@ -2,20 +2,24 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using TMPro;
 using ExPresSXR.Misc;
 using System;
 
 namespace ExPresSXR.Presentation.Pictures
 {
+    /// <summary>
+    /// Allows scrolling through a set of pictures interactively.
+    /// </summary>
     public class PictureScrollViewer : MonoBehaviour
     {
-        /// <summary>
-        /// Current picture data currently displayed.
-        /// </summary>
         [SerializeField]
         [Tooltip("Current picture data currently displayed.")]
         private PictureData _pictureData;
+        /// <summary>
+        /// Current picture data currently displayed.
+        /// </summary>
         public PictureData PictureData
         {
             get => _pictureData;
@@ -54,12 +58,12 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
-        /// <summary>
-        /// Mode how (automatic) scrolls behave. Both ConstantDuration and ConstantSpeed scroll smooth while PictureSnap snaps to each picture.
-        /// </summary>
         [SerializeField]
         [Tooltip("Mode how (automatic) scrolls behave. Both ConstantDuration and ConstantSpeed scroll smooth while PictureSnap snaps to each picture.")]
         private ScrollType _scrollBehavior;
+        /// <summary>
+        /// Mode how (automatic) scrolls behave. Both ConstantDuration and ConstantSpeed scroll smooth while PictureSnap snaps to each picture.
+        /// </summary>
         public ScrollType ScrollBehavior
         {
             get => _scrollBehavior;
@@ -71,36 +75,36 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
-        /// <summary>
-        /// Duration in seconds it takes when (auto) scrolling from side to side. _scrollType must be set to ScrollType.ConstantDuration.
-        /// </summary>
         [SerializeField]
         [Tooltip("Duration in seconds it takes when (auto) scrolling from side to side. _scrollType must be set to ScrollType.ConstantDuration.")]
         private float _autoScrollDuration = 10.0f;
+        /// <summary>
+        /// Duration in seconds it takes when (auto) scrolling from side to side. _scrollType must be set to ScrollType.ConstantDuration.
+        /// </summary>
         public float AutoScrollDuration
         {
             get => _autoScrollDuration;
             set => _autoScrollDuration = value;
         }
 
-        /// <summary>
-        /// Speed in pixel per seconds when (auto) scrolling from side to side. _scrollType must be set to ScrollType.ConstantSpeed.
-        /// </summary>
         [SerializeField]
         [Tooltip("Speed in pixel per seconds when (auto) scrolling from side to side. _scrollType must be set to ScrollType.ConstantSpeed.")]
         private float _autoScrollSpeed = 20.0f;
+        /// <summary>
+        /// Speed in pixel per seconds when (auto) scrolling from side to side. _scrollType must be set to ScrollType.ConstantSpeed.
+        /// </summary>
         public float AutoScrollSpeed
         {
             get => _autoScrollSpeed;
             set => _autoScrollSpeed = value;
         }
 
-        /// <summary>
-        /// Duration in seconds a single picture is shown when (auto) scrolling from left to right. _scrollType must be set to ScrollType.PictureSnap.
-        /// </summary>
         [SerializeField]
         [Tooltip("Duration in seconds a single picture is shown when (auto) scrolling from left to right. _scrollType must be set to ScrollType.PictureSnap.")]
         private float _pictureSnapDuration = 3.0f;
+        /// <summary>
+        /// Duration in seconds a single picture is shown when (auto) scrolling from left to right. _scrollType must be set to ScrollType.PictureSnap.
+        /// </summary>
         public float PictureSnapDuration
         {
             get => _pictureSnapDuration;
@@ -115,12 +119,12 @@ namespace ExPresSXR.Presentation.Pictures
         [Tooltip("Text if no picture data is displayed.")]
         private string _noPicturesTitle = "Insert Pictures to Inspect";
 
-        /// <summary>
-        /// If true, enabled will automatically scroll right. If AutoScrollLeft is also enabled, scrolling will be stopped.
-        /// </summary>
         [SerializeField]
         [Tooltip("If true, enabled will automatically scroll right. If AutoScrollLeft is also enabled, scrolling will be stopped.")]
         private bool _autoScrollRight;
+        /// <summary>
+        /// If true, enabled will automatically scroll right. If AutoScrollLeft is also enabled, scrolling will be stopped.
+        /// </summary>
         public bool AutoScrollRight
         {
             get => _autoScrollRight;
@@ -131,12 +135,12 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
-        /// <summary>
-        /// If true, enabled will automatically scroll left. If AutoScrollRight is also enabled, scrolling will be stopped.
-        /// </summary>
         [SerializeField]
         [Tooltip("If true, enabled will automatically scroll left. If AutoScrollRight is also enabled, scrolling will be stopped.")]
         private bool _autoScrollLeft;
+        /// <summary>
+        /// If true, enabled will automatically scroll left. If AutoScrollRight is also enabled, scrolling will be stopped.
+        /// </summary>
         public bool AutoScrollLeft
         {
             get => _autoScrollLeft;
@@ -203,39 +207,73 @@ namespace ExPresSXR.Presentation.Pictures
         private float _scrollValue;
 
 
-        // Events
+        /// <summary>
+        /// Emitted when the picture data changes.
+        /// </summary>
         public UnityEvent OnPictureDataChanged;
+        /// <summary>
+        /// Emitted when the picture data was changed to a not-null value.
+        /// </summary>
         public UnityEvent OnPictureDataAdded;
+        /// <summary>
+        /// Emitted when the picture data was changed to null.
+        /// </summary>
         public UnityEvent OnPictureDataRemoved;
 
-        // Parameters: autoScrollLeft, autoScrollRight
+        /// <summary>
+        /// Emitted when auto scrolling was activated, providing the values for scrolling left and right respectively.
+        /// </summary>
         public UnityEvent<bool, bool> OnAutoScrollActive;
+        /// <summary>
+        /// Emitted when auto scrolling was deactivated.
+        /// </summary>
         public UnityEvent OnAutoScrollInactive;
 
-        // Scroll
+        /// <summary>
+        /// Emitted when the scrolling reached the start.
+        /// </summary>
         public UnityEvent OnPicturesStartReached;
-        public UnityEvent OnPicturesMidReached; // One of the pictures/segments in between
+        /// <summary>
+        /// Emitted when scrolling to a midpoint (not start or end).
+        /// </summary>
+        public UnityEvent OnPicturesMidReached;
+        /// <summary>
+        /// Emitted when the scrolling reached the end.
+        /// </summary>
         public UnityEvent OnPicturesEndReached;
 
-
+        /// <summary>
+        /// Emitted when snapping to a picture. Requires `ScrollType` set to `PictureSnap`.
+        /// </summary>
         public UnityEvent OnPictureSnapped;
 
-
+        /// <summary>
+        /// The viewer hold any picture data.
+        /// </summary>
         public bool HasPictureData
         {
             get => _pictureData != null;
         }
 
+        /// <summary>
+        /// Number of pictures in the current picture data. Zero if no picture data exists.
+        /// </summary>
         public int NumPictures
         {
             get => HasPictureData ? _pictureData.NumPictures : 0;
         }
 
+        /// <summary>
+        /// A list of the sprites displaying the pictures. An empty array if no picture data exists.
+        /// </summary>
         public Sprite[] Pictures
         {
             get => HasPictureData ? _pictureData.Pictures : default;
         }
 
+        /// <summary>
+        /// Calculated width of the displayed images. Zero if no picture data exists.
+        /// </summary>
         public float ContentWidth
         {
             get => _picturesContainer != null ? _picturesContainer.rect.width : 0.0f;
@@ -338,7 +376,7 @@ namespace ExPresSXR.Presentation.Pictures
             // set description
             if (HasPictureData)
             {
-                int rawDescriptionIdx =  (int) (nextSnappedValue * NumPictures);
+                int rawDescriptionIdx = (int)(nextSnappedValue * NumPictures);
                 int descriptionIdx = Math.Clamp(rawDescriptionIdx, 0, NumPictures - 1);
                 _infoTextDisplay.text = _pictureData.Descriptions[descriptionIdx];
             }
@@ -458,7 +496,6 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
-
         private void SetSliderIsGrabbed(SelectEnterEventArgs args) => _sliderGrabbed = true;
 
         private void SetSliderIsReleased(SelectExitEventArgs args) => _sliderGrabbed = false;
@@ -477,7 +514,7 @@ namespace ExPresSXR.Presentation.Pictures
         {
             if (args.interactableObject.transform.TryGetComponent(out PictureDataProvider dataProvider))
             {
-                PictureData = dataProvider.data;
+                PictureData = dataProvider.Data;
             }
             else
             {
@@ -496,16 +533,25 @@ namespace ExPresSXR.Presentation.Pictures
             }
         }
 
+        /// <summary>
+        /// Internally use to update the picture data in the editor.
+        /// </summary>
         public void InternalUpdatePictureData()
         {
             PictureData = PictureData;
         }
     }
 
+    /// <summary>
+    /// How automatic scrolling is performed.
+    /// </summary>
     public enum ScrollType
     {
+         /// <summary> Scroll through the images in a constant duration picture data with different lengths. </summary>
         ConstantDuration,
+        /// <summary> Scroll through the images with a constant speed. </summary>
         ConstantSpeed,
+        /// <summary> Snap between pictures displaying them a certain duration. </summary>
         PictureSnap
     }
 }

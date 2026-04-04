@@ -1,17 +1,11 @@
-/*
-    Script Name: ElevationChanger.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: This script represents one side of a scale, changing it's position as a delegate of a scale.
-*/
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
 
     /// <summary>
+    /// This script represents one side of a scale, changing it's position as a delegate of a scale.
+    /// 
     /// Make sure to add a Rigidbody (as a child) and lock it's movement/rotation.
     /// This guarantees that objects are pushed correctly.
     /// (See the "Push Bases" of the Scale for reference).
@@ -80,13 +74,13 @@ namespace ExPresSXR.Minigames.CoinScale
         /// <param name="state">Desired state.</param>
         public void Activate(ScaleState state)
         {
-            if (_bowl.side == Bowl.ScaleSide.Left)
+            if (_bowl.Side == Bowl.ScaleSide.Left)
             {
-                StartTransition(state.leftBowlPosition);
+                StartTransition(state.LeftBowlPosition);
             }
             else
             {
-                StartTransition(state.rightBowlPosition);
+                StartTransition(state.RightBowlPosition);
             }
             
         }

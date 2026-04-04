@@ -1,14 +1,13 @@
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Video;
 using ExPresSXR.Experimentation.DataGathering;
 using System.Linq;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
-
+    /// <summary>
+    /// Helper class for the button quiz.
+    /// </summary>
     public class QuizUtility : MonoBehaviour
     {
         /// <summary>
@@ -52,17 +51,17 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <returns>Number of answers for the question.</returns>
         public static int GetNumAnswersForQuestion(ButtonQuizConfig config, ButtonQuizQuestion question)
         {
-            if (config.answersAmount != AnswersAmount.DifferingAmounts)
+            if (config.AnswersAmount != AnswersAmount.DifferingAmounts)
             {
-                return (int)config.answersAmount + 1;
+                return (int)config.AnswersAmount + 1;
             }
 
             int numAnswers = 0;
             for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
             {
                 // First empty question should be last as non-empty questions are prohibited
-                if (question.answerObjects.Length >= i && question.answerObjects[i] == null
-                        && question.answerTexts.Length >= i && string.IsNullOrEmpty(question.answerTexts[i]))
+                if (question.AnswerObjects.Length >= i && question.AnswerObjects[i] == null
+                        && question.AnswerTexts.Length >= i && string.IsNullOrEmpty(question.AnswerTexts[i]))
                 {
                     return numAnswers;
                 }
@@ -83,7 +82,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             int length = GetNumAnswersForQuestion(config, question);
             int[] array = GenerateIdentityArray(length);
 
-            if (config.answerOrdering == AnswerOrdering.Randomize)
+            if (config.AnswerOrdering == AnswerOrdering.Randomize)
             {
                 array = Shuffle(array);
             }
@@ -99,7 +98,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
 
         /// <summary>
         /// Permutes an array using the given permutation as indices. Both arrays must be of same length.
-        /// Entries in the permutation array < 0 will be ignored and no entries will be added. 
+        /// Entries in the permutation array less 0 will be ignored and no entries will be added. 
         /// </summary>
         /// <typeparam name="T">Type of the permuted array.</typeparam>
         /// <param name="array">Array to be permuted.</param>
@@ -164,7 +163,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <param name="buttons">Quiz Buttons to be converted</param>
         /// <returns>Boolean array</returns>
-        public static bool[] ExtractButtonPressStates(QuizButton[] buttons) => buttons.Select(b => b != null && b.pressed).ToArray();
+        public static bool[] ExtractButtonPressStates(QuizButton[] buttons) => buttons.Select(b => b != null && b.Pressed).ToArray();
 
 
         /// <summary>
@@ -187,7 +186,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// Can be used to check if a question was answered completely right or wrong.
         /// </summary>
         /// <param name="a">first array to check</param>
-        /// <param name="a">second array to check</param>
+        /// <param name="b">second array to check</param>
         /// <returns>if all value pairs matched</returns>
         public static bool ArrayMatch(bool[] a, bool[] b) => Enumerable.SequenceEqual(a, b);
 
@@ -198,6 +197,6 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// </summary>
         /// <param name="buttons">Buttons for which the trigger time should be extracted.</param>
         /// <returns>Longest Trigger time of the pressed buttons</returns>
-        public static float SelectedButtonMaxTriggerTime(QuizButton[] buttons) => buttons.Max(b => b != null && b.pressed ? b.GetTriggerTimerValue() : -1.0f);
+        public static float SelectedButtonMaxTriggerTime(QuizButton[] buttons) => buttons.Max(b => b != null && b.Pressed ? b.GetTriggerTimerValue() : -1.0f);
     }
 }

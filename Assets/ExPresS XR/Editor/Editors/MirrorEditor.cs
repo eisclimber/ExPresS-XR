@@ -8,14 +8,14 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class MirrorEditor : UnityEditor.Editor
     {
-        protected Mirror mirror;
+        protected Mirror _mirror;
 
         protected static bool _showEvents = false;
         protected static bool _showObjectRefs = false;
 
         protected virtual void OnEnable()
         {
-            mirror = (Mirror)target;
+            _mirror = (Mirror)target;
         }
 
         public override void OnInspectorGUI()
@@ -61,7 +61,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_provideCustomRenderTexture"), true);
 
-                if (!mirror.provideCustomRenderTexture)
+                if (!_mirror.ProvideCustomRenderTexture)
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_pixelRatio"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_resolutionPct"), true);
@@ -83,7 +83,7 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_overlayTexture"), true);
-                if (mirror.overlayTexture)
+                if (_mirror.OverlayTexture)
                 {
                     EditorGUI.indentLevel++;
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("_overlayStrength"), true);
@@ -113,8 +113,8 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUILayout.LabelField("Handle these with care! Thank you:)");
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_mirrorCamera"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_mirrorPlane"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("__mirrorCamera"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("__mirrorPlane"), true);
 
             EditorGUI.indentLevel--;
         }

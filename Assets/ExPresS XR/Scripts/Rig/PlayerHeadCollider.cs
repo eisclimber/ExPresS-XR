@@ -1,43 +1,67 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using ExPresSXR.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
-// Thanks to metaanomie for basic code (https://metaanomie.blogspot.com/2020/04/unity-vr-head-blocking-steam-vr-v2.html)
-// Attach this to the 'Main Camera' of an XROrigin and assign an anchor (e.g. the XROrigin's CameraOffset) 
-// to prevent the camera clipping through walls
-
+// Thanks to metaanomie for the basic implementation: https://metaanomie.blogspot.com/2020/04/unity-vr-head-blocking-steam-vr-v2.html
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// Detects collisions of an `ExPresS XR Rig`s camera.
+    /// It can optionally push the rig back to prevent clipping inside objects (this may be weird though) and/or display vignette effect of an `ScreenCollisionIndicator` when collisions occur.
+    /// </summary>
     public class PlayerHeadCollider : MonoBehaviour
     {
         private const float GRAVITY_STRENGTH = 9.81f;
 
-
+        /// <summary>
+        /// If true the players camera will be pushed back.
+        /// </summary>
         [Tooltip("If true the players camera will be pushed back.")]
-        public bool collisionPushbackEnabled;
+        public bool CollisionPushbackEnabled;
 
         [Tooltip("If true the players cameras corner will be faded.")]
         [SerializeField]
         private bool _showCollisionVignetteEffect;
-        public bool showCollisionVignetteEffect
+        /// <summary>
+        /// If true the players cameras corner will be faded.
+        /// </summary>
+        public bool ShowCollisionVignetteEffect
         {
             get => _showCollisionVignetteEffect;
             set => _showCollisionVignetteEffect = value;
         }
 
-        public ScreenCollisionIndicator screenCollisionIndicator;
+        [SerializeField]
+        [Tooltip("Screen collision indicator used to indicate collisions.")]
+        private ScreenCollisionIndicator _screenCollisionIndicator;
+        /// <summary>
+        /// Screen collision indicator used to indicate collisions.
+        /// </summary>
+        public ScreenCollisionIndicator ScreenCollisionIndicator
+        {
+            get => _screenCollisionIndicator;
+            set => _screenCollisionIndicator = value;
+        }
 
         [Tooltip("The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height. Usually should be set to the ExPresSXRRig or XROrigin.")]
         [SerializeField]
         private Transform _pushbackAnchor;
-        public Transform pushbackAnchor {
+        /// <summary>
+        /// The anchor that is moved when collisions occur. Should have a CharacterController-Component to read the player's height.
+        /// Usually should be set to the ExPresSXRRig or XROrigin.
+        /// </summary>
+        public Transform PushbackAnchor {
             get => _pushbackAnchor; 
             set => _pushbackAnchor = value;
         }
 
+        /// <summary>
+        /// Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.
+        /// </summary>
         [Tooltip("Determines how close the camera can get to a wall/object. Smaller values may allow looking through Objects at the edge of the view.")]
         [SerializeField]
         private float _colliderSize = 0.25f;
@@ -45,21 +69,32 @@ namespace ExPresSXR.Rig
         [Tooltip("The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s")]
         [SerializeField]
         private float _maxFadeDuration = 0.5f;
-        public float maxFadeDuration { 
+        /// <summary>
+        /// The duration till the screen fade reaches it's max occlusion in seconds. Should be greater than 0 to prevent visual bugs. Default: 0.5s
+        /// </summary>
+        public float MaxFadeDuration { 
             get => _maxFadeDuration; 
             set => _maxFadeDuration = value;
         }
 
+        /// <summary>
+        /// Physics Layers used to detect collisions.
+        /// </summary>
         [Tooltip("Physics Layers used to detect collisions.")]
         [SerializeField]
         private LayerMask _layerMask = 1; // Layer: Default
 
+
+        /// <summary>
+        /// Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.
+        /// </summary>
         [Space]
-
-
         [Tooltip("Will be invoked once when the first collision with a wall occurs. Gets reset when no collision is detected anymore.")]
         public UnityEvent OnCollisionStarted;
 
+        /// <summary>
+        /// Will be invoked once when a collision with wall ends.
+        /// </summary>
         [Tooltip("Will be invoked once when a collision with wall ends.")]
         public UnityEvent OnCollisionEnded;
 
@@ -69,7 +104,7 @@ namespace ExPresSXR.Rig
         private Coroutine _cooldownCoroutine;
         private CharacterController _playerController;
 
-        private Vector3 momentaryGravity 
+        private Vector3 MomentaryGravity 
         {
             get => new(0.0f, -GRAVITY_STRENGTH * Time.deltaTime, 0.0f);
         }
@@ -79,13 +114,13 @@ namespace ExPresSXR.Rig
         {
             if (_pushbackAnchor == null)
             {
-                Debug.LogError("No GameObject was set as pushback anchor!");
+                Debug.LogError("No GameObject was set as pushback anchor!", this);
             }
             else
             {
                 if (!_pushbackAnchor.TryGetComponent(out _playerController))
                 {
-                    Debug.LogWarning("The _pushbackAnchor has no CharacterController-Component. Collision pushback won't work!");
+                    Debug.LogWarning("The _pushbackAnchor has no CharacterController-Component. Collision pushback won't work!", this);
                 }
             }
             
@@ -118,21 +153,21 @@ namespace ExPresSXR.Rig
 
         private void ConnectScreenCollisionIndicator()
         {
-            if (screenCollisionIndicator != null)
+            if (_screenCollisionIndicator != null)
             {
                 OnCollisionStarted.AddListener(() =>
                 {
-                    if (showCollisionVignetteEffect)
+                    if (ShowCollisionVignetteEffect)
                     {
-                        screenCollisionIndicator.FadeIn(_maxFadeDuration);
+                        _screenCollisionIndicator.FadeIn(_maxFadeDuration);
                     }
                 });
 
                 OnCollisionEnded.AddListener(() =>
                 {
-                    if (showCollisionVignetteEffect)
+                    if (ShowCollisionVignetteEffect)
                     {
-                        screenCollisionIndicator.FadeOut(_maxFadeDuration);
+                        _screenCollisionIndicator.FadeOut(_maxFadeDuration);
                     }
                 });
             }
@@ -165,12 +200,6 @@ namespace ExPresSXR.Rig
                 _colliding = false;
                 OnCollisionEnded.Invoke();
             }
-
-            // if (_playerController != null && collisionPushbackEnabled)
-            // {
-            //     // Apply gravity nonetheless
-            //     _playerController.Move(momentaryGravity);
-            // }
         }
 
 
@@ -191,10 +220,10 @@ namespace ExPresSXR.Rig
                 headDiff.y = headDiff.y > 0 ? _colliderSize : -_colliderSize;
             }
 
-            if (_playerController != null && collisionPushbackEnabled)
+            if (_playerController != null && CollisionPushbackEnabled)
             {
                 // Apply head difference and momentary gravity
-                _playerController.Move(-headDiff + momentaryGravity);
+                _playerController.Move(MomentaryGravity - headDiff);
             }
 
             // Collision Started
@@ -210,12 +239,14 @@ namespace ExPresSXR.Rig
         private bool IsColliderHeldByPlayer(Collider collider)
         {
             // The collider must exist and be part of a Rigidbody attached (required by interactable)
-            // The interactable must exist, be selected and held primarily be the player
-            return collider != null 
+            // The interactable must exist, selected and by the player by checking the tag or if it is a NearFarInteractor.
+            // The latter is needed as there seems to be a bug that the tag is incorrect, despite setting it to "Player".
+            return collider != null
                 && collider.attachedRigidbody != null
                 && collider.attachedRigidbody.TryGetComponent(out XRGrabInteractable interactable)
                 && interactable.isSelected
-                && interactable.firstInteractorSelecting.transform.CompareTag("Player");
+                && (interactable.firstInteractorSelecting is NearFarInteractor
+                    || interactable.firstInteractorSelecting.transform.CompareTag("Player"));
         }
 
         private IEnumerator CollisionCooldown()

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery.ObjectPool
 {
+    /// <summary>
+    /// Returns the attached GameObject to the configured (or default) pool.
+    /// </summary>
     public class PoolObjectDestroyTimer : MonoBehaviour
     {
         /// <summary>
@@ -26,6 +29,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
             if (_destroyCoroutine != null)
             {
                 StopCoroutine(_destroyCoroutine);
+                _destroyCoroutine = null;
             }
 
             if (_objectPoolManager == null)
@@ -41,6 +45,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
             if (_destroyCoroutine != null)
             {
                 StopCoroutine(_destroyCoroutine);
+                _destroyCoroutine = null;
             }
         }
 
@@ -54,6 +59,7 @@ namespace ExPresSXR.Minigames.Archery.ObjectPool
             }
 
             _objectPoolManager.ReturnToPool(gameObject);
+            _destroyCoroutine = null;
         }
     }
 }

@@ -3,8 +3,9 @@ using UnityEngine;
 namespace ExPresSXR.Minigames.Excavation
 {
     /// <summary>
-    /// Represents a utility to work with individual RGBA color channels.
-    /// All values work are normalize (i.e. in the range of 0.0f to 1.0f).
+    /// A component that allows drawing on an excavation area.  
+    /// This is done by casting a raycast in the local *up* direction of this component.
+    /// If it hits an excavation area, it will automatically draw on it with a strength relative to the distance.
     /// </summary>
     public static class ColorChannel
     {
@@ -48,9 +49,13 @@ namespace ExPresSXR.Minigames.Excavation
         /// </summary>
         public enum Channels
         {
+            /// <summary> Red channel. </summary>
             R,
+            /// <summary> Green channel. </summary>
             G,
+            /// <summary> Blue channel. </summary>
             B,
+            /// <summary> Alpha channel. </summary>
             A
         }
     }

@@ -10,10 +10,10 @@ namespace ExPresSXR.Editor.SetupDialogs
         {
             // Get existing open window or if none, make a new one:
             EditorWindow window = GetWindow<SetupDialogRoomCreation>("Room Creation");
-            window.minSize = defaultWindowSize;
+            window.minSize = DefaultWindowSize;
         }
 
-        public override string uxmlName
+        public override string UxmlName
         {
             get => "Assets/ExPresS XR/Editor/Setup Dialogs/Room Creation Tutorial/room-creation.uxml";
         }
@@ -24,7 +24,7 @@ namespace ExPresSXR.Editor.SetupDialogs
 
         protected override void AssignStepContainersRefs()
         {
-            step2Container = contentContainer.Q<VisualElement>("step-2-room-creation");
+            step2Container = ContentContainer.Q<VisualElement>("step-2-room-creation");
         }
 
 

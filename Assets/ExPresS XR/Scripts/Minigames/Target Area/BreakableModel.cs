@@ -4,6 +4,14 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.TargetArea
 {
+    /// <summary>
+    /// Allows the visual destruction of an object by showing different models and/or using a material to change it's appearance.  
+    /// This system can be used for tearing down wall to reveal something or sculpting something from stone.  
+    /// Bear in mind that this is not about being physically accurate but rather about to revealing different versions of a model,
+    /// allowing you to break the model. This however requires you to make the model though.  
+    /// 
+    /// As a an example shader for breaking" the texture you can use the "Breakable Stone Shader" in ExPresS XR's shader folder.
+    /// </summary>
     public class BreakableModel : MonoBehaviour
     {
         /// <summary>
@@ -11,22 +19,25 @@ namespace ExPresSXR.Minigames.TargetArea
         /// </summary>
         private const string DEFAULT_SHADER_VARIABLE_NAME = "_DamagePct";
 
-        /// <summary>
-        /// Maximum possible damage. Make sure that the value can be reached with the your setup of TargetAreas.
-        /// </summary>
         [SerializeField]
         [Tooltip("Maximum possible damage.")]
         private int _maxDamage = 3;
+        /// <summary>
+        /// Maximum possible damage. Make sure that the value can be reached with the your setup of TargetAreas.
+        /// </summary>
         public int MaxDamage
         {
             get => _maxDamage;
             set => _maxDamage = value;
         }
 
-        [ReadonlyInInspector]
         [SerializeField]
         [Tooltip("Current damage.")]
+        [ReadonlyInInspector]
         private int _currentDamage;
+        /// <summary>
+        /// Current damage.
+        /// </summary>
         public int CurrentDamage
         {
             get => _currentDamage;
@@ -115,6 +126,13 @@ namespace ExPresSXR.Minigames.TargetArea
         /// </summary>
         public UnityEvent<int> OnDamage;
 
+        /// <inheritdoc />
+        protected void Start()
+        {
+            // Reset the damage in case it got altered in the editor.
+            _currentDamage = 0;
+        }
+
         /// <summary>
         /// Increases the damage by one.
         /// </summary>
@@ -128,8 +146,15 @@ namespace ExPresSXR.Minigames.TargetArea
         public void DecreaseDamage() => CurrentDamage--;
 
         /// <summary>
+        /// Resets the damage.
+        /// </summary>
+        [ContextMenu("Reset Damage")]
+        public void ResetDamage() => CurrentDamage = 0;
+
+        /// <summary>
         /// Disables the visuals of all models after a given period of time.
         /// </summary>
+        /// <param name="delay">Delay for disabling the visuals.</param>
         public void DisableModelVisualsDelayed(float delay) => Invoke(nameof(DisableVisuals), delay);
 
         /// <summary>

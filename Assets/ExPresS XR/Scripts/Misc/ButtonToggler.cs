@@ -1,15 +1,23 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows toggling the state of a ui button for supporting on the fly toggleMode.
+    /// </summary>
     [RequireComponent(typeof(Button))]
     public class ButtonToggler : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("If the button should be considered pressed (toggledDown) or not (toggledUp).")]
         private bool _pressed = false;
-        public bool pressed
+        /// <summary>
+        /// If the button should be considered pressed (toggledDown) or not (toggledUp).
+        /// </summary>
+        public bool Pressed
         {
             get => _pressed;
             set
@@ -19,15 +27,31 @@ namespace ExPresSXR.Misc
                 if (btn != null)
                 {
                     ColorBlock colors = btn.colors;
-                    colors.normalColor = pressed ? pressedColor : normalColor;
-                    colors.selectedColor = pressed ? pressedColor : normalColor;
+                    colors.normalColor = Pressed ? pressedColor : normalColor;
+                    colors.selectedColor = Pressed ? pressedColor : normalColor;
                     btn.colors = colors;
                 }
             }
         }
 
-        [Space]
+        [SerializeField]
+        [Tooltip("If enabled, will attempt to connect to the 'onClick' event of the button. Do not call ToggleButton in this case!")]
+        private bool _connectToClick = false;
+        /// <summary>
+        /// If enabled, will attempt to connect to the 'onClick' event of the button. Do not call ToggleButton in this case!
+        /// </summary>
+        public bool ConnectToClick
+        {
+            get => _connectToClick;
+            set => _connectToClick = value;
+        }
 
+
+
+        /// <summary>
+        /// Emitted when the toggle state changes, providing the toggle pressed state.
+        /// </summary>
+        [Space]
         public ToggledChangedEvent OnToggleChanged;
 
 
@@ -41,28 +65,46 @@ namespace ExPresSXR.Misc
             btn = gameObject.GetComponent<Button>();
             normalColor = btn.colors.normalColor;
             pressedColor = btn.colors.pressedColor;
-            btn.onClick.AddListener(ToggleButton);
+
+            if (_connectToClick)
+            {
+                btn.onClick.AddListener(ToggleButton);
+            }
         }
 
         private void OnDisable()
         {
-            btn.onClick.RemoveListener(ToggleButton);
+            if (_connectToClick)
+            {
+                btn.onClick.RemoveListener(ToggleButton);
+            }
         }
 
-        private void ToggleButton()
+        /// <summary>
+        /// Toggles the buttons pressed state. Fails if `_connectToClick` is disabled, to prevent multiple toggles.
+        /// </summary>
+        public void ToggleButton()
         {
-            pressed = !pressed;
+            if (_connectToClick)
+            {
+                Debug.LogWarning("Calling Toggle Button if `_connectToClick` is true, is not allowed!");
+                return;
+            }
 
-            OnToggleChanged.Invoke(pressed);
+            Pressed = !_pressed;
+
+            OnToggleChanged.Invoke(_pressed);
         }
 
         private void OnValidate()
         {
-            pressed = _pressed;
+            Pressed = _pressed;
         }
     }
 
-    // Make the toggle changed event serializable again 
-    [System.Serializable]
+    /// <summary>
+    /// Wrapper class for a bool event emitted when the toggle state changes.
+    /// </summary>
+    [Serializable]
     public class ToggledChangedEvent : UnityEvent<bool> { }
 }

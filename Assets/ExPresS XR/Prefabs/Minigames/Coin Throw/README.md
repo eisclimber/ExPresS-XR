@@ -10,3 +10,11 @@ Your goal is simple: Try to hit the moving bowls on the ground with the denarius
 To start stand between the pillars and press the start button.
 
 P.S: Feel free to practice throwing the coin first.
+
+## Setup
+
+- Create an interactable with a CoinReset-Compoent. This will reset the coins position to the initial position once hitting the target.
+- Create a CoinResetArea to the floor (and all other areas you might need it) to reset the coins when missing the targets.
+- Create targets with a Collision and ThrowTarget-Component.
+- For moving targets, add a PingPongLinearTween. It will move back and forward from the start position with the provided delta, speed and repetitions.
+- To start, enable detectHits for the targets, start the tweens and allow interaction with the interactable (optional).

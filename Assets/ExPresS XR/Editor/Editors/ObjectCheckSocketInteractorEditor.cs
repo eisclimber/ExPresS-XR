@@ -1,6 +1,5 @@
 using UnityEditor;
-using ExPresSXR.Interaction;
-
+using ExPresSXR.Interaction.Interactors;
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -27,7 +26,7 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.LabelField("Target Object", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("targetObject"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_targetObject"), true);
             EditorGUI.indentLevel--;
         }
     }

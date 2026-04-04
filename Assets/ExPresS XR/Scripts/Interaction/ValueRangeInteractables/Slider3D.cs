@@ -2,6 +2,8 @@ using System;
 using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
@@ -58,7 +60,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         private Vector3 _grabOffset;
 
         /// <inheritdoc />
-        public override Vector3 GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public override Vector3 GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             // Put anchor position into slider space
             Vector3 localPosition = GetInteractorLocalPosition(interactable, interactor) - _grabOffset;
@@ -71,7 +73,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(Vector3 value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(Vector3 value, IXRInteractable interactable)
         {
             if (_handle == null)
             {
@@ -91,7 +93,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         /// <param name="interactable">Interactable selected.</param>
         /// <param name="interactor">Interactor selecting.</param>
-        public void SetHandleGrabOffsetWithInteraction(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public void SetHandleGrabOffsetWithInteraction(IXRInteractable interactable, IXRInteractor interactor)
         {
             _grabOffset = _useHandleGrabOffset ? GetInteractorLocalPosition(interactable, interactor) - _handle.localPosition : Vector3.zero;
         }
@@ -131,6 +133,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
             Gizmos.matrix = atTransform.localToWorldMatrix;
             Gizmos.DrawWireCube(Vector3.zero, _maxPosition - _minPosition);
+
+            GizmoUtils.DrawLabel("(0,0,0)", _minPosition, atTransform);
+            GizmoUtils.DrawLabel("(1,1,1)", _maxPosition, atTransform);
         }
     }
 }

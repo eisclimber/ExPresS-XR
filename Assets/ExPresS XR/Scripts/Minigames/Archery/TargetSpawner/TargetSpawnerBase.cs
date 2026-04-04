@@ -8,6 +8,9 @@ using UnityEngine;
 /// </summary>
 namespace ExPresSXR.Minigames.Archery.TargetSpawner
 {
+    /// <summary>
+    /// Abstract class representing a spawner for the archery game logic providing an interface for spawning and passing the ScoreManagers to the spawned targets.
+    /// </summary>
     public abstract class TargetSpawnerBase : MonoBehaviour
     {
         /// <summary>

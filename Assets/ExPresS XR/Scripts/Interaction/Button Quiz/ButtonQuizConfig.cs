@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
+    /// <summary>
+    /// Holds the config of a quiz to allow serialization.
+    /// It contains basic information about the type and the question in for of an array of `QuizQuestions`.
+    /// </summary>
     [Serializable]
     // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizConfig, Assembly-CSharp
     public class ButtonQuizConfig : ScriptableObject
@@ -24,59 +28,59 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <summary>
         /// The mode of the quiz. Either SingleChoice or MultipleChoice.
         /// </summary>
-        public QuizMode quizMode = QuizMode.SingleChoice;
+        public QuizMode QuizMode = QuizMode.SingleChoice;
         /// <summary>
         /// The ordering of the questions. Either Ordered (order of in `questions`) or Randomize.
         /// </summary>
-        public QuestionOrdering questionOrdering = QuestionOrdering.Randomize;
+        public QuestionOrdering QuestionOrdering = QuestionOrdering.Randomize;
         /// <summary>
         /// Number of answer (and required buttons). Either One, Two, Three, Four or Differing.
         /// </summary>
-        public AnswersAmount answersAmount = AnswersAmount.Two;
+        public AnswersAmount AnswersAmount = AnswersAmount.Two;
         /// <summary>
         /// The type of questions (what is displayed). Either Object, Text, Video or DifferingTypes (any of the first three).
         /// </summary>
-        public AnswerOrdering answerOrdering = AnswerOrdering.Randomize;
+        public AnswerOrdering AnswerOrdering = AnswerOrdering.Randomize;
         /// <summary>
         /// The type of questions (what is displayed). Either Object, Text, Video or DifferingTypes (any of the first three).
         /// </summary>
-        public QuestionType questionType = QuestionType.Text;
+        public QuestionType QuestionType = QuestionType.Text;
         /// <summary>
         ///  The type of answers (what is displayed *on* the buttons). Either Object, Text or DifferingTypes (any of the first two).
         /// </summary>
-        public AnswerType answerType = AnswerType.Text;
+        public AnswerType AnswerType = AnswerType.Text;
         /// <summary>
         /// The type of feedback (what is displayed). Either ShowAnswers, Object, Text, Video or DifferingTypes (any of the first three).
         /// </summary>
-        public FeedbackMode feedbackMode = FeedbackMode.AlwaysCorrect;
+        public FeedbackMode FeedbackMode = FeedbackMode.AlwaysCorrect;
         /// <summary>
         /// What feedback (correct or incorrect) is shown. Either None, Always Right, Always Wrong or Random.
         /// </summary>
-        public FeedbackType feedbackType = FeedbackType.ShowAnswers;
+        public FeedbackType FeedbackType = FeedbackType.ShowAnswers;
 
-       /// <summary>
-       /// If enabled, will add the `feedbackPrefixText` (plus a '\n') to every feedback.
-       /// </summary>
-        public bool feedbackPrefixEnabled = false;
+        /// <summary>
+        /// If enabled, will add the `feedbackPrefixText` (plus a '\n') to every feedback.
+        /// </summary>
+        public bool FeedbackPrefixEnabled = false;
         /// <summary>
         /// The prefix added to every feedback if `feedbackPrefixEnabled` is enabled.
         /// </summary>
-        public string feedbackPrefixText = DEFAULT_FEEDBACK_PREFIX;
+        public string FeedbackPrefixText = DEFAULT_FEEDBACK_PREFIX;
 
         /// <summary>
         /// The exact prefix added to every question (including a new line).
         /// Returns an empty string if no prefix should be added.
         /// </summary>
-        public string usedFeedbackPrefix
+        public string UsedFeedbackPrefix
         {
-            get => feedbackPrefixEnabled ? feedbackPrefixText + "\n" : "";
+            get => FeedbackPrefixEnabled ? FeedbackPrefixText + "\n" : "";
         }
 
         /// <summary>
         /// The questions that need to be answered to complete the quiz.  
         /// If `questionOrdering` is set to `Ordered`, the questions are displayed in the order of the array.
         /// </summary>
-        public ButtonQuizQuestion[] questions = new ButtonQuizQuestion[0];
+        public ButtonQuizQuestion[] Questions = new ButtonQuizQuestion[0];
 
 
         /// <summary>
@@ -85,7 +89,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <returns>A csv string of the configs values.</returns>
         [MultiColumnValue]
-        [HeaderReplacement("quizMode", "questionOrdering", "answersAmount", "answersOrdering", 
+        [HeaderReplacement("quizMode", "questionOrdering", "answersAmount", "answersOrdering",
                             "questionType", "answerType", "feedbackMode", "feedbackType")]
         public string GetConfigCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
             => CsvUtility.JoinAsCsv(GetConfigCsvExportValuesList(), sep);
@@ -96,13 +100,13 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <returns>A multi-line csv string of the export data of all questions.</returns>
         [MultiColumnValue]
-        [HeaderReplacement("questionIdx", "questionVideo", "questionObject", "questionText", "answerObject0", "answerObject1", 
+        [HeaderReplacement("questionIdx", "questionVideo", "questionObject", "questionText", "answerObject0", "answerObject1",
                             "answerObject2", "answerObject3", "answerText0", "answerText1", "answerText2", "answerText3",
                             "correctAnswers0", "correctAnswers1", "correctAnswers2", "correctAnswers3", "feedbackVideo",
                             "feedbackObject", "feedbackText")]
         public string GetAllQuestionsCsvExportValues(char sep = CsvUtility.DEFAULT_COLUMN_SEPARATOR)
         {
-            string[] questionExports = questions.Select(q => q.GetQuestionCsvExportValues(sep)).ToArray();
+            string[] questionExports = Questions.Select(q => q.GetQuestionCsvExportValues(sep)).ToArray();
             return string.Join("\n", questionExports);
         }
 
@@ -113,14 +117,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public List<object> GetConfigCsvExportValuesList()
             => new()
                 {
-                    quizMode,
-                    questionOrdering,
-                    answersAmount,
-                    answerOrdering,
-                    questionType,
-                    answerType,
-                    feedbackMode,
-                    feedbackType
+                    QuizMode,
+                    QuestionOrdering,
+                    AnswersAmount,
+                    AnswerOrdering,
+                    QuestionType,
+                    AnswerType,
+                    FeedbackMode,
+                    FeedbackType
                 };
 
 
@@ -159,71 +163,113 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 };
     }
 
-
+    /// <summary>
+    /// The mode of the quiz. Either SingleChoice or MultipleChoice.
+    /// </summary>
     public enum QuizMode
     {
-        // ExPresSXR.Interaction.ButtonQuiz.QuizMode, Assembly-CSharp
+        /// <summary>Only one answer is correct.</summary>
         SingleChoice,
+        /// <summary>Multiple answers can be correct.</summary>
         MultipleChoice
     }
 
+    /// <summary>
+    /// The ordering of the questions. Either Ordered (order of in `questions`) or Randomize.
+    /// </summary>
     public enum QuestionOrdering
     {
-        // ExPresSXR.Interaction.ButtonQuiz.QuestionOrdering, Assembly-CSharp
+        /// <summary>Questions are asked in the order they are defined.</summary>
         Ordered,
+        /// <summary>Questions are asked in random order.</summary>
         Randomize
     }
 
+    /// <summary>
+    /// The number of answers.
+    /// </summary>
     public enum AnswersAmount
     {
-        // ExPresSXR.Interaction.ButtonQuiz.AnswersAmount, Assembly-CSharp
+        /// <summary>Only one answer is available.</summary>
         One,
+        /// <summary>Two answers are available.</summary>
         Two,
+        /// <summary>Three answers are available.</summary>
         Three,
+        /// <summary>Four answers are available.</summary>
         Four,
+        /// <summary>Answer amount is derived from config using the available answers.</summary>
         DifferingAmounts
     }
 
+    /// <summary>
+    /// The ordering of the questions. Either Ordered (order of in `questions`) or Randomize.
+    /// </summary>
     public enum AnswerOrdering
     {
-        // ExPresSXR.Interaction.ButtonQuiz.AnswerOrdering, Assembly-CSharp
+        /// <summary>Answers are provided in the order they are defined.</summary>
         Ordered,
+        /// <summary>Answers are provided in random order.</summary>
         Randomize
     }
 
+    /// <summary>
+    /// The type of questions (what is displayed).
+    /// </summary>
     public enum QuestionType
     {
-        // ExPresSXR.Interaction.ButtonQuiz.QuestionType, Assembly-CSharp
+        /// <summary>Only objects are displayed as questions.</summary>
         Object,
+        /// <summary>Only videos are shown as questions.</summary>
         Video,
+        /// <summary>Only text is displayed as questions.</summary>
         Text,
+        /// <summary>Any type of question is allowed.</summary>
         DifferingTypes
     }
 
+    /// <summary>
+    /// The type of answers (what can be selected).
+    /// </summary>
     public enum AnswerType
     {
-        // ExPresSXR.Interaction.ButtonQuiz.AnswerType, Assembly-CSharp
+        /// <summary>Objects can be chosen as answers.</summary>
         Object,
+        /// <summary>Text can be chosen as answers.</summary>
         Text,
+        /// <summary>Any type of answers is allowed.</summary>
         DifferingTypes
     }
 
+    /// <summary>
+    /// The type of feedback provided after answering a question.
+    /// </summary>
     public enum FeedbackMode
     {
-        // ExPresSXR.Interaction.ButtonQuiz.FeedbackMode, Assembly-CSharp
+        /// <summary>No feedback is provided.</summary>
         None,
+        /// <summary>The correct feedback is provided.</summary>
         AlwaysCorrect,
+        /// <summary>The wrong feedback is provided.</summary>
         AlwaysWrong,
+        /// <summary>The feedback is chosen randomly (correct or wrong).</summary>
         Random
     }
 
+    /// <summary>
+    /// How feedback is displayed.
+    /// </summary>
     public enum FeedbackType
     {
-        // ExPresSXR.Interaction.ButtonQuiz.FeedbackType, Assembly-CSharp
-        ShowAnswers, // Overrides Feedback Mode
+        /// <summary>The correct answer(s) are shown. Overrides Feedback Mode.</summary>
+        ShowAnswers,
+        /// <summary>Feedback is provided via objects.</summary>
         Object,
+        /// <summary>Feedback is provided via text.</summary>
         Text,
+        /// <summary>Feedback is provided via a video.</summary>
         Video,
+        /// <summary>Feedback provided differs per question.</summary>
         DifferingTypes
     }
 }

@@ -8,14 +8,14 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class PictureScrollViewerEditor : UnityEditor.Editor
     {
-        PictureScrollViewer scrollViewer;
+        protected PictureScrollViewer _pictureScrollViewer;
 
         protected static bool _showEvents = false;
         protected static bool _showObjectRefs = false;
 
         protected virtual void OnEnable()
         {
-            scrollViewer = (PictureScrollViewer)target;
+            _pictureScrollViewer = (PictureScrollViewer)target;
         }
 
         public override void OnInspectorGUI()
@@ -41,22 +41,22 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Update displayed prefab only when necessary
                 serializedObject.ApplyModifiedProperties();
-                scrollViewer.InternalUpdatePictureData();
+                _pictureScrollViewer.InternalUpdatePictureData();
             }
 
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_scrollBehavior"), true);
             EditorGUI.indentLevel++;
-            if (scrollViewer.ScrollBehavior == ScrollType.ConstantDuration)
+            if (_pictureScrollViewer.ScrollBehavior == ScrollType.ConstantDuration)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_autoScrollDuration"), true);
             }
-            else if (scrollViewer.ScrollBehavior == ScrollType.ConstantSpeed)
+            else if (_pictureScrollViewer.ScrollBehavior == ScrollType.ConstantSpeed)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_autoScrollSpeed"), true);
             }
-            else if (scrollViewer.ScrollBehavior == ScrollType.PictureSnap)
+            else if (_pictureScrollViewer.ScrollBehavior == ScrollType.PictureSnap)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_pictureSnapDuration"), true);
             }

@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using ExPresSXR.Minigames.Archery.TargetSpawner.Line;
 using UnityEditor;
 using UnityEngine;
-
+using ExPresSXR.Minigames.Archery.TargetSpawner.Line;
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -11,19 +8,11 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class LineSpawnerEditor : UnityEditor.Editor
     {
-        LineSpawner targetScript;
-
-        private static bool _showTargetsConfig = false;
-        private static bool _showGoodTargetsConfig = false;
-        private static bool _showBadTargetsConfig = false;
-        private static bool _gameObjectRefs = false;
-        private static bool _showDebugValues = false;
-
-
-        protected virtual void OnEnable()
-        {
-            targetScript = (LineSpawner)target;
-        }
+        protected static bool _showTargetsConfig = false;
+        protected static bool _showGoodTargetsConfig = false;
+        protected static bool _showBadTargetsConfig = false;
+        protected static bool _gameObjectRefs = false;
+        protected static bool _showDebugValues = false;
 
         public override void OnInspectorGUI()
         {

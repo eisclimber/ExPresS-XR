@@ -8,7 +8,7 @@ using UnityEngine.Localization.Components;
 namespace ExPresSXR.Localization
 {
     /// <summary>
-    /// Defines the type of the asset to be localized,
+    /// Defines the type of the asset to be localized.
     /// </summary>
     [Serializable]
     public class LocalizedFont : LocalizedAsset<Font> { }

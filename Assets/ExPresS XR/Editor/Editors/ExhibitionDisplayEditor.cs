@@ -2,20 +2,19 @@ using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Presentation;
 
-
 namespace ExPresSXR.Editor.Editors
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ExhibitionDisplay))]
     public class ExhibitionDisplayEditor : UnityEditor.Editor
     {
-        ExhibitionDisplay targetScript;
+        protected ExhibitionDisplay _exhibitionDisplay;
 
         private static bool _showObjectRefs = false;
 
         void OnEnable()
         {
-            targetScript = (ExhibitionDisplay)target;
+            _exhibitionDisplay = (ExhibitionDisplay)target;
         }
 
         public override void OnInspectorGUI()
@@ -36,16 +35,27 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Update Displayed Prefab only when necessary
                 serializedObject.ApplyModifiedProperties();
-                targetScript.displayedPrefab = targetScript.displayedPrefab;
+                _exhibitionDisplay.DisplayedPrefab = _exhibitionDisplay.DisplayedPrefab;
             }
+
+            EditorGUILayout.Space();
+            
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObject"), true);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectSpeed"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectAxis"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spinObjectRandomizeRotationOffset"), true);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
+
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_allowNonInteractables"), true);
             if (EditorGUI.EndChangeCheck())
             {
                 // Update Displayed Prefab so non-interactable may be removed
                 serializedObject.ApplyModifiedProperties();
-                targetScript.displayedPrefab = targetScript.displayedPrefab;
+                _exhibitionDisplay.DisplayedPrefab = _exhibitionDisplay.DisplayedPrefab;
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_putBackTime"), true);
             EditorGUI.indentLevel--;
@@ -66,13 +76,13 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            targetScript.usePhysicalInfoButton = EditorGUILayout.Toggle("Use Physical Info Button", targetScript.usePhysicalInfoButton);
+            _exhibitionDisplay.UsePhysicalInfoButton = EditorGUILayout.Toggle("Use Physical Info Button", _exhibitionDisplay.UsePhysicalInfoButton);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_toggleInfo"), true);
-            if (!targetScript.toggleInfo)
+            if (!_exhibitionDisplay.ToggleInfo)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_showInfoDuration"), true);
 
-                if (targetScript.showInfoDuration < targetScript.GetInfoActivationDuration())
+                if (_exhibitionDisplay.ShowInfoDuration < _exhibitionDisplay.GetInfoActivationDuration())
                 {
                     EditorGUILayout.HelpBox("The value of 'showInfoDuration' is less than the length of your Video/Audio Clip."
                         + "The Info will be shown until the Clip is completed.", MessageType.Info);

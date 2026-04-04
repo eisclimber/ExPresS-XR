@@ -1,11 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using ExPresSXR.Misc;
 
 namespace ExPresSXR.UI
 {
     /// <summary>
-    /// Visualizes an ExPresSXR Timer as a filling circle.
+    /// Visualizes an ExPresSXR Timer as a filling circle with an optional display of time and text.
+    /// 
+    /// The visuals can be customized in various ways such as counting up or down as well as smooth or tick movement based on time or steps.
+    /// To further control the timing of the visuals both text and progress can be rounded independently.
+    /// It is recommended to use the same `RoundType` if both use the `CountType` is the same.
+    /// With `FillDirection` being set to `Down` these values are recommended based on `RoundType`:
+    /// - Smooth: Ceil (Text), None (Fill)
+    /// - TickNum: Ceil (Both)
+    /// - TickTime: Floor (Both)
     /// </summary>
     public class CircularTimerUi : TimerUi
     {
@@ -29,17 +38,53 @@ namespace ExPresSXR.UI
         /// <summary>
         /// Resets the visualization.
         /// </summary>
-        public override void ResetVisualization() => _fillSettings.ResetVisualization();
+        public override void ResetVisualization()
+        {
+            base.ResetVisualization();
+            _fillSettings.ResetVisualization();
+        }
 
-        // Helper classes
+        /// <summary>
+        /// A helper class to hold the settings for the visualization of the circular timer.
+        /// </summary>
         [Serializable]
         public class FillSettings
         {
-            public FillDirection fillDirection = FillDirection.Down;
-            public ProgressType fillType = ProgressType.Smooth;
+            /// <summary>
+            /// The direction in which the fill image fills up.
+            /// </summary>
+            [Tooltip("The direction in which the fill image fills up.")]
+            public FillDirection FillDirection = FillDirection.Down;
+
+            /// <summary>
+            /// The type of progress visualization.
+            /// </summary>
+            [Tooltip("The type of progress visualization.")]
+            public ProgressType FillType = ProgressType.Smooth;
+
+            /// <summary>
+            /// How the remaining time is displayed (i.e. count up or down).
+            /// </summary>
+            public RuntimeUtils.RoundType RoundType = RuntimeUtils.RoundType.Floor;
+
+            /// <summary>
+            /// The tick frequency for the tick-based visualization.
+            /// Will be interpreted as seconds if 'fillType' is set to 'TickTime'.
+            /// If 'fillType' is set to 'TickNum' the value is interpreted as number of ticks.
+            /// Has no effect if `fillType` is set to `Smooth` or set to a value equal or below zero.
+            /// </summary>
+            [Tooltip("The tick frequency for the tick-based visualization.\nOnly relevant if 'fillType' is set to 'Tick'."
+                + "\nWill be interpreted as seconds if 'fillType' is set to 'TickTime'."
+                + "\nIf 'fillType' is set to 'TickNum' the value is interpreted as number of ticks."
+                + "\nHas no effect if `fillType` is set to `Smooth` or set to a value equal or below zero.")]
+            public int tickFrequency = 1;
 
             [SerializeField]
+            [Tooltip("If the caps shown at the ends of the progress meter to round the ends.")]
             private bool _capsEnabled;
+            /// <summary>
+            /// If the caps shown at the ends of the progress meter to round the ends.
+            /// </summary>
             public bool CapsEnabled
             {
                 get => _capsEnabled;
@@ -50,9 +95,12 @@ namespace ExPresSXR.UI
                 }
             }
 
-
             [SerializeField]
+            [Tooltip("Color of the fill meter and the caps.")]
             private Color _color = Color.white;
+            /// <summary>
+            /// Color of the fill meter and the caps.
+            /// </summary>
             public Color Color
             {
                 get => _color;
@@ -64,7 +112,11 @@ namespace ExPresSXR.UI
             }
 
             [SerializeField]
+            [Tooltip("The image used to visualize the fill of the timer. Should be of Image Type 'Filled' for correct visualization.")]
             private Image _fillImage;
+            /// <summary>
+            /// The image used to visualize the fill of the timer. Should be of Image Type 'Filled' for correct visualization.
+            /// </summary>
             public Image FillImage
             {
                 get => _fillImage;
@@ -76,7 +128,11 @@ namespace ExPresSXR.UI
             }
 
             [SerializeField]
+            [Tooltip("The image used to visualize the start cap of the timer.")]
             private Image _startCapImage;
+            /// <summary>
+            /// The image used to visualize the start cap of the timer.
+            /// </summary>
             public Image StartCapImage
             {
                 get => _startCapImage;
@@ -88,9 +144,12 @@ namespace ExPresSXR.UI
                 }
             }
 
-
             [SerializeField]
+            [Tooltip("The image used to visualize the end cap of the timer.")]
             private Image _endCapImage;
+            /// <summary>
+            /// The image used to visualize the end cap of the timer.
+            /// </summary>
             public Image EndCapImage
             {
                 get => _endCapImage;
@@ -102,7 +161,25 @@ namespace ExPresSXR.UI
                 }
             }
 
+            [SerializeField]
+            [Tooltip("If the caps will be hidden when the timer is not running and the fill amount is 0.")]
+            private bool _hideCapsIfNotRunning = true;
+            /// <summary>
+            /// If the caps will be hidden when the timer is not running and the fill amount is 0.
+            /// </summary>
+            public bool HideCapsIfNotRunning
+            {
+                get => _hideCapsIfNotRunning;
+                set
+                {
+                    _hideCapsIfNotRunning = value;
+                    UpdateCaps();
+                }
+            }
 
+            /// <summary>
+            /// Updates the colors set for the visualization.
+            /// </summary>
             public void UpdateColors()
             {
                 if (FillImage != null)
@@ -119,6 +196,9 @@ namespace ExPresSXR.UI
                 }
             }
 
+            /// <summary>
+            /// Updates the visibility of the caps.
+            /// </summary>
             public void UpdateCaps()
             {
                 if (_startCapImage != null)
@@ -131,14 +211,19 @@ namespace ExPresSXR.UI
                 }
             }
 
+            /// <summary>
+            /// Updates the visualization of the timer according to the remaining time and overall wait time.
+            /// </summary>
+            /// <param name="remainingTime">Remaining time of the timer.</param>
+            /// <param name="waitTime">Total wait time of the timer.</param>
             public void UpdateVisualization(float remainingTime, float waitTime)
             {
                 UpdateCaps();
 
                 if (_fillImage != null)
                 {
-                    float progressPct = Mathf.Clamp01(remainingTime / waitTime);
-                    _fillImage.fillAmount = fillDirection == FillDirection.Down ? progressPct : 1.0f - progressPct;
+                    float progressPct = CalculateProgressPct(remainingTime, waitTime);
+                    _fillImage.fillAmount = FillDirection == FillDirection.Down ? progressPct : 1.0f - progressPct;
                 }
 
                 if (CapsEnabled)
@@ -149,22 +234,58 @@ namespace ExPresSXR.UI
                 }
             }
 
+            /// <summary>
+            /// Resets the visualization to the default state (fill amount 0).
+            /// </summary>
             public void ResetVisualization()
             {
-                _fillImage.fillAmount = fillDirection == FillDirection.Down ? 0 : 1;
+                _fillImage.fillAmount = FillDirection == FillDirection.Down ? 0 : 1;
+
+                if (_hideCapsIfNotRunning)
+                {
+                    _startCapImage.enabled = false;
+                    _endCapImage.enabled = false;
+                }
+            }
+
+            private float CalculateProgressPct(float remainingTime, float waitTime)
+            {
+                float progressPct = Mathf.Clamp01(remainingTime / waitTime);
+                if (FillType == ProgressType.TickTime && tickFrequency > 0)
+                {
+                    int numTicks = Mathf.CeilToInt(waitTime / tickFrequency);
+                    return RuntimeUtils.RoundValue(progressPct * numTicks, RoundType) / numTicks;
+                }
+                else if (FillType == ProgressType.TickNum && tickFrequency > 0)
+                {
+                    return RuntimeUtils.RoundValue(progressPct * tickFrequency, RoundType) / tickFrequency;
+                }
+
+                return progressPct;
             }
         }
 
-        // Enums
+        /// <summary>
+        /// The way progress is visualized, either as counting up or counting down.
+        /// </summary>
         public enum FillDirection
         {
+            /// <summary>Progress is shown as counting up.</summary>
             Up,
+            /// <summary>Progress is shown as counting down.</summary>
             Down
         }
 
+        /// <summary>
+        /// The type of progress visualization.
+        /// </summary>
         public enum ProgressType
         {
-            Tick,
+            /// <summary>Progress will be visualized in discrete time-based steps.</summary>
+            TickTime,
+            /// <summary>Progress will be visualized in discrete value-based steps.</summary>
+            TickNum,
+            /// <summary>Progress will be visualized smoothly.</summary>
             Smooth
         }
     }

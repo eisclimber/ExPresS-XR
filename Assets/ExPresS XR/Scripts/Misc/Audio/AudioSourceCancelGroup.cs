@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.Audio
 {
+    /// <summary>
+    /// Allows canceling multiple AudioSources at once.
+    /// </summary>
     public class AudioSourceCancelGroup : MonoBehaviour
     {
         /// <summary>

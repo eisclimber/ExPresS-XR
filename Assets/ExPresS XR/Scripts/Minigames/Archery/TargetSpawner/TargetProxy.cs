@@ -8,12 +8,12 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner
     /// </summary>
     public class TargetProxy : MonoBehaviour
     {
-        /// <summary>
-        /// Target to be referenced.
-        /// </summary>
         [SerializeField]
         [Tooltip("Target to be referenced.")]
         private Target _target;
+        /// <summary>
+        /// Target to be referenced.
+        /// </summary>
         public Target Target
         {
             get => _target;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Interaction.ValueRangeInteractable;
-using UnityEditor.XR.Interaction.Toolkit;
+
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -14,7 +14,7 @@ namespace ExPresSXR.Editor.Editors
     /// </summary>
     [CustomEditor(typeof(ValueRangeInteractable<,,>), true)]
     [CanEditMultipleObjects]
-    public class ValueRangeInteractableEditor : XRBaseInteractableEditor
+    public class ValueRangeInteractableEditor : UnityEditor.XR.Interaction.Toolkit.Interactables.XRBaseInteractableEditor
     {
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._ValueDescriptor"/>.</summary>
         protected SerializedProperty _valueDescriptor;
@@ -23,11 +23,17 @@ namespace ExPresSXR.Editor.Editors
         protected SerializedProperty _valueVisualizer;
         
 
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._inputDisabled"/>.</summary>
+        protected SerializedProperty _inputDisabled;
+
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._zeroValueOnRelease"/>.</summary>
         protected SerializedProperty _zeroValueOnRelease;
 
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._requireDirectInteraction"/>.</summary>
         protected SerializedProperty _requireDirectInteraction;
+
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._allowNearFarInteraction"/>.</summary>
+        protected SerializedProperty _allowNearFarInteraction;
 
 
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable._snapSound"/>.</summary>
@@ -63,17 +69,45 @@ namespace ExPresSXR.Editor.Editors
         
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnValueChanged"/>.</summary>
         protected SerializedProperty _onValueChanged;
-
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnValueChangedString"/>.</summary>
-        protected SerializedProperty _onValueChangedString;
         
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnValueSelected"/>.</summary>
         protected SerializedProperty _onValueSelected;
+
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnValueReset"/>.</summary>
+        protected SerializedProperty _onValueReset;
+
+
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnInputDisabled"/>.</summary>
+        protected SerializedProperty _onInputDisabled;
+
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnInputEnabled"/>.</summary>
+        protected SerializedProperty _onInputEnabled;
+
 
         protected IRangeInteractorInternal _rangeInteractableInternal;
 
         protected static bool _showSounds = false;
         protected static bool _showValueEvents = false;
+
+        protected virtual string SnapToMinButtonLabel
+        {
+            get => "Snap to Min";
+        }
+
+        protected virtual string SnapToMaxButtonLabel
+        {
+            get => "Snap to Max";
+        }
+
+        protected virtual string PrintValueButtonLabel
+        {
+            get => "Snap to Max";
+        }
+
+        protected virtual string ResetButtonLabel
+        {
+            get => "Reset";
+        }
 
         protected override void OnEnable()
         {
@@ -82,8 +116,10 @@ namespace ExPresSXR.Editor.Editors
             _valueDescriptor = serializedObject.FindProperty("_valueDescriptor");
             _valueVisualizer = serializedObject.FindProperty("_valueVisualizer");
 
+            _inputDisabled = serializedObject.FindProperty("_inputDisabled");
             _zeroValueOnRelease = serializedObject.FindProperty("_zeroValueOnRelease");
             _requireDirectInteraction = serializedObject.FindProperty("_requireDirectInteraction");
+            _allowNearFarInteraction = serializedObject.FindProperty("_allowNearFarInteraction");
 
             _snapSound = serializedObject.FindProperty("_snapSound");
             _minValueSound = serializedObject.FindProperty("_minValueSound");
@@ -97,8 +133,11 @@ namespace ExPresSXR.Editor.Editors
             _onSnapped = serializedObject.FindProperty("OnSnapped");
             _onValueChangedSingle = serializedObject.FindProperty("OnValueChangedSingle");
             _onValueChanged = serializedObject.FindProperty("OnValueChanged");
-            _onValueChangedString = serializedObject.FindProperty("OnValueChangedString");
             _onValueSelected = serializedObject.FindProperty("OnValueSelected");
+            _onValueReset = serializedObject.FindProperty("OnValueReset");
+
+            _onInputDisabled = serializedObject.FindProperty("OnInputDisabled");
+            _onInputEnabled = serializedObject.FindProperty("OnInputEnabled");
 
             _rangeInteractableInternal = (IRangeInteractorInternal)target;
         }
@@ -108,6 +147,8 @@ namespace ExPresSXR.Editor.Editors
         {
             DrawRangeProperties();
             DrawSoundsFoldout();
+            DrawButtons();
+
             base.DrawProperties();
         }
 
@@ -123,10 +164,15 @@ namespace ExPresSXR.Editor.Editors
             }
 
             EditorGUILayout.Space();
+            DrawPostRangeProperties();
+        }
 
+        protected virtual void DrawPostRangeProperties()
+        {
+            EditorGUILayout.PropertyField(_inputDisabled);
             EditorGUILayout.PropertyField(_zeroValueOnRelease);
             EditorGUILayout.PropertyField(_requireDirectInteraction);
-
+            EditorGUILayout.PropertyField(_allowNearFarInteraction);
             EditorGUILayout.Space();
         }
 
@@ -144,13 +190,13 @@ namespace ExPresSXR.Editor.Editors
         protected virtual void DrawSoundsProperties()
         {
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_snapSound"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_minValueSound"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_maxValueSound"), true);
+            EditorGUILayout.PropertyField(_snapSound, true);
+            EditorGUILayout.PropertyField(_minValueSound, true);
+            EditorGUILayout.PropertyField(_maxValueSound, true);
             EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_moveSound"), true);
+            EditorGUILayout.PropertyField(_moveSound, true);
             EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_defaultAudioPlayer"), true);
+            EditorGUILayout.PropertyField(_defaultAudioPlayer, true);
             EditorGUI.indentLevel--;
             EditorGUILayout.Space();
         }
@@ -185,9 +231,41 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(_onValueChangedSingle, true);
             EditorGUILayout.PropertyField(_onValueChanged, true);
-            EditorGUILayout.PropertyField(_onValueChangedString, true);
             EditorGUILayout.PropertyField(_onValueSelected, true);
+            EditorGUILayout.PropertyField(_onValueReset, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_onInputDisabled, true);
+            EditorGUILayout.PropertyField(_onInputEnabled, true);
             EditorGUI.indentLevel--;
+        }
+
+        protected virtual void DrawButtons()
+        {
+            float buttonWidth = (EditorGUIUtility.currentViewWidth - 24.0f) / 2.0f;
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button(SnapToMinButtonLabel, GUILayout.Width(buttonWidth)))
+            {
+                _rangeInteractableInternal.SetValueToMinValue();
+            }
+
+            if (GUILayout.Button(SnapToMaxButtonLabel, GUILayout.Width(buttonWidth)))
+            {
+                _rangeInteractableInternal.SetValueToMaxValue();
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button(PrintValueButtonLabel, GUILayout.Width(buttonWidth)))
+            {
+                Debug.Log(_rangeInteractableInternal.ToString());
+            }
+
+            if (GUILayout.Button(ResetButtonLabel, GUILayout.Width(buttonWidth)))
+            {
+                _rangeInteractableInternal.ResetValue();
+            }
+            GUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
         }
     }
 }

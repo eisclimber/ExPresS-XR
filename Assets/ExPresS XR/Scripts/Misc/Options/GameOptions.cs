@@ -9,11 +9,21 @@ namespace ExPresSXR.Misc.Options
     public class GameOptions : MonoBehaviour
     {
         #region Key Names & Constants
+        // Define the keys for storing the values here, making them public to be used elsewhere if needed.
+
         /// <summary>
-        /// Define the keys for storing the values here, making them public to be used elsewhere if needed. 
+        /// Key for the selected player experience.
         /// </summary>
         public const string SELECTED_EXPERIENCE_PLAYER_PREF = "ExperienceType";
+
+        /// <summary>
+        /// Key for the made with value.
+        /// </summary>
         public const string MADE_WITH_PLAYER_PREF = "MadeWith";
+
+        /// <summary>
+        /// Key for storing if subtitles should be enabled.
+        /// </summary>
         public const string SUBTITLES_PLAYER_PREF = "Subtitles";
 
         /// <summary>
@@ -23,6 +33,9 @@ namespace ExPresSXR.Misc.Options
         #endregion
 
         #region Default Values
+        /// <summary>
+        /// Categorizes the experience type.
+        /// </summary>
         [SerializeField]
         [Tooltip("Categorizes the experience type.")]
         protected ExperienceType _defaultExperience = ExperienceType.None;
@@ -31,12 +44,18 @@ namespace ExPresSXR.Misc.Options
         [Tooltip("With what this game was made with.")]
         protected string _defaultMadeWith = MADE_WITH_PLAYER_PREF;
 
+        /// <summary>
+        /// If subtitles are enabled or not.
+        /// </summary>
         [SerializeField]
         [Tooltip("If subtitles are enabled or not.")]
         protected bool _defaultSubtitlesEnabled = true;
 
         [Space]
 
+        /// <summary>
+        /// Create missing values on awake.
+        /// </summary>
         [SerializeField]
         [Tooltip("Create missing values on awake.")]
         protected bool _createMissingValuesOnAwake = true;
@@ -161,11 +180,17 @@ namespace ExPresSXR.Misc.Options
         #endregion
 
         #region Custom GameOption Values
+        /// <summary>
+        /// Available types of experiences.
+        /// </summary>
         public enum ExperienceType
         {
+            /// <summary> No experience type. </summary>
             None = 0,
+            /// <summary> The `Exhibition` experience. </summary>
             Exhibition = 1,
-            Experience = 2
+            /// <summary> The `Excavation` experience. </summary>
+            Excavation = 2
         }
         #endregion
 
@@ -176,7 +201,9 @@ namespace ExPresSXR.Misc.Options
         /// </summary>
         public enum GameOptionConditionals
         {
+            /// <summary> Refers to the `MadeWithExPresSXR` value. </summary>
             MadeWithExPresSXR,
+            /// <summary> Refers to the `Subtitles` value. </summary>
             Subtitles
         }
 
@@ -184,7 +211,7 @@ namespace ExPresSXR.Misc.Options
         /// Returns the conditional value saved in the PlayerPrefs.
         /// </summary>
         /// <param name="conditional">Conditional value to check.</param>
-        /// <returns>Wether or not the condition is true.</returns>
+        /// <returns>Whether or not the condition is true.</returns>
         public static bool GetValueOfConditional(GameOptionConditionals conditional)
         {
             return conditional switch

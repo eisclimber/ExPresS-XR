@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEditor.XR.Interaction.Toolkit;
 using ExPresSXR.Rig;
+using UnityEditor.XR.Interaction.Toolkit.Interactors;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -21,8 +18,8 @@ namespace ExPresSXR.Editor.Editors
         {
             EditorGUILayout.PropertyField(m_EnableUIInteraction, Contents.enableUIInteraction);
             EditorGUILayout.PropertyField(m_UseForceGrab, Contents.useForceGrab);
-            EditorGUILayout.PropertyField(m_AllowAnchorControl, Contents.allowAnchorControl);
-            if (m_AllowAnchorControl.boolValue)
+            EditorGUILayout.PropertyField(m_ManipulateAttachTransform, Contents.manipulateAttachTransform);
+            if (m_ManipulateAttachTransform.boolValue)
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -47,9 +44,9 @@ namespace ExPresSXR.Editor.Editors
 
                     EditorGUILayout.Space();
 
-                    EditorGUILayout.PropertyField(m_AnchorRotateReferenceFrame, Contents.anchorRotateReferenceFrame);
-                    EditorGUILayout.PropertyField(m_AnchorRotationMode, Contents.anchorRotationMode);
-                    if (m_AnchorRotationMode.intValue == (int)XRRayInteractor.AnchorRotationMode.RotateOverTime)
+                    EditorGUILayout.PropertyField(m_RotateReferenceFrame, Contents.rotateReferenceFrame);
+                    EditorGUILayout.PropertyField(m_RotateReferenceFrame, Contents.rotateMode);
+                    if (m_RotateMode.intValue == (int)XRRayInteractor.RotateMode.RotateOverTime)
                     {
                         using (new EditorGUI.IndentLevelScope())
                         {

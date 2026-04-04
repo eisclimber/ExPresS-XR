@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.Events;
 using ExPresSXR.Rig;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Allows switching scenes with a rig.
+    /// </summary>
     public class SceneSwitcher : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("If the scene should be switched with fade. A rig is required if switching with fade.")]
+        private bool _useFade = true;
         /// <summary>
         /// If the scene should be switched with fade. A rig is required if switching with fade.
         /// </summary>
-        [SerializeField]
-        private bool _useFade = true;
-        public bool useFade
+        public bool UseFade
         {
             get => _useFade;
         }
@@ -32,6 +31,7 @@ namespace ExPresSXR.Misc
         /// A reference to the rig. Will prevent interactions after exiting and required for fading out.
         /// </summary>
         [SerializeField]
+        [Tooltip("A reference to the rig. Will prevent interactions after exiting and required for fading out.")]
         private ExPresSXRRig _rig;
 
         /// <summary>
@@ -39,6 +39,8 @@ namespace ExPresSXR.Misc
         /// As this operation is rather expensive, it is best to directly set the reference directly.
         /// </summary>
         [SerializeField]
+        [Tooltip("If enabled will try to find the current ExPresSXRRig.\n"
+                + "As this operation is rather expensive, it is best to directly set the reference directly.")]
         private bool _findRigIfMissing = true;
 
 
@@ -58,7 +60,7 @@ namespace ExPresSXR.Misc
             // Disable interactions while exiting
             if (_rig != null)
             {
-                _rig.interactionOptions = InteractionOptions.Nothing;
+                _rig.InteractionOptions = InteractionOptions.Nothing;
             }
 
             if (_useFade)

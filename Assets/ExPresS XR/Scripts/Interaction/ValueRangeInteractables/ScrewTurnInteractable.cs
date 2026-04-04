@@ -2,6 +2,7 @@ using System;
 using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
@@ -20,17 +21,23 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     {
         [Space]
 
+        /// <summary>
+        /// The offset of the screw at value '0' along the y-axis.
+        /// </summary>
         [SerializeField]
         [Tooltip("The offset of the screw at value '0' along the y-axis.")]
         protected float _minPosition = -1.0f;
 
+        /// <summary>
+        /// The offset of the screw at value '1' along the y-axis.
+        /// </summary>
         [SerializeField]
         [Tooltip("The offset of the screw at value '1' along the y-axis.")]
         protected float _maxPosition = 1.0f;
 
 
         /// <inheritdoc />
-        public override void UpdateVisualization(float value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(float value, IXRInteractable interactable)
         {
             base.UpdateVisualization(value, interactable);
 
@@ -57,7 +64,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.blue,
                 Color.yellow,
                 Vector3.right,
-                atTransform
+                atTransform,
+                "0.0",
+                "1.0",
+                "{0:F1}"
             );
         }
     }

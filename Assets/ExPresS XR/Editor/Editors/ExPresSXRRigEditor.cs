@@ -1,8 +1,8 @@
 using System.IO;
-using ExPresSXR.Editor.Utility;
-using ExPresSXR.Rig;
 using UnityEditor;
 using UnityEngine;
+using ExPresSXR.Rig;
+using ExPresSXR.Editor.Utility;
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -10,13 +10,13 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class ExPresSXRRigEditor : UnityEditor.Editor
     {
-        ExPresSXRRig targetScript;
+        protected ExPresSXRRig _rig;
 
         private static bool _showObjectRefs = false;
 
         void OnEnable()
         {
-            targetScript = (ExPresSXRRig)target;
+            _rig = (ExPresSXRRig)target;
         }
 
         public override void OnInspectorGUI()
@@ -61,24 +61,20 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Prevents warnings for enabling GameObjects during OnValidate()
                 serializedObject.ApplyModifiedProperties();
-                targetScript.EditorRevalidate();
+                _rig.EditorRevalidate();
             }
             EditorGUI.indentLevel--;
         }
 
         protected virtual void DrawInputConfigOptions()
         {
-            if (targetScript.inputMethod == InputMethod.Controller)
+            if (_rig.InputMethod == InputMethod.Controller)
             {
                 DrawControllerOptions();
             }
-            else if (targetScript.inputMethod == InputMethod.HeadGaze)
+            else if (_rig.InputMethod == InputMethod.HeadGaze)
             {
                 DrawHeadGazeOptions();
-            }
-            else if (targetScript.inputMethod == InputMethod.EyeGaze)
-            {
-                DrawEyeGazeOptions();
             }
             else
             {
@@ -91,6 +87,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.LabelField("Movement", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_movementPreset"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_movementOptions"), true);
 
             EditorGUILayout.Space();
 
@@ -105,10 +102,10 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Prevents warnings for enabling GameObjects during OnValidate()
                 serializedObject.ApplyModifiedProperties();
-                targetScript.EditorRevalidate();
+                _rig.EditorRevalidate();
             }
 
-            DrawInteractionInfoBoxes();
+            DrawInfoBoxes();
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
@@ -123,42 +120,83 @@ namespace ExPresSXR.Editor.Editors
             {
                 // Prevents warnings for enabling GameObjects during OnValidate()
                 serializedObject.ApplyModifiedProperties();
-                targetScript.EditorRevalidate();
+                _rig.EditorRevalidate();
             }
         }
 
 
-        protected virtual void DrawInteractionInfoBoxes()
+        protected virtual void DrawInfoBoxes()
         {
-            bool hasDirect = targetScript.interactionOptions.HasFlag(InteractionOptions.Direct);
-            bool hasRay = targetScript.interactionOptions.HasFlag(InteractionOptions.Ray);
-            bool hasUiRay = targetScript.interactionOptions.HasFlag(InteractionOptions.UiRay);
-            bool hasClimb = targetScript.interactionOptions.HasFlag(InteractionOptions.Climb);
-            bool hasClimbGravity = targetScript.interactionOptions.HasFlag(InteractionOptions.ClimbControlGravity);
+            InteractionOptions interactions = _rig.InteractionOptions;
+            MovementOptions movements = _rig.MovementOptions;
 
-            // Info Box (Ray only for UI)
-            if (!hasRay && hasUiRay)
+            bool hasNear = interactions.HasFlag(InteractionOptions.Near);
+            bool hasFar = interactions.HasFlag(InteractionOptions.Far);
+            bool hasFarAnchorControl = interactions.HasFlag(InteractionOptions.FarAnchorControl);
+            bool hasFarUi = interactions.HasFlag(InteractionOptions.FarUi);
+
+            bool hasPoke = interactions.HasFlag(InteractionOptions.Poke);
+            bool hasPokePointOnHover = interactions.HasFlag(InteractionOptions.PokePointOnHover);
+            bool hasPokeUi = interactions.HasFlag(InteractionOptions.PokeUi);
+
+            bool uiScrolling = interactions.HasFlag(InteractionOptions.UiScrolling);
+
+            bool hasTpDuringNear = movements.HasFlag(MovementOptions.TeleportDuringNearInteraction);
+            bool hasGravity = movements.HasFlag(MovementOptions.Gravity);
+            bool hasJump = movements.HasFlag(MovementOptions.Jump);
+            bool hasClimb = movements.HasFlag(MovementOptions.Climb);
+
+            // Interaction Info Box (Anchor control requires far interaction)
+            if (!hasFar && hasFarAnchorControl)
             {
-                EditorGUILayout.HelpBox("The Interaction option 'Ray' must be enabled for 'UiRay' to have an effect. "
-                        + "If you want the ray to be visible only for UI set the 'Invalid Color Gradient' of the "
-                        + "'XR Ray Interactor Line Visual's of both RayInteractors to be fully transparent"
+                EditorGUILayout.HelpBox("The Interaction option 'Far' must be enabled for 'FarAnchorControl' to have an effect. ", MessageType.Info);
+            }
+
+            // Interaction Info Box (Ray only for UI)
+            if (!hasFar && hasFarUi)
+            {
+                EditorGUILayout.HelpBox("The Interaction option 'Far' must be enabled for 'UiFar' to have an effect. "
+                        + "If you want the ray to be visible only for UI set the 'No Hit Properties' of the "
+                        + "'Line Visual's of both RayInteractors to be fully transparent"
                         + "and set the 'Raycast Mask' of the 'XR Ray Interactors' to only UI.", MessageType.Info);
             }
 
-            // Info Box (Climbing)
-            if (hasClimb && !hasDirect && !hasRay)
+            // Info Box (Poke)
+            if (!hasPoke && (hasPokePointOnHover || hasPokeUi))
+            {
+                EditorGUILayout.HelpBox("The Interaction option 'Poke' must be enabled to use the other poke input options.", MessageType.Info);
+            }
+
+            // Interaction Info Box (Ray only for UI)
+            if (uiScrolling && !hasFarUi && !hasPokeUi)
+            {
+                EditorGUILayout.HelpBox("The Interaction option 'UiScrolling' is enabled but neither Far "
+                    + "nor Poke Interaction is configured to use UI.", MessageType.Info);
+            }
+
+            // Movement
+
+            // Movement Info Box (Tp during Near)
+            if (hasTpDuringNear && !hasNear)
+            {
+                // Can't happen
+                EditorGUILayout.HelpBox("Teleportation during near interaction is disabled but near interaction is disabled anyway.", MessageType.Warning);
+            }
+
+            // Movement Info Box (Climbing)
+            if (hasClimb && !hasNear && !hasFar)
             {
                 // No way of interaction
                 EditorGUILayout.HelpBox("The Interaction option 'Climb' is enabled but neither no way of interacting is. "
                         + "It is recommended to enable 'Direct' interaction to allow grabbing climb interactables.", MessageType.Warning);
             }
-            else if (hasClimb && !hasDirect)
+            else if (hasClimb && !hasNear)
             {
                 // Climbing with ray: WTF?!
                 EditorGUILayout.HelpBox("The Interaction option 'Climb' is enabled but only 'Ray' interactions are enabled. "
                         + "You'll probably want to enable 'Direct' interaction.", MessageType.Info);
             }
-            else if (hasClimb && hasDirect && hasRay)
+            else if (hasClimb && hasNear && hasFar)
             {
                 // No way of interaction
                 EditorGUILayout.HelpBox("The Interaction option 'Climb' is enabled and both 'Direct' and 'Ray' interactions are enabled. "
@@ -166,11 +204,18 @@ namespace ExPresSXR.Editor.Editors
                                         + "and DirectInteractors.", MessageType.Info);
             }
 
-            if (hasClimb && !hasClimbGravity)
+            // Movement Info Box (Climbing)
+            if (hasClimb && !hasGravity)
             {
                 // Better with gravity
-                EditorGUILayout.HelpBox("Not applying gravity during climbing. Be sure to enable fly and/or "
-                                        + "disable gravity in your ContinuosMoveProvider.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Gravity is not activated even though climbing is activated. Where is the fun if you can fall?", MessageType.Info);
+            }
+
+            // Movement Info Box (Jump without Gravity)
+            if (hasJump && !hasGravity)
+            {
+                // Better with gravity
+                EditorGUILayout.HelpBox("Not applying gravity during jumping. How are you planning of getting down?", MessageType.Info);
             }
         }
 
@@ -185,9 +230,9 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUI.BeginChangeCheck();
 
-            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", targetScript.movementPreset == MovementPreset.Teleport);
+            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", _rig.MovementPreset == MovementPreset.Teleport);
 
-            if (useTeleport && targetScript.movementPreset == MovementPreset.Teleport)
+            if (useTeleport && _rig.MovementPreset == MovementPreset.Teleport)
             {
                 EditorGUILayout.HelpBox("If you want to add reticles for Head Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
             }
@@ -196,7 +241,7 @@ namespace ExPresSXR.Editor.Editors
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                targetScript.movementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
+                _rig.MovementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
                 serializedObject.Update();
             }
 
@@ -213,9 +258,9 @@ namespace ExPresSXR.Editor.Editors
             EditorGUI.indentLevel++;
             EditorGUI.BeginChangeCheck();
 
-            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", targetScript.movementPreset == MovementPreset.Teleport);
+            bool useTeleport = EditorGUILayout.Toggle("Teleportation Enabled", _rig.MovementPreset == MovementPreset.Teleport);
 
-            if (useTeleport && targetScript.movementPreset == MovementPreset.Teleport)
+            if (useTeleport && _rig.MovementPreset == MovementPreset.Teleport)
             {
                 EditorGUILayout.HelpBox("If you want to add reticles for Eye Gaze set them in the TeleportAreas and -Anchors.", MessageType.Info);
             }
@@ -224,7 +269,7 @@ namespace ExPresSXR.Editor.Editors
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                targetScript.movementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
+                _rig.MovementPreset = useTeleport ? MovementPreset.Teleport : MovementPreset.None;
                 serializedObject.Update();
             }
 
@@ -238,7 +283,7 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawOptionalTeleportReticles()
         {
-            if (targetScript.movementPreset == MovementPreset.Teleport)
+            if (_rig.MovementPreset == MovementPreset.Teleport)
             {
                 EditorGUI.BeginChangeCheck();
 
@@ -249,7 +294,7 @@ namespace ExPresSXR.Editor.Editors
                 {
                     // Prevents warnings for enabling GameObjects during OnValidate()
                     serializedObject.ApplyModifiedProperties();
-                    targetScript.EditorRevalidate();
+                    _rig.EditorRevalidate();
                 }
             }
         }
@@ -273,17 +318,57 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawFadeButtons()
         {
-            if (targetScript.fadeRect != null && targetScript.fadeRect.screenCompletelyVisible
-                && GUILayout.Button("Fade Screen To Black"))
+            // Fade to color button
+            bool canFadeToColor = _rig.FadeRect != null && _rig.FadeRect.ScreenCompletelyHidden;
+            EditorGUI.BeginDisabledGroup(canFadeToColor);
+            if (GUILayout.Button("Fade Screen To Color"))
             {
-                targetScript.FadeToColor(!Application.isPlaying);
-            }
+                if (_rig.FadeRect != null)
+                {
+                    _rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
+                }
 
-            if (targetScript.fadeRect != null && targetScript.fadeRect.screenCompletelyHidden
-                && GUILayout.Button("Fade Screen To Clear"))
-            {
-                targetScript.FadeToClear(!Application.isPlaying);
+                if (Application.isPlaying)
+                {
+                    _rig.FadeToColor();
+                }
+                else
+                {
+                    _rig.FadeToColorInstant();
+                }
+
+                if (_rig.FadeRect != null)
+                {
+                    _rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
+                }
             }
+            EditorGUI.EndDisabledGroup();
+
+            // Fade to clear button
+            bool canFadeToClear = _rig.FadeRect != null && _rig.FadeRect.ScreenCompletelyVisible;
+            EditorGUI.BeginDisabledGroup(canFadeToClear);
+            if (GUILayout.Button("Fade Screen To Clear"))
+            {
+                if (_rig.FadeRect != null)
+                {
+                    _rig.FadeRect.OnFadeCompleted.AddListener(Repaint);
+                }
+
+                if (Application.isPlaying)
+                {
+                    _rig.FadeToClear();
+                }
+                else
+                {
+                    _rig.FadeToClearInstant();
+                }
+
+                if (_rig.FadeRect != null)
+                {
+                    _rig.FadeRect.OnFadeCompleted.RemoveListener(Repaint);
+                }
+            }
+            EditorGUI.EndDisabledGroup();
         }
 
         protected virtual void DrawCustomRigButtons()
@@ -293,7 +378,7 @@ namespace ExPresSXR.Editor.Editors
                 SaveAsCustomXRRig();
             }
 
-            if (File.Exists(CreationUtils.savedXRRigPath))
+            if (File.Exists(CreationUtils.SavedXRRigPath))
             {
                 EditorGUILayout.HelpBox("Custom ExPresS XR Rig already exists. Setting a new one will"
                     + " override the old one.", MessageType.Warning);
@@ -307,7 +392,6 @@ namespace ExPresSXR.Editor.Editors
 
             if (_showObjectRefs)
             {
-                EditorGUI.indentLevel++;
                 EditorGUILayout.LabelField("Handle these with care! Thank you:)");
 
                 EditorGUILayout.Space();
@@ -317,26 +401,34 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftHandController"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightHandController"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeController"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_eyeGazeController"), true);
                 EditorGUI.indentLevel--;
 
                 EditorGUILayout.Space();
 
-                EditorGUILayout.LabelField("Systems", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Hands", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_locomotionSystem"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_climbingGravityManager"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_leftAutoHand"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_rightAutoHand"), true);
+                EditorGUI.indentLevel--;
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.LabelField("Locomotion", EditorStyles.boldLabel);
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_locomotionMediator"), true);
+                EditorGUI.indentLevel--;
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Hud", EditorStyles.boldLabel);
                 EditorGUI.BeginChangeCheck();
+                EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_hud"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_hudCamera"), true);
                 if (EditorGUI.EndChangeCheck())
                 {
                     // Prevents warnings for enabling GameObjects during OnValidate()
                     serializedObject.ApplyModifiedProperties();
-                    targetScript.EditorRevalidate();
+                    _rig.EditorRevalidate();
                 }
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_playerHeadCollider"), true);
                 EditorGUI.indentLevel--;
@@ -349,23 +441,21 @@ namespace ExPresSXR.Editor.Editors
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_fadeRect"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_headGazeReticle"), true);
                 EditorGUI.indentLevel--;
-                EditorGUI.indentLevel--;
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
-
-
+        
         private void SaveAsCustomXRRig()
         {
-            GameObject go = targetScript.gameObject;
+            GameObject go = _rig.gameObject;
             if (PrefabUtility.IsAnyPrefabInstanceRoot(go))
             {
                 GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(go);
-                PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.savedXRRigPath);
+                PrefabUtility.SaveAsPrefabAsset(prefab, CreationUtils.SavedXRRigPath);
             }
             else
             {
-                PrefabUtility.SaveAsPrefabAsset(targetScript.gameObject, CreationUtils.savedXRRigPath);
+                PrefabUtility.SaveAsPrefabAsset(_rig.gameObject, CreationUtils.SavedXRRigPath);
             }
         }
 

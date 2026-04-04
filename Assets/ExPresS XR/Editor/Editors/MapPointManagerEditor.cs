@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Movement;
-
 
 namespace ExPresSXR.Editor.Editors
 {
@@ -11,11 +8,11 @@ namespace ExPresSXR.Editor.Editors
     [CanEditMultipleObjects]
     public class MapPointManagerEditor : UnityEditor.Editor
     {
-        MapPointManager targetScript;
+        protected MapPointManager _mapPointManager;
 
         protected virtual void OnEnable()
         {
-            targetScript = (MapPointManager)target;
+            _mapPointManager = (MapPointManager)target;
         }
 
         public override void OnInspectorGUI()
@@ -41,7 +38,7 @@ namespace ExPresSXR.Editor.Editors
 
             if (GUILayout.Button("Add New Map Point"))
             {
-                targetScript.CreateNewMapPointObject();
+                _mapPointManager.CreateNewMapPointObject();
             }
         }
 

@@ -1,9 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using ExPresSXR.Rig;
 using ExPresSXR.Misc;
+using System.IO;
 
 
 namespace ExPresSXR.Editor.Utility
@@ -19,8 +19,8 @@ namespace ExPresSXR.Editor.Utility
         public const string NONE_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - None";
         public const string CUSTOM_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom";
         public const string SAVED_RIG_PREFAB_NAME = "ExPresS XR Rigs/ExPresS XR Rig - Custom (Saved)";
-        public const string QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Quiz Button Square";
-        public const string MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Buttons/Quiz Buttons/Multiple Choice Confirm Button Square";
+        public const string QUIZ_BUTTON_SQUARE_PREFAB_NAME = "Interaction/Buttons/Quiz Buttons/Quiz Button Square";
+        public const string MC_CONFIRM_BUTTON_SQUARE_PREFAB_NAME = "Interaction/Buttons/Quiz Buttons/Multiple Choice Confirm Button Square";
         public const string AFTER_QUIZ_DIALOG_PATH_NAME = "Misc/After Quiz Dialog";
 
 
@@ -38,7 +38,7 @@ namespace ExPresSXR.Editor.Utility
         }
 
 
-        public static GameObject InstantiateAndConfigureExPresSXRRig(InputMethod inputMethod, MovementPreset movementPreset, 
+        public static GameObject InstantiateAndConfigureExPresSXRRig(InputMethod inputMethod, MovementPreset movementPreset, MovementOptions movementOptions,
                                                                         InteractionOptions interactionOptions, string rigGoName = "ExPresS XR Rig")
         {
             // Use Teleport Rig Prefab as base go 
@@ -49,7 +49,7 @@ namespace ExPresSXR.Editor.Utility
 
             if (rigGo.TryGetComponent(out ExPresSXRRig rig))
             {
-                ConfigData configData = new(rig, inputMethod, movementPreset, interactionOptions);
+                ConfigData configData = new(rig, inputMethod, movementPreset, movementOptions, interactionOptions);
                 RigConfigurator.ApplyConfigData(configData);
             }
             else
@@ -114,7 +114,7 @@ namespace ExPresSXR.Editor.Utility
         }
 
 
-        public static string savedXRRigPath
+        public static string SavedXRRigPath
         {
             get => RuntimeEditorUtils.MakeExPresSXRPrefabPath(SAVED_RIG_PREFAB_NAME);
         }
@@ -133,6 +133,38 @@ namespace ExPresSXR.Editor.Utility
                 return context.transform;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Returns the current path in the file explorer.
+        /// </summary>
+        /// <returns>Path in the file explorer.</returns>
+        public static string GetClickedDirFullPath()
+        {
+            string clickedAssetGuid = Selection.assetGUIDs[0];
+            string clickedPath = AssetDatabase.GUIDToAssetPath(clickedAssetGuid);
+
+            FileAttributes attr = File.GetAttributes(clickedPath);
+            return attr.HasFlag(FileAttributes.Directory) ? clickedPath : Path.GetDirectoryName(clickedPath);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="defaultName">Default name of the asset created.</param>
+        /// <typeparam name="T"></typeparam>
+        public static void CreateScriptableObject<T>(string defaultName) where T : ScriptableObject
+        {
+            T asset = ScriptableObject.CreateInstance<T>();
+            string basePath = Path.Join(GetClickedDirFullPath(), defaultName + ".asset");
+            string uniqueAssetPath = AssetDatabase.GenerateUniqueAssetPath(basePath);
+
+            AssetDatabase.CreateAsset(asset, uniqueAssetPath);
+            AssetDatabase.SaveAssets();
+
+            EditorUtility.FocusProjectWindow();
+
+            Selection.activeObject = asset;
         }
     }
 }

@@ -3,14 +3,17 @@ using UnityEngine.Events;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 {
+    /// <summary>
+    /// A proxy component that allows passing a collision to another object but only with a certain object.
+    /// </summary>
     public class ObjectCollisionDetector : MonoBehaviour
     {
-        /// <summary>
-        /// The object this component detects collisions with.
-        /// </summary>
         [SerializeField]
         [Tooltip("The object this component detects collisions with.")]
         private GameObject _objectToDetect;
+        /// <summary>
+        /// The object this component detects collisions with.
+        /// </summary>
         public GameObject ObjectToDetect
         {
             get => _objectToDetect;

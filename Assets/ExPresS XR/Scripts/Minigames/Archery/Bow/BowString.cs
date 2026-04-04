@@ -4,9 +4,15 @@ using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Minigames.Archery.Bow
 {
+    /// <summary>
+    /// An interactable that can be grabbed that will visualized a bowstring.
+    /// It will calculate the strength the bow will be drawn (linear between two points) and visualize it via a LineRenderer.
+    /// </summary>
     public class BowString : XRBaseInteractable
     {
         /*------------------------------------------------------------------------------------
@@ -67,12 +73,12 @@ namespace ExPresSXR.Minigames.Archery.Bow
         // For debugging
         [Space]
 
-        /// <summary>
-        /// Will shoot arrows automatically. For debugging.
-        /// </summary>
         [SerializeField]
         [Tooltip("Will shoot arrows automatically. For debugging.")]
         private bool _autoShot;
+        /// <summary>
+        /// Will shoot arrows automatically. For debugging.
+        /// </summary>
         public bool AutoShot
         {
             get => _autoShot;
@@ -90,13 +96,13 @@ namespace ExPresSXR.Minigames.Archery.Bow
         [Tooltip("Time of arrows shot automatically, if enabled. For debugging.")]
         private float _autoShotFrequency = 1.0f;
 
-        /// <summary>
-        /// Current pull strength. For debugging.
-        /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
         [Tooltip("Current pull strength. For debugging.")]
         private float _pullStrength = 0.0f;
+        /// <summary>
+        /// Current pull strength. For debugging.
+        /// </summary>
         public float PullStrength
         {
             get => _pullStrength;
@@ -227,6 +233,7 @@ namespace ExPresSXR.Minigames.Archery.Bow
             if (!_autoShot && _autoShotCoroutine != null)
             {
                 StopCoroutine(_autoShotCoroutine);
+                _autoShotCoroutine = null;
             }
             
             if (_autoShot)
@@ -240,10 +247,7 @@ namespace ExPresSXR.Minigames.Archery.Bow
             yield return new WaitForSeconds(_autoShotFrequency);
             EmitStringReleasedEvent();
 
-            if (_autoShot)
-            {
-                _autoShotCoroutine = StartCoroutine(AutoShootLoop());
-            }
+            _autoShotCoroutine = _autoShot ? StartCoroutine(AutoShootLoop()) : null;
         }
     }
 }

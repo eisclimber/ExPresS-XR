@@ -7,6 +7,9 @@ using UnityEngine.Video;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
+    /// <summary>
+    /// Utility functions any values for CSV serialization, internally used by the DataGatherer.
+    /// </summary>
     public class CsvUtility : MonoBehaviour
     {
         /// <summary>
@@ -49,7 +52,6 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <param name="values">Values to be converted to a CSV line.</param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <param name="safe">If true escapes all values using the DEFAULT_ESCAPE_CHARACTER (and replace it in the string).</param>
-        /// <typeparam name="T">Type of values to be converted.</typeparam>
         /// <returns>A (csv)-string representation of the values-array.</returns>
         public static string JoinAsCsv<T>(IEnumerable<T> values, char sep = DEFAULT_COLUMN_SEPARATOR, bool safe = true)
         {
@@ -65,7 +67,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// If the lists do not match in lengths, iteration will stop at the shorter one.
         /// </summary>
         /// <param name="values">Values to be converted to a CSV line.</param>
-        /// <param name="safeIndividual">A list</param>
+        /// <param name="safeIndividual">A list of denoting if the column should be escaped.</param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR).</param>
         /// <typeparam name="T">Type of values to be converted.</typeparam>
         /// <returns>A (csv)-string representation of the values-array.</returns>
@@ -80,7 +82,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// Converts any arbitrary value to a safe CSV column entry with the provided separator.
         /// This is done by using the DEFAULT_ESCAPE_CHAR to surround the value.
         /// </summary>
-        /// <param name="values">Values to be converted to a safe CSV column entry. </param>
+        /// <param name="value">Values to be converted to a safe CSV column entry. </param>
         /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
         /// <typeparam name="T">Type to be converted.</typeparam>
         /// <returns>A (if required CSV-escaped) string.</returns>
@@ -115,6 +117,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// These are: The separator character and the escape character itself.
         /// </summary>
         /// <param name="value">String to be checked</param>
+        /// <param name="sep">Separator character (Default: DataGatherer.DEFAULT_COLUMN_SEPARATOR). </param>
         /// <returns>If the string is properly escaped.</returns>
         public static bool NeedsEscaping(string value, char sep = DEFAULT_COLUMN_SEPARATOR) => value.Contains(sep) || value.Contains("\"");
 
@@ -131,7 +134,7 @@ namespace ExPresSXR.Experimentation.DataGathering
         /// <summary>
         /// Returns an CSV having 'num' empty columns using 'sepChar' as separator, i.e. 'num'-1 contains 'sepChar's.
         /// </summary>
-        /// <param name="num"> The number of columns</param>
+        /// <param name="numCols"> The number of columns</param>
         /// <param name="sepChar"> Separator used. Default: DEFAULT_COLUMN_SEPARATOR = ';'.</param>
         /// <returns></returns>
         public static string EmptyCSVColumns(int numCols, char sepChar = DEFAULT_COLUMN_SEPARATOR) => numCols > 1 ? new string(sepChar, numCols - 1) : "";

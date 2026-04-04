@@ -10,31 +10,35 @@ using System.Text.RegularExpressions;
 
 namespace ExPresSXR.Localization
 {
+    /// <summary>
+    /// Allows switching between locales.
+    /// Initializes the LocalizationSystem if necessary.
+    /// </summary>
     public class LocaleChanger : MonoBehaviour
     {
+        private int _currentLocaleIdx;
         /// <summary>
         /// Returns the index of the current selected locale or -1 if not initialized.
         /// </summary>
-        private int _currentLocaleIdx;
-        public int currentLocaleIdx
+        public int CurrentLocaleIdx
         {
             get => _initialized ? _currentLocaleIdx : -1;
         }
 
+        private int _numLocales = 1;
         /// <summary>
         /// Returns the number of available locale or -1 if not initialized.
         /// </summary>
-        private int _numLocales = 1;
-        public int numLocales
+        public int NumLocales
         {
             get => _initialized ? _numLocales : -1;
         }
 
+        private bool _initialized;
         /// <summary>
         /// If the language server was initialized, meaning locales are replaced and can be switched.
         /// </summary>
-        private bool _initialized;
-        public bool initialized
+        public bool Initialized
         {
             get => _initialized;
         }
@@ -69,10 +73,7 @@ namespace ExPresSXR.Localization
             _numLocales = LocalizationSettings.AvailableLocales.Locales.Count;
 
             // Update displayed locale if ready
-            if (!_initialized)
-            {
-                SetLocale(_currentLocaleIdx);
-            }
+            SetLocale(_currentLocaleIdx);
         }
 
         /// <summary>
@@ -107,7 +108,7 @@ namespace ExPresSXR.Localization
         /// <summary>
         /// Sets the locale using its identifierCode, if it is available.
         /// </summary>
-        /// <param name="desiredLocale">The locales identifier code (en, de, ...).</param>
+        /// <param name="identifierCode">The locales identifier code (en, de, ...).</param>
         public void SetLocale(string identifierCode)
         {
             int localeIndex = FindLocaleIndex(identifierCode);
@@ -143,42 +144,6 @@ namespace ExPresSXR.Localization
             }
         }
 
-        /// <summary>
-        /// Finds the index of the desired locale in the LocalizationSettings.
-        /// </summary>
-        /// <param name="desiredLocale">The locale.</param>
-        /// <returns>The index of the locale or -1 if not found.</returns>
-        public int FindLocaleIndex(Locale desiredLocale)
-        {
-            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
-            for (int i = 0; i < locales.Count; i++)
-            {
-                if (locales[i].Equals(desiredLocale))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Finds the index of the desired locale in the LocalizationSettings using its language code.
-        /// </summary>
-        /// <param name="languageCode">The language code (en, de, ...).</param>
-        /// <returns>The index of the locale or -1 if not found.</returns>
-        public int FindLocaleIndex(string languageCode)
-        {
-            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
-            for (int i = 0; i < locales.Count; i++)
-            {
-                if (locales[i].Identifier.Code == languageCode)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
 
         private IEnumerator InitializeLocalization(Action callback)
         {
@@ -197,6 +162,43 @@ namespace ExPresSXR.Localization
         }
 
         // Remove language code suffix from locale names
-        private string RemoveLanguageCodeSuffix(string localeName) => Regex.Replace(localeName, @" \([^)]*\)$", "");
+        private static string RemoveLanguageCodeSuffix(string localeName) => Regex.Replace(localeName, @" \([^)]*\)$", "");
+
+        
+        /// <summary>
+        /// Finds the index of the desired locale in the LocalizationSettings.
+        /// </summary>
+        /// <param name="desiredLocale">The locale.</param>
+        /// <returns>The index of the locale or -1 if not found.</returns>
+        public static int FindLocaleIndex(Locale desiredLocale)
+        {
+            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
+            for (int i = 0; i < locales.Count; i++)
+            {
+                if (locales[i].Equals(desiredLocale))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds the index of the desired locale in the LocalizationSettings using its language code.
+        /// </summary>
+        /// <param name="languageCode">The language code (en, de, ...).</param>
+        /// <returns>The index of the locale or -1 if not found.</returns>
+        public static int FindLocaleIndex(string languageCode)
+        {
+            List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
+            for (int i = 0; i < locales.Count; i++)
+            {
+                if (locales[i].Identifier.Code == languageCode)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }

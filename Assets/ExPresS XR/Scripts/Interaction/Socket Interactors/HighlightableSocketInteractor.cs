@@ -1,27 +1,44 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactors
 {
+    /// <summary>
+    /// A SocketInteractor can shows a visual queue (`highlighterObject`) where the interactable area is of nothing is in the socket.
+    /// 
+    /// The visual queue can be scaled automatically if `useColliderSizeAsScale` is set to true and it **this** `SocketInteractor` 
+    /// has a `SphereCollider`- or `BoxCollider`-Component.
+    /// If not the size can be set by modifying `highlighterScale`.
+    /// 
+    /// Make sure the `highlighterObject` does **not** have a Collider, only a `Mesh` and `MeshRenderer`.
+    /// </summary>
     public class HighlightableSocketInteractor : XRSocketInteractor
     {
-
         [SerializeField]
+        [Tooltip("If the highlighter object should be shown when no object is in the socket.")]
         protected bool _showHighlighter;
-        public bool showHighlighter
+        /// <summary>
+        /// If the highlighter object should be shown when no object is in the socket.
+        /// </summary>
+        public bool ShowHighlighter
         {
             get => _showHighlighter;
             set
             {
                 _showHighlighter = value;
 
-                SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
+                SetHighlighterVisible(ShowHighlighter && startingSelectedInteractable == null);
             }
         }
 
         [SerializeField]
+        [Tooltip("The highlighter shown when no object is in the socket.")]
         protected GameObject _highlighterObject;
-        public GameObject highlighterObject
+        /// <summary>
+        /// The highlighter shown when no object is in the socket.
+        /// </summary>
+        public GameObject HighlighterObject
         {
             get => _highlighterObject;
             set
@@ -37,8 +54,12 @@ namespace ExPresSXR.Interaction
         }
 
         [SerializeField]
+        [Tooltip("Controls the scale of the provided highlighter by the scale of the sockets collider.")]
         protected bool _useColliderSizeAsScale;
-        public bool useColliderSizeAsScale
+        /// <summary>
+        /// Controls the scale of the provided highlighter by the scale of the sockets collider.
+        /// </summary>
+        public bool UseColliderSizeAsScale
         {
             get => _useColliderSizeAsScale;
             set
@@ -49,10 +70,13 @@ namespace ExPresSXR.Interaction
             }
         }
 
-        [Tooltip("The scale of the highlighterObject. Be sure to make it a little bit smaller (0.01f) to prevent z-fighting due to material overlapping.")]
         [SerializeField]
+        [Tooltip("The scale of the highlighterObject.")]
         protected Vector3 _highlighterScale = Vector3.one * 0.1f;
-        public Vector3 highlighterScale
+        /// <summary>
+        /// The scale of the highlighterObject.
+        /// </summary>
+        public Vector3 HighlighterScale
         {
             get => _highlighterScale;
             set
@@ -66,25 +90,30 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
+            SetHighlighterVisible(ShowHighlighter && startingSelectedInteractable == null);
 
-            selectEntered.AddListener(HideHighlighter);
-            selectExited.AddListener(ShowHighlighter);
+            selectEntered.AddListener(HideHighlighterFromSelect);
+            selectExited.AddListener(ShowHighlighterFromSelect);
         }
 
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
 
-            selectEntered.RemoveListener(HideHighlighter);
-            selectExited.RemoveListener(ShowHighlighter);
+            selectEntered.RemoveListener(HideHighlighterFromSelect);
+            selectExited.RemoveListener(ShowHighlighterFromSelect);
         }
 
 
+        /// <summary>
+        /// Maps the size of a collider component of this GameObject to `HighlighterScale`.
+        /// </summary>
         protected void UpdateHighlighterScaleWithCollider()
         {
             if (!_useColliderSizeAsScale)
@@ -92,46 +121,61 @@ namespace ExPresSXR.Interaction
                 return;
             }
 
-            if (GetComponent<SphereCollider>())
+            if (TryGetComponent(out SphereCollider sphereCollider))
             {
-                SphereCollider collider = GetComponent<SphereCollider>();
-
-                highlighterScale = Vector3.one * (2 * collider.radius);
+                HighlighterScale = Vector3.one * 2 * sphereCollider.radius;
             }
-            else if (GetComponent<BoxCollider>())
+            else if (TryGetComponent(out BoxCollider boxCollider))
             {
-                BoxCollider collider = GetComponent<BoxCollider>();
-
-                highlighterScale = collider.size;
+                HighlighterScale = boxCollider.size;
+            }
+            else if (TryGetComponent(out CapsuleCollider capsuleCollider))
+            {
+                HighlighterScale = new(capsuleCollider.radius, capsuleCollider.height, capsuleCollider.radius);
             }
             else
             {
                 Debug.LogWarning("Did not find a SphereCollider nor a BoxCollider. Setting scale to (1, 1, 1).");
-                highlighterScale = Vector3.one;
+                HighlighterScale = Vector3.one;
             }
         }
 
 
-        public bool CanSetHighlighterScaleWithCollider()
-        {
-            return GetComponent<SphereCollider>() != null || GetComponent<BoxCollider>() != null;
-        }
-
-
+        /// <summary>
+        /// Sets the visibility of the highlighter.
+        /// </summary>
+        /// <param name="visible">Set to visible or not.</param>
         public virtual void SetHighlighterVisible(bool visible)
         {
-            if (_highlighterObject != null)
+            if (_highlighterObject != null && _highlighterObject.TryGetComponent(out MeshRenderer renderer))
             {
-                _highlighterObject.GetComponent<MeshRenderer>().enabled = showHighlighter && visible;
+                renderer.enabled = ShowHighlighter && visible;
             }
         }
 
+        /// <summary>
+        /// Select enter callback showing the highlighter. 
+        /// </summary>
+        /// <param name="args">Ignored.</param>
+        protected void ShowHighlighterFromSelect(SelectExitEventArgs _) => SetHighlighterVisible(true);
 
-        protected void ShowHighlighter(SelectExitEventArgs args) => SetHighlighterVisible(true);
+        /// <summary>
+        /// Select exit callback hiding the highlighter. 
+        /// </summary>
+        /// <param name="args">Ignored.</param>
+        protected void HideHighlighterFromSelect(SelectEnterEventArgs _) => SetHighlighterVisible(false);
 
-        protected void HideHighlighter(SelectEnterEventArgs args) => SetHighlighterVisible(false);
 
+        /// <summary>
+        /// If this component has either a Sphere-, Box- or CapsuleCollider and this `HighlighterScale` can be set automatically.
+        /// </summary>
+        /// <returns>If `HighlighterScale` can be derived from a collider.</returns>
+        public bool CanSetHighlighterScaleWithCollider()
+        {
+            return TryGetComponent(out SphereCollider _) || TryGetComponent(out BoxCollider _) || TryGetComponent(out CapsuleCollider _);
+        }
 
+        /// <inheritdoc />
         protected override void OnValidate()
         {
             base.OnValidate();

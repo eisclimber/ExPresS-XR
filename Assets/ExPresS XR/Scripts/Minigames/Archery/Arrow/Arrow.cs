@@ -5,6 +5,11 @@ using ExPresSXR.Minigames.Archery.TargetSpawner;
 
 namespace ExPresSXR.Minigames.Archery.Arrow
 {
+    /// <summary>
+    /// Implements an arrow that can be shot, pooled and sticks on impact.
+    /// For a nice arch when shooting an arrow it is recommended to add two rigid bodies to the GameObject. One at the feathered end and one at the tip.
+    /// To detect hits, a [HitDetector](Hit-Detector) is needed.
+    /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class Arrow : MonoBehaviour, IShootable, IPoolObject
     {
@@ -175,7 +180,7 @@ namespace ExPresSXR.Minigames.Archery.Arrow
         /// <summary>
         /// Handles being shot in a direction.
         /// </summary>
-        /// <param name="direction">Direction and force to be shot at.</param>
+        /// <param name="force">Force (and direction) to shoot at.</param>
         public void Shoot(Vector3 force) => _baseRb.AddForce(force, ForceMode.Impulse);
 
         // IPoolObject
@@ -194,13 +199,13 @@ namespace ExPresSXR.Minigames.Archery.Arrow
         {
             if (_baseRb != null)
             {
-                _baseRb.velocity = Vector3.zero;
+                _baseRb.linearVelocity = Vector3.zero;
                 _baseRb.angularVelocity = Vector3.zero;
             }
 
             if (_tipRb != null)
             {
-                _tipRb.velocity = Vector3.zero;
+                _tipRb.linearVelocity = Vector3.zero;
                 _tipRb.angularVelocity = Vector3.zero;
                 _tipRb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }

@@ -6,8 +6,14 @@ using UnityEngine;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
+    /// <summary>
+    /// Utility functions for data gathering.
+    /// </summary>
     public static class DataGatheringHelpers
     {
+        /// <summary>
+        /// Name to refer to the GameObject as type as it is not a component but should be added to the list for choosing values to be exported.
+        /// </summary>
         public const string GAME_OBJECT_FULL_NAME = "Game Object";
 
         #region Find Component

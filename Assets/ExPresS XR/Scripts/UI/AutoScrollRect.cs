@@ -5,16 +5,25 @@ using UnityEngine.UI;
 
 namespace ExPresSXR.UI
 {
+    /// <summary>
+    /// Manages a set of MapPoints controlling the behavior of MapPoints during TP-Mode.  
+    /// 
+    /// For controlling what is shown when the player is present and what not, use a PlayerDetector on the MapPoints themselves.  
+    /// 
+    /// **Attention:** Make sure that you correctly set the the height of your "Content"-GameObject so that it can fit everyting inside. If you don't do that, the scrolling will not work!  
+    /// You can check it by disabling the "Mask"-Component of the Viewport-GameObject.
+    /// 
+    /// </summary>
     [RequireComponent(typeof(ScrollRect))]
     public class AutoScrollRect : MonoBehaviour
     {
-        /// <summary>
-        /// If enabled, the rect will scroll automatically.
-        /// </summary>
         [SerializeField]
         [Tooltip("If enabled, the rect will scroll automatically.")]
         private bool _autoScrolling;
-        public bool autoScrolling
+        /// <summary>
+        /// If enabled, the rect will scroll automatically.
+        /// </summary>
+        public bool AutoScrolling
         {
             get => _autoScrolling;
             set
@@ -22,7 +31,7 @@ namespace ExPresSXR.UI
                 bool changed = _autoScrolling == value;
                 _autoScrolling = value;
 
-                if (changed && autoScrolling)
+                if (changed && _autoScrolling)
                 {
                     OnScrollStarted.Invoke(_scrollDirection);
                 }
@@ -182,9 +191,14 @@ namespace ExPresSXR.UI
             _autoScrolling = true;
         }
 
+        /// <summary>
+        /// Scrolling direction when scrolling automatically.
+        /// </summary>
         public enum ScrollDirection
         {
+            /// <summary> Automatically scrolls up. </summary>
             Up = 1,
+            /// <summary> Automatically scrolls down. </summary>
             Down = -1
         }
     }

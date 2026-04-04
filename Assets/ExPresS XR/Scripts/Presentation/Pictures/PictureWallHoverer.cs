@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 namespace ExPresSXR.Presentation.Pictures
 {
+    /// <summary>
+    /// Implements a group of pictures showing a description for the last one hovered over. 
+    /// </summary>
     public class PictureWallHoverer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         /// <summary>

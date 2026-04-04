@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace ExPresSXR.UI.Menu
 {
+    /// <summary>
+    /// Handles a set of menus attached to a parent object, ensuring only the start menu is shown.
+    /// </summary>
     public class MenuManager : MonoBehaviour
     {
         /// <summary>

@@ -2,25 +2,24 @@ using ExPresSXR.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
-/// This class is used to combine the values of two (float) slider
-/// as there seems to be no easy way of adding multiple sliders as 
-/// of determining which handle is currently selected. The result is
-/// that both sliders always move.
-/// Instead we use two float sliders and this script to combine them.
-/// </summary>
-
 namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueCombiner
 {
+    /// <summary>
+    /// This class is used to combine the values of two (float) slider
+    /// as there seems to be no easy way of adding multiple sliders as 
+    /// of determining which handle is currently selected. The result is
+    /// that both sliders always move.
+    /// Instead we use two float sliders and this script to combine them.
+    /// </summary>
     public class TwoSlidersToPosCombiner : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("Value that is manipulated by a slider each for the x- and z-axis. The value is a Vector3 to be used directly as position.")]
+        private Vector3 _value;
         /// <summary>
         /// Value that is manipulated by a slider each for the x- and z-axis.
         /// The value is a Vector3 to be used directly as position.
         /// </summary>
-        [SerializeField]
-        [Tooltip("Value that is manipulated by a slider each for the x- and z-axis. The value is a Vector3 to be used directly as position.")]
-        private Vector3 _value;
         public Vector3 Value
         {
             get => _value;
@@ -132,8 +131,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable.ValueCombiner
                 transform
             );
 
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireCube(new Vector3(0.0f, 0.0f, 0.0f), boxSize);
+            GizmoUtils.DrawWireCube(new Vector3(0.0f, 0.0f, 0.0f), boxSize, transform, "(0,0)", "(1,1)");
         }
     }
 }

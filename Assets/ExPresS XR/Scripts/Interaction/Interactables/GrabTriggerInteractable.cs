@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactables
 {
     /// <summary>
     /// Base for simple Interactables that can be activated via grab and optionally indicate a hover by changing their color.
@@ -12,17 +10,41 @@ namespace ExPresSXR.Interaction
     public class GrabTriggerInteractable : XRBaseInteractable
     {
         [SerializeField]
+        [Tooltip("The material shown when the interactable is being hovered.")]
         protected Material _hoveredMaterial;
+        /// <summary>
+        /// The material shown when the interactable is being hovered.
+        /// </summary>
+        public Material HoverMaterial
+        {
+            get => _hoveredMaterial;
+            set => _hoveredMaterial = value;
+        }
 
+        [SerializeField]
+        [Tooltip("Renderer to manipulate the material from. Determined on startup.")]
+        private Renderer _renderer;
+        /// <summary>
+        /// Renderer to manipulate the material from. Determined on startup.
+        /// </summary>
+        protected Renderer Renderer
+        {
+            get => _renderer;
+            set => _renderer = value;
+        }
+
+        /// <summary>
+        /// Original material. Determined on startup.
+        /// </summary>
         protected Material _originalMaterial;
-        protected Renderer _renderer;
 
 
+        /// <inheritdoc />
         protected override void Awake()
         {
             base.Awake();
 
-            if (TryGetComponent(out _renderer))
+            if (_renderer != null || TryGetComponent(out _renderer))
             {
                 _originalMaterial = _renderer.sharedMaterial;
             }
@@ -32,6 +54,7 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -40,6 +63,7 @@ namespace ExPresSXR.Interaction
             hoverExited.AddListener(ChangeToOriginalMaterial);
         }
 
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -48,6 +72,10 @@ namespace ExPresSXR.Interaction
             hoverExited.RemoveListener(ChangeToOriginalMaterial);
         }
 
+        /// <summary>
+        /// Changes the material to the one for hovering.
+        /// </summary>
+        /// <param name="_">Ignored</param>
         protected virtual void ChangeToHoverMaterial(HoverEnterEventArgs _)
         {
             if (_renderer != null && _hoveredMaterial != null)
@@ -56,6 +84,10 @@ namespace ExPresSXR.Interaction
             }
         }
 
+        /// <summary>
+        /// Changes the material to the original one.
+        /// </summary>
+        /// <param name="_">Ignored</param>
         protected virtual void ChangeToOriginalMaterial(HoverExitEventArgs _)
         {
             if (_renderer != null)

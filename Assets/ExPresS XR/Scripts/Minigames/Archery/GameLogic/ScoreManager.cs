@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery.GameLogic
 {
+    /// <summary>
+    /// Implements the basic logic of an arrow game, starting the timer, registering the score managers and starting the spawners.  
+    /// The score can be increase or decreased using the respective functions. To further handle how values are processed, you can choose how a score increase should be handled.
+    /// This makes it possible to visualize hitting a target in multiple different ways simultaneously, i.e. count its points and count the hits.
+    /// </summary>
     public class ScoreManager : MonoBehaviour
     {
         /// <summary>
@@ -48,11 +53,11 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         /// <summary>
         /// Combines ScoreManagers with the GlobalScoreManagers, returning a list without duplicates.
         /// </summary>
-        /// <param name="manager">ScoreManagers to be combined with the global score managers.</param>
-        public static ScoreManager[] MergeWithGlobalManagers(IEnumerable<ScoreManager> managers) 
+        /// <param name="managers">ScoreManagers to be combined with the global score managers.</param>
+        public static ScoreManager[] MergeWithGlobalManagers(IEnumerable<ScoreManager> managers)
                 => (managers != null ? GlobalScoreManagers.Union(managers) : GlobalScoreManagers).ToArray();
 
-        
+
         /// <summary>
         /// Processes a raw value according to the rules of the provided ScoreDeltaHandling.
         /// </summary>
@@ -69,7 +74,7 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
                 _ => scoreDelta,
             };
         }
-        
+
         /// <summary>
         /// How fast the score in-/decreases per default.
         /// </summary>
@@ -119,10 +124,10 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         [Tooltip("Reference to the text displaying the score.")]
         private TMP_Text _scoreText;
 
+        private int _score = 0;
         /// <summary>
         /// Current score displayed.
         /// </summary>
-        private int _score = 0;
         public int Score
         {
             get => _score;
@@ -156,13 +161,14 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         /// <summary>
         /// Increases or decreases the score by the default step size.
         /// </summary>
-        /// <param name="increase">Wether to increase the score or not.</param>
+        /// <param name="increase">Whether to increase the score or not.</param>
         public void AlterScore(bool increase) => AlterScore(_stepSize, increase);
 
         /// <summary>
         /// Increases or decreases the score by the provided step size.
         /// </summary>
-        /// <param name="increase">Wether to increase the score or not.</param>
+        /// <param name="points">The amount of points to change the score by.</param>
+        /// <param name="increase">Whether to increase the score or not.</param>
         public void AlterScore(int points, bool increase) => Score += HandleScoreDelta(increase ? points : -points, _alterScoreHandling);
 
         /// <summary>
@@ -174,6 +180,7 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         /// <summary>
         /// Increase the score by the provided amount.
         /// </summary>
+        /// <param name="amount">The amount to increase the score by.</param>
         public void IncreaseScore(int amount) => Score += HandleScoreDelta(amount, _increaseHandling);
 
 
@@ -186,6 +193,7 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
         /// <summary>
         /// Decrease the score by the provided amount.
         /// </summary>
+        /// <param name="amount">The amount to increase the score by.</param>
         public void DecreaseScore(int amount) => Score -= HandleScoreDelta(amount, _decreaseHandling);
 
         /// <summary>
@@ -196,14 +204,19 @@ namespace ExPresSXR.Minigames.Archery.GameLogic
 
 
         /// <summary>
-        /// Describes how a score delta is handled. If the processed value is added/subtracted depends on the function called (increase vs decrease).
+        /// Describes how a score delta is handled.
+        /// If the processed value is added/subtracted depends on the function called (increase vs decrease).
         /// </summary>
         public enum ScoreDeltaHandling
         {
-            Raw, // Use raw value, allowing negative deltas.
-            Absolute, // Use absolute value, will always be positive.
-            Count, // Use 1, disregarding the delta.
-            Ignore // Use 0
+            /// <summary> Use raw value, allowing negative deltas. </summary>
+            Raw,
+            /// <summary> Use absolute value, will always be positive.</summary>
+            Absolute,
+            /// <summary> Use 1, disregarding the delta. </summary>
+            Count,
+            /// <summary> Use 0. </summary>
+            Ignore
         }
     }
 }

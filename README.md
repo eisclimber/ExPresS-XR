@@ -8,58 +8,42 @@ Based on the OpenXR Standard, its aim is to help automate early stages of develo
 
 If you are new, check out the [Getting Started](https://github.com/eisclimber/ExPresS-XR/wiki/Getting-Started)-Page in the wiki and [video tutorials](https://www.youtube.com/playlist?list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_).
 
-The full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
-
-
-## Structure
-
-Following the aim of the OpenXR standard itself, ExPresS XR allows development for a multitude of devices.
-That is why the project does not only support VR headsets with controllers but also a controller-free mode that can be used with smartphones (+ a VR mount, like the Google Cardboard)
-
-The project is divided into three main focus groups: General, Experimentation and Presentation.
-
-- **General**: Implementations of configurable XR Rigs, Movement, XR-based UI and Interaction, as well as in-editor tutorials.
-- **Experimentation**: Providing an easy solution to collect and export data, automatic generation of a "clean" test environment, as well as a fully customizable quizzing system.
-- **Presentation**: Options for displaying objects in VR in interesting ways that allow building virtual exhibitions with ease.
-
-Apart from the code itself, the wiki features useful workflow tutorials that aim to help inexperienced developers (e.g. building end systems or scanning real-world objects to be imported into the project).
+The wiki and full documentation can be found [here](https://github.com/eisclimber/ExPresS-XR/wiki)
 
 ## Features
 
-- Ready to play example scenes showing the features and applications of `ExPresS XR`.
-- In-editor setup dialogs and tutorials for a quick start with your project.
-- Detailed documentation of the project components and workflow.
 - A fully configurable XR Rig.
-  - Three input modes: Controller, Head Gaze, and Eye Gaze (untested).
+  - Supports `Controller` and `Head Gaze`-Input.
   - Different movement options: Teleportation, Continuous Move, Climbing, Grab Move, Teleport-Stations, ....
-  - Customizable interaction options: Ray, Grab/Direct, Poke, UI, ....
+  - Customizable interaction options: Near-Far, Ray, Grab, Poke, ....
   - Head Collision with collision detection, pushback and visual feedback.
-  - Virtual animated hands allowing grabbing and pushing of objects.
-  - Display the controllers used in the game.
-  - A system for hand animations when grabbing.
+  - Virtual animated hands allowing you to grab, poke and push objects.
   - A basic implementation of Inverse Kinematics (IK). For more elaborate IK use add-ons like FinalIK.
-- A great expansion of Unity's interaction toolkit.
-  - A great variety of custom interactables like levers, joysticks, multi-dimensional sliders, and much more; all based on an expandable, easy-to-use system.
+- A huge expansion of Unity's interaction toolkit.
+  - An all-in-one, expandable and easy-to-use system for creating custom interactables like buttons. levers, joysticks, multi-dimensional sliders, and much more.
   - Sockets that highlight their size and can be setup to accept certain objects.
   - A socket that will move objects back to the socket's position when no interaction is performed.
-  - Physical Buttons with toggle mode.
   - Scaling of grabbed objects.
   - UI keyboards usable with XR.
   - Support for hand/wrist menus.
-  - Sound- and rumble-emission upon collision.
-  - Grab and interaction triggers.
-  - Various VR minigames testing your skils in archery (aka "BAaM"), throwing, logic and more!
+  - Audio and haptic feedback for collisions and interactions.
   - Helpers for localization.
-- A HUD system, allowing full screen fades and other permanent UI elements.
-- Configurable displays to present objects and further information in VR.
-  - The objects can be picked up and inspected.
-- Automatic Creation of "neutral"-looking rooms with specified dimensions for quick experiment setups.
 - An easy-to-use system for gathering and exporting data from anywhere in the VR.
   - Gather any CSV data within seconds!
   - Supports different separators and multiple columns.
   - Structured similar to Unity's event system.
   - Data can be saved locally or sent via HTTP.
   - Can be controlled through the editor or via code.
+- Various VR minigames for testing your skils.
+  - Archery (aka `BaAM`): An fully fledged out archery system along with targets and a minigame logic.
+  - Boxing: A simple boxing mechanic.
+  - Coin Scale: Find the counterfeit coin by comparing coins based on their weight.
+  - Coin Throw: Throw coins (or objects) into moving targets.
+  - Excavation: Discover objects by unveiling them from beneath the dirt. 
+  - Puzzle: Socket based puzzles for creating jigsaw puzzles or similar mechanics.
+  - Target Area: A basic system for trigger-based repeated interactions, like breaking stone.
+  - Tile Game: A tile based game that lets you place tiles to gain points from creating larger and larger areas (similar to Dorfromantik or Carcassonne).
+- Configurable exhibition displays to present objects along with further information.
 - A fully customizable quizzing system.
   - Users answer a question by pressing a physical button in the VR.
   - Can be tailored and edited to one's likings using a setup dialog.
@@ -67,10 +51,24 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
   - Supports Questions, Answers and Feedback in the form of Text, GameObjects, Images and Videos.
   - The Feedback can be shown in different ways or omitted.
   - Everything can be exported via the data gathering system.
+- A HUD system, allowing full screen fades and other permanent UI elements.
+- Automatic Creation of "neutral"-looking rooms with specified dimensions for quick experiment setups.
 - A VR-ready Main Menu Components and Scene.
 - All the little helpers you'll need for making your perfect VR game.
-- A huge wiki and [YouTube Tutorials](https://www.youtube.com/watch?v=-k2wBBZ9a1w&list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_)
+- Ready to play example scenes showing the features and applications of `ExPresS XR`.
+- In-editor setup dialogs and tutorials for a quick start with your project.
+- Detailed documentation of the project components and common workflows.
+- [YouTube Tutorials](https://www.youtube.com/watch?v=-k2wBBZ9a1w&list=PLaAvR_HPw8vhvauv-PpZuULIV3pETSwn_)
 
+
+## Installation
+
+The project is largely contained within in the `ExPresS XR` directory of the `Asset` Folder and aims to have as few external dependencies as possible.  
+Because of this you can simply copy and the directory into your existing project, copying the Input Mappings from the `Settings` directory and adjusting `Tags` and `Interaction Layer`.
+
+If you are starting with a new project the process is even simpler: Just press `Use this template` while you are logged in with your `GitHub` account to create a fresh `ExPresS XR` project.  
+
+It is planned to separate the project into several smaller UnityPackages, that then will be accessible in the Asset Store.
 
 ## Made with ExPresS XR
 
@@ -80,7 +78,7 @@ Apart from the code itself, the wiki features useful workflow tutorials that aim
 It is available for free on the [Meta Quest Store](https://www.meta.com/en-gb/experiences/hetepheres-tomb/28627787526867149/) and on [Steam](https://store.steampowered.com/app/3553060/Hetepheres_Tomb__Secrets_of_the_Lost_Queen).
 - The internationally appraised exhibition **Tempelsteuer und Taubenhändler (Doves and Temple Taxes)** is a VR recreation of Herod's Temple with an emphasis on how currency was used and exchanged in temples in ancient times.  
 It is available on [Sidequest](https://sidequestvr.com/app/33452/temple-tax-and-doves) and [Itch.io](https://eisclimber.itch.io/temple-tax-and-doves).
-- **Hornmoldhaus VR** is an interactive and engaging exhibition about Japanese culture and medicine in ancient Germany. It features §D scans of invaluable artifacts, a partial remodel of the city museum in Bietigheim-Bissingen and fun minigames.  
+- **Hornmoldhaus VR** is an interactive and engaging exhibition about Japanese culture and medicine in ancient Germany. It features 3D scans of invaluable artifacts, a partial remodel of the city museum in Bietigheim-Bissingen and fun minigames.  
 Released on [Sidequest](https://sidequestvr.com/app/21084/hornmoldhaus-vr) and [Itch.io](https://eisclimber.itch.io/hornmoldhaus-vr)
 - A numismatic/roman-inspired exhibition with awesome minigames
 - [Workshops on using VR for Cultural Heritage Presentation using ExPresS XR for the CIVIS Days 2023 and FORGE 2023](https://github.com/eisclimber/VRMuseumTemplate)
@@ -103,7 +101,7 @@ If you like the project, you can buy me a coffee (Programmer + Coffee = Code :D)
 
 ## Credits
 
-Created by Luca "eisclimber" Dreiling
+Created and Maintained by Luca "eisclimber" Dreiling
 
 Contributors:
 - Lena Matulla: Archery System and Minigame (BAaM)
@@ -123,7 +121,7 @@ E-Mail: [luca.dreiling@gmx.de](mailto:luca.dreiling@gmx.de)
 
 ## Version
 
-ExPresS XR is currently developed and tested with Unity 2022.3.35f1.
+ExPresS XR is currently developed and tested with Unity 6000.3.9f1 and uses XR Interaction Toolkit 3.3.1.
 
 ## License
 

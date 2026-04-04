@@ -1,9 +1,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using ExPresSXR.Interaction.Interactables;
 
-namespace ExPresSXR.Interaction
+namespace ExPresSXR.Interaction.Interactors
 {
+    /// <summary>
+    /// An Expansion of the `TagCheckSocketInteractor` allowing submission of a objects by tag, optionally disabling both the socket and submitted interactable.
+    /// 
+    /// The submission can be tested using "DEBUG Emit Submit Event" in the context menu for the component.
+    /// </summary>
     public class TagCheckSubmitSocketInteractor : TagCheckSocketInteractor
     {
         /// <summary>
@@ -18,15 +24,17 @@ namespace ExPresSXR.Interaction
         /// </summary>
         public UnityEvent OnSubmitted;
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            SetHighlighterVisible(showHighlighter && startingSelectedInteractable == null);
+            SetHighlighterVisible(ShowHighlighter && startingSelectedInteractable == null);
 
             selectEntered.AddListener(HandleSubmission);
         }
 
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();

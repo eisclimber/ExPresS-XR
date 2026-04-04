@@ -1,18 +1,18 @@
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using ExPresSXR.Experimentation.DataGathering;
-using System.IO;
 
 namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(DataGatherer))]
     public class DataGathererEditor : UnityEditor.Editor
     {
-        DataGatherer targetScript;
+        protected DataGatherer _dataGatherer;
 
         void OnEnable()
         {
-            targetScript = (DataGatherer)target;
+            _dataGatherer = (DataGatherer)target;
         }
 
         public override void OnInspectorGUI()
@@ -31,14 +31,14 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            if (targetScript.dataExportType == DataGatherer.ExportType.Http
-                || targetScript.dataExportType == DataGatherer.ExportType.Both)
+            if (_dataGatherer.DataExportType == DataGatherer.ExportType.Http
+                || _dataGatherer.DataExportType == DataGatherer.ExportType.Both)
             {
                 // Either Only http or both
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_httpExportPath"), true);
             }
-            if (targetScript.dataExportType == DataGatherer.ExportType.Local
-                || targetScript.dataExportType == DataGatherer.ExportType.Both)
+            if (_dataGatherer.DataExportType == DataGatherer.ExportType.Local
+                || _dataGatherer.DataExportType == DataGatherer.ExportType.Both)
             {
                 // Either Only local or both
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_localExportPath"), true);
@@ -47,15 +47,15 @@ namespace ExPresSXR.Editor.Editors
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_separatorType"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_separator"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_escapeColumns"), true);
 
-            if (targetScript.separatorType == DataGatherer.SeparatorType.Custom)
+            if (_dataGatherer.Separator == DataGatherer.SeparatorType.Custom)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_columnSeparator"), true);
             }
 
-            if (targetScript.separatorType != DataGatherer.SeparatorType.Semicolon && !targetScript.escapeColumns)
+            if (_dataGatherer.Separator != DataGatherer.SeparatorType.Semicolon && !_dataGatherer.EscapeColumns)
             {
                 EditorGUILayout.HelpBox("Using separators different to ';' (especially ',' or '.') will interfere "
                     + "with the printing of Vectors or float values. You can prevent this by enabling checking 'Escape Columns'."
@@ -96,22 +96,22 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.LabelField("Manual Export", EditorStyles.boldLabel);
             if (GUILayout.Button("Print Current Values"))
             {
-                Debug.Log("The Header is: " + targetScript.GetExportCSVHeader());
-                Debug.Log("The Value is: " + targetScript.GetExportCSVLine());
+                Debug.Log("The Header is: " + _dataGatherer.GetExportCSVHeader());
+                Debug.Log("The Value is: " + _dataGatherer.GetExportCSVLine());
             }
 
             if (Application.isPlaying)
             {
                 if (GUILayout.Button("Export Values Manually"))
                 {
-                    targetScript.ExportNewCSVLine();
+                    _dataGatherer.ExportNewCSVLine();
                 }
             }
 
             if (GUILayout.Button("Print Full Export Paths"))
             {
-                Debug.Log("The Local Export Path is: " + Path.GetFullPath(targetScript.GetLocalSavePath()) + "\n"
-                        + "The Http Export Path is: " + targetScript.httpExportPath);
+                Debug.Log("The Local Export Path is: " + Path.GetFullPath(_dataGatherer.GetLocalSavePath()) + "\n"
+                        + "The Http Export Path is: " + _dataGatherer.HttpExportPath);
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -135,7 +135,7 @@ namespace ExPresSXR.Editor.Editors
                 if (_prevArraySize < arrayProp.arraySize)
                 {
                     // Entry added -> Enforce defaults and update
-                    targetScript.dataBindings[arrayProp.arraySize - 1].ResetToDefaults();
+                    _dataGatherer.DataBindings[arrayProp.arraySize - 1].ResetToDefaults();
                 }
                 serializedObject.Update();
             }

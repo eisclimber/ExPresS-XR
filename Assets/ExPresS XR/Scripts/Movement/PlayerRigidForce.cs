@@ -7,12 +7,12 @@ namespace ExPresSXR.Movement
     /// </summary>
     public class PlayerRigidForce : PlayerForceBase
     {
+        [SerializeField]
+        private bool _applyForce = true;
         /// <summary>
         /// Whether or not the force should be applied.
         /// </summary>
-        [SerializeField]
-        private bool _applyForce = true;
-        public bool applyForce
+        public bool ApplyForce
         {
             get => _applyForce;
             set => _applyForce = value;
@@ -33,7 +33,7 @@ namespace ExPresSXR.Movement
         private void Update()
         {
             if (_characterController != null && _characterController.gameObject.activeInHierarchy && _characterController.enabled 
-                && _applyForce && !forceTemporarilyDisabled)
+                && _applyForce && !ForceTemporarilyDisabled)
             {
                 float lerpFactor = _characterController.isGrounded ? _floorLerpFactor : _airLerpFactor;
                 _currentVelocity = Vector3.Lerp(_currentVelocity, Vector3.zero, lerpFactor);
@@ -58,5 +58,12 @@ namespace ExPresSXR.Movement
         /// </summary>
         /// <param name="impulse">Impulse to be applied.</param>
         public void ApplyImpulseUpperHalfSphere(Vector3 impulse) => ApplyImpulse(new Vector3(impulse.x, Mathf.Max(impulse.y, 0.0f), impulse.z));
+
+        /// <summary>
+        /// Applies a test horizontal impulse.
+        /// </summary>
+        /// <param name="impulse">Impulse to be applied.</param>
+        [ContextMenu("Apply Test Impulse")]
+        public void ApplyTestImpulse() => _currentVelocity += Vector3.forward * 10.0f;
     }
 }

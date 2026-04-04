@@ -1,33 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
+using ExPresSXR.Interaction.Feedback;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 
 
 namespace ExPresSXR.Minigames.TargetArea
 {
     /// <summary>
-    /// Triggers <seealso cref="TargetArea"> that are set as target and tracks the progress of triggering all targets.
+    /// Triggers a `TargetArea` that are set as target and tracks the progress of triggering all targets.
     /// Should be attached to the GameObject holding the Collider that is used as a trigger.
     /// </summary>
     public class TargetAreaTriggerer : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("The TargetAreas that are required to be completed.")]
+        private TargetArea[] _targets;
         /// <summary>
         /// The TargetAreas that are required to be completed.
         /// </summary>
-        [SerializeField]
-        private TargetArea[] _targets;
-        public TargetArea[] targets
+        public TargetArea[] Targets
         {
             get => _targets;
             set => _targets = value;
         }
 
         /// <summary>
-        /// The number of targets to be completed.
+        /// If enabled, the target areas will be automatically set up on Start().
         /// </summary>
         [SerializeField]
-        private bool _setupOnAwake = true;
+        [Tooltip("If enabled, the target areas will be automatically set up on Start().")]
+        private bool _autoStart = true;
 
         /// <summary>
         /// If enabled all events each of the three events below will be called mutually exclusive. This prevents errors when using these for different haptic feedbacks.
@@ -39,8 +41,31 @@ namespace ExPresSXR.Minigames.TargetArea
         [Space]
 
         /// <summary>
+        /// TIf haptics should be performed when hitting a target.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("If haptics should be performed when hitting a target.")]
+        private bool _doHaptics;
+
+        /// <summary>
+        /// The haptics player used for feedback.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The haptics player used for feedback.")]
+        private HapticImpulsePlayer _hapticsPlayer;
+
+        /// <summary>
+        /// The default rumble that is performed when calling 'PerformDefaultRumble()'.
+        /// </summary>
+        [Tooltip("The default rumble that is performed when calling 'PerformDefaultRumble()'.")]
+        [SerializeField]
+        private RumbleDescription _rumble = new(0.5f, 0.5f);
+
+
+        /// <summary>
         /// If an action was performed on a valid TargetArea.
         /// </summary>
+        [Space]
         public UnityEvent OnTargetAreaActionPerformed;
         /// <summary>
         /// If a single TargetArea was completed but not all.
@@ -54,7 +79,7 @@ namespace ExPresSXR.Minigames.TargetArea
         /// <summary>
         /// How many targets are available/required for this TargetAreaTriggerer.
         /// </summary>
-        public int numTargets
+        public int NumTargets
         {
             get => _targets != null ? _targets.Length : 0;
         }
@@ -66,17 +91,21 @@ namespace ExPresSXR.Minigames.TargetArea
         {
             if (!TryGetComponent(out Collider col))
             {
-                Debug.LogError("Could not find a Collider-Component so we won't be able to be detected targets.");
+                Debug.LogError("Could not find a Collider-Component so we won't be able to be detected targets.", this);
                 return;
             }
 
             if (!col.isTrigger)
             {
-                Debug.LogWarning("Setting the Collider as trigger to not collide with objects. Please make the Collider a trigger via the inspector. ");
+                Debug.LogWarning("Setting the Collider as trigger to not collide with objects. "
+                    + "Please make the Collider a trigger via the inspector.", this);
                 col.isTrigger = true;
             }
+        }
 
-            if (_setupOnAwake)
+        private void Start()
+        {
+            if (_autoStart)
             {
                 SetupTargets();
             }
@@ -110,11 +139,15 @@ namespace ExPresSXR.Minigames.TargetArea
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent(out TargetArea target)
-                && IsUncompletedTarget(target))
+                && IsUncompletedTarget(target)
+                && target.QueueAction())
             {
-                target.QueueAction();
+                if (_hapticsPlayer != null && _doHaptics)
+                {
+                    RumbleUtility.PerformConstantRumble(_rumble.Strength, _rumble.Duration, _hapticsPlayer);
+                }
 
-                if (!_emitEventsExclusively || !target.completed)
+                if (!_emitEventsExclusively || !target.Completed)
                 {
                     OnTargetAreaActionPerformed.Invoke();
                 }
@@ -125,12 +158,12 @@ namespace ExPresSXR.Minigames.TargetArea
         {
             _numCompleted++;
 
-            if (_numCompleted == numTargets)
+            if (_numCompleted == NumTargets)
             {
                 OnAllTargetsCompleted.Invoke();
             }
-            
-            if (!_emitEventsExclusively || _numCompleted != numTargets)
+
+            if (!_emitEventsExclusively || _numCompleted != NumTargets)
             {
                 OnSingleTargetCompleted.Invoke();
             }
@@ -143,7 +176,7 @@ namespace ExPresSXR.Minigames.TargetArea
                 // Found target => Return if it was not already completed
                 if (t == target)
                 {
-                    return !target.completed;
+                    return !target.Completed;
                 }
             }
             return false;

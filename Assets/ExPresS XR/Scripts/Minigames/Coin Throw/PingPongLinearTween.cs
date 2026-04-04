@@ -1,17 +1,14 @@
-/*
-    Script Name: PingPongLinearTween.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: This is only a minimal script to allow ping-pong-tweening. 
-                If you need something more elaborate, safe yourself the headache 
-                and buy a tween library like DOTween:)
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinThrow
 {
+    /// <summary>
+    /// This is only a minimal script to allow ping-pong-tweening. 
+    /// 
+    /// If you need something more elaborate, safe yourself the headache and buy a tween library like DOTween:)
+    /// </summary>
     public class PingPongLinearTween : MonoBehaviour
     {
         /// <summary>
@@ -25,12 +22,14 @@ namespace ExPresSXR.Minigames.CoinThrow
         /// Duration of the tween for one direction.
         /// </summary>
         [SerializeField]
+        [Tooltip("Duration of the tween for one direction.")]
         private float _duration = 1.0f;
 
         /// <summary>
         /// If enabled, the tween starts automatically during Awake().
         /// </summary>
         [SerializeField]
+        [Tooltip("If enabled, the tween starts automatically during Awake().")]
         private bool _startOnAwake;
 
         private float _startTime;

@@ -4,6 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
 {
@@ -14,6 +16,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
     /// </summary>
     public class KnobInteractable : ValueRangeInteractable<Float01Descriptor, TurnVisualizer, float>
     {
+        /// <inheritdoc />
         protected override void StartGrab(SelectEnterEventArgs args)
         {
             base.StartGrab(args);
@@ -52,12 +55,12 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [Tooltip("Factor for faster/slower turns.")]
         protected float _turnSpeed = 1.0f;
 
-        /// <summary>
-        /// How turning is performed.
-        /// </summary>
         [SerializeField]
         [Tooltip("How turning is performed.")]
         protected InteractorTurnType _turnType;
+        /// <summary>
+        /// How turning is performed.
+        /// </summary>
         public InteractorTurnType TurnType
         {
             get => _turnType;
@@ -67,6 +70,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         [SerializeField]
         [Tooltip("If true, inverses the turn direction.")]
         private bool _flipTurnDirection;
+        /// <summary>
+        /// If true, inverses the turn direction.
+        /// </summary>
         public bool FlipTurnDirection
         {
             get => _flipTurnDirection;
@@ -92,13 +98,19 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         private float _rawValue;
+        /// <summary>
+        /// Raw value visualized. Ensured to be in the range between 0.0f and 1.0f (inclusive).
+        /// </summary>
         public float RawValue
         {
             get => _rawValue;
             set => _rawValue = Mathf.Clamp01(value);
         }
 
-        public Vector3 _previousTurnForward = Vector3.zero;
+        private Vector3 _previousTurnForward = Vector3.zero;
+        /// <summary>
+        /// Forward direction of the previous update.
+        /// </summary>
         public Vector3 PreviousTurnForward
         {
             get => _previousTurnForward;
@@ -107,7 +119,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
 
 
         /// <inheritdoc />
-        protected virtual Vector3 GetTurnForward(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        protected virtual Vector3 GetTurnForward(IXRInteractable interactable, IXRInteractor interactor)
         {
 
             Vector3 interactorForward = _turnType == InteractorTurnType.Forward
@@ -118,7 +130,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override float GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public override float GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             Vector3 currentTurnForward = GetTurnForward(interactable, interactor);
             // Prevent initial grab -> previous turn forward is Vector3.zero
@@ -136,7 +148,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(float value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(float value, IXRInteractable interactable)
         {
             if (_pivot == null)
             {
@@ -162,7 +174,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 Color.yellow,
                 Vector3.zero,
                 Vector3.up,
-                atTransform
+                atTransform,
+                "0.0",
+                "1.0",
+                "{0:F1}"
             );
         }
 
@@ -171,7 +186,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public enum InteractorTurnType
         {
+            /// <summary> Turning is determined from wrist movement. </summary>
             Forward,
+            /// <summary> Turning is determined the direction from the interactable to the interactor. </summary>
             Direction
         }
     }

@@ -6,6 +6,9 @@ using UnityEngine.Rendering;
 
 namespace ExPresSXR.Minigames.Excavation
 {
+    /// <summary>
+    /// The main game logic of a brush-based excavation game.
+    /// </summary>
     public class ExcavationGame : MonoBehaviour
     {
         /// <summary>
@@ -151,31 +154,30 @@ namespace ExPresSXR.Minigames.Excavation
         {
             Vector2 extents = _gridGizmoDrawScale / 2.0f;
             Transform atTransform = _gridTransform != null ? _gridTransform : transform;
-            GizmoUtils.DrawGrid(Vector3.zero, _gridGizmoDrawScale / 2.0f, GridSize, Color.blue, Color.white, atTransform);
+            GizmoUtils.DrawGrid(Vector3.zero, _gridGizmoDrawScale / 2.0f, GridSize, 
+                                Color.blue, Color.white, atTransform,
+                                "(0, 0)", $"({GridWidth - 1}, {GridHeight - 1})", 
+                                $"(0, {GridHeight - 1})", $"({GridWidth - 1}, 0)");
 
             // Bottom left = (0, 0)
             Gizmos.color = Color.red;
             Vector3 bottomLeft = new(-extents.x, 0.0f, -extents.y);
             Gizmos.DrawSphere(bottomLeft, BIG_CORNER_MARKER_SIZE);
-            GizmoUtils.DrawLabel("(0, 0)", bottomLeft, atTransform);
 
             // Top right = (1, 1)
             Gizmos.color = Color.green;
             Vector3 topRight = new(extents.x, 0.0f, extents.y);
             Gizmos.DrawSphere(topRight, BIG_CORNER_MARKER_SIZE);
-            GizmoUtils.DrawLabel($"({GridWidth - 1}, {GridHeight - 1})", topRight, atTransform);
 
             // Bottom right = (0, 1)
             Gizmos.color = Color.magenta;
             Vector3 bottomRight = new(-extents.x, 0.0f, extents.y);
             Gizmos.DrawSphere(bottomRight, SMALL_CORNER_MARKER_SIZE);
-            GizmoUtils.DrawLabel($"(0, {GridHeight - 1})", bottomRight, atTransform);
 
             // Top left = (1, 0)
             Gizmos.color = Color.cyan;
             Vector3 topLeft = new(extents.x, 0.0f, -extents.y);
             Gizmos.DrawSphere(topLeft, SMALL_CORNER_MARKER_SIZE);
-            GizmoUtils.DrawLabel($"({GridWidth - 1}, 0)", topLeft, atTransform);
         }
     }
 }

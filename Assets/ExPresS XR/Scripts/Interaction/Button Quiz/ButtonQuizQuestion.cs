@@ -6,6 +6,11 @@ using ExPresSXR.Experimentation.DataGathering;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
+    /// <summary>
+    /// Serializable class representing a question in the TutorialButtonQuiz.
+    /// 
+    /// Besides being able to store question, answer and feedback values it also features methods for retrieving them using a QuizConfig.
+    /// </summary>
     [System.Serializable]
     // ExPresSXR.Interaction.ButtonQuiz.ButtonQuizQuestion, Assembly-CSharp
     public class ButtonQuizQuestion
@@ -20,77 +25,92 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// It should be the same as it's index in the `QuizConfig.question` it is contained in.
         /// Will be automatically set when editing via the SetupDialog.
         /// </summary>
-        public int itemIdx;
+        public int ItemIdx;
         /// <summary>
         /// The video clip shown as question. Has higher priority than the `videoUrl`.
         /// </summary>
-        public VideoClip questionVideo;
+        public VideoClip QuestionVideo;
         /// <summary>
         /// The video url (link to the 'StreamingAsset/'-folder) shown as question.
         /// Will be overwritten by `questionVideo`.
         /// </summary>
-        public string questionVideoUrl;
+        public string QuestionVideoUrl;
         /// <summary>
         /// The GameObject shown as question.
         /// </summary>
-        public GameObject questionObject;
+        public GameObject QuestionObject;
         /// <summary>
         /// The text shown as question.
         /// </summary>
-        public string questionText;
+        public string QuestionText;
 
         /// <summary>
         /// An array of size 4 holding the GameObjects shown as answer option on a QuizButton.
         /// </summary>
-        public GameObject[] answerObjects;
+        public GameObject[] AnswerObjects;
         /// <summary>
         /// An array of size 4 holding the strings shown as answer option on a QuizButton.
         /// </summary>
-        public string[] answerTexts;
+        public string[] AnswerTexts;
 
         /// <summary>
         /// An array of 4 booleans where true marks ans answer and their associated text and GameObject as correct.
         /// </summary>
-        public bool[] correctAnswers;
+        public bool[] CorrectAnswers;
 
         /// <summary>
         /// The video shown as feedback.
         /// </summary>
-        public VideoClip feedbackVideo;
+        public VideoClip FeedbackVideo;
         /// <summary>
         /// The GameObject shown as feedback. Has higher priority than the `videoUrl`.
         /// </summary>
-        public string feedbackVideoUrl;
+        public string FeedbackVideoUrl;
         /// <summary>
         /// The video url (link to the 'StreamingAsset/'-folder) shown as feedback. 
         /// Will be overwritten by `feedbackVideo`.
         /// </summary>
-        public GameObject feedbackObject;
+        public GameObject FeedbackObject;
         /// <summary>
         /// The text shown as feedback.
         /// </summary>
-        public string feedbackText;
+        public string FeedbackText;
 
+        /// <summary>
+        /// Contructor for a ButtonQuizQuestion.
+        /// </summary>
+        /// <param name="itemIdx">Id of the question.</param>
+        /// <param name="questionVideo">Question video shown.</param>
+        /// <param name="questionVideoUrl">Question video URL shown (ignored if `questionVideo` is provided).</param>
+        /// <param name="questionObject">Question displayed</param>
+        /// <param name="questionText">Question text displayed.</param>
+        /// <param name="answerObjects">Answer objects displayed.</param>
+        /// <param name="answerTexts">Answer texts displayed.</param>
+        /// <param name="correctAnswers">Correct answers.</param>
+        /// <param name="feedbackVideo">Feedback video shown.</param>
+        /// <param name="feedbackVideoUrl">Feedback video URL shown (ignored if `feedbackVideo` is provided).</param>
+        /// <param name="feedbackObject">Feedback object shown.</param>
+        /// <param name="feedbackText">Feedback text shown.</param>
         public ButtonQuizQuestion(int itemIdx, VideoClip questionVideo, string questionVideoUrl, GameObject questionObject,
                             string questionText, GameObject[] answerObjects, string[] answerTexts, bool[] correctAnswers,
                             VideoClip feedbackVideo, string feedbackVideoUrl, GameObject feedbackObject, string feedbackText)
         {
-            this.itemIdx = itemIdx;
+            ItemIdx = itemIdx;
 
-            this.questionVideo = questionVideo;
-            this.questionVideoUrl = questionVideoUrl;
-            this.questionObject = questionObject;
-            this.questionText = questionText;
+            QuestionVideo = questionVideo;
+            QuestionVideoUrl = questionVideoUrl;
+            QuestionObject = questionObject;
+            QuestionText = questionText;
 
-            this.answerObjects = answerObjects;
-            this.answerTexts = answerTexts;
+            AnswerObjects = answerObjects;
+            AnswerTexts = answerTexts;
 
-            this.correctAnswers = correctAnswers;
+            CorrectAnswers = correctAnswers;
 
-            this.feedbackVideo = feedbackVideo;
-            this.feedbackVideoUrl = feedbackVideoUrl;
-            this.feedbackObject = feedbackObject;
-            this.feedbackText = feedbackText;
+            FeedbackVideo = feedbackVideo;
+            FeedbackVideoUrl = feedbackVideoUrl;
+            FeedbackObject = feedbackObject;
+            FeedbackText = feedbackText;
         }
 
 
@@ -102,35 +122,35 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public string GetFeedbackText(ButtonQuizConfig config)
         {
             // No Feedback
-            if (config.feedbackMode == FeedbackMode.None)
+            if (config.FeedbackMode == FeedbackMode.None)
             {
                 return "";
             }
 
             // Show feedback text if exists
-            if (config.feedbackType == FeedbackType.Text || config.feedbackType == FeedbackType.DifferingTypes)
+            if (config.FeedbackType == FeedbackType.Text || config.FeedbackType == FeedbackType.DifferingTypes)
             {
-                return feedbackText ?? "";
+                return FeedbackText ?? "";
             }
 
             // Show answer text feedback type is ShowAnswer
-            if (config.feedbackType == FeedbackType.ShowAnswers
-                    && (config.answerType == AnswerType.Text || config.answerType == AnswerType.DifferingTypes))
+            if (config.FeedbackType == FeedbackType.ShowAnswers
+                    && (config.AnswerType == AnswerType.Text || config.AnswerType == AnswerType.DifferingTypes))
             {
                 string feedbackString = "";
 
-                switch (config.feedbackMode)
+                switch (config.FeedbackMode)
                 {
                     case FeedbackMode.AlwaysCorrect:
                     case FeedbackMode.AlwaysWrong:
-                        for (int i = 0; i < answerTexts.Length; i++)
+                        for (int i = 0; i < AnswerTexts.Length; i++)
                         {
-                            bool chooseCorrect = config.feedbackMode == FeedbackMode.AlwaysCorrect;
-                            if (correctAnswers[i] == chooseCorrect && answerTexts[i] != null && answerTexts[i] != "")
+                            bool chooseCorrect = config.FeedbackMode == FeedbackMode.AlwaysCorrect;
+                            if (CorrectAnswers[i] == chooseCorrect && AnswerTexts[i] != null && AnswerTexts[i] != "")
                             {
-                                feedbackString += answerTexts[i];
+                                feedbackString += AnswerTexts[i];
 
-                                if (config.quizMode == QuizMode.SingleChoice)
+                                if (config.QuizMode == QuizMode.SingleChoice)
                                 {
                                     return feedbackString;
                                 }
@@ -142,14 +162,14 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                         int numValidAnswer = GetNumValidAnswers();
                         for (int i = 0; i < numValidAnswer; i++)
                         {
-                            if (Random.Range(0, 1) < 0.5 && answerTexts[i] != null && answerTexts[i] != "")
+                            if (Random.Range(0, 1) < 0.5 && AnswerTexts[i] != null && AnswerTexts[i] != "")
                             {
-                                feedbackString += answerTexts[i] + "\n";
+                                feedbackString += AnswerTexts[i] + "\n";
                             }
                         }
-                        if (feedbackString == "" || config.quizMode == QuizMode.SingleChoice)
+                        if (feedbackString == "" || config.QuizMode == QuizMode.SingleChoice)
                         {
-                            return answerTexts[Random.Range(0, numValidAnswer)];
+                            return AnswerTexts[Random.Range(0, numValidAnswer)];
                         }
                         return feedbackString;
                 }
@@ -166,39 +186,39 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public GameObject[] GetFeedbackGameObjects(ButtonQuizConfig config)
         {
             // No Feedback
-            if (config.feedbackMode == FeedbackMode.None)
+            if (config.FeedbackMode == FeedbackMode.None)
             {
                 return new GameObject[0];
             }
 
             // Show feedback object if exists
-            if (config.feedbackType == FeedbackType.Object || config.feedbackType == FeedbackType.DifferingTypes)
+            if (config.FeedbackType == FeedbackType.Object || config.FeedbackType == FeedbackType.DifferingTypes)
             {
-                if (feedbackObject != null)
+                if (FeedbackObject != null)
                 {
-                    return new GameObject[] { feedbackObject };
+                    return new GameObject[] { FeedbackObject };
                 }
                 return new GameObject[0];
             }
 
             // Show answer object feedback type is ShowAnswer
-            if (config.feedbackType == FeedbackType.ShowAnswers
-                    && (config.answerType == AnswerType.Object || config.answerType == AnswerType.DifferingTypes))
+            if (config.FeedbackType == FeedbackType.ShowAnswers
+                    && (config.AnswerType == AnswerType.Object || config.AnswerType == AnswerType.DifferingTypes))
             {
                 List<GameObject> feedbackGos = new();
 
-                switch (config.feedbackMode)
+                switch (config.FeedbackMode)
                 {
                     case FeedbackMode.AlwaysCorrect:
                     case FeedbackMode.AlwaysWrong:
-                        for (int i = 0; i < answerTexts.Length; i++)
+                        for (int i = 0; i < AnswerTexts.Length; i++)
                         {
-                            bool chooseCorrect = config.feedbackMode == FeedbackMode.AlwaysCorrect;
-                            if (correctAnswers[i] == chooseCorrect && answerObjects[i] != null)
+                            bool chooseCorrect = config.FeedbackMode == FeedbackMode.AlwaysCorrect;
+                            if (CorrectAnswers[i] == chooseCorrect && AnswerObjects[i] != null)
                             {
-                                feedbackGos.Add(answerObjects[i]);
+                                feedbackGos.Add(AnswerObjects[i]);
 
-                                if (config.quizMode == QuizMode.SingleChoice)
+                                if (config.QuizMode == QuizMode.SingleChoice)
                                 {
                                     return feedbackGos.ToArray();
                                 }
@@ -208,16 +228,16 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                     case FeedbackMode.Random:
                         for (int i = 0; i < GetNumValidAnswers(); i++)
                         {
-                            if (Random.Range(0, 1) < 0.5 && answerObjects[i] != null)
+                            if (Random.Range(0, 1) < 0.5 && AnswerObjects[i] != null)
                             {
-                                feedbackGos.Add(answerObjects[i]);
-                                if (config.quizMode == QuizMode.SingleChoice)
+                                feedbackGos.Add(AnswerObjects[i]);
+                                if (config.QuizMode == QuizMode.SingleChoice)
                                 {
                                     return feedbackGos.ToArray();
                                 }
                             }
                         }
-                        if (answerTexts.Length <= 0 && config.quizMode == QuizMode.SingleChoice)
+                        if (AnswerTexts.Length <= 0 && config.QuizMode == QuizMode.SingleChoice)
                         {
                             return new GameObject[] { feedbackGos[Random.Range(0, feedbackGos.Count)] };
                         }
@@ -234,9 +254,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <returns>The feedback VideoClip for the config.</returns>
         public VideoClip GetFeedbackVideo(ButtonQuizConfig config)
         {
-            if (config.feedbackType == FeedbackType.Video || config.feedbackType == FeedbackType.DifferingTypes)
+            if (config.FeedbackType == FeedbackType.Video || config.FeedbackType == FeedbackType.DifferingTypes)
             {
-                return feedbackVideo;
+                return FeedbackVideo;
             }
 
             return null;
@@ -249,9 +269,9 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         /// <returns>The feedback url string for the config.</returns>
         public string GetFeedbackVideoUrl(ButtonQuizConfig config)
         {
-            if (config.feedbackType == FeedbackType.Video || config.feedbackType == FeedbackType.DifferingTypes)
+            if (config.FeedbackType == FeedbackType.Video || config.FeedbackType == FeedbackType.DifferingTypes)
             {
-                return feedbackVideoUrl;
+                return FeedbackVideoUrl;
             }
 
             return "";
@@ -279,25 +299,25 @@ namespace ExPresSXR.Interaction.ButtonQuiz
         public List<object> GetQuestionCsvExportValuesList()
             => new()
                 {
-                        itemIdx,
-                        CsvUtility.GetVideoName(questionVideo, questionVideoUrl),
-                        questionObject != null? questionObject.name : "",
-                        questionText,
-                        answerObjects.Length > 0 && answerObjects[0] != null? answerObjects[0].name : "",
-                        answerObjects.Length > 1 && answerObjects[1] != null? answerObjects[1].name : "",
-                        answerObjects.Length > 2 && answerObjects[2] != null? answerObjects[2].name : "",
-                        answerObjects.Length > 3 && answerObjects[3] != null? answerObjects[3].name : "",
-                        answerTexts.Length > 0? answerTexts[0] : "",
-                        answerTexts.Length > 1? answerTexts[1] : "",
-                        answerTexts.Length > 2? answerTexts[2] : "",
-                        answerTexts.Length > 3? answerTexts[3] : "",
-                        correctAnswers.Length > 0? correctAnswers[0].ToString() : "false",
-                        correctAnswers.Length > 1? correctAnswers[1].ToString() : "false",
-                        correctAnswers.Length > 2? correctAnswers[2].ToString() : "false",
-                        correctAnswers.Length > 3? correctAnswers[3].ToString() : "false",
-                        feedbackVideo != null? feedbackVideo.name : feedbackVideoUrl,
-                        feedbackObject != null? feedbackObject.name : "",
-                        feedbackText
+                        ItemIdx,
+                        CsvUtility.GetVideoName(QuestionVideo, QuestionVideoUrl),
+                        QuestionObject != null? QuestionObject.name : "",
+                        QuestionText,
+                        AnswerObjects.Length > 0 && AnswerObjects[0] != null? AnswerObjects[0].name : "",
+                        AnswerObjects.Length > 1 && AnswerObjects[1] != null? AnswerObjects[1].name : "",
+                        AnswerObjects.Length > 2 && AnswerObjects[2] != null? AnswerObjects[2].name : "",
+                        AnswerObjects.Length > 3 && AnswerObjects[3] != null? AnswerObjects[3].name : "",
+                        AnswerTexts.Length > 0 ? AnswerTexts[0] : "",
+                        AnswerTexts.Length > 1 ? AnswerTexts[1] : "",
+                        AnswerTexts.Length > 2 ? AnswerTexts[2] : "",
+                        AnswerTexts.Length > 3 ? AnswerTexts[3] : "",
+                        CorrectAnswers.Length > 0? CorrectAnswers[0].ToString() : "false",
+                        CorrectAnswers.Length > 1? CorrectAnswers[1].ToString() : "false",
+                        CorrectAnswers.Length > 2? CorrectAnswers[2].ToString() : "false",
+                        CorrectAnswers.Length > 3? CorrectAnswers[3].ToString() : "false",
+                        FeedbackVideo != null? FeedbackVideo.name : FeedbackVideoUrl,
+                        FeedbackObject != null? FeedbackObject.name : "",
+                        FeedbackText
                 };
 
 
@@ -353,8 +373,8 @@ namespace ExPresSXR.Interaction.ButtonQuiz
             int numAnswers = 0;
             for (int i = 0; i < ButtonQuiz.NUM_ANSWERS; i++)
             {
-                if (i < answerObjects.Length && answerObjects[i] != null
-                    || i < answerTexts.Length && !string.IsNullOrEmpty(answerTexts[i]))
+                if (i < AnswerObjects.Length && AnswerObjects[i] != null
+                    || i < AnswerTexts.Length && !string.IsNullOrEmpty(AnswerTexts[i]))
                 {
                     numAnswers++;
                 }

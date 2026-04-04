@@ -38,12 +38,12 @@ namespace ExPresSXR.Minigames.Excavation
         [Tooltip("Positions of the grid needed to be completed.")]
         private Vector2Int[] _positions;
 
-        /// <summary>
-        /// Used internally for displaying in the editor.
-        /// </summary>
         [SerializeField]
         [Tooltip("Used internally for displaying in the editor.")]
         private int _granularity = -1;
+        /// <summary>
+        /// Used internally for displaying in the editor.
+        /// </summary>
         public int Granularity
         {
             get => _granularity;
@@ -68,9 +68,9 @@ namespace ExPresSXR.Minigames.Excavation
         /// <summary>
         /// Checks if all the sections have been completed to an average of at least `_completionValue` percent.
         /// </summary>
-        /// <param name="gridWidth">Width (& Height) of the excavation game grid to check.</param>
-        /// <param name="colors">Array of the Colors of each section.</param>
-        /// <returns>Wether or not the zone has been completed.</returns>
+        /// <param name="gridWidth">Width (and height) of the excavation game grid to check.</param>
+        /// <param name="colors">Array of the colors of each section.</param>
+        /// <returns>Whether or not the zone has been completed.</returns>
         public bool CheckCompletion(int gridWidth, Color32[] colors)
         {
             if (_completed)

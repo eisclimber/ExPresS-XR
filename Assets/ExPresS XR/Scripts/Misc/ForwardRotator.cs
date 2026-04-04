@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc
 {
+    /// <summary>
+    /// Follows the provided forward vector with its forward over time. Can be used to create a menu that smoothly follows the player.
+    /// </summary>
     public class ForwardRotator : MonoBehaviour
     {
         private const float LERP_STOP_ANGLE = 1.0f;

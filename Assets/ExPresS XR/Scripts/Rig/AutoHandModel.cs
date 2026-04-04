@@ -5,19 +5,25 @@ using UnityEngine.XR;
 
 namespace ExPresSXR.Rig
 {
+    /// <summary>
+    /// The Auto Hand Model detects and displays the currently used controller as well as providing an optional animated hand model.
+    /// It is used to represent the hand/controller of the XR Rig.  
+    /// 
+    /// There are in total four versions, two for for the for each hand, one having collisions and one doesn't.
+    /// </summary>
     public class AutoHandModel : MonoBehaviour
     {
+        [SerializeField]
+        private HandModelMode _HandModelMode;
         /// <summary>
         /// Determines which model is displayed.
         /// </summary>
-        [SerializeField]
-        private HandModelMode _handModelMode;
-        public HandModelMode handModelMode
+        public HandModelMode HandModelMode
         {
-            get => _handModelMode;
+            get => _HandModelMode;
             set
             {
-                _handModelMode = value;
+                _HandModelMode = value;
 
                 // Allows updating the model during runtime
                 UpdateDisplayedModel();
@@ -26,26 +32,30 @@ namespace ExPresSXR.Rig
         /// <summary>
         /// Characteristics of the controller to search for, which is used to get the correct controller for the correct hand.
         /// </summary>
-        public InputDeviceCharacteristics controllerCharacteristics;
+        public InputDeviceCharacteristics _controllerCharacteristics;
         /// <summary>
-        /// A list of models from which the correct model for the used controller when is chosen `handModelMode` is set to `Controller` or `Both`. 
+        /// A list of models from which the correct model for the used controller when is chosen `HandModelMode` is set to `Controller` or `Both`. 
         /// If no model was found for the controller a generic model will be shown.
         /// </summary>
-        public List<GameObject> controllerModels;
+        public List<GameObject> _controllerModels;
         /// <summary>
-        /// The model that is displayed and animated when `handModelMode` is set to `Hand` or `Both`.
+        /// The model that is displayed and animated when `HandModelMode` is set to `Hand` or `Both`.
         /// </summary>
-        public GameObject handModel;
+        public GameObject _handModel;
+
         /// <summary>
-        /// A custom model that is shown when `handModelMode` is set to `Custom`.
+        /// A custom model that is shown when `HandModelMode` is set to `Custom`.
         /// </summary>
         public GameObject customModel;
 
-        public Transform currentAttach
+        /// <summary>
+        /// The current attach transform provided by the current model.
+        /// </summary>
+        public Transform CurrentAttach
         {
             get
             {
-                if (_currentHandModel != null && (handModelMode == HandModelMode.Hand || handModelMode == HandModelMode.Both))
+                if (_currentHandModel != null && (HandModelMode == HandModelMode.Hand || HandModelMode == HandModelMode.Both))
                 {
                     Transform handAttach = _currentHandModel.transform.Find("Attach");
                     if (handAttach != null)
@@ -53,7 +63,7 @@ namespace ExPresSXR.Rig
                         return handAttach;
                     }
                 }
-                else if (_currentControllerModel != null && handModelMode == HandModelMode.Controller)
+                else if (_currentControllerModel != null && HandModelMode == HandModelMode.Controller)
                 {
                     Transform controllerAttach = _currentControllerModel.transform.Find("Attach");
                     if (controllerAttach != null)
@@ -65,31 +75,31 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Completely disables collisions with the hand/controller models during runtime. Overwrites the functionality of _collisionsEnabled.")]
+        [SerializeField]
+        private bool _modelCollisionsEnabled;
         /// <summary>
         /// Completely disables collisions with the hand/controller models during runtime.
         /// Overwrites the functionality of `_collisionsEnabled`.
         /// </summary>
-        [Tooltip("Completely disables collisions with the hand/controller models during runtime. Overwrites the functionality of _collisionsEnabled.")]
-        [SerializeField]
-        private bool _modelCollisionsEnabled;
-        public bool modelCollisionsEnabled
+        public bool ModelCollisionsEnabled
         {
             get => _modelCollisionsEnabled;
             set
             {
                 _modelCollisionsEnabled = value;
                 // Update collisions (Setting to true enables it automatically)
-                collisionsCurrentlyEnabled = true;
+                CollisionsCurrentlyEnabled = true;
             }
         }
 
+        [Tooltip("Temporary en-/disables collisions if _modelCollisionsEnabled is true. Will be controlled by the HandController. To disable collisions completely use _modelCollisionsEnabled instead.")]
+        private bool _collisionsCurrentlyEnabled;
         /// <summary>
         /// Temporary en-/disables collisions if `_modelCollisionsEnabled` is true. Will be controlled by the HandController.
         /// To disable collisions completely use `_modelCollisionsEnabled` instead.
         /// </summary>
-        [Tooltip("Temporary en-/disables collisions if _modelCollisionsEnabled is true. Will be controlled by the HandController. To disable collisions completely use _modelCollisionsEnabled instead.")]
-        private bool _collisionsCurrentlyEnabled;
-        public bool collisionsCurrentlyEnabled
+        public bool CollisionsCurrentlyEnabled
         {
             get => _collisionsCurrentlyEnabled;
             set
@@ -115,7 +125,9 @@ namespace ExPresSXR.Rig
         private GameObject _currentControllerModel;
         private GameObject _currentHandModel;
 
-
+        /// <summary>
+        /// Emitted when the auto hand models were loaded, meaning a controller was detected.
+        /// </summary>
         public UnityEvent OnModelsLoaded;
 
         private void Update()
@@ -137,13 +149,13 @@ namespace ExPresSXR.Rig
 
         private void UpdateModelVisibility()
         {
-            bool showHand = handModelMode == HandModelMode.Hand
-                                || handModelMode == HandModelMode.Both;
+            bool showHand = HandModelMode == HandModelMode.Hand
+                                || HandModelMode == HandModelMode.Both;
 
             // Also show controller for mode Custom
-            bool showController = handModelMode == HandModelMode.Controller
-                                || handModelMode == HandModelMode.Custom
-                                || handModelMode == HandModelMode.Both;
+            bool showController = HandModelMode == HandModelMode.Controller
+                                || HandModelMode == HandModelMode.Custom
+                                || HandModelMode == HandModelMode.Both;
 
             _currentHandModel.SetActive(showHand);
             _currentControllerModel.SetActive(showController);
@@ -153,7 +165,7 @@ namespace ExPresSXR.Rig
         private bool TryInitialize()
         {
             List<InputDevice> devices = new();
-            InputDevices.GetDevicesWithCharacteristics(controllerCharacteristics, devices);
+            InputDevices.GetDevicesWithCharacteristics(_controllerCharacteristics, devices);
 
             if (devices.Count > 0)
             {
@@ -162,7 +174,7 @@ namespace ExPresSXR.Rig
                 LoadModels();
 
                 // Ensures to Enable/Disable Collisions on currently loaded models
-                modelCollisionsEnabled = _modelCollisionsEnabled;
+                ModelCollisionsEnabled = _modelCollisionsEnabled;
                 return true;
             }
             return false;
@@ -170,7 +182,7 @@ namespace ExPresSXR.Rig
 
         private void LoadModels()
         {
-            if (_currentDevice == null || !_currentDevice.isValid)
+            if (_currentDevice == null || !_currentDevice.isValid || !isActiveAndEnabled)
             {
                 return;
             }
@@ -180,7 +192,7 @@ namespace ExPresSXR.Rig
             {
                 Destroy(_currentHandModel);
             }
-            _currentHandModel = Instantiate(handModel, transform);
+            _currentHandModel = Instantiate(_handModel, transform);
 
             // Load Controller Model
             if (_currentControllerModel != null)
@@ -188,8 +200,8 @@ namespace ExPresSXR.Rig
                 Destroy(_currentControllerModel);
             }
 
-            GameObject prefab = controllerModels.Find(controller => controller.name.StartsWith(_currentDevice.name));
-            if (handModelMode == HandModelMode.Custom)
+            GameObject prefab = _controllerModels.Find(controller => controller.name.StartsWith(_currentDevice.name));
+            if (HandModelMode == HandModelMode.Custom)
             {
                 _currentControllerModel = customModel != null ? Instantiate(customModel, transform) : null;
             }
@@ -200,19 +212,39 @@ namespace ExPresSXR.Rig
             else
             {
                 Debug.LogWarning($"No Model with name: '{_currentDevice.name}' found, using a generic model instead.");
-                _currentControllerModel = Instantiate(controllerModels[0], transform);
+                _currentControllerModel = Instantiate(_controllerModels[0], transform);
             }
 
             OnModelsLoaded.Invoke();
         }
+
+        /// <summary>
+        /// Sets the hand pointing pose enabled/disabled, if possible.
+        /// </summary>
+        /// <param name="pointing">If the hand should be pointing or not.</param>
+        public void SetHandPointing(bool pointing)
+        {
+            if (_currentHandModel != null && _currentHandModel.TryGetComponent(out VirtualHandAnimator handAnimator))
+            {
+                handAnimator.SetPointing(pointing);
+            }
+        }
     }
 
+    /// <summary>
+    /// How the hands are represented.
+    /// </summary>
     public enum HandModelMode
     {
+        /// <summary> Displays the hands as controllers matching the headset. </summary>
         Controller,
+        /// <summary> Uses an articulated hand for visualization. </summary>
         Hand,
+        /// <summary> Uses both hand and controller models. </summary>
         Both,
+        /// <summary> Uses a custom model. </summary>
         Custom,
+        /// <summary> No hand visualization. </summary>
         None
     }
 }

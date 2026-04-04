@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ExPresSXR.Misc.Timing
 {
+    /// <summary>
+    /// A stopwatch allowing to measure the time from a start time.
+    /// </summary>
     public class Stopwatch : MonoBehaviour
     {
         /// <summary>
@@ -9,12 +12,13 @@ namespace ExPresSXR.Misc.Timing
         /// </summary>
         public const float INACTIVE_STOP_TIME = -1.0f;
 
+        [SerializeField]
+        [Tooltip("Time when the stopwatch was started or INACTIVE_STOP_TIME if not started.")]
+        private float _startTime = INACTIVE_STOP_TIME;
         /// <summary>
         /// Stops and resets the stopwatch, returns the final time measurement.
         /// </summary>
-        [Tooltip("Time when the stopwatch was started or INACTIVE_STOP_TIME if not started.")]
-        private float _startTime = INACTIVE_STOP_TIME;
-        public float startTime
+        public float StartTime
         {
             get => _startTime;
         }
@@ -22,8 +26,7 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         /// How long the stopwatch is currently running or INACTIVE_STOP_TIME if not started.
         /// </summary>
-        [Tooltip("How long the stopwatch is currently running or INACTIVE_STOP_TIME if not started.")]
-        public float currentStopTime
+        public float CurrentStopTime
         {
             get 
             {
@@ -31,25 +34,32 @@ namespace ExPresSXR.Misc.Timing
             }
         }
 
+        [SerializeField]
+        [Tooltip("If true, will start the stopwatch during OnAwake().")]
+        private bool _autoStart;
         /// <summary>
-        /// If true, will start the timer  during OnAwake().
+        /// If true, will start the stopwatch during OnAwake().
         /// </summary>
-        [Tooltip("If true, will start the timer  during OnAwake().")]
-        public bool autoStart;
+        public bool AutoStart
+        {
+            get => _autoStart;
+            set => _autoStart = value;
+        }
 
+        [SerializeField]
+        [Tooltip("Is true if the stopwatch is currently measuring time.")]
+        private bool _running;
         /// <summary>
         /// Is true if the stopwatch is currently measuring time.
         /// </summary>
-        [Tooltip("Is true if the stopwatch is currently measuring time.")]
-        private bool _running;
-        public bool running 
+        public bool Running 
         { 
             get => _running;
         }
 
 
         private void Awake() {
-            if (autoStart)
+            if (_autoStart)
             {
                 StartTimeMeasurement();
             }
@@ -67,12 +77,12 @@ namespace ExPresSXR.Misc.Timing
         /// <summary>
         /// Stops and resets the stopwatch, returns the final time measurement in seconds.
         /// </summary>
-        /// <param name="_restart">Wether to restart or not.</param>
+        /// <param name="_restart">Whether to restart or not.</param>
         /// <returns>The duration until the timer was stopped in seconds.</returns>
         public float StopTimeMeasurement(bool _restart = false)
         {
             // Save end time
-            float endTime = currentStopTime;
+            float endTime = CurrentStopTime;
             
             // Halt stopwatch or restart
             _running = _restart;

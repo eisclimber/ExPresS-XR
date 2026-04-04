@@ -1,0 +1,393 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &234582810859185921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1193461215287848392}
+  - component: {fileID: 7352047378580479821}
+  - component: {fileID: 4905552876310719870}
+  - component: {fileID: 8104261138259852324}
+  m_Layer: 3
+  m_Name: ExPresS XR Line Visuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1193461215287848392
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234582810859185921}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7352047378580479821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234582810859185921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e353695beb436ab39a90d9ecefaee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.CurveVisualController
+  m_LineRenderer: {fileID: 4905552876310719870}
+  m_CurveVisualObject: {fileID: 0}
+  m_OverrideLineOrigin: 1
+  m_LineOriginTransform: {fileID: 0}
+  m_VisualPointCount: 20
+  m_MaxVisualCurveDistance: 10
+  m_RestingVisualLineLength: 0.25
+  m_LineDynamicsMode: 1
+  m_RetractDelay: 1
+  m_RetractDuration: 1
+  m_ExtendLineToEmptyHit: 0
+  m_ExtensionRate: 10
+  m_EndPointExpansionRate: 10
+  m_ComputeMidPointWithComplexCurves: 0
+  m_SnapToSelectedAttachIfAvailable: 1
+  m_SnapToSnapVolumeIfAvailable: 0
+  m_CurveStartOffset: 0.015
+  m_CurveEndOffset: 0.005
+  m_CustomizeLinePropertiesForState: 1
+  m_LinePropertyAnimationSpeed: 8
+  m_NoValidHitProperties:
+    m_SmoothlyCurveLine: 1
+    m_LineBendRatio: 0.25
+    m_AdjustWidth: 1
+    m_StarWidth: 0.003
+    m_EndWidth: 0.003
+    m_EndWidthScaleDistanceFactor: 2
+    m_AdjustGradient: 1
+    m_Gradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 1, b: 1, a: 0.5019608}
+      key2: {r: 0, g: 0, b: 0, a: 0.2509804}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 193
+      atime1: 8192
+      atime2: 32768
+      atime3: 55705
+      atime4: 65342
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 4
+    m_CustomizeExpandLineDrawPercent: 0
+    m_ExpandModeLineDrawPercent: 0.9
+  m_UIHitProperties:
+    m_SmoothlyCurveLine: 1
+    m_LineBendRatio: 0.5
+    m_AdjustWidth: 1
+    m_StarWidth: 0.004
+    m_EndWidth: 0.004
+    m_EndWidthScaleDistanceFactor: 2
+    m_AdjustGradient: 1
+    m_Gradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 0.78431374, b: 0.5686275, a: 0.49019608}
+      key2: {r: 1, g: 1, b: 1, a: 1}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 16384
+      ctime2: 65535
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 8192
+      atime2: 32768
+      atime3: 65535
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 3
+      m_NumAlphaKeys: 4
+    m_CustomizeExpandLineDrawPercent: 0
+    m_ExpandModeLineDrawPercent: 0.9
+  m_UIPressHitProperties:
+    m_SmoothlyCurveLine: 1
+    m_LineBendRatio: 0.5
+    m_AdjustWidth: 1
+    m_StarWidth: 0.003
+    m_EndWidth: 0.003
+    m_EndWidthScaleDistanceFactor: 2
+    m_AdjustGradient: 1
+    m_Gradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 0.5686275, g: 0.78431374, b: 1, a: 0.627451}
+      key2: {r: 1, g: 1, b: 1, a: 1}
+      key3: {r: 1, g: 1, b: 1, a: 0.78431374}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 32768
+      ctime2: 65535
+      ctime3: 65535
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 8192
+      atime2: 26214
+      atime3: 42598
+      atime4: 65535
+      atime5: 65535
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 3
+      m_NumAlphaKeys: 5
+    m_CustomizeExpandLineDrawPercent: 0
+    m_ExpandModeLineDrawPercent: 0.9
+  m_SelectHitProperties:
+    m_SmoothlyCurveLine: 1
+    m_LineBendRatio: 0.5
+    m_AdjustWidth: 1
+    m_StarWidth: 0.003
+    m_EndWidth: 0.003
+    m_EndWidthScaleDistanceFactor: 2
+    m_AdjustGradient: 1
+    m_Gradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 0.5686275, g: 0.78431374, b: 1, a: 0.627451}
+      key2: {r: 1, g: 1, b: 1, a: 1}
+      key3: {r: 1, g: 1, b: 1, a: 0.78431374}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 32768
+      ctime2: 65535
+      ctime3: 65535
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 8192
+      atime2: 26214
+      atime3: 42598
+      atime4: 65535
+      atime5: 65535
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 3
+      m_NumAlphaKeys: 5
+    m_CustomizeExpandLineDrawPercent: 0
+    m_ExpandModeLineDrawPercent: 0.75
+  m_HoverHitProperties:
+    m_SmoothlyCurveLine: 1
+    m_LineBendRatio: 0.5
+    m_AdjustWidth: 1
+    m_StarWidth: 0.004
+    m_EndWidth: 0.004
+    m_EndWidthScaleDistanceFactor: 2
+    m_AdjustGradient: 1
+    m_Gradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 0.78431374, b: 0.5686275, a: 0.49019608}
+      key2: {r: 1, g: 1, b: 1, a: 1}
+      key3: {r: 1, g: 1, b: 1, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 16384
+      ctime2: 65535
+      ctime3: 65535
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 13878
+      atime2: 32768
+      atime3: 65535
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 3
+      m_NumAlphaKeys: 4
+    m_CustomizeExpandLineDrawPercent: 0
+    m_ExpandModeLineDrawPercent: 0.9
+  m_RenderLineInWorldSpace: 1
+  m_SwapMaterials: 0
+  m_BaseLineMaterial: {fileID: 0}
+  m_EmptyHitMaterial: {fileID: 0}
+--- !u!120 &4905552876310719870
+LineRenderer:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234582810859185921}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Positions: []
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    textureScale: {x: 1, y: 1}
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0
+  m_ApplyActiveColorSpace: 1
+--- !u!210 &8104261138259852324
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234582810859185921}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0

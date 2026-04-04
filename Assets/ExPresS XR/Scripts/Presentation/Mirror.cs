@@ -2,14 +2,21 @@ using UnityEngine;
 
 namespace ExPresSXR.Presentation
 {
+    /// <summary>
+    /// Represents a mirror. Be careful as the reflection angles to not exactly line up.
+    /// For accurate and performant mirrors use a separate package.
+    /// </summary>
     public class Mirror : MonoBehaviour
     {   
         private const int RENDER_TEXTURE_DEPTH = 16;
 
-        [Tooltip("Aspect ratio of the mirror plane in px.")]
         [SerializeField]
+        [Tooltip("Aspect ratio of the mirror plane in px.")]
         private Vector2 _pixelRatio = new(1080, 1080);
-        public Vector2 pixelRatio
+        /// <summary>
+        /// Aspect ratio of the mirror plane in px.
+        /// </summary>
+        public Vector2 PixelRatio
         {
             get => _pixelRatio;
             set
@@ -19,11 +26,14 @@ namespace ExPresSXR.Presentation
             }
         }
         
-        [Tooltip("Resolution of the mirror in percentage. Scales the amount of pixels of the aspect ratio, higher values might impact performance.")]
         [Range(0.0f, 1.0f)]
         [SerializeField]
+        [Tooltip("Resolution of the mirror in percentage. Scales the amount of pixels of the aspect ratio, higher values might impact performance.")]
         private float _resolutionPct = 1.0f;
-        public float resolutionPct
+        /// <summary>
+        /// Resolution of the mirror in percentage. Scales the amount of pixels of the aspect ratio, higher values might impact performance.
+        /// </summary>
+        public float ResolutionPct
         {
             get => _resolutionPct;
             set
@@ -33,10 +43,13 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("If enabled require providing a custom RenderTexture. Else it will be generated automatically.")]
         [SerializeField]
+        [Tooltip("If enabled require providing a custom RenderTexture. Else it will be generated automatically.")]
         private bool _provideCustomRenderTexture;
-        public bool provideCustomRenderTexture
+        /// <summary>
+        /// If enabled require providing a custom RenderTexture. Else it will be generated automatically.
+        /// </summary>
+        public bool ProvideCustomRenderTexture
         {
             get => _provideCustomRenderTexture;
             set
@@ -46,10 +59,13 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("The RenderTexture that is used when 'provideCustomRenderTexture' is enabled.")]
         [SerializeField]
+        [Tooltip("The RenderTexture that is used when 'provideCustomRenderTexture' is enabled.")]
         private RenderTexture _customRenderTexture;
-        public RenderTexture customRenderTexture
+        /// <summary>
+        /// The RenderTexture that is used when 'provideCustomRenderTexture' is enabled.
+        /// </summary>
+        public RenderTexture CustomRenderTexture
         {
             get => _customRenderTexture;
             set
@@ -59,12 +75,15 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        // Image Modification
+        [SerializeField]
         [Tooltip("Texture that is laid over the mirror to make it look more realistic (e.g. dirt, fingerprints, ...). "
                 + "Some example textures can be found at 'ExPresS XR/Sprites/Mirror/'.")]
-        [SerializeField]
         private Texture _overlayTexture;
-        public Texture overlayTexture
+        /// <summary>
+        /// Texture that is laid over the mirror to make it look more realistic (e.g. dirt, fingerprints, ...).
+        /// Some example textures can be found at 'ExPresS XR/Sprites/Mirror/'.
+        /// </summary>
+        public Texture OverlayTexture
         {
             get => _overlayTexture;
             set
@@ -74,11 +93,14 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("Strength of the effect applied by the overlayTexture.")]
         [Range(0.0f, 1.0f)]
         [SerializeField]
+        [Tooltip("Strength of the effect applied by the overlayTexture.")]
         private float _overlayStrength = 0.5f;
-        public float overlayStrength
+        /// <summary>
+        /// Strength of the effect applied by the overlayTexture.
+        /// </summary>
+        public float OverlayStrength
         {
             get => _overlayStrength;
             set
@@ -88,10 +110,13 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("Color that is mixed with the displayed image to change it's color. Use white for no tinting.")]
         [SerializeField]
+        [Tooltip("Color that is mixed with the displayed image to change it's color. Use white for no tinting.")]
         private Color _tintColor = Color.white;
-        public Color tintColor
+        /// <summary>
+        /// Color that is mixed with the displayed image to change it's color. Use white for no tinting.
+        /// </summary>
+        public Color TintColor
         {
             get => _tintColor;
             set
@@ -101,11 +126,14 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("Factor that shifts the bightness the displayed image.")]
         [Range(0.0f, 1.0f)]
         [SerializeField]
+        [Tooltip("Factor that shifts the bightness the displayed image.")]
         private float _brighteningFactor = 0.0f;
-        public float brighteningFactor
+        /// <summary>
+        /// Factor that shifts the bightness the displayed image.
+        /// </summary>
+        public float BrighteningFactor
         {
             get => _brighteningFactor;
             set
@@ -117,18 +145,27 @@ namespace ExPresSXR.Presentation
 
         // Targets and GameObjects
 
-        [Tooltip("Target for which the mirror effect is simulated. It should be best set to the Camera of an XR Rig.")]
+        /// <summary>
+        /// Target for which the mirror effect is simulated. It should be best set to the Camera of an XR Rig.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Target for which the mirror effect is simulated. It should be best set to the Camera of an XR Rig.")]
         private Transform _trackedTarget;
         
-        [Tooltip("Reference to the Mirror's Camera.")]
+        /// <summary>
+        /// Reference to the Mirror's Camera.
+        /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the Mirror's Camera.")]
         private Camera _mirrorCamera;
 
-        [Tooltip("Reference to the Mirror's Plane.")]
         [SerializeField]
+        [Tooltip("Reference to the Mirror's Plane.")]
         private Transform _mirrorPlane;
-        public Transform mirrorPlane
+        /// <summary>
+        /// Reference to the Mirror's Plane.
+        /// </summary>
+        public Transform MirrorPlane
         {
             get => _mirrorPlane;
             set
@@ -138,28 +175,35 @@ namespace ExPresSXR.Presentation
             }
         }
 
-        [Tooltip("The RenderTexture currently used for the mirror.")]
-        public RenderTexture activeRenderTexture
+        /// <summary>
+        /// The RenderTexture currently used for the mirror.
+        /// </summary>
+        public RenderTexture ActiveRenderTexture
         {
-            get => provideCustomRenderTexture ? _customRenderTexture : _generatedRenderTexture;
+            get => ProvideCustomRenderTexture ? _customRenderTexture : _generatedRenderTexture;
         }
 
-        [Tooltip("The pixel size of the currently used RenderTexture. Returns (0,0) if no texture is set.")]
-        public Vector2 actualPixelResultion
+        /// <summary>
+        /// The pixel size of the currently used RenderTexture. Returns (0,0) if no texture is set.
+        /// </summary>
+        public Vector2 ActualPixelResultion
         {
             get
             {
-                Texture renderTexture = activeRenderTexture;
+                Texture renderTexture = ActiveRenderTexture;
                 return renderTexture != null ? 
                         new Vector2(renderTexture.width, renderTexture.height) : 
                         Vector2.zero;
             }
         }
 
-        [Tooltip("The material used to display the RenderTexture.")]
         [SerializeField]
+        [Tooltip("The material used to display the RenderTexture.")]
         private Material _mirrorMaterial;
-        public Material mirrorMaterial
+        /// <summary>
+        /// The material used to display the RenderTexture.
+        /// </summary>
+        public Material MirrorMaterial
         {
             get => _mirrorMaterial;
             set
@@ -209,7 +253,7 @@ namespace ExPresSXR.Presentation
 
         private void UpdateRenderTextures()
         {
-            if (!provideCustomRenderTexture)
+            if (!ProvideCustomRenderTexture)
             {
                 Vector3 texturePixels = _pixelRatio * _resolutionPct;
 
@@ -227,11 +271,11 @@ namespace ExPresSXR.Presentation
 
         private void DisplayActiveRenderTexture()
         {
-            if (activeRenderTexture != null)
+            if (ActiveRenderTexture != null)
             {
                 if (_mirrorCamera != null)
                 {
-                    _mirrorCamera.targetTexture = activeRenderTexture;
+                    _mirrorCamera.targetTexture = ActiveRenderTexture;
                 }
                 else
                 {
@@ -240,7 +284,7 @@ namespace ExPresSXR.Presentation
 
                 if (_mirrorMaterial != null)
                 {
-                    _mirrorMaterial.mainTexture = activeRenderTexture;
+                    _mirrorMaterial.mainTexture = ActiveRenderTexture;
                 }
                 else
                 {
@@ -250,7 +294,7 @@ namespace ExPresSXR.Presentation
             else
             {
                 Debug.LogWarning("Active RenderTexture is null. The mirror won't display anything."
-                        + (provideCustomRenderTexture ?
+                        + (ProvideCustomRenderTexture ?
                             "Be sure to provide your own renderTexture or disable the provideCustomRenderTexture." : 
                             "")
                 );
@@ -267,7 +311,7 @@ namespace ExPresSXR.Presentation
                 if (_mirrorMaterial != null)
                 {
                     // Change displayed mirror texture
-                    _mirrorMaterial.mainTexture = activeRenderTexture;
+                    _mirrorMaterial.mainTexture = ActiveRenderTexture;
                     _mirrorMaterial.color = _tintColor;
 
                     // Add/Enable overlay as metallic
@@ -284,10 +328,10 @@ namespace ExPresSXR.Presentation
                     }
 
                     // Brighten up image using emission
-                    if (brighteningFactor > 0)
+                    if (BrighteningFactor > 0)
                     {
                         _mirrorMaterial.EnableKeyword("_EMISSION");
-                        _mirrorMaterial.SetTexture("_EmissionMap", activeRenderTexture);
+                        _mirrorMaterial.SetTexture("_EmissionMap", ActiveRenderTexture);
                         _mirrorMaterial.SetColor("_EmissionColor", Color.white * _brighteningFactor);
                     }
                     else

@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
 {
+    /// <summary>
+    /// A spawner that spawns a single target and moves it with a certain speed between two target positions.  
+    /// Despawning/Resets of the target happen based on collisions with an `ObjectCollisionDetector`.
+    /// 
+    /// Objects can either be only good or bad, while the selection can be randomized.
+    /// The selection of good and bad objects and visuals is also configurable and randomizable.
+    /// </summary>
     public class LineSpawner : TargetSpawnerBase
     {
         /// <summary>
@@ -131,61 +138,61 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         private Transform _rightSpawnAnchor;
 
 
-        /// <summary>
-        /// Reference to the current target on the line.
-        /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
         [Tooltip("Reference to the current target on the line.")]
         private GameObject _currentTarget;
+        /// <summary>
+        /// Reference to the current target on the line.
+        /// </summary>
         public GameObject CurrentTarget
         {
             get => _currentTarget;
         }
 
-        /// <summary>
-        /// Wether or not the current target moves from left to right or reversed.
-        /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
-        [Tooltip("Wether or not the current target moves from left to right or reversed.")]
+        [Tooltip("Whether or not the current target moves from left to right or reversed.")]
         private bool _isCurrentlyLeftToRight;
+        /// <summary>
+        /// Whether or not the current target moves from left to right or reversed.
+        /// </summary>
         public bool IsCurrentlyLeftToRight
         {
             get => _isCurrentlyLeftToRight;
         }
 
-        /// <summary>
-        /// Direction of the current target.
-        /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
         [Tooltip("Direction of the current target.")]
         private Vector3 _currentDirection;
+        /// <summary>
+        /// Direction of the current target.
+        /// </summary>
         public Vector3 CurrentDirection
         {
             get => _currentDirection;
         }
 
-        /// <summary>
-        /// Whether or not the current target is bad or good.
-        /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
         [Tooltip("Whether or not the current target is bad or good.")]
-        private bool _isCurrentTargetBad = false;
+        private bool _isCurrentTargetBad;
+        /// <summary>
+        /// Whether or not the current target is bad or good.
+        /// </summary>
         public bool IsCurrentTargetBad
         {
             get => _isCurrentTargetBad;
         }
 
-        /// <summary>
-        /// Where the current target was spawned at.
-        /// </summary>
         [ReadonlyInInspector]
         [SerializeField]
         [Tooltip("Where the current target was spawned at.")]
         private Transform _currentSpawnAnchor;
+        /// <summary>
+        /// Where the current target was spawned at.
+        /// </summary>
         public Transform CurrentSpawnAnchor
         {
             get => _currentSpawnAnchor;
@@ -229,7 +236,7 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         /// <summary>
         /// Creates a new target, switching directions based on the parameter.
         /// </summary>
-        /// <param name="switchDirections">Wether to switch directions or not.</param>
+        /// <param name="switchDirections">Whether to switch directions or not.</param>
         public void CreateNewTarget(bool switchDirections)
         {
             // An empty collider does not have a gameObject associated with it
@@ -254,6 +261,7 @@ namespace ExPresSXR.Minigames.Archery.TargetSpawner.Line
         /// <summary>
         /// Creates a new target from a collision.
         /// </summary>
+        /// <param name="other">Other collider of the collision.</param>
         public void SpawnNewTargetFromCollision(Collider other) => CreateNewTarget(other.gameObject != null);
 
         /// <summary>

@@ -12,77 +12,143 @@ using UnityEngine.Networking;
 
 namespace ExPresSXR.Experimentation.DataGathering
 {
+    /// <summary>
+    /// The Data Gatherer is a component to extract and save data in a Unity Scene.
+    /// All values that are specified in the Data Gatherer will be stored in a CSV-formatted file which will be saved at the path and/or be send via http POST to a server.
+    /// 
+    /// A more detailed description of the capabilities of the `Data Gatherer` can be found in the [DataGathering-Tutorial](Data-Gathering) which is also available in the editor under "ExPresS XR > Data Gathering".
+    /// 
+    /// Some important things to note:  
+    /// 
+    /// - The DataGatherer can automatically export values but any script can export new values at any time calling`ExportNewCsvLine()`.
+    /// - When played in the editor the Values will be stored at `Application.dataPath`. The Build will store it at the apps data-path (e.g. `%APPDATA%` on Windows)
+    /// - While `includeTimestamp` is optional it is recommended to include it as the export times might differ by a few milliseconds.
+    /// - The shortest somewhat stable value for `periodicExportTime` was about `0.01s`. 
+    /// - Using `exportDuringUpdate` the exports were around 0.02 on a Valve Index (aprox. `Time.DeltaTime` with 60FPs).
+    /// </summary>
     public class DataGatherer : MonoBehaviour
     {
+        /// <summary>
+        /// Default file ending used if a path does not provide a file extension considered valid.
+        /// </summary>
+        public static readonly string DEFAULT_EXPORT_FILE_ENDING = ".csv";
+
+        /// <summary>
+        /// Default path to the export file created to safe the data.
+        /// </summary>
         public const string DEFAULT_EXPORT_FILE_NAME = "Data/DataGathererValues.csv";
+
+        /// <summary>
+        /// Name of the automatically generated timestamp (number) column.
+        /// </summary>
         public const string HUMAN_READABLE_TIME_COLUMN_NAME = "time";
+
+        /// <summary>
+        /// Name of the automatically generated unix timestamp (date + time in UTC) column.
+        /// </summary>
         public const string UNIX_TIME_COLUMN_NAME = "unix_time";
+
+        /// <summary>
+        /// Name of the automatically generated unitx time (seconds since app start) column.
+        /// </summary>
         public const string UNITY_TIME_COLUMN_NAME = "unity_time";
+
+        /// <summary>
+        /// Name of the automatically generated delta time (duration of current frame) column.
+        /// </summary>
         public const string DELTA_TIME_COLUMN_NAME = "delta_time";
 
-        public static readonly string[] EXPORT_FILE_ENDINGS = { "csv", "log", "txt" };
+        /// <summary>
+        /// File endings considered valid log file paths. If the files do not match one of these endings, s
+        /// </summary>
+        public static readonly string[] EXPORT_FILE_ENDINGS = new string[] { DEFAULT_EXPORT_FILE_ENDING, ".log", ".txt" };
 
+        /// <summary>
+        /// Format for a pretty timestamp with a space separating date and time.
+        /// </summary>
         public static readonly string timestampPretty = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+        /// <summary>
+        /// Format for a safe timestamp with a underscore separating date and time.
+        /// </summary>
         public static readonly string timestampSafe = DateTimeOffset.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
+
         [SerializeField]
+        [Tooltip("How the export should be performed. Either saving to a file or posting as http request.")]
         private ExportType _dataExportType;
-        public ExportType dataExportType
+        /// <summary>
+        /// How the export should be performed. Either saving to a file or posting as http request.
+        /// </summary>
+        public ExportType DataExportType
         {
             get => _dataExportType;
             set => _dataExportType = value;
         }
 
-
         [SerializeField]
-        private SeparatorType _separatorType;
-        public SeparatorType separatorType
+        [Tooltip("Separator type used for the columns.")]
+        private SeparatorType _separator;
+        /// <summary>
+        /// Separator type used for the columns.
+        /// </summary>
+        public SeparatorType Separator
         {
-            get => _separatorType;
+            get => _separator;
             set
             {
-                _separatorType = value;
+                _separator = value;
 
-                if (_separatorType == SeparatorType.Comma)
+                if (_separator == SeparatorType.Comma)
                 {
-                    columnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
+                    ColumnSeparator = CsvUtility.COMMA_COLUMN_SEPARATOR;
                 }
-                else if (_separatorType == SeparatorType.Semicolon)
+                else if (_separator == SeparatorType.Semicolon)
                 {
-                    columnSeparator = CsvUtility.SEMICOLON_COLUMN_SEPARATOR;
+                    ColumnSeparator = CsvUtility.SEMICOLON_COLUMN_SEPARATOR;
                 }
             }
         }
 
         [SerializeField]
-        private bool _escapeColumns = true;
-        public bool escapeColumns
-        {
-            get => _escapeColumns;
-            set => _escapeColumns = value;
-        }
-
-
-        [SerializeField]
+        [Tooltip("Actual separator character used for the columns. Defined by the Separator if not set to 'Custom'.")]
         private char _columnSeparator = CsvUtility.DEFAULT_COLUMN_SEPARATOR;
-        public char columnSeparator
+        /// <summary>
+        /// Actual separator character used for the columns. Defined by the Separator if not set to 'Custom'.
+        /// </summary>
+        public char ColumnSeparator
         {
             get => _columnSeparator;
             set
             {
                 _columnSeparator = value;
 
-                foreach (DataGatheringBinding binding in dataBindings)
+                foreach (DataGatheringBinding binding in DataBindings)
                 {
-                    binding.headerSeparator = _columnSeparator;
+                    binding.HeaderSeparator = _columnSeparator;
                 }
             }
         }
 
+        [SerializeField]
+        [Tooltip("If all columns should be escaped to prevent format issues.")]
+        private bool _escapeColumns = true;
+        /// <summary>
+        /// If all columns should be escaped to prevent format issues.
+        /// </summary>
+        public bool EscapeColumns
+        {
+            get => _escapeColumns;
+            set => _escapeColumns = value;
+        }
 
         [SerializeField]
+        [Tooltip("Path to the local export directory relative to the apps data directory (Application.persistentDataPath).")]
         private string _localExportPath = DEFAULT_EXPORT_FILE_NAME;
-        public string localExportPath
+        /// <summary>
+        /// Path to the local export directory relative to the apps data directory (Application.persistentDataPath).
+        /// </summary>
+        public string LocalExportPath
         {
             get => _localExportPath;
             set
@@ -97,10 +163,26 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
+        [SerializeField]
+        [Tooltip("Url to post data to when exports should be performed via http.")]
+        private string _httpExportPath;
+        /// <summary>
+        /// Url to post data to when exports should be performed via http.
+        /// </summary>
+        public string HttpExportPath
+        {
+            get => _httpExportPath;
+            set => _httpExportPath = value;
+        }
+
 
         [SerializeField]
+        [Tooltip("When enabled a timestamped export file is created each time the app is started.")]
         private bool _newExportFilePerPlaythrough = true;
-        public bool newExportFilePerPlaythrough
+        /// <summary>
+        /// When enabled a timestamped export file is created each time the app is started.
+        /// </summary>
+        public bool NewExportFilePerPlaythrough
         {
             get => _newExportFilePerPlaythrough;
             set => _newExportFilePerPlaythrough = value;
@@ -108,36 +190,36 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
-        private string _httpExportPath;
-        public string httpExportPath
-        {
-            get => _httpExportPath;
-            set => _httpExportPath = value;
-        }
-
-
-        // Triggers
-        [SerializeField]
+        [Tooltip("Will automatically export data each frame in the Update() function.")]
         private bool _exportDuringUpdateEnabled;
-        public bool exportDuringUpdateEnabled
+        /// <summary>
+        /// Will automatically export data each frame in the Update() function.
+        /// </summary>
+        public bool ExportDuringUpdateEnabled
         {
             get => _exportDuringUpdateEnabled;
             set => _exportDuringUpdateEnabled = value;
         }
 
-
         [SerializeField]
+        [Tooltip("Input actions that trigger an export when performed.")]
         private InputActionReference[] _inputActionTrigger;
-        public InputActionReference[] inputActionTrigger
+        /// <summary>
+        /// Input actions that trigger an export when performed.
+        /// </summary>
+        public InputActionReference[] InputActionTrigger
         {
             get => _inputActionTrigger;
             set => _inputActionTrigger = value;
         }
 
-
         [SerializeField]
+        [Tooltip("When enabled, updates are performed periodically after `_periodicExportTime` seconds.")]
         private bool _periodicExportEnabled = false;
-        public bool periodicExportEnabled
+        /// <summary>
+        /// When enabled, updates are performed periodically after `_periodicExportTime` seconds.
+        /// </summary>
+        public bool PeriodicExportEnabled
         {
             get => _periodicExportEnabled;
             set
@@ -157,54 +239,74 @@ namespace ExPresSXR.Experimentation.DataGathering
         }
 
         [SerializeField]
+        [Tooltip("Frequency in seconds after which an automatic export is triggered, when enabled.")]
         private float _periodicExportTime = 1.0f;
-        public float periodicExportTime
+        /// <summary>
+        /// Frequency in seconds after which an automatic export is triggered, when enabled.
+        /// </summary>
+        public float PeriodicExportTime
         {
             get => _periodicExportTime;
             set => _periodicExportTime = value;
         }
 
 
-        // Data
         [SerializeField]
         [Tooltip("Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). "
                     + "Its value is relative to the computers local timezone.")]
         private bool _includeHumanReadableTimestamp = true;
-        public bool includeHumanReadableTimestamp
+        /// <summary>
+        /// Includes a timestamp in a human-readable format ('yyyy-MM-dd HH:mm:ss'). Its value is relative to the computers local timezone.
+        /// </summary>
+        public bool IncludeHumanReadableTimestamp
         {
             get => _includeHumanReadableTimestamp;
             set => _includeHumanReadableTimestamp = value;
         }
 
         [SerializeField]
+        [Tooltip("Includes a unix (numeric) timestamp.")]
         private bool _includeUnixTimestamp = true;
-        public bool includeUnixTimestamp
+        /// <summary>
+        /// Includes a unix (numeric) timestamp.
+        /// </summary>
+        public bool IncludeUnixTimestamp
         {
             get => _includeUnixTimestamp;
             set => _includeUnixTimestamp = value;
         }
 
-
         [SerializeField]
+        [Tooltip("Includes the unity time (time since the app was started).")]
         private bool _includeUnityTime = true;
-        public bool includeUnityTime
+        /// <summary>
+        /// Includes the unity time (time since the app was started).
+        /// </summary>
+        public bool IncludeUnityTime
         {
             get => _includeUnityTime;
             set => _includeUnityTime = value;
         }
 
         [SerializeField]
+        [Tooltip("Includes the unity delta time.")]
         private bool _includeDeltaTime = true;
-        public bool includeDeltaTime
+        /// <summary>
+        /// Includes the unity delta time.
+        /// </summary>
+        public bool IncludeDeltaTime
         {
             get => _includeDeltaTime;
             set => _includeDeltaTime = value;
         }
 
-
         [SerializeField]
+        [Tooltip("Values and function return values to be exported.")]
         private DataGatheringBinding[] _dataBindings = new DataGatheringBinding[0];
-        public DataGatheringBinding[] dataBindings
+        /// <summary>
+        /// Values and function return values to be exported.
+        /// </summary>
+        public DataGatheringBinding[] DataBindings
         {
             get => _dataBindings;
             set => _dataBindings = value;
@@ -212,8 +314,12 @@ namespace ExPresSXR.Experimentation.DataGathering
 
 
         [SerializeField]
+        [Tooltip("InputAction values to be exported.")]
         private InputActionReference[] _inputActionDataBindings = new InputActionReference[0];
-        public InputActionReference[] inputActionDataBindings
+        /// <summary>
+        /// InputAction values values to be exported.
+        /// </summary>
+        public InputActionReference[] InputActionDataBindings
         {
             get => _inputActionDataBindings;
             set => _inputActionDataBindings = value;
@@ -241,13 +347,16 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void FixedUpdate()
         {
-            if (exportDuringUpdateEnabled)
+            if (ExportDuringUpdateEnabled)
             {
                 ExportNewCSVLine();
             }
         }
 
         #region Export
+        /// <summary>
+        /// Exports a new line with the current values.
+        /// </summary>
         public void ExportNewCSVLine()
         {
             if (!isActiveAndEnabled)
@@ -257,20 +366,21 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
 
             string data = GetExportCSVLine();
-            if (dataExportType == ExportType.Http || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Http || DataExportType == ExportType.Both)
             {
-                // Debug.Log($"Posting '{httpExportPath}' to '{data}'.");
-                StartCoroutine(PostHttpData(httpExportPath, data));
+                StartCoroutine(PostHttpData(HttpExportPath, data));
             }
 
-            if (dataExportType == ExportType.Local || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Local || DataExportType == ExportType.Both)
             {
-                // Debug.Log($"Saving '{data}' at '{GetLocalSavePath()}'.");
                 _outputWriter.WriteLine(data);
             }
         }
 
-
+        /// <summary>
+        /// Calculates the CSV header for the current configuration and bindings. 
+        /// </summary>
+        /// <returns>CSV header string.</returns>
         public string GetExportCSVHeader()
         {
             string[] prependedHeaders = {
@@ -283,21 +393,25 @@ namespace ExPresSXR.Experimentation.DataGathering
             List<string> bindingHeaders = new(prependedHeaders.Where(s => !string.IsNullOrEmpty(s)));
             List<bool> escapeIndividual = new(Enumerable.Repeat(_escapeColumns, bindingHeaders.Count));
             // Add data bindings
-            bindingHeaders.AddRange(_dataBindings.Select(v => v != null ? v.exportColumnName : ""));
+            bindingHeaders.AddRange(_dataBindings.Select(v => v != null ? v.ExportColumnName : ""));
             escapeIndividual.AddRange(_dataBindings.Select(v => !(v?.IsBoundToMultiColumnValue() ?? false) && _escapeColumns));
             // Add InputAction bindings
             bindingHeaders.AddRange(_inputActionDataBindings.Select(v => v != null ? v.name : ""));
             escapeIndividual.AddRange(Enumerable.Repeat(_escapeColumns, bindingHeaders.Count - escapeIndividual.Count));
-            
+
             // Convert to string
-            if (escapeColumns)
+            if (EscapeColumns)
             {
-                return CsvUtility.JoinAsCsv(bindingHeaders, escapeIndividual, columnSeparator);
+                return CsvUtility.JoinAsCsv(bindingHeaders, escapeIndividual, ColumnSeparator);
             }
-            return CsvUtility.JoinAsCsv(bindingHeaders.ToArray(), columnSeparator, false);
+            return CsvUtility.JoinAsCsv(bindingHeaders.ToArray(), ColumnSeparator, false);
         }
 
 
+        /// <summary>
+        /// Reads the current values, exporting them as CSV string.
+        /// </summary>
+        /// <returns>CSV value (escaped) string</returns>
         public string GetExportCSVLine()
         {
             string[] prependedValues = {
@@ -317,11 +431,11 @@ namespace ExPresSXR.Experimentation.DataGathering
             escapeIndividual.AddRange(Enumerable.Repeat(false, bindingValues.Count - escapeIndividual.Count));
 
             // Convert to string
-            if (escapeColumns)
+            if (EscapeColumns)
             {
-                return CsvUtility.JoinAsCsv(bindingValues, escapeIndividual, columnSeparator);
+                return CsvUtility.JoinAsCsv(bindingValues, escapeIndividual, ColumnSeparator);
             }
-            return CsvUtility.JoinAsCsv(bindingValues.ToArray(), columnSeparator, false);
+            return CsvUtility.JoinAsCsv(bindingValues.ToArray(), ColumnSeparator, false);
         }
 
         private IEnumerator PostHttpData(string url, string data)
@@ -358,19 +472,20 @@ namespace ExPresSXR.Experimentation.DataGathering
                 _outputWriter.Close();
             }
 
-            if (dataExportType == ExportType.Http || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Http || DataExportType == ExportType.Both)
             {
-                StartCoroutine(PostHttpData(httpExportPath, GetExportCSVHeader()));
+                StartCoroutine(PostHttpData(HttpExportPath, GetExportCSVHeader()));
             }
 
-            if (dataExportType == ExportType.Local || dataExportType == ExportType.Both)
+            if (DataExportType == ExportType.Local || DataExportType == ExportType.Both)
             {
-                if (!HasExportableFileEnding(localExportPath))
+                if (!HasExportableFileEnding(LocalExportPath))
                 {
-                    Debug.LogWarning("File does not end on '.txt', '.log' or '.csv'."
-                            + "Appending '.csv' and creating a new file if necessary. "
-                            + $"New path is: '{localExportPath}.csv'.");
-                    _localExportPath += ".csv";
+                    string availableEndings = CsvUtility.ArrayToString(EXPORT_FILE_ENDINGS);
+                    _localExportPath += DEFAULT_EXPORT_FILE_ENDING;
+                    Debug.LogWarning($"File did not end on one of ${availableEndings}."
+                            + $"Appending '${DEFAULT_EXPORT_FILE_ENDING}' and creating a new file if necessary. "
+                            + $"New path is: '{LocalExportPath}'.");
                 }
 
                 string path = GetLocalSavePath();
@@ -399,6 +514,10 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
+        /// <summary>
+        /// Utility function called by the editor internally to validate the bindings. 
+        /// </summary>
+        /// <param name="warnInvalid">Prints a wraning message per invalid binding.</param>
         public void ValidateBindings(bool warnInvalid = true)
         {
             foreach (DataGatheringBinding binding in _dataBindings)
@@ -438,7 +557,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void ConnectInputActions()
         {
-            foreach (InputActionReference actionRef in inputActionTrigger)
+            foreach (InputActionReference actionRef in InputActionTrigger)
             {
                 if (actionRef != null)
                 {
@@ -449,7 +568,7 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void DisconnectInputActions()
         {
-            foreach (InputActionReference actionRef in inputActionTrigger)
+            foreach (InputActionReference actionRef in InputActionTrigger)
             {
                 if (actionRef != null)
                 {
@@ -462,13 +581,14 @@ namespace ExPresSXR.Experimentation.DataGathering
         #region Coroutines & Callback
         private void TryStartPeriodicCoroutine()
         {
-            if (periodicExportEnabled && Application.isPlaying)
+            if (PeriodicExportEnabled && Application.isPlaying)
             {
                 if (_periodicExportTime > 0)
                 {
                     if (_periodicExportCoroutine != null)
                     {
                         StopCoroutine(_periodicExportCoroutine);
+                        _periodicExportCoroutine = null;
                     }
                     _periodicExportCoroutine = StartCoroutine(TimeTriggerCoroutine());
                 }
@@ -488,13 +608,17 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        private void OnInputActionExportRequested(InputAction.CallbackContext callback) => ExportNewCSVLine();
+        private void OnInputActionExportRequested(InputAction.CallbackContext _) => ExportNewCSVLine();
         #endregion
 
         #region Utility
+        /// <summary>
+        /// Returns the local safe path either in appdata or in the editor.
+        /// </summary>
+        /// <returns>A safe path to write files to.</returns>
         public string GetLocalSavePath()
         {
-            string path = _newExportFilePerPlaythrough ? InsertBeforeExportPostfixes(localExportPath, $"_{timestampSafe}") : localExportPath;
+            string path = _newExportFilePerPlaythrough ? InsertBeforeExportPostfixes(LocalExportPath, $"_{timestampSafe}") : LocalExportPath;
 
 #if UNITY_EDITOR
             return Path.Combine(Application.dataPath, path);
@@ -517,11 +641,11 @@ namespace ExPresSXR.Experimentation.DataGathering
             }
         }
 
-        private static bool HasExportableFileEnding(string path) => EXPORT_FILE_ENDINGS.Any(ending => path.EndsWith($".{ending}"));
+        private static bool HasExportableFileEnding(string path) => EXPORT_FILE_ENDINGS.Any(ending => path.EndsWith(ending));
 
         private static string InsertBeforeExportPostfixes(string path, string toInsert)
         {
-            string pattern = $"(\\.{string.Join("|\\.", EXPORT_FILE_ENDINGS)})$";
+            string pattern = $"(\\.{string.Join("|", EXPORT_FILE_ENDINGS)})$";
 
             if (Regex.IsMatch(path, pattern))
             {
@@ -536,25 +660,36 @@ namespace ExPresSXR.Experimentation.DataGathering
 
         private void OnValidate()
         {
-            separatorType = _separatorType;
-            columnSeparator = _columnSeparator;
+            Separator = _separator;
+            ColumnSeparator = _columnSeparator;
             ValidateBindings(false);
         }
         #endregion
 
         #region Enums
+        /// <summary>
+        /// Type of separating csv columns.
+        /// </summary>
         public enum SeparatorType
         {
+            /// <summary> Separate columns using a semicolon `;`. </summary>
             Semicolon,
+            /// <summary> Separate columns using a comma `,`. </summary>
             Comma,
+            /// <summary> Separate columns using the provided char. </summary>
             Custom
         }
 
-
+        /// <summary>
+        /// How data is exported.
+        /// </summary>
         public enum ExportType
         {
+            /// <summary> Write data to disk. </summary>
             Local,
+            /// <summary> Send data via http. </summary>
             Http,
+            /// <summary> Write both the file to disk and sent via http. </summary>
             Both
         }
         #endregion

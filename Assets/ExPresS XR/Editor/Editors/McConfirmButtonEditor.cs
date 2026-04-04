@@ -1,27 +1,18 @@
 using UnityEditor;
 using ExPresSXR.Interaction.ButtonQuiz;
 
-
 namespace ExPresSXR.Editor.Editors
 {
     [CustomEditor(typeof(McConfirmButton))]
     [CanEditMultipleObjects]
     public class McConfirmButtonEditor : QuizButtonEditor
     {
-        protected McConfirmButton mcConfirmButton;
+        protected McConfirmButton _mcConfirmButton;
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            mcConfirmButton = (McConfirmButton)target;
-        }
-
-        protected override void DrawBaseProperties()
-        {
-            DrawInputProperties();
-            DrawPushLimitProperties();
-            DrawSoundsProperties();
-            DrawAnswerButtons();
+            _mcConfirmButton = (McConfirmButton)target;
         }
 
         protected virtual void DrawAnswerButtons()

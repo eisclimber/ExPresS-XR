@@ -1,8 +1,8 @@
 using System;
 using ExPresSXR.Misc;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace ExPresSXR.Interaction.ValueRangeInteractable
 {
@@ -51,7 +51,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override float GetVisualizedValue(IXRSelectInteractable interactable, IXRSelectInteractor interactor)
+        public override float GetVisualizedValue(IXRInteractable interactable, IXRInteractor interactor)
         {
             Vector3 interactorDirection = GetInteractorDirection(interactable, interactor);
             interactorDirection.x = 0.0f; // Ignore x coordinate
@@ -60,7 +60,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         /// <inheritdoc />
-        public override void UpdateVisualization(float value, IXRSelectInteractable interactable)
+        public override void UpdateVisualization(float value, IXRInteractable interactable)
         {
             if (_pivot == null)
             {
@@ -87,12 +87,15 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
                 localPivotPos,
                 Vector3.up,
                 Vector3.right,
-                atTransform
+                atTransform,
+                "0.0",
+                "1.0",
+                "{0:F1}"
             );
         }
 
         /// <inheritdoc />
-        protected override Vector3 GetPivotOffset(IXRSelectInteractable interactable) => _pivot != null ? _pivot.position : base.GetPivotOffset(interactable);
+        protected override Vector3 GetPivotOffset(IXRInteractable interactable) => _pivot != null ? _pivot.position : base.GetPivotOffset(interactable);
     }
 
 }

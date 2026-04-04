@@ -6,22 +6,21 @@ using UnityEngine.ProBuilder;
 using UnityEditor.ProBuilder;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.ProBuilder.Shapes;
-using ExPresSXR.Experimentation.DataGathering;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 
 namespace ExPresSXR.Editor.Utility
 {
     public static class RoomCreationUtils
     {
         // Experimentation default material paths
-        const string EXPERIMENTATION_FLOOR_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/PVC Floor Blue Speckled.mat";
-        const string EXPERIMENTATION_CEILING_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall.mat";
-        const string EXPERIMENTATION_WALL_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall.mat";
+        const string EXPERIMENTATION_FLOOR_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/PVC Floor Blue Speckled/PVC Floor Blue Speckled.mat";
+        const string EXPERIMENTATION_CEILING_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall/Woodchip Wall.mat";
+        const string EXPERIMENTATION_WALL_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall/Woodchip Wall.mat";
 
         // Exhibition default material paths
-        const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Wood Fishbone.mat";
-        const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall.mat";
-        const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall.mat";
+        const string EXHIBITION_FLOOR_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Wood Floor Fishbone/Wood Fishbone.mat";
+        const string EXHIBITION_WALL_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall/Woodchip Wall.mat";
+        const string EXHIBITION_CEILING_MATERIAL_PATH = "Assets/ExPresS XR/Materials/World Materials/Woodchip Wall/Woodchip Wall.mat";
 
 
         // Teleportation area placement offset

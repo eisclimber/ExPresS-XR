@@ -24,8 +24,7 @@ namespace ExPresSXR.Editor.Editors
                                         positionRect.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING,
                                         positionRect.width,
                                         EditorGUIUtility.singleLineHeight);
-
-                EditorGUI.PropertyField(positionRect, property.FindPropertyRelative("exportColumnName"));
+                EditorGUI.PropertyField(positionRect, property.FindPropertyRelative("_exportColumnName"));
 
                 positionRect = new Rect(positionRect.x,
                                         positionRect.y + EditorGUIUtility.singleLineHeight + PROPERTY_SPACING,
@@ -65,7 +64,7 @@ namespace ExPresSXR.Editor.Editors
         {
             if (property.isExpanded)
             {
-                return 4 * EditorGUIUtility.singleLineHeight + 4 * PROPERTY_SPACING;
+                return 4 * (EditorGUIUtility.singleLineHeight + PROPERTY_SPACING);
             }
             return EditorGUIUtility.singleLineHeight;
         }
@@ -90,7 +89,7 @@ namespace ExPresSXR.Editor.Editors
             property.serializedObject.ApplyModifiedProperties();
             int ownIndex = ParseOwnArrayIndex(property.propertyPath);
             DataGatherer dataGatherer = (DataGatherer)property.serializedObject.targetObject;
-            dataGatherer.dataBindings[ownIndex].UpdateMemberList();
+            dataGatherer.DataBindings[ownIndex].UpdateMemberList();
         }
 
 

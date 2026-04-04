@@ -1,33 +1,21 @@
-/*
-    Script Name: Bowl.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: This script represents a bowl of a scale, detecting coins and calculates
-                a weight (1 for real, 0 for fake coins) from all coins in the bowl. 
-*/
-
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinScale
 {
+    /// <summary>
+    /// This script represents a bowl of a scale, detecting coins and calculates a weight (1 for real, 0 for fake coins) from all coins in the bowl. 
+    /// </summary>
     public class Bowl : MonoBehaviour
     {
-        public enum ScaleSide
-        {
-            Left,
-            Right
-        };
-
-        /// <summary>
-        /// Which Side of the scale this bowl is located.
-        /// </summary>
         [Tooltip("Which Side of the scale this bowl is located.")]
         [SerializeField]
         private ScaleSide _side;
-        public ScaleSide side
+        /// <summary>
+        /// Which Side of the scale this bowl is located.
+        /// </summary>
+        public ScaleSide Side
         {
             get => _side;
         }
@@ -65,7 +53,7 @@ namespace ExPresSXR.Minigames.CoinScale
         /// The sum of the weights of all coins in this bowl.
         /// </summary>
         /// <returns>An int representing the total weight in this bowl.</returns>
-        public int GetWeight() => _containedCoins.Sum(cw => cw.isFake ? 0 : 1);
+        public int GetWeight() => _containedCoins.Sum(cw => cw.IsFake ? 0 : 1);
 
         /// <summary>
         /// Resets the bowls position and clears the registered coins. Doe not take care of resetting the coins positions. 
@@ -75,5 +63,16 @@ namespace ExPresSXR.Minigames.CoinScale
             _containedCoins = new();
             transform.localPosition = _initialPos;
         }
+
+        /// <summary>
+        /// Which Side of the scale this bowl is located.
+        /// </summary>
+        public enum ScaleSide
+        {
+            /// <summary> Left side of the scale. </summary>
+            Left,
+            /// <summary> Right side of the scale. </summary>
+            Right
+        };
     }
 }

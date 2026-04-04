@@ -2,15 +2,19 @@ using UnityEngine;
 
 namespace ExPresSXR.Interaction.ButtonQuiz
 {
+    /// <summary>
+    /// An expansion of `BaseButton` representing the Button that is used when confirming a answer `TutorialButtonQuiz` when in MultipleChoiceMode.
+    /// </summary>
     // ExPresSXR.Interaction.ButtonQuiz.McConfirmButton, Assembly-CSharp
     public class McConfirmButton : QuizButton
     {
+        [SerializeField]
+        [Tooltip("An arrays of references to `QuizButtons` that are used to determine if a multiple choice answer was given correctly.")]
+        private QuizButton[] _answerButtons;
         /// <summary>
         /// An arrays of references to `QuizButtons` that are used to determine if a multiple choice answer was given correctly.
         /// </summary>
-        [SerializeField]
-        private QuizButton[] _answerButtons;
-        public QuizButton[] answerButtons
+        public QuizButton[] AnswerButtons
         {
             get => _answerButtons;
             set => _answerButtons = value;
@@ -30,7 +34,7 @@ namespace ExPresSXR.Interaction.ButtonQuiz
                 }
             }
 
-            if (allCorrect != invertedFeedback)
+            if (allCorrect != InvertedFeedback)
             {
                 OnAnsweredCorrect.Invoke();
             }

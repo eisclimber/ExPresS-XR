@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace ExPresSXR.UI.Menu
 {
+    /// <summary>
+    /// Implements a basic menu navigation for switching menus (to a fixe "back"-menu or to an arbitrary one).
+    /// </summary>
     public class BasicMenuLogic : MonoBehaviour
     {
         /// <summary>
         /// Menu to switch to when `GoBack` is called.
         /// </summary>
         [SerializeField]
-        protected BasicMenuLogic backMenu;
+        protected BasicMenuLogic _backMenu;
         
         /// <summary>
         /// Disables the gameObject this component is attached to and activates the provided menu.
@@ -29,9 +32,9 @@ namespace ExPresSXR.UI.Menu
         /// </summary>
         public void GoBack()
         {
-            if (backMenu != null)
+            if (_backMenu != null)
             {
-                GoToMenu(backMenu);
+                GoToMenu(_backMenu);
             }
             else
             {

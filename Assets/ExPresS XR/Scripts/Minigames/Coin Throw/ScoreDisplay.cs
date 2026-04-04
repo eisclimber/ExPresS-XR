@@ -1,22 +1,18 @@
-/*
-    Script Name: ScoreDisplay.cs
-    Author: Kevin Koerner
-    Refactoring & Integration: Luca Dreiling
-    Purpose: Displays and stores a numerical score via UI.
-*/
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.CoinThrow
 {
+    /// <summary>
+    /// Displays and stores a numerical score via UI.
+    /// </summary>
     public class ScoreDisplay : MonoBehaviour
     {
         /// <summary>
         /// Reference to the TMP_Text that displays the value.
         /// </summary>
         [SerializeField]
+        [Tooltip("Reference to the TMP_Text that displays the value.")]
         private TMP_Text _textDisplay;
 
         private void Start() {
