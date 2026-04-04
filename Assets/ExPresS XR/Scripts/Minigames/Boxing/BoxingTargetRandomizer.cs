@@ -138,8 +138,9 @@ namespace ExPresSXR.Minigames.Boxing
         /// <summary>
         /// Stops randomization.
         /// </summary>
+        /// <param name="deactivateTargets">Sets active target as not active. Default: false</param>
         [ContextMenu("Stop Target Randomization")]
-        public void StopTargetRandomization(bool cancelTargets = false)
+        public void StopTargetRandomization(bool deactivateTargets = false)
         {
             if (_waitForSpawnCoroutine != null)
             {
@@ -147,7 +148,7 @@ namespace ExPresSXR.Minigames.Boxing
                 _waitForSpawnCoroutine = null;
             }
 
-            if (cancelTargets)
+            if (deactivateTargets)
             {
                 DeactivateAllTargets();
             }

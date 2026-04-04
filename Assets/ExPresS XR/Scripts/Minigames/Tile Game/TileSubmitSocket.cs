@@ -305,6 +305,7 @@ namespace ExPresSXR.Minigames.TileGame
         /// Displays the provided score in the tile, showing the score for each direction slightly delayed.
         /// </summary>
         /// <param name="score">Score to display.</param>
+        /// <param name="areas">Description of the areas to be displayed.</param>
         public void DisplayScore(ScoreResults score, AreaDescription[] areas)
         {
             // Maybe order the scores...
@@ -406,8 +407,8 @@ namespace ExPresSXR.Minigames.TileGame
             /// <summary>
             /// Creates a new BoardSubmitContext.
             /// </summary>
+            /// <param name="submittedSocket">The socket submitted to.</param>
             /// <param name="tileVisuals">Tile visuals submitted.</param>
-            /// <param name="boardPos">Board pos of the submission.</param>
             public BoardSubmitContext(TileSubmitSocket submittedSocket, TileVisuals tileVisuals)
             {
                 SubmittedSocket = submittedSocket;

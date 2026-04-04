@@ -110,26 +110,26 @@ namespace ExPresSXR.Rig
             }
         }
 
+        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
+        [SerializeField]
+        private float _afterGrabCollisionsDisabled = 0.3f;
         /// <summary>
         /// Duration in seconds for which the hand collisions are disabled after grabbing an object to allow it to be thrown.
         /// If set to `0.0f` hand model collisions will be turned on immediately.
         /// </summary>
-        [Tooltip("Duration for which the hand collisions are disabled after grabbing an object to allow it to be thrown.")]
-        [SerializeField]
-        private float _afterGrabCollisionsDisabled = 0.3f;
         public float AfterGrabCollisionsDisabled
         {
             get => _afterGrabCollisionsDisabled;
             set => _afterGrabCollisionsDisabled = value;
         }
 
+        [SerializeField]
+        private bool _handModelCollisions;
         /// <summary>
         /// Whether or not the hand models have collisions to push objects. They are disabled when hovering an object.
         /// Does not affect collisions when teleporting, these are always disabled.
         /// Change the TeleportInteractors AutoHandModel to the one with collision to enable them.
         /// </summary>
-        [SerializeField]
-        private bool _handModelCollisions;
         public bool HandModelCollisions
         {
             get => _handModelCollisions;
