@@ -120,6 +120,14 @@ namespace ExPresSXR.Rig
             }
         }
 
+        /// <summary>
+        /// If a model (controller or hand) is currently shown.
+        /// </summary>
+        public bool HasNoModel
+        {
+            get => _currentHandModel == null || _currentControllerModel == null;
+        }
+
 
         private InputDevice _currentDevice;
         private GameObject _currentControllerModel;
@@ -132,15 +140,12 @@ namespace ExPresSXR.Rig
 
         private void Update()
         {
-            if (!_currentDevice.isValid)
-            {
-                UpdateDisplayedModel();
-            }
+            UpdateDisplayedModel();
         }
 
         private void UpdateDisplayedModel()
         {
-            if (TryInitialize())
+            if ((!_currentDevice.isValid && TryInitialize()) || HasNoModel)
             {
                 UpdateModelVisibility();
             }
@@ -157,8 +162,20 @@ namespace ExPresSXR.Rig
                                 || HandModelMode == HandModelMode.Custom
                                 || HandModelMode == HandModelMode.Both;
 
-            _currentHandModel.SetActive(showHand);
-            _currentControllerModel.SetActive(showController);
+            if (HasNoModel)
+            {
+                LoadModels();
+            }
+
+            if (_currentHandModel != null)
+            {
+                _currentHandModel.SetActive(showHand);
+            }
+
+            if (_currentControllerModel != null)
+            {
+                _currentControllerModel.SetActive(showController);
+            }
         }
 
 

@@ -10,6 +10,8 @@ namespace ExPresSXR.Misc
     /// </summary>
     public class AutoSetupUtils
     {
+
+#if UNITY_EDITOR
         /// <summary>
         /// Get or creates a trigger on an EventTrigger of an EventSystem used by Unity UI.
         /// </summary>
@@ -39,7 +41,7 @@ namespace ExPresSXR.Misc
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddVoidPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction callback, bool requireNoListeners = true)
         {
-            try 
+            try
             {
                 EventTrigger.TriggerEvent triggerEvent = GetOrCreateEventTriggerEvent(trigger, triggerType);
                 if (requireNoListeners && HasEventPersistentListeners(triggerEvent))
@@ -65,7 +67,7 @@ namespace ExPresSXR.Misc
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<bool> callback, bool argument, bool requireNoListeners = true)
         {
-            try 
+            try
             {
                 EventTrigger.TriggerEvent triggerEvent = GetOrCreateEventTriggerEvent(trigger, triggerType);
                 if (requireNoListeners && HasEventPersistentListeners(triggerEvent))
@@ -91,7 +93,7 @@ namespace ExPresSXR.Misc
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<float> callback, float argument, bool requireNoListeners = true)
         {
-            try 
+            try
             {
                 EventTrigger.TriggerEvent triggerEvent = GetOrCreateEventTriggerEvent(trigger, triggerType);
                 if (requireNoListeners && HasEventPersistentListeners(triggerEvent))
@@ -117,7 +119,7 @@ namespace ExPresSXR.Misc
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddIntPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<int> callback, int argument, bool requireNoListeners = true)
         {
-            try 
+            try
             {
                 EventTrigger.TriggerEvent triggerEvent = GetOrCreateEventTriggerEvent(trigger, triggerType);
                 if (requireNoListeners && HasEventPersistentListeners(triggerEvent))
@@ -144,7 +146,7 @@ namespace ExPresSXR.Misc
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddStringPersistentTriggerCall(EventTrigger trigger, EventTriggerType triggerType, UnityAction<string> callback, string argument, bool requireNoListeners = true)
         {
-            try 
+            try
             {
                 EventTrigger.TriggerEvent triggerEvent = GetOrCreateEventTriggerEvent(trigger, triggerType);
                 if (requireNoListeners && HasEventPersistentListeners(triggerEvent))
@@ -170,7 +172,7 @@ namespace ExPresSXR.Misc
         /// <param name="requireNoListeners">Will fail if there are already persistent listeners.</param>
         public static void AddObjectPersistentTriggerCall<T>(EventTrigger trigger, EventTriggerType triggerType, UnityAction<UnityEngine.Object> callback, UnityEngine.Object argument, bool requireNoListeners = true) where T : UnityEngine.Object
         {
-            try 
+            try
             {
                 EventTrigger.TriggerEvent triggerEvent = GetOrCreateEventTriggerEvent(trigger, triggerType);
                 if (requireNoListeners && HasEventPersistentListeners(triggerEvent))
@@ -200,5 +202,6 @@ namespace ExPresSXR.Misc
         /// <param name="evnt">Event to check.</param>
         /// <returns>A persistent listener exists.</returns>
         public static bool HasEventPersistentListeners<T>(UnityEvent<T> evnt) => evnt.GetPersistentEventCount() > 0;
+#endif
     }
 }

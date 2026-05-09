@@ -51,6 +51,9 @@ namespace ExPresSXR.Editor.Editors
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnToggleModeChanged"/>.</summary>
         protected SerializedProperty _onToggleModeChanged;
 
+        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="ValueRangeInteractable.OnButtonPressReset"/>.</summary>
+        protected SerializedProperty _onButtonPressReset;
+
         protected Button _button;
 
         protected override string SnapToMinButtonLabel
@@ -86,6 +89,8 @@ namespace ExPresSXR.Editor.Editors
 
             _onToggleModeChanged = serializedObject.FindProperty("OnToggleModeChanged");
 
+            _onButtonPressReset = serializedObject.FindProperty("OnButtonPressReset");
+
             _button = (Button)target;
         }
 
@@ -93,13 +98,13 @@ namespace ExPresSXR.Editor.Editors
         protected override void DrawRangeProperties()
         {
             DrawPressButtons();
-            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_toggleMode);
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_inputDisabled);
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                _rangeInteractableInternal.InternalUpdateValue();
+                _rangeInteractableInternal.InternalUpdateInputDisabled();
             }
             base.DrawRangeProperties();
         }
@@ -131,7 +136,6 @@ namespace ExPresSXR.Editor.Editors
                 {
                     _button.InternalForceNextPressState();
                     _button.Pressed = true;
-                    // serializedObject.ApplyModifiedProperties();
                     // Reset press manually delayed
                     EditorApplication.delayCall += UndoEditorButtonPress;
                     _button.UpdateValueVisualization();
@@ -194,6 +198,7 @@ namespace ExPresSXR.Editor.Editors
             EditorGUILayout.PropertyField(_onValueChanged, true);
             EditorGUILayout.PropertyField(_onValueSelected, true);
             EditorGUILayout.PropertyField(_onValueReset, true);
+            EditorGUILayout.PropertyField(_onButtonPressReset, true);
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(_onInputDisabled, true);
             EditorGUILayout.PropertyField(_onInputEnabled, true);

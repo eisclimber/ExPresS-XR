@@ -55,7 +55,12 @@ namespace ExPresSXR.Misc
         /// <summary>
         /// Switch the scene as configured.
         /// </summary>
-        public void SwitchScene()
+        public void SwitchScene() => SwitchScene(_sceneIndex);
+
+        /// <summary>
+        /// Switch the scene as configured.
+        /// </summary>
+        public void SwitchScene(int scene)
         {
             // Disable interactions while exiting
             if (_rig != null)
@@ -65,11 +70,11 @@ namespace ExPresSXR.Misc
 
             if (_useFade)
             {
-                RuntimeUtils.ChangeSceneWithFade(_rig, _sceneIndex, false, null);
+                RuntimeUtils.ChangeSceneWithFade(_rig, scene, false, null);
             }
             else
             {
-                RuntimeUtils.SwitchSceneAsync(_sceneIndex, null);
+                RuntimeUtils.SwitchSceneAsync(scene, null);
             }
         }
     }

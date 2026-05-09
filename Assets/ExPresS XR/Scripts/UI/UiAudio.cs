@@ -1,7 +1,4 @@
-using System;
 using ExPresSXR.Misc;
-using Unity.XR.CoreUtils.Editor;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -154,7 +151,7 @@ namespace ExPresSXR.UI
 
         foreach (T btn in objs)
         {
-            Undo.RecordObject(btn, "Add Audio Ui Callbacks");
+            UnityEditor.Undo.RecordObject(btn, "Add Audio Ui Callbacks");
 
             if (!btn.gameObject.TryGetComponent(out EventTrigger trigger))
             {
@@ -168,8 +165,8 @@ namespace ExPresSXR.UI
 
             Debug.Log("Done setting up audio events for buttons to with events.");
 
-            EditorUtility.SetDirty(btn);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(btn);
+            UnityEditor.EditorUtility.SetDirty(btn);
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(btn);
         }
     }
 #endif
