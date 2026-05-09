@@ -169,7 +169,13 @@ namespace ExPresSXR.Editor.Editors
 
         protected virtual void DrawPostRangeProperties()
         {
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_inputDisabled);
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                _rangeInteractableInternal.InternalUpdateInputDisabled();
+            }
             EditorGUILayout.PropertyField(_zeroValueOnRelease);
             EditorGUILayout.PropertyField(_requireDirectInteraction);
             EditorGUILayout.PropertyField(_allowNearFarInteraction);

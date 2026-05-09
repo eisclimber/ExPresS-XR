@@ -225,11 +225,10 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         }
 
         [SerializeField]
-        [Tooltip("If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion and only snap in certain situations like after a grab has been released.")]
+        [Tooltip("If true, snapping will not be enforced. This can be used to only snap if the interactable is released.")]
         private bool _enforceSnap = true;
         /// <summary>
-        /// If true, no snapping will be performed, even if snaps are configured. This can be used to have a smooth motion 
-        /// and only snap in certain situations like after a grab has been released.
+        /// If true, snapping will not be enforced. This can be used to only snap if the interactable is released.
         /// </summary>
         public bool EnforceSnap
         {

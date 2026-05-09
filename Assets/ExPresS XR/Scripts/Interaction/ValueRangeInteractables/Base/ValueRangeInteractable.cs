@@ -295,7 +295,7 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             {
                 return;
             }
-            
+
             _selectInteractor = null;
 
             OnValueSelected.Invoke(Value);
@@ -503,7 +503,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public virtual void SetValueToMinValue()
         {
-            Assert.IsTrue(_valueDescriptor.IsMinValue(_valueDescriptor.DefaultMinValue), "ValueDescriptor does not accept the DefaultMinValue as minimum value.");
             _valueDescriptor.Value = _valueDescriptor.DefaultMinValue;
             _valueVisualizer.UpdateVisualization(Value, this);
             EmitOnMinValue(_valueDescriptor.Value);
@@ -514,7 +513,6 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// </summary>
         public virtual void SetValueToMaxValue()
         {
-            Assert.IsTrue(_valueDescriptor.IsMaxValue(_valueDescriptor.DefaultMaxValue), "ValueDescriptor does not accept the DefaultMinValue as maximum value.");
             _valueDescriptor.Value = _valueDescriptor.DefaultMaxValue;
             _valueVisualizer.UpdateVisualization(Value, this);
             EmitOnMaxValue(_valueDescriptor.Value);
@@ -545,10 +543,9 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
             Value = Value;
         }
 
-        /// <summary>
-        /// Executed automatically when the input is disabled. Allows changing values in the inspector during runtime.
-        /// </summary>
-        protected virtual void OnValidate()
+
+        /// <inheritdoc />
+        public virtual void InternalUpdateInputDisabled()
         {
             InputDisabled = _inputDisabled;
         }
@@ -563,6 +560,11 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         /// Update value to allow editing from the editor.
         /// </summary>
         public void InternalUpdateValue();
+
+        /// <summary>
+        /// Triggers 
+        /// </summary>
+        public void InternalUpdateInputDisabled();
 
         /// <summary>
         /// Sets the value to the minimum value of the range.
@@ -580,4 +582,4 @@ namespace ExPresSXR.Interaction.ValueRangeInteractable
         public void ResetValue();
     }
 }
-#endregion
+        #endregion

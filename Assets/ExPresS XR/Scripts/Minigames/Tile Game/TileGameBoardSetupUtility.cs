@@ -1,6 +1,4 @@
-using ExPresSXR.Misc;
 using UnityEditor;
-using UnityEditor.Events;
 using UnityEngine;
 
 namespace ExPresSXR.Minigames.TileGame
@@ -150,7 +148,7 @@ namespace ExPresSXR.Minigames.TileGame
             int numEvents = socket.OnTileSubmitted.GetPersistentEventCount();
             if (numEvents < 1)
             {
-                UnityEventTools.AddPersistentListener(socket.OnTileSubmitted, _game.AddTileFromBoardSubmission);
+                UnityEditor.Events.UnityEventTools.AddPersistentListener(socket.OnTileSubmitted, _game.AddTileFromBoardSubmission);
                 // Force the editor to update
                 EditorUtility.SetDirty(socket);
             }

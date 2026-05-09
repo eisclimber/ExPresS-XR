@@ -1,4 +1,3 @@
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace ExPresSXR.Misc.ColorSwitching
@@ -111,30 +110,33 @@ namespace ExPresSXR.Misc.ColorSwitching
                 return;
             }
 
-            AnimatorController controller = _animator.runtimeAnimatorController as AnimatorController;
+#if UNITY_EDITOR
+            UnityEditor.Animations.AnimatorController controller = _animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController;
 
             if (controller == null) // Probably not set up yet -> do noting..
             {
                 return;
             }
 
-            AnimatorControllerLayer layer = controller.layers[0]; // Only checking the first layer for simplicity
-            AnimatorStateMachine stateMachine = layer.stateMachine;
+            UnityEditor.Animations.AnimatorControllerLayer layer = controller.layers[0]; // Only checking the first layer for simplicity
+            UnityEditor.Animations.AnimatorStateMachine stateMachine = layer.stateMachine;
 
-            foreach (ChildAnimatorState child in stateMachine.states)
+            foreach (UnityEditor.Animations.ChildAnimatorState child in stateMachine.states)
             {
-                AnimatorState state = child.state;
+                UnityEditor.Animations.AnimatorState state = child.state;
 
                 EvaluateStateBehaviours(state);
                 EvaluateStateTransitions(state);
             }
+#endif
         }
 
+#if UNITY_EDITOR
         /// <summary>
         /// Checks a state if it can be used for color switching.
         /// </summary>
         /// <param name="state">State top check.</param>
-        protected virtual void EvaluateStateBehaviours(AnimatorState state)
+        protected virtual void EvaluateStateBehaviours(UnityEditor.Animations.AnimatorState state)
         {
             foreach (StateMachineBehaviour behaviour in state.behaviours)
             {
@@ -160,9 +162,9 @@ namespace ExPresSXR.Misc.ColorSwitching
         /// Checks a states transitions if it can be used for color switching.
         /// </summary>
         /// <param name="state">State top check.</param>
-        protected virtual void EvaluateStateTransitions(AnimatorState state)
+        protected virtual void EvaluateStateTransitions(UnityEditor.Animations.AnimatorState state)
         {
-            foreach (AnimatorStateTransition transition in state.transitions)
+            foreach (UnityEditor.Animations.AnimatorStateTransition transition in state.transitions)
             {
                 if (transition.conditions.Length > 0 && transition.hasExitTime)
                 {
@@ -173,17 +175,17 @@ namespace ExPresSXR.Misc.ColorSwitching
                     transition.hasExitTime = false;
                 }
 
-                if (transition.interruptionSource != TransitionInterruptionSource.Destination)
+                if (transition.interruptionSource != UnityEditor.Animations.TransitionInterruptionSource.Destination)
                 {
                     Debug.LogWarning(
                         $"State from '{state.name}' to '{transition.destinationState.name}' is not interuptable. " +
                         "This can cause issues when switching states. Setting it to 'Destination'.", this
                     );
-                    transition.interruptionSource = TransitionInterruptionSource.Destination;
+                    transition.interruptionSource = UnityEditor.Animations.TransitionInterruptionSource.Destination;
                 }
             }
         }
-
+#endif
         /// <summary>
         /// Ensures a correct setup of the animator.
         /// </summary>

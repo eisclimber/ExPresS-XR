@@ -46,14 +46,17 @@ namespace ExPresSXR.Misc
             set => _connectToClick = value;
         }
 
-
-
         /// <summary>
         /// Emitted when the toggle state changes, providing the toggle pressed state.
         /// </summary>
         [Space]
         public ToggledChangedEvent OnToggleChanged;
 
+        /// <summary>
+        /// Emitted when the toggle state changes, providing the *Negated* toggle pressed state.
+        /// </summary>
+        [Space]
+        public ToggledChangedEvent OnToggleChangedNegated;
 
         private Button btn;
         private Color normalColor;
@@ -94,6 +97,7 @@ namespace ExPresSXR.Misc
             Pressed = !_pressed;
 
             OnToggleChanged.Invoke(_pressed);
+            OnToggleChangedNegated.Invoke(!_pressed);
         }
 
         private void OnValidate()
